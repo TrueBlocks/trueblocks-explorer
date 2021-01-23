@@ -3,7 +3,7 @@ info:
   title: TrueBlocks API
   description: An API for accessing cached Ethereum blockchain data and accounts
   contact:
-    email: you@your-company.com
+    email: jrush@quickblocks.io
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -19,45 +19,69 @@ tags:
 - name: Blockchain
   description: Access and cache blockchain-related data
 paths:
-  /list:
+  /v0/scrape:
     get:
       tags:
-      - Accounts
+      - Scraper
       summary: searches inventory
-      description: |
-        By passing in the appropriate options, you can search for
-        available inventory in the system
+      description: Allows you to control the index
       operationId: searchInventory
       parameters:
-      - name: searchString
+      - name: mode
         in: query
-        description: pass an optional search string for looking up inventory
-        required: false
+        description: control the block and account scrapers
+        required: true
         style: form
         explode: true
         schema:
           type: string
-      - name: skip
+          enum:
+          - run
+          - quit
+          - pause
+          - restart
+      - name: tool
         in: query
-        description: number of records to skip for pagination
+        description: process the index, monitors, or both (none means process timestamps
+          only)
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - index
+          - monitors
+          - none
+          - both
+      - name: pin
+        in: query
+        description: pin new chunks (and blooms) to IPFS (requires Pinata key)
         required: false
         style: form
         explode: true
         schema:
-          minimum: 0
-          type: integer
-          format: int32
-      - name: limit
+          type: boolean
+          default: false
+      - name: publish
         in: query
-        description: maximum number of records to return
+        description: publish the hash of the pin manifest to the UnchainedIndex smart
+          contract
         required: false
         style: form
         explode: true
         schema:
-          maximum: 50
-          minimum: 0
-          type: integer
-          format: int32
+          type: boolean
+          default: false
+      - name: sleep
+        in: query
+        description: the number of seconds to sleep between passes (default 14)
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          default: 14
       responses:
         "200":
           description: search results matching criteria
@@ -69,25 +93,6 @@ paths:
                   $ref: '#/components/schemas/InventoryItem'
         "400":
           description: bad input parameter
-    post:
-      tags:
-      - admins
-      summary: adds an inventory item
-      description: Adds an item to the system
-      operationId: addInventory
-      requestBody:
-        description: Inventory item to add
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InventoryItem'
-      responses:
-        "201":
-          description: item created
-        "400":
-          description: invalid input, object invalid
-        "409":
-          description: an existing item already exists
 components:
   schemas:
     InventoryItem:

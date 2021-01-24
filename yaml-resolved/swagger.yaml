@@ -518,7 +518,7 @@ paths:
           - "true"
       - name: clean
         in: query
-        description: clean the Accounts (addrs to lower case, sort by addr)
+        description: clean the data (addrs to lower case, sort by addr)
         required: false
         style: form
         explode: true
@@ -546,7 +546,7 @@ paths:
       parameters:
       - name: collections
         in: query
-        description: display collections Accounts
+        description: display collections data
         required: false
         style: form
         explode: true
@@ -570,10 +570,8 @@ paths:
     get:
       tags:
       - Accounts
-      summary: Fetches the ABI for a smart contract. Optionally generates C++ source
-        code representing that ABI.
-      description: Fetches the ABI for a smart contract. Optionally generates C++
-        source code representing that ABI.
+      summary: Fetches the ABI for a smart contract.
+      description: Fetches the ABI for a smart contract.
       operationId: accounts-abis
       parameters:
       - name: addrs
@@ -819,11 +817,6 @@ paths:
         explode: true
         schema:
           type: string
-          enum:
-          - run
-          - quit
-          - pause
-          - restart
       - name: tool
         in: query
         description: process the index, monitors, or both (none means process timestamps
@@ -833,11 +826,6 @@ paths:
         explode: true
         schema:
           type: string
-          enum:
-          - index
-          - monitors
-          - none
-          - both
       - name: n_blocks
         in: query
         description: maximum number of blocks to process (defaults to 5000)
@@ -1283,12 +1271,10 @@ paths:
     get:
       tags:
       - Data
-      summary: |-
-        Finds the nearest block prior to a date, or the nearest date prior to a block.
-            Alternatively, search for one of 'special' blocks.
-      description: |-
-        Finds the nearest block prior to a date, or the nearest date prior to a block.
-            Alternatively, search for one of 'special' blocks.
+      summary: Finds the nearest block prior to a date, or the nearest date prior
+        to a block.\n    Alternatively, search for one of 'special' blocks.
+      description: Finds the nearest block prior to a date, or the nearest date prior
+        to a block.\n    Alternatively, search for one of 'special' blocks.
       operationId: data-when
       parameters:
       - name: block_list

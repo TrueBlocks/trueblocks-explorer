@@ -105,7 +105,19 @@ components:
       properties:
         data:
           type: object
-          example: {}
+          example:
+          - $ref: '#/components/schemas/scrape_response'
+          - $ref: '#/components/schemas/trans_response'
         error:
-          type: string
-          example: something went wrong
+          type: array
+          example:
+          - error 1
+          - error 2
+          items:
+            type: string
+    scrape_response:
+      type: string
+      example: Scrape response
+    trans_response:
+      type: string
+      example: Trans response

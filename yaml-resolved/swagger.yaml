@@ -605,7 +605,18 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - index
+            - monitors
+            - collections
+            - names
+            - abis
+            - caches
+            - some
+            - all
       - name: details
         in: query
         description: include details about items found in monitors, slurps, abis,
@@ -622,7 +633,16 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - blocks
+            - transactions
+            - traces
+            - slurps
+            - prices
+            - all
       - name: depth
         in: query
         description: for cache mode only, number of levels deep to report
@@ -713,7 +733,14 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - monitors
+            - index
+            - none
+            - both
       - name: n_blocks
         in: query
         description: maximum number of blocks to process (defaults to 5000)
@@ -1186,7 +1213,19 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - none
+            - some
+            - all
+            - balance
+            - nonce
+            - code
+            - storage
+            - deployed
+            - accttype
       - name: changes
         in: query
         description: only report a balance when it changes from one block to the next
@@ -1260,7 +1299,17 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - name
+            - symbol
+            - decimals
+            - totalSupply
+            - version
+            - none
+            - all
       - name: by_acct
         in: query
         description: consider each address an ERC20 token except the last, whose balance
@@ -1391,7 +1440,16 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - ext
+            - int
+            - token
+            - nfts
+            - miner
+            - all
       - name: appearances
         in: query
         description: show only the blocknumer.tx_id appearances of the exported transactions

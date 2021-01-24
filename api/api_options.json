@@ -354,8 +354,8 @@
       "def_val": "5000",
       "generate": "header",
       "option_kind": "flag",
-      "data_type": "<blknum>",
-      "real_type": "blknum_t",
+      "data_type": "<uint64>",
+      "real_type": "uint64_t",
       "description": "maximum number of records to process for --freshen option"
     },
     "factory": {
@@ -535,6 +535,7 @@
       "command": "mode",
       "hotkey": "",
       "def_val": "",
+      "is_required": true,
       "core_visible": true,
       "docs_visible": true,
       "generate": "header",
@@ -573,8 +574,8 @@
       "docs_visible": true,
       "generate": "header",
       "option_kind": "flag",
-      "data_type": "<blknum>",
-      "real_type": "blknum_t",
+      "data_type": "<uint64>",
+      "real_type": "uint64_t",
       "description": "maximum number of blocks to process (defaults to 5000)"
     },
     "n_block_procs": {
@@ -1190,7 +1191,7 @@
       "option_kind": "switch",
       "data_type": "<boolean>",
       "real_type": "bool",
-      "description": "display collections Accounts"
+      "description": "display collections data"
     }
   },
   "tags": {
@@ -1238,7 +1239,7 @@
       "option_kind": "switch",
       "data_type": "<boolean>",
       "real_type": "bool",
-      "description": "clean the Accounts (addrs to lower case, sort by addr)"
+      "description": "clean the data (addrs to lower case, sort by addr)"
     },
     "": {
       "num": "12460",
@@ -2109,7 +2110,7 @@
       "generate": "--",
       "option_kind": "description",
       "data_type": "",
-      "description": "Fetches the ABI for a smart contract. Optionally generates C++ source code representing that ABI."
+      "description": "Fetches the ABI for a smart contract."
     }
   },
   "when": {

@@ -19,7 +19,7 @@ tags:
 - name: Blockchain
   description: Access and cache blockchain-related data
 paths:
-  /v0/scrape:
+  /scrape:
     get:
       tags:
       - Scraper
@@ -61,8 +61,10 @@ paths:
         style: form
         explode: true
         schema:
-          type: boolean
-          default: false
+          type: string
+          enum:
+          - ""
+          - "true"
       - name: publish
         in: query
         description: publish the hash of the pin manifest to the UnchainedIndex smart
@@ -71,8 +73,10 @@ paths:
         style: form
         explode: true
         schema:
-          type: boolean
-          default: false
+          type: string
+          enum:
+          - ""
+          - "true"
       - name: sleep
         in: query
         description: the number of seconds to sleep between passes (default 14)
@@ -81,41 +85,30 @@ paths:
         explode: true
         schema:
           type: number
-          default: 14
       responses:
         "200":
-          description: search results matching criteria
+          description: status of the scraper
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InventoryItem'
+                  $ref: '#/components/schemas/scrape_response'
         "400":
           description: bad input parameter
 components:
   schemas:
-    InventoryItem:
+    scrape_response:
       required:
-      - id
-      - manufacturer
-      - name
-      - releaseDate
+      - result
       type: object
       properties:
-        id:
+        result:
           type: string
-          format: uuid
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-        name:
+          example: success
+        error:
           type: string
-          example: Widget Adapter
-        releaseDate:
-          type: string
-          format: date-time
-          example: 2016-08-29T09:12:33.001Z
-        manufacturer:
-          $ref: '#/components/schemas/Manufacturer'
+          example: something went wrong
     Manufacturer:
       required:
       - name

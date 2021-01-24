@@ -12,17 +12,125 @@ servers:
 - url: https://virtserver.swaggerhub.com/trueblocks/TrueBlocks/0.8.04
   description: SwaggerHub API Auto Mocking
 tags:
-- name: Scraper
-  description: Control the TrueBlocks scraper and build the index
 - name: Accounts
   description: List, export, and cache address-based transactional data
-- name: Blockchain
+- name: Admin
+  description: Control the TrueBlocks scraper and build the index
+- name: Data
   description: Access and cache blockchain-related data
+- name: State
+  description: Access to account and token state
+- name: Other
+  description: Access to other and external data
 paths:
+  /export:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /list:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /collections:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /names:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /tags:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /abis:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /rm:
+    get:
+      tags:
+      - Accounts
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /status:
+    get:
+      tags:
+      - Admin
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
   /scrape:
     get:
       tags:
-      - Scraper
+      - Admin
       summary: searches inventory
       description: Allows you to control the index
       operationId: searchInventory
@@ -96,6 +204,162 @@ paths:
                   $ref: '#/components/schemas/response'
         "400":
           description: bad input parameter
+  /blocks:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /transactions:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /logs:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /receipts:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /traces:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /when:
+    get:
+      tags:
+      - Data
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /state:
+    get:
+      tags:
+      - State
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /tokens:
+    get:
+      tags:
+      - State
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /quotes:
+    get:
+      tags:
+      - Other
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /slurp:
+    get:
+      tags:
+      - Other
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /where:
+    get:
+      tags:
+      - Other
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+  /dive:
+    get:
+      tags:
+      - Other
+      responses:
+        "200":
+          description: status of the scraper
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
 components:
   schemas:
     response:

@@ -819,6 +819,11 @@ paths:
         explode: true
         schema:
           type: string
+          enum:
+          - run
+          - quit
+          - pause
+          - restart
       - name: tool
         in: query
         description: process the index, monitors, or both (none means process timestamps
@@ -828,6 +833,11 @@ paths:
         explode: true
         schema:
           type: string
+          enum:
+          - index
+          - monitors
+          - none
+          - both
       - name: n_blocks
         in: query
         description: maximum number of blocks to process (defaults to 5000)

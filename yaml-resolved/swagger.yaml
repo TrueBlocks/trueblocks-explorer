@@ -56,10 +56,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: receipts
         in: query
         description: export receipts instead of transaction list
@@ -67,10 +64,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: logs
         in: query
         description: export logs instead of transaction list
@@ -78,10 +72,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: traces
         in: query
         description: export traces instead of transaction list
@@ -89,10 +80,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: statements
         in: query
         description: export reconcilations instead of transaction list
@@ -100,10 +88,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: accounting
         in: query
         description: export accounting records instead of transaction list
@@ -111,10 +96,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: articulate
         in: query
         description: articulate transactions, traces, logs, and outputs
@@ -122,10 +104,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: write_txs
         in: query
         description: write transactions to the cache (see notes)
@@ -133,10 +112,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: write_traces
         in: query
         description: write traces to the cache (see notes)
@@ -144,10 +120,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: skip_ddos
         in: query
         description: toggle skipping over 2016 dDos transactions ('on' by default)
@@ -155,10 +128,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: max_traces
         in: query
         description: if --skip_ddos is on, this many traces defines what a ddos transaction
@@ -175,10 +145,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: freshen
         in: query
         description: freshen but do not print the exported data
@@ -186,10 +153,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: freshen_max
         in: query
         description: maximum number of records to process for --freshen option
@@ -206,10 +170,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: emitter
         in: query
         description: available for --logs option only, export will only export if
@@ -218,10 +179,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: count
         in: query
         description: only available for --appearances mode, if present return only
@@ -230,10 +188,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: first_record
         in: query
         description: the first record to process
@@ -257,10 +212,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: unripe
         in: query
         description: ignored (preserved for backwards compatibility)
@@ -268,10 +220,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -308,10 +257,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: unripe
         in: query
         description: enable search of unripe (neither staged nor finalized) folder
@@ -320,10 +266,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: blooms
         in: query
         description: process query by first using bloom filter and, if hit, downloading
@@ -332,10 +275,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: start
         in: query
         description: this value is ignored but remains for backward compatibility
@@ -376,10 +316,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -415,10 +352,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: match_case
         in: query
         description: do case-sensitive search
@@ -426,10 +360,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: all
         in: query
         description: include all accounts in the search
@@ -437,10 +368,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: owned
         in: query
         description: include personal accounts in the search
@@ -448,10 +376,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: custom
         in: query
         description: include your custom named accounts
@@ -459,10 +384,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: prefund
         in: query
         description: include prefund accounts
@@ -470,10 +392,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: named
         in: query
         description: include well know token and airdrop addresses in the search
@@ -481,10 +400,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: other
         in: query
         description: export other addresses if found
@@ -492,10 +408,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: addr
         in: query
         description: display only addresses in the results (useful for scripting)
@@ -503,10 +416,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: to_custom
         in: query
         description: for editCmd only, is the edited name a custom name or not
@@ -514,10 +424,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: clean
         in: query
         description: clean the data (addrs to lower case, sort by addr)
@@ -525,10 +432,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -553,10 +457,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -592,10 +493,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: generate
         in: query
         description: generate C++ code into the current folder for all functions and
@@ -604,10 +502,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: monitored
         in: query
         description: load ABIs from monitored addresses
@@ -615,10 +510,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: known
         in: query
         description: load common 'known' ABIs from cache
@@ -626,10 +518,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: addr
         in: query
         description: include address of smart contract for the abi in output
@@ -637,10 +526,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: sol
         in: query
         description: file name of .sol file from which to create a new known abi (without
@@ -682,10 +568,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -721,10 +604,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: types
         in: query
         description: for cache mode only, which type(s) of cache to report
@@ -749,10 +629,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: get_config
         in: query
         description: returns JSON data of the editable configuration file items
@@ -760,10 +637,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: set_config
         in: query
         description: accepts JSON in an env variable and writes it to configuration
@@ -772,10 +646,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: start
         in: query
         description: first block to process (inclusive)
@@ -864,10 +735,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: publish
         in: query
         description: publish the hash of the pin manifest to the UnchainedIndex smart
@@ -876,10 +744,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: listpins
         in: query
         description: list pins (precludes other options, requires API key)
@@ -887,10 +752,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: sleep
         in: query
         description: the number of seconds to sleep between passes (default 14)
@@ -934,10 +796,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: addrs
         in: query
         description: display all addresses included in the block
@@ -945,10 +804,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: uniq
         in: query
         description: display only uniq addresses found per block
@@ -956,10 +812,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: uniq_tx
         in: query
         description: display only uniq addresses found per transaction
@@ -967,10 +820,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: count
         in: query
         description: display counts of appearances (for --addrs, --uniq, or --uniq_tx)
@@ -979,10 +829,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: uncles
         in: query
         description: display uncle blocks (if any) instead of the requested block
@@ -990,10 +837,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: force
         in: query
         description: force a re-write of the block to the cache
@@ -1001,10 +845,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: trace
         in: query
         description: export the traces from the block as opposed to the block data
@@ -1012,10 +853,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1051,10 +889,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: trace
         in: query
         description: display the transaction's trace
@@ -1062,10 +897,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: force
         in: query
         description: force the results into the tx cache
@@ -1073,10 +905,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: uniq
         in: query
         description: display a list of uniq addresses found in this transaction
@@ -1084,10 +913,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1123,10 +949,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: logs
         in: query
         description: display the receipt's logs
@@ -1134,10 +957,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1173,10 +993,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1212,10 +1029,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: count
         in: query
         description: show the number of traces for the transaction only (fast)
@@ -1223,10 +1037,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: skip_ddos
         in: query
         description: skip over 2018 ddos during export ('on' by default)
@@ -1234,10 +1045,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: max_traces
         in: query
         description: if --skip_ddos is on, this many traces defines what a ddos transaction
@@ -1291,10 +1099,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: timestamps
         in: query
         description: ignore other options and generate timestamps only
@@ -1302,10 +1107,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: skip
         in: query
         description: only applicable if --timestamps is on, the step between block
@@ -1366,10 +1168,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: no_zero
         in: query
         description: suppress the display of zero balance accounts
@@ -1377,10 +1176,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: call
         in: query
         description: a comma-separated string of an address, a 4-byte, and required
@@ -1443,10 +1239,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: no_zero
         in: query
         description: suppress the display of zero balance accounts
@@ -1454,10 +1247,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1484,10 +1274,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: period
         in: query
         description: increment of display
@@ -1578,10 +1365,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper
@@ -1662,10 +1446,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       - name: no_zero
         in: query
         description: suppress the display of tables with zero records
@@ -1673,10 +1454,7 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
-          enum:
-          - ""
-          - "true"
+          type: boolean
       responses:
         "200":
           description: status of the scraper

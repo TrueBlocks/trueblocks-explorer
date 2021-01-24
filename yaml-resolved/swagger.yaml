@@ -98,14 +98,14 @@ paths:
           description: bad input parameter
 components:
   schemas:
-    scrape_response:
+    response:
       required:
       - result
       type: object
       properties:
         data:
-          type: string
-          example: '{}'
+          type: object
+          example: {}
         error:
           type: string
           example: something went wrong

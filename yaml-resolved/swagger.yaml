@@ -10,7 +10,7 @@ info:
   version: 0.8.04
 servers:
 - url: http://localhost:8080
-  description: Local doc
+  description: Local documentation
 - url: https://virtserver.swaggerhub.com/trueblocks/TrueBlocks/0.8.04
   description: SwaggerHub API Auto Mocking
 tags:
@@ -1026,10 +1026,8 @@ paths:
     get:
       tags:
       - Data
-      summary: Retrieve an Ethereum transaction from the local cache or a running
-        node.
-      description: Retrieve an Ethereum transaction from the local cache or a running
-        node.
+      summary: Retrieve a transaction from the cache or the node.
+      description: Retrieve a transaction from the cache or the node.
       operationId: data-transactions
       parameters:
       - name: transactions
@@ -1100,10 +1098,8 @@ paths:
     get:
       tags:
       - Data
-      summary: Retrieve a transaction's receipt from the local cache or a running
-        node.
-      description: Retrieve a transaction's receipt from the local cache or a running
-        node.
+      summary: Retrieve a transaction's receipt from the cache or the node.
+      description: Retrieve a transaction's receipt from the cache or the node.
       operationId: data-receipts
       parameters:
       - name: transactions
@@ -1152,9 +1148,8 @@ paths:
     get:
       tags:
       - Data
-      summary: Retrieve a transaction's logs from the local cache or a running node.
-      description: Retrieve a transaction's logs from the local cache or a running
-        node.
+      summary: Retrieve a transaction's logs from the cache or the node.
+      description: Retrieve a transaction's logs from the cache or the node.
       operationId: data-logs
       parameters:
       - name: transactions
@@ -1192,9 +1187,8 @@ paths:
     get:
       tags:
       - Data
-      summary: Retrieve a transaction's traces from the local cache or a running node.
-      description: Retrieve a transaction's traces from the local cache or a running
-        node.
+      summary: Retrieve a transaction's traces from the cache or the node.
+      description: Retrieve a transaction's traces from the cache or the node.
       operationId: data-traces
       parameters:
       - name: transactions
@@ -1334,10 +1328,8 @@ paths:
     get:
       tags:
       - State
-      summary: Retrieve the balance (in wei) for one or more addresses at the given
-        block(s).
-      description: Retrieve the balance (in wei) for one or more addresses at the
-        given block(s).
+      summary: Retrieve the balance of one or more address at the given block(s).
+      description: Retrieve the balance of one or more address at the given block(s).
       operationId: state-state
       parameters:
       - name: addrs
@@ -1411,10 +1403,9 @@ paths:
     get:
       tags:
       - State
-      summary: Retrieve the token balance(s) for one or more addresses at the given
-        (or latest) block(s).
-      description: Retrieve the token balance(s) for one or more addresses at the
-        given (or latest) block(s).
+      summary: Retrieve the token balance for one or more address at the given block(s).
+      description: Retrieve the token balance for one or more address at the given
+        block(s).
       operationId: state-tokens
       parameters:
       - name: addrs2
@@ -1589,10 +1580,8 @@ paths:
     get:
       tags:
       - Other
-      summary: Reports if a block was found in the cache, at a local, or at a remote
-        node.
-      description: Reports if a block was found in the cache, at a local, or at a
-        remote node.
+      summary: Reports in which cache (if any) a block is found.
+      description: Reports in which cache (if any) a block is found.
       operationId: other-where
       parameters:
       - name: blocks

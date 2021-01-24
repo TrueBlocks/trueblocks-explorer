@@ -833,11 +833,6 @@ paths:
         explode: true
         schema:
           type: string
-          enum:
-          - index
-          - monitors
-          - none
-          - both
       - name: n_blocks
         in: query
         description: maximum number of blocks to process (defaults to 5000)
@@ -1501,6 +1496,18 @@ paths:
         explode: true
         schema:
           type: string
+          enum:
+          - "5"
+          - "15"
+          - "30"
+          - "60"
+          - "120"
+          - "240"
+          - "1440"
+          - "10080"
+          - hourly
+          - daily
+          - weekly
       - name: pair
         in: query
         description: which price pair to freshen or list (see Poloniex)
@@ -1517,6 +1524,10 @@ paths:
         explode: true
         schema:
           type: string
+          enum:
+          - poloniex
+          - maker
+          - tellor
       responses:
         "200":
           description: status of the scraper
@@ -1625,6 +1636,9 @@ paths:
         explode: true
         schema:
           type: string
+          enum:
+          - tables
+          - dump
       - name: datadir
         in: query
         description: folder containing TurboGeth data file (data.mdb)

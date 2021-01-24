@@ -10,14 +10,14 @@ info:
   version: 0.8.04
 servers:
 - url: http://localhost:8080
-  description: Local documentation
+  description: Local endpoints
 - url: https://virtserver.swaggerhub.com/trueblocks/TrueBlocks/0.8.04
   description: SwaggerHub API Auto Mocking
 tags:
 - name: Accounts
-  description: List, export, and cache address-based transactional data
+  description: Access and cache transactional data
 - name: Admin
-  description: Control the TrueBlocks scraper and build the index
+  description: Control the scraper and build the index
 - name: Data
   description: Access and cache blockchain-related data
 - name: State

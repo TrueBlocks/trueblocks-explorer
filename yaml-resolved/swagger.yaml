@@ -93,7 +93,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/scrape_response'
+                  $ref: '#/components/schemas/response'
         "400":
           description: bad input parameter
 components:
@@ -103,24 +103,9 @@ components:
       - result
       type: object
       properties:
-        result:
+        data:
           type: string
-          example: success
+          example: '{}'
         error:
           type: string
           example: something went wrong
-    Manufacturer:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          example: ACME Corporation
-        homePage:
-          type: string
-          format: url
-          example: https://www.acme-corp.com
-        phone:
-          type: string
-          example: 408-867-5309

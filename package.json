@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@hookform/error-message": "^0.0.4",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "d3": "^5.15.1",
     "d3-array": "^2.4.0",
     "d3-scale": "^3.2.1",

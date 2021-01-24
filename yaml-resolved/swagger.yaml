@@ -1234,8 +1234,7 @@ paths:
           - "true"
       - name: skip_ddos
         in: query
-        description: toggle skipping over 2018 ddos transactions during export ('on'
-          by default)
+        description: skip over 2018 ddos during export ('on' by default)
         required: false
         style: form
         explode: true
@@ -1277,10 +1276,8 @@ paths:
     get:
       tags:
       - Data
-      summary: Finds the nearest block prior to a date, or the nearest date prior
-        to a block.\n    Alternatively, search for one of 'special' blocks.
-      description: Finds the nearest block prior to a date, or the nearest date prior
-        to a block.\n    Alternatively, search for one of 'special' blocks.
+      summary: Finds block based on date, blockNum, timestamp, or 'special'.
+      description: Finds block based on date, blockNum, timestamp, or 'special'.
       operationId: data-when
       parameters:
       - name: block_list
@@ -1413,9 +1410,8 @@ paths:
     get:
       tags:
       - State
-      summary: Retrieve the token balance for one or more address at the given block(s).
-      description: Retrieve the token balance for one or more address at the given
-        block(s).
+      summary: Retrieve token balances for one or more address at given block(s).
+      description: Retrieve token balances for one or more address at given block(s).
       operationId: state-tokens
       parameters:
       - name: addrs2

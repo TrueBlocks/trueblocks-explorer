@@ -1,8 +1,9 @@
 {
   "list": {
     "addrs": {
-      "num": "10020",
+      "num": "10110",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "addrs",
@@ -16,28 +17,11 @@
       "data_type": "list<addr>",
       "real_type": "listaddr",
       "description": "one or more Ethereum addresses"
-    }
-  },
-  "rm": {
-    "rm": {
-      "num": "10030",
-      "group": "apps",
-      "api_route": "rm",
-      "tool": "acctScrape",
-      "command": "rm",
-      "hotkey": "",
-      "core_visible": true,
-      "generate": "local",
-      "option_kind": "switch",
-      "data_type": "<boolean>",
-      "real_type": "bool",
-      "description": "process the request to delete, undelete, or remove monitors"
-    }
-  },
-  "list": {
+    },
     "staging": {
-      "num": "10060",
+      "num": "10120",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "staging",
@@ -49,8 +33,9 @@
       "description": "enable search of staging (not yet finalized) folder"
     },
     "unripe": {
-      "num": "10080",
+      "num": "10130",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "unripe",
@@ -62,8 +47,9 @@
       "description": "enable search of unripe (neither staged nor finalized) folder (requires --staging)"
     },
     "blooms": {
-      "num": "10083",
+      "num": "10140",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "blooms",
@@ -75,8 +61,9 @@
       "description": "process query by first using bloom filter and, if hit, downloading index chunk from remote"
     },
     "start": {
-      "num": "10120",
+      "num": "10150",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "start",
@@ -89,8 +76,9 @@
       "description": "this value is ignored but remains for backward compatibility"
     },
     "end": {
-      "num": "10140",
+      "num": "10160",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "end",
@@ -103,8 +91,9 @@
       "description": "this value is ignored but remains for backward compatibility"
     },
     "": {
-      "num": "10160",
+      "num": "10170",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "list",
       "tool": "acctScrape",
       "command": "",
@@ -122,6 +111,7 @@
     "addrs": {
       "num": "10200",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "addrs",
@@ -139,6 +129,7 @@
     "topics": {
       "num": "10205",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "topics",
@@ -155,6 +146,7 @@
     "appearances": {
       "num": "10210",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "appearances",
@@ -170,6 +162,7 @@
     "receipts": {
       "num": "10220",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "receipts",
@@ -185,6 +178,7 @@
     "logs": {
       "num": "10230",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "logs",
@@ -200,6 +194,7 @@
     "traces": {
       "num": "10240",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "traces",
@@ -215,6 +210,7 @@
     "statements": {
       "num": "10250",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "statements",
@@ -230,6 +226,7 @@
     "accounting": {
       "num": "10280",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "accounting",
@@ -245,6 +242,7 @@
     "articulate": {
       "num": "10310",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "articulate",
@@ -260,6 +258,7 @@
     "write_txs": {
       "num": "10320",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "write_txs",
@@ -274,6 +273,7 @@
     "write_traces": {
       "num": "10330",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "write_traces",
@@ -288,6 +288,7 @@
     "skip_ddos": {
       "num": "10340",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "skip_ddos",
@@ -302,6 +303,7 @@
     "max_traces": {
       "num": "10350",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "max_traces",
@@ -316,6 +318,7 @@
     "all_abis": {
       "num": "10360",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "all_abis",
@@ -329,6 +332,7 @@
     "freshen": {
       "num": "10380",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "freshen",
@@ -342,6 +346,7 @@
     "freshen_max": {
       "num": "10390",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "freshen_max",
@@ -356,6 +361,7 @@
     "factory": {
       "num": "10395",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "factory",
@@ -369,6 +375,7 @@
     "emitter": {
       "num": "10430",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "emitter",
@@ -383,6 +390,7 @@
     "count": {
       "num": "10435",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "count",
@@ -398,6 +406,7 @@
     "start": {
       "num": "10440",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "start",
@@ -412,6 +421,7 @@
     "end": {
       "num": "10450",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "end",
@@ -426,6 +436,7 @@
     "first_record": {
       "num": "10453",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "first_record",
@@ -440,6 +451,7 @@
     "max_records": {
       "num": "10457",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "max_records",
@@ -454,6 +466,7 @@
     "staging": {
       "num": "10060",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "staging",
@@ -467,6 +480,7 @@
     "unripe": {
       "num": "10080",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "unripe",
@@ -480,6 +494,7 @@
     "": {
       "num": "10460",
       "group": "apps",
+      "tags": "Accounts",
       "api_route": "export",
       "tool": "acctExport",
       "command": "",
@@ -493,10 +508,28 @@
       "description": "Export full detail of transactions for one or more Ethereum addresses."
     }
   },
+  "rm": {
+    "rm": {
+      "num": "10510",
+      "group": "apps",
+      "tags": "Accounts",
+      "api_route": "rm",
+      "tool": "acctScrape",
+      "command": "rm",
+      "hotkey": "",
+      "core_visible": true,
+      "generate": "local",
+      "option_kind": "switch",
+      "data_type": "<boolean>",
+      "real_type": "bool",
+      "description": "process the request to delete, undelete, or remove monitors"
+    }
+  },
   "scrape": {
     "mode": {
       "num": "10600",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "mode",
@@ -513,6 +546,7 @@
     "tool": {
       "num": "10610",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "tool",
@@ -529,6 +563,7 @@
     "n_blocks": {
       "num": "10615",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "n_blocks",
@@ -545,6 +580,7 @@
     "n_block_procs": {
       "num": "10620",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "n_block_procs",
@@ -559,6 +595,7 @@
     "n_addr_procs": {
       "num": "10640",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "n_addr_procs",
@@ -573,6 +610,7 @@
     "pin": {
       "num": "10645",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "pin",
@@ -588,6 +626,7 @@
     "publish": {
       "num": "10648",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "publish",
@@ -603,6 +642,7 @@
     "listpins": {
       "num": "10652",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "listpins",
@@ -616,6 +656,7 @@
     "sleep": {
       "num": "10658",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "sleep",
@@ -631,6 +672,7 @@
     "": {
       "num": "10660",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "scrape",
       "tool": "blockScrape",
       "command": "",
@@ -648,6 +690,7 @@
     "modes": {
       "num": "10700",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "modes",
@@ -664,6 +707,7 @@
     "details": {
       "num": "10720",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "details",
@@ -679,6 +723,7 @@
     "types": {
       "num": "10730",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "types",
@@ -694,6 +739,7 @@
     "depth": {
       "num": "10735",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "depth",
@@ -708,6 +754,7 @@
     "report": {
       "num": "10760",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "report",
@@ -723,6 +770,7 @@
     "get_config": {
       "num": "10780",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "get_config",
@@ -736,6 +784,7 @@
     "set_config": {
       "num": "10800",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "set_config",
@@ -749,6 +798,7 @@
     "start": {
       "num": "10820",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "start",
@@ -763,6 +813,7 @@
     "end": {
       "num": "10840",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "end",
@@ -777,6 +828,7 @@
     "": {
       "num": "10860",
       "group": "apps",
+      "tags": "Admin",
       "api_route": "status",
       "tool": "cacheStatus",
       "command": "",
@@ -794,6 +846,7 @@
     "freshen": {
       "num": "12020",
       "group": "tools",
+      "tags": "Other",
       "api_route": "quotes",
       "tool": "ethQuote",
       "command": "freshen",
@@ -809,6 +862,7 @@
     "period": {
       "num": "12040",
       "group": "tools",
+      "tags": "Other",
       "api_route": "quotes",
       "tool": "ethQuote",
       "command": "period",
@@ -825,6 +879,7 @@
     "pair": {
       "num": "12060",
       "group": "tools",
+      "tags": "Other",
       "api_route": "quotes",
       "tool": "ethQuote",
       "command": "pair",
@@ -841,6 +896,7 @@
     "feed": {
       "num": "12060",
       "group": "tools",
+      "tags": "Other",
       "api_route": "quotes",
       "tool": "ethQuote",
       "command": "feed",
@@ -857,6 +913,7 @@
     "": {
       "num": "12080",
       "group": "tools",
+      "tags": "Other",
       "api_route": "quotes",
       "tool": "ethQuote",
       "command": "",
@@ -874,6 +931,7 @@
     "addrs": {
       "num": "12120",
       "group": "tools",
+      "tags": "Other",
       "api_route": "slurp",
       "tool": "ethslurp",
       "command": "addrs",
@@ -891,6 +949,7 @@
     "blocks": {
       "num": "12140",
       "group": "tools",
+      "tags": "Other",
       "api_route": "slurp",
       "tool": "ethslurp",
       "command": "blocks",
@@ -907,6 +966,7 @@
     "types": {
       "num": "12160",
       "group": "tools",
+      "tags": "Other",
       "api_route": "slurp",
       "tool": "ethslurp",
       "command": "types",
@@ -923,6 +983,7 @@
     "appearances": {
       "num": "12180",
       "group": "tools",
+      "tags": "Other",
       "api_route": "slurp",
       "tool": "ethslurp",
       "command": "appearances",
@@ -938,6 +999,7 @@
     "": {
       "num": "12220",
       "group": "tools",
+      "tags": "Other",
       "api_route": "slurp",
       "tool": "ethslurp",
       "command": "",
@@ -955,6 +1017,7 @@
     "terms": {
       "num": "12260",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "terms",
@@ -972,6 +1035,7 @@
     "expand": {
       "num": "12280",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "expand",
@@ -987,6 +1051,7 @@
     "match_case": {
       "num": "12300",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "match_case",
@@ -1002,6 +1067,7 @@
     "all": {
       "num": "12315",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "all",
@@ -1017,6 +1083,7 @@
     "owned": {
       "num": "12320",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "owned",
@@ -1032,6 +1099,7 @@
     "custom": {
       "num": "12340",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "custom",
@@ -1047,6 +1115,7 @@
     "prefund": {
       "num": "12360",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "prefund",
@@ -1062,6 +1131,7 @@
     "named": {
       "num": "12380",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "named",
@@ -1077,6 +1147,7 @@
     "other": {
       "num": "12400",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "other",
@@ -1090,6 +1161,7 @@
     "addr": {
       "num": "12420",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "addr",
@@ -1107,6 +1179,7 @@
     "collections": {
       "num": "12430",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "collections",
       "tool": "ethNames",
       "command": "collections",
@@ -1117,13 +1190,14 @@
       "option_kind": "switch",
       "data_type": "<boolean>",
       "real_type": "bool",
-      "description": "display collections data"
+      "description": "display collections Accounts"
     }
   },
   "tags": {
     "tags": {
       "num": "12445",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "tags",
       "tool": "ethNames",
       "command": "tags",
@@ -1141,6 +1215,7 @@
     "to_custom": {
       "num": "12450",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "to_custom",
@@ -1154,6 +1229,7 @@
     "clean": {
       "num": "12455",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "clean",
@@ -1162,11 +1238,12 @@
       "option_kind": "switch",
       "data_type": "<boolean>",
       "real_type": "bool",
-      "description": "clean the data (addrs to lower case, sort by addr)"
+      "description": "clean the Accounts (addrs to lower case, sort by addr)"
     },
     "": {
       "num": "12460",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "names",
       "tool": "ethNames",
       "command": "",
@@ -1184,6 +1261,7 @@
     "blocks": {
       "num": "12500",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "blocks",
@@ -1201,6 +1279,7 @@
     "hashes_only": {
       "num": "12520",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "hashes_only",
@@ -1216,6 +1295,7 @@
     "addrs": {
       "num": "12540",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "addrs",
@@ -1231,6 +1311,7 @@
     "uniq": {
       "num": "12560",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "uniq",
@@ -1246,6 +1327,7 @@
     "uniq_tx": {
       "num": "12580",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "uniq_tx",
@@ -1261,6 +1343,7 @@
     "count": {
       "num": "12600",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "count",
@@ -1276,6 +1359,7 @@
     "uncles": {
       "num": "12610",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "uncles",
@@ -1291,6 +1375,7 @@
     "force": {
       "num": "12620",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "force",
@@ -1304,6 +1389,7 @@
     "trace": {
       "num": "12625",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "trace",
@@ -1317,6 +1403,7 @@
     "": {
       "num": "12640",
       "group": "tools",
+      "tags": "Data",
       "api_route": "blocks",
       "tool": "getBlock",
       "command": "",
@@ -1334,6 +1421,7 @@
     "transactions": {
       "num": "12920",
       "group": "tools",
+      "tags": "Data",
       "api_route": "logs",
       "tool": "getLogs",
       "command": "transactions",
@@ -1351,6 +1439,7 @@
     "articulate": {
       "num": "12940",
       "group": "tools",
+      "tags": "Data",
       "api_route": "logs",
       "tool": "getLogs",
       "command": "articulate",
@@ -1366,6 +1455,7 @@
     "": {
       "num": "12960",
       "group": "tools",
+      "tags": "Data",
       "api_route": "logs",
       "tool": "getLogs",
       "command": "",
@@ -1383,6 +1473,7 @@
     "transactions": {
       "num": "13000",
       "group": "tools",
+      "tags": "Data",
       "api_route": "receipts",
       "tool": "getReceipt",
       "command": "transactions",
@@ -1400,6 +1491,7 @@
     "articulate": {
       "num": "13020",
       "group": "tools",
+      "tags": "Data",
       "api_route": "receipts",
       "tool": "getReceipt",
       "command": "articulate",
@@ -1415,6 +1507,7 @@
     "logs": {
       "num": "13040",
       "group": "tools",
+      "tags": "Data",
       "api_route": "receipts",
       "tool": "getReceipt",
       "command": "logs",
@@ -1430,6 +1523,7 @@
     "": {
       "num": "13060",
       "group": "tools",
+      "tags": "Data",
       "api_route": "receipts",
       "tool": "getReceipt",
       "command": "",
@@ -1447,6 +1541,7 @@
     "addrs": {
       "num": "13100",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "addrs",
@@ -1464,6 +1559,7 @@
     "blocks": {
       "num": "13120",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "blocks",
@@ -1480,6 +1576,7 @@
     "parts": {
       "num": "13140",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "parts",
@@ -1496,6 +1593,7 @@
     "changes": {
       "num": "13160",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "changes",
@@ -1511,6 +1609,7 @@
     "no_zero": {
       "num": "13180",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "no_zero",
@@ -1526,6 +1625,7 @@
     "call": {
       "num": "13190",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "call",
@@ -1541,6 +1641,7 @@
     "": {
       "num": "13220",
       "group": "tools",
+      "tags": "State",
       "api_route": "state",
       "tool": "getState",
       "command": "",
@@ -1558,6 +1659,7 @@
     "addrs2": {
       "num": "13260",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "addrs2",
@@ -1575,6 +1677,7 @@
     "blocks": {
       "num": "13280",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "blocks",
@@ -1591,6 +1694,7 @@
     "parts": {
       "num": "13300",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "parts",
@@ -1607,6 +1711,7 @@
     "by_acct": {
       "num": "13320",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "by_acct",
@@ -1622,6 +1727,7 @@
     "no_zero": {
       "num": "13340",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "no_zero",
@@ -1637,6 +1743,7 @@
     "": {
       "num": "13360",
       "group": "tools",
+      "tags": "State",
       "api_route": "tokens",
       "tool": "getTokenInfo",
       "command": "",
@@ -1654,6 +1761,7 @@
     "transactions": {
       "num": "13400",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "transactions",
@@ -1671,6 +1779,7 @@
     "articulate": {
       "num": "13420",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "articulate",
@@ -1686,6 +1795,7 @@
     "count": {
       "num": "13440",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "count",
@@ -1701,6 +1811,7 @@
     "skip_ddos": {
       "num": "13460",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "skip_ddos",
@@ -1715,6 +1826,7 @@
     "max_traces": {
       "num": "13480",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "max_traces",
@@ -1729,6 +1841,7 @@
     "filter": {
       "num": "13490",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "filter",
@@ -1743,6 +1856,7 @@
     "": {
       "num": "13500",
       "group": "tools",
+      "tags": "Data",
       "api_route": "traces",
       "tool": "getTrace",
       "command": "",
@@ -1760,6 +1874,7 @@
     "transactions": {
       "num": "13540",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "transactions",
@@ -1777,6 +1892,7 @@
     "articulate": {
       "num": "13560",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "articulate",
@@ -1792,6 +1908,7 @@
     "trace": {
       "num": "13580",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "trace",
@@ -1807,6 +1924,7 @@
     "force": {
       "num": "13600",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "force",
@@ -1820,6 +1938,7 @@
     "uniq": {
       "num": "13605",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "uniq",
@@ -1835,6 +1954,7 @@
     "": {
       "num": "13620",
       "group": "tools",
+      "tags": "Data",
       "api_route": "transactions",
       "tool": "getTrans",
       "command": "",
@@ -1852,6 +1972,7 @@
     "addrs": {
       "num": "13660",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "addrs",
@@ -1869,6 +1990,7 @@
     "canonical": {
       "num": "13680",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "canonical",
@@ -1884,6 +2006,7 @@
     "generate": {
       "num": "13700",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "generate",
@@ -1899,6 +2022,7 @@
     "monitored": {
       "num": "13840",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "monitored",
@@ -1913,6 +2037,7 @@
     "known": {
       "num": "13850",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "known",
@@ -1927,6 +2052,7 @@
     "addr": {
       "num": "13855",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "addr",
@@ -1941,6 +2067,7 @@
     "sol": {
       "num": "13860",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "sol",
@@ -1955,6 +2082,7 @@
     "find": {
       "num": "13865",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "find",
@@ -1970,6 +2098,7 @@
     "": {
       "num": "13880",
       "group": "tools",
+      "tags": "Accounts",
       "api_route": "abis",
       "tool": "grabABI",
       "command": "",
@@ -1987,6 +2116,7 @@
     "block_list": {
       "num": "13940",
       "group": "tools",
+      "tags": "Data",
       "api_route": "when",
       "tool": "whenBlock",
       "command": "block_list",
@@ -2002,6 +2132,7 @@
     "list": {
       "num": "13960",
       "group": "tools",
+      "tags": "Data",
       "api_route": "when",
       "tool": "whenBlock",
       "command": "list",
@@ -2016,6 +2147,7 @@
     "timestamps": {
       "num": "13962",
       "group": "tools",
+      "tags": "Data",
       "api_route": "when",
       "tool": "whenBlock",
       "command": "timestamps",
@@ -2031,6 +2163,7 @@
     "skip": {
       "num": "13962",
       "group": "tools",
+      "tags": "Data",
       "api_route": "when",
       "tool": "whenBlock",
       "command": "skip",
@@ -2047,6 +2180,7 @@
     "": {
       "num": "13980",
       "group": "tools",
+      "tags": "Data",
       "api_route": "when",
       "tool": "whenBlock",
       "command": "",
@@ -2063,6 +2197,7 @@
     "blocks": {
       "num": "14020",
       "group": "tools",
+      "tags": "Other",
       "api_route": "where",
       "tool": "whereBlock",
       "command": "blocks",
@@ -2079,6 +2214,7 @@
     "": {
       "num": "14040",
       "group": "tools",
+      "tags": "Other",
       "api_route": "where",
       "tool": "whereBlock",
       "command": "",
@@ -2095,6 +2231,7 @@
     "mode": {
       "num": "14010",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "mode",
@@ -2110,6 +2247,7 @@
     "datadir": {
       "num": "14020",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "datadir",
@@ -2126,6 +2264,7 @@
     "name": {
       "num": "14030",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "name",
@@ -2142,6 +2281,7 @@
     "goerli": {
       "num": "14035",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "goerli",
@@ -2157,6 +2297,7 @@
     "no_zero": {
       "num": "14040",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "no_zero",
@@ -2172,6 +2313,7 @@
     "": {
       "num": "14050",
       "group": "tools",
+      "tags": "Other",
       "api_route": "dive",
       "tool": "turboDive",
       "command": "",

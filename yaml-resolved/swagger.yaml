@@ -40,7 +40,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: topics
         in: query
         description: filter by one or more logs topics (only for --logs option)
@@ -48,7 +50,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: appearances
         in: query
         description: export a list of appearances
@@ -249,7 +253,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: staging
         in: query
         description: enable search of staging (not yet finalized) folder
@@ -343,7 +349,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: expand
         in: query
         description: expand search to include all fields (default searches name, address,
@@ -484,7 +492,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: canonical
         in: query
         description: convert all types to their canonical represenation and remove
@@ -787,7 +797,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: hashes_only
         in: query
         description: display only transaction hashes, default is to display full transaction
@@ -881,7 +893,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: articulate
         in: query
         description: articulate the transactions if an ABI is found for the 'to' address
@@ -941,7 +955,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: articulate
         in: query
         description: articulate the transactions if an ABI is found for the 'to' address
@@ -985,7 +1001,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: articulate
         in: query
         description: articulate the transactions if an ABI is found for the 'to' address
@@ -1021,7 +1039,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: articulate
         in: query
         description: articulate the transactions if an ABI is found for the 'to' address
@@ -1091,7 +1111,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: list
         in: query
         description: export a list of the 'special' blocks
@@ -1143,7 +1165,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: blocks
         in: query
         description: an optional list of one or more blocks at which to report balances,
@@ -1152,7 +1176,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: parts
         in: query
         description: control which state to export
@@ -1213,7 +1239,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: blocks
         in: query
         description: an optional list of one or more blocks at which to report balances,
@@ -1222,7 +1250,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: parts
         in: query
         description: one or more parts of the token information to retreive
@@ -1341,7 +1371,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: blocks
         in: query
         description: an optional range of blocks to slurp
@@ -1349,7 +1381,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       - name: types
         in: query
         description: one or more types of transactions to request
@@ -1392,7 +1426,9 @@ paths:
         style: form
         explode: true
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: status of the scraper

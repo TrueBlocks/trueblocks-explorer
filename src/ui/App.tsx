@@ -9,6 +9,7 @@ import { MainMenu } from "./components/MainMenu";
 import { SidePanel, PanelDirection } from "./components/SidePanels/SidePanel";
 import { StatusPanel } from "./components/SidePanels/StatusPanel";
 import { HelpPanel } from "./components/SidePanels/HelpPanel";
+import { useCommand } from "@hooks/useCommand";
 
 const { Header, Footer, Content } = Layout;
 
@@ -16,6 +17,7 @@ export const App = () => {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [statusExpanded, setStatusExpanded] = useState(true);
   const [helpExpanded, setHelpExpanded] = useState(true);
+  const [status, loading] = useCommand("status");
 
   return (
     <Layout>
@@ -50,7 +52,7 @@ export const App = () => {
               onToggle={setStatusExpanded}
               dir={PanelDirection.Right}
             >
-              <StatusPanel />
+              <StatusPanel status={status} loading={loading} />
             </SidePanel>
             <SidePanel
               header="Help"

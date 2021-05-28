@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useCommand } from "@hooks/useCommand";
+import { Result, useCommand } from "@hooks/useCommand";
 import { Loading } from "@components/Loading";
 import { Badge, Divider } from "antd";
 import { createUseStyles } from "react-jss";
@@ -35,8 +35,12 @@ const useStyles = createUseStyles({
   },
 });
 
-export const StatusPanel = () => {
-  const [status, loading] = useCommand("status");
+interface StatusPanelProps {
+  status: Result;
+  loading: boolean;
+}
+
+export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
   const styles = useStyles();
 
   const statusContent = status.content[0] as JsonResponse;

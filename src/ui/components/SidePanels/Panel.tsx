@@ -1,20 +1,20 @@
-import React, { ReactNode } from 'react';
-import classNames from 'classnames';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { PanelHeader, PanelDirection } from './PanelHeader';
+import React, { ReactNode } from "react";
+import classNames from "classnames";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { PanelHeader, PanelDirection } from "./PanelHeader";
 
 export { PanelDirection };
 
 export type PanelProps = {
-  children: ReactNode,
-  collapsibleContent?: boolean,
-  customCollapseIcon?: ReactNode,
-  customExpandIcon?: ReactNode,
-  dir: PanelDirection,
-  expanded?: boolean,
-  header: ReactNode,
-  onToggle: (expanded: boolean) => void,
-}
+  children: ReactNode;
+  collapsibleContent?: boolean;
+  customCollapseIcon?: ReactNode;
+  customExpandIcon?: ReactNode;
+  dir: PanelDirection;
+  expanded?: boolean;
+  header: ReactNode;
+  onToggle: (expanded: boolean) => void;
+};
 
 export const Panel = ({
   children,
@@ -26,16 +26,13 @@ export const Panel = ({
   header,
   onToggle,
 }: PanelProps) => {
-  const classes = classNames('side-panel');
+  const classes = classNames("side-panel");
   const icons = [
     customCollapseIcon || <RightOutlined />,
     customExpandIcon || <LeftOutlined />,
   ];
 
-  const [
-    collapseIcon,
-    expandIcon,
-  ] = (() => {
+  const [collapseIcon, expandIcon] = (() => {
     if (customCollapseIcon || customExpandIcon) return icons;
 
     if (dir === PanelDirection.Right) return icons;
@@ -60,7 +57,15 @@ export const Panel = ({
         iconExpanded={expandIcon}
         onToggle={onToggle}
       >
-        {header}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "4px 16px",
+          }}
+        >
+          {header}
+        </div>
       </PanelHeader>
       {childrenToShow}
     </section>

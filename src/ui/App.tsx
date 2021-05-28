@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import 'antd/dist/antd.css';
-import './App.css';
+import "antd/dist/antd.css";
+import "./App.css";
 
-import { Layout } from 'antd';
-import { Routes } from './Routes';
-import { MainMenu } from './components/MainMenu';
-import {
-  SidePanel,
-  PanelDirection,
-} from './components/SidePanels/SidePanel';
-import {StatusPanel} from './components/SidePanels/StatusPanel';
-import {HelpPanel} from './components/SidePanels/HelpPanel';
+import { Layout } from "antd";
+import { Routes } from "./Routes";
+import { MainMenu } from "./components/MainMenu";
+import { SidePanel, PanelDirection } from "./components/SidePanels/SidePanel";
+import { StatusPanel } from "./components/SidePanels/StatusPanel";
+import { HelpPanel } from "./components/SidePanels/HelpPanel";
 
-const {
-  Header,
-  Footer,
-  Content,
-} = Layout;
+const { Header, Footer, Content } = Layout;
 
 export const App = () => {
   const [menuExpanded, setMenuExpanded] = useState(false);
@@ -39,7 +32,13 @@ export const App = () => {
         </SidePanel>
         <Layout>
           <Layout>
-            <Content style={{ backgroundColor: 'white', padding: '1rem', overflowY: 'auto' }}>
+            <Content
+              style={{
+                backgroundColor: "white",
+                padding: "1rem",
+                overflowY: "auto",
+              }}
+            >
               {/* View */}
 
               {/* TODO: move it */}
@@ -62,9 +61,7 @@ export const App = () => {
               <HelpPanel />
             </SidePanel>
           </Layout>
-          <Footer>
-            Footer
-          </Footer>
+          <Footer>Footer</Footer>
         </Layout>
       </Layout>
     </Layout>

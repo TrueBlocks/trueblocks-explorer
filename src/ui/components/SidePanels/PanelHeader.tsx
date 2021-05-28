@@ -1,27 +1,29 @@
-import classNames from 'classnames';
-import React, { ReactNode } from 'react';
-import { Button, Divider } from 'antd';
+import classNames from "classnames";
+import React, { ReactNode } from "react";
+import { Button, Divider } from "antd";
 
-import './PanelHeader.css';
+import "./PanelHeader.css";
 
-function ifExpanded<Type>(expanded: boolean, onTrue: () => Type, onFalse: () => Type): Type {
-  return expanded
-    ? onTrue()
-    : onFalse();
+function ifExpanded<Type>(
+  expanded: boolean,
+  onTrue: () => Type,
+  onFalse: () => Type
+): Type {
+  return expanded ? onTrue() : onFalse();
 }
 
 export const enum PanelDirection {
   Left,
-  Right
+  Right,
 }
 
 export type PanelHeaderProps = {
-  children: ReactNode,
-  dir: PanelDirection,
-  expanded: boolean,
-  iconCollapsed: ReactNode,
-  iconExpanded: ReactNode,
-  onToggle: (expanded: boolean) => void,
+  children: ReactNode;
+  dir: PanelDirection;
+  expanded: boolean;
+  iconCollapsed: ReactNode;
+  iconExpanded: ReactNode;
+  onToggle: (expanded: boolean) => void;
 };
 
 export const PanelHeader = ({
@@ -32,19 +34,23 @@ export const PanelHeader = ({
   iconExpanded,
   onToggle,
 }: PanelHeaderProps) => {
-  const classes = classNames('panel-header', {
-    'dir-left': dir === PanelDirection.Left,
-    'dir-right': dir === PanelDirection.Right,
+  const classes = classNames("panel-header", {
+    "dir-left": dir === PanelDirection.Left,
+    "dir-right": dir === PanelDirection.Right,
     expanded,
     collapsed: !expanded,
   });
-  const header = expanded
-    ? <h1>{children}</h1>
-    : null;
+  const header = expanded ? (
+    <h1
+      style={{ fontSize: "16px", padding: "4px 0px", letterSpacing: "0.1em" }}
+    >
+      {children}
+    </h1>
+  ) : null;
   const icon = ifExpanded(
     expanded,
     () => iconCollapsed,
-    () => iconExpanded,
+    () => iconExpanded
   );
 
   return (
@@ -55,7 +61,7 @@ export const PanelHeader = ({
           {icon}
         </Button>
       </header>
-      <Divider />
+      <Divider style={{ margin: 0, marginBottom: "16px" }} />
     </>
   );
 };

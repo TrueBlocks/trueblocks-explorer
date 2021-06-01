@@ -1170,6 +1170,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-cookie@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "@types/js-cookie@npm:2.2.6"
+  checksum: 08d3a2a014d2b7fd97070b5e5039f2ca387f07b9ecc13cfa85040479e7adbd62087901bd8adf94b2afad96457652996d1f051282ad3d4677a7ae1b6bf87a640f
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.3, @types/json-schema@npm:^7.0.4, @types/json-schema@npm:^7.0.5, @types/json-schema@npm:^7.0.6":
   version: 7.0.7
   resolution: "@types/json-schema@npm:7.0.7"
@@ -7392,6 +7399,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "js-cookie@npm:2.2.1"
+  checksum: c110f78427cb7715f67c69df0b3430f7cf9dafb5ddb13014df171d4fb61ccda0b1caf9767412cde63cab4bad697a5d4ce83b0c2e7ec650ec9929ed70750d20ae
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -12284,6 +12298,7 @@ resolve@^2.0.0-next.3:
     "@tsconfig/recommended": ^1.0.1
     "@types/dotenv-safe": ^8.1.1
     "@types/jest": ^26.0.20
+    "@types/js-cookie": ^2.2.6
     "@types/react": ^17.0.3
     "@types/react-dom": ^17.0.2
     "@types/react-jss": ^10.0.0
@@ -12316,6 +12331,7 @@ resolve@^2.0.0-next.3:
     html-webpack-plugin: ^5.3.1
     jest: ^26.6.3
     jest-fetch-mock: ^3.0.3
+    js-cookie: ^2.2.1
     path-browserify: ^1.0.1
     prop-types: ^15.7.2
     react: ^17.0.1

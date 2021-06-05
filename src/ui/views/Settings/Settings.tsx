@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { cookieVars } from '../../utils';
 import { Caches } from './Tabs/Caches';
 import { Schemas } from './Tabs/Schemas';
-import { Scraper } from './Tabs/Scraper';
+import { Scrapers } from './Tabs/Scrapers';
 import { Skins } from './Tabs/Skins';
 
 const { TabPane } = Tabs;
@@ -22,8 +22,8 @@ export const SystemView = () => {
     <>
       <PageHeader title={title} />
       <Tabs defaultActiveKey={currentTab} onChange={(key) => onTabChange(key)}>
-        <TabPane tab="Scraper" key="scraper">
-          <Scraper />
+        <TabPane tab="Scrapers" key="scraper">
+          <Scrapers />
         </TabPane>
         <TabPane tab="Caches" key="caches">
           <Caches />

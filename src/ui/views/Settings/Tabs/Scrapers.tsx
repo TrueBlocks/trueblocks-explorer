@@ -1,8 +1,8 @@
 import { runCommand } from '@modules/core';
-import { Button } from 'antd';
+import { Switch } from 'antd';
 import React, { useState } from 'react';
 
-export const Scraper = () => {
+export const Scrapers = () => {
   const [idxScraperOn, setIndexScraper] = useState(true);
   const [monScraperOn, setMonitorScraper] = useState(true);
 
@@ -18,8 +18,13 @@ export const Scraper = () => {
 
   return (
     <>
-      <Button type={idxScraperOn ? 'primary' : 'dashed'} onClick={toggleIndexScraper}>Toggle Index Scraper</Button>
-      <Button type={monScraperOn ? 'primary' : 'dashed'} onClick={toggleMonitorScraper}>Toggle Monitor Scraper</Button>
+      index scraper:
+      {' '}
+      <Switch checkedChildren="on" unCheckedChildren="off" onClick={toggleIndexScraper} />
+      <br />
+      monitor scraper:
+      {' '}
+      <Switch checkedChildren="on" unCheckedChildren="off" onClick={toggleMonitorScraper} />
       <h4>
         scrapers
       </h4>

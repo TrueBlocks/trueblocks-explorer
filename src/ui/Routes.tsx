@@ -1,32 +1,61 @@
-import React from 'react';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 import {
-  Route, Switch,
-} from 'react-router-dom';
+  DashboardLocation,
+  ExplorerLocation,
+  NamesLocation,
+  NamesTagsLocation,
+  SupportLocation,
+  SystemLocation,
+} from "./locations";
+
 import {
   DashboardView,
-
-  ExplorerView, NamesView,
-
+  ExplorerView,
+  NamesView,
   SupportView,
   SystemView,
-} from './views';
+} from "./views";
+
+const routes = [
+  {
+    path: DashboardLocation,
+    exact: true,
+    component: DashboardView,
+  },
+  {
+    path: NamesLocation,
+    component: NamesView,
+  },
+  {
+    path: NamesTagsLocation,
+    component: NamesView,
+  },
+  {
+    path: ExplorerLocation,
+    component: ExplorerView,
+  },
+  {
+    path: SupportLocation,
+    component: SupportView,
+  },
+  {
+    path: SystemLocation,
+    component: SystemView,
+  },
+];
+
+const CustomRoute = (props: any) => {
+  const { path, component, exact } = props;
+
+  return <Route path={path} component={component} exact={exact} />;
+};
 
 export const Routes = () => (
   <Switch>
-    <Route exact path="/">
-      <DashboardView />
-    </Route>
-    <Route path="/names">
-      <NamesView />
-    </Route>
-    <Route path="/explorer">
-      <ExplorerView />
-    </Route>
-    <Route path="/support">
-      <SupportView />
-    </Route>
-    <Route path="/system">
-      <SystemView />
-    </Route>
+    {routes.map((props) => (
+      <CustomRoute key={props.path} {...props} />
+    ))}
+    <DashboardView />
   </Switch>
 );

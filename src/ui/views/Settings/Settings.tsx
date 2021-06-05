@@ -3,14 +3,14 @@ import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { cookieVars } from '../../utils';
 import { Caches } from './Tabs/Caches';
-import { Config } from './Tabs/Config';
 import { Schemas } from './Tabs/Schemas';
+import { Scraper } from './Tabs/Scraper';
 import { Skins } from './Tabs/Skins';
 
 const { TabPane } = Tabs;
 
 export const SystemView = () => {
-  const [currentTab, setCurrentTab] = useState(Cookies.get(cookieVars.settings_current_tab) || 'config');
+  const [currentTab, setCurrentTab] = useState(Cookies.get(cookieVars.settings_current_tab) || 'scraper');
 
   const onTabChange = (key: string) => {
     Cookies.set(cookieVars.settings_current_tab, key);
@@ -22,8 +22,8 @@ export const SystemView = () => {
     <>
       <PageHeader title={title} />
       <Tabs defaultActiveKey={currentTab} onChange={(key) => onTabChange(key)}>
-        <TabPane tab="Config" key="config">
-          <Config />
+        <TabPane tab="Scraper" key="scraper">
+          <Scraper />
         </TabPane>
         <TabPane tab="Caches" key="caches">
           <Caches />

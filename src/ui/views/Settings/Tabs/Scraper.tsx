@@ -6,20 +6,20 @@ export const Scraper = () => {
   const [idxScraperOn, setIndexScraper] = useState(true);
   const [monScraperOn, setMonitorScraper] = useState(true);
 
-  const toggleScraper1 = async () => {
+  const toggleIndexScraper = async () => {
     setIndexScraper(!idxScraperOn);
     await runCommand('scraper', { tool: 'monitor', mode: idxScraperOn });
   };
 
-  const toggleScraper2 = async () => {
+  const toggleMonitorScraper = async () => {
     setMonitorScraper(!monScraperOn);
     await runCommand('scraper', { tool: 'monitor', mode: monScraperOn });
   };
 
   return (
     <>
-      <Button type={idxScraperOn ? 'primary' : 'dashed'} onClick={toggleScraper1}>Toggle Index Scraper</Button>
-      <Button type={monScraperOn ? 'primary' : 'dashed'} onClick={toggleScraper2}>Toggle Monitor Scraper</Button>
+      <Button type={idxScraperOn ? 'primary' : 'dashed'} onClick={toggleIndexScraper}>Toggle Index Scraper</Button>
+      <Button type={monScraperOn ? 'primary' : 'dashed'} onClick={toggleMonitorScraper}>Toggle Monitor Scraper</Button>
       <h4>
         scrapers
       </h4>

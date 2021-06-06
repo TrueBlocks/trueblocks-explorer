@@ -1,33 +1,50 @@
 import { runCommand } from '@modules/core';
 import { Switch } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const Scrapers = () => {
-  const [idxScraperOn, setIndexScraper] = useState(true);
-  const [monScraperOn, setMonitorScraper] = useState(true);
+  const [indexerOn, setIndexerOn] = useState(true);
+  const [monitorsOn, setMonitorsOn] = useState(true);
+  const [response, setResponse] = useState({});
 
-  const toggleIndexScraper = async () => {
-    setIndexScraper(!idxScraperOn);
-    await runCommand('scraper', { tool: 'monitor', mode: idxScraperOn });
+  const toggleIndexer = async () => {
+    setIndexerOn(!indexerOn);
+    setResponse(await runCommand('scraper', { toggle: 'indexer', mode: indexerOn }));
   };
 
-  const toggleMonitorScraper = async () => {
-    setMonitorScraper(!monScraperOn);
-    await runCommand('scraper', { tool: 'monitor', mode: monScraperOn });
+  const toggleMonitors = async () => {
+    setMonitorsOn(!monitorsOn);
+    setResponse(await runCommand('scraper', { toggle: 'monitors', mode: monitorsOn }));
   };
+
+  const toggleBoth = async () => {
+    const bothOn = !(indexerOn && monitorsOn);
+    setIndexerOn(bothOn);
+    setMonitorsOn(bothOn);
+    setResponse(await runCommand('scraper', { toggle: 'both', mode: bothOn }));
+  };
+
+  useEffect(() => {
+    setResponse(runCommand('scraper', { status: 'both' }));
+  }, []);
 
   return (
     <>
       index scraper:
       {' '}
-      <Switch checkedChildren="on" unCheckedChildren="off" onClick={toggleIndexScraper} />
+      <Switch checked={indexerOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleIndexer} />
       <br />
       monitor scraper:
       {' '}
-      <Switch checkedChildren="on" unCheckedChildren="off" onClick={toggleMonitorScraper} />
-      <h4>
-        scrapers
-      </h4>
+      <Switch checked={monitorsOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleMonitors} />
+      <br />
+      both scrapers:
+      {' '}
+      <Switch checked={indexerOn && monitorsOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleBoth} />
+      <br />
+      Return value:
+      {' '}
+      {JSON.stringify(response, null, 2)}
     </>
   );
 };

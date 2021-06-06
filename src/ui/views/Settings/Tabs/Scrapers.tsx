@@ -8,9 +8,9 @@ import React, { useEffect, useState } from 'react';
 // http://localhost:8080/scraper?tool=[indexer|monitors|both]&mode=[true|false] returns the same with message 'toggle'
 //
 export const Scrapers = () => {
-  // TODO(tjayrush): The state of this toggle is needs to be update from the server
+  // TODO(tjayrush): The state of this toggle needs to be updated from the server
   const [indexerOn, setIndexerOn] = useState(true);
-  // TODO(tjayrush): The state of this toggle is needs to be update from the server
+  // TODO(tjayrush): The state of this toggle needs to be updated from the server
   const [monitorsOn, setMonitorsOn] = useState(true);
   // TODO(tjayrush): This is a promise, how do I turn it into JSON?
   const [response, setResponse] = useState({});

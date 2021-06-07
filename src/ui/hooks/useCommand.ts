@@ -2,24 +2,41 @@ import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/function';
 import { useEffect, useState } from 'react';
 import {
-  CommandParams, CoreCommand, JsonResponse, runCommand,
+  CommandParams,
+  CoreCommand,
+  JsonResponse,
+  runCommand,
 } from '../modules/core';
 
 type DataResult = {
-  status: 'success',
-  data: JsonResponse[],
-  meta: {}
+  status: 'success';
+  data: JsonResponse[];
+  meta: {};
+};
+
+type ScrapeResult = {
+  status: 'success';
+  monitor: boolean;
+  indexer: boolean;
 };
 
 type FailedResult = {
-  status: 'fail',
-  data: string,
-  meta: {}
+  status: 'fail';
+  data: string;
+  meta: {};
+};
+
+type FailedScrapeResult = {
+  status: 'fail';
+  monitor: boolean;
+  indexer: boolean;
 };
 
 export type Result = DataResult | FailedResult;
 
-function toFailedResult(error: Error): FailedResult {
+export type ScraperResult = ScrapeResult | FailedScrapeResult;
+
+export function toFailedResult(error: Error): FailedResult {
   return {
     status: 'fail',
     data: error.toString(),
@@ -27,11 +44,29 @@ function toFailedResult(error: Error): FailedResult {
   };
 }
 
-function toSuccessfulData(responseData: JsonResponse): DataResult {
+export function toFailedScrapeResult(error: Error): FailedScrapeResult {
+  return {
+    status: 'fail',
+    monitor: false,
+    indexer: false,
+  };
+}
+
+export function toSuccessfulData(responseData: JsonResponse): DataResult {
   return {
     status: 'success',
     data: responseData.data,
     meta: responseData.meta,
+  };
+}
+
+export function toSuccessfulScraperData(
+  responseData: JsonResponse
+): ScrapeResult {
+  return {
+    status: 'success',
+    monitor: responseData.monitor,
+    indexer: responseData.indexer,
   };
 }
 
@@ -47,8 +82,8 @@ export function useCommand(command: CoreCommand, params?: CommandParams) {
         eitherResponse,
         Either.fold(
           toFailedResult,
-          (serverResponse) => toSuccessfulData(serverResponse) as Result,
-        ),
+          (serverResponse) => toSuccessfulData(serverResponse) as Result
+        )
       );
       setData(result);
       setLoading(false);

@@ -4,11 +4,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const tsconfigLocation = path.resolve(__dirname, './tsconfig_ui.json');
-const getSourceLocation = (...subdirectories) => ['./src/ui', ...subdirectories].join('/');
+const getSourceLocation = (...subdirectories) =>
+  ['./src/ui', ...subdirectories].join('/');
 
 module.exports = () => ({
   entry: getSourceLocation('index.tsx'),
   output: {
+    publicPath: '/',
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist/ui'),
   },
@@ -29,10 +31,7 @@ module.exports = () => ({
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: [
-          /node_modules/,
-          /\.test\./,
-        ],
+        exclude: [/node_modules/, /\.test\./],
         options: {
           // disable type checker - we will use it in fork plugin
           transpileOnly: true,

@@ -28,9 +28,11 @@ export const Scrapers = () => {
     // TODO(tjayrush): This state is local to the app and disagrees with the actual state
     setMonitorsOn(!monitorsOn);
     // TODO(tjayrush): This value is the actual state of the scraper in the backend
-    setResponse(
-      await runCommand("scraper", { toggle: "monitors", mode: monitorsOn })
-    );
+    const response = await runCommand("scraper", {
+      toggle: "monitors",
+      mode: monitorsOn,
+    });
+    setResponse(response);
   };
 
   const toggleBoth = async () => {
@@ -39,7 +41,11 @@ export const Scrapers = () => {
     setIndexerOn(bothOn);
     setMonitorsOn(bothOn);
     // TODO(tjayrush): This value is the actual state of the scraper in the backend
-    setResponse(await runCommand("scraper", { toggle: "both", mode: bothOn }));
+    const response = await runCommand("scraper", {
+      toggle: "both",
+      mode: bothOn,
+    });
+    setResponse(response);
   };
 
   useEffect(() => {

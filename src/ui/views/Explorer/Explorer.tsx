@@ -1,6 +1,15 @@
 import { PageHeader, Tabs } from 'antd';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import {
+  ExplorerBlocksLocation,
+  ExplorerIndexesLocation,
+  ExplorerLogsLocation,
+  ExplorerReceiptsLocation,
+  ExplorerTracesLocation,
+  ExplorerTransactionsLocation,
+} from '../../locations';
 import { cookieVars } from '../../utils';
 import { Blocks } from './Tabs/Blocks';
 import { Indexes } from './Tabs/Indexes';
@@ -12,10 +21,14 @@ import { Transactions } from './Tabs/Transactions';
 const { TabPane } = Tabs;
 
 export const ExplorerView = () => {
-  const [currentTab, setCurrentTab] = useState(Cookies.get(cookieVars.explorer_current_tab) || 'indexes');
+  const history = useHistory();
+  const [currentTab, setCurrentTab] = useState(
+    Cookies.get(cookieVars.explorer_current_tab) || ExplorerIndexesLocation
+  );
 
   const onTabChange = (key: string) => {
     Cookies.set(cookieVars.explorer_current_tab, key);
+    history.push(key);
     setCurrentTab(key);
   };
 
@@ -24,22 +37,22 @@ export const ExplorerView = () => {
     <>
       <PageHeader title={title} />
       <Tabs defaultActiveKey={currentTab} onChange={(key) => onTabChange(key)}>
-        <TabPane tab="Indexes" key="indexes">
+        <TabPane tab="Indexes" key={ExplorerIndexesLocation}>
           <Indexes />
         </TabPane>
-        <TabPane tab="Blocks" key="blocks">
+        <TabPane tab="Blocks" key={ExplorerBlocksLocation}>
           <Blocks />
         </TabPane>
-        <TabPane tab="Transactions" key="transactions">
+        <TabPane tab="Transactions" key={ExplorerTransactionsLocation}>
           <Transactions />
         </TabPane>
-        <TabPane tab="Receipts" key="receipts">
+        <TabPane tab="Receipts" key={ExplorerReceiptsLocation}>
           <Receipts />
         </TabPane>
-        <TabPane tab="Logs" key="logs">
+        <TabPane tab="Logs" key={ExplorerLogsLocation}>
           <Logs />
         </TabPane>
-        <TabPane tab="Traces" key="traces">
+        <TabPane tab="Traces" key={ExplorerTracesLocation}>
           <Traces />
         </TabPane>
       </Tabs>

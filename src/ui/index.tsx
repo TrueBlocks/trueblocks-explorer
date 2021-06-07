@@ -10,5 +10,5 @@ render(
       <App />
     </Router>
   </GlobalStateProvider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

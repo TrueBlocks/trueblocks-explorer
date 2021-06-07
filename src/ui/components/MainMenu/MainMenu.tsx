@@ -4,24 +4,24 @@ import {
   PhoneOutlined,
   SettingOutlined,
   UnorderedListOutlined,
-} from "@ant-design/icons";
-import { Menu } from "antd";
-import React from "react";
-import { NavLink } from "react-router-dom";
+} from '@ant-design/icons';
+import { Menu } from 'antd';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
-  DashboardLocation,
+  RootLocation,
   ExplorerLocation,
   NamesLocation,
   SupportLocation,
   SystemLocation,
-} from "../../locations";
+} from '../../locations';
 
 const { SubMenu } = Menu;
 
 export const MainMenu = () => (
   <Menu mode="inline">
     <Menu.Item icon={<UnorderedListOutlined />}>
-      <NavLink to={DashboardLocation}>Dashboard</NavLink>
+      <NavLink to={RootLocation}>Dashboard</NavLink>
     </Menu.Item>
 
     <Menu.Item icon={<BookOutlined />}>

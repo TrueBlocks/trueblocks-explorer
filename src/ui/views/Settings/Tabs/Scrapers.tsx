@@ -1,6 +1,6 @@
-import { runCommand } from '@modules/core';
-import { Switch } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { runCommand } from "@modules/core";
+import { Switch } from "antd";
+import React, { useEffect, useState } from "react";
 
 // Server interface
 //
@@ -19,14 +19,18 @@ export const Scrapers = () => {
     // TODO(tjayrush): This state is local to the app and disagrees with the actual state
     setIndexerOn(!indexerOn);
     // TODO(tjayrush): This value is the actual state of the scraper in the backend
-    setResponse(await runCommand('scraper', { toggle: 'indexer', mode: indexerOn }));
+    setResponse(
+      await runCommand("scraper", { toggle: "indexer", mode: indexerOn })
+    );
   };
 
   const toggleMonitors = async () => {
     // TODO(tjayrush): This state is local to the app and disagrees with the actual state
     setMonitorsOn(!monitorsOn);
     // TODO(tjayrush): This value is the actual state of the scraper in the backend
-    setResponse(await runCommand('scraper', { toggle: 'monitors', mode: monitorsOn }));
+    setResponse(
+      await runCommand("scraper", { toggle: "monitors", mode: monitorsOn })
+    );
   };
 
   const toggleBoth = async () => {
@@ -35,32 +39,46 @@ export const Scrapers = () => {
     setIndexerOn(bothOn);
     setMonitorsOn(bothOn);
     // TODO(tjayrush): This value is the actual state of the scraper in the backend
-    setResponse(await runCommand('scraper', { toggle: 'both', mode: bothOn }));
+    setResponse(await runCommand("scraper", { toggle: "both", mode: bothOn }));
   };
 
   useEffect(() => {
-    // TODO(tjayrush): I am not at all clear what this does or why it's here (even though I
-    // TODO(tjayrush): put it here).
-    setResponse(runCommand('scraper', { status: 'both' }));
+    (async () => {
+      // TODO(tjayrush): I am not at all clear what this does or why it's here (even though I
+      // TODO(tjayrush): put it here).
+      const response = await runCommand("scraper", { status: "both" });
+      console.log(response);
+      setResponse(response);
+    })();
   }, []);
 
   return (
     <>
-      index scraper:
-      {' '}
-      <Switch checked={indexerOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleIndexer} />
+      index scraper:{" "}
+      <Switch
+        checked={indexerOn}
+        checkedChildren="on"
+        unCheckedChildren="off"
+        onClick={toggleIndexer}
+      />
       <br />
-      monitor scraper:
-      {' '}
-      <Switch checked={monitorsOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleMonitors} />
+      monitor scraper:{" "}
+      <Switch
+        checked={monitorsOn}
+        checkedChildren="on"
+        unCheckedChildren="off"
+        onClick={toggleMonitors}
+      />
       <br />
-      both scrapers:
-      {' '}
-      <Switch checked={indexerOn && monitorsOn} checkedChildren="on" unCheckedChildren="off" onClick={toggleBoth} />
+      both scrapers:{" "}
+      <Switch
+        checked={indexerOn && monitorsOn}
+        checkedChildren="on"
+        unCheckedChildren="off"
+        onClick={toggleBoth}
+      />
       <br />
-      returned value:
-      {' '}
-      {JSON.stringify(response, null, 2)}
+      returned value: {JSON.stringify(response, null, 2)}
     </>
   );
 };

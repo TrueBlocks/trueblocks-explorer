@@ -5,6 +5,7 @@
   "homepage": "./",
   "private": true,
   "scripts": {
+    "start": "concurrently 'yarn develop:ui' 'open http://localhost:1234'",
     "compile:ui": "webpack --mode production",
     "develop:ui": "webpack serve --mode development --port 1234",
     "compile:electron": "tsc -p tsconfig_electron.json",

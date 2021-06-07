@@ -8,6 +8,7 @@ import { Loading } from '@components/Loading';
 import { Result } from '@hooks/useCommand';
 import { JsonResponse } from '@modules/core';
 import { Badge } from 'antd';
+import filesize from 'filesize';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
@@ -117,9 +118,8 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
             {statusData.caches && statusData.caches[1].nFiles}
             {' '}
             (
-            {statusData.caches && statusData.caches[1].sizeInBytes}
-            {' '}
-            bytes)
+            {statusData.caches && filesize(statusData.caches[1].sizeInBytes)}
+            )
           </div>
         </div>
 
@@ -130,9 +130,8 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
             {statusData.caches && statusData.caches[3].nFiles}
             {' '}
             (
-            {statusData.caches && statusData.caches[3].sizeInBytes}
-            {' '}
-            bytes)
+            {statusData.caches && filesize(statusData.caches[3].sizeInBytes)}
+            )
           </div>
         </div>
 

@@ -32,10 +32,26 @@ export const NamesTable = ({
     addColumn<Name>({
       title: 'Address',
       dataIndex: 'address',
+      configuration: {
+        sorter: {
+          compare(a, b) {
+            if (a.address === b.address) return 0;
+            return (a.address < b.address ? -1 : 1);
+          },
+        },
+      },
     }),
     addColumn({
       title: 'Name',
       dataIndex: 'name',
+      configuration: {
+        sorter: {
+          compare(a, b) {
+            if (a.name === b.name) return 0;
+            return (a.name < b.name ? -1 : 1);
+          },
+        },
+      },
     }),
     addColumn({
       title: 'Symbol',

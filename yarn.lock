@@ -1087,6 +1087,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/filesize@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/filesize@npm:5.0.0"
+  dependencies:
+    filesize: "*"
+  checksum: 40ed98b3fb319df30afb588a6ea111a16312fa7f235d81729880e386762b0094a7fccf9454984a76397ac1e8f7aee73dc52908d0143f363bdf6c99af7c69911a
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.5
   resolution: "@types/graceful-fs@npm:4.1.5"
@@ -5189,6 +5198,13 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: 0f103418c072ec66c081a9908cd7824ee19905e18be16889cb050f5f373998afaf7ca4c2fd2df4cabf703a2cd526aefe59105930e3f8d266a5b35e6d5f5b3cf4
+  languageName: node
+  linkType: hard
+
+"filesize@npm:*, filesize@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "filesize@npm:6.3.0"
+  checksum: 6bd6b30fbece9e3e04eca3e8f2656f336e86b16b598af69d9e0b38039b11bfa3955ee101f17bedaed01a65118710bb78b40f3df4518055d1f37b355500cc68ee
   languageName: node
   linkType: hard
 
@@ -12319,6 +12335,7 @@ resolve@^2.0.0-next.3:
     "@testing-library/react-hooks": ^5.1.1
     "@tsconfig/recommended": ^1.0.1
     "@types/dotenv-safe": ^8.1.1
+    "@types/filesize": ^5.0.0
     "@types/jest": ^26.0.20
     "@types/js-cookie": ^2.2.6
     "@types/react": ^17.0.3
@@ -12348,6 +12365,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-react: ^7.22.0
     eslint-plugin-react-hooks: ^4.2.0
     file-loader: ^6.2.0
+    filesize: ^6.3.0
     fork-ts-checker-webpack-plugin: ^6.1.1
     fp-ts: ^2.9.5
     html-webpack-plugin: ^5.3.1

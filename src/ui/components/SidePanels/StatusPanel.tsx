@@ -62,7 +62,7 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
           <div className={styles.itemHeader}>LATEST</div>
           <div>
             <ClockCircleFilled className={styles.itemIcon} />
-            {statusMeta.client}
+            {Intl.NumberFormat().format(statusMeta.client)}
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
               className={styles.itemIcon}
               style={{ color: '#52c41a' }}
             />
-            {statusMeta.finalized}
+            {Intl.NumberFormat().format(statusMeta.finalized)}
             <span className={styles.statusItem}>FINAL</span>
           </div>
           <div>
@@ -99,7 +99,7 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
               className={styles.itemIcon}
               style={{ color: '#fadb14' }}
             />
-            {statusMeta.staging}
+            {Intl.NumberFormat().format(statusMeta.staging)}
             <span className={styles.statusItem}>STAGING</span>
           </div>
           <div>
@@ -107,7 +107,7 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
               className={styles.itemIcon}
               style={{ color: '#f5222d' }}
             />
-            {statusMeta.unripe}
+            {Intl.NumberFormat().format(statusMeta.unripe)}
             <span className={styles.statusItem}>UNRIPE</span>
           </div>
         </div>

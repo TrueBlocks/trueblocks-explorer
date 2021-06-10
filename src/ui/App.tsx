@@ -23,7 +23,6 @@ const useStyles = createUseStyles({
 
 export const App = () => {
   const [status, setStatus] = useState<Result>(toSuccessfulData({ data: [{}], meta: {} }) as Result);
-  const [init, setInit] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState(false);
   const styles = useStyles();
 
@@ -36,7 +35,6 @@ export const App = () => {
         Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
       );
       setLoadingStatus(false);
-      setInit(true);
       setStatus(result);
       setInterval(async () => {
         setLoadingStatus(true);
@@ -46,13 +44,10 @@ export const App = () => {
           Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
         );
         setLoadingStatus(false);
-        setInit(true);
         setStatus(result);
       }, 10 * 1000);
     })();
   }, []);
-
-  console.log(loadingStatus);
 
   return (
     <Layout>

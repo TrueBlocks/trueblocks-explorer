@@ -1,5 +1,6 @@
 import { either as Either, taskEither as TaskEither } from 'fp-ts';
 import { pipe } from 'fp-ts/function';
+import { notification } from 'antd';
 
 export type CoreCommand =
   | 'export'
@@ -65,10 +66,18 @@ export function runCommand(command: CoreCommand, params?: CommandParams) {
   const url = new URL(command, process.env.CORE_URL);
   // We rely on JS to cast booleans and numbers to strings automatically, hence type cast
   url.search = new URLSearchParams(params as Record<string, string>).toString();
-
   return pipe(
     // Try to call a command and retrieve its output through HTTP
-    TaskEither.tryCatch(() => fetch(url.toString()), Either.toError),
+    TaskEither.tryCatch(
+      () => fetch(url.toString()),
+      (error) => {
+        notification['warning']({
+          message: `Error running "${command}"`,
+          description: `${error}`,
+        });
+        return Either.toError(error);
+      }
+    ),
     // Validate response status (only if there was no Error)
     TaskEither.chain(validateStatus),
     // Extract JSON from the response

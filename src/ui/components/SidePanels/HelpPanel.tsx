@@ -1,6 +1,6 @@
 import { Loading } from '@components/Loading';
 import { useCommand } from '@hooks/useCommand';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useLocation } from 'react-router-dom';
 import { DashboardCollectionsLocation, DashboardOverviewLocation } from '../../locations';
@@ -22,13 +22,14 @@ const helpRoutes = [
 
 export const HelpPanel = () => {
   const location = useLocation();
-  const [help, loading] = useCommand('help');
-  const styles = useStyles();
+  const [help] = useCommand('status', { ui_help: `${location.pathname}`});
+  const getData = useCallback((response) => (response.status === 'fail' ? [] : response.data[0]), []);
+  const theHelp = getData(help);
 
-  const matchedRoute = helpRoutes.find((item) => item.route === location.pathname);
+  const matchedRoute = theHelp; //helpRoutes.find((item) => item.route === location.pathname);
 
   return (
-    <Loading loading={loading}>
+    <Loading loading={false}>
       <div
         style={{
           display: 'flex',
@@ -41,12 +42,11 @@ export const HelpPanel = () => {
           <div>
             <div>{matchedRoute.helpText}</div>
             <a href={matchedRoute.helpLink} target='_blank' rel='noreferrer'>
-              Learn more...
+              more...
             </a>
           </div>
         )}
       </div>
-      {/* <span>{JSON.stringify(help, null, 2)}</span> */}
     </Loading>
   );
 };

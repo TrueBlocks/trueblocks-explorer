@@ -225,10 +225,11 @@ export const useKeyBindings = (
           if (document.activeElement?.isSameNode(currentRow)) {
             // look for previous sibling
             const siblings = getSiblings(currentRow);
+            const currentRowString = currentRow.getAttribute('data-row-key').toString();
             if (
               siblings &&
               siblings.length > 0 &&
-              currentRow.getAttribute('data-row-key').toString() !== siblings.length.toString()
+              currentRowString.charAt(currentRowString.length - 1) !== siblings.length.toString()
             ) {
               setFocusedRow(siblings.length - 1);
               siblings[siblings.length - 1].focus();

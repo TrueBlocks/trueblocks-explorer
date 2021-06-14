@@ -182,6 +182,7 @@ export const useKeyBindings = (
   const handleHomeKey = useCallback(
     (event) => {
       if (currentPage !== 1) {
+        setFocusedRow(0);
         firstPage();
       } else {
         if (event.target) {
@@ -195,7 +196,7 @@ export const useKeyBindings = (
             if (document.activeElement?.isSameNode(currentRow)) {
               const siblings = getSiblings(currentRow);
               if (siblings && siblings.length > 0 && currentRow.getAttribute('data-row-key').toString() !== '1') {
-                setFocusedRow(1);
+                setFocusedRow(0);
                 siblings[1].focus();
               }
             } else {

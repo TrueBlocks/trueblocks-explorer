@@ -19,7 +19,7 @@ export const NamesTable = ({ getNames, loadingNames }: { getNames: () => Name[];
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly React.ReactText[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [focusedRow, setFocusedRow] = useState(1);
+  const [focusedRow, setFocusedRow] = useState(0);
 
   const dataSource = getNames().map((item, i) => {
     return {
@@ -67,6 +67,8 @@ export const NamesTable = ({ getNames, loadingNames }: { getNames: () => Name[];
     },
     [currentPage, dataSource, focusedRow, setFocusedRow]
   );
+
+  console.log(focusedRow);
 
   const components = {
     body: { row: CustomRow },

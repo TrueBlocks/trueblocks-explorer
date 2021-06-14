@@ -91,7 +91,7 @@ export const useKeyBindings = (
           if (document.activeElement?.isSameNode(currentRow)) {
             // look for previous sibling
             let previousSibling = currentRow.previousElementSibling;
-            if (!previousSibling.getAttribute('data-row-key')) {
+            if (!previousSibling.getAttribute('data-row-key') && currentPage !== 1) {
               previousPage();
             } else {
               while (!previousSibling?.getAttribute('data-row-key')) {

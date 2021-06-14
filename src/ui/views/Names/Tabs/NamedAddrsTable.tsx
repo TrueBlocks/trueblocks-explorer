@@ -53,7 +53,12 @@ export const NamesTable = ({ getNames, loadingNames }: { getNames: () => Name[];
       currentPage > 1 && setCurrentPage(currentPage - 1);
       const tr = document.querySelector('tr[data-row-key]');
       const siblings = getSiblings(tr);
-      siblings[focusedRow].focus();
+      if (currentPage === 1) {
+        //@ts-ignore
+        tr.focus();
+      } else {
+        siblings[focusedRow].focus();
+      }
     },
     [currentPage, dataSource, focusedRow, setFocusedRow]
   );

@@ -68,8 +68,6 @@ export const NamesTable = ({ getNames, loadingNames }: { getNames: () => Name[];
     [currentPage, dataSource, focusedRow, setFocusedRow]
   );
 
-  console.log(focusedRow);
-
   const components = {
     body: { row: CustomRow },
   };
@@ -182,9 +180,15 @@ export const NamesTable = ({ getNames, loadingNames }: { getNames: () => Name[];
         pagination={{
           current: currentPage,
           pageSize: pageSize,
-          onChange: (page, pageSize) => {
+          onChange: (page, newPageSize) => {
             setCurrentPage(page);
-            pageSize && setPageSize(pageSize);
+            if (newPageSize !== pageSize) {
+              setPageSize(pageSize);
+              setCurrentPage(1);
+              const tr = document.querySelector('tr[data-row-key]');
+              //@ts-ignore
+              tr.focus();
+            }
           },
         }}
         rowClassName={(record, index) => 'row-' + index}

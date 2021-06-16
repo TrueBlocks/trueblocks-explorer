@@ -124,6 +124,7 @@ export const BaseTableRows = ({ data, columns, loading }: { data: JsonResponse, 
           expandedRowRender: (rowset) => <div>{JSON.stringify(rowset, null, 2)}</div>,
         }}
       />
+      {debug ? <pre>records: {JSON.stringify(data.length)}</pre> : <></>}
       {debug ? <pre>{JSON.stringify(data, null, 2)}</pre> : <></>}
     </div>
   );

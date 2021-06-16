@@ -1,7 +1,7 @@
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
-import { Layout } from 'antd';
+import { Button, Layout } from 'antd';
 import 'antd/dist/antd.css';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
@@ -13,6 +13,7 @@ import { HelpPanel } from './components/SidePanels/HelpPanel';
 import { PanelDirection, SidePanel } from './components/SidePanels/SidePanel';
 import { StatusPanel } from './components/SidePanels/StatusPanel';
 import { Routes } from './Routes';
+import useGlobalState from './state';
 import { cookieVars } from './utils';
 
 const { Header, Footer, Content } = Layout;
@@ -22,6 +23,7 @@ const useStyles = createUseStyles({
 });
 
 export const App = () => {
+  const { debug, setDebug } = useGlobalState();
   const [status, setStatus] = useState<Result>(toSuccessfulData({ data: [{}], meta: {} }) as Result);
   const [loadingStatus, setLoadingStatus] = useState(false);
   const styles = useStyles();
@@ -78,7 +80,12 @@ export const App = () => {
               <HelpPanel />
             </SidePanel>
           </Layout>
-          <Footer>Footer</Footer>
+          <Footer>
+            <Button
+              type={debug ? 'primary' : 'ghost'}
+              onClick={() => setDebug(!debug)}>{debug ? 'debug on' : 'debug off'}
+            </Button>
+          </Footer>
         </Layout>
       </Layout>
     </Layout>

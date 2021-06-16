@@ -1,5 +1,5 @@
 import { createErrorNotification } from '@modules/error_notification';
-import { Button, Card, Col, notification, Row } from 'antd';
+import { Card, Col, notification, Row } from 'antd';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
@@ -33,8 +33,5 @@ export const Overview = () => {
     </Col>
     </Row>
     <br />
-    <Button type='primary' onClick={showError}>
-      Error
-    </Button>
   </>
 )};

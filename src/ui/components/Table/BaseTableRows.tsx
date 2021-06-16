@@ -2,6 +2,7 @@ import { JsonResponse } from '@modules/core';
 import Table, { ColumnsType } from 'antd/lib/table';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import useGlobalState from '../../state';
 import { getSiblings, useKeyBindings } from '../../utils';
 
 export const CustomRow = (props: any) => {
@@ -10,6 +11,7 @@ export const CustomRow = (props: any) => {
 };
 
 export const BaseTableRows = ({ data, columns, loading }: { data: JsonResponse, columns: ColumnsType<any>, loading: boolean }) => {
+  const { debug, setDebug } = useGlobalState();
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly React.ReactText[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -122,6 +124,7 @@ export const BaseTableRows = ({ data, columns, loading }: { data: JsonResponse, 
           expandedRowRender: (rowset) => <div>{JSON.stringify(rowset, null, 2)}</div>,
         }}
       />
+      {debug ? <pre>{JSON.stringify(data, null, 2)}</pre> : <></>}
     </div>
   );
 };

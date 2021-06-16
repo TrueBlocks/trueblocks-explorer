@@ -1,4 +1,4 @@
-import { addColumn, BaseTableRows, TableActions } from '@components/Table';
+import { addColumn, addNumColumn, BaseTableRows, TableActions } from '@components/Table';
 import { BlockType } from '@modules/data/block';
 import { createErrorNotification } from '@modules/error_notification';
 import { ColumnsType } from 'antd/lib/table';
@@ -14,15 +14,17 @@ export const Blocks = () => {
   }
 
   const getData = useCallback((response) => (response.status === 'fail' ? [] : response.data), []);
-  return <BaseTableRows data={getData(blocks)} columns={blockSchema} loading={loading} />
+  return (
+    <BaseTableRows data={getData(blocks)} columns={blockListSchema} loading={loading} />
+  );
 };
 
-const blockSchema: ColumnsType<BlockType> = [
+const blockListSchema: ColumnsType<BlockType> = [
   addColumn<BlockType>({
     title: 'Hash',
     dataIndex: 'hash',
   }),
-  addColumn<BlockType>({
+  addNumColumn<BlockType>({
     title: 'Block Number',
     dataIndex: 'blockNumber',
   }),
@@ -34,13 +36,21 @@ const blockSchema: ColumnsType<BlockType> = [
     title: 'Date',
     dataIndex: 'date',
   }),
-  addColumn<BlockType>({
+  addNumColumn<BlockType>({
     title: 'nTransactions',
     dataIndex: 'transactionsCnt',
   }),
-  addColumn<BlockType>({
+  addNumColumn<BlockType>({
     title: 'Uncles',
     dataIndex: 'unclesCnt',
+  }),
+  addNumColumn<BlockType>({
+    title: 'Gas Limit',
+    dataIndex: 'gasLimit',
+  }),
+  addNumColumn<BlockType>({
+    title: 'Gas Used',
+    dataIndex: 'gasUsed',
   }),
 ];
 

@@ -2,7 +2,7 @@ import { BaseView } from '@components/BaseView';
 import React from 'react';
 import {
   ExplorerBlocksLocation,
-  ExplorerLogsLocation,
+  ExplorerLocation, ExplorerLogsLocation,
   ExplorerReceiptsLocation,
   ExplorerTracesLocation,
   ExplorerTransactionsLocation
@@ -27,6 +27,7 @@ export const ExplorerView = () => {
     <BaseView
       title={title}
       defaultActive={ExplorerBlocksLocation}
+      baseActive={ExplorerLocation}
       cookieName={cookieVars.explorer_current_tab}
       tabs={tabs}
     />

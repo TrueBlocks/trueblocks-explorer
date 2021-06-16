@@ -2,7 +2,7 @@ import { BaseView } from '@components/BaseView';
 import React from 'react';
 import {
   SettingsCachesLocation,
-
+  SettingsLocation,
   SettingsSchemasLocation,
   SettingsScrapersLocation,
   SettingsSkinsLocation
@@ -25,6 +25,7 @@ export const SettingsView = () => {
     <BaseView
       title={title}
       defaultActive={SettingsScrapersLocation}
+      baseActive={SettingsLocation}
       cookieName={cookieVars.settings_current_tab}
       tabs={tabs}
     />

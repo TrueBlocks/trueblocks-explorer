@@ -5,7 +5,7 @@ import {
   SupportContactUsLocation,
   SupportDocumentationLocation,
   SupportHotKeysLocation,
-  SupportLicensingLocation
+  SupportLicensingLocation, SupportLocation
 } from '../..//locations';
 import { cookieVars } from '../../utils';
 import { About } from './Tabs/About';
@@ -27,6 +27,7 @@ export const SupportView = () => {
     <BaseView
       title={title}
       defaultActive={SupportContactUsLocation}
+      baseActive={SupportLocation}
       cookieName={cookieVars.support_current_tab}
       tabs={tabs}
     />

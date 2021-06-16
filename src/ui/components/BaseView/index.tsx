@@ -16,16 +16,16 @@ declare type TabsPosition = 'top' | 'right' | 'bottom' | 'left';
 interface ViewParams {
   title: string,
   defaultActive: string,
+  baseActive: string,
   cookieName: string,
   tabs: ViewTab[];
   position?: TabsPosition
 }
 
-export const BaseView = ({title, cookieName, defaultActive, tabs, position = 'top'}: ViewParams) => {
+export const BaseView = ({title, cookieName, defaultActive, baseActive, tabs, position = 'top'}: ViewParams) => {
   const history = useHistory();
   const location = useLocation();
-  const parts = location.pathname.split('/');
-  const subPath = location.pathname.replace(parts[parts.length-1], '');
+  const subPath = location.pathname.replace(baseActive, '');
   const [currentTab, setCurrentTab] = useState(
     (subPath && subPath.length > 0 ? location.pathname : null) ||
       Cookies.get(cookieName) ||

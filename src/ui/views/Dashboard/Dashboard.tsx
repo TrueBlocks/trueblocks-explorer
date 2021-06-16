@@ -3,7 +3,7 @@ import React from 'react';
 import {
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardIndexesLocation,
+  DashboardIndexesLocation, DashboardLocation,
   DashboardMonitorsLocation,
   DashboardOverviewLocation
 } from '../../locations';
@@ -27,6 +27,7 @@ export const DashboardView = () => {
     <BaseView
       title={title}
       defaultActive={DashboardOverviewLocation}
+      baseActive={DashboardLocation}
       cookieName={cookieVars.dashboard_current_tab}
       tabs={tabs}
     />

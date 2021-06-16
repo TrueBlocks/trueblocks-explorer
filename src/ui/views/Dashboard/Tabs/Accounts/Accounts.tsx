@@ -1,7 +1,7 @@
 import { BaseView } from '@components/BaseView';
 import React from 'react';
 import {
-  AccountFunctionsLocation, AccountTransactionsLocation
+  AccountFunctionsLocation, AccountTransactionsLocation, DashboardAccountsLocation
 } from '../../../../locations';
 import { cookieVars } from '../../../../utils';
 import { AccountFunctions } from './Tabs/Functions';
@@ -17,6 +17,7 @@ export const AccountsView = () => {
     <BaseView
       title={title}
       defaultActive={AccountTransactionsLocation}
+      baseActive={DashboardAccountsLocation}
       cookieName={cookieVars.dashboard_account_sub_tab}
       tabs={tabs}
       position='left'

@@ -3,9 +3,7 @@ import React from 'react';
 import {
   NamesAddressesLocation,
   NamesBlocksLocation,
-
-  NamesEventSigsLocation, NamesFuncSigsLocation,
-
+  NamesEventSigsLocation, NamesFuncSigsLocation, NamesLocation,
   NamesTagsLocation
 } from '../../locations';
 import { cookieVars } from '../../utils';
@@ -28,6 +26,7 @@ export const NamesView = () => {
     <BaseView
       title={title}
       defaultActive={NamesAddressesLocation}
+      baseActive={NamesLocation}
       cookieName={cookieVars.names_current_tab}
       tabs={tabs}
     />

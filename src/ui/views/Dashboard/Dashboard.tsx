@@ -1,12 +1,11 @@
 import { BaseView } from '@components/BaseView';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardIndexesLocation,
-  DashboardLocation,
+  DashboardIndexesLocation, DashboardLocation,
   DashboardMonitorsLocation,
-  DashboardOverviewLocation,
+  DashboardOverviewLocation
 } from '../../locations';
 import { cookieVars } from '../../utils';
 import { AccountsView } from './Tabs/Accounts/Accounts';
@@ -15,19 +14,14 @@ import { IndexesView } from './Tabs/Indexes/Indexes';
 import { Monitors } from './Tabs/Monitors';
 import { Overview } from './Tabs/Overview';
 
-export const DashboardView = ({ match }: { match?: any }) => {
+export const DashboardView = () => {
   const title = 'Dashboard';
   var tabs = [
-    { name: 'Overview', location: DashboardOverviewLocation, component: <Overview />, disabled: false },
-    {
-      name: 'Accounts',
-      location: DashboardAccountsLocation,
-      component: <AccountsView />,
-      disabled: false,
-    },
-    { name: 'Monitors', location: DashboardMonitorsLocation, component: <Monitors />, disabled: false },
-    { name: 'Collections', location: DashboardCollectionsLocation, component: <Collections />, disabled: false },
-    { name: 'Indexes', location: DashboardIndexesLocation, component: <IndexesView />, disabled: false },
+    {name: "Overview", location: DashboardOverviewLocation, component: <Overview />, disabled: false},
+    {name: "Accounts", location: DashboardAccountsLocation, component: <AccountsView />, disabled: false},
+    {name: "Monitors", location: DashboardMonitorsLocation, component: <Monitors />, disabled: false},
+    {name: "Collections", location: DashboardCollectionsLocation, component: <Collections />, disabled: false},
+    {name: "Indexes", location: DashboardIndexesLocation, component: <IndexesView />, disabled: false},
   ];
 
   return (

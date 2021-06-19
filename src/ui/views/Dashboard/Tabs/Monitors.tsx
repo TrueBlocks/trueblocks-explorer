@@ -1,19 +1,10 @@
 import { NamesFilters } from '@components/Filters';
-import {
-  addActionsColumn,
-  addColumn,
-  addNumColumn,
-  addTagsColumn,
-  BaseTableRows,
-  TableActions,
-} from '@components/Table';
+import { addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTableRows, TableActions } from '@components/Table';
 import { useCommand } from '@hooks/useCommand';
 import { MonitorType } from '@modules/data/monitor';
 import { createErrorNotification } from '@modules/error_notification';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { DashboardAccountsAddressLocation } from '../../../locations';
 
 export const Monitors = () => {
   const [monitors, loading] = useCommand('status', { mode: 'monitors', details: true });
@@ -24,7 +15,9 @@ export const Monitors = () => {
   }
 
   const getData = useCallback((response) => {
-    return response.status === 'fail' || !response.data[0].caches ? [] : response.data[0].caches[0].items;
+    return (
+      response.status === 'fail' || !response.data[0].caches ? [] : response.data[0].caches[0].items
+    );
   }, []);
 
   return (
@@ -39,7 +32,6 @@ const monitorSchema: ColumnsType<MonitorType> = [
   addColumn<MonitorType>({
     title: 'Address',
     dataIndex: 'address',
-    render: (address: any) => <Link to={DashboardAccountsAddressLocation(address)}>{address}</Link>,
   }),
   addColumn({
     title: 'Name',
@@ -77,7 +69,7 @@ const monitorSchema: ColumnsType<MonitorType> = [
       dataIndex: '',
       configuration: {
         align: 'right',
-      },
+      }
     },
     {
       width: 150,
@@ -90,12 +82,12 @@ function getTableActions(item: MonitorType) {
   const onClick = (action: string, item: MonitorType) => {
     switch (action) {
       case 'remove':
-        console.log('Deleting the monitor', item);
+        console.log("Deleting the monitor", item);
         break;
       default:
-        console.log('Clicked action', action, item);
+        console.log('Clicked action', action, item)
     }
-  };
+  }
 
   return <TableActions item={item} onClick={onClick} />;
 }

@@ -42,8 +42,8 @@ export function toFailedResult(error: Error): FailedResult {
 export function toFailedScrapeResult(error: Error): FailedScrapeResult {
   return {
     status: 'fail',
-    monitor: { Running: false },
-    indexer: { Running: false },
+    monitor: {Running: false},
+    indexer: {Running: false},
   };
 }
 
@@ -63,7 +63,7 @@ export function toSuccessfulScraperData(responseData: JsonResponse): ScrapeResul
   };
 }
 
-export function useCommand(command: CoreCommand, params?: CommandParams, deps?: any[]) {
+export function useCommand(command: CoreCommand, params?: CommandParams) {
   const emptyData = { data: [{}], meta: {} };
   const [response, setData] = useState<Result>(toSuccessfulData(emptyData));
   const [loading, setLoading] = useState(true);

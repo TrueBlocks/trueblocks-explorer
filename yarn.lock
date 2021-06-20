@@ -1283,6 +1283,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-highlight-words@npm:^0.16.2":
+  version: 0.16.2
+  resolution: "@types/react-highlight-words@npm:0.16.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 9f1d809a4e4da0c06c62898a781450833992ef9b5555f4774034d68cad9c371395a4f4341de156773df3f19e72a5f2071a674a6d4314832ae77a868ecd6e0268
+  languageName: node
+  linkType: hard
+
 "@types/react-jss@npm:^10.0.0":
   version: 10.0.0
   resolution: "@types/react-jss@npm:10.0.0"
@@ -5928,6 +5937,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"highlight-words-core@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "highlight-words-core@npm:1.2.2"
+  checksum: 188e629fbccf2aaff831892e75a2af47d3ca294c5c760cc50af23d5546b4b71b76aad8fba8548f7991a3cb2be1970c0951139f811e7dd92be5d83656d567a5d5
+  languageName: node
+  linkType: hard
+
 "highlight.js@npm:^10.4.1, highlight.js@npm:~10.7.0":
   version: 10.7.2
   resolution: "highlight.js@npm:10.7.2"
@@ -8371,6 +8387,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"memoize-one@npm:^4.0.0":
+  version: 4.0.3
+  resolution: "memoize-one@npm:4.0.3"
+  checksum: 944f45aec97579a52f6db7d14ecaa88ebb119abd14ecbc3472a15d780b86073699a70e000f204c910e0bde76adeeac3a39bf47d38b374d8b13038da3847e1f24
+  languageName: node
+  linkType: hard
+
 "memory-fs@npm:^0.5.0":
   version: 0.5.0
   resolution: "memory-fs@npm:0.5.0"
@@ -10505,6 +10528,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-highlight-words@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "react-highlight-words@npm:0.17.0"
+  dependencies:
+    highlight-words-core: ^1.2.0
+    memoize-one: ^4.0.0
+    prop-types: ^15.5.8
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0
+  checksum: 2fb807c9fd6b8fcd9744728b755a004ede446025995f75f9ccdc75928f41aef085cea4480d2c8d8d8d26a3b452cf5c43d90b40f6cb4f21f9702e61d371900aba
+  languageName: node
+  linkType: hard
+
 "react-hotkeys-hook@npm:^3.3.1":
   version: 3.3.1
   resolution: "react-hotkeys-hook@npm:3.3.1"
@@ -12368,6 +12404,7 @@ resolve@^2.0.0-next.3:
     "@types/js-cookie": ^2.2.6
     "@types/react": ^17.0.3
     "@types/react-dom": ^17.0.2
+    "@types/react-highlight-words": ^0.16.2
     "@types/react-jss": ^10.0.0
     "@types/react-router-dom": ^5.1.7
     "@types/react-syntax-highlighter": ^13.5.0
@@ -12405,6 +12442,7 @@ resolve@^2.0.0-next.3:
     prop-types: ^15.7.2
     react: ^17.0.1
     react-dom: ^17.0.1
+    react-highlight-words: ^0.17.0
     react-hotkeys-hook: ^3.3.1
     react-jss: ^10.6.0
     react-markdown: ^6.0.2

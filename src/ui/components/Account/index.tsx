@@ -150,7 +150,7 @@ export const Account = ({ initAddress }: { initAddress: string }) => {
         />
         <progress
           style={{ position: 'absolute', right: '8px' }}
-          max={totalRecords || 0}
+          max={'100'}
           value={((transactions.data.length / (totalRecords || 1)) * 100).toFixed(0)}
         />
       </div>

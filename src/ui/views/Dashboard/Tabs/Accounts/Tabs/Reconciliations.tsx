@@ -10,7 +10,7 @@ export const AccountReconciliations = ({ record }: { record: Transaction }) => {
     <div className={styles.container}>
       <div></div>
       <div className={styles.cardHolder}>
-        {record.statements.map((statement: Reconciliation) => oneStatement(statement))}
+        {record.statements?.map((statement: Reconciliation) => oneStatement(statement))}
       </div>
       <div></div>
     </div>

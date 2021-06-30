@@ -5,7 +5,7 @@ import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
 import { createErrorNotification } from '@modules/error_notification';
 import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
-import { Checkbox, Collapse, Divider, Input, Tabs } from 'antd';
+import { Checkbox, Divider, Input, Tabs } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
@@ -15,8 +15,6 @@ import { createUseStyles } from 'react-jss';
 import { useLocation } from 'react-router-dom';
 import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 import { AccountTransactions } from '../../views/Dashboard/Tabs/Accounts/Tabs/Transactions';
-
-const { Panel } = Collapse;
 
 const { TabPane } = Tabs;
 
@@ -98,93 +96,74 @@ export const Account = ({ initAddress }: { initAddress: string }) => {
   const getMeta = useCallback((response) => (response.status === 'fail' ? [] : response.meta), []);
   const expandRender = (record: any) => <AccountTransactions record={record} />;
   return (
-    <Collapse>
-      <Panel
-        key={currentAddress}
-        header={
-          <span
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              position: 'absolute',
-              top: '12px',
-              left: '48px',
-              width: '90%',
-            }}>
-            <div>{currentAddress}</div> <Console />
-          </span>
-        }>
-        <div>
-          <Checkbox checked={max_records > 200} onChange={(event) => onMaxRecords()}>
-            max_records
-          </Checkbox>
-          <Checkbox checked={reversed} onChange={(event) => onReversed()}>
-            reversed
-          </Checkbox>
-          <Checkbox checked={articulate} onChange={(event) => onArticulate()}>
-            articulate
-          </Checkbox>
-          <Checkbox checked={accounting} onChange={(event) => onAccounting()}>
-            accounting
-          </Checkbox>
-          <Checkbox checked={staging} onChange={(event) => onStaging()}>
-            staging
-          </Checkbox>
-          <Checkbox checked={denom === 'ether'} onChange={(event) => onEther()}>
-            ether
-          </Checkbox>
-          <Checkbox checked={denom === 'dollars'} onChange={(event) => onDollars()}>
-            dollars
-          </Checkbox>
-          <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', position: 'relative' }}>
-            <h3 style={{ marginRight: '12px', flexShrink: 0 }}>Viewing account:</h3>
-            <Input
-              disabled={loading}
-              placeholder={'Input an address'}
-              value={currentAddress}
-              onChange={(e) => setCurrentAddress(e.target.value)}
-            />
-            <Console style={{ position: 'absolute', right: '8px' }} />
-          </div>
+    <div>
+      <Checkbox checked={max_records > 200} onChange={(event) => onMaxRecords()}>
+        max_records
+      </Checkbox>
+      <Checkbox checked={reversed} onChange={(event) => onReversed()}>
+        reversed
+      </Checkbox>
+      <Checkbox checked={articulate} onChange={(event) => onArticulate()}>
+        articulate
+      </Checkbox>
+      <Checkbox checked={accounting} onChange={(event) => onAccounting()}>
+        accounting
+      </Checkbox>
+      <Checkbox checked={staging} onChange={(event) => onStaging()}>
+        staging
+      </Checkbox>
+      <Checkbox checked={denom === 'ether'} onChange={(event) => onEther()}>
+        ether
+      </Checkbox>
+      <Checkbox checked={denom === 'dollars'} onChange={(event) => onDollars()}>
+        dollars
+      </Checkbox>
+      <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', position: 'relative' }}>
+        <h3 style={{ marginRight: '12px', flexShrink: 0 }}>Viewing account:</h3>
+        <Input
+          disabled={loading}
+          placeholder={'Input an address'}
+          value={currentAddress}
+          onChange={(e) => setCurrentAddress(e.target.value)}
+        />
+        <Console style={{ position: 'absolute', right: '8px' }} />
+      </div>
 
+      <Divider />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 14fr' }}>
+        <div>
+          <b>
+            Summary for
+            <br />
+            <div style={{ width: '40px' }}> </div>
+            {currentAddress.slice(0, 6) +
+              '...' +
+              currentAddress.slice(currentAddress.length - 5, currentAddress.length - 1)}
+          </b>
+          <br />
+          nTransactions: {theData.length}
+          <br />
+          firstBlock: {theData[0]?.blockNumber}
+          <br />
+          lastBlock: {theData[theData.length - 1]?.blockNumber}
+          <br />
+          balance: {'XXX'}
           <Divider />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 14fr' }}>
-            <div>
-              <b>
-                Summary for
-                <br />
-                <div style={{ width: '40px' }}> </div>
-                {currentAddress.slice(0, 6) +
-                  '...' +
-                  currentAddress.slice(currentAddress.length - 5, currentAddress.length - 1)}
-              </b>
-              <br />
-              nTransactions: {theData.length}
-              <br />
-              firstBlock: {theData[0]?.blockNumber}
-              <br />
-              lastBlock: {theData[theData.length - 1]?.blockNumber}
-              <br />
-              balance: {'XXX'}
-              <Divider />
-              <Tabs tabPosition='left'>
-                <TabPane tab='Assets'></TabPane>
-                <TabPane tab='Neighbors'></TabPane>
-                <TabPane tab='Charts'></TabPane>
-              </Tabs>
-            </div>
-            <BaseTable
-              data={getData(transactions)}
-              columns={transactionSchema}
-              loading={loading}
-              extraData={currentAddress}
-              expandRender={expandRender}
-            />
-          </div>
+          <Tabs tabPosition='left'>
+            <TabPane tab='Assets'></TabPane>
+            <TabPane tab='Neighbors'></TabPane>
+            <TabPane tab='Charts'></TabPane>
+          </Tabs>
         </div>
-      </Panel>
-    </Collapse>
+        <BaseTable
+          data={getData(transactions)}
+          columns={transactionSchema}
+          loading={loading}
+          extraData={currentAddress}
+          expandRender={expandRender}
+        />
+      </div>
+    </div>
   );
 };
 

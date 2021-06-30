@@ -1,3 +1,4 @@
+import { Account } from '@components/Account';
 import { addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions } from '@components/Table';
 import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
@@ -21,7 +22,14 @@ export const Monitors = () => {
 
   return (
     <>
-      <BaseTable data={getData(monitors)} columns={monitorSchema} loading={loading} />
+      <BaseTable
+        data={getData(monitors)}
+        columns={monitorSchema}
+        loading={loading}
+        expandRender={(row) => {
+          return <Account initAddress={row.address} />;
+        }}
+      />
     </>
   );
 };

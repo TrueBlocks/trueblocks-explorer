@@ -148,7 +148,11 @@ export const Account = ({ initAddress }: { initAddress: string }) => {
           value={currentAddress}
           onChange={(e) => setCurrentAddress(e.target.value)}
         />
-        <Console style={{ position: 'absolute', right: '8px' }} />
+        <progress
+          style={{ position: 'absolute', right: '8px' }}
+          max={totalRecords || 0}
+          value={((transactions.data.length / (totalRecords || 1)) * 100).toFixed(0)}
+        />
       </div>
 
       <Divider />

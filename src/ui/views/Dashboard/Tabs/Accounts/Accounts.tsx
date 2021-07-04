@@ -1,4 +1,5 @@
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { ViewTab } from '@components/BaseView';
 import { Console } from '@components/Console';
 import { addColumn, addFlagColumn, BaseTable } from '@components/Table';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
@@ -91,6 +92,18 @@ export const AccountsView = () => {
     });
   }
 
+  const tinyTabs: ViewTab[] = [
+    {
+      name: 'Assets',
+      location: 'assets',
+      component: <div>Assets</div>,
+    },
+    { name: 'Neighbors', location: 'neighbors', component: <div>Neighbors</div> },
+    { name: 'Charts', location: 'charts', component: <div>Charts</div> },
+    { name: 'Functions', location: 'functions', component: <div>Functions</div> },
+    { name: 'Events', location: 'events', component: <div>Events</div> },
+  ];
+
   const getData = useCallback((response) => (response.status === 'fail' ? [] : response.data), []);
   const theData = getData(transactions);
   const getMeta = useCallback((response) => (response.status === 'fail' ? [] : response.meta), []);
@@ -143,17 +156,13 @@ export const AccountsView = () => {
           <br />
           nTransactions: {theData.length}
           <br />
-          firstBlock: {theData[0].blockNumber}
+          firstBlock: {theData && theData.length > 0 && theData[0].blockNumber}
           <br />
-          lastBlock: {theData[theData.length - 1].blockNumber}
+          lastBlock: {theData && theData.length > 0 && theData[theData.length - 1].blockNumber}
           <br />
           balance: {'XXX'}
           <Divider />
-          <Tabs tabPosition='left'>
-            <TabPane tab='Assets'></TabPane>
-            <TabPane tab='Neighbors'></TabPane>
-            <TabPane tab='Charts'></TabPane>
-          </Tabs>
+          <TinyTabs tabs={tinyTabs} />
         </div>
         <BaseTable
           data={getData(transactions)}
@@ -165,6 +174,16 @@ export const AccountsView = () => {
         );
       </div>
     </div>
+  );
+};
+
+const TinyTabs = ({ tabs }: { tabs: ViewTab[] }) => {
+  return (
+    <Tabs tabPosition='left'>
+      {tabs.map((tab: any) => {
+        return <TabPane key={tab.location} tab={tab.name} />;
+      })}
+    </Tabs>
   );
 };
 

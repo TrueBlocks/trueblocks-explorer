@@ -1,39 +1,33 @@
 import { BaseView } from '@components/BaseView';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardIndexesLocation,
   DashboardLocation,
   DashboardMonitorsLocation,
-  DashboardOverviewLocation,
 } from '../../locations';
 import { cookieVars } from '../../utils';
 import { AccountsView } from './Tabs/Accounts/Accounts';
 import { Collections } from './Tabs/Collections';
-import { IndexesView } from './Tabs/Indexes/Indexes';
 import { Monitors } from './Tabs/Monitors';
-import { Overview } from './Tabs/Overview';
 
 export const DashboardView = ({ match }: { match?: any }) => {
   const title = 'Dashboard';
   var tabs = [
-    { name: 'Overview', location: DashboardOverviewLocation, component: <Overview />, disabled: false },
+    { name: 'Monitors', location: DashboardMonitorsLocation, component: <Monitors />, disabled: false },
     {
-      name: 'Accounts',
+      name: 'Accounts Details',
       location: DashboardAccountsLocation,
       component: <AccountsView />,
       disabled: false,
     },
-    { name: 'Monitors', location: DashboardMonitorsLocation, component: <Monitors />, disabled: false },
     { name: 'Collections', location: DashboardCollectionsLocation, component: <Collections />, disabled: false },
-    { name: 'Indexes', location: DashboardIndexesLocation, component: <IndexesView />, disabled: false },
   ];
 
   return (
     <BaseView
       title={title}
-      defaultActive={DashboardOverviewLocation}
+      defaultActive={DashboardMonitorsLocation}
       baseActive={DashboardLocation}
       cookieName={cookieVars.dashboard_current_tab}
       tabs={tabs}

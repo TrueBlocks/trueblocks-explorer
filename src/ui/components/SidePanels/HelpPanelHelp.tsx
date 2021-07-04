@@ -4,22 +4,16 @@ import {
   AccountGasLocation,
   AccountReconciliationsLocation,
   AccountTracesLocation,
-  AccountTransactionsLocation,
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardIndexesLocation,
   DashboardLocation,
   DashboardMonitorsLocation,
-  DashboardOverviewLocation,
   ExplorerBlocksLocation,
   ExplorerLocation,
   ExplorerLogsLocation,
   ExplorerReceiptsLocation,
   ExplorerTracesLocation,
   ExplorerTransactionsLocation,
-  IndexChartsLocation,
-  IndexGridLocation,
-  IndexTableLocation,
   NamesAddressesLocation,
   NamesBlocksLocation,
   NamesEventSigsLocation,
@@ -28,6 +22,10 @@ import {
   NamesTagsLocation,
   RootLocation,
   SettingsCachesLocation,
+  SettingsIndexChartsLocation,
+  SettingsIndexesLocation,
+  SettingsIndexGridLocation,
+  SettingsIndexTableLocation,
   SettingsLocation,
   SettingsSchemasLocation,
   SettingsScrapersLocation,
@@ -70,14 +68,6 @@ export const helpRoutes = [
     helpText: 'View the functional history of an account.',
   },
   {
-    route: AccountTransactionsLocation,
-    helpText: 'View transactional history of an account.',
-  },
-  {
-    route: DashboardOverviewLocation,
-    helpText: 'The dashboard overview page gives you an overview of your holdings among other things.',
-  },
-  {
     route: DashboardMonitorsLocation,
     helpText:
       'Monitors are named addresses that you have indicated are "of interest" and should be monitored by the scrapers.',
@@ -87,7 +77,7 @@ export const helpRoutes = [
     helpText: 'Collections allow you to group together multiple monitored addresses.',
   },
   {
-    route: DashboardIndexesLocation,
+    route: SettingsIndexesLocation,
     helpText: (
       <div>
         <p>View the contents of the TrueBlocks index cache.</p>
@@ -102,15 +92,15 @@ export const helpRoutes = [
     ),
   },
   {
-    route: IndexChartsLocation,
+    route: SettingsIndexChartsLocation,
     helpText: 'Charts related to the index cache.',
   },
   {
-    route: IndexGridLocation,
+    route: SettingsIndexGridLocation,
     helpText: 'Grid view of the index cache.',
   },
   {
-    route: IndexTableLocation,
+    route: SettingsIndexTableLocation,
     helpText: 'Table view of the index cache.',
   },
   {

@@ -1,32 +1,27 @@
 export const RootLocation = '/';
 
 export const DashboardLocation = '/dashboard';
-export const DashboardOverviewLocation = '/dashboard/overview';
 export const DashboardAccountsLocation = '/dashboard/accounts';
-export const DashboardAccountsAddressLocationTemplate = '/dashboard/accounts/:address';
-export const DashboardAccountsAddressLocation = (address: string) => `/dashboard/accounts/${address}`;
-export const AccountTransactionsLocation = '/dashboard/accounts/transactions';
-export const AccountTransactionsLocationAddressTemplate = '/dashboard/accounts/transactions/:address';
-export const AccountTransactionsLocationAddress = (address: string) => `/dashboard/accounts/transactions/${address}`;
-export const AccountFunctionsLocation = '/dashboard/accounts/functions';
-export const AccountFunctionsLocationAddressTemplate = '/dashboard/accounts/functions/:address';
-export const AccountFunctionsLocationAddress = (address: string) => `/dashboard/accounts/functions/${address}`;
-export const AccountGasLocation = '/dashboard/accounts/gas';
-export const AccountGasLocationAddressTemplate = '/dashboard/accounts/gas/address';
-export const AccountGasLocationAddress = (address: string) => `/dashboard/accounts/gas/${address}`;
-export const AccountTracesLocation = '/dashboard/accounts/traces';
-export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/address';
-export const AccountTracesLocationAddress = (address: string) => `/dashboard/accounts/traces/${address}`;
-export const AccountReconciliationsLocation = '/dashboard/accounts/reconciliations';
-export const AccountReconciliationsLocationAddressTemplate = '/dashboard/accounts/reconciliations/address';
-export const AccountReconciliationsLocationAddress = (address: string) =>
-  `/dashboard/accounts/reconciliations/${address}`;
 export const DashboardMonitorsLocation = '/dashboard/monitors';
 export const DashboardCollectionsLocation = '/dashboard/collections';
-export const DashboardIndexesLocation = '/dashboard/indexes';
-export const IndexGridLocation = '/dashboard/indexes/grid';
-export const IndexTableLocation = '/dashboard/indexes/table';
-export const IndexChartsLocation = '/dashboard/indexes/charts';
+export const DashboardAccountsAddressLocationTemplate = '/dashboard/accounts/:address';
+export const DashboardAccountsAddressLocation = (address: string) => `/dashboard/accounts/${address}`;
+
+export const AccountReconciliationsLocation = '/dashboard/accounts/reconciliations';
+export const AccountFunctionsLocation = '/dashboard/accounts/functions';
+export const AccountGasLocation = '/dashboard/accounts/gas';
+export const AccountTracesLocation = '/dashboard/accounts/traces';
+
+export const AccountReconciliationsLocationAddressTemplate = '/dashboard/accounts/reconciliations/:address';
+export const AccountFunctionsLocationAddressTemplate = '/dashboard/accounts/functions/:address';
+export const AccountGasLocationAddressTemplate = '/dashboard/accounts/gas/:address';
+export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/:address';
+
+export const AccountReconciliationsLocationAddress = (address: string) =>
+  `/dashboard/accounts/reconciliations/${address}`;
+export const AccountFunctionsLocationAddress = (address: string) => `/dashboard/accounts/functions/${address}`;
+export const AccountGasLocationAddress = (address: string) => `/dashboard/accounts/gas/${address}`;
+export const AccountTracesLocationAddress = (address: string) => `/dashboard/accounts/traces/${address}`;
 
 export const NamesLocation = '/names';
 export const NamesAddressesLocation = '/names/addresses';
@@ -44,6 +39,10 @@ export const ExplorerTracesLocation = '/explorer/traces';
 
 export const SettingsLocation = '/settings';
 export const SettingsScrapersLocation = '/settings/scrapers';
+export const SettingsIndexesLocation = '/settings/indexes';
+export const SettingsIndexGridLocation = '/settings/indexes/grid';
+export const SettingsIndexTableLocation = '/settings/indexes/table';
+export const SettingsIndexChartsLocation = '/settings/indexes/charts';
 export const SettingsCachesLocation = '/settings/caches';
 export const SettingsSkinsLocation = '/settings/skins';
 export const SettingsSchemasLocation = '/settings/schemas';

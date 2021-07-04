@@ -24,7 +24,7 @@ export const AccountsView = () => {
   const [accounting, setAccounting] = useState(true);
   const [staging, setStaging] = useState(false);
   const [reversed, setReversed] = useState(false);
-  const [max_records, setMaxRecords] = useState(10);
+  const [max_records, setMaxRecords] = useState(7);
   const [denom, setDenom] = useState('ether');
   const [currentAddress, setCurrentAddress] = useState('0xf503017d7baf7fbc0fff7492b751025c6a78179b');
   const emptyData = { data: [{}], meta: {} };

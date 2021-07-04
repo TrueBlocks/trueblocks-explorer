@@ -16,7 +16,7 @@ export const DashboardView = ({ match }: { match?: any }) => {
   var tabs = [
     { name: 'Monitors', location: DashboardMonitorsLocation, component: <Monitors />, disabled: false },
     {
-      name: 'Accounts Details',
+      name: 'Account Details',
       location: DashboardAccountsLocation,
       component: <AccountsView />,
       disabled: false,

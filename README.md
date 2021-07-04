@@ -7,7 +7,7 @@
 [![React](https://img.shields.io/badge/React-node.js-purple.svg)](https://reactjs.org/)
 [![Twitter](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Twitter)](https://twitter.com/quickblocks?lang=es)
 
-The TrueBlocks system allows you to access your own personal account history in a fully-local and therefore fully-private way. It relies on two components. The frontend (this repo) and the backend [https://github.com/TrueBlocks/trueblocks-core](TrueBlocks core).
+TrueBlocks lets you explore the Ethereum blockchain in a fully-local and therefore fully-private way. This repo provides a frontend (this repo) application for the backend, [https://github.com/TrueBlocks/trueblocks-core](TrueBlocks core).
 
 ## Prerequisites
 
@@ -21,7 +21,11 @@ Assuming you have the TrueBlocks core properly installed and can successfully ru
 > chifra --version
 ```
 
-you may proceed with installing and running the Account Explorer.
+Then, you need to serve the index on your local machine:
+
+```shell
+chifra serve
+```
 
 ### Installing the TrueBlocks Account Explorer
 
@@ -35,7 +39,8 @@ yarn
 yarn develop
 ```
 
-Your should see the **TrueBlocks Account Explorer** screen:
+Now, the application should be running at `localhost:1234`:
+
 
 <img src="./public/screen_shot.png" />
 
@@ -47,7 +52,7 @@ Your should see the **TrueBlocks Account Explorer** screen:
 
 ## Requirements
 
-- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with **--tracing** enabled. An excellent choice is Turbo-Geth (now called XXX). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [http://gtihub.com/Great-Hill-Corporation/trueblocks-docker](the TrueBlocks docker image).
+- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with **--tracing** enabled. An excellent choice is Turbo-Geth (now called XXX). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [http://github.com/TrueBlocks/trueblocks-docker](the TrueBlocks docker image).
 
 ## Getting Data on the Command Line
 
@@ -91,7 +96,7 @@ Which exports every 10,000th block in the chain from first to last. Or, try this
 > chifra blocks --uniq_tx 4001001
 ```
 
-Which will show every address that appears anywhere in block 4,001,001. There are literally hundreds of other options to `chifra` and the other tools. See the documentation.
+Which shows every address that appears anywhere in block 4,001,001. There are literally hundreds of other options to `chifra` and the other tools. See the documentation.
 
 ## Getting Data from the API
 
@@ -101,7 +106,15 @@ The TrueBlocks Explorer uses an API to access data provided (that is ultimately 
 > curl "http://localhost:8080/blocks?blocks=4001001&uniq_tx"
 ```
 
-which will return the same as the above command (in JSON format -- everything from the API is returned as JSON unless you add `&fmt=txt` or `&fmt=csv` to your request.
+which returns the same as the preceding `chifra blocks --uniq_tx` command.
+
+### Change data formats.
+
+By default, everything from the API is returned as JSON.
+
+However, you can change this by adding the options `&fmt=txt` or `&fmt=csv` to your request.
+
+### Get docs
 
 For documentation on the API, you may do this:
 

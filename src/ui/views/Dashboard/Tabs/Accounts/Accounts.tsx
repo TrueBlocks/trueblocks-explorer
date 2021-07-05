@@ -1,6 +1,5 @@
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { ViewTab } from '@components/BaseView';
-import { Console } from '@components/Console';
 import { addColumn, addFlagColumn, BaseTable } from '@components/Table';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
@@ -19,26 +18,21 @@ import { AccountTransactions } from './Tabs/Transactions';
 
 const { TabPane } = Tabs;
 
-export const AccountsView = () => {
-  const [articulate, setArticulate] = useState(true);
+export const AccountsView = ({ initAddress }: { initAddress: string }) => {
   const [accounting, setAccounting] = useState(true);
   const [staging, setStaging] = useState(false);
-  const [reversed, setReversed] = useState(false);
-  const [max_records, setMaxRecords] = useState(7);
   const [denom, setDenom] = useState('ether');
-  const [currentAddress, setCurrentAddress] = useState('0xf503017d7baf7fbc0fff7492b751025c6a78179b');
+  const [currentAddress, setCurrentAddress] = useState(initAddress);
   const emptyData = { data: [{}], meta: {} };
   const [transactions, setTransactions] = useState<Result>(toSuccessfulData(emptyData));
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const parts = location.pathname.split('/');
+  const [totalRecords, setTotalRecords] = useState<null | number>(null);
   const address = parts[parts.length - 1];
 
-  const onArticulate = () => setArticulate(!articulate);
   const onAccounting = () => setAccounting(!accounting);
   const onStaging = () => setStaging(!staging);
-  const onReversed = () => setReversed(!reversed);
-  const onMaxRecords = () => setMaxRecords(max_records > 200 ? 200 : 5000);
   const onEther = () => {
     setAccounting(true);
     denom === 'ether' ? setDenom('') : setDenom('ether');
@@ -49,18 +43,28 @@ export const AccountsView = () => {
   }, []);
 
   useEffect(() => {
-    if (address !== currentAddress && address?.slice(0, 2) === '0x') {
-      setCurrentAddress(address);
-    }
-  }, [address]);
-
-  // To get count:
-  // nRecords = http://localhost:8080/list?count&appearances&addrs=0xf503017d7baf7fbc0fff7492b751025c6a78179b
-
-  useEffect(() => {
     (async () => {
       if (currentAddress.slice(0, 2) === '0x') {
         setLoading(true);
+        const eitherResponse = await runCommand('list', {
+          count: true,
+          appearances: true,
+          addrs: currentAddress,
+        });
+        const result: Result = pipe(
+          eitherResponse,
+          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+        );
+        //@ts-ignore
+        setTotalRecords(result.data[0]?.nRecords);
+        setLoading(false);
+      }
+    })();
+  }, [currentAddress, denom, accounting, staging]);
+
+  useEffect(() => {
+    (async () => {
+      if (totalRecords && transactions.data.length < totalRecords) {
         const eitherResponse = await runCommand('export', {
           addrs: currentAddress,
           fmt: 'json',
@@ -70,21 +74,26 @@ export const AccountsView = () => {
           // unripe: true,
           ether: denom === 'ether',
           dollars: denom === 'dollars',
-          articulate: articulate,
+          articulate: true,
           accounting: accounting,
-          reversed: reversed,
-          max_records: max_records,
-          first_record: 0,
+          reversed: false,
+          first_record: transactions?.data?.length,
+          max_records:
+            transactions?.data?.length < 100
+              ? 10
+              : 31 /* an arbitrary number not too big, not too small, that appears not to repeat */,
         });
         const result: Result = pipe(
           eitherResponse,
           Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
         );
-        setTransactions(result);
-        setLoading(false);
+        let newTransactions = { ...transactions };
+        //@ts-ignore
+        newTransactions.data = [...newTransactions.data, ...result.data];
+        setTransactions(newTransactions);
       }
     })();
-  }, [currentAddress, denom, articulate, accounting, staging, reversed, max_records]);
+  }, [totalRecords, transactions]);
 
   if (transactions.status === 'fail') {
     createErrorNotification({
@@ -110,15 +119,6 @@ export const AccountsView = () => {
   const expandRender = (record: any) => <AccountTransactions record={record} />;
   return (
     <div>
-      <Checkbox checked={max_records > 200} onChange={(event) => onMaxRecords()}>
-        max_records
-      </Checkbox>
-      <Checkbox checked={reversed} onChange={(event) => onReversed()}>
-        reversed
-      </Checkbox>
-      <Checkbox checked={articulate} onChange={(event) => onArticulate()}>
-        articulate
-      </Checkbox>
       <Checkbox checked={accounting} onChange={(event) => onAccounting()}>
         accounting
       </Checkbox>
@@ -139,7 +139,11 @@ export const AccountsView = () => {
           value={currentAddress}
           onChange={(e) => setCurrentAddress(e.target.value)}
         />
-        <Console style={{ position: 'absolute', right: '8px' }} />
+        <progress
+          style={{ position: 'absolute', right: '8px' }}
+          max={'100'}
+          value={((transactions.data.length / (totalRecords || 1)) * 100).toFixed(0)}
+        />
       </div>
 
       <Divider />
@@ -171,7 +175,6 @@ export const AccountsView = () => {
           extraData={currentAddress}
           expandRender={expandRender}
         />
-        );
       </div>
     </div>
   );
@@ -276,11 +279,14 @@ export const renderStatements = (statements: ReconciliationArray) => {
   return (
     <table className={style.table}>
       <tbody>
-        {statements?.map((statement) => {
+        {statements?.map((statement, i) => {
           let show = true;
           return (
             <Statement
-              key={statement.blockNumber * 100000 + statement.transactionIndex + statement.assetSymbol}
+              key={
+                statement.blockNumber * 100000 + statement.transactionIndex + statement.assetSymbol ||
+                `${i}-${Math.random()}`
+              }
               statement={statement}
             />
           );
@@ -323,26 +329,26 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
   const styles = useStyles();
 
   return (
-    <tr className={styles.row} key={statement.assetSymbol}>
-      <td key={1} className={styles.col} style={{ width: '12%' }}>
+    <tr className={styles.row} key={statement.assetSymbol || Math.random()}>
+      <td key={`${1}-${Math.random()}`} className={styles.col} style={{ width: '12%' }}>
         {statement.assetSymbol?.slice(0, 5)}
       </td>
-      <td key={2} className={styles.col} style={{ width: '17%' }}>
+      <td key={`${2}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
         {clip(statement.begBal)}
       </td>
-      <td key={5} className={styles.col} style={{ width: '17%' }}>
+      <td key={`${3}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
         {totalIn1(statement)}
       </td>
-      <td key={3} className={styles.col} style={{ width: '17%' }}>
+      <td key={`${4}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
         {totalOut1(statement)}
       </td>
-      <td key={4} className={styles.col} style={{ width: '17%' }}>
+      <td key={`${5}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
         {clip(statement.gasCostOut, true)}
       </td>
-      <td key={6} className={styles.col} style={{ width: '17%' }}>
+      <td key={`${6}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
         {clip(statement.endBal)}
       </td>
-      <td key={7} className={styles.col} style={{ width: '4%' }}>
+      <td key={`${7}-${Math.random()}`} className={styles.col} style={{ width: '4%' }}>
         <ReconIcon reconciled={statement.reconciled} />
       </td>
     </tr>

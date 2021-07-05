@@ -58,12 +58,12 @@ const indexSchema: ColumnsType<Monitor> = [
     dataIndex: 'bloomSizeBytes',
   }),
   addColumn({
-    title: 'index_hash',
-    dataIndex: 'index_hash',
+    title: 'indexHash',
+    dataIndex: 'indexHash',
   }),
   addColumn({
-    title: 'bloom_hash',
-    dataIndex: 'bloom_hash',
+    title: 'bloomHash',
+    dataIndex: 'bloomHash',
   }),
 ];
 

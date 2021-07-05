@@ -17,14 +17,14 @@ import { Monitors } from './Tabs/Monitors';
 import { Overview } from './Tabs/Overview';
 
 export const DashboardView = ({ match }: { match?: any }) => {
-  const { accountAddresses } = useGlobalState();
+  const { accountAddress } = useGlobalState();
   const title = 'Dashboard';
   var tabs = [
     { name: 'Overview', location: DashboardOverviewLocation, component: <Overview />, disabled: false },
     {
       name: 'Accounts',
       location: DashboardAccountsLocation,
-      component: <AccountsView initAddress={accountAddresses[0]} />,
+      component: <AccountsView initAddress={accountAddress} />,
       disabled: false,
     },
     { name: 'Monitors', location: DashboardMonitorsLocation, component: <Monitors />, disabled: false },

@@ -10,7 +10,7 @@ const DEBUG = Cookies.get('debug') === 'true' ? true : false;
 const initialState = {
   theme: THEME || null,
   debug: DEBUG || false,
-  accountAddresses: ['0xf503017d7baf7fbc0fff7492b751025c6a78179b', '0xd1629474d25a63B1018FcC965e1d218A00F6CbD3'],
+  accountAddress: '0xf503017d7baf7fbc0fff7492b751025c6a78179b',
   names: null,
 };
 
@@ -28,10 +28,10 @@ const GlobalStateReducer = (state: any, action: any) => {
         ...state,
         debug: action.debug,
       };
-    case 'SET_ACCOUNT_ADDRESSES':
+    case 'SET_ACCOUNT_ADDRESS':
       return {
         ...state,
-        accountAddresses: action.addresses,
+        accountAddress: action.address,
       };
     case 'SET_NAMES':
       return {
@@ -54,8 +54,8 @@ const useGlobalState = () => {
     dispatch({ type: 'SET_DEBUG', debug });
   };
 
-  const setAccountAddresses = (addresses: string[]) => {
-    dispatch({ type: 'SET_ACCOUNT_ADDRESSES', addresses });
+  const setAccountAddress = (address: string) => {
+    dispatch({ type: 'SET_ACCOUNT_ADDRESS', address });
   };
 
   const setNames = (names: any) => {
@@ -67,8 +67,8 @@ const useGlobalState = () => {
     setTheme,
     debug: state.debug,
     setDebug,
-    accountAddresses: state.accountAddresses,
-    setAccountAddresses,
+    accountAddress: state.accountAddress,
+    setAccountAddress,
     names: state.names,
     setNames,
   };

@@ -197,7 +197,7 @@ export const DetailTable = ({
     '-' +
     range.end;
 
-  const details = ['nAddrs', 'nApps', 'blockRange', 'indexSizeBytes', 'bloomSizeBytes', 'index_hash', 'bloom_hash'];
+  const details = ['nAddrs', 'nApps', 'blockRange', 'indexSizeBytes', 'bloomSizeBytes', 'indexHash', 'bloomHash'];
   return (
     <div
       style={{

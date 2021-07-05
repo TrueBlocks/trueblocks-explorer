@@ -5,8 +5,8 @@ import {
   AccountFunctionsLocationAddressTemplate,
   AccountGasLocation,
   AccountGasLocationAddressTemplate,
-  AccountReconciliationsLocation,
-  AccountReconciliationsLocationAddressTemplate,
+  AccountReconsLocation,
+  AccountReconsLocationAddressTemplate,
   AccountTracesLocation,
   AccountTracesLocationAddressTemplate,
   DashboardAccountsAddressLocationTemplate,
@@ -65,7 +65,7 @@ const routes = [
   { path: AccountFunctionsLocationAddressTemplate, component: DashboardView },
   { path: AccountGasLocationAddressTemplate, component: DashboardView },
   { path: AccountTracesLocationAddressTemplate, component: DashboardView },
-  { path: AccountReconciliationsLocationAddressTemplate, component: DashboardView },
+  { path: AccountReconsLocationAddressTemplate, component: DashboardView },
   {
     path: AccountFunctionsLocation,
     exact: true,
@@ -82,7 +82,7 @@ const routes = [
     component: DashboardView,
   },
   {
-    path: AccountReconciliationsLocation,
+    path: AccountReconsLocation,
     exact: true,
     component: DashboardView,
   },

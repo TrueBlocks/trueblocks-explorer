@@ -2,7 +2,7 @@ import React from 'react';
 import {
   AccountFunctionsLocation,
   AccountGasLocation,
-  AccountReconciliationsLocation,
+  AccountReconsLocation,
   AccountTracesLocation,
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
@@ -60,7 +60,7 @@ export const helpRoutes = [
     helpText: 'View the event history of an account.',
   },
   {
-    route: AccountReconciliationsLocation,
+    route: AccountReconsLocation,
     helpText: 'View the reconciliation history of an account.',
   },
   {

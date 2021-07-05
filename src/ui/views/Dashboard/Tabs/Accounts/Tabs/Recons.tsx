@@ -4,7 +4,7 @@ import React from 'react';
 import { useAcctStyles } from '../AccountStyles';
 
 //-----------------------------------------------------------------
-export const AccountReconcs = ({ record }: { record: Transaction }) => {
+export const AccountRecons = ({ record }: { record: Transaction }) => {
   const styles = useAcctStyles();
   return (
     <div className={styles.container}>

@@ -17,15 +17,11 @@ export const AccountGasLocationAddress = (address: string) => `/dashboard/accoun
 export const AccountTracesLocation = '/dashboard/accounts/traces';
 export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/address';
 export const AccountTracesLocationAddress = (address: string) => `/dashboard/accounts/traces/${address}`;
-export const AccountReconcsLocation = '/dashboard/accounts/recons';
-export const AccountReconcsLocationAddressTemplate = '/dashboard/accounts/recons/address';
-export const AccountReconcsLocationAddress = (address: string) => `/dashboard/accounts/recons/${address}`;
+export const AccountReconsLocation = '/dashboard/accounts/recons';
+export const AccountReconsLocationAddressTemplate = '/dashboard/accounts/recons/address';
+export const AccountReconsLocationAddress = (address: string) => `/dashboard/accounts/recons/${address}`;
 export const DashboardMonitorsLocation = '/dashboard/monitors';
 export const DashboardCollectionsLocation = '/dashboard/collections';
-export const DashboardIndexesLocation = '/dashboard/indexes';
-export const IndexGridLocation = '/dashboard/indexes/grid';
-export const IndexTableLocation = '/dashboard/indexes/table';
-export const IndexChartsLocation = '/dashboard/indexes/charts';
 
 export const NamesLocation = '/names';
 export const NamesAddressesLocation = '/names/addresses';
@@ -43,6 +39,10 @@ export const ExplorerTracesLocation = '/explorer/traces';
 
 export const SettingsLocation = '/settings';
 export const SettingsScrapersLocation = '/settings/scrapers';
+export const SettingsIndexesLocation = '/settings/indexes';
+export const SettingsIndexGridLocation = '/settings/indexes/grid';
+export const SettingsIndexTableLocation = '/settings/indexes/table';
+export const SettingsIndexChartsLocation = '/settings/indexes/charts';
 export const SettingsCachesLocation = '/settings/caches';
 export const SettingsSkinsLocation = '/settings/skins';
 export const SettingsSchemasLocation = '/settings/schemas';

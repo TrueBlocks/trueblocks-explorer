@@ -1,11 +1,12 @@
-import { addColumn, addNumColumn, TableActions } from '@components/Table';
+import { GridTable } from '@components/GridTable';
+import { addColumn, addNumColumn } from '@components/Table';
 import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import { Monitor } from '@modules/types';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useCallback } from 'react';
 
-export const IndexCharts = () => {
+export const IndexGrid = () => {
   const [indexes, loading] = useCommand('status', { mode: 'index', details: true });
   if (indexes.status === 'fail') {
     createErrorNotification({
@@ -17,7 +18,7 @@ export const IndexCharts = () => {
     return response.status === 'fail' || !response.data[0].caches ? [] : response.data[0].caches[0].items;
   }, []);
 
-  return <div>Charts of the index</div>;
+  return <GridTable data={getData(indexes)} columns={indexSchema} />;
 };
 
 const indexSchema: ColumnsType<Monitor> = [
@@ -58,25 +59,11 @@ const indexSchema: ColumnsType<Monitor> = [
     dataIndex: 'bloomSizeBytes',
   }),
   addColumn({
-    title: 'index_hash',
-    dataIndex: 'index_hash',
+    title: 'indexHash',
+    dataIndex: 'indexHash',
   }),
   addColumn({
-    title: 'bloom_hash',
-    dataIndex: 'bloom_hash',
+    title: 'bloomHash',
+    dataIndex: 'bloomHash',
   }),
 ];
-
-function getTableActions(item: Monitor) {
-  const onClick = (action: string, item: Monitor) => {
-    switch (action) {
-      case 'remove':
-        console.log('Deleting the monitor', item);
-        break;
-      default:
-        console.log('Clicked action', action, item);
-    }
-  };
-
-  return <TableActions item={item} onClick={onClick} />;
-}

@@ -2,12 +2,11 @@ import React from 'react';
 import {
   AccountFunctionsLocation,
   AccountGasLocation,
-  AccountReconcsLocation,
+  AccountReconsLocation,
   AccountTracesLocation,
   AccountTransactionsLocation,
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardIndexesLocation,
   DashboardLocation,
   DashboardMonitorsLocation,
   DashboardOverviewLocation,
@@ -17,9 +16,6 @@ import {
   ExplorerReceiptsLocation,
   ExplorerTracesLocation,
   ExplorerTransactionsLocation,
-  IndexChartsLocation,
-  IndexGridLocation,
-  IndexTableLocation,
   NamesAddressesLocation,
   NamesBlocksLocation,
   NamesEventSigsLocation,
@@ -28,6 +24,10 @@ import {
   NamesTagsLocation,
   RootLocation,
   SettingsCachesLocation,
+  SettingsIndexChartsLocation,
+  SettingsIndexesLocation,
+  SettingsIndexGridLocation,
+  SettingsIndexTableLocation,
   SettingsLocation,
   SettingsSchemasLocation,
   SettingsScrapersLocation,
@@ -62,7 +62,7 @@ export const helpRoutes = [
     helpText: 'View the event history of an account.',
   },
   {
-    route: AccountReconcsLocation,
+    route: AccountReconsLocation,
     helpText: 'View the reconciliation history of an account.',
   },
   {
@@ -87,7 +87,7 @@ export const helpRoutes = [
     helpText: 'Collections allow you to group together multiple monitored addresses.',
   },
   {
-    route: DashboardIndexesLocation,
+    route: SettingsIndexesLocation,
     helpText: (
       <div>
         <p>View the contents of the TrueBlocks index cache.</p>
@@ -102,15 +102,15 @@ export const helpRoutes = [
     ),
   },
   {
-    route: IndexChartsLocation,
+    route: SettingsIndexChartsLocation,
     helpText: 'Charts related to the index cache.',
   },
   {
-    route: IndexGridLocation,
+    route: SettingsIndexGridLocation,
     helpText: 'Grid view of the index cache.',
   },
   {
-    route: IndexTableLocation,
+    route: SettingsIndexTableLocation,
     helpText: 'Table view of the index cache.',
   },
   {

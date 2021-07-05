@@ -3,21 +3,21 @@ import React from 'react';
 import {
   AccountFunctionsLocation,
   AccountGasLocation,
-  AccountReconciliationsLocation,
+  AccountReconcsLocation,
   AccountTracesLocation,
   DashboardAccountsLocation,
 } from '../../../../../locations';
 import { AccountFunctions } from './Functions';
 import { AccountGas } from './Gas';
-import { AccountReconciliations } from './Reconciliations';
+import { AccountReconcs } from './Reconcs';
 
 export const AccountTransactions = ({ record }: any) => {
   const title = '';
   const tabs = [
     {
       name: 'Reconciliations',
-      location: AccountReconciliationsLocation,
-      component: <AccountReconciliations record={record} />,
+      location: AccountReconcsLocation,
+      component: <AccountReconcs record={record} />,
     },
     { name: 'Functions / Events', location: AccountFunctionsLocation, component: <AccountFunctions record={record} /> },
     {

@@ -17,10 +17,9 @@ export const AccountGasLocationAddress = (address: string) => `/dashboard/accoun
 export const AccountTracesLocation = '/dashboard/accounts/traces';
 export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/address';
 export const AccountTracesLocationAddress = (address: string) => `/dashboard/accounts/traces/${address}`;
-export const AccountReconciliationsLocation = '/dashboard/accounts/reconciliations';
-export const AccountReconciliationsLocationAddressTemplate = '/dashboard/accounts/reconciliations/address';
-export const AccountReconciliationsLocationAddress = (address: string) =>
-  `/dashboard/accounts/reconciliations/${address}`;
+export const AccountReconcsLocation = '/dashboard/accounts/reconciliations';
+export const AccountReconcsLocationAddressTemplate = '/dashboard/accounts/reconciliations/address';
+export const AccountReconcsLocationAddress = (address: string) => `/dashboard/accounts/reconciliations/${address}`;
 export const DashboardMonitorsLocation = '/dashboard/monitors';
 export const DashboardCollectionsLocation = '/dashboard/collections';
 export const DashboardIndexesLocation = '/dashboard/indexes';

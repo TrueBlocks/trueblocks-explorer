@@ -34,6 +34,7 @@ export const AccountsView = ({ initAddress }: { initAddress: string }) => {
   const onAccounting = () => setAccounting(!accounting);
   const onStaging = () => setStaging(!staging);
   const onEther = () => {
+    setTransactions(toSuccessfulData(emptyData));
     setAccounting(true);
     denom === 'ether' ? setDenom('') : setDenom('ether');
   };
@@ -93,7 +94,7 @@ export const AccountsView = ({ initAddress }: { initAddress: string }) => {
         setTransactions(newTransactions);
       }
     })();
-  }, [totalRecords, transactions]);
+  }, [totalRecords, transactions, denom, staging]);
 
   if (transactions.status === 'fail') {
     createErrorNotification({

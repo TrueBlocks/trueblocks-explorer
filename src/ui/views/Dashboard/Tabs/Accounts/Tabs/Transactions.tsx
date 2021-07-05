@@ -9,7 +9,7 @@ import {
 } from '../../../../../locations';
 import { AccountFunctions } from './Functions';
 import { AccountGas } from './Gas';
-import { AccountReconcs } from './Reconcs';
+import { AccountReconcs } from './Recons';
 
 export const AccountTransactions = ({ record }: any) => {
   const title = '';

@@ -1,26 +1,29 @@
 export const RootLocation = '/';
 
 export const DashboardLocation = '/dashboard';
-export const DashboardOverviewLocation = '/dashboard/overview';
+
+export const DashboardMonitorsLocation = '/dashboard/monitors';
+
 export const DashboardAccountsLocation = '/dashboard/accounts';
 export const DashboardAccountsAddressLocationTemplate = '/dashboard/accounts/:address';
 export const DashboardAccountsAddressLocation = (address: string) => `/dashboard/accounts/${address}`;
-export const AccountTransactionsLocation = '/dashboard/accounts/transactions';
-export const AccountTransactionsLocationAddressTemplate = '/dashboard/accounts/transactions/:address';
-export const AccountTransactionsLocationAddress = (address: string) => `/dashboard/accounts/transactions/${address}`;
+
+export const AccountReconsLocation = '/dashboard/accounts/recons';
+export const AccountReconsLocationAddressTemplate = '/dashboard/accounts/recons/:address';
+export const AccountReconsLocationAddress = (address: string) => `/dashboard/accounts/recons/${address}`;
+
 export const AccountFunctionsLocation = '/dashboard/accounts/functions';
 export const AccountFunctionsLocationAddressTemplate = '/dashboard/accounts/functions/:address';
 export const AccountFunctionsLocationAddress = (address: string) => `/dashboard/accounts/functions/${address}`;
+
 export const AccountGasLocation = '/dashboard/accounts/gas';
-export const AccountGasLocationAddressTemplate = '/dashboard/accounts/gas/address';
+export const AccountGasLocationAddressTemplate = '/dashboard/accounts/gas/:address';
 export const AccountGasLocationAddress = (address: string) => `/dashboard/accounts/gas/${address}`;
+
 export const AccountTracesLocation = '/dashboard/accounts/traces';
-export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/address';
+export const AccountTracesLocationAddressTemplate = '/dashboard/accounts/traces/:address';
 export const AccountTracesLocationAddress = (address: string) => `/dashboard/accounts/traces/${address}`;
-export const AccountReconsLocation = '/dashboard/accounts/recons';
-export const AccountReconsLocationAddressTemplate = '/dashboard/accounts/recons/address';
-export const AccountReconsLocationAddress = (address: string) => `/dashboard/accounts/recons/${address}`;
-export const DashboardMonitorsLocation = '/dashboard/monitors';
+
 export const DashboardCollectionsLocation = '/dashboard/collections';
 
 export const NamesLocation = '/names';

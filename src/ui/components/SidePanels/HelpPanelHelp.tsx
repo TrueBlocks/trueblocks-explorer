@@ -4,12 +4,10 @@ import {
   AccountGasLocation,
   AccountReconsLocation,
   AccountTracesLocation,
-  AccountTransactionsLocation,
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
   DashboardLocation,
   DashboardMonitorsLocation,
-  DashboardOverviewLocation,
   ExplorerBlocksLocation,
   ExplorerLocation,
   ExplorerLogsLocation,
@@ -68,14 +66,6 @@ export const helpRoutes = [
   {
     route: AccountFunctionsLocation,
     helpText: 'View the functional history of an account.',
-  },
-  {
-    route: AccountTransactionsLocation,
-    helpText: 'View transactional history of an account.',
-  },
-  {
-    route: DashboardOverviewLocation,
-    helpText: 'The dashboard overview page gives you an overview of your holdings among other things.',
   },
   {
     route: DashboardMonitorsLocation,

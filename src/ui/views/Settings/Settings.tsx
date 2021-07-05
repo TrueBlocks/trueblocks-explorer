@@ -9,7 +9,7 @@ import {
   SettingsSkinsLocation,
 } from '../../locations';
 import { cookieVars } from '../../utils';
-import { IndexesView } from '../Dashboard/Tabs/Indexes/Indexes';
+import { IndexesView } from './Tabs/Indexes/Indexes';
 import { Caches } from './Tabs/Caches';
 import { Schemas } from './Tabs/Schemas';
 import { Scrapers } from './Tabs/Scrapers';

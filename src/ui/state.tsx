@@ -11,6 +11,7 @@ const initialState = {
   theme: THEME || null,
   debug: DEBUG || false,
   accountAddresses: ['0xf503017d7baf7fbc0fff7492b751025c6a78179b', '0xd1629474d25a63B1018FcC965e1d218A00F6CbD3'],
+  names: null,
 };
 
 const GlobalStateReducer = (state: any, action: any) => {
@@ -32,6 +33,11 @@ const GlobalStateReducer = (state: any, action: any) => {
         ...state,
         accountAddresses: action.addresses,
       };
+    case 'SET_NAMES':
+      return {
+        ...state,
+        names: action.names,
+      };
     default:
       return state;
   }
@@ -52,6 +58,10 @@ const useGlobalState = () => {
     dispatch({ type: 'SET_ACCOUNT_ADDRESSES', addresses });
   };
 
+  const setNames = (names: any) => {
+    dispatch({ type: 'SET_NAMES', names });
+  };
+
   return {
     theme: state.theme,
     setTheme,
@@ -59,6 +69,8 @@ const useGlobalState = () => {
     setDebug,
     accountAddresses: state.accountAddresses,
     setAccountAddresses,
+    names: state.names,
+    setNames,
   };
 };
 

@@ -24,7 +24,7 @@ const useStyles = createUseStyles({
 });
 
 export const App = () => {
-  const { debug, setDebug } = useGlobalState();
+  const { debug, setDebug, setNames, names } = useGlobalState();
   const [status, setStatus] = useState<Result>(toSuccessfulData({ data: [{}], meta: {} }) as Result);
   const [loadingStatus, setLoadingStatus] = useState(false);
   const styles = useStyles();
@@ -45,6 +45,25 @@ export const App = () => {
         );
         setStatus(result);
       }, 10 * 1000);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const eitherResponse = await runCommand('names');
+      const result: Result = pipe(
+        eitherResponse,
+        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+      );
+
+      const arrayToObject = (array: any) =>
+        array.reduce((obj: any, item: any) => {
+          obj[item.address] = item;
+          return obj;
+        }, {});
+      const resultMap = arrayToObject(result.data);
+
+      setNames(resultMap);
     })();
   }, []);
 

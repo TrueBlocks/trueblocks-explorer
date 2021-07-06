@@ -12,6 +12,7 @@ const initialState = {
   debug: DEBUG || false,
   accountAddress: '0xf503017d7baf7fbc0fff7492b751025c6a78179b',
   names: null,
+  namesEditModal: false,
 };
 
 const GlobalStateReducer = (state: any, action: any) => {
@@ -38,6 +39,11 @@ const GlobalStateReducer = (state: any, action: any) => {
         ...state,
         names: action.names,
       };
+    case 'SET_NAMES_EDIT_MODAL':
+      return {
+        ...state,
+        namesEditModal: action.val,
+      };
     default:
       return state;
   }
@@ -62,6 +68,10 @@ const useGlobalState = () => {
     dispatch({ type: 'SET_NAMES', names });
   };
 
+  const setNamesEditModal = (val: any) => {
+    dispatch({ type: 'SET_NAMES_EDIT_MODAL', val });
+  };
+
   return {
     theme: state.theme,
     setTheme,
@@ -71,6 +81,8 @@ const useGlobalState = () => {
     setAccountAddress,
     names: state.names,
     setNames,
+    namesEditModal: state.namesEditModal,
+    setNamesEditModal,
   };
 };
 

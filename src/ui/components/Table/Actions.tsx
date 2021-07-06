@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 type Action = 'details' | 'remove' | 'edit' | 'monitor';
 
 export function TableActions({ item, onClick }: InferType<typeof TableActions.propTypes>) {
-  const createOnClick = useCallback((action: Action) => () => onClick(action, item), []);
+  const createOnClick = (action: Action) => () => onClick(action, item);
 
   return (
     <>

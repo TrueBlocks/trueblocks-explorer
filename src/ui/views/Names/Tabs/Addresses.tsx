@@ -5,8 +5,10 @@ import { createErrorNotification } from '@modules/error_notification';
 import { renderNamedAddress } from '@modules/renderers';
 import { Name } from '@modules/types';
 import { Button, Input, Space } from 'antd';
+import Modal from 'antd/lib/modal/Modal';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
+import useGlobalState from '../../../state';
 import { DashboardAccountsAddressLocation } from '../../../Routes';
 import './Addresses.css';
 
@@ -14,12 +16,27 @@ export const Addresses = () => {
   const [searchText, setSearchText] = useState('');
   const [_, setSearchedColumn] = useState('');
   const searchInputRef = useRef(null);
+  const { namesEditModal, setNamesEditModal } = useGlobalState();
+  const [selectedNameName, setSelectedNameName] = useState(namesEditModal.name);
+  const [selectedNameDescription, setSelectedNameDescription] = useState(namesEditModal.description);
+  const [selectedNameSource, setSelectedNameSource] = useState(namesEditModal.source);
+  const [selectedNameTags, setSelectedNameTags] = useState(namesEditModal.tags);
   const [addresses, loading] = useCommand('names', { expand: true, all: true });
+
   if (addresses.status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch addresses',
     });
   }
+
+  useEffect(() => {
+    if (namesEditModal) {
+      setSelectedNameName(namesEditModal.name);
+      setSelectedNameDescription(namesEditModal.description);
+      setSelectedNameSource(namesEditModal.source);
+      setSelectedNameTags(namesEditModal.tags);
+    }
+  }, [namesEditModal]);
 
   const getData = useCallback((response) => {
     if (response.status === 'fail') return [];
@@ -90,8 +107,55 @@ export const Addresses = () => {
     setSearchText('');
   };
 
+  const onEditItem = () => {
+    console.log(namesEditModal);
+    fetch(`${process.env.CORE_URL}/names?addrs=${namesEditModal.address}`, {
+      method: 'POST',
+      body: JSON.stringify({ address: namesEditModal.address, description: selectedNameDescription }),
+    })
+      .then((result) => result.json())
+      .then((response) => console.log(response));
+  };
+
   return (
     <>
+      <Modal visible={namesEditModal} onCancel={() => setNamesEditModal(false)} onOk={() => onEditItem()}>
+        <div style={{ marginTop: '24px' }}>
+          <h2>Editing {namesEditModal.name || namesEditModal.address}</h2>
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ marginBottom: '6px' }}>Name</div>
+            <Input
+              placeholder={'Name'}
+              value={selectedNameName}
+              onChange={(e) => setSelectedNameName(e.target.value)}
+            />
+          </div>
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ marginBottom: '6px' }}>Description</div>
+            <Input
+              placeholder={'Description'}
+              value={selectedNameDescription}
+              onChange={(e) => setSelectedNameDescription(e.target.value)}
+            />
+          </div>
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ marginBottom: '6px' }}>Source</div>
+            <Input
+              placeholder={'Source'}
+              value={selectedNameSource}
+              onChange={(e) => setSelectedNameSource(e.target.value)}
+            />
+          </div>
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ marginBottom: '6px' }}>Tags</div>
+            <Input
+              placeholder={'Tags'}
+              value={selectedNameTags}
+              onChange={(e) => setSelectedNameTags(e.target.value)}
+            />
+          </div>
+        </div>
+      </Modal>
       <BaseTable
         data={getData(addresses)}
         columns={addressSchema.map((item) => {
@@ -176,5 +240,16 @@ const addressSchema: ColumnsType<Name> = [
 ];
 
 function getTableActions(item: Name) {
-  return <TableActions item={item} onClick={(action, tableItem) => console.log('Clicked action', action, tableItem)} />;
+  const { setNamesEditModal } = useGlobalState();
+  return (
+    <TableActions
+      item={item}
+      onClick={(action, tableItem) => {
+        if (action === 'edit') {
+          setNamesEditModal(tableItem);
+        }
+        console.log('Clicked action', action, tableItem);
+      }}
+    />
+  );
 }

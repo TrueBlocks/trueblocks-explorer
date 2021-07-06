@@ -6,6 +6,7 @@ import { renderNamedAddress } from '@modules/renderers';
 import { Monitor } from '@modules/types';
 import { Button, Input, Space } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { any } from 'prop-types';
 import React, { useCallback, useState, useRef } from 'react';
 import { DashboardAccountsAddressLocation } from '../../../Routes';
 
@@ -22,7 +23,15 @@ export const Monitors = () => {
   }
 
   const getData = useCallback((response) => {
-    return response.status === 'fail' || !response.data[0].caches ? [] : response.data[0].caches[0].items;
+    return response.status === 'fail' || !response.data[0].caches
+      ? []
+      : response.data[0].caches[0].items?.map((item: any, i: number) => {
+          return {
+            id: (i + 1).toString(),
+            nameaddr: item.name + ' ' + item.address,
+            ...item,
+          };
+        });
   }, []);
 
   const getColumnSearchProps = (dataIndex: any) => ({
@@ -99,8 +108,8 @@ export const Monitors = () => {
 
 const monitorSchema: ColumnsType<Monitor> = [
   addColumn<Monitor>({
-    title: 'Address',
-    dataIndex: 'address',
+    title: 'Name / Address',
+    dataIndex: 'nameaddr',
     configuration: {
       render: (unused, record) => renderNamedAddress(record, DashboardAccountsAddressLocation(record.address)),
       width: 500,

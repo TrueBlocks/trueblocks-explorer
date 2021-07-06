@@ -4,13 +4,17 @@ import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderNamedAddress } from '@modules/renderers';
 import { Name } from '@modules/types';
-import { Button, Input, Space } from 'antd';
+import { Button, Input, Space, Spin } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import useGlobalState from '../../../state';
 import { DashboardAccountsAddressLocation } from '../../../Routes';
 import './Addresses.css';
+import { runCommand } from '@modules/core';
+import { pipe } from 'fp-ts/lib/function';
+import { either as Either } from 'fp-ts';
+import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 
 export const Addresses = () => {
   const [searchText, setSearchText] = useState('');
@@ -21,13 +25,31 @@ export const Addresses = () => {
   const [selectedNameDescription, setSelectedNameDescription] = useState(namesEditModal.description);
   const [selectedNameSource, setSelectedNameSource] = useState(namesEditModal.source);
   const [selectedNameTags, setSelectedNameTags] = useState(namesEditModal.tags);
-  const [addresses, loading] = useCommand('names', { expand: true, all: true });
+  const [addresses, setAddresses] = useState<Result>({ status: 'success', data: [], meta: {} });
+  const [loading, setLoading] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
 
   if (addresses.status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch addresses',
     });
   }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const eitherResponse = await runCommand('names', {
+        expand: true,
+        all: true,
+      });
+      const result: Result = pipe(
+        eitherResponse,
+        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+      );
+      setLoading(false);
+      setAddresses(result);
+    })();
+  }, []);
 
   useEffect(() => {
     if (namesEditModal) {
@@ -108,53 +130,90 @@ export const Addresses = () => {
   };
 
   const onEditItem = () => {
-    console.log(namesEditModal);
-    fetch(`${process.env.CORE_URL}/names?addrs=${namesEditModal.address}`, {
+    setLoadingEdit(true);
+    fetch(`${process.env.CORE_URL}/names`, {
       method: 'POST',
-      body: JSON.stringify({ address: namesEditModal.address, description: selectedNameDescription }),
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'omit',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        address: namesEditModal.address,
+        description: selectedNameDescription,
+        name: selectedNameName,
+        source: selectedNameSource,
+        tags: selectedNameTags,
+      }),
     })
       .then((result) => result.json())
-      .then((response) => console.log(response));
+      .then((response) => {
+        let newAddresses = { ...addresses };
+        //@ts-ignore
+        let foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
+        //@ts-ignore
+        newAddresses.data[foundAddress] = {
+          //@ts-ignore
+          ...newAddresses.data[foundAddress],
+          description: selectedNameDescription,
+          name: selectedNameName,
+          source: selectedNameSource,
+          tags: selectedNameTags,
+        };
+        console.log(newAddresses);
+        setAddresses(newAddresses);
+        setLoadingEdit(false);
+        setNamesEditModal(false);
+      });
   };
 
   return (
     <>
       <Modal visible={namesEditModal} onCancel={() => setNamesEditModal(false)} onOk={() => onEditItem()}>
-        <div style={{ marginTop: '24px' }}>
-          <h2>Editing {namesEditModal.name || namesEditModal.address}</h2>
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ marginBottom: '6px' }}>Name</div>
-            <Input
-              placeholder={'Name'}
-              value={selectedNameName}
-              onChange={(e) => setSelectedNameName(e.target.value)}
-            />
+        {loadingEdit ? (
+          <div style={{ padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Spin />
           </div>
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ marginBottom: '6px' }}>Description</div>
-            <Input
-              placeholder={'Description'}
-              value={selectedNameDescription}
-              onChange={(e) => setSelectedNameDescription(e.target.value)}
-            />
+        ) : (
+          <div style={{ marginTop: '24px' }}>
+            <h2>Editing {namesEditModal.name || namesEditModal.address}</h2>
+            <div style={{ marginTop: '16px' }}>
+              <div style={{ marginBottom: '6px' }}>Name</div>
+              <Input
+                placeholder={'Name'}
+                value={selectedNameName}
+                onChange={(e) => setSelectedNameName(e.target.value)}
+              />
+            </div>
+            <div style={{ marginTop: '16px' }}>
+              <div style={{ marginBottom: '6px' }}>Description</div>
+              <Input
+                placeholder={'Description'}
+                value={selectedNameDescription}
+                onChange={(e) => setSelectedNameDescription(e.target.value)}
+              />
+            </div>
+            <div style={{ marginTop: '16px' }}>
+              <div style={{ marginBottom: '6px' }}>Source</div>
+              <Input
+                placeholder={'Source'}
+                value={selectedNameSource}
+                onChange={(e) => setSelectedNameSource(e.target.value)}
+              />
+            </div>
+            <div style={{ marginTop: '16px' }}>
+              <div style={{ marginBottom: '6px' }}>Tags</div>
+              <Input
+                placeholder={'Tags'}
+                value={selectedNameTags}
+                onChange={(e) => setSelectedNameTags(e.target.value)}
+              />
+            </div>
           </div>
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ marginBottom: '6px' }}>Source</div>
-            <Input
-              placeholder={'Source'}
-              value={selectedNameSource}
-              onChange={(e) => setSelectedNameSource(e.target.value)}
-            />
-          </div>
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ marginBottom: '6px' }}>Tags</div>
-            <Input
-              placeholder={'Tags'}
-              value={selectedNameTags}
-              onChange={(e) => setSelectedNameTags(e.target.value)}
-            />
-          </div>
-        </div>
+        )}
       </Modal>
       <BaseTable
         data={getData(addresses)}

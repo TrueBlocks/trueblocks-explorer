@@ -19,12 +19,11 @@ import { runCommand } from '@modules/core';
 import useGlobalState from '../../state';
 
 export const DashboardView = ({ match }: { match?: any }) => {
-  const { accountAddress, setAccountAddress } = useGlobalState();
+  const { accountAddress, setAccountAddress, transactions, setTransactions, totalRecords, setTotalRecords } =
+    useGlobalState();
   const { names } = useGlobalState();
   const [named, setNamed] = useState('');
   const [loading, setLoading] = useState(false);
-  const [totalRecords, setTotalRecords] = useState<null | number>(null);
-  const [transactions, setTransactions] = useState<Result | null>(null);
 
   useEffect(() => {
     const name = names && names[accountAddress];

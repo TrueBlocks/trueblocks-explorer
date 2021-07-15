@@ -14,6 +14,8 @@ const initialState = {
   accountAddress: ADDRESS || null,
   names: null,
   namesEditModal: false,
+  transactions: null,
+  totalRecords: null,
 };
 
 const GlobalStateReducer = (state: any, action: any) => {
@@ -46,6 +48,16 @@ const GlobalStateReducer = (state: any, action: any) => {
         ...state,
         namesEditModal: action.val,
       };
+    case 'SET_TRANSACTIONS':
+      return {
+        ...state,
+        transactions: action.transactions,
+      };
+    case 'SET_TOTAL_RECORDS':
+      return {
+        ...state,
+        totalRecords: action.records,
+      };
     default:
       return state;
   }
@@ -74,6 +86,14 @@ const useGlobalState = () => {
     dispatch({ type: 'SET_NAMES_EDIT_MODAL', val });
   };
 
+  const setTransactions = (transactions: any) => {
+    dispatch({ type: 'SET_TRANSACTIONS', transactions });
+  };
+
+  const setTotalRecords = (records: any) => {
+    dispatch({ type: 'SET_TOTAL_RECORDS', records });
+  };
+
   return {
     theme: state.theme,
     setTheme,
@@ -85,6 +105,10 @@ const useGlobalState = () => {
     setNames,
     namesEditModal: state.namesEditModal,
     setNamesEditModal,
+    transactions: state.transactions,
+    setTransactions,
+    totalRecords: state.totalRecords,
+    setTotalRecords,
   };
 };
 

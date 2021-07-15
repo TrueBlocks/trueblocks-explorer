@@ -34,10 +34,19 @@ const GlobalStateReducer = (state: any, action: any) => {
       };
     case 'SET_ACCOUNT_ADDRESS':
       Cookies.set('address', action.address);
-      return {
-        ...state,
-        accountAddress: action.address,
-      };
+      if (action.address !== state.address) {
+        return {
+          ...state,
+          accountAddress: action.address,
+          transactions: null,
+          totalRecords: null,
+        };
+      } else {
+        return {
+          ...state,
+          accountAddress: action.address,
+        };
+      }
     case 'SET_NAMES':
       return {
         ...state,

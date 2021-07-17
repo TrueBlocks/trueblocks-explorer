@@ -1,5 +1,5 @@
 import { BaseTable, TableActions, addActionsColumn, addColumn, addNumColumn, addTagsColumn } from '@components/Table';
-import { Button, Input, Space, Spin } from 'antd';
+import { Button, Input, Space, Spin, Form } from 'antd';
 import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
 import React, { useCallback, useRef, useState } from 'react';
 
@@ -117,7 +117,7 @@ export const Monitors = () => {
         address: selectedNameAddress,
         description: selectedNameDescription,
         name: selectedNameName,
-        source: selectedNameSource,
+        source: selectedNameSource.length > 0 ? selectedNameSource : 'Etherscan.io',
         tags: selectedNameTags,
       }),
     })
@@ -143,54 +143,79 @@ export const Monitors = () => {
 
   return (
     <>
-      <Modal visible={namesEditModal} onCancel={() => setNamesEditModal(false)} onOk={() => onEditItem()}>
+      <Modal visible={namesEditModal} footer={null}>
         {loadingEdit ? (
           <div style={{ padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Spin />
           </div>
         ) : (
-          <div style={{ marginTop: '24px' }}>
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ marginBottom: '6px' }}>Address</div>
-              <Input
-                placeholder={'Address'}
-                value={selectedNameAddress}
-                onChange={(e) => setSelectedNameAddress(e.target.value)}
-              />
+          <Form onFinish={() => onEditItem()}>
+            <div style={{ marginTop: '24px' }}>
+              <div style={{ marginTop: '16px' }}>
+                <Form.Item
+                  label={<div style={{ minWidth: '64px' }}>Address</div>}
+                  name='address'
+                  rules={[{ required: true, message: 'Address required' }]}
+                  {...(selectedNameAddress.length > 0 &&
+                    (selectedNameAddress.slice(0, 2) !== '0x' || selectedNameAddress.length !== 42) && {
+                      help: 'Address must begin with 0x and be 42 characters',
+                      validateStatus: 'error',
+                    })}>
+                  <Input
+                    placeholder={'Address'}
+                    value={selectedNameAddress}
+                    onChange={(e) => setSelectedNameAddress(e.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <Form.Item
+                  label={<div style={{ minWidth: '64px' }}>Name</div>}
+                  name='name'
+                  rules={[{ required: true, message: 'Name is required' }]}>
+                  <Input
+                    placeholder={'Name'}
+                    value={selectedNameName}
+                    onChange={(e) => setSelectedNameName(e.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <Form.Item label={<div style={{ minWidth: '74px' }}>Description</div>} name='description'>
+                  <Input
+                    placeholder={'Description'}
+                    value={selectedNameDescription}
+                    onChange={(e) => setSelectedNameDescription(e.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <Form.Item label={<div style={{ minWidth: '74px' }}>Source</div>} name='source'>
+                  <Input
+                    placeholder={'Source'}
+                    value={selectedNameSource}
+                    onChange={(e) => setSelectedNameSource(e.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <div style={{ marginTop: '16px' }}>
+                <Form.Item label={<div style={{ minWidth: '74px' }}>Tags</div>} name='tags'>
+                  <Input
+                    placeholder={'Tags'}
+                    value={selectedNameTags}
+                    onChange={(e) => setSelectedNameTags(e.target.value)}
+                  />
+                </Form.Item>
+              </div>
+              <Form.Item>
+                <div style={{ marginTop: '16px' }}>
+                  <Button type={'primary'} htmlType={'submit'}>
+                    Submit
+                  </Button>
+                </div>
+              </Form.Item>
             </div>
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ marginBottom: '6px' }}>Name</div>
-              <Input
-                placeholder={'Name'}
-                value={selectedNameName}
-                onChange={(e) => setSelectedNameName(e.target.value)}
-              />
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ marginBottom: '6px' }}>Description</div>
-              <Input
-                placeholder={'Description'}
-                value={selectedNameDescription}
-                onChange={(e) => setSelectedNameDescription(e.target.value)}
-              />
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ marginBottom: '6px' }}>Source</div>
-              <Input
-                placeholder={'Source'}
-                value={selectedNameSource}
-                onChange={(e) => setSelectedNameSource(e.target.value)}
-              />
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ marginBottom: '6px' }}>Tags</div>
-              <Input
-                placeholder={'Tags'}
-                value={selectedNameTags}
-                onChange={(e) => setSelectedNameTags(e.target.value)}
-              />
-            </div>
-          </div>
+          </Form>
         )}
       </Modal>
       <div

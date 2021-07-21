@@ -80,10 +80,36 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>BLOCKS</div>
-          <ScraperProgress value={statusMeta.finalized} client={statusMeta.client} word='FINAL' color='#52c41a' />
-          <ScraperProgress value={statusMeta.staging} client={statusMeta.client} word='STAGING' color='#fadb14' />
-          <ScraperProgress value={statusMeta.ripe} client={statusMeta.client} word='RIPE' color='#fadb14' />
-          <ScraperProgress value={statusMeta.unripe} client={statusMeta.client} word='UNRIPE' color='#f5222d' />
+          <div>
+            <ApiFilled className={styles.itemIcon} style={{ color: '#52c41a' }} />
+            {Intl.NumberFormat().format(statusMeta.finalized)}
+            <span className={styles.statusItem}>
+              FINAL
+              <br />
+            </span>
+            <ApiFilled className={styles.itemIcon} style={{ color: 'white' }} />
+            <div style={{ display: 'inline' }}>{statusMeta.client - statusMeta.finalized} behind head</div>
+          </div>
+          <div>
+            <ApiFilled className={styles.itemIcon} style={{ color: '#fadb14' }} />
+            {Intl.NumberFormat().format(statusMeta.staging)}
+            <span className={styles.statusItem}>
+              STAGING
+              <br />
+            </span>
+            <ApiFilled className={styles.itemIcon} style={{ color: 'white' }} />
+            <div style={{ display: 'inline' }}>{statusMeta.client - statusMeta.staging} behind head</div>
+          </div>
+          <div>
+            <ApiFilled className={styles.itemIcon} style={{ color: '#f5222d' }} />
+            {Intl.NumberFormat().format(statusMeta.unripe)}
+            <span className={styles.statusItem}>
+              UNRIPE
+              <br />
+            </span>
+            <ApiFilled className={styles.itemIcon} style={{ color: 'white' }} />
+            <div style={{ display: 'inline' }}>{statusMeta.client - statusMeta.unripe} behind head</div>
+          </div>
         </div>
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>MONITORS</div>
@@ -146,32 +172,5 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
         </div>
       </div>
     </Loading>
-  );
-};
-
-const ScraperProgress = ({
-  value,
-  client,
-  word,
-  color,
-}: {
-  value: number;
-  client: number;
-  word: string;
-  color: string;
-}) => {
-  const styles = useStyles();
-  const st: string = styles.itemIcon;
-  return (
-    <div>
-      <ApiFilled className={st} style={{ color: `${color}` }} />
-      {Intl.NumberFormat().format(value)}
-      <span className={styles.statusItem}>
-        {word}
-        <br />
-      </span>
-      <ApiFilled className={styles.itemIcon} style={{ color: 'white' }} />
-      <div style={{ display: 'inline' }}>{Intl.NumberFormat().format(client - value)} behind head</div>
-    </div>
   );
 };

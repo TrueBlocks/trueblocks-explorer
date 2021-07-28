@@ -143,7 +143,7 @@ There are many, many options to use TrueBlocks. Here are a few:
 
 - Using the command line, get tab-seperated list of every **log** that an address appears in:
 
-  - `> chifra export --logs 0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359 --fmt txt`
+  - `chifra export --logs 0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359 --fmt txt`
 
 - Get JSON details of every **trace** in which a specific address appears:
 
@@ -157,7 +157,7 @@ There are many, many options to use TrueBlocks. Here are a few:
 
 - From the command line, get tab-seperated text of every **balance change in US dollars** for an address:
 
-  - `> chifra export --balances --deltas 0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359 --dollars`
+  - `chifra export --balances --deltas 0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359 --dollars`
 
 - Get balance of DAI for an address at current block on command line:
 

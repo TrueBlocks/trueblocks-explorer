@@ -3,7 +3,7 @@
 ![Image Logo](https://avatars1.githubusercontent.com/u/19167586?s=200&v=4)
 
 [![Website](https://img.shields.io/badge/Website-quickblocks.io-brightgreen.svg)](https://quickblocks.io/)
-[![TrueBlocks](https://img.shields.io/badge/Trueblocks-explorer-blue.svg)](https://github.com/Great-Hill-Corporation/trueblocks-explorer)
+[![TrueBlocks](https://img.shields.io/badge/Trueblocks-explorer-blue.svg)](https://github.com/TrueBlocks/trueblocks-explorer)
 [![React](https://img.shields.io/badge/React-node.js-purple.svg)](https://reactjs.org/)
 [![Twitter](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Twitter)](https://twitter.com/quickblocks?lang=es)
 
@@ -52,7 +52,7 @@ Now, the application should be running at `localhost:1234`:
 
 ## Requirements
 
-- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with **--tracing** enabled. An excellent choice is Turbo-Geth (now called XXX). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [the TrueBlocks docker image](http://github.com/Great-Hill-Corporation/trueblocks-docker).
+- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with `--tracing` enabled. An excellent choice is Turbo-Geth (now called XXX). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [the TrueBlocks docker image](http://github.com/TrueBlocks/trueblocks-docker).
 
 ## Getting Data on the Command Line
 
@@ -189,7 +189,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 - **Thomas Jay Rush** - [tjayrush](https://github.com/tjayrush)
 - **Ed Mazurek** - [wildmolasses](https://github.com/wildmolasses)
 
-See also the list of [contributors](https://github.com/Great-Hill-Corporation/trueblocks-docker/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/TrueBlocks/trueblocks-explorer/contributors) who participated in this project.
 
 ## License
 

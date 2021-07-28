@@ -49,7 +49,7 @@ Now, the application should be running at `localhost:1234`.
 
 ## Requirements
 
-- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with `--tracing` enabled. An excellent choice is Turbo-Geth (now called XXX). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [the TrueBlocks docker image](http://github.com/TrueBlocks/trueblocks-docker).
+- **Note:** In order for the TrueBlocks to work, you must have access to an Ethereum node with `--tracing` enabled. An excellent choice is [Erigon](https://github.com/ledgerwatch/erigon) (previously called Turbo-Geth). TrueBlocks defaults to using Parity at the RPC endpoint http://localhost:8545, but you may use any node supporting tracing and any endpoint (Infura, Quiknodes, for example). Performance will be _greatly reduced_ if you use a remote server. A good solution to this problem is to run a node on the [dAppNode](https://dappnode.io/) or [Ava.do](https://ava.do/) platforms and use [the TrueBlocks docker image](http://github.com/TrueBlocks/trueblocks-docker).
 
 ## Getting Data on the Command Line
 

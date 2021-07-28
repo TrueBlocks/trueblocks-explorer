@@ -17,8 +17,8 @@ Prior to proceeding, you must [install the TrueBlocks Core](http://docs.truebloc
 
 Assuming you have the TrueBlocks core properly installed and can successfully run the following command:
 
-```[shell]
-> chifra --version
+```shell
+chifra --version
 ```
 
 Then, you need to serve the index on your local machine:
@@ -31,7 +31,7 @@ chifra serve
 
 From your development folder:
 
-```[shell]
+```shell
 git clone git@github.com:TrueBlocks/trueblocks-explorer.git
 cd trueblocks-explorer
 cp .env.example .env
@@ -56,15 +56,15 @@ Now, the application should be running at `localhost:1234`:
 
 ## Getting Data on the Command Line
 
-Assuming TrueBlocks is installed correctly, and that you have a node endpoint, and that the tools are in your \$PATH, you should be able to run the following command at a command prompt:
+Assuming TrueBlocks is installed correctly, and that you have a node endpoint, and that the tools are in your `$PATH`, you should be able to run the following command at a command prompt:
 
-```
-> chifra blocks 100
+```shell
+chifra blocks 100
 ```
 
 and get valid data from your node:
 
-```
+```json
 {
   "data": [
     {
@@ -86,14 +86,14 @@ and get valid data from your node:
 
 If that works, try this command:
 
-```
-> chifra blocks 0-latest:10000
+```shell
+chifra blocks 0-latest:10000
 ```
 
 Which exports every 10,000th block in the chain from first to last. Or, try this command:
 
-```
-> chifra blocks --uniq_tx 4001001
+```shell
+chifra blocks --uniq_tx 4001001
 ```
 
 Which shows every address that appears anywhere in block 4,001,001. There are literally hundreds of other options to `chifra` and the other tools. See the documentation.
@@ -102,8 +102,8 @@ Which shows every address that appears anywhere in block 4,001,001. There are li
 
 The TrueBlocks Explorer uses an API to access data provided (that is ultimately provided by `chifra`). Assuming everything is installed correctly and you've started the API server, you should be able to get the same data from the API:
 
-```
-> curl "http://localhost:8080/blocks?blocks=4001001&uniq_tx"
+```shell
+curl "http://localhost:8080/blocks?blocks=4001001&uniq_tx"
 ```
 
 which returns the same as the preceding `chifra blocks --uniq_tx` command.
@@ -118,16 +118,16 @@ However, you can change this by adding the options `&fmt=txt` or `&fmt=csv` to y
 
 For documentation on the API, you may do this:
 
-```
-> open "http://localhost:8090"
+```shell
+open "http://localhost:8090"
 ```
 
 ## Scraping the Chain
 
 To begin the process of creating the address index, enter this command in a seperate window or `tmux` session. You will need to keep this process running continually to keep the index fresh.
 
-```
-> chifra scrape
+```shell
+chifra scrape
 ```
 
 - **Note:** This requires a _--tracing node_ to produce a full list of appearances. It will work (with some configuration changes) on non-tracing nodes, but many of the appearances will not be included. Note also, this takes a loooong time. Depending on your setup at least 2-3 days (local node endpoint) or significantly longer (remote, rate-limited RPC endpoints).

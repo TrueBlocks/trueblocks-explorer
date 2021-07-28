@@ -7,7 +7,7 @@
 [![React](https://img.shields.io/badge/React-node.js-purple.svg)](https://reactjs.org/)
 [![Twitter](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Twitter)](https://twitter.com/quickblocks?lang=es)
 
-TrueBlocks lets you explore the Ethereum blockchain in a fully-local and therefore fully-private way. This repo provides a frontend (this repo) application for the backend, [TrueBlocks core](https://github.com/TrueBlocks/trueblocks-core).
+TrueBlocks lets you explore the Ethereum blockchain in a fully-local and therefore fully-private way. This repo provides a frontend application for the backend, [TrueBlocks core](https://github.com/TrueBlocks/trueblocks-core).
 
 ## Prerequisites
 
@@ -137,7 +137,7 @@ There are many, many options to use TrueBlocks. Here are a few:
 
   - `curl http://localhost/list?address=0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359`
 
-- Get full details of every **transaction** for specific address to CSV:
+- Get full details of every **transaction** for a specific address to CSV:
 
   - `curl http://localhost/export?address=0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359&fmt=csv`
 
@@ -155,7 +155,7 @@ There are many, many options to use TrueBlocks. Here are a few:
   - `chifra names 0x6b175474e89094c44da98b954eedeac495271d0f` // DAI
   - `curl http://localhost/names?0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359` // TrueBlocks Tip Jar
 
-- From the command line, get tab-seperated text of every **balance change in US dollars** for an addresses:
+- From the command line, get tab-seperated text of every **balance change in US dollars** for an address:
 
   - `> chifra export --balances --deltas 0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359 --dollars`
 

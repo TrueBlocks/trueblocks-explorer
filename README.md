@@ -39,10 +39,7 @@ yarn
 yarn develop
 ```
 
-Now, the application should be running at `localhost:1234`:
-
-
-<img src="./public/screen_shot.png" />
+Now, the application should be running at `localhost:1234`.
 
 ## NPM Scripts
 

@@ -7,7 +7,7 @@
 [![React](https://img.shields.io/badge/React-node.js-purple.svg)](https://reactjs.org/)
 [![Twitter](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Twitter)](https://twitter.com/quickblocks?lang=es)
 
-TrueBlocks lets you explore the Ethereum blockchain in a fully-local and therefore fully-private way. This repo provides a frontend (this repo) application for the backend, [https://github.com/TrueBlocks/trueblocks-core](TrueBlocks core).
+TrueBlocks lets you explore the Ethereum blockchain in a fully-local and therefore fully-private way. This repo provides a frontend (this repo) application for the backend, [TrueBlocks core](https://github.com/TrueBlocks/trueblocks-core).
 
 ## Prerequisites
 

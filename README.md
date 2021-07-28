@@ -177,10 +177,6 @@ Yes - Parity delivers the necessary articulated traces so that TrueBlocks can bu
 
 ### More coming soon...
 
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
 
 - **Thomas Jay Rush** - [tjayrush](https://github.com/tjayrush)

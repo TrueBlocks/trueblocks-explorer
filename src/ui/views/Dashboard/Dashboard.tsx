@@ -1,14 +1,9 @@
-import {
-  DashboardAccountsLocation,
-  DashboardCollectionsLocation,
-  DashboardLocation,
-  DashboardMonitorsLocation,
-} from '../../Routes';
+import { DashboardAccountsLocation, DashboardCollectionsLocation, DashboardMonitorsLocation } from '../../Routes';
 import { useGlobalNames, useGlobalState } from '../../State';
 import { Collections } from './Tabs/Collections';
 import { DetailsView } from './Tabs/Details';
 import { Monitors } from './Tabs/Monitors';
-import { BaseView_old } from '@components/BaseView_old';
+import { BaseView } from '@components/BaseView';
 import { emptyData, Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
 import { createErrorNotification } from '@modules/error_notification';
@@ -20,7 +15,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 export const DashboardView = () => {
   const [loading, setLoading] = useState(false);
   const [staging, setStaging] = useState(false);
-  const [denom, setDenom] = useState('ether');
   const [hideZero, setHideZero] = useState('all');
   const [hideNamed, setHideNamed] = useState(false);
   const [hideReconciled, setHideReconciled] = useState(false);
@@ -28,6 +22,7 @@ export const DashboardView = () => {
   const [period, setPeriod] = useState('by tx');
 
   const { currentAddress } = useGlobalState();
+  const { denom, setDenom } = useGlobalState();
   const { namesMap } = useGlobalNames();
   const { totalRecords, setTotalRecords } = useGlobalState();
   const { transactions, setTransactions } = useGlobalState();
@@ -117,6 +112,7 @@ export const DashboardView = () => {
     });
     return unrecon && unrecon.length > 0;
   });
+
   let uniqAssets: any = [];
 
   if (theData) {
@@ -199,22 +195,18 @@ export const DashboardView = () => {
   ];
 
   return (
-    <>
-      <BaseView_old
-        title={'Dashboard'}
-        cookieName={'COOKIE_DASHBOARD'}
-        tabs={tabs}
-        defaultActive={DashboardMonitorsLocation}
-        baseActive={DashboardLocation}
-      />
-    </>
+    <BaseView
+      title={'Dashboard'}
+      cookieName={'COOKIE_DASHBOARD'}
+      tabs={tabs}
+    />
   );
 };
 
 declare type stateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 export declare type UserPrefs = {
   denom: string;
-  setDenom: stateSetter<string>;
+  setDenom: any;
   staging: boolean;
   setStaging: stateSetter<boolean>;
   hideZero: string;

@@ -29,7 +29,7 @@ import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types
 import { Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
@@ -88,12 +88,10 @@ const ViewOptions = ({ params }: { params: AccountViewParams }) => {
 
   const onEther = () => {
     prefs.setDenom('ether');
-    setTransactions({ status: 'success' }); // empty
   };
 
   const onDollars = () => {
     prefs.setDenom('dollars');
-    setTransactions({ status: 'success' }); // empty
   };
 
   const onHideZero = () => {
@@ -425,20 +423,13 @@ export const msgPills = (record: Transaction) => {
 
 export const renderStatements = (statements: ReconciliationArray) => {
   const styles = useStyles();
+  const { denom } = useGlobalState().denom;
   if (statements === null) return <></>;
   return (
     <table className={style.table}>
       <tbody>
         {statements?.map((statement, i) => {
-          return (
-            <Statement
-              key={
-                statement.blockNumber * 100000 + statement.transactionIndex + statement.assetSymbol ||
-                `${i}-${Math.random()}`
-              }
-              statement={statement}
-            />
-          );
+          return <Statement key={`statement.assetAddr + ${i.toString()}`} statement={statement} />;
         })}
       </tbody>
     </table>
@@ -476,29 +467,52 @@ const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
   return <div>{icon}</div>;
 };
 
+const showValue = (val: string, sP: number, showZeros: boolean = false, isGas: boolean = false) => {
+  const convert = (val: string, sP: number) => {
+    const denom = useGlobalState().denom;
+    if (denom != 'dollars' || val == '') return clip(val, isGas);
+    return clip((Number(val) * sP).toFixed(2).toString(), isGas);
+  };
+  if (showZeros) {
+    return !val ? convert('0.000000', sP) : convert(val, sP);
+  }
+  return convert(val, sP);
+};
+
 const Statement = ({ statement }: { statement: Reconciliation }) => {
   const styles = useStyles();
+  const sP = Number(statement.spotPrice);
+  const k = statement.assetAddr;
+  const denom = useGlobalState().denom;
+  const [sym, setSym] = useState(statement.assetSymbol);
+  useEffect(() => {
+    if (denom == 'dollars') {
+      setSym(statement.assetSymbol?.slice(0, 5) + ' $');
+    } else {
+      setSym(statement.assetSymbol?.slice(0, 5));
+    }
+  }, [denom]);
   return (
-    <tr className={styles.row} key={statement.assetSymbol || Math.random()}>
-      <td key={`${1}-${Math.random()}`} className={styles.col} style={{ width: '12%' }}>
-        {statement.assetSymbol?.slice(0, 5)}
+    <tr className={styles.row} key={`${k}-row`}>
+      <td key={`${k}-1`} className={styles.col} style={{ width: '12%' }}>
+        {sym}
       </td>
-      <td key={`${2}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
-        {clip(!statement.begBal ? '0.000000' : statement.begBal)}
+      <td key={`${k}-2`} className={styles.col} style={{ width: '17%' }}>
+        {showValue(statement.begBal, sP, true)}
       </td>
-      <td key={`${3}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
-        {clip(statement.totalIn)}
+      <td key={`${k}-3`} className={styles.col} style={{ width: '17%' }}>
+        {showValue(statement.totalIn, sP)}
       </td>
-      <td key={`${4}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
-        {clip(statement.totalOutLessGas)}
+      <td key={`${k}-4`} className={styles.col} style={{ width: '17%' }}>
+        {showValue(statement.totalOutLessGas, sP)}
       </td>
-      <td key={`${5}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
-        {clip(statement.gasCostOut, true)}
+      <td key={`${k}-5`} className={styles.col} style={{ width: '17%' }}>
+        {showValue(statement.gasCostOut, sP, false, true)}
       </td>
-      <td key={`${6}-${Math.random()}`} className={styles.col} style={{ width: '17%' }}>
-        {clip(!statement.endBal ? '0.000000' : statement.endBal)}
+      <td key={`${k}-6`} className={styles.col} style={{ width: '17%' }}>
+        {showValue(statement.endBal, sP, true)}
       </td>
-      <td key={`${7}-${Math.random()}`} className={styles.col} style={{ width: '4%' }}>
+      <td key={`${k}-7`} className={styles.col} style={{ width: '4%' }}>
         <ReconIcon statement={statement} />
       </td>
     </tr>

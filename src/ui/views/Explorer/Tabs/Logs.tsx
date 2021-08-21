@@ -4,7 +4,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import React from 'react';
 
 export const Logs = () => {
-  //TODO(tjayrush): hard coded data
+  // TODO(tjayrush): hard coded data
   const { theData, loading, status } = useFetchData('logs', { transactions: '12001001.1', articulate: true });
 
   if (status === 'fail') {

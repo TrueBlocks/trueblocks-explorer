@@ -51,7 +51,7 @@ const statementHeader = (statement: Reconciliation, showDetails: boolean, setSho
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '20fr 1fr', textAlign: 'start' }}>
       <div>
-        {statement.assetSymbol + ' reconciliation'} [{statement.reconciliationType}]
+        {statement.assetSymbol + ' reconciliation'} [{statement.reconciliationType}] (spotPrice: {statement.spotPrice})
       </div>
       <div onClick={() => setShowDetails(!showDetails)}>{showDetails ? '-' : '+'}</div>
     </div>

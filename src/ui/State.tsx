@@ -6,10 +6,12 @@ const GlobalStateContext = createContext<any[]>([]);
 
 const THEME = Cookies.get('theme');
 const ADDRESS = Cookies.get('address');
+const DENOM = Cookies.get('denom');
 
 const initialState = {
   theme: THEME || null,
   currentAddress: ADDRESS || null,
+  denom: DENOM || 'ether',
   namesMap: null,
   namesArray: null,
   namesEditModal: false,
@@ -40,6 +42,12 @@ const GlobalStateReducer = (state: any, action: any) => {
           currentAddress: action.address,
         };
       }
+    case 'SET_DENOM':
+      Cookies.set('denom', action.denom);
+      return {
+        ...state,
+        denom: action.denom,
+      };
     case 'SET_NAMES_MAP':
       return {
         ...state,
@@ -81,6 +89,10 @@ export const useGlobalState = () => {
     dispatch({ type: 'SET_CURRENT_ADDRESS', address });
   };
 
+  const setDenom = (denom: string) => {
+    dispatch({ type: 'SET_DENOM', denom: denom });
+  };
+
   const setNamesMap = (namesMap: any) => {
     dispatch({ type: 'SET_NAMES_MAP', namesMap: namesMap });
   };
@@ -106,6 +118,8 @@ export const useGlobalState = () => {
     setTheme,
     currentAddress: state.currentAddress,
     setCurrentAddress,
+    denom: state.denom,
+    setDenom,
     namesMap: state.namesMap,
     setNamesMap,
     namesArray: state.namesArray,

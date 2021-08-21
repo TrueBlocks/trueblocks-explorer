@@ -51,7 +51,8 @@ const statementHeader = (statement: Reconciliation, showDetails: boolean, setSho
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '20fr 1fr', textAlign: 'start' }}>
       <div>
-        {statement.assetSymbol + ' reconciliation'} [{statement.reconciliationType}] (spotPrice: {statement.spotPrice})
+        {statement.assetSymbol + ' reconciliation'} [{statement.reconciliationType}] (spotPrice: {statement.spotPrice}-
+        {statement.priceSource})
       </div>
       <div onClick={() => setShowDetails(!showDetails)}>{showDetails ? '-' : '+'}</div>
     </div>
@@ -129,6 +130,13 @@ const statementBody = (statement: Reconciliation, showDetails: boolean, styles: 
         {oneDebug(styles, showDetails, 'endBal', statement.endBal)}
         {oneDebug(styles, showDetails, 'endBalCalc', statement.endBalCalc)}
         {oneDebug(styles, showDetails, 'endBalDiff', statement.endBalDiff)}
+        {oneDebug(styles, showDetails, 'spotPrice', statement.spotPrice)}
+        {oneDebug(
+          styles,
+          showDetails,
+          'priceSource',
+          statement.priceSource === '' ? 'not-priced' : statement.priceSource
+        )}
         {/* {oneRow(styles, showDetails, 'reconciled', statement.reconciled ? 'true' : 'false')} */}
       </tbody>
     </table>

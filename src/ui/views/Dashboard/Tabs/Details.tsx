@@ -487,7 +487,7 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
   const [sym, setSym] = useState(statement.assetSymbol);
   useEffect(() => {
     if (denom == 'dollars') {
-      setSym(statement.assetSymbol?.slice(0, 5) + ' $');
+      setSym(statement.assetSymbol?.slice(0, 5) + (statement.priceSource === 'not-priced' ? ' -' : ' $'));
     } else {
       setSym(statement.assetSymbol?.slice(0, 5));
     }

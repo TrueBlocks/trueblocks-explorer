@@ -10,6 +10,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import { AssetHistory, AssetHistoryArray, Reconciliation, Transaction, TransactionArray } from '@modules/types';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
+import Mousetrap from 'mousetrap';
 import React, { useCallback, useEffect, useState } from 'react';
 
 export const DashboardView = () => {
@@ -20,6 +21,7 @@ export const DashboardView = () => {
   const [hideReconciled, setHideReconciled] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [period, setPeriod] = useState('by tx');
+  const [cancel, setCancel] = useState(false);
 
   const { currentAddress } = useGlobalState();
   const { denom, setDenom } = useGlobalState();
@@ -55,7 +57,7 @@ export const DashboardView = () => {
 
   useEffect(() => {
     (async () => {
-      if (totalRecords && (transactions?.data?.length || 0) < totalRecords) {
+      if (!cancel && totalRecords && (transactions?.data?.length || 0) < totalRecords) {
         const eitherResponse = await runCommand('export', {
           addrs: currentAddress,
           fmt: 'json',
@@ -91,7 +93,15 @@ export const DashboardView = () => {
         setTransactions(newTransactions);
       }
     })();
-  }, [totalRecords, transactions]);
+  }, [totalRecords, transactions, cancel]);
+
+  // clean up mouse control when we unmount
+  useEffect(() => {
+    return () => {
+      Mousetrap.unbind(['esc']);
+    };
+  }, []);
+  Mousetrap.bind('esc', () => setCancel(true));
 
   const getMeta = useCallback((response) => (response?.status === 'fail' ? [] : response?.meta), []);
   let theMeta: any = getMeta(transactions);
@@ -194,13 +204,7 @@ export const DashboardView = () => {
     { name: 'Collections', location: DashboardCollectionsLocation, component: <Collections /> },
   ];
 
-  return (
-    <BaseView
-      title={'Dashboard'}
-      cookieName={'COOKIE_DASHBOARD'}
-      tabs={tabs}
-    />
-  );
+  return <BaseView title={'Dashboard'} cookieName={'COOKIE_DASHBOARD'} tabs={tabs} />;
 };
 
 declare type stateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;

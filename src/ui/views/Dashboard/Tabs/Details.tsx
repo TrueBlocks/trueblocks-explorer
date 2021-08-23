@@ -294,8 +294,14 @@ const AddressBar = ({ params }: { params: AccountViewParams }) => {
   );
 };
 
-export const renderAsNamedAddress = (address: string, acctFor: string) => {
+export const renderAsNamedAddress = (record: Transaction, which: string) => {
   const { namesMap } = useGlobalNames();
+
+  let address = which === 'from' ? record.from : record.to;
+  const isCreation = address == '0x0';
+  if (isCreation) address = record.receipt.contractAddress; // may be empty
+
+  const acctFor = record.extraData;
 
   const isCurrent = address === acctFor;
   const isSpecial = address === '0xPrefund' || address === '0xBlockReward' || address === '0xUncleReward';
@@ -311,10 +317,12 @@ export const renderAsNamedAddress = (address: string, acctFor: string) => {
     style = { color: 'green' };
   }
 
-  const addr =
+  const decorated =
     name === '' || name === undefined
       ? address
       : '[' + address?.substr(0, 6) + '...' + address?.substr(address.length - 4, address.length) + '] ';
+  const addr = (isCreation ? '0x0 --> ' : '') + decorated;
+
   return (
     <div style={style}>
       {addr}
@@ -354,8 +362,8 @@ export const transactionSchema: ColumnsType<Transaction> = [
         return (
           <>
             <pre>
-              {renderAsNamedAddress(record.from, record.extraData)}
-              {renderAsNamedAddress(record.to, record.extraData)}
+              {renderAsNamedAddress(record, 'from')}
+              {renderAsNamedAddress(record, 'to')}
               <div style={{ margin: '0px', padding: '0px', display: 'grid', gridTemplateColumns: '1fr 10fr' }}>
                 {msgPills(record)}
                 <div> </div>

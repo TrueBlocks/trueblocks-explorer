@@ -1,12 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
+import { Theme, themeList } from '@modules/themes';
 import { useGlobalState } from '../../../State';
-
-const themeList = [
-  { theme: 'Blue on Black', primaryColor: 'lightblue', secondaryColor: 'black' },
-  { theme: 'Yellow on Green', primaryColor: 'yellow', secondaryColor: 'forestgreen' },
-  { theme: 'Orange on Black', primaryColor: 'orange', secondaryColor: 'black' },
-];
 
 const useStyles = createUseStyles({
   skinContainer: {
@@ -28,13 +23,22 @@ export const Skins = () => {
   const { theme, setTheme } = useGlobalState();
   const styles = useStyles(theme);
 
+  const onThemeClick = (clickedTheme: Theme) => setTheme(clickedTheme);
+
   return (
     <div>
       <h2 className={styles.skinTitle}>Skins</h2>
-      {themeList.map((theme) => (
-        <div key={theme.theme} className={styles.skinContainer} onClick={() => setTheme(theme)}>
-          <div style={{ backgroundColor: theme.secondaryColor }} className={styles.skinItem}>
-            <div style={{ color: theme.primaryColor }}>{theme.theme}</div>
+      {themeList.map((themeOnList) => (
+        <div
+          key={themeOnList.name}
+          className={styles.skinContainer}
+          onClick={() => onThemeClick(themeOnList)}
+          role='button'
+          onKeyPress={() => onThemeClick(themeOnList)}
+          tabIndex={0}
+        >
+          <div style={{ backgroundColor: themeOnList.secondaryColor }} className={styles.skinItem}>
+            <div style={{ color: themeOnList.primaryColor }}>{themeOnList.name}</div>
           </div>
         </div>
       ))}

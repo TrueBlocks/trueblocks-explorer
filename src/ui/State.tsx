@@ -1,5 +1,6 @@
 import { toSuccessfulData, useCommand } from '@hooks/useCommand';
 import { Accountname, address as Address } from '@modules/types';
+import { getThemeByName, Theme, ThemeName } from '@modules/themes';
 import Cookies from 'js-cookie';
 import React, {
   createContext,
@@ -9,10 +10,8 @@ import React, {
 } from 'react';
 import { ReactNode } from 'react-markdown';
 
-// const THEME = Cookies.get('theme');
+const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');
-
-type Theme = ReturnType<typeof getDefaultTheme>;
 
 type NamesEditModalState = {
   address: string,
@@ -22,24 +21,21 @@ type NamesEditModalState = {
   tags: string
 }
 
-type TransactionsState = {
+type TransactionsQueryState = {
   result: ReturnType<typeof useCommand>[0],
   loading: ReturnType<typeof useCommand>[1]
 };
 
 type State = {
-  theme?: Theme,
+  theme: Theme,
   currentAddress?: string,
   namesMap: Map<Address, Accountname>
   namesArray?: Accountname[],
   namesEditModalVisible: boolean,
   namesEditModal: NamesEditModalState,
-  transactions: TransactionsState,
+  transactions: TransactionsQueryState,
   totalRecords: number,
 }
-
-// TODO: It shouldn't be here
-const getDefaultTheme = () => ({ theme: 'Blue on Black', primaryColor: 'lightblue', secondaryColor: 'black' });
 
 const createDefaultTransaction = () => toSuccessfulData({
   data: [], meta: {},
@@ -59,7 +55,7 @@ const getDefaultNamesEditModalValue = () => ({
 });
 
 const initialState: State = {
-  theme: getDefaultTheme(),
+  theme: getThemeByName(THEME),
   currentAddress: ADDRESS,
   namesMap: new Map(),
   namesArray: [],
@@ -127,7 +123,7 @@ const GlobalStateContext = createContext<[
 const GlobalStateReducer = (state: State, action: GlobalAction) => {
   switch (action.type) {
     case 'SET_THEME':
-      Cookies.set('theme', action.theme || '');
+      Cookies.set('theme', action.theme.name);
       return {
         ...state,
         theme: action.theme,

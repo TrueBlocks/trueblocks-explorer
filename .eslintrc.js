@@ -43,6 +43,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'indent': ['error', 2, { SwitchCase: 1 }],
+    '@typescript-eslint/indent': ['error', 2],
     'max-len': ['warn', { code: 120, comments: 120 }],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],

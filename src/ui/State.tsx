@@ -140,10 +140,7 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
         };
       }
 
-      return {
-        ...state,
-        currentAddress: action.address,
-      };
+      return state;
     case 'SET_NAMES_MAP':
       return {
         ...state,

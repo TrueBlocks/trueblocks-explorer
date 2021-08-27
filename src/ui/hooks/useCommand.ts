@@ -1,5 +1,5 @@
 import {
-  CommandParams, CoreCommand, JsonResponse, runCommand
+  CommandParams, CoreCommand, JsonResponse, runCommand,
 } from '@modules/core';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/function';
@@ -41,7 +41,7 @@ export function toFailedResult(error: Error): FailedResult {
   };
 }
 
-export function toFailedScrapeResult(error: Error): FailedScrapeResult {
+export function toFailedScrapeResult(): FailedScrapeResult {
   return {
     status: 'fail',
     monitor: { Running: false },
@@ -72,8 +72,15 @@ export function useCommand(command: CoreCommand, params?: CommandParams) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     (async () => {
       const eitherResponse = await runCommand(command, params);
+
+      if (cancelled) {
+        return;
+      }
+
       const result: Result = pipe(
         eitherResponse,
         Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
@@ -81,6 +88,10 @@ export function useCommand(command: CoreCommand, params?: CommandParams) {
       setData(result);
       setLoading(false);
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return [response, loading] as const;

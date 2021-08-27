@@ -13,7 +13,7 @@ import {
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useEffect, useMemo, useState,
 } from 'react';
 import {
   DashboardAccountsLocation,
@@ -45,17 +45,18 @@ export const DashboardView = () => {
     transactionsMeta,
     setTransactions,
   } = useGlobalState();
-  // const [fetchedTransactionCount, setFetchTransactionCount] = useState(0);
-  const fetchedTransactionCount = useRef(0);
-  const [fetchedTransactions, setFetchedTransactions] = useState<[]>([]);
-
-  if (transactionsStatus === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch transactions',
-    });
-  }
 
   useEffect(() => {
+    if (transactionsStatus === 'fail') {
+      createErrorNotification({
+        description: 'Could not fetch transactions',
+      });
+    }
+  }, [transactionsStatus]);
+
+  useEffect(() => {
+    let cancelled = false;
+
     (async () => {
       if (currentAddress?.slice(0, 2) === '0x') {
         setLoading(true);
@@ -64,6 +65,11 @@ export const DashboardView = () => {
           appearances: true,
           addrs: currentAddress,
         });
+
+        if (cancelled) {
+          return;
+        }
+
         const result: Result = pipe(
           eitherResponse,
           Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
@@ -73,15 +79,18 @@ export const DashboardView = () => {
         setLoading(false);
       }
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [currentAddress, setTotalRecords]);
 
+  // Run this effect until we fetch the last transaction
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
-      const transactionCount = transactions.length; // fetchedTransactionCount.current;
-
-      if (cancelled) return;
+      const transactionCount = transactions.length;
 
       if (totalRecords && transactionCount < totalRecords) {
         const eitherResponse = await runCommand('export', {
@@ -109,30 +118,35 @@ export const DashboardView = () => {
             return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
           })(),
         });
+
+        if (cancelled) {
+          return;
+        }
+
         const result: Result = pipe(
           eitherResponse,
           Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
         );
 
-        setFetchedTransactions((alreadyFetched) => [...alreadyFetched, ...(result.data as [])]);
+        setTransactions({
+          result: toSuccessfulData({
+            data: [
+              ...transactions,
+              ...(result.data as []),
+            ],
+            meta: transactionsMeta,
+          }),
+          loading: false,
+        });
       }
     })();
 
     return () => { cancelled = true; };
-  }, [currentAddress, totalRecords, transactions.length]);
+  }, [currentAddress, setTransactions, totalRecords, transactions, transactionsMeta]);
 
-  useEffect(
-    () => {
-      setTransactions({
-        result: toSuccessfulData({ data: fetchedTransactions, meta: transactionsMeta }),
-        loading: false,
-      });
-      fetchedTransactionCount.current += fetchedTransactions.length;
-    },
-    [fetchedTransactions, setTransactions, transactionsMeta],
-  );
-
-  const theData = useMemo(() => (transactions as Transaction[])
+  // Store raw data, because it can be huge and we don't want to have to reload it
+  // every time a user toggles "hide reconciled".
+  const transactionModels = useMemo(() => (transactions as Transaction[])
     .map((transaction, index) => {
       const newId = String(index + 1);
       const fromName = namesMap.get(transaction.from) || createEmptyAccountname();
@@ -144,12 +158,13 @@ export const DashboardView = () => {
         fromName,
         toName,
       };
-    })
-    .filter((transaction) => {
-      if (!hideReconciled) return true;
+    }), [namesMap, transactions]);
 
-      return transaction.statements.some(({ reconciled }) => !reconciled);
-    }), [hideReconciled, namesMap, transactions]);
+  const theData = useMemo(() => transactionModels.filter((transaction) => {
+    if (!hideReconciled) return true;
+
+    return transaction.statements.some(({ reconciled }) => !reconciled);
+  }), [hideReconciled, transactionModels]);
 
   const uniqAssets = useMemo(() => {
     if (!theData.length) return [];

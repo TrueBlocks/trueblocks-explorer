@@ -4,6 +4,7 @@ import { getThemeByName, Theme, ThemeName } from '@modules/themes';
 import Cookies from 'js-cookie';
 import React, {
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useReducer,
@@ -21,7 +22,7 @@ type NamesEditModalState = {
   tags: string
 }
 
-type TransactionsQueryState = {
+export type TransactionsQueryState = {
   result: ReturnType<typeof useCommand>[0],
   loading: ReturnType<typeof useCommand>[1]
 };
@@ -203,13 +204,13 @@ export const useGlobalState = () => {
     dispatch({ type: 'SET_NAMES_EDIT_MODAL_VISIBLE', visible });
   };
 
-  const setTransactions = (transactions: SetTransactions['transactions']) => {
+  const setTransactions = useCallback((transactions: SetTransactions['transactions']) => {
     dispatch({ type: 'SET_TRANSACTIONS', transactions });
-  };
+  }, [dispatch]);
 
-  const setTotalRecords = (records: SetTotalRecords['records']) => {
+  const setTotalRecords = useCallback((records: SetTotalRecords['records']) => {
     dispatch({ type: 'SET_TOTAL_RECORDS', records });
-  };
+  }, [dispatch]);
 
   return {
     theme: state.theme,

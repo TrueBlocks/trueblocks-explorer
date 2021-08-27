@@ -13,7 +13,7 @@ import {
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
   DashboardAccountsLocation,
@@ -45,6 +45,9 @@ export const DashboardView = () => {
     transactionsMeta,
     setTransactions,
   } = useGlobalState();
+  // const [fetchedTransactionCount, setFetchTransactionCount] = useState(0);
+  const fetchedTransactionCount = useRef(0);
+  const [fetchedTransactions, setFetchedTransactions] = useState<[]>([]);
 
   if (transactionsStatus === 'fail') {
     createErrorNotification({
@@ -70,11 +73,17 @@ export const DashboardView = () => {
         setLoading(false);
       }
     })();
-  }, [currentAddress, staging]);
+  }, [currentAddress, setTotalRecords]);
 
   useEffect(() => {
+    let cancelled = false;
+
     (async () => {
-      if (totalRecords && (transactions.length || 0) < totalRecords) {
+      const transactionCount = transactions.length; // fetchedTransactionCount.current;
+
+      if (cancelled) return;
+
+      if (totalRecords && transactionCount < totalRecords) {
         const eitherResponse = await runCommand('export', {
           addrs: currentAddress || '', // TODO: this is a quick and dirty fix
           fmt: 'json',
@@ -89,13 +98,13 @@ export const DashboardView = () => {
           reversed: false,
           relevant: true,
           // summarize_by: 'monthly',
-          first_record: transactions.length || 0,
+          first_record: transactionCount,
           max_records: (() => {
-            if (transactions.length < 50) return 10;
+            if (transactionCount < 50) return 10;
 
-            if (transactions.length < 150) return 71;
+            if (transactionCount < 150) return 71;
 
-            if (transactions.length < 1500) return 239;
+            if (transactionCount < 1500) return 239;
 
             return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
           })(),
@@ -104,26 +113,27 @@ export const DashboardView = () => {
           eitherResponse,
           Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
         );
-        // TODO: fix this mutation
-        // const newTransactions: Result = transactions.length ? { status: transactionsStatus, data: transactions, meta: transactionsMeta } : toSuccessfulData(emptyData);
-        const newTransactions = toSuccessfulData({
-          data: [...transactions, ...result.data],
-          meta: transactionsMeta,
-        });
 
-        setTransactions({ result: newTransactions, loading: false });
+        setFetchedTransactions((alreadyFetched) => [...alreadyFetched, ...(result.data as [])]);
       }
     })();
-  }, [totalRecords, transactions]);
 
-  const getMeta = useCallback((response) => (response?.status === 'fail' ? [] : response?.meta), []);
-  const theMeta: any = getMeta(transactions);
+    return () => { cancelled = true; };
+  }, [currentAddress, totalRecords, transactions.length]);
 
-  const [theData, setTheData] = useState<Transaction[]>([]);
+  useEffect(
+    () => {
+      setTransactions({
+        result: toSuccessfulData({ data: fetchedTransactions, meta: transactionsMeta }),
+        loading: false,
+      });
+      fetchedTransactionCount.current += fetchedTransactions.length;
+    },
+    [fetchedTransactions, setTransactions, transactionsMeta],
+  );
 
-  // should be useMemo really
-  useEffect(() => {
-    setTheData((transactions as Transaction[]).map((transaction, index) => {
+  const theData = useMemo(() => (transactions as Transaction[])
+    .map((transaction, index) => {
       const newId = String(index + 1);
       const fromName = namesMap.get(transaction.from) || createEmptyAccountname();
       const toName = namesMap.get(transaction.to) || createEmptyAccountname();
@@ -134,16 +144,12 @@ export const DashboardView = () => {
         fromName,
         toName,
       };
-    }));
-  }, [transactions]);
-
-  useEffect(() => {
-    setTheData(theData.filter((transaction) => {
+    })
+    .filter((transaction) => {
       if (!hideReconciled) return true;
 
       return transaction.statements.some(({ reconciled }) => !reconciled);
-    }));
-  }, [hideReconciled]);
+    }), [hideReconciled, namesMap, transactions]);
 
   const uniqAssets = useMemo(() => {
     if (!theData.length) return [];
@@ -189,7 +195,7 @@ export const DashboardView = () => {
         || (hideZero === 'hide' && Number(asset.balHistory[asset.balHistory.length - 1].balance) > 0);
       return show && (!hideNamed || !namesMap.get(asset.assetAddr));
     });
-  }, [theData]);
+  }, [hideNamed, hideZero, namesMap, theData]);
 
   const params: AccountViewParams = {
     loading,
@@ -213,7 +219,7 @@ export const DashboardView = () => {
     totalRecords,
     theData,
     setTransactions,
-    theMeta,
+    theMeta: transactionsMeta,
     uniqAssets,
   };
 

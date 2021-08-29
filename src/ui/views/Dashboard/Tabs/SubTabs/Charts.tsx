@@ -60,7 +60,7 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
 
   const links: any = [];
   links.push(<Link to={DashboardAccountsHistoryLocation + '?asset=' + asset.assetAddr}>History</Link>);
-  if (!namesMap[asset.assetAddr]) {
+  if (!namesMap.get(asset.assetAddr)) {
     links.push(
       <a target='_blank' href={'http://localhost:8080/names?autoname=' + asset.assetAddr}>
         Name
@@ -89,8 +89,8 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
     <div key={index + 'd1'} style={{ overflowX: 'hidden' }}>
       {asset.assetSymbol === 'ETH'
         ? asset.assetSymbol
-        : namesMap[asset.assetAddr]
-        ? namesMap[asset.assetAddr].name?.substr(0, 15) +
+        : namesMap.get(asset.assetAddr)
+        ? namesMap.get(asset.assetAddr)?.name?.substr(0, 15) +
           (asset.assetSymbol ? ' (' + asset.assetSymbol.substr(0, 15) + ')' : '')
         : asset.assetSymbol.substr(0, 15)}
       <br />

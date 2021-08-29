@@ -13,8 +13,7 @@
     "compile": "concurrently 'yarn compile:ui' 'yarn compile:electron'",
     "develop": "concurrently 'yarn develop:ui' 'yarn develop:electron'",
     "test": "jest --setupFiles dotenv/config --verbose",
-    "test:e2e": "cypress open",
-    "prettify": "node_modules/.bin/prettier '{src,test,mocks}/**/*.{js,jsx,ts,tsx}' --write"
+    "test:e2e": "cypress open"
   },
   "browserslist": [
     "last 2 chrome version",
@@ -22,7 +21,6 @@
     "last 2 safari version"
   ],
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^2.0.2",
     "@tsconfig/recommended": "^1.0.1",
     "@types/dotenv-safe": "^8.1.1",
     "@types/jest": "^26.0.20",
@@ -46,7 +44,6 @@
     "fork-ts-checker-webpack-plugin": "^6.1.1",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.3",
-    "prettier": "^2.0.2",
     "style-loader": "^2.0.0",
     "ts-jest": "^26.5.3",
     "ts-loader": "^8.0.18",
@@ -88,17 +85,5 @@
     "react-syntax-highlighter": "^15.4.3",
     "react-test-renderer": "^17.0.2",
     "recharts": "^2.0.9"
-  },
-  "prettier": {
-    "endOfLine": "lf",
-    "arrowParens": "always",
-    "semi": true,
-    "singleQuote": true,
-    "printWidth": 120,
-    "tabWidth": 2,
-    "useTabs": false,
-    "bracketSpacing": true,
-    "jsxBracketSameLine": true,
-    "jsxSingleQuote": true
   }
 }

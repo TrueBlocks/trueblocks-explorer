@@ -1,6 +1,7 @@
 import { ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation } from './Routes';
 import { useGlobalNames } from './State';
 import './app.css';
+import { Accountname } from '@modules/types';
 import { Console } from './components/Console';
 import { MainMenu, MenuItems } from './components/MainMenu';
 import { HelpPanel } from './components/SidePanels/HelpPanel';
@@ -72,10 +73,18 @@ export const App = () => {
           obj[item.address] = item;
           return obj;
         }, {});
-      const resultMap = arrayToObject(result.data);
+      // const resultMap = arrayToObject(result.data);
+
+      const resultMap = (() => {
+        const { data: fetchedNames } = result;
+
+        if (typeof fetchedNames === 'string') return new Map();
+
+        return new Map((fetchedNames as Accountname[]).map((name: Accountname) => [name.address, name]));
+      })();
 
       setNamesMap(resultMap);
-      setNamesArray(result.data);
+      setNamesArray((result.data as Accountname[]));
     })();
   }, []);
 

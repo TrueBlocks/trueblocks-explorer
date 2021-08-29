@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'airbnb',
   ],
   overrides: [
@@ -38,13 +39,17 @@ module.exports = {
   },
   plugins: [
     'react',
+    // 'react-hooks',
     '@typescript-eslint',
   ],
   rules: {
-    'max-len': 120,
+    'indent': ['error', 2, { SwitchCase: 1 }],
+    '@typescript-eslint/indent': ['error', 2],
+    'max-len': ['warn', { code: 120, comments: 120 }],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'jsx-quotes': ['error', 'prefer-single'],
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'no-shadow': 'off',

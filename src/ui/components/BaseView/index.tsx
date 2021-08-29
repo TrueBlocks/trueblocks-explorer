@@ -33,6 +33,7 @@ export const BaseView = ({ cookieName, tabs, extraContent, title = '', position 
   // needed for <Link> to work
   useEffect(() => {
     if (!tabs.find((tab) => tab.location === pathname)) return;
+
     setLastVisited(pathname);
     onTabChange(pathname);
   }, [pathname]);

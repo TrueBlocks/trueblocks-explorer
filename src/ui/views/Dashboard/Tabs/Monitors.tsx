@@ -1,21 +1,30 @@
-import { useGlobalState } from '../../../State';
-import { goToUrl } from '../../../Utilities';
 import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
-import { addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions } from '@components/Table';
+import {
+  addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions,
+} from '@components/Table';
 import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
 import { Monitor } from '@modules/types';
-import { Button, Form, Input, Spin } from 'antd';
+import {
+  Button, Form, Input, Spin,
+} from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useCallback, useRef, useState } from 'react';
+import React, {
+  useCallback, useMemo, useRef, useState,
+} from 'react';
+import { useGlobalState } from '../../../State';
+import { goToUrl } from '../../../Utilities';
 
 export const Monitors = () => {
   const [searchText, setSearchText] = useState('');
   const [_, setSearchedColumn] = useState('');
   const searchInputRef = useRef(null);
-  const { namesEditModal, setNamesEditModal } = useGlobalState();
+  const {
+    namesEditModalVisible,
+    setNamesEditModalVisible,
+  } = useGlobalState();
   const [selectedNameAddress, setSelectedNameAddress] = useState('');
   const [selectedNameName, setSelectedNameName] = useState('');
   const [selectedNameDescription, setSelectedNameDescription] = useState('');
@@ -29,18 +38,16 @@ export const Monitors = () => {
       description: 'Could not fetch monitors',
     });
   }
-  const getData = useCallback((response) => {
+  const theData = useMemo(() => {
+    const response = monitors;
     return response.status === 'fail' || !response.data[0].caches
       ? []
-      : response.data[0].caches[0].items?.map((item: any, i: number) => {
-          return {
-            id: (i + 1).toString(),
-            searchStr: item.address + ' ' + item.name,
-            ...item,
-          };
-        });
-  }, []);
-  const theData = getData(monitors);
+      : response.data[0].caches[0].items?.map((item: any, i: number) => ({
+        id: (i + 1).toString(),
+        searchStr: `${item.address} ${item.name}`,
+        ...item,
+      }));
+  }, [monitors]);
 
   // Antd filter routine requires this structure
   // export interface FilterDropdownProps {
@@ -53,7 +60,9 @@ export const Monitors = () => {
   //   visible: boolean;
   // }
   const getColumnSearchProps = (dataIndex: any) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
+    filterDropdown: ({
+      setSelectedKeys, selectedKeys, confirm, clearFilters,
+    }: any) => (
       <div style={{ padding: 8 }}>
         <SearchInput
           onEnter={() => handleSearch(selectedKeys, confirm, dataIndex, setSearchText, setSearchedColumn)}
@@ -69,11 +78,10 @@ export const Monitors = () => {
       </div>
     ),
     filterIcon: filterIconFunc,
-    onFilter: (value: any, record: any) =>
-      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : '',
+    onFilter: (value: any, record: any) => (record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : ''),
     onFilterDropdownVisibleChange: (visible: any) => {
       if (visible) {
-        //@ts-ignore
+        // @ts-ignore
         setTimeout(() => searchInputRef.current.select(), 100);
       }
     },
@@ -101,7 +109,7 @@ export const Monitors = () => {
     })
       .then((result) => result.json())
       .then((response) => {
-        /*let newAddresses = { ...addresses };
+        /* let newAddresses = { ...addresses };
         //@ts-ignore
         let foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
         //@ts-ignore
@@ -113,9 +121,9 @@ export const Monitors = () => {
           source: selectedNameSource,
           tags: selectedNameTags,
         };
-        setAddresses(newAddresses);*/
+        setAddresses(newAddresses); */
         setLoadingEdit(false);
-        setNamesEditModal(false);
+        setNamesEditModalVisible(false);
       });
   };
 
@@ -130,9 +138,16 @@ export const Monitors = () => {
 
   return (
     <>
-      <Modal visible={namesEditModal} footer={null}>
+      <Modal
+        visible={namesEditModalVisible}
+        footer={null}
+        onCancel={() => setNamesEditModalVisible(false)}
+      >
         {loadingEdit ? (
-          <div style={{ padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{
+            padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          }}
+          >
             <Spin />
           </div>
         ) : (
@@ -143,13 +158,14 @@ export const Monitors = () => {
                   label={<div style={{ minWidth: '64px' }}>Address</div>}
                   name='address'
                   rules={[{ required: true, message: 'Address required' }]}
-                  {...(selectedNameAddress.length > 0 &&
-                    (selectedNameAddress.slice(0, 2) !== '0x' || selectedNameAddress.length !== 42) && {
-                      help: 'Address must begin with 0x and be 42 characters',
-                      validateStatus: 'error',
-                    })}>
+                  {...(selectedNameAddress.length > 0
+                    && (selectedNameAddress.slice(0, 2) !== '0x' || selectedNameAddress.length !== 42) && {
+                    help: 'Address must begin with 0x and be 42 characters',
+                    validateStatus: 'error',
+                  })}
+                >
                   <Input
-                    placeholder={'Address'}
+                    placeholder='Address'
                     value={selectedNameAddress}
                     onChange={(e) => setSelectedNameAddress(e.target.value)}
                   />
@@ -159,9 +175,10 @@ export const Monitors = () => {
                 <Form.Item
                   label={<div style={{ minWidth: '64px' }}>Name</div>}
                   name='name'
-                  rules={[{ required: true, message: 'Name is required' }]}>
+                  rules={[{ required: true, message: 'Name is required' }]}
+                >
                   <Input
-                    placeholder={'Name'}
+                    placeholder='Name'
                     value={selectedNameName}
                     onChange={(e) => setSelectedNameName(e.target.value)}
                   />
@@ -170,7 +187,7 @@ export const Monitors = () => {
               <div style={{ marginTop: '16px' }}>
                 <Form.Item label={<div style={{ minWidth: '74px' }}>Description</div>} name='description'>
                   <Input
-                    placeholder={'Description'}
+                    placeholder='Description'
                     value={selectedNameDescription}
                     onChange={(e) => setSelectedNameDescription(e.target.value)}
                   />
@@ -179,7 +196,7 @@ export const Monitors = () => {
               <div style={{ marginTop: '16px' }}>
                 <Form.Item label={<div style={{ minWidth: '74px' }}>Source</div>} name='source'>
                   <Input
-                    placeholder={'Source'}
+                    placeholder='Source'
                     value={selectedNameSource}
                     onChange={(e) => setSelectedNameSource(e.target.value)}
                   />
@@ -188,7 +205,7 @@ export const Monitors = () => {
               <div style={{ marginTop: '16px' }}>
                 <Form.Item label={<div style={{ minWidth: '74px' }}>Tags</div>} name='tags'>
                   <Input
-                    placeholder={'Tags'}
+                    placeholder='Tags'
                     value={selectedNameTags}
                     onChange={(e) => setSelectedNameTags(e.target.value)}
                   />
@@ -196,7 +213,7 @@ export const Monitors = () => {
               </div>
               <Form.Item>
                 <div style={{ marginTop: '16px' }}>
-                  <Button type={'primary'} htmlType={'submit'}>
+                  <Button type='primary' htmlType='submit'>
                     Submit
                   </Button>
                 </div>
@@ -206,7 +223,7 @@ export const Monitors = () => {
         )}
       </Modal>
       <div
-        onClick={() => setNamesEditModal(true)}
+        onClick={() => setNamesEditModalVisible(true)}
         style={{
           marginTop: '16px',
           marginBottom: '24px',
@@ -214,7 +231,8 @@ export const Monitors = () => {
           fontWeight: 'bold',
           cursor: 'pointer',
           fontSize: '20px',
-        }}>
+        }}
+      >
         <PlusCircleFilled style={{ marginRight: '8px' }} />
         Add new monitor
       </div>
@@ -227,10 +245,9 @@ export const Monitors = () => {
         </div>
         <BaseTable
           dataSource={theData}
-          columns={monitorSchema.map((item) => {
-            //@ts-ignore
-            return { ...item, ...getColumnSearchProps(item.dataIndex) };
-          })}
+          columns={monitorSchema.map((item) =>
+            // @ts-ignore
+            ({ ...item, ...getColumnSearchProps(item.dataIndex) }))}
           loading={loading}
         />
       </div>
@@ -263,41 +280,33 @@ const SearchInput = ({
   dataIndex: any;
   selectedKeys: any;
   setSelectedKeys: any;
-}) => {
-  return (
-    <Input
-      ref={searchInputRef}
-      placeholder={`Search ${dataIndex}`}
-      value={selectedKeys[0]}
-      onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-      onPressEnter={onEnter}
-      style={{ marginBottom: 8, display: 'block' }}
-    />
-  );
-};
-const SearchButton = ({ onClick }: { onClick: any }) => {
-  return (
-    <Button type='primary' onClick={onClick} icon={<SearchOutlined />} size='small' style={{ width: 90 }}>
-      Search
-    </Button>
-  );
-};
+}) => (
+  <Input
+    ref={searchInputRef}
+    placeholder={`Search ${dataIndex}`}
+    value={selectedKeys[0]}
+    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+    onPressEnter={onEnter}
+    style={{ marginBottom: 8, display: 'block' }}
+  />
+);
+const SearchButton = ({ onClick }: { onClick: any }) => (
+  <Button type='primary' onClick={onClick} icon={<SearchOutlined />} size='small' style={{ width: 90 }}>
+    Search
+  </Button>
+);
 
-const ResetButton = ({ onClick }: { onClick: any }) => {
-  return (
-    <Button onClick={onClick} size='small' style={{ width: 90 }}>
-      Reset
-    </Button>
-  );
-};
+const ResetButton = ({ onClick }: { onClick: any }) => (
+  <Button onClick={onClick} size='small' style={{ width: 90 }}>
+    Reset
+  </Button>
+);
 
-const FilterButton = ({ onClick }: { onClick: any }) => {
-  return (
-    <Button type='link' size='small' onClick={onClick}>
-      Filter
-    </Button>
-  );
-};
+const FilterButton = ({ onClick }: { onClick: any }) => (
+  <Button type='link' size='small' onClick={onClick}>
+    Filter
+  </Button>
+);
 
 const monitorSchema: ColumnsType<Monitor> = [
   addColumn<Monitor>({
@@ -316,7 +325,7 @@ const monitorSchema: ColumnsType<Monitor> = [
         ellipsis: false,
       },
     },
-    (tag: string) => console.log('tag click', tag)
+    (tag: string) => console.log('tag click', tag),
   ),
   addNumColumn<Monitor>({
     title: 'nAppearances',
@@ -351,7 +360,7 @@ const monitorSchema: ColumnsType<Monitor> = [
     {
       width: 150,
       getComponent: getTableActions,
-    }
+    },
   ),
 ];
 
@@ -359,7 +368,7 @@ function getTableActions(item: Monitor) {
   const onClick = (action: string, item: Monitor) => {
     switch (action) {
       case 'info':
-        goToUrl('https://etherscan.io/address/' + item.address);
+        goToUrl(`https://etherscan.io/address/${item.address}`);
         break;
       case 'delete':
         console.log('DELETE');

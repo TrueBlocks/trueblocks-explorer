@@ -1,4 +1,23 @@
 import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  DownCircleFilled,
+  DownOutlined,
+  RightCircleFilled,
+  UpCircleFilled,
+} from '@ant-design/icons';
+import { BaseView, ViewTab } from '@components/BaseView';
+import { addColumn } from '@components/Table';
+import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
+import {
+  Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select,
+} from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
+import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
+import {
   DashboardAccountsChartsLocation,
   DashboardAccountsEventsLocation,
   DashboardAccountsFunctionsLocation,
@@ -15,26 +34,11 @@ import { Functions } from './SubTabs/Functions';
 import { Gas } from './SubTabs/Gas';
 import { History } from './SubTabs/History';
 import { Neighbors } from './SubTabs/Neighbors';
-import {
-  CheckCircleFilled,
-  CloseCircleFilled,
-  DownCircleFilled,
-  DownOutlined,
-  RightCircleFilled,
-  UpCircleFilled,
-} from '@ant-design/icons';
-import { BaseView, ViewTab } from '@components/BaseView';
-import { addColumn } from '@components/Table';
-import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
-import { Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select } from 'antd';
-import { ColumnsType } from 'antd/lib/table';
-import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
 export const DetailsView = ({ params }: { params: AccountViewParams }) => {
-  const { theData, theMeta, uniqAssets, loading } = params;
+  const {
+    theData, theMeta, uniqAssets, loading,
+  } = params;
   if (!theData || !uniqAssets) return <></>;
 
   const leftSideTabs: ViewTab[] = [
@@ -75,7 +79,7 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
       <AddressBar params={params} />
       <Divider style={{ height: '1px' }} />
       <div style={{ display: 'grid', gridTemplateColumns: '20fr 1fr' }}>
-        <BaseView cookieName={'COOKIE_DASHBOARD_ACCOUNTS'} tabs={leftSideTabs} position='left' />
+        <BaseView cookieName='COOKIE_DASHBOARD_ACCOUNTS' tabs={leftSideTabs} position='left' />
         <ViewOptions params={params} />
       </div>
     </div>
@@ -84,14 +88,18 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
 
 const ViewOptions = ({ params }: { params: AccountViewParams }) => {
   const styles = useStyles();
-  const { prefs, setTransactions } = params;
+  // const { setTransactions } = useGlobalState();
+  const { prefs } = params;
 
   const onEther = () => {
-    prefs.setDenom('ether');
+    // prefs.setDenom('ether');
+    // setTransactions({ result: { status: 'success', data: [], meta: {} }, loading: false }); // empty
   };
 
   const onDollars = () => {
-    prefs.setDenom('dollars');
+    // prefs.setDenom('dollars');
+    // TODO: use a function instead of object literal for empty value
+    // setTransactions({ result: { status: 'success', data: [], meta: {} }, loading: false }); // empty
   };
 
   const onHideZero = () => {
@@ -131,14 +139,13 @@ const ViewOptions = ({ params }: { params: AccountViewParams }) => {
         placeholder='Inserted are removed'
         value={prefs.period}
         onChange={(newValue) => prefs.setPeriod(newValue)}
-        style={{ width: '100%' }}>
-        {repOptions.map((item, index) => {
-          return (
-            <Select.Option key={index} value={item}>
-              {item}
-            </Select.Option>
-          );
-        })}
+        style={{ width: '100%' }}
+      >
+        {repOptions.map((item, index) => (
+          <Select.Option key={index} value={item}>
+            {item}
+          </Select.Option>
+        ))}
       </Select>
       <Checkbox checked={prefs.hideNamed} onChange={() => prefs.setHideNamed(!prefs.hideNamed)}>
         unnamed
@@ -164,7 +171,7 @@ const ViewOptions = ({ params }: { params: AccountViewParams }) => {
       <Checkbox checked={prefs.hideZero === 'all'} onChange={() => onShowAll()}>
         show all
       </Checkbox>
-      <p />
+      { /* <p />
       <div className={styles.smallHeader}>denomination: </div>
       <Checkbox checked={prefs.denom === 'ether'} onChange={() => onEther()}>
         ether
@@ -172,7 +179,7 @@ const ViewOptions = ({ params }: { params: AccountViewParams }) => {
       <br />
       <Checkbox checked={prefs.denom === 'dollars'} onChange={() => onDollars()}>
         dollars
-      </Checkbox>
+      </Checkbox> */ }
       <p />
       <div className={styles.smallHeader}>export: </div>
       <Button onClick={onExportCSV} className={styles.exportBtn}>
@@ -198,19 +205,20 @@ const AssetSelector = ({ params }: { params: AccountViewParams }) => {
 
   const menu = (
     <Menu onClick={onClick}>
-      {uniqAssets.map((item, index) => {
-        return <Menu.Item key={index}>{item.assetSymbol}</Menu.Item>;
-      })}
+      {uniqAssets.map((item, index) => <Menu.Item key={index}>{item.assetSymbol}</Menu.Item>)}
     </Menu>
   );
 
   return (
     <>
       <div className={styles.smallHeader} style={{ display: 'inline' }}>
-        asset:{' '}
+        asset:
+        {' '}
         <Dropdown className='' overlay={menu} trigger={['click']}>
           <a className='ant-dropdown-link' onClick={(e) => e.preventDefault()}>
-            Filter <DownOutlined />
+            Filter
+            {' '}
+            <DownOutlined />
           </a>
         </Dropdown>
       </div>
@@ -282,14 +290,14 @@ const AddressBar = ({ params }: { params: AccountViewParams }) => {
         <br />
         {currentAddress}
         <br />
-        {namesMap[currentAddress]?.name}
+        {namesMap.get(currentAddress)?.name}
       </h3>
-      <div></div>
+      <div />
       <div>
         <ProgressBar params={params} />
         <AssetSelector params={params} />
       </div>
-      <div></div>
+      <div />
     </div>
   );
 };
@@ -306,7 +314,7 @@ export const renderAsNamedAddress = (record: Transaction, which: string) => {
   const isCurrent = address === acctFor;
   const isSpecial = address === '0xPrefund' || address === '0xBlockReward' || address === '0xUncleReward';
 
-  let name = namesMap && namesMap[address] && namesMap[address].name;
+  let name = namesMap && namesMap.get(address) && namesMap.get(address)?.name;
   if (!isSpecial && !isCurrent && !name) {
     return <div style={{ color: 'grey' }}>{address}</div>;
   }
@@ -320,7 +328,7 @@ export const renderAsNamedAddress = (record: Transaction, which: string) => {
   const decorated =
     name === '' || name === undefined
       ? address
-      : '[' + address?.substr(0, 6) + '...' + address?.substr(address.length - 4, address.length) + '] ';
+      : `[${address?.substr(0, 6)}...${address?.substr(address.length - 4, address.length)}] `;
   const addr = (isCreation ? '0x0 --> ' : '') + decorated;
 
   return (
@@ -338,13 +346,13 @@ export const transactionSchema: ColumnsType<Transaction> = [
     configuration: {
       width: '15%',
       render: (field: any, record: Transaction) => {
-        if (!record) return <div></div>;
+        if (!record) return <div />;
         return (
           <pre>
             <div>{dayjs(record.date).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div>{dayjs.unix(record.timestamp).fromNow()}</div>
             <div style={{ fontSize: 'small', fontStyle: 'italic' }}>
-              {record.blockNumber?.toString() + '.' + record.transactionIndex?.toString()}
+              {`${record.blockNumber?.toString()}.${record.transactionIndex?.toString()}`}
             </div>
           </pre>
         );
@@ -357,14 +365,14 @@ export const transactionSchema: ColumnsType<Transaction> = [
     configuration: {
       width: '30%',
       render: (unused: any, record: Transaction) => {
-        if (!record) return <div></div>;
+        if (!record) return <div />;
         const to = record.to === record.extraData ? <div style={style}>{record.to}</div> : record.to;
         return (
           <>
             <pre>
               {renderAsNamedAddress(record, 'from')}
               {renderAsNamedAddress(record, 'to')}
-              <div style={{ margin: '0px', padding: '0px', display: 'grid', gridTemplateColumns: '1fr 10fr' }}>
+              <div style={{ margin: '0px', padding: '0px', display: 'grid', gridTemplateColumns: '1fr 10fr' }} >
                 {msgPills(record)}
                 <div> </div>
               </div>
@@ -400,7 +408,7 @@ export const transactionSchema: ColumnsType<Transaction> = [
     configuration: {
       width: '5%',
       render: (item, record, index) => (
-        <a target='_blank' href={'http://etherscan.io/tx/' + record.hash}>
+        <a target='_blank' href={`http://etherscan.io/tx/${record.hash}`} rel='noreferrer'>
           ES
         </a>
       ),
@@ -415,9 +423,7 @@ export const msgPills = (record: Transaction) => {
   const isCon = record.to == '0x0';
   const is20 = record.toName?.is_erc20 || record?.statements?.length > 1;
   const is721 = record.toName?.is_erc721;
-  const tag = (name: string, tag: string, show: boolean) => {
-    return show ? <div className={st.tag + ' ' + tag}>{name}</div> : <></>;
-  };
+  const tag = (name: string, tag: string, show: boolean) => (show ? <div className={`${st.tag} ${tag}`}>{name}</div> : <></>);
   return (
     <div style={{ display: 'flex' }}>
       {tag('int', st.intTag, isInt)}
@@ -431,14 +437,12 @@ export const msgPills = (record: Transaction) => {
 
 export const renderStatements = (statements: ReconciliationArray) => {
   const styles = useStyles();
-  const { denom } = useGlobalState().denom;
+  // const denom = 'ether'; // useGlobalState().denom;
   if (statements === null) return <></>;
   return (
     <table className={style.table}>
       <tbody>
-        {statements?.map((statement, i) => {
-          return <Statement key={`statement.assetAddr + ${i.toString()}`} statement={statement} />;
-        })}
+        {statements?.map((statement, i) => <Statement key={`statement.assetAddr + ${i.toString()}`} statement={statement} />)}
       </tbody>
     </table>
   );
@@ -477,9 +481,9 @@ const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
 
 const showValue = (val: string, sP: number, showZeros: boolean = false, isGas: boolean = false) => {
   const convert = (val: string, sP: number) => {
-    const denom = useGlobalState().denom;
-    if (denom != 'dollars' || val == '') return clip(val, isGas);
-    return clip((Number(val) * sP).toFixed(2).toString(), isGas);
+    // const denom = 'ether';
+    if (true || val == '') return clip(val, isGas);
+    // return clip((Number(val) * sP).toFixed(2).toString(), isGas);
   };
   if (showZeros) {
     return !val ? convert('0.000000', sP) : convert(val, sP);
@@ -491,15 +495,15 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
   const styles = useStyles();
   const sP = Number(statement.spotPrice);
   const k = statement.assetAddr;
-  const denom = useGlobalState().denom;
+  // const denom = 'ether';
   const [sym, setSym] = useState(statement.assetSymbol);
   useEffect(() => {
-    if (denom == 'dollars') {
-      setSym(statement.assetSymbol?.slice(0, 5) + (statement.priceSource === 'not-priced' ? ' -' : ' $'));
+    if (false) { // denom == 'dollars') {
+      setSym(`${statement.assetSymbol?.slice(0, 5)} ${(statement.priceSource === 'not-priced' ? ' -' : ' $')}`);
     } else {
       setSym(statement.assetSymbol?.slice(0, 5));
     }
-  }, [denom]);
+  }, []);
   return (
     <tr className={styles.row} key={`${k}-row`}>
       <td key={`${k}-1`} className={styles.col} style={{ width: '12%' }}>
@@ -530,26 +534,28 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
 const clip = (num: string, is_gas?: boolean) => {
   if (!num) return <></>;
   const parts = num.split('.');
-  if (parts.length === 0 || parts[0] === '')
+  if (parts.length === 0 || parts[0] === '') {
     return (
       <div style={{ color: 'lightgrey' }}>
-        {'0.000000'}
+        0.000000
         {is_gas ? 'g' : ''}
       </div>
     );
-  if (parts.length === 1)
+  }
+  if (parts.length === 1) {
     return (
-      parts[0] +
-      (
+      parts[0]
+      + (
         <div>
-          {'.000000'}
+          .000000
           {is_gas ? 'g' : ''}
         </div>
       )
     );
+  }
   return (
     <div>
-      {parts[0] + '.' + parts[1].substr(0, 6)}
+      {`${parts[0]}.${parts[1].substr(0, 6)}`}
       {is_gas ? 'g' : ''}
     </div>
   );
@@ -655,7 +661,7 @@ const exportColumns: ColumnsType<Transaction> = [
     title: 'bn.txid',
     dataIndex: 'blockNumber',
     configuration: {
-      render: (unused, record) => record.blockNumber + '.' + record.transactionIndex,
+      render: (unused, record) => `${record.blockNumber}.${record.transactionIndex}`,
     },
   }),
   addColumn({

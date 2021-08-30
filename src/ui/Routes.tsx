@@ -2,10 +2,14 @@
  * Parts of this file were generated with makeClass --js. Edit only those parts of
  * the code outside of the BEG_CODE/END_CODE sections
  */
-import { address } from '@modules/types';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { DashboardView, ExplorerView, NamesView, SettingsView, SupportView } from './views';
+
+import { address } from '@modules/types';
+
+import {
+  DashboardView, ExplorerView, NamesView, SettingsView, SupportView,
+} from './views';
 
 const Mousetrap = require('mousetrap');
 
@@ -384,45 +388,45 @@ export const routes = [
     exact: true,
     component: SupportView,
     helpText: 'A short history of TrueBlocks, LLC.',
-  }
+  },
 ];
 // END_CODE_ROUTES
 
 // BEG_CODE_KEYS
-Mousetrap.bind('s m', function () {
+Mousetrap.bind('s m', () => {
   window.location.href = DashboardMonitorsLocation;
 });
-Mousetrap.bind('s a', function () {
+Mousetrap.bind('s a', () => {
   window.location.href = DashboardAccountsLocation;
 });
-Mousetrap.bind('s n', function () {
+Mousetrap.bind('s n', () => {
   window.location.href = NamesLocation;
 });
-Mousetrap.bind('s e', function () {
+Mousetrap.bind('s e', () => {
   window.location.href = ExplorerLocation;
 });
-Mousetrap.bind('e b', function () {
+Mousetrap.bind('e b', () => {
   window.location.href = ExplorerBlocksLocation;
 });
-Mousetrap.bind('e t', function () {
+Mousetrap.bind('e t', () => {
   window.location.href = ExplorerTransactionsLocation;
 });
-Mousetrap.bind('e r', function () {
+Mousetrap.bind('e r', () => {
   window.location.href = ExplorerReceiptsLocation;
 });
-Mousetrap.bind('e l', function () {
+Mousetrap.bind('e l', () => {
   window.location.href = ExplorerLogsLocation;
 });
-Mousetrap.bind('e c', function () {
+Mousetrap.bind('e c', () => {
   window.location.href = ExplorerTracesLocation;
 });
-Mousetrap.bind('s s', function () {
+Mousetrap.bind('s s', () => {
   window.location.href = SettingsLocation;
 });
-Mousetrap.bind('s u', function () {
+Mousetrap.bind('s u', () => {
   window.location.href = SupportContactUsLocation;
 });
-Mousetrap.bind('s k', function () {
+Mousetrap.bind('s k', () => {
   window.location.href = SupportHotKeysLocation;
 });
 // END_CODE_KEYS
@@ -440,4 +444,3 @@ export const Routes = () => (
     <DashboardView />
   </Switch>
 );
-

@@ -1,3 +1,11 @@
+import React, {
+  useEffect, useMemo, useState,
+} from 'react';
+
+import { either as Either } from 'fp-ts';
+import { pipe } from 'fp-ts/lib/function';
+import Mousetrap from 'mousetrap';
+
 import { BaseView } from '@components/BaseView';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
@@ -9,12 +17,7 @@ import {
   Reconciliation,
   Transaction,
 } from '@modules/types';
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
-import Mousetrap from 'mousetrap';
-import React, {
-  useEffect, useMemo, useState,
-} from 'react';
+
 import {
   DashboardAccountsLocation,
   DashboardCollectionsLocation,

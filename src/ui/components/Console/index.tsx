@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { addActionListener, removeListener } from '../../websockets';
 
 function getProgress(string: string) {

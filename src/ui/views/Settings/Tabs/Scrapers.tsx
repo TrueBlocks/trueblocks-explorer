@@ -1,10 +1,14 @@
-import { ScraperResult, toFailedScrapeResult, toSuccessfulScraperData } from '@hooks/useCommand';
-import { JsonResponse, runCommand } from '@modules/core';
-import { Card, Col, Row, Switch } from 'antd';
-import { either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+
+import {
+  Card, Col, Row, Switch,
+} from 'antd';
+import { either } from 'fp-ts';
+import { pipe } from 'fp-ts/lib/function';
+
+import { ScraperResult, toFailedScrapeResult, toSuccessfulScraperData } from '@hooks/useCommand';
+import { JsonResponse, runCommand } from '@modules/core';
 
 const useStyles = createUseStyles({
   card: {
@@ -18,7 +22,7 @@ const useStyles = createUseStyles({
 const formatResponse = (response: either.Either<Error, Record<string, any>>) => {
   const result: ScraperResult = pipe(
     response,
-    either.fold(toFailedScrapeResult, (serverResponse) => toSuccessfulScraperData(serverResponse) as ScraperResult)
+    either.fold(toFailedScrapeResult, (serverResponse) => toSuccessfulScraperData(serverResponse) as ScraperResult),
   );
   return result;
 };
@@ -71,7 +75,8 @@ export const Scrapers = () => {
       <Row>
         <Col>
           <Card style={{ height: '500px' }} hoverable title={indexer.Name} className={styles.card}>
-            both scrapers:{' '}
+            both scrapers:
+            {' '}
             <Switch
               checked={indexer.Running && monitors.Running}
               checkedChildren='on'
@@ -86,7 +91,8 @@ export const Scrapers = () => {
         </Col>
         <Col>
           <Card style={{ height: '500px' }} hoverable title={monitors.Name} className={styles.card}>
-            both scrapers:{' '}
+            both scrapers:
+            {' '}
             <Switch
               checked={indexer.Running && monitors.Running}
               checkedChildren='on'
@@ -94,7 +100,8 @@ export const Scrapers = () => {
               onClick={toggleBoth}
             />
             <br />
-            monitor scraper:{' '}
+            monitor scraper:
+            {' '}
             <Switch checked={monitors.Running} checkedChildren='on' unCheckedChildren='off' onClick={toggleMonitors} />
             <pre>{JSON.stringify(monitors, null, 2)}</pre>
           </Card>

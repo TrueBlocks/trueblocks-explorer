@@ -1,4 +1,6 @@
-import { address, blknum, date, gas, hash, timestamp, TransactionArray, uint64 } from '@modules/types';
+import {
+  address, blknum, date, gas, hash, timestamp, TransactionArray, uint64,
+} from '@modules/types';
 
 export type Block = {
   gasLimit: gas;

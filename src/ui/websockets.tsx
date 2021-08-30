@@ -1,4 +1,6 @@
-let { socket, socketReady, listeners, messageQueue } = getInitialState();
+let {
+  socket, socketReady, listeners, messageQueue,
+} = getInitialState();
 
 function getInitialState() {
   return {
@@ -10,12 +12,12 @@ function getInitialState() {
 }
 
 function callListeners(message: any) {
-  //@ts-ignore
+  // @ts-ignore
   listeners.forEach((listener) => listener(message));
 }
 
 export function addMessageListener(listener: any) {
-  //@ts-ignore
+  // @ts-ignore
   listeners.push(listener);
 }
 
@@ -32,7 +34,7 @@ export function addActionListener(actionToListenFor: any, listener: any) {
     listener(message);
   };
 
-  //@ts-ignore
+  // @ts-ignore
   listeners.push(actionListener);
 
   return actionListener;
@@ -44,7 +46,7 @@ export function removeListener(listenerToRemove: any) {
 
 export function send(action: any, message: any) {
   if (!socketReady) {
-    //@ts-ignore
+    // @ts-ignore
     messageQueue.push([action, message]);
     return false;
   }
@@ -53,7 +55,7 @@ export function send(action: any, message: any) {
     action,
     ...message,
   };
-  //@ts-ignore
+  // @ts-ignore
   socket.send(JSON.stringify(messageObject));
   return true;
 }
@@ -61,7 +63,7 @@ export function send(action: any, message: any) {
 export function clear() {
   const state = getInitialState();
 
-  //@ts-ignore
+  // @ts-ignore
   socket.close();
 
   socket = state.socket;
@@ -71,15 +73,15 @@ export function clear() {
 }
 
 export function setup({ host = 'localhost', port = 8080, path = 'websocket' } = {}) {
-  //@ts-ignore
+  // @ts-ignore
   socket = new WebSocket(`ws://${host}:${port}/${path}`);
-  //@ts-ignore
+  // @ts-ignore
   socket.addEventListener('open', () => {
     socketReady = true;
     messageQueue.forEach((message) => send.apply(null, message));
     messageQueue = [];
   });
-  //@ts-ignore
+  // @ts-ignore
   socket.addEventListener('message', ({ data }) => {
     const message = JSON.parse(data);
 

@@ -1,10 +1,14 @@
-import { addColumn, addNumColumn, BaseTable, TableActions } from '@components/Table';
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+import dayjs from 'dayjs';
+
+import {
+  addColumn, addNumColumn, BaseTable, TableActions,
+} from '@components/Table';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
 import { Block } from '@modules/types';
-import { ColumnsType } from 'antd/lib/table';
-import dayjs from 'dayjs';
-import React from 'react';
 
 export const Blocks = () => {
   const { theData, loading, status } = useFetchData('blocks', { list: 0, list_count: 12, cache: true });
@@ -23,28 +27,24 @@ const blockListSchema: ColumnsType<Block> = [
     title: 'Date',
     dataIndex: 'timestamp',
     configuration: {
-      render: (value) => {
-        return (
-          <div>
-            <div>{dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')}</div>
-            <div style={{ fontStyle: 'italic' }}>{dayjs.unix(value).fromNow()}</div>
-          </div>
-        );
-      },
+      render: (value) => (
+        <div>
+          <div>{dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')}</div>
+          <div style={{ fontStyle: 'italic' }}>{dayjs.unix(value).fromNow()}</div>
+        </div>
+      ),
     },
   }),
   addColumn<Block>({
     title: 'Hash',
     dataIndex: 'hash',
     configuration: {
-      render: (value, record) => {
-        return (
-          <div>
-            <div>{value}</div>
-            <div style={{ fontStyle: 'italic' }}>{Intl.NumberFormat().format(record.blockNumber)}</div>
-          </div>
-        );
-      },
+      render: (value, record) => (
+        <div>
+          <div>{value}</div>
+          <div style={{ fontStyle: 'italic' }}>{Intl.NumberFormat().format(record.blockNumber)}</div>
+        </div>
+      ),
       width: 620,
     },
   }),
@@ -52,16 +52,14 @@ const blockListSchema: ColumnsType<Block> = [
     title: 'Miner',
     dataIndex: 'miner',
     configuration: {
-      render: (value, record) => {
-        return (
-          <div>
-            <div>{value}</div>
-            <div style={{ fontStyle: 'italic' }}>
-              {record.unclesCnt === null || record.unclesCnt === 0 ? '' : record.unclesCnt + ' uncle'}
-            </div>
+      render: (value, record) => (
+        <div>
+          <div>{value}</div>
+          <div style={{ fontStyle: 'italic' }}>
+            {record.unclesCnt === null || record.unclesCnt === 0 ? '' : `${record.unclesCnt} uncle`}
           </div>
-        );
-      },
+        </div>
+      ),
       width: 400,
     },
   }),

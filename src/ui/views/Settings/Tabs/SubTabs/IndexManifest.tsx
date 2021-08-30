@@ -1,9 +1,11 @@
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+
 import { addColumn, BaseTable } from '@components/Table';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
 import { ManifestRecord } from '@modules/types';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
 
 export const IndexManifest = () => {
   const { theData, loading, status } = useFetchData('pins', { list: true });

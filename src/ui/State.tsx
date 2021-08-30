@@ -1,7 +1,3 @@
-import { toSuccessfulData, useCommand } from '@hooks/useCommand';
-import { Accountname, address as Address } from '@modules/types';
-import { getThemeByName, Theme, ThemeName } from '@modules/themes';
-import Cookies from 'js-cookie';
 import React, {
   createContext,
   useCallback,
@@ -10,6 +6,12 @@ import React, {
   useReducer,
 } from 'react';
 import { ReactNode } from 'react-markdown';
+
+import Cookies from 'js-cookie';
+
+import { toSuccessfulData, useCommand } from '@hooks/useCommand';
+import { getThemeByName, Theme, ThemeName } from '@modules/themes';
+import { Accountname, address as Address } from '@modules/types';
 
 const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');

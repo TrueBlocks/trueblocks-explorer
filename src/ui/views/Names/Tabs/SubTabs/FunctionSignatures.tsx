@@ -1,9 +1,11 @@
-import { abiSignature } from '../Signatures';
+import React from 'react';
+
 import { BaseTable } from '@components/Table';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
 import { Function } from '@modules/types';
-import React from 'react';
+
+import { abiSignature } from '../Signatures';
 
 export const FunctionSignatures = () => {
   const filterFunc = (item: Function) => item.type !== 'function';

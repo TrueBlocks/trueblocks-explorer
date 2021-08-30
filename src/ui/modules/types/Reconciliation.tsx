@@ -1,4 +1,6 @@
-import { address, blknum, int256, timestamp, uint64 } from '@modules/types';
+import {
+  address, blknum, int256, timestamp, uint64,
+} from '@modules/types';
 
 export type Reconciliation = {
   blockNumber: blknum;

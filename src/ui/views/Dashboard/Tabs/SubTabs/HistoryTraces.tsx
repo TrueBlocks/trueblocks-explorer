@@ -1,12 +1,15 @@
-import { useAcctStyles } from '../Details';
-import { LogentryArray, Transaction } from '@modules/types';
-import { Card } from 'antd';
 import React from 'react';
+
+import { Card } from 'antd';
+
+import { LogentryArray, Transaction } from '@modules/types';
+
+import { useAcctStyles } from '../Details';
 
 //-----------------------------------------------------------------
 export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
   if (!record) return <></>;
-  const key = record.blockNumber + '.' + record.transactionIndex;
+  const key = `${record.blockNumber}.${record.transactionIndex}`;
   const styles = useAcctStyles();
   return (
     <div key={key} className={styles.container}>
@@ -17,8 +20,9 @@ export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
           headStyle={{
             backgroundColor: 'lightgrey',
           }}
-          hoverable={true}
-          title={'Events'}>
+          hoverable
+          title='Events'
+        >
           {showLogs(record?.receipt?.logs)}
         </Card>
       </div>
@@ -29,11 +33,13 @@ export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
 //-----------------------------------------------------------------
 const showLogs = (logs: LogentryArray) => {
   if (!logs) return <></>;
-  return logs.map((log, index) => {
-    return (
-      <pre key={index}>
-        [{index}]: {JSON.stringify(log, null, 2)}
-      </pre>
-    );
-  });
+  return logs.map((log, index) => (
+    <pre key={index}>
+      [
+      {index}
+      ]:
+      {' '}
+      {JSON.stringify(log, null, 2)}
+    </pre>
+  ));
 };

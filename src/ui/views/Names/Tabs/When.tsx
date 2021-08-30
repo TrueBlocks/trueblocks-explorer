@@ -1,9 +1,13 @@
-import { addActionsColumn, addColumn, addNumColumn, BaseTable, TableActions } from '@components/Table';
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+
+import {
+  addActionsColumn, addColumn, addNumColumn, BaseTable, TableActions,
+} from '@components/Table';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
 import { Block } from '@modules/types';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
 
 export const When = () => {
   const { theData, loading, status } = useFetchData('when', { list: true });
@@ -45,7 +49,7 @@ const whenSchema: ColumnsType<Block> = [
     {
       width: 150,
       getComponent: getTableActions,
-    }
+    },
   ),
 ];
 

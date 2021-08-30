@@ -1,7 +1,9 @@
-import './PanelHeader.css';
+import React, { ReactNode } from 'react';
+
 import { Button, Divider } from 'antd';
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+
+import './PanelHeader.css';
 
 function ifExpanded<Type>(expanded: boolean, onTrue: () => Type, onFalse: () => Type): Type {
   return expanded ? onTrue() : onFalse();
@@ -21,7 +23,9 @@ export type PanelHeaderProps = {
   onToggle: (expanded: boolean) => void;
 };
 
-export const PanelHeader = ({ children, dir, expanded, iconCollapsed, iconExpanded, onToggle }: PanelHeaderProps) => {
+export const PanelHeader = ({
+  children, dir, expanded, iconCollapsed, iconExpanded, onToggle,
+}: PanelHeaderProps) => {
   const classes = classNames('panel-header', {
     'dir-left': dir === PanelDirection.Left,
     'dir-right': dir === PanelDirection.Right,
@@ -34,7 +38,7 @@ export const PanelHeader = ({ children, dir, expanded, iconCollapsed, iconExpand
   const icon = ifExpanded(
     expanded,
     () => iconCollapsed,
-    () => iconExpanded
+    () => iconExpanded,
   );
 
   return (

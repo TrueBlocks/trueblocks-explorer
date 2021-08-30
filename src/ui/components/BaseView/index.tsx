@@ -1,6 +1,7 @@
-import { PageHeader, Tabs } from 'antd';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+
+import { PageHeader, Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
@@ -20,7 +21,9 @@ export interface ViewParams {
   position?: TabsPosition;
 }
 
-export const BaseView = ({ cookieName, tabs, extraContent, title = '', position = 'top' }: ViewParams) => {
+export const BaseView = ({
+  cookieName, tabs, extraContent, title = '', position = 'top',
+}: ViewParams) => {
   const history = useHistory();
   const { pathname } = useLocation();
   const [lastVisited, setLastVisited] = useState(localStorage.getItem(cookieName) || tabs[0].location);
@@ -47,7 +50,8 @@ export const BaseView = ({ cookieName, tabs, extraContent, title = '', position 
         tabPosition={position}
         defaultActiveKey={lastVisited}
         activeKey={lastVisited}
-        onChange={(key) => onTabChange(key)}>
+        onChange={(key) => onTabChange(key)}
+      >
         {tabs.map((tab) => (
           <TabPane tab={tab.name} key={tab.location} disabled={tab.disabled}>
             {tab.component}

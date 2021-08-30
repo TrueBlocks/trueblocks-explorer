@@ -1,3 +1,13 @@
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+
+import { BaseView } from '@components/BaseView';
+import { addColumn, addNumColumn } from '@components/Table';
+import { useFetchDataCaches } from '@hooks/useFetchData';
+import { createErrorNotification } from '@modules/error_notification';
+import { Chunk } from '@modules/types';
+
 import {
   SettingsIndexesChartsLocation,
   SettingsIndexesGridLocation,
@@ -8,13 +18,6 @@ import { IndexCharts } from './SubTabs/IndexCharts';
 import { IndexGrid } from './SubTabs/IndexGrid';
 import { IndexManifest } from './SubTabs/IndexManifest';
 import { IndexTable } from './SubTabs/IndexTable';
-import { BaseView } from '@components/BaseView';
-import { addColumn, addNumColumn } from '@components/Table';
-import { useFetchDataCaches } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
-import { Chunk } from '@modules/types';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
 
 export const IndexesView = () => {
   const { theData, loading, status } = useFetchDataCaches('status', { mode: 'index', details: true });
@@ -28,46 +31,48 @@ export const IndexesView = () => {
     {
       name: 'Grid',
       location: SettingsIndexesGridLocation,
-      component: <IndexGrid key={'grid'} theData={theData} loading={loading} />,
+      component: <IndexGrid key='grid' theData={theData} loading={loading} />,
     },
     {
       name: 'Table',
       location: SettingsIndexesTableLocation,
-      component: <IndexTable key={'table'} theData={theData} loading={loading} />,
+      component: <IndexTable key='table' theData={theData} loading={loading} />,
     },
     {
       name: 'Charts',
       location: SettingsIndexesChartsLocation,
-      component: <IndexCharts key={'chart'} theData={theData} loading={loading} />,
+      component: <IndexCharts key='chart' theData={theData} loading={loading} />,
     },
     {
       name: 'Manifest',
       location: SettingsIndexesManifestLocation,
-      component: <IndexManifest key={'manifest'} />,
+      component: <IndexManifest key='manifest' />,
     },
   ];
 
-  return <BaseView title={''} cookieName={'COOKIE_SETTINGS_INDEX'} tabs={tabs} position='left' />;
+  return <BaseView title='' cookieName='COOKIE_SETTINGS_INDEX' tabs={tabs} position='left' />;
 };
 
 function padLeft(num: number, size: number, char: string = '0') {
-  var s = num + '';
+  let s = `${num}`;
   while (s.length < size) s = char + s;
   return s;
 }
 
-const renderBlockRange = (record: Chunk) => {
-  return (
+const renderBlockRange = (record: Chunk) => (
+  <div>
     <div>
-      <div>
-        {padLeft(record.firstApp, 9)}
-        {'-'}
-        {padLeft(record.latestApp, 9)}
-      </div>
-      <i>{Intl.NumberFormat().format(record.latestApp - record.firstApp + 1)} blocks</i>
+      {padLeft(record.firstApp, 9)}
+      -
+      {padLeft(record.latestApp, 9)}
     </div>
-  );
-};
+    <i>
+      {Intl.NumberFormat().format(record.latestApp - record.firstApp + 1)}
+      {' '}
+      blocks
+    </i>
+  </div>
+);
 
 export const indexSchema: ColumnsType<Chunk> = [
   addColumn({

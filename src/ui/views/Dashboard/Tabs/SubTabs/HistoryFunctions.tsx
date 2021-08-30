@@ -1,12 +1,15 @@
-import { useAcctStyles } from '../Details';
-import { Transaction } from '@modules/types';
-import { Card } from 'antd';
 import React from 'react';
+
+import { Card } from 'antd';
+
+import { Transaction } from '@modules/types';
+
+import { useAcctStyles } from '../Details';
 
 //-----------------------------------------------------------------
 export const HistoryFunctions = ({ record }: { record: Transaction }) => {
   if (!record) return <></>;
-  const key = record.blockNumber + '.' + record.transactionIndex;
+  const key = `${record.blockNumber}.${record.transactionIndex}`;
   const styles = useAcctStyles();
   return (
     <div key={key} className={styles.container}>
@@ -17,8 +20,9 @@ export const HistoryFunctions = ({ record }: { record: Transaction }) => {
           headStyle={{
             backgroundColor: 'lightgrey',
           }}
-          hoverable={true}
-          title={'Input'}>
+          hoverable
+          title='Input'
+        >
           {showInput(record, key)}
         </Card>
       </div>
@@ -40,7 +44,7 @@ const showInput = (record: Transaction, key: string) => {
     <pre>
       <div>{head}</div>
       {str?.match(/.{1,64}/g)?.map((s, index) => (
-        <div key={key + '.' + index}>{s}</div>
+        <div key={`${key}.${index}`}>{s}</div>
       ))}
     </pre>
   );
@@ -54,14 +58,15 @@ const showInput = (record: Transaction, key: string) => {
 };
 
 //-----------------------------------------------------------------
-const oneItem = (title: string, component: React.ReactElement) => {
-  return (
-    <div>
-      <b>
-        <u>{title}:</u>
-      </b>
-      {component}
-      <br />
-    </div>
-  );
-};
+const oneItem = (title: string, component: React.ReactElement) => (
+  <div>
+    <b>
+      <u>
+        {title}
+        :
+      </u>
+    </b>
+    {component}
+    <br />
+  </div>
+);

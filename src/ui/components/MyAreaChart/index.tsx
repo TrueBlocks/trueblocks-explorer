@@ -1,6 +1,10 @@
-import { BaseTable } from '@components/Table';
 import React from 'react';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import {
+  Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis,
+} from 'recharts';
+
+import { BaseTable } from '@components/Table';
 
 export const MyAreaChart = ({
   items,
@@ -18,18 +22,19 @@ export const MyAreaChart = ({
   color?: string;
 }) => {
   if (columns.length < 2) {
-    return <>{'Schema must have at least two fields in MyAreaChart'}</>;
+    return <>Schema must have at least two fields in MyAreaChart</>;
   }
   return (
     <div key={index} style={table ? { display: 'grid', gridTemplateRows: '1fr 8fr' } : {}}>
       {title === null ? <></> : <h2>{title}</h2>}
       <div
-        key={index + '-d2'}
+        key={`${index}-d2`}
         style={
           table
             ? { display: 'grid', gridTemplateColumns: '15fr 25fr' }
             : { width: '100%', height: '200px', minWidth: '1' }
-        }>
+        }
+      >
         {table ? <BaseTable dataSource={items} columns={columns} loading={false} defPageSize={10} /> : <></>}
         <ResponsiveContainer width='100%' height='100%' minWidth='500' minHeight='400'>
           <AreaChart width={500} height={400} data={items} margin={margins}>

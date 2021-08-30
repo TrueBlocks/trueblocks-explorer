@@ -1,11 +1,14 @@
-import { NamesSignaturesEventsLocation, NamesSignaturesFunctionsLocation } from '../../../Routes';
-import { EventSignatures } from './SubTabs/EventSignatures';
-import { FunctionSignatures } from './SubTabs/FunctionSignatures';
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+
 import { BaseView } from '@components/BaseView';
 import { addActionsColumn, addColumn, TableActions } from '@components/Table';
 import { Function } from '@modules/types';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+
+import { NamesSignaturesEventsLocation, NamesSignaturesFunctionsLocation } from '../../../Routes';
+import { EventSignatures } from './SubTabs/EventSignatures';
+import { FunctionSignatures } from './SubTabs/FunctionSignatures';
 
 export const Signatures = () => {
   const tabs = [
@@ -21,7 +24,7 @@ export const Signatures = () => {
     },
   ];
 
-  return <BaseView title={''} cookieName={'COOKIE_NAMES_SIGNATURES'} tabs={tabs} position='left' />;
+  return <BaseView title='' cookieName='COOKIE_NAMES_SIGNATURES' tabs={tabs} position='left' />;
 };
 
 export const abiSignature: ColumnsType<Function> = [
@@ -52,7 +55,7 @@ export const abiSignature: ColumnsType<Function> = [
     {
       width: 150,
       getComponent: getTableActions,
-    }
+    },
   ),
 ];
 

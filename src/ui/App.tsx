@@ -1,30 +1,36 @@
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
+
 import {
   BookOutlined,
   CameraOutlined,
   PhoneOutlined,
   QuestionCircleFilled,
   SettingOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons';
-import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
-import { runCommand } from '@modules/core';
-import { Accountname } from '@modules/types';
 import { Layout, Typography } from 'antd';
-import 'antd/dist/antd.css';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
-import './app.css';
+
+import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
+import { runCommand } from '@modules/core';
+import { Accountname } from '@modules/types';
+
 import { Console } from './components/Console';
 import { MainMenu, MenuItems } from './components/MainMenu';
 import { HelpPanel } from './components/SidePanels/HelpPanel';
 import { PanelDirection, SidePanel } from './components/SidePanels/SidePanel';
 import { StatusPanel } from './components/SidePanels/StatusPanel';
-import { ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation } from './Routes';
+import {
+  ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation,
+} from './Routes';
 import { useGlobalNames } from './State';
+
+import 'antd/dist/antd.css';
+import './app.css';
 
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
@@ -46,14 +52,14 @@ export const App = () => {
       const eitherResponse = await runCommand('status');
       const result: Result = pipe(
         eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
       );
       setStatus(result);
       setInterval(async () => {
         const eitherResponse = await runCommand('status');
         const result: Result = pipe(
           eitherResponse,
-          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
         );
         setStatus(result);
       }, 10 * 1000);
@@ -65,14 +71,13 @@ export const App = () => {
       const eitherResponse = await runCommand('names', { expand: true, all: true });
       const result: Result = pipe(
         eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
       );
 
-      const arrayToObject = (array: any) =>
-        array.reduce((obj: any, item: any) => {
-          obj[item.address] = item;
-          return obj;
-        }, {});
+      const arrayToObject = (array: any) => array.reduce((obj: any, item: any) => {
+        obj[item.address] = item;
+        return obj;
+      }, {});
       // const resultMap = arrayToObject(result.data);
 
       const resultMap = (() => {
@@ -124,7 +129,7 @@ export const App = () => {
         </Title>
       </Header>
       <Layout>
-        <SidePanel header='Menu' dir={PanelDirection.Left} cookieName={'MENU_EXPANDED'} collapsibleContent={false}>
+        <SidePanel header='Menu' dir={PanelDirection.Left} cookieName='MENU_EXPANDED' collapsibleContent={false}>
           <MainMenu items={menuItems} />
         </SidePanel>
         <Layout>
@@ -134,24 +139,26 @@ export const App = () => {
                 backgroundColor: 'white',
                 padding: '1rem',
                 overflowY: 'scroll',
-              }}>
+              }}
+            >
               <Routes />
             </Content>
-            <SidePanel header='Status' cookieName={'STATUS_EXPANDED'} dir={PanelDirection.Right}>
+            <SidePanel header='Status' cookieName='STATUS_EXPANDED' dir={PanelDirection.Right}>
               <StatusPanel status={status} loading={loadingStatus} />
             </SidePanel>
             <SidePanel
               header='Help'
-              cookieName={'HELP_EXPANDED'}
+              cookieName='HELP_EXPANDED'
               dir={PanelDirection.Right}
               customCollapseIcon={<QuestionCircleFilled className={styles.help_icon} />}
-              customExpandIcon={<QuestionCircleFilled className={styles.help_icon} />}>
+              customExpandIcon={<QuestionCircleFilled className={styles.help_icon} />}
+            >
               <HelpPanel />
             </SidePanel>
           </Layout>
           <Footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div></div>
-            <Console asText={true} />
+            <div />
+            <Console asText />
             <div />
           </Footer>
         </Layout>

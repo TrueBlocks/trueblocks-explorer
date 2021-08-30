@@ -1,6 +1,8 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
+
 import { Theme, themeList } from '@modules/themes';
+
 import { useGlobalState } from '../../../State';
 
 const useStyles = createUseStyles({

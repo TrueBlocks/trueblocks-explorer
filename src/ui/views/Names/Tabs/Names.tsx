@@ -1,16 +1,25 @@
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
+
 import { SearchOutlined } from '@ant-design/icons';
-import { addActionsColumn, addColumn, addFlagColumn, addTagsColumn, BaseTable, TableActions } from '@components/Table';
+import {
+  Button, Input, Space, Spin,
+} from 'antd';
+import Modal from 'antd/lib/modal/Modal';
+import { ColumnsType } from 'antd/lib/table';
+import { either as Either } from 'fp-ts';
+import { pipe } from 'fp-ts/lib/function';
+
+import {
+  addActionsColumn, addColumn, addFlagColumn, addTagsColumn, BaseTable, TableActions,
+} from '@components/Table';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
 import { Accountname } from '@modules/types';
-import { Button, Input, Space, Spin } from 'antd';
-import Modal from 'antd/lib/modal/Modal';
-import { ColumnsType } from 'antd/lib/table';
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { useGlobalState } from '../../../State';
 
 export const Names = () => {
@@ -33,13 +42,11 @@ export const Names = () => {
   }
   const getData = useCallback((response) => {
     if (response.status === 'fail') return [];
-    return response.data?.map((item: any, i: number) => {
-      return {
-        id: (i + 1).toString(),
-        searchStr: item.address + ' ' + item.name,
-        ...item,
-      };
-    });
+    return response.data?.map((item: any, i: number) => ({
+      id: (i + 1).toString(),
+      searchStr: `${item.address} ${item.name}`,
+      ...item,
+    }));
   }, []);
   const theData = getData(addresses);
 
@@ -52,7 +59,7 @@ export const Names = () => {
       });
       const result: Result = pipe(
         eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result)
+        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
       );
       setLoading(false);
       setAddresses(result);
@@ -60,7 +67,9 @@ export const Names = () => {
   }, []);
 
   const getColumnSearchProps = (dataIndex: any) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
+    filterDropdown: ({
+      setSelectedKeys, selectedKeys, confirm, clearFilters,
+    }: any) => (
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInputRef}
@@ -76,7 +85,8 @@ export const Names = () => {
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
             size='small'
-            style={{ width: 90 }}>
+            style={{ width: 90 }}
+          >
             Search
           </Button>
           <Button onClick={() => handleReset(clearFilters)} size='small' style={{ width: 90 }}>
@@ -89,18 +99,18 @@ export const Names = () => {
               confirm({ closeDropdown: false });
               setSearchText(selectedKeys[0]);
               setSearchedColumn(dataIndex);
-            }}>
+            }}
+          >
             Filter
           </Button>
         </Space>
       </div>
     ),
     filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value: any, record: any) =>
-      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : '',
+    onFilter: (value: any, record: any) => (record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : ''),
     onFilterDropdownVisibleChange: (visible: any) => {
       if (visible) {
-        //@ts-ignore
+        // @ts-ignore
         setTimeout(() => searchInputRef.current.select(), 100);
       }
     },
@@ -149,12 +159,12 @@ export const Names = () => {
       .then((result) => result.json())
       .then((response) => {
         // TODO(tjayrush): Does this check for backend error?
-        let newAddresses = { ...addresses };
-        //@ts-ignore
-        let foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
-        //@ts-ignore
+        const newAddresses = { ...addresses };
+        // @ts-ignore
+        const foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
+        // @ts-ignore
         newAddresses.data[foundAddress] = {
-          //@ts-ignore
+          // @ts-ignore
           ...newAddresses.data[foundAddress],
           description: selectedNameDescription,
           name: selectedNameName,
@@ -185,10 +195,9 @@ export const Names = () => {
       />
       <BaseTable
         dataSource={theData}
-        columns={addressSchema.map((item) => {
-          //@ts-ignore
-          return { ...item, ...getColumnSearchProps(item.dataIndex) };
-        })}
+        columns={addressSchema.map((item) =>
+          // @ts-ignore
+          ({ ...item, ...getColumnSearchProps(item.dataIndex) }))}
         loading={loading}
       />
     </>
@@ -224,34 +233,45 @@ const NameEditModal = ({
 }) => {
   const { namesEditModalVisible, setNamesEditModalVisible } = useGlobalState();
   const fields = [
-    { name: 'Address', value: namesEditModal.address, type: '', onChange: setSelectedNameName, disabled: true },
-    { name: 'Name', value: selectedNameName, type: '', onChange: setSelectedNameName },
-    { name: 'Description', value: selectedNameDescription, type: '', onChange: setSelectedNameDescription },
-    { name: 'Source', value: selectedNameSource, type: '', onChange: setSelectedNameSource },
-    { name: 'Tags', value: selectedNameTags, type: '', onChange: setSelectedNameTags },
+    {
+      name: 'Address', value: namesEditModal.address, type: '', onChange: setSelectedNameName, disabled: true,
+    },
+    {
+      name: 'Name', value: selectedNameName, type: '', onChange: setSelectedNameName,
+    },
+    {
+      name: 'Description', value: selectedNameDescription, type: '', onChange: setSelectedNameDescription,
+    },
+    {
+      name: 'Source', value: selectedNameSource, type: '', onChange: setSelectedNameSource,
+    },
+    {
+      name: 'Tags', value: selectedNameTags, type: '', onChange: setSelectedNameTags,
+    },
   ];
 
   return (
     <Modal visible={namesEditModalVisible} onCancel={() => setNamesEditModalVisible(false)} onOk={() => onEditItem()}>
       {loadingEdit ? (
-        <div style={{ padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{
+          padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
           <Spin />
         </div>
       ) : (
         <div style={{ marginTop: '24px' }}>
           <h2>Editing Name</h2>
-          {fields.map((item: any, index: number) => {
-            return (
-              <ModalEditRow
-                key={index}
-                name={item.name}
-                value={item.value}
-                type={item.type}
-                onChange={item.onChange}
-                disabled={item.disabled}
-              />
-            );
-          })}
+          {fields.map((item: any, index: number) => (
+            <ModalEditRow
+              key={index}
+              name={item.name}
+              value={item.value}
+              type={item.type}
+              onChange={item.onChange}
+              disabled={item.disabled}
+            />
+          ))}
         </div>
       )}
     </Modal>
@@ -270,14 +290,12 @@ const ModalEditRow = ({
   type: any;
   onChange: any;
   disabled: any;
-}) => {
-  return (
-    <div style={{ marginTop: '16px' }}>
-      <div style={{ marginBottom: '6px' }}>{name}</div>
-      <Input disabled={disabled} placeholder={name} value={value} onChange={(e) => onChange(e.target.value)} />
-    </div>
-  );
-};
+}) => (
+  <div style={{ marginTop: '16px' }}>
+    <div style={{ marginBottom: '6px' }}>{name}</div>
+    <Input disabled={disabled} placeholder={name} value={value} onChange={(e) => onChange(e.target.value)} />
+  </div>
+);
 
 const addressSchema: ColumnsType<Accountname> = [
   addColumn<Accountname>({
@@ -312,7 +330,7 @@ const addressSchema: ColumnsType<Accountname> = [
         ellipsis: false,
       },
     },
-    (tag: string) => console.log('tag click', tag)
+    (tag: string) => console.log('tag click', tag),
   ),
   addFlagColumn({
     title: 'Prefund',
@@ -346,7 +364,7 @@ const addressSchema: ColumnsType<Accountname> = [
     {
       width: 150,
       getComponent: getTableActions,
-    }
+    },
   ),
 ];
 

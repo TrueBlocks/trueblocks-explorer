@@ -1,5 +1,6 @@
-import { useGlobalState } from '../../../State';
 import React from 'react';
+
+import { useGlobalState } from '../../../State';
 
 export const Caches = () => {
   const { theme } = useGlobalState();

@@ -1,7 +1,9 @@
-import 'antd/dist/antd.css';
+import React, { useEffect, useState } from 'react';
+
 import Table, { ColumnsType } from 'antd/lib/table';
 import Mousetrap from 'mousetrap';
-import React, { useEffect, useState } from 'react';
+
+import 'antd/dist/antd.css';
 
 type JsonResponse = Record<string, any>;
 
@@ -52,14 +54,14 @@ export const BaseTable = ({
     setKeyedData(
       dataSource
         ? dataSource.map((record: any, index: number) => {
-            if (record.key !== undefined) console.log('BaseTable assigns the key field, data should not.');
-            return {
-              key: index,
-              extraData: extraData,
-              ...record,
-            };
-          })
-        : []
+          if (record.key !== undefined) console.log('BaseTable assigns the key field, data should not.');
+          return {
+            key: index,
+            extraData,
+            ...record,
+          };
+        })
+        : [],
     );
   }, [dataSource, extraData]);
 
@@ -68,35 +70,30 @@ export const BaseTable = ({
   }, [curRow, keyedData]);
 
   // clean up mouse control when we unmount
-  useEffect(() => {
-    return () => {
-      // setCurRow(0);
-      // setCurPage(1);
-      Mousetrap.unbind(['up', 'down', 'pageup', 'pagedown', 'home', 'end', 'enter']);
-    };
+  useEffect(() => () => {
+    // setCurRow(0);
+    // setCurPage(1);
+    Mousetrap.unbind(['up', 'down', 'pageup', 'pagedown', 'home', 'end', 'enter']);
   }, []);
 
   const gridStyle = siderRender ? { display: 'grid', gridTemplateColumns: '30fr 1fr 12fr 1fr' } : {};
-  const expandedRowRender =
-    expandRender !== undefined ? expandRender : (row: any) => <pre>{JSON.stringify(row, null, 2)}</pre>;
+  const expandedRowRender = expandRender !== undefined ? expandRender : (row: any) => <pre>{JSON.stringify(row, null, 2)}</pre>;
 
   return (
     <div style={gridStyle}>
       <Table
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => {
-              setRowNumber(record.key);
-            },
-            style: record.key === curRow ? { color: 'darkblue', backgroundColor: 'rgb(236, 235, 235)' } : {},
-          };
-        }}
+        onRow={(record, rowIndex) => ({
+          onClick: (event) => {
+            setRowNumber(record.key);
+          },
+          style: record.key === curRow ? { color: 'darkblue', backgroundColor: 'rgb(236, 235, 235)' } : {},
+        })}
         size='small'
         loading={loading}
         columns={columns}
         dataSource={keyedData}
         expandable={{
-          expandedRowRender: expandedRowRender,
+          expandedRowRender,
         }}
         pagination={{
           onChange: (page, newPageSize) => {
@@ -105,14 +102,14 @@ export const BaseTable = ({
               setRowNumber(0);
             }
           },
-          pageSize: pageSize,
+          pageSize,
           current: curPage,
           pageSizeOptions: ['5', '10', '20', '50', '100'],
         }}
       />
-      <div></div>
+      <div />
       {siderRender ? siderRender(displayedRow) : <></>}
-      <div></div>
+      <div />
     </div>
   );
 };

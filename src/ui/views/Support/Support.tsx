@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { BaseView } from '@components/BaseView';
+
 import {
   SupportAboutUsLocation,
   SupportContactUsLocation,
@@ -10,8 +14,6 @@ import { Contact } from './Tabs/Contact';
 import { Documentation } from './Tabs/Documentation';
 import { HotKeys } from './Tabs/HotKeys';
 import { Licensing } from './Tabs/Licensing';
-import { BaseView } from '@components/BaseView';
-import React from 'react';
 
 export const SupportView = () => {
   const tabs = [
@@ -22,5 +24,5 @@ export const SupportView = () => {
     { name: 'About Us', location: SupportAboutUsLocation, component: <About /> },
   ];
 
-  return <BaseView title={'Support'} cookieName={'COOKIE_SUPPORT'} tabs={tabs} />;
+  return <BaseView title='Support' cookieName='COOKIE_SUPPORT' tabs={tabs} />;
 };

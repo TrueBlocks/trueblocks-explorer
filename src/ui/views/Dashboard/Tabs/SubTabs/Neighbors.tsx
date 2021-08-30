@@ -1,5 +1,6 @@
-import { TransactionArray } from '@modules/types';
 import React from 'react';
+
+import { TransactionArray } from '@modules/types';
 
 export const Neighbors = ({
   theData,
@@ -10,14 +11,14 @@ export const Neighbors = ({
   theMeta: any;
   loading: boolean;
 }) => {
-  let neighbors: any = [];
+  const neighbors: any = [];
   theData.map((item) => {
     neighbors.push({
-      key: item.from + '-from',
+      key: `${item.from}-from`,
       count: 1,
     });
     neighbors.push({
-      key: item.to + '-to',
+      key: `${item.to}-to`,
       count: 1,
     });
   });

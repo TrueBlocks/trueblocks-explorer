@@ -1,7 +1,8 @@
+import React from 'react';
+
 import { Loading } from '@components/Loading';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
-import React from 'react';
 
 export const Logs = () => {
   // TODO(tjayrush): hard coded data

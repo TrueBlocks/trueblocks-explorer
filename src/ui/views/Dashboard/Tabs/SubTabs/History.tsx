@@ -1,3 +1,8 @@
+import React from 'react';
+
+import { BaseView } from '@components/BaseView';
+import { BaseTable } from '@components/Table';
+
 import {
   DashboardAccountsHistoryCustomLocation,
   DashboardAccountsHistoryEventsLocation,
@@ -11,9 +16,6 @@ import { transactionSchema } from '../Details';
 import { HistoryEvents } from './HistoryEvents';
 import { HistoryFunctions } from './HistoryFunctions';
 import { HistoryRecons } from './HistoryRecons';
-import { BaseView } from '@components/BaseView';
-import { BaseTable } from '@components/Table';
-import React from 'react';
 
 export const History = ({ params }: { params: AccountViewParams }) => {
   const { theData, loading } = params;
@@ -61,5 +63,5 @@ export const AccountHistorySider = ({ record, params }: { record: any; params: A
     },
   ];
 
-  return <BaseView title={''} cookieName={'COOKIE_DASHBOARD_DETAILS'} tabs={tabs} />;
+  return <BaseView title='' cookieName='COOKIE_DASHBOARD_DETAILS' tabs={tabs} />;
 };

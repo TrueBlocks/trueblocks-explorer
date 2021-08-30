@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { BaseView } from '@components/BaseView';
+
 import {
   SettingsCachesLocation,
   SettingsDataModelLocation,
@@ -10,8 +14,6 @@ import { DataModel } from './Tabs/Data Model';
 import { IndexesView } from './Tabs/Indexes';
 import { Scrapers } from './Tabs/Scrapers';
 import { Skins } from './Tabs/Skins';
-import { BaseView } from '@components/BaseView';
-import React from 'react';
 
 export const SettingsView = () => {
   const tabs = [
@@ -21,5 +23,5 @@ export const SettingsView = () => {
     { name: 'Skins', location: SettingsSkinsLocation, component: <Skins /> },
     { name: 'Data Model', location: SettingsDataModelLocation, component: <DataModel /> },
   ];
-  return <BaseView title={'Settings'} cookieName={'COOKIE_SETTINGS'} tabs={tabs} />;
+  return <BaseView title='Settings' cookieName='COOKIE_SETTINGS' tabs={tabs} />;
 };

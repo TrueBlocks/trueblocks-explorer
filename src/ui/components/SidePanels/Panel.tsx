@@ -1,7 +1,9 @@
-import { PanelDirection, PanelHeader } from './PanelHeader';
+import React, { ReactNode } from 'react';
+
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+
+import { PanelDirection, PanelHeader } from './PanelHeader';
 
 export { PanelDirection };
 
@@ -52,13 +54,15 @@ export const Panel = ({
         expanded={expanded}
         iconCollapsed={collapseIcon}
         iconExpanded={expandIcon}
-        onToggle={onToggle}>
+        onToggle={onToggle}
+      >
         <div
           style={{
             display: 'flex',
             justifyContent: 'center',
             padding: '4px 16px',
-          }}>
+          }}
+        >
           {header}
         </div>
       </PanelHeader>

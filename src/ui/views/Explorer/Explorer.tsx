@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { BaseView } from '@components/BaseView';
+
 import {
   ExplorerBlocksLocation,
   ExplorerLogsLocation,
@@ -10,8 +14,6 @@ import { Logs } from './Tabs/Logs';
 import { Receipts } from './Tabs/Receipts';
 import { Traces } from './Tabs/Traces';
 import { Transactions } from './Tabs/Transactions';
-import { BaseView } from '@components/BaseView';
-import React from 'react';
 
 export const ExplorerView = () => {
   const tabs = [

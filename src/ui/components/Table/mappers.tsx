@@ -1,7 +1,8 @@
+import React, { ReactElement } from 'react';
+
 import { Tag } from 'antd';
 import { option as Option } from 'fp-ts';
 import { pipe } from 'fp-ts/function';
-import React, { ReactElement } from 'react';
 
 export function renderFlag(flag?: boolean): ReactElement {
   return pipe(
@@ -9,8 +10,8 @@ export function renderFlag(flag?: boolean): ReactElement {
     Option.fromPredicate((flagOrUndefined) => flagOrUndefined !== undefined),
     Option.fold(
       () => <></>,
-      (someFlag) => <Tag color={someFlag ? 'green' : 'volcano'}>{someFlag ? 'Yes' : 'No'}</Tag>
-    )
+      (someFlag) => <Tag color={someFlag ? 'green' : 'volcano'}>{someFlag ? 'Yes' : 'No'}</Tag>,
+    ),
   );
 }
 
@@ -30,8 +31,8 @@ export function renderTagsWithClickHandler(onClick: TagClickHandler) {
               </Tag>
             ))}
           </>
-        )
-      )
+        ),
+      ),
     );
   };
 }

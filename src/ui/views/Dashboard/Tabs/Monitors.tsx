@@ -1,4 +1,14 @@
+import React, {
+  useCallback, useMemo, useRef, useState,
+} from 'react';
+
 import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
+import {
+  Button, Form, Input, Spin,
+} from 'antd';
+import Modal from 'antd/lib/modal/Modal';
+import { ColumnsType } from 'antd/lib/table';
+
 import {
   addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions,
 } from '@components/Table';
@@ -6,14 +16,7 @@ import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
 import { Monitor } from '@modules/types';
-import {
-  Button, Form, Input, Spin,
-} from 'antd';
-import Modal from 'antd/lib/modal/Modal';
-import { ColumnsType } from 'antd/lib/table';
-import React, {
-  useCallback, useMemo, useRef, useState,
-} from 'react';
+
 import { useGlobalState } from '../../../State';
 import { goToUrl } from '../../../Utilities';
 

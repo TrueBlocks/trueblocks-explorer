@@ -1,5 +1,3 @@
 import React from 'react';
 
-export const DataModel = () => {
-  return <h4>Data Model</h4>;
-};
+export const DataModel = () => <h4>Data Model</h4>;

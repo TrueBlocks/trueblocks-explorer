@@ -1,5 +1,5 @@
 export function goToUrl(href: string) {
-  var a = document.createElement('a');
+  const a = document.createElement('a');
   a.href = href;
   a.setAttribute('target', '_blank');
   a.click();
@@ -551,18 +551,15 @@ export const chartColors = [
 //-------------------------------------------------------------------------
 export const downloadRecords = (theData: any, columns: any, delim: string, surr: string) => {
   const ext = delim === ',' ? '.csv' : '.txt';
-  const exportFileName =
-    'Txs_' +
+  const exportFileName = `Txs_${
     new Date()
       .toISOString()
       .replace(/[ -.T]/g, '_')
-      .replace(/Z/, '') +
-    ext;
+      .replace(/Z/, '')
+  }${ext}`;
 
   const theHeader = columns
-    .map((column: any) => {
-      return surr + (!column.title ? column.dataIndex : column.title) + surr;
-    })
+    .map((column: any) => surr + (!column.title ? column.dataIndex : column.title) + surr)
     .join(delim);
 
   const theRows = theData.map((record: any, index: number) => {
@@ -571,22 +568,21 @@ export const downloadRecords = (theData: any, columns: any, delim: string, surr:
         let value = column.render(record[column.dataIndex], record);
         if (!value || value === undefined) value = '';
         return surr + value + surr;
-      } else {
-        if (!column) return surr + '' + surr;
-        if (!record[column.dataIndex] || record[column.dataIndex] === '') return surr + '' + surr;
-        return surr + record[column.dataIndex] + surr;
       }
+      if (!column) return `${surr}${surr}`;
+      if (!record[column.dataIndex] || record[column.dataIndex] === '') return `${surr}${surr}`;
+      return surr + record[column.dataIndex] + surr;
     });
     return row.join(delim);
   });
 
-  const theOutput = theHeader + '\n' + theRows.join('\n');
+  const theOutput = `${theHeader}\n${theRows.join('\n')}`;
   sendTheExport(exportFileName, 'CSV', theOutput);
 };
 
 const sendTheExport = (fileName: string, outFmt: string, theOutput: string) => {
-  var expElement = document.createElement('a');
-  expElement.href = 'data:text/' + outFmt + ';charset=utf-8,' + encodeURI(theOutput);
+  const expElement = document.createElement('a');
+  expElement.href = `data:text/${outFmt};charset=utf-8,${encodeURI(theOutput)}`;
   expElement.target = '_blank';
   expElement.download = fileName;
   expElement.click();

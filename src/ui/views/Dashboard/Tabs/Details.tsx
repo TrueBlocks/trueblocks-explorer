@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
+
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -6,16 +9,16 @@ import {
   RightCircleFilled,
   UpCircleFilled,
 } from '@ant-design/icons';
-import { BaseView, ViewTab } from '@components/BaseView';
-import { addColumn } from '@components/Table';
-import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
 import {
   Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
+
+import { BaseView, ViewTab } from '@components/BaseView';
+import { addColumn } from '@components/Table';
+import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
+
 import {
   DashboardAccountsChartsLocation,
   DashboardAccountsEventsLocation,

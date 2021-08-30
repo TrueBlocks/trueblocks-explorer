@@ -1,9 +1,13 @@
-import { addActionsColumn, addColumn, BaseTable, TableActions } from '@components/Table';
+import React from 'react';
+
+import { ColumnsType } from 'antd/lib/table';
+
+import {
+  addActionsColumn, addColumn, BaseTable, TableActions,
+} from '@components/Table';
 import { useFetchData } from '@hooks/useFetchData';
 import { createErrorNotification } from '@modules/error_notification';
 import { Tag } from '@modules/types/Tag';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
 
 export const Tags = () => {
   const { theData, loading, status } = useFetchData('names', { tags: true });
@@ -30,7 +34,7 @@ const tagSchema: ColumnsType<Tag> = [
     {
       width: 150,
       getComponent: getTableActions,
-    }
+    },
   ),
 ];
 

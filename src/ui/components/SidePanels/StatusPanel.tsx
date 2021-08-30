@@ -1,11 +1,15 @@
-import { ApiFilled, ClockCircleFilled, ExperimentFilled, EyeFilled } from '@ant-design/icons';
+import React from 'react';
+import { createUseStyles } from 'react-jss';
+
+import {
+  ApiFilled, ClockCircleFilled, ExperimentFilled, EyeFilled,
+} from '@ant-design/icons';
+import { Badge } from 'antd';
+import filesize from 'filesize';
+
 import { Loading } from '@components/Loading';
 import { Result } from '@hooks/useCommand';
 import { JsonResponse } from '@modules/core';
-import { Badge } from 'antd';
-import filesize from 'filesize';
-import React from 'react';
-import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   container: { paddingBottom: '16px' },
@@ -40,18 +44,16 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
 
   const statusData = status.data[0] as JsonResponse;
   const statusMeta = status.meta as JsonResponse;
-  const ripe =
-    statusMeta.ripe !== statusMeta.staging ? (
-      <ScraperProgress value={statusMeta.ripe} client={statusMeta.client} word='RIPE' color='#fadb14' />
-    ) : (
-      <></>
-    );
-  const unripe =
-    statusMeta.unripe !== statusMeta.ripe ? (
-      <ScraperProgress value={statusMeta.unripe} client={statusMeta.client} word='UNRIPE' color='#f5222d' />
-    ) : (
-      <></>
-    );
+  const ripe = statusMeta.ripe !== statusMeta.staging ? (
+    <ScraperProgress value={statusMeta.ripe} client={statusMeta.client} word='RIPE' color='#fadb14' />
+  ) : (
+    <></>
+  );
+  const unripe = statusMeta.unripe !== statusMeta.ripe ? (
+    <ScraperProgress value={statusMeta.unripe} client={statusMeta.client} word='UNRIPE' color='#f5222d' />
+  ) : (
+    <></>
+  );
 
   return (
     <Loading loading={loading}>
@@ -101,8 +103,11 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
           <div className={styles.itemHeader}>MONITORS</div>
           <div>
             <EyeFilled className={styles.itemIcon} />
-            {statusData.caches && statusData.caches[1].nFiles} (
-            {statusData.caches && filesize(statusData.caches[1].sizeInBytes)})
+            {statusData.caches && statusData.caches[1].nFiles}
+            {' '}
+            (
+            {statusData.caches && filesize(statusData.caches[1].sizeInBytes)}
+            )
           </div>
         </div>
 
@@ -110,8 +115,11 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
           <div className={styles.itemHeader}>SLURPS</div>
           <div>
             <ExperimentFilled className={styles.itemIcon} />
-            {statusData.caches && statusData.caches[3].nFiles} (
-            {statusData.caches && filesize(statusData.caches[3].sizeInBytes)})
+            {statusData.caches && statusData.caches[3].nFiles}
+            {' '}
+            (
+            {statusData.caches && filesize(statusData.caches[3].sizeInBytes)}
+            )
           </div>
         </div>
 
@@ -176,7 +184,7 @@ const ScraperProgress = ({
   const cn: string = styles.itemIcon;
   const dist = Intl.NumberFormat().format(Math.abs(client - value));
   const style = client > value ? { display: 'inline' } : { display: 'inline', color: 'red' };
-  const msg = <div style={style}>{client > value ? dist + ' behind head' : <i>{dist + ' ahead'}</i>}</div>;
+  const msg = <div style={style}>{client > value ? `${dist} behind head` : <i>{`${dist} ahead`}</i>}</div>;
   return (
     <div>
       <ApiFilled className={cn} style={{ color: `${color}` }} />

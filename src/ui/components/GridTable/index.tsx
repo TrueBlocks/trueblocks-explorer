@@ -3,9 +3,10 @@
  * copyright (c) 2018, 2019 TrueBlocks, LLC (http://trueblocks.io)
  * All Rights Reserved
  *------------------------------------------------------------------------*/
-import cx from 'classnames';
 import React, { Fragment, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+
+import cx from 'classnames';
 
 //-----------------------------------------------------------------
 export const GridTable = ({
@@ -38,25 +39,23 @@ export const GridTable = ({
   };
 
   return (
-    <Fragment>
+    <>
       <GridHeader cols={cols} rowSpan={rowSpan} />
       <div>
-        {rows.map((row) => {
-          return (
-            <GridRow
-              key={row}
-              row={row}
-              cols={cols}
-              meta={meta}
-              rowSpan={rowSpan}
-              selected={selected}
-              setSelected={selectionChanged}
-            />
-          );
-        })}
+        {rows.map((row) => (
+          <GridRow
+            key={row}
+            row={row}
+            cols={cols}
+            meta={meta}
+            rowSpan={rowSpan}
+            selected={selected}
+            setSelected={selectionChanged}
+          />
+        ))}
       </div>
       <DetailTable data={data} columns={columns} idCol='firstTs' cellStart={selected} cellSpan={rowSpan / 10} />
-    </Fragment>
+    </>
   );
 };
 
@@ -67,9 +66,7 @@ const GridHeader = ({ cols, rowSpan }: { cols: any; rowSpan: any }) => {
   return (
     <div className={styles.header}>
       <div> </div>
-      {cols.map((n: number, idx: number) => {
-        return <div key={n * idx}>{Intl.NumberFormat().format(n * colSpan)}</div>;
-      })}
+      {cols.map((n: number, idx: number) => <div key={n * idx}>{Intl.NumberFormat().format(n * colSpan)}</div>)}
     </div>
   );
 };
@@ -94,7 +91,10 @@ const GridRow = ({
   const styles = useStyles();
   return (
     <div className={styles.row}>
-      <div className={styles.sider}>{row * rowSpan}:</div>
+      <div className={styles.sider}>
+        {row * rowSpan}
+        :
+      </div>
       {cols.map((col: { col: any }) => {
         const x: any = col;
         const cellStart = row * rowSpan + x * colSpan;
@@ -108,12 +108,10 @@ const GridRow = ({
         let cn = styles.incomplete;
         if (selected === cellStart && meta.completed >= cellStart) {
           cn = styles.selected;
-        } else {
-          if (meta.completed >= cellEnd) {
-            cn = styles.complete;
-          } else if (meta.completed >= cellStart) {
-            cn = styles.partial;
-          }
+        } else if (meta.completed >= cellEnd) {
+          cn = styles.complete;
+        } else if (meta.completed >= cellStart) {
+          cn = styles.partial;
         }
         let handler = (e: any) => setSelected(row * 1e6 + x * 1e5);
         if (char == '') handler = () => {};
@@ -150,17 +148,19 @@ export const DetailTable = ({
           display: 'grid',
           gridTemplateColumns: '1fr 50fr 1fr',
           justifyItems: 'space between',
-        }}>
-        <div></div>
+        }}
+      >
+        <div />
         <div
           className='at-body'
           style={{
             borderTop: '0px',
             paddingLeft: '10px',
-          }}>
+          }}
+        >
           <h4>Click a box to see details</h4>
         </div>
-        <div></div>
+        <div />
       </div>
     );
   }
@@ -174,28 +174,29 @@ export const DetailTable = ({
           display: 'grid',
           gridTemplateColumns: '1fr 50fr 1fr',
           justifyItems: 'space between',
-        }}>
-        <div></div>
+        }}
+      >
+        <div />
         <div
           className='at-body'
           style={{
             borderTop: '0px',
             paddingLeft: '10px',
-          }}>
+          }}
+        >
           <h4>Click a box to see details</h4>
         </div>
-        <div></div>
+        <div />
       </div>
     );
   }
 
-  const subtit =
-    'Details: ' +
-    (filteredData.length ? filteredData.length : 'No') +
-    ' completed chunks in block range ' +
-    range.start +
-    '-' +
-    range.end;
+  const subtit = `Details: ${
+    filteredData.length ? filteredData.length : 'No'
+  } completed chunks in block range ${
+    range.start
+  }-${
+    range.end}`;
 
   const details = ['nAddrs', 'nApps', 'blockRange', 'indexSizeBytes', 'bloomSizeBytes', 'indexHash', 'bloomHash'];
   return (
@@ -204,56 +205,64 @@ export const DetailTable = ({
         display: 'grid',
         gridTemplateColumns: '1fr 50fr 1fr',
         justifyItems: 'space between',
-      }}>
-      <div></div>
+      }}
+    >
+      <div />
       <div
         className='at-body'
         style={{
           borderTop: '0px',
-        }}>
+        }}
+      >
         <h4>{subtit}</h4>
-        <div style={{ display: 'grid', gridTemplateColumns: '4fr 92 4fr', justifyItems: 'stretch', gridGap: '20px' }}>
+        <div style={{
+          display: 'grid', gridTemplateColumns: '4fr 92 4fr', justifyItems: 'stretch', gridGap: '20px',
+        }}
+        >
           <div
             style={{
               display: 'flex',
               flexFlow: 'row wrap',
               justifyItems: 'stretch',
               gridGap: '4px',
-            }}>
-            {filteredData.map((record: any, i: number) => {
-              return (
-                <div key={i} style={{ padding: '2px', border: '1px solid black' }}>
-                  <div style={{ fontWeight: 600, backgroundColor: 'lightgrey' }}>
-                    {record.filename.replace(/.bin/, '')}
-                  </div>
-                  {details.map((field, i) => {
-                    let val = <></>;
-                    if (field === 'blockRange') {
-                      const dist = record.latestApp - record.firstApp;
-                      val = <div style={{ border: '1px black' }}>{dist}</div>;
-                    } else {
-                      val = <div style={{ border: '1px black' }}>{record[field]}</div>;
-                    }
-                    if (field === 'nApps' && record[field] >= 2000000) {
-                      val = <div style={{ color: 'blue', fontWeight: 600, border: '1px black' }}>{record[field]}</div>;
-                    } else if (field === 'nApps') {
-                      val = <div style={{ color: 'red', fontWeight: 600, border: '1px black' }}>{record[field]}</div>;
-                    }
-                    return (
-                      <div key={i} style={{ textAlign: 'right', gridTemplateColumns: '1fr 1fr', display: 'grid' }}>
-                        <div style={{ border: '1px black' }}>{field}: </div>
-                        {val}
-                      </div>
-                    );
-                  })}
+            }}
+          >
+            {filteredData.map((record: any, i: number) => (
+              <div key={i} style={{ padding: '2px', border: '1px solid black' }}>
+                <div style={{ fontWeight: 600, backgroundColor: 'lightgrey' }}>
+                  {record.filename.replace(/.bin/, '')}
                 </div>
-              );
-            })}
+                {details.map((field, i) => {
+                  let val = <></>;
+                  if (field === 'blockRange') {
+                    const dist = record.latestApp - record.firstApp;
+                    val = <div style={{ border: '1px black' }}>{dist}</div>;
+                  } else {
+                    val = <div style={{ border: '1px black' }}>{record[field]}</div>;
+                  }
+                  if (field === 'nApps' && record[field] >= 2000000) {
+                    val = <div style={{ color: 'blue', fontWeight: 600, border: '1px black' }}>{record[field]}</div>;
+                  } else if (field === 'nApps') {
+                    val = <div style={{ color: 'red', fontWeight: 600, border: '1px black' }}>{record[field]}</div>;
+                  }
+                  return (
+                    <div key={i} style={{ textAlign: 'right', gridTemplateColumns: '1fr 1fr', display: 'grid' }}>
+                      <div style={{ border: '1px black' }}>
+                        {field}
+                        :
+                        {' '}
+                      </div>
+                      {val}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
-          <div></div>
+          <div />
         </div>
       </div>
-      <div></div>
+      <div />
     </div>
   );
 };

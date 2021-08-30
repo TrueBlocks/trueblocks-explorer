@@ -1,7 +1,9 @@
-import { Panel, PanelDirection } from './Panel';
+import React, { ReactNode, useState } from 'react';
+
 import { Layout } from 'antd';
 import Cookies from 'js-cookie';
-import React, { ReactNode, useState } from 'react';
+
+import { Panel, PanelDirection } from './Panel';
 
 const { Sider } = Layout;
 
@@ -18,12 +20,14 @@ export type SidePanelProps = {
 };
 
 export const SidePanel = (props: SidePanelProps) => {
-  const { children, collapsibleContent, customCollapseIcon, customExpandIcon, dir, header, cookieName } = props;
+  const {
+    children, collapsibleContent, customCollapseIcon, customExpandIcon, dir, header, cookieName,
+  } = props;
   const [expanded, setExpanded] = useState(Cookies.get(cookieName) === 'true');
 
   const onToggle = (expanded: boolean) => {
     Cookies.set(cookieName, expanded ? 'true' : 'false');
-    setExpanded(expanded ? true : false);
+    setExpanded(!!expanded);
   };
 
   return (
@@ -35,7 +39,8 @@ export const SidePanel = (props: SidePanelProps) => {
         overflowY: expanded ? 'scroll' : 'hidden',
       }}
       theme='light'
-      collapsed={!expanded}>
+      collapsed={!expanded}
+    >
       <Panel
         header={header}
         dir={dir}
@@ -43,7 +48,8 @@ export const SidePanel = (props: SidePanelProps) => {
         onToggle={onToggle}
         collapsibleContent={collapsibleContent}
         customCollapseIcon={customCollapseIcon}
-        customExpandIcon={customExpandIcon}>
+        customExpandIcon={customExpandIcon}
+      >
         {children}
       </Panel>
     </Sider>

@@ -13,6 +13,7 @@ import { ReactNode } from 'react-markdown';
 
 const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');
+const DENOM = Cookies.get('denom') || 'ether';
 
 type NamesEditModalState = {
   address: string,
@@ -29,6 +30,7 @@ export type TransactionsQueryState = {
 
 type State = {
   theme: Theme,
+  denom: string,
   currentAddress?: string,
   namesMap: Map<Address, Accountname>
   namesArray?: Accountname[],
@@ -57,6 +59,7 @@ const getDefaultNamesEditModalValue = () => ({
 
 const initialState: State = {
   theme: getThemeByName(THEME),
+  denom: DENOM,
   currentAddress: ADDRESS,
   namesMap: new Map(),
   namesArray: [],
@@ -70,6 +73,11 @@ type SetTheme = {
   type: 'SET_THEME',
   theme: State['theme'],
 };
+
+type SetDenom = {
+  type: 'SET_DENOM',
+  denom: State['denom'],
+}
 
 type SetCurrentAddress = {
   type: 'SET_CURRENT_ADDRESS',
@@ -108,6 +116,7 @@ type SetTotalRecords = {
 
 type GlobalAction =
   | SetTheme
+  | SetDenom
   | SetCurrentAddress
   | SetNamesMap
   | SetNamesArray
@@ -128,6 +137,13 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
       return {
         ...state,
         theme: action.theme,
+      };
+    case 'SET_DENOM':
+      // TODO(tjayrush): not sure why this doesn't work
+      // Cookies.set('denom', action.denom);
+      return {
+        ...state,
+        denom: action.denom,
       };
     case 'SET_CURRENT_ADDRESS':
       Cookies.set('address', action.address || '');
@@ -184,6 +200,10 @@ export const useGlobalState = () => {
     dispatch({ type: 'SET_THEME', theme });
   };
 
+  const setDenom = (denom: SetDenom['denom']) => {
+    dispatch({ type: 'SET_DENOM', denom });
+  };
+
   const setCurrentAddress = (address: SetCurrentAddress['address']) => {
     dispatch({ type: 'SET_CURRENT_ADDRESS', address });
   };
@@ -215,6 +235,8 @@ export const useGlobalState = () => {
   return {
     theme: state.theme,
     setTheme,
+    denom: state.denom,
+    setDenom,
     currentAddress: state.currentAddress,
     setCurrentAddress,
     namesMap: state.namesMap,

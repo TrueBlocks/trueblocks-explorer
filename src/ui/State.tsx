@@ -13,7 +13,6 @@ import { ReactNode } from 'react-markdown';
 
 const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');
-const DENOM = Cookies.get('denom');
 
 type NamesEditModalState = {
   address: string,

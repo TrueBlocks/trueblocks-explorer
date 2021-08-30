@@ -3,7 +3,7 @@ import {
 } from '@modules/core';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/function';
-import { useEffect, useState } from 'react';
+import { DependencyList, useEffect, useState } from 'react';
 
 type DataResult = {
   status: 'success';
@@ -67,12 +67,19 @@ export function toSuccessfulScraperData(responseData: JsonResponse): ScrapeResul
 
 export const emptyData = { data: [{}], meta: {} };
 
-export function useCommand(command: CoreCommand, params?: CommandParams) {
+export function useCommand(
+  command: CoreCommand,
+  params?: CommandParams,
+  predicate = () => true,
+  dependencies: DependencyList = [],
+) {
   const [response, setData] = useState<Result>(toSuccessfulData(emptyData));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+
+    if (!predicate()) return () => undefined;
 
     (async () => {
       const eitherResponse = await runCommand(command, params);
@@ -92,7 +99,7 @@ export function useCommand(command: CoreCommand, params?: CommandParams) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, dependencies);
 
   return [response, loading] as const;
 }

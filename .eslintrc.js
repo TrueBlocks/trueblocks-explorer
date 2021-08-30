@@ -39,8 +39,8 @@ module.exports = {
   },
   plugins: [
     'react',
-    // 'react-hooks',
     '@typescript-eslint',
+    'simple-import-sort'
   ],
   rules: {
     'indent': ['error', 2, { SwitchCase: 1 }],
@@ -56,5 +56,24 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
+    'simple-import-sort/imports': ['error', {
+      groups: [
+        // React
+        ['^react'],
+        // Side effect imports.
+        ['^\\u0000'],
+        // NPM modules starting with '@'
+        ['^@(?!components|hooks|modules\\b)\\w', '^\\w'],
+        // Anything else
+        ['^'],
+        // Our aliases
+        ['^@components', '^@hooks', '^@modules'],
+        // Relative imports
+        ['^\\.'],
+        // Styles
+        ['^.+\\.s?css$']
+      ]
+    }],
+    'simple-import-sort/exports': 'error'
   },
 };

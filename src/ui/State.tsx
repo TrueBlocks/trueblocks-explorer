@@ -140,6 +140,7 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
           totalRecords: 0,
         };
       }
+
       return state;
     case 'SET_NAMES_MAP':
       return {

@@ -1,6 +1,6 @@
 import { address, blknum, uint64 } from '@modules/types';
 
-export declare type Monitor = {
+export type Monitor = {
   nAppearances: blknum;
   lastExport: blknum;
   firstAppearance: blknum;
@@ -25,4 +25,4 @@ export declare type Monitor = {
   symbol: string;
   tags: string;
 };
-export declare type MonitorArray = Monitor[];
+export type MonitorArray = Monitor[];

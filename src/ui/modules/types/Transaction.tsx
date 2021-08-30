@@ -14,7 +14,7 @@ import {
   wei,
 } from '@modules/types';
 
-export declare type Transaction = {
+export type Transaction = {
   id: string;
   hash: hash;
   blockHash: hash;
@@ -46,4 +46,4 @@ export declare type Transaction = {
   toName: Accountname;
   extraData: string;
 };
-export declare type TransactionArray = Transaction[];
+export type TransactionArray = Transaction[];

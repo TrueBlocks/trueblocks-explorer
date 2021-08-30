@@ -1,6 +1,6 @@
 import { uint64 } from '@modules/types';
 
-export declare type Parameter = {
+export type Parameter = {
   type: string;
   name: string;
   str_default: string;
@@ -12,4 +12,4 @@ export declare type Parameter = {
   is_flags: uint64;
   precision: uint64;
 };
-export declare type ParameterArray = Parameter[];
+export type ParameterArray = Parameter[];

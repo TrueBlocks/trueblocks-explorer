@@ -1,5 +1,5 @@
-export declare type ItemCounter = {
+export type ItemCounter = {
   evt: string;
   count: number;
 };
-export declare type ItemCounterArray = ItemCounter[];
+export type ItemCounterArray = ItemCounter[];

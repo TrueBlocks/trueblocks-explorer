@@ -1,6 +1,6 @@
 import { blknum, Function, hash, Traceaction, Traceresult, uint64 } from '@modules/types';
 
-export declare type Trace = {
+export type Trace = {
   blockHash: hash;
   blockNumber: blknum;
   subtraces: uint64;
@@ -14,4 +14,4 @@ export declare type Trace = {
   articulatedTrace: Function;
   compressedTrace: string;
 };
-export declare type TraceArray = Trace[];
+export type TraceArray = Trace[];

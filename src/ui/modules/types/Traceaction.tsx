@@ -1,6 +1,6 @@
 import { address, gas, wei } from '@modules/types';
 
-export declare type Traceaction = {
+export type Traceaction = {
   selfDestructed: address;
   balance: wei;
   callType: string;
@@ -12,4 +12,4 @@ export declare type Traceaction = {
   to: address;
   value: wei;
 };
-export declare type TraceactionArray = Traceaction[];
+export type TraceactionArray = Traceaction[];

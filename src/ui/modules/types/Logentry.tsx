@@ -1,6 +1,6 @@
 import { address, blknum, Function, hash, TopicArray } from '@modules/types';
 
-export declare type Logentry = {
+export type Logentry = {
   address: address;
   blockHash: hash;
   blockNumber: blknum;
@@ -15,4 +15,4 @@ export declare type Logentry = {
   type: string;
   removed: boolean;
 };
-export declare type LogentryArray = Logentry[];
+export type LogentryArray = Logentry[];

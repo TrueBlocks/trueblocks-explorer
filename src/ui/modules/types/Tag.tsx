@@ -1,4 +1,4 @@
-export declare type Tag = {
+export type Tag = {
   tag: string;
 };
-export declare type TagArray = Tag[];
+export type TagArray = Tag[];

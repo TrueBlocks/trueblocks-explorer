@@ -145,10 +145,8 @@ export const DashboardView = () => {
   }, [currentAddress, setTransactions, totalRecords, transactions, transactionsMeta, cancel]);
 
   // clean up mouse control when we unmount
-  useEffect(() => {
-    return () => {
-      Mousetrap.unbind(['esc']);
-    };
+  useEffect(() => () => {
+    Mousetrap.unbind(['esc']);
   }, []);
   Mousetrap.bind('esc', () => setCancel(true));
 
@@ -264,7 +262,7 @@ export const DashboardView = () => {
 };
 
 declare type stateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
-export declare type UserPrefs = {
+export type UserPrefs = {
   staging: boolean;
   setStaging: stateSetter<boolean>;
   hideZero: string;
@@ -279,7 +277,7 @@ export declare type UserPrefs = {
   setPeriod: stateSetter<string>;
 };
 
-export declare type AccountViewParams = {
+export type AccountViewParams = {
   prefs: UserPrefs;
   loading: boolean;
   setLoading: stateSetter<boolean>;

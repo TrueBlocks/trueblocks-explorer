@@ -1,9 +1,9 @@
-import { addActionListener, removeListener } from '../../websockets';
 import React, { useEffect, useState } from 'react';
+import { addActionListener, removeListener } from '../../websockets';
 
 function getProgress(string: string) {
-  var str = string.replace(/\s+/g, ' ');
-  var tokens = str.split(' ');
+  const str = string.replace(/\s+/g, ' ');
+  const tokens = str.split(' ');
   return { msg: tokens[1], done: tokens[2], total: tokens[4] };
 }
 
@@ -15,25 +15,30 @@ export const Console = (props: any) => {
 
   useEffect(() => {
     const listener = addActionListener('progress', ({ id, content }: { id: any; content: any }) => {
-      //const {content} = content;
       if (content) {
         const { msg, done, total } = getProgress(content);
-        const toPercent = () => ((parseInt(done) / parseInt(total)) * 100).toFixed(0);
-        const finished = msg.includes('Finished') || msg.includes('Completed');
-        const prevPct = progPct;
-        const progressPercentage = finished ? 0 : toPercent();
-        setOp(finished ? '' : content);
+        const toPercent = () => ((parseInt(done, 10) / parseInt(total, 10)) * 100).toFixed(0);
+        const completed = msg.includes('Finished') || msg.includes('Completed');
+        const progressPercentage = completed ? 0 : toPercent();
+        setOp(completed ? '' : content);
         setProgressPct(progressPercentage);
-        setFinished(finished);
+        setFinished(completed);
       }
     });
     return () => removeListener(listener);
   }, []);
 
-  const item = props.asText ? <pre>Console: {op}</pre> : <progress max='100' value={progPct}></progress>;
+  const { asText, style } = props;
+  const item = asText ? (
+    <pre>
+      {op}
+    </pre>
+  ) : <progress max='100' value={progPct} />;
+
+  if (finished) return <></>;
   return (
     <>
-      {props.asText ? (
+      {asText ? (
         <div
           style={{
             backgroundColor: 'black',
@@ -44,11 +49,12 @@ export const Console = (props: any) => {
             width: '50%',
             display: 'flex',
             alignItems: 'center',
-          }}>
+          }}
+        >
           {item}
         </div>
       ) : (
-        <div style={{ ...props.style }}>{item}</div>
+        <div style={{ ...style }}>{item}</div>
       )}
     </>
   );

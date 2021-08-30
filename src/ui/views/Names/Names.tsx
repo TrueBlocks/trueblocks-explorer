@@ -13,5 +13,5 @@ export const NamesView = () => {
     { name: 'Signatures', location: NamesSignaturesLocation, component: <Signatures /> },
     { name: 'Named Blocks', location: NamesBlocksLocation, component: <When /> },
   ];
-  return <BaseView title={'Names'} cookieName={'COOKIE_NAMES'} tabs={tabs} />;
+  return <BaseView title='Names' cookieName='COOKIE_NAMES' tabs={tabs} />;
 };

@@ -59,7 +59,6 @@ export const DashboardView = () => {
 
     (async () => {
       if (currentAddress?.slice(0, 2) === '0x') {
-        setLoading(true);
         const eitherResponse = await runCommand('list', {
           count: true,
           appearances: true,
@@ -76,7 +75,6 @@ export const DashboardView = () => {
         );
 
         setTotalRecords(result.status === 'success' ? result.data[0]?.nRecords : 0);
-        setLoading(false);
       }
     })();
 
@@ -93,6 +91,7 @@ export const DashboardView = () => {
       const transactionCount = transactions.length;
 
       if (!cancel && totalRecords && transactionCount < totalRecords) {
+        setLoading(transactionCount < 10);
         const eitherResponse = await runCommand('export', {
           addrs: currentAddress || '', // TODO: this is a quick and dirty fix
           fmt: 'json',
@@ -138,6 +137,7 @@ export const DashboardView = () => {
           }),
           loading: false,
         });
+        setLoading(false);
       }
     })();
 

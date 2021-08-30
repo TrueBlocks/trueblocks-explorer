@@ -86,13 +86,17 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
 };
 
 const ViewOptions = ({ params }: { params: AccountViewParams }) => {
+  const { denom, setDenom } = useGlobalState();
+
   const styles = useStyles();
   const { prefs } = params;
 
   const onEther = () => {
+    setDenom('ether');
   };
 
   const onDollars = () => {
+    setDenom('dollars');
   };
 
   const onHideZero = () => {
@@ -164,15 +168,15 @@ const ViewOptions = ({ params }: { params: AccountViewParams }) => {
       <Checkbox checked={prefs.hideZero === 'all'} onChange={() => onShowAll()}>
         show all
       </Checkbox>
-      { /* <p />
+      <p />
       <div className={styles.smallHeader}>denomination: </div>
-      <Checkbox checked={prefs.denom === 'ether'} onChange={() => onEther()}>
+      <Checkbox checked={denom === 'ether'} onChange={() => onEther()}>
         ether
       </Checkbox>
       <br />
-      <Checkbox checked={prefs.denom === 'dollars'} onChange={() => onDollars()}>
+      <Checkbox checked={denom === 'dollars'} onChange={() => onDollars()}>
         dollars
-      </Checkbox> */ }
+      </Checkbox>
       <p />
       <div className={styles.smallHeader}>export: </div>
       <Button onClick={onExportCSV} className={styles.exportBtn}>
@@ -474,9 +478,9 @@ const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
 
 const showValue = (val: string, sP: number, showZeros: boolean = false, isGas: boolean = false) => {
   const convert = (val: string, sP: number) => {
-    // const denom = 'ether';
-    if (true || val == '') return clip(val, isGas);
-    // return clip((Number(val) * sP).toFixed(2).toString(), isGas);
+    const { denom } = useGlobalState();
+    if (denom !== 'dollars' || val === '') return clip(val, isGas);
+    return clip((Number(val) * sP).toFixed(2).toString(), isGas);
   };
   if (showZeros) {
     return !val ? convert('0.000000', sP) : convert(val, sP);
@@ -488,15 +492,16 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
   const styles = useStyles();
   const sP = Number(statement.spotPrice);
   const k = statement.assetAddr;
-  // const denom = 'ether';
+  const { denom } = useGlobalState();
   const [sym, setSym] = useState(statement.assetSymbol);
   useEffect(() => {
-    if (false) { // denom == 'dollars') {
+    if (denom === 'dollars') {
       setSym(`${statement.assetSymbol?.slice(0, 5)} ${(statement.priceSource === 'not-priced' ? ' -' : ' $')}`);
     } else {
       setSym(statement.assetSymbol?.slice(0, 5));
     }
-  }, []);
+  }, [denom, statement.assetSymbol, statement.priceSource]);
+
   return (
     <tr className={styles.row} key={`${k}-row`}>
       <td key={`${k}-1`} className={styles.col} style={{ width: '12%' }}>

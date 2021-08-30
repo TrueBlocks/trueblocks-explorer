@@ -1,6 +1,6 @@
 import { ParameterArray } from '@modules/types';
 
-export declare type Function = {
+export type Function = {
   name: string;
   type: string;
   abi_source: string;
@@ -15,4 +15,4 @@ export declare type Function = {
   inputs_dict: string;
   outputs_dict: string;
 };
-export declare type FunctionArray = Function[];
+export type FunctionArray = Function[];

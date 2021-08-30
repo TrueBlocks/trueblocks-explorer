@@ -1,6 +1,6 @@
 import { address, blknum, uint64 } from '@modules/types';
 
-export declare type Chunk = {
+export type Chunk = {
   nApps: blknum;
   firstApp: blknum;
   latestApp: blknum;
@@ -20,4 +20,4 @@ export declare type Chunk = {
   symbol: string;
   tags: string;
 };
-export declare type ChunkArray = Chunk[];
+export type ChunkArray = Chunk[];

@@ -1,6 +1,6 @@
-export declare type ManifestRecord = {
+export type ManifestRecord = {
   fileName: string;
   bloomHash: string;
   indexHash: string;
 };
-export declare type ManifestRecordArray = ManifestRecord[];
+export type ManifestRecordArray = ManifestRecord[];

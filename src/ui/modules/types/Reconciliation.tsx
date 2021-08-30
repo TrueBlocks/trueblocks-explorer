@@ -1,6 +1,6 @@
 import { address, blknum, int256, timestamp, uint64 } from '@modules/types';
 
-export declare type Reconciliation = {
+export type Reconciliation = {
   blockNumber: blknum;
   transactionIndex: blknum;
   timestamp: timestamp;
@@ -35,4 +35,4 @@ export declare type Reconciliation = {
   totalOut: int256;
   totalOutLessGas: int256;
 };
-export declare type ReconciliationArray = Reconciliation[];
+export type ReconciliationArray = Reconciliation[];

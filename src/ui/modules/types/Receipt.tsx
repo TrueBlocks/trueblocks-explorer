@@ -1,6 +1,6 @@
 import { address, blknum, bytes32, gas, hash, LogentryArray, wei } from '@modules/types';
 
-export declare type Receipt = {
+export type Receipt = {
   blockHash: hash;
   blockNumber: blknum;
   contractAddress: address;
@@ -15,4 +15,4 @@ export declare type Receipt = {
   transactionHash: hash;
   transactionIndex: blknum;
 };
-export declare type ReceiptArray = Receipt[];
+export type ReceiptArray = Receipt[];

@@ -4,13 +4,13 @@ import {
   DownCircleFilled,
   DownOutlined,
   RightCircleFilled,
-  UpCircleFilled
+  UpCircleFilled,
 } from '@ant-design/icons';
 import { BaseView, ViewTab } from '@components/BaseView';
 import { addColumn } from '@components/Table';
 import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
 import {
-  Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select
+  Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
@@ -23,7 +23,7 @@ import {
   DashboardAccountsFunctionsLocation,
   DashboardAccountsGasLocation,
   DashboardAccountsHistoryLocation,
-  DashboardAccountsNeighborsLocation
+  DashboardAccountsNeighborsLocation,
 } from '../../../Routes';
 import { useGlobalNames, useGlobalState } from '../../../State';
 import { downloadRecords } from '../../../Utilities';
@@ -319,10 +319,9 @@ export const renderAsNamedAddress = (record: Transaction, which: string) => {
     style = { color: 'green' };
   }
 
-  const decorated =
-    name === '' || name === undefined
-      ? address
-      : `[${address?.substr(0, 6)}...${address?.substr(address.length - 4, address.length)}] `;
+  const decorated = name === '' || name === undefined
+    ? address
+    : `[${address?.substr(0, 6)}...${address?.substr(address.length - 4, address.length)}] `;
   const addr = (isCreation ? '0x0 --> ' : '') + decorated;
 
   return (
@@ -366,7 +365,10 @@ export const transactionSchema: ColumnsType<Transaction> = [
             <pre>
               {renderAsNamedAddress(record, 'from')}
               {renderAsNamedAddress(record, 'to')}
-              <div style={{ margin: '0px', padding: '0px', display: 'grid', gridTemplateColumns: '1fr 10fr' }} >
+              <div style={{
+                margin: '0px', padding: '0px', display: 'grid', gridTemplateColumns: '1fr 10fr',
+              }}
+              >
                 {msgPills(record)}
                 <div> </div>
               </div>

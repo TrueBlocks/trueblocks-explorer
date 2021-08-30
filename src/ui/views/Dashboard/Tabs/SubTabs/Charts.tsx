@@ -1,13 +1,13 @@
-import { DashboardAccountsHistoryLocation } from '../../../../Routes';
-import { useGlobalNames, useGlobalState } from '../../../../State';
-import { chartColors } from '../../../../Utilities';
-import { AccountViewParams } from '../../Dashboard';
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
 import { AssetHistory, Balance } from '@modules/types';
 import dayjs from 'dayjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { DashboardAccountsHistoryLocation } from '../../../../Routes';
+import { useGlobalNames, useGlobalState } from '../../../../State';
+import { chartColors } from '../../../../Utilities';
+import { AccountViewParams } from '../../Dashboard';
 
 export const Charts = ({ params }: { params: AccountViewParams }) => {
   const { uniqAssets } = params;

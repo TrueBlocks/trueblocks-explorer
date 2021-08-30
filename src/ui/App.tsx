@@ -1,22 +1,14 @@
-import { ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation } from './Routes';
-import { useGlobalNames } from './State';
-import './app.css';
-import { Accountname } from '@modules/types';
-import { Console } from './components/Console';
-import { MainMenu, MenuItems } from './components/MainMenu';
-import { HelpPanel } from './components/SidePanels/HelpPanel';
-import { PanelDirection, SidePanel } from './components/SidePanels/SidePanel';
-import { StatusPanel } from './components/SidePanels/StatusPanel';
 import {
   BookOutlined,
   CameraOutlined,
   PhoneOutlined,
   QuestionCircleFilled,
   SettingOutlined,
-  UnorderedListOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons';
 import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
+import { Accountname } from '@modules/types';
 import { Layout, Typography } from 'antd';
 import 'antd/dist/antd.css';
 import dayjs from 'dayjs';
@@ -25,6 +17,14 @@ import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import './app.css';
+import { Console } from './components/Console';
+import { MainMenu, MenuItems } from './components/MainMenu';
+import { HelpPanel } from './components/SidePanels/HelpPanel';
+import { PanelDirection, SidePanel } from './components/SidePanels/SidePanel';
+import { StatusPanel } from './components/SidePanels/StatusPanel';
+import { ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation } from './Routes';
+import { useGlobalNames } from './State';
 
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;

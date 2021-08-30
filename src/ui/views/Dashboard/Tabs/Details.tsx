@@ -4,13 +4,13 @@ import {
   DownCircleFilled,
   DownOutlined,
   RightCircleFilled,
-  UpCircleFilled,
+  UpCircleFilled
 } from '@ant-design/icons';
 import { BaseView, ViewTab } from '@components/BaseView';
 import { addColumn } from '@components/Table';
 import { Reconciliation, ReconciliationArray, Transaction } from '@modules/types';
 import {
-  Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select,
+  Button, Checkbox, Divider, Dropdown, Menu, message, Progress, Select
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
@@ -23,7 +23,7 @@ import {
   DashboardAccountsFunctionsLocation,
   DashboardAccountsGasLocation,
   DashboardAccountsHistoryLocation,
-  DashboardAccountsNeighborsLocation,
+  DashboardAccountsNeighborsLocation
 } from '../../../Routes';
 import { useGlobalNames, useGlobalState } from '../../../State';
 import { downloadRecords } from '../../../Utilities';
@@ -88,18 +88,12 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
 
 const ViewOptions = ({ params }: { params: AccountViewParams }) => {
   const styles = useStyles();
-  // const { setTransactions } = useGlobalState();
   const { prefs } = params;
 
   const onEther = () => {
-    // prefs.setDenom('ether');
-    // setTransactions({ result: { status: 'success', data: [], meta: {} }, loading: false }); // empty
   };
 
   const onDollars = () => {
-    // prefs.setDenom('dollars');
-    // TODO: use a function instead of object literal for empty value
-    // setTransactions({ result: { status: 'success', data: [], meta: {} }, loading: false }); // empty
   };
 
   const onHideZero = () => {
@@ -437,7 +431,6 @@ export const msgPills = (record: Transaction) => {
 
 export const renderStatements = (statements: ReconciliationArray) => {
   const styles = useStyles();
-  // const denom = 'ether'; // useGlobalState().denom;
   if (statements === null) return <></>;
   return (
     <table className={style.table}>

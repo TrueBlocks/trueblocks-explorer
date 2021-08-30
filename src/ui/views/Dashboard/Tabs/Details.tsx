@@ -16,7 +16,6 @@ import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 import {
   DashboardAccountsChartsLocation,
   DashboardAccountsEventsLocation,
@@ -359,7 +358,6 @@ export const transactionSchema: ColumnsType<Transaction> = [
       width: '30%',
       render: (unused: any, record: Transaction) => {
         if (!record) return <div />;
-        const to = record.to === record.extraData ? <div style={style}>{record.to}</div> : record.to;
         return (
           <>
             <pre>
@@ -432,7 +430,7 @@ export const msgPills = (record: Transaction) => {
 };
 
 export const renderStatements = (statements: ReconciliationArray) => {
-  const styles = useStyles();
+  const style = useStyles();
   if (statements === null) return <></>;
   return (
     <table className={style.table}>
@@ -450,7 +448,7 @@ const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
   }
   let icon = <></>;
   const okay = { color: 'green' };
-  const not_okay = { color: 'red' };
+  const notOkay = { color: 'red' };
   if (statement.reconciled) {
     icon = <></>;
     switch (statement.reconciliationType) {
@@ -469,7 +467,7 @@ const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
         break;
     }
   } else {
-    icon = <CloseCircleFilled style={not_okay} />;
+    icon = <CloseCircleFilled style={notOkay} />;
   }
   return <div>{icon}</div>;
 };

@@ -82,7 +82,7 @@ export const DashboardView = () => {
   }, [listRequest.data, listRequest.status, setTotalRecords]);
 
   // Run this effect until we fetch the last transaction
-  const [transactionsRequest] = useCommand(
+  const [transactionsRequest, transactionsLoading] = useCommand(
     'export',
     {
       addrs: currentAddress as string,
@@ -112,6 +112,12 @@ export const DashboardView = () => {
     () => Boolean(currentAddress && totalRecords && transactions.length < totalRecords),
     [currentAddress, totalRecords, transactions.length],
   );
+
+  useEffect(() => {
+    const stateToSet = !transactionsLoading ? false : transactions.length < 10;
+
+    setLoading(stateToSet);
+  }, [transactions.length, transactionsLoading]);
 
   useEffect(() => {
     if (!transactionsRequest.data.length) return;

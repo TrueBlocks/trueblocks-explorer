@@ -1,5 +1,5 @@
 import {
-  address, blknum, int256, timestamp, uint64,
+  address, blknum, double, int256, timestamp, uint64,
 } from '@modules/types';
 
 export type Reconciliation = {
@@ -10,31 +10,31 @@ export type Reconciliation = {
   assetSymbol: string;
   decimals: uint64;
   prevBlk: blknum;
-  prevBlkBal: int256;
-  begBal: int256;
-  begBalDiff: int256;
-  amountIn: int256;
-  amountOut: int256;
-  internalIn: int256;
-  internalOut: int256;
-  selfDestructIn: int256;
-  selfDestructOut: int256;
-  minerBaseRewardIn: int256;
-  minerNephewRewardIn: int256;
-  minerTxFeeIn: int256;
-  minerUncleRewardIn: int256;
-  prefundIn: int256;
-  gasCostOut: int256;
-  endBal: int256;
-  endBalCalc: int256;
-  endBalDiff: int256;
-  amountNet: int256;
-  spotPrice: int256;
+  prevBlkBal: double;
+  begBal: double;
+  begBalDiff: double;
+  amountIn: double;
+  amountOut: double;
+  internalIn: double;
+  internalOut: double;
+  selfDestructIn: double;
+  selfDestructOut: double;
+  minerBaseRewardIn: double;
+  minerNephewRewardIn: double;
+  minerTxFeeIn: double;
+  minerUncleRewardIn: double;
+  prefundIn: double;
+  gasCostOut: double;
+  endBal: double;
+  endBalCalc: double;
+  endBalDiff: double;
+  amountNet: double;
+  spotPrice: double;
   priceSource: string;
   reconciliationType: string;
   reconciled: boolean;
-  totalIn: int256;
-  totalOut: int256;
-  totalOutLessGas: int256;
+  totalIn: double;
+  totalOut: double;
+  totalOutLessGas: double;
 };
 export type ReconciliationArray = Reconciliation[];

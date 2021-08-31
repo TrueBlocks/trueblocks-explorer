@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Card } from 'antd';
 
-import { Reconciliation, Transaction } from '@modules/types';
+import { double, Reconciliation, Transaction } from '@modules/types';
 
 import { AccountViewParams } from '../../Dashboard';
 import { useAcctStyles } from '../Details';
@@ -10,14 +10,18 @@ import { useAcctStyles } from '../Details';
 //-----------------------------------------------------------------
 export const HistoryRecons = ({ record, params }: { record: Transaction; params: AccountViewParams }) => {
   const { prefs } = params;
+  const { denom } = params.prefs;
+  const styles = useAcctStyles();
 
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
-  const styles = useAcctStyles();
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
-        {record?.statements?.map((statement: Reconciliation, index: number) => oneStatement(statement, index, prefs.showDetails, prefs.setShowDetails, styles, key))}
+        {record?.statements?.map((statement: Reconciliation, index: number) => {
+          const statementIn = priceReconciliation(statement, denom);
+          return oneStatement(statementIn, index, prefs.showDetails, prefs.setShowDetails, styles, key);
+        })}
       </div>
       <div />
     </div>
@@ -25,10 +29,43 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
 };
 
 //-----------------------------------------------------------------
+const priceReconciliation = (statementIn: Reconciliation, denom: string) => {
+  if (denom === 'ether') {
+    return statementIn;
+  }
+
+  const statement: Reconciliation = JSON.parse(JSON.stringify(statementIn));
+  statement.prevBlkBal = (statementIn.prevBlkBal * statementIn.spotPrice);
+  statement.begBal = (statementIn.begBal * statementIn.spotPrice);
+  statement.begBalDiff = (statementIn.begBalDiff * statementIn.spotPrice);
+  statement.amountIn = (statementIn.amountIn * statementIn.spotPrice);
+  statement.amountOut = (statementIn.amountOut * statementIn.spotPrice);
+  statement.internalIn = (statementIn.internalIn * statementIn.spotPrice);
+  statement.internalOut = (statementIn.internalOut * statementIn.spotPrice);
+  statement.selfDestructIn = (statementIn.selfDestructIn * statementIn.spotPrice);
+  statement.selfDestructOut = (statementIn.selfDestructOut * statementIn.spotPrice);
+  statement.minerBaseRewardIn = (statementIn.minerBaseRewardIn * statementIn.spotPrice);
+  statement.minerNephewRewardIn = (statementIn.minerNephewRewardIn * statementIn.spotPrice);
+  statement.minerTxFeeIn = (statementIn.minerTxFeeIn * statementIn.spotPrice);
+  statement.minerUncleRewardIn = (statementIn.minerUncleRewardIn * statementIn.spotPrice);
+  statement.prefundIn = (statementIn.prefundIn * statementIn.spotPrice);
+  statement.gasCostOut = (statementIn.gasCostOut * statementIn.spotPrice);
+  statement.gasCostOut = (statementIn.gasCostOut * statementIn.spotPrice);
+  statement.endBal = (statementIn.endBal * statementIn.spotPrice);
+  statement.endBalCalc = (statementIn.endBalCalc * statementIn.spotPrice);
+  statement.endBalDiff = (statementIn.endBalDiff * statementIn.spotPrice);
+  statement.amountNet = (statementIn.amountNet * statementIn.spotPrice);
+  statement.totalIn = (statementIn.totalIn * statementIn.spotPrice);
+  statement.totalOut = (statementIn.totalOut * statementIn.spotPrice);
+  statement.totalOutLessGas = (statementIn.totalOutLessGas * statementIn.spotPrice);
+  return statement;
+};
+
+//-----------------------------------------------------------------
 const oneStatement = (
   statement: Reconciliation,
   index: number,
-  showDetails: boolean,
+  details: boolean,
   setShowDetails: any,
   styles: any,
   key: string,
@@ -40,14 +77,14 @@ const oneStatement = (
       backgroundColor: 'lightgrey',
     }}
     hoverable
-    title={statementHeader(statement, showDetails, setShowDetails)}
+    title={statementHeader(statement, details, setShowDetails)}
   >
-    {statementBody(statement, showDetails, styles)}
+    {statementBody(statement, details, styles)}
   </Card>
 );
 
 //-----------------------------------------------------------------
-const statementHeader = (statement: Reconciliation, showDetails: boolean, setShowDetails: any) => (
+const statementHeader = (statement: Reconciliation, details: boolean, setShowDetails: any) => (
   <div style={{ display: 'grid', gridTemplateColumns: '20fr 1fr', textAlign: 'start' }}>
     <div>
       {`${statement.assetSymbol} reconciliation`}
@@ -60,175 +97,134 @@ const statementHeader = (statement: Reconciliation, showDetails: boolean, setSho
       {statement.priceSource}
       )
     </div>
-    <div onClick={() => setShowDetails(!showDetails)}>{showDetails ? '-' : '+'}</div>
+    <div onClick={() => setShowDetails(!details)}>{details ? '-' : '+'}</div>
   </div>
 );
 
 //-----------------------------------------------------------------
-const clip = (num: string, diff?: boolean) => {
-  const parts = num.split('.');
-  if (parts.length === 0 || parts[0] === '') return <div style={{ color: 'lightgrey' }}>-</div>;
-  if (parts.length === 1) {
-    return (
-      <div style={diff ? { color: 'red' } : {}}>
-        {parts[0]}
-        .0000000
-      </div>
-    );
-  }
-  return <div style={diff ? { color: 'red' } : {}}>{`${parts[0]}.${parts[1].substr(0, 7)}`}</div>;
-};
+const statementBody = (statement: Reconciliation, details: boolean, styles: any) => {
+  const rowStyle = styles.tableRow;
+  const detailView = !details ? <></> : (
+    <>
+      {DividerRow(rowStyle)}
+      {DetailRow(rowStyle, 'assetSymbol', statement.assetSymbol)}
+      {DetailRow(rowStyle, 'decimals', statement.decimals)}
+      {DetailRow(rowStyle, 'blockNumber', statement.blockNumber.toString())}
+      {DetailRow(rowStyle, 'transactionIndex', statement.transactionIndex.toString())}
+      {DetailRow(rowStyle, 'timestamp', statement.timestamp.toString())}
+      {DetailRow(rowStyle, 'prevBlk', statement.prevBlk)}
 
-//-----------------------------------------------------------------
-const statementBody = (statement: Reconciliation, showDetails: boolean, styles: any) => (
-  <table>
-    <tbody>
-      {oneRow(styles, showDetails, '', 'income', 'outflow', 'balance', 'diff', true)}
-      {oneRow(
-        styles,
-        showDetails,
-        'begBal',
-        '',
-        '',
-        statement.begBal === '' ? '0.0000000' : statement.begBal,
-        statement.begBalDiff,
-      )}
-      {oneRow(styles, showDetails, 'amount', statement.amountIn, statement.amountOut)}
-      {oneRow(styles, showDetails, 'internal', statement.internalIn, statement.internalOut)}
-      {oneRow(styles, showDetails, 'selfDestruct', statement.selfDestructIn, statement.selfDestructOut)}
-      {oneRow(styles, showDetails, 'minerBaseReward', statement.minerBaseRewardIn)}
-      {oneRow(styles, showDetails, 'minerNephewReward', statement.minerNephewRewardIn)}
-      {oneRow(styles, showDetails, 'minerTxFee', statement.minerTxFeeIn)}
-      {oneRow(styles, showDetails, 'minerUncleReward', statement.minerUncleRewardIn)}
-      {oneRow(styles, showDetails, 'prefund', statement.prefundIn)}
-      {oneRow(styles, showDetails, 'gasCost', '', statement.gasCostOut)}
-      {oneRow(
-        styles,
-        showDetails,
-        'amountNet',
-        '',
-        '',
-        statement.amountNet === '' ? '' : statement.amountNet > '0' ? `+${statement.amountNet}` : statement.amountNet,
-      )}
-      {oneRow(
-        styles,
-        showDetails,
-        'endBal',
-        '',
-        '',
-        statement.endBal === '' ? '0.0000000' : statement.endBal,
-        statement.endBalDiff,
-      )}
-      {oneDivider(styles, showDetails)}
-      {/* {oneDebug(styles, showDetails, 'assetAddr', statement.assetAddr)} */}
-      {oneDebug(styles, showDetails, 'assetSymbol', statement.assetSymbol)}
-      {oneDebug(styles, showDetails, 'decimals', statement.decimals.toString())}
-      {oneDebug(styles, showDetails, 'blockNumber', statement.blockNumber.toString())}
-      {oneDebug(styles, showDetails, 'transactionIndex', statement.transactionIndex.toString())}
-      {oneDebug(styles, showDetails, 'timestamp', statement.timestamp.toString())}
-      {oneDebug(styles, showDetails, 'prevBlk', statement.prevBlk.toString())}
-      {oneDivider(styles, showDetails)}
-      {oneDebug(styles, showDetails, 'type', statement.reconciliationType)}
-      {oneDebug(styles, showDetails, 'prevBlkBal', statement.prevBlkBal)}
-      {oneDebug(styles, showDetails, 'begBal', statement.begBal)}
-      {oneDebug(styles, showDetails, 'begBalDiff', statement.begBalDiff)}
-      {oneDebug(styles, showDetails, 'endBal', statement.endBal)}
-      {oneDebug(styles, showDetails, 'endBalCalc', statement.endBalCalc)}
-      {oneDebug(styles, showDetails, 'endBalDiff', statement.endBalDiff)}
-      {oneDebug(styles, showDetails, 'spotPrice', statement.spotPrice)}
-      {oneDebug(
-        styles,
-        showDetails,
-        'priceSource',
-        statement.priceSource === '' ? 'not-priced' : statement.priceSource,
-      )}
-      {/* {oneRow(styles, showDetails, 'reconciled', statement.reconciled ? 'true' : 'false')} */}
-    </tbody>
-  </table>
-);
+      {DividerRow(rowStyle)}
+      {DetailRow(rowStyle, 'type', statement.reconciliationType)}
+      {DetailRow(rowStyle, 'prevBlkBal', statement.prevBlkBal)}
+      {DetailRow(rowStyle, 'begBal', statement.begBal)}
+      {DetailRow(rowStyle, 'begBalDiff', statement.begBalDiff)}
+      {DetailRow(rowStyle, 'endBal', statement.endBal)}
+      {DetailRow(rowStyle, 'endBalCalc', statement.endBalCalc)}
+      {DetailRow(rowStyle, 'endBalDiff', statement.endBalDiff)}
+      {DetailRow(rowStyle, 'spotPrice', statement.spotPrice)}
+      {DetailRow(rowStyle, 'priceSource', statement.priceSource === '' ? 'not-priced' : statement.priceSource)}
+    </>
+  );
 
-//-----------------------------------------------------------------
-const oneDivider = (styles: any, showDetails: boolean) => {
-  if (!showDetails) return <></>;
   return (
-    <tr>
-      <td className={styles.tableRow} colSpan={6}>
-        <hr />
-      </td>
-    </tr>
+    <table>
+      <tbody>
+        <HeaderRow />
+        {BodyRow(rowStyle, 'begBal', 0, 0, statement.begBal, statement.begBalDiff)}
+        {BodyRow(rowStyle, 'amount', statement.amountIn, statement.amountOut)}
+        {BodyRow(rowStyle, 'internal', statement.internalIn, statement.internalOut)}
+        {BodyRow(rowStyle, 'selfDestruct', statement.selfDestructIn, statement.selfDestructOut)}
+        {BodyRow(rowStyle, 'baseReward', statement.minerBaseRewardIn, 0)}
+        {BodyRow(rowStyle, 'txFee', statement.minerTxFeeIn, 0)}
+        {BodyRow(rowStyle, 'nephewReward', statement.minerNephewRewardIn, 0)}
+        {BodyRow(rowStyle, 'uncleReward', statement.minerUncleRewardIn, 0)}
+        {BodyRow(rowStyle, 'prefund', statement.prefundIn, 0)}
+        {BodyRow(rowStyle, 'gasCost', 0, statement.gasCostOut)}
+        {BodyRow(rowStyle, 'amountNet', 0, 0, statement.amountNet)}
+        {BodyRow(rowStyle, 'endBal', 0, 0, statement.endBal, statement.endBalDiff)}
+        {detailView}
+      </tbody>
+    </table>
   );
 };
 
 //-----------------------------------------------------------------
-const oneDebug = (styles: any, showDetails: boolean, name: string, value: string) => {
-  if (!showDetails) return <></>;
-  if (value === '') value = '0.0000000';
-  const isErr: boolean = name?.includes('Diff') && value != '0.0000000';
+const clip2 = (num: double) => {
+  if (!num) return <div style={{ color: 'lightgrey' }}>-</div>;
+  return <div>{Number(num).toFixed(5)}</div>;
+};
+
+//-----------------------------------------------------------------
+const BodyRow = (
+  style: string,
+  name: string,
+  valueIn: double = 0.0,
+  valueOut: double = 0.0,
+  balance: double = 0.0,
+  diffIn: double = 0.0,
+) => (
+  <tr>
+    <td className={style} style={{ width: '100px' }}>
+      {name}
+    </td>
+    <td className={style} style={{ width: '20px' }} />
+    <td className={style} style={{ width: '100px' }}>
+      {clip2(valueIn)}
+    </td>
+    <td className={style} style={{ width: '100px' }}>
+      {clip2(valueOut)}
+    </td>
+    <td className={style} style={{ width: '100px' }}>
+      {clip2(balance)}
+    </td>
+    <td className={style} style={{ width: '100px', color: 'red' }}>
+      {clip2(diffIn)}
+    </td>
+  </tr>
+);
+
+//-----------------------------------------------------------------
+const DetailRow = (style: string, name: string, value: double | string) => {
+  const isErr: boolean = name?.includes('Diff') && value !== 0.0;
   const disp = (
     <tr>
-      <td className={styles.tableRow} style={{ width: '100px' }}>
+      <td className={style} style={{ width: '100px' }} colSpan={2}>
         {name}
       </td>
-      <td className={styles.tableRow} style={{ width: '20px' }}>
-        {' '}
-      </td>
       <td
-        className={styles.tableRow}
+        className={style}
         style={isErr ? { color: 'red', textAlign: 'right' } : { textAlign: 'right' }}
-        colSpan={2}
+        colSpan={3}
       >
-        {value}
+        {typeof value === 'string' ? value : clip2(value)}
       </td>
-      <td className={styles.tableRow} colSpan={2}>
-        {' '}
-      </td>
+      <td className={style} />
     </tr>
   );
   return disp;
 };
 
 //-----------------------------------------------------------------
-const oneRow = (
-  styles: any,
-  showDetails: boolean,
-  name: string,
-  valueIn: string,
-  valueOut: string = '',
-  balance: string = '',
-  diffIn: string = '',
-  header: boolean = false,
-) => {
-  const v1: number = +valueIn;
-  const v2: number = +valueOut;
-  if (!showDetails && name !== 'begBal' && name !== 'endBal' && v1 + v2 === 0) return <></>;
+const DividerRow = (style: string) => (
+  <tr>
+    <td className={style} colSpan={6}>
+      <hr />
+    </td>
+  </tr>
+);
 
-  const valI = header ? valueIn : clip(valueIn);
-  const valO = header ? valueOut : clip(valueOut);
-  const bal = header ? balance : clip(balance);
-  const diff = header ? diffIn : clip(diffIn, true);
-  const style = header ? styles.tableHead : styles.tableRow;
-  const dStyle = diffIn !== '' ? {} : { color: 'red' };
-
+//-----------------------------------------------------------------
+const HeaderRow = () => {
+  const styles = useAcctStyles();
   return (
     <tr>
-      <td className={style} style={{ width: '100px' }}>
-        {name}
-      </td>
-      <td className={style} style={{ width: '20px' }}>
-        {' '}
-      </td>
-      <td className={style} style={{ width: '100px' }}>
-        {valI}
-      </td>
-      <td className={style} style={{ width: '100px' }}>
-        {valO}
-      </td>
-      <td className={style} style={{ width: '100px' }}>
-        {bal}
-      </td>
-      <td className={style} style={{ ...dStyle, width: '100px' }}>
-        {diff}
-      </td>
+      <td className={styles.tableHead} style={{ width: '100px' }} />
+      <td className={styles.tableHead} style={{ width: '20px' }} />
+      <td className={styles.tableHead} style={{ width: '100px' }}>income</td>
+      <td className={styles.tableHead} style={{ width: '100px' }}>outflow</td>
+      <td className={styles.tableHead} style={{ width: '100px' }}>balance</td>
+      <td className={styles.tableHead} style={{ width: '100px' }}>diff</td>
     </tr>
   );
 };

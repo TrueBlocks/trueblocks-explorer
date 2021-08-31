@@ -223,13 +223,13 @@ export const useGlobalState = () => {
     dispatch({ type: 'SET_CURRENT_ADDRESS', address });
   };
 
-  const setNamesMap = (namesMap: SetNamesMap['namesMap']) => {
+  const setNamesMap = useCallback((namesMap: SetNamesMap['namesMap']) => {
     dispatch({ type: 'SET_NAMES_MAP', namesMap });
-  };
+  }, [dispatch]);
 
-  const setNamesArray = (namesArray: SetNamesArray['namesArray']) => {
+  const setNamesArray = useCallback((namesArray: SetNamesArray['namesArray']) => {
     dispatch({ type: 'SET_NAMES_ARRAY', namesArray });
-  };
+  }, [dispatch]);
 
   const setNamesEditModal = (val: SetNamesEditModal['val']) => {
     dispatch({ type: 'SET_NAMES_EDIT_MODAL', val });

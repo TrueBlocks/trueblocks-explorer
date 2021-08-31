@@ -511,6 +511,7 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
         {sym}
       </td>
       <td key={`${k}-2`} className={styles.col} style={{ width: '17%' }}>
+//TODO(tjayrush): This should not convert to string
         {showValue(statement.begBal.toString(), sP, true)}
       </td>
       <td key={`${k}-3`} className={styles.col} style={{ width: '17%' }}>

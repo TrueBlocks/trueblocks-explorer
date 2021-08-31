@@ -30,4 +30,3 @@ export * from '@modules/types/Trace';
 export * from '@modules/types/Traceaction';
 export * from '@modules/types/Traceresult';
 export * from '@modules/types/Transaction';
-export * from '@modules/types/TransactionsQuery';

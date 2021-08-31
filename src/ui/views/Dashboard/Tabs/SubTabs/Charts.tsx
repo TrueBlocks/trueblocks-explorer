@@ -35,7 +35,7 @@ export const Charts = ({ params }: { params: AccountViewParams }) => {
 
         const items = asset.balHistory.map((item: Balance) => ({
           date: dayjs(item.date).format('YYYY-MM-DD'),
-          [asset.assetAddr]: parseFloat(item.balance || '0'),
+          [asset.assetAddr]: item.balance,
         }));
 
         return (

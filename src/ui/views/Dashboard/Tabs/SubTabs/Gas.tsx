@@ -8,7 +8,7 @@ export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: 
     if (!tx.statements) return false;
     const stmts = tx.statements.filter((st) =>
       // console.log('---------', index, '---------', index < 3, '---------');
-      st.gasCostOut !== '');
+      st.gasCostOut.toString() !== '');
     return stmts.length > 0;
   });
 
@@ -25,7 +25,7 @@ export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: 
     gasCostOut: st.gasCostOut,
   })));
 
-  stmts = stmts.filter((st: any) => st.gasCostOut !== '');
+  stmts = stmts.filter((st: any) => st.gasCostOut?.toString() !== '');
 
   return (
     <div>

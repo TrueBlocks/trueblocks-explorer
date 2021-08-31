@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState,
+  useEffect, useMemo, useRef, useState,
 } from 'react';
 
 import { SearchOutlined } from '@ant-design/icons';
@@ -8,23 +8,27 @@ import {
 } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import { ColumnsType } from 'antd/lib/table';
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
 
 import {
   addActionsColumn, addColumn, addFlagColumn, addTagsColumn, BaseTable, TableActions,
 } from '@components/Table';
-import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
-import { runCommand } from '@modules/core';
+import { useCommand } from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
-import { Accountname } from '@modules/types';
+import { Accountname, AccountnameArray } from '@modules/types';
 
 import { useGlobalState } from '../../../State';
 
+type NameModel =
+  & Accountname
+  & {
+    id: string,
+    searchStr: string,
+  };
+
 export const Names = () => {
-  const [searchText, setSearchText] = useState('');
-  const [_, setSearchedColumn] = useState('');
+  const [, setSearchText] = useState('');
+  const [, setSearchedColumn] = useState('');
   const searchInputRef = useRef(null);
   const { namesEditModal, setNamesEditModal, setNamesEditModalVisible } = useGlobalState();
   const [selectedNameName, setSelectedNameName] = useState(namesEditModal.name);
@@ -32,39 +36,37 @@ export const Names = () => {
   const [selectedNameSource, setSelectedNameSource] = useState(namesEditModal.source);
   const [selectedNameTags, setSelectedNameTags] = useState(namesEditModal.tags);
   const [loadingEdit, setLoadingEdit] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const [addresses, setAddresses] = useState<Result>({ status: 'success', data: [], meta: {} });
-  if (addresses.status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch addresses',
-    });
-  }
-  const getData = useCallback((response) => {
-    if (response.status === 'fail') return [];
-    return response.data?.map((item: any, i: number) => ({
-      id: (i + 1).toString(),
-      searchStr: `${item.address} ${item.name}`,
-      ...item,
-    }));
-  }, []);
-  const theData = getData(addresses);
+  const [addresses, setAddresses] = useState<NameModel[]>([]);
+
+  const [namesRequest, loading] = useCommand('names', {
+    expand: true,
+    all: true,
+  });
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const eitherResponse = await runCommand('names', {
-        expand: true,
-        all: true,
+    if (namesRequest.status === 'fail') {
+      createErrorNotification({
+        description: 'Could not fetch addresses',
       });
-      const result: Result = pipe(
-        eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-      );
-      setLoading(false);
-      setAddresses(result);
+    }
+  }, [namesRequest.status]);
+
+  useEffect(() => {
+    const newAddressesValue = (() => {
+      if (namesRequest.status === 'fail') return [];
+
+      return (namesRequest.data as AccountnameArray).map((item, index) => ({
+        id: String(index + 1),
+        searchStr: `${item.address} ${item.name}`,
+        ...item,
+      }));
     })();
-  }, []);
+
+    setAddresses(newAddressesValue);
+  }, [namesRequest.data, namesRequest.status]);
+
+  const theData = useMemo(() => addresses, [addresses]);
 
   const getColumnSearchProps = (dataIndex: any) => ({
     filterDropdown: ({
@@ -157,15 +159,17 @@ export const Names = () => {
       }),
     })
       .then((result) => result.json())
-      .then((response) => {
+      .then(() => {
         // TODO(tjayrush): Does this check for backend error?
-        const newAddresses = { ...addresses };
-        // @ts-ignore
-        const foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
-        // @ts-ignore
-        newAddresses.data[foundAddress] = {
-          // @ts-ignore
-          ...newAddresses.data[foundAddress],
+        // (dawid): no, it does not. Also it does not check for network error,
+        //          but we will fix it together with runCommand
+        const newAddresses = [...addresses];
+        const foundAddressIndex = newAddresses.findIndex(
+          (item: Accountname) => item.address === namesEditModal.address,
+        );
+
+        newAddresses[foundAddressIndex] = {
+          ...newAddresses[foundAddressIndex],
           description: selectedNameDescription,
           name: selectedNameName,
           source: selectedNameSource,
@@ -206,7 +210,6 @@ export const Names = () => {
 
 const NameEditModal = ({
   namesEditModal,
-  setNamesEditModal,
   loadingEdit,
   selectedNameName,
   setSelectedNameName,
@@ -281,7 +284,6 @@ const NameEditModal = ({
 const ModalEditRow = ({
   name,
   value,
-  type,
   onChange,
   disabled,
 }: {

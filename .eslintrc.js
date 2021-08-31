@@ -47,7 +47,7 @@ module.exports = {
     '@typescript-eslint/indent': ['error', 2],
     'max-len': ['warn', { code: 120, comments: 120 }],
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-use-before-define': ['off'],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'jsx-quotes': ['error', 'prefer-single'],
     'import/prefer-default-export': 'off',

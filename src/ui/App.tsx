@@ -15,17 +15,17 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
 
+import { Console } from '@components/Console';
+import { MainMenu, MenuItems } from '@components/MainMenu';
+import { HelpPanel } from '@components/SidePanels/HelpPanel';
+import { PanelDirection, SidePanel } from '@components/SidePanels/SidePanel';
+import { StatusPanel } from '@components/SidePanels/StatusPanel';
 import {
   Result, toFailedResult, toSuccessfulData, useCommand,
 } from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
 import { Accountname } from '@modules/types';
 
-import { Console } from './components/Console';
-import { MainMenu, MenuItems } from './components/MainMenu';
-import { HelpPanel } from './components/SidePanels/HelpPanel';
-import { PanelDirection, SidePanel } from './components/SidePanels/SidePanel';
-import { StatusPanel } from './components/SidePanels/StatusPanel';
 import {
   ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation,
 } from './Routes';

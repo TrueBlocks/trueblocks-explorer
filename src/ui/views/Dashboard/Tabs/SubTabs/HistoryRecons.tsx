@@ -20,8 +20,9 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
-        {record?.statements?.map((statement: Reconciliation, index: number) => {
+        {record.statements.map((statement, index) => {
           const statementIn = priceReconciliation(statement, denom);
+          // TODO: oneStatement should be a component
           return oneStatement(statementIn, index, prefs.showDetails, prefs.setShowDetails, styles, key);
         })}
       </div>
@@ -74,6 +75,7 @@ const statementHeader = (statement: Reconciliation, details: boolean, setShowDet
 //-----------------------------------------------------------------
 const statementBody = (statement: Reconciliation, details: boolean, styles: any) => {
   const rowStyle = styles.tableRow;
+  // TODO: Make all the components instead of function calls
   const detailView = !details ? <></> : (
     <>
       {DividerRow(rowStyle)}
@@ -120,6 +122,7 @@ const statementBody = (statement: Reconciliation, details: boolean, styles: any)
 };
 
 //-----------------------------------------------------------------
+// TODO: Why the '2', this should be a component.
 const clip2 = (num: double) => {
   if (!num) return <div style={{ color: 'lightgrey' }}>-</div>;
   return <div>{Number(num).toFixed(5)}</div>;

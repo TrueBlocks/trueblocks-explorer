@@ -511,19 +511,19 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
         {sym}
       </td>
       <td key={`${k}-2`} className={styles.col} style={{ width: '17%' }}>
-        {showValue(statement.begBal, sP, true)}
+        {showValue(statement.begBal.toString(), sP, true)}
       </td>
       <td key={`${k}-3`} className={styles.col} style={{ width: '17%' }}>
-        {showValue(statement.totalIn, sP)}
+        {showValue(statement.totalIn.toString(), sP)}
       </td>
       <td key={`${k}-4`} className={styles.col} style={{ width: '17%' }}>
-        {showValue(statement.totalOutLessGas, sP)}
+        {showValue(statement.totalOutLessGas.toString(), sP)}
       </td>
       <td key={`${k}-5`} className={styles.col} style={{ width: '17%' }}>
-        {showValue(statement.gasCostOut, sP, false, true)}
+        {showValue(statement.gasCostOut.toString(), sP, false, true)}
       </td>
       <td key={`${k}-6`} className={styles.col} style={{ width: '17%' }}>
-        {showValue(statement.endBal, sP, true)}
+        {showValue(statement.endBal.toString(), sP, true)}
       </td>
       <td key={`${k}-7`} className={styles.col} style={{ width: '4%' }}>
         <ReconIcon statement={statement} />

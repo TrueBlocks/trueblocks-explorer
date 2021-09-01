@@ -42,13 +42,13 @@ export const Events = ({ theData, loading }: { theData: TransactionArray; loadin
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-      <MyAreaChart title='Top Ten Events' items={top} columns={countSchema} table />
-      <MyAreaChart title='Other Events' items={remains} columns={countSchema} table />
+      <MyAreaChart title='Top Ten Events' items={top} columns={evtCountSchema} table />
+      <MyAreaChart title='Other Events' items={remains} columns={evtCountSchema} table />
     </div>
   );
 };
 
-export const countSchema: ColumnsType<ItemCounter> = [
+export const evtCountSchema: ColumnsType<ItemCounter> = [
   addColumn({
     title: 'Event',
     dataIndex: 'evt',

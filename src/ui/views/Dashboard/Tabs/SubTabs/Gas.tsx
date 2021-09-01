@@ -4,15 +4,13 @@ import { Transaction, TransactionArray } from '@modules/types';
 
 export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
   if (!theData) return <></>;
-  const usesGas = theData.filter((tx: Transaction, index: number) => {
+  const usesGas = theData.filter((tx: Transaction) => {
     if (!tx.statements) return false;
-    const stmts = tx.statements.filter((st) =>
-      // console.log('---------', index, '---------', index < 3, '---------');
-      st.gasCostOut !== '');
+    const stmts = tx.statements.filter((st) => st.gasCostOut);
     return stmts.length > 0;
   });
 
-  let stmts = usesGas.map((tx: Transaction) => tx.statements.map((st) => ({
+  const stmts = usesGas.map((tx: Transaction) => tx.statements.map((st) => ({
     blockNumber: tx.blockNumber,
     transactionIndex: tx.transactionIndex,
     hash: tx.hash,
@@ -24,8 +22,6 @@ export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: 
     asset: st.assetSymbol,
     gasCostOut: st.gasCostOut,
   })));
-
-  stmts = stmts.filter((st: any) => st.gasCostOut !== '');
 
   return (
     <div>

@@ -41,13 +41,13 @@ export const Functions = ({ theData, loading }: { theData: TransactionArray; loa
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-      <MyAreaChart title='Top Ten Functions' items={top} columns={countSchema} table />
-      <MyAreaChart title='Other Functions' items={remains} columns={countSchema} table />
+      <MyAreaChart title='Top Ten Functions' items={top} columns={funcCountSchema} table />
+      <MyAreaChart title='Other Functions' items={remains} columns={funcCountSchema} table />
     </div>
   );
 };
 
-export const countSchema: ColumnsType<ItemCounter> = [
+export const funcCountSchema: ColumnsType<ItemCounter> = [
   addColumn({
     title: 'Function',
     dataIndex: 'evt',

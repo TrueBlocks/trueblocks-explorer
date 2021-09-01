@@ -21,7 +21,6 @@ import {
 import {
   DashboardAccountsLocation,
   DashboardCollectionsLocation,
-  DashboardLocation,
   DashboardMonitorsLocation,
 } from '../../Routes';
 import { useGlobalNames, useGlobalState } from '../../State';
@@ -197,7 +196,6 @@ export const DashboardView = () => {
         if (found) {
           unique[index].balHistory = [
             ...unique[index].balHistory,
-// TODO(tjayrush: This should not covert to string
             {
               balance: (denom === 'dollars'
                 ? parseInt(found.endBal.toString() || '0', 10) * Number(found.spotPrice)
@@ -223,8 +221,8 @@ export const DashboardView = () => {
     return unique.filter((asset: AssetHistory) => {
       if (asset.balHistory.length === 0) return false;
       const show = hideZero === 'all'
-        || (hideZero === 'show' && Number(asset.balHistory[asset.balHistory.length - 1].balance) === 0)
-        || (hideZero === 'hide' && Number(asset.balHistory[asset.balHistory.length - 1].balance) > 0);
+        || (hideZero === 'show' && asset.balHistory[asset.balHistory.length - 1].balance === 0)
+        || (hideZero === 'hide' && asset.balHistory[asset.balHistory.length - 1].balance > 0);
       return show && (!hideNamed || !namesMap.get(asset.assetAddr));
     });
   }, [hideNamed, hideZero, namesMap, theData, denom]);
@@ -296,7 +294,6 @@ export type AccountViewParams = {
   setLoading: stateSetter<boolean>;
   totalRecords: number | null;
   theData: any;
-  // This should not be passed down, as it is in GlobalState
   setTransactions: any;
   theMeta: any;
   uniqAssets: AssetHistoryArray;

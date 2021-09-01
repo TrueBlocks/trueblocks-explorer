@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Card } from 'antd';
 
-import { double, Reconciliation, Transaction } from '@modules/types';
+import {
+  double, priceReconciliation, Reconciliation, Transaction,
+} from '@modules/types';
 
 import { AccountViewParams } from '../../Dashboard';
 import { useAcctStyles } from '../Details';
@@ -28,40 +30,6 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
   );
 };
 
-//-----------------------------------------------------------------
-const priceReconciliation = (statementIn: Reconciliation, denom: string) => {
-  if (denom === 'ether') {
-    return statementIn;
-  }
-
-  const statement: Reconciliation = JSON.parse(JSON.stringify(statementIn));
-  statement.prevBlkBal = (statementIn.prevBlkBal * statementIn.spotPrice);
-  statement.begBal = (statementIn.begBal * statementIn.spotPrice);
-  statement.begBalDiff = (statementIn.begBalDiff * statementIn.spotPrice);
-  statement.amountIn = (statementIn.amountIn * statementIn.spotPrice);
-  statement.amountOut = (statementIn.amountOut * statementIn.spotPrice);
-  statement.internalIn = (statementIn.internalIn * statementIn.spotPrice);
-  statement.internalOut = (statementIn.internalOut * statementIn.spotPrice);
-  statement.selfDestructIn = (statementIn.selfDestructIn * statementIn.spotPrice);
-  statement.selfDestructOut = (statementIn.selfDestructOut * statementIn.spotPrice);
-  statement.minerBaseRewardIn = (statementIn.minerBaseRewardIn * statementIn.spotPrice);
-  statement.minerNephewRewardIn = (statementIn.minerNephewRewardIn * statementIn.spotPrice);
-  statement.minerTxFeeIn = (statementIn.minerTxFeeIn * statementIn.spotPrice);
-  statement.minerUncleRewardIn = (statementIn.minerUncleRewardIn * statementIn.spotPrice);
-  statement.prefundIn = (statementIn.prefundIn * statementIn.spotPrice);
-  statement.gasCostOut = (statementIn.gasCostOut * statementIn.spotPrice);
-  statement.gasCostOut = (statementIn.gasCostOut * statementIn.spotPrice);
-  statement.endBal = (statementIn.endBal * statementIn.spotPrice);
-  statement.endBalCalc = (statementIn.endBalCalc * statementIn.spotPrice);
-  statement.endBalDiff = (statementIn.endBalDiff * statementIn.spotPrice);
-  statement.amountNet = (statementIn.amountNet * statementIn.spotPrice);
-  statement.totalIn = (statementIn.totalIn * statementIn.spotPrice);
-  statement.totalOut = (statementIn.totalOut * statementIn.spotPrice);
-  statement.totalOutLessGas = (statementIn.totalOutLessGas * statementIn.spotPrice);
-  return statement;
-};
-
-//-----------------------------------------------------------------
 const oneStatement = (
   statement: Reconciliation,
   index: number,
@@ -97,7 +65,9 @@ const statementHeader = (statement: Reconciliation, details: boolean, setShowDet
       {statement.priceSource}
       )
     </div>
-    <div onClick={() => setShowDetails(!details)}>{details ? '-' : '+'}</div>
+    <button style={{ outline: 'none' }} type='button' onClick={() => setShowDetails(!details)}>
+      {details ? '-' : '+'}
+    </button>
   </div>
 );
 
@@ -109,10 +79,10 @@ const statementBody = (statement: Reconciliation, details: boolean, styles: any)
       {DividerRow(rowStyle)}
       {DetailRow(rowStyle, 'assetSymbol', statement.assetSymbol)}
       {DetailRow(rowStyle, 'decimals', statement.decimals)}
+      {DetailRow(rowStyle, 'prevBlk', statement.prevBlk.toString())}
       {DetailRow(rowStyle, 'blockNumber', statement.blockNumber.toString())}
       {DetailRow(rowStyle, 'transactionIndex', statement.transactionIndex.toString())}
       {DetailRow(rowStyle, 'timestamp', statement.timestamp.toString())}
-      {DetailRow(rowStyle, 'prevBlk', statement.prevBlk)}
 
       {DividerRow(rowStyle)}
       {DetailRow(rowStyle, 'type', statement.reconciliationType)}

@@ -505,6 +505,7 @@ const Statement = ({ statement }: { statement: Reconciliation }) => {
     }
   }, [denom, statement.assetSymbol, statement.priceSource]);
 
+  // TODO: the below code should not convert the values to strings
   return (
     <tr className={styles.row} key={`${k}-row`}>
       <td key={`${k}-1`} className={styles.col} style={{ width: '12%' }}>

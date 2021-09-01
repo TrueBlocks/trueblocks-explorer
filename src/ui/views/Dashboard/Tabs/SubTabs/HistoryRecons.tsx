@@ -20,7 +20,7 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
-        {record.statements.map((statement, index) => {
+        {record?.statements?.map((statement, index) => {
           const statementIn = priceReconciliation(statement, denom);
           // TODO: oneStatement should be a component
           return oneStatement(statementIn, index, prefs.showDetails, prefs.setShowDetails, styles, key);

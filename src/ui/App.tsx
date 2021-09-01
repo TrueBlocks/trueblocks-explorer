@@ -15,7 +15,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { either as Either } from 'fp-ts';
 import { pipe } from 'fp-ts/lib/function';
 
-import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
+import {
+  Result, toFailedResult, toSuccessfulData, useCommand,
+} from '@hooks/useCommand';
 import { runCommand } from '@modules/core';
 import { Accountname } from '@modules/types';
 
@@ -44,54 +46,40 @@ export const App = () => {
 
   const { setNamesMap, setNamesArray } = useGlobalNames();
   const [status, setStatus] = useState<Result>(toSuccessfulData({ data: [{}], meta: {} }) as Result);
-  const [loadingStatus, setLoadingStatus] = useState(false);
+  const [loadingStatus] = useState(false);
   const styles = useStyles();
 
   useEffect(() => {
-    (async () => {
+    const fetchStatus = async () => {
       const eitherResponse = await runCommand('status');
       const result: Result = pipe(
         eitherResponse,
         Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
       );
       setStatus(result);
-      setInterval(async () => {
-        const eitherResponse = await runCommand('status');
-        const result: Result = pipe(
-          eitherResponse,
-          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-        );
-        setStatus(result);
-      }, 10 * 1000);
-    })();
+    };
+
+    fetchStatus();
+
+    const intervalId = setInterval(fetchStatus, 10 * 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
+
+  const [namesRequest] = useCommand('names', { expand: true, all: true });
 
   useEffect(() => {
-    (async () => {
-      const eitherResponse = await runCommand('names', { expand: true, all: true });
-      const result: Result = pipe(
-        eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-      );
+    const resultMap = (() => {
+      const { data: fetchedNames } = namesRequest;
 
-      const arrayToObject = (array: any) => array.reduce((obj: any, item: any) => {
-        obj[item.address] = item;
-        return obj;
-      }, {});
-      // const resultMap = arrayToObject(result.data);
+      if (typeof fetchedNames === 'string') return new Map();
 
-      const resultMap = (() => {
-        const { data: fetchedNames } = result;
-
-        if (typeof fetchedNames === 'string') return new Map();
-
-        return new Map((fetchedNames as Accountname[]).map((name: Accountname) => [name.address, name]));
-      })();
-
-      setNamesMap(resultMap);
-      setNamesArray((result.data as Accountname[]));
+      return new Map((fetchedNames as Accountname[]).map((name: Accountname) => [name.address, name]));
     })();
-  }, []);
+
+    setNamesMap(resultMap);
+    setNamesArray([...resultMap.values()]);
+  }, [namesRequest, setNamesMap, setNamesArray]);
 
   const menuItems: MenuItems = [
     {

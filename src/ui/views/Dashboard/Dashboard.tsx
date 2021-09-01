@@ -2,13 +2,12 @@ import React, {
   useEffect, useMemo, useState,
 } from 'react';
 
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
 import Mousetrap from 'mousetrap';
 
 import { BaseView } from '@components/BaseView';
-import { Result, toFailedResult, toSuccessfulData } from '@hooks/useCommand';
-import { runCommand } from '@modules/core';
+import {
+  useCommand,
+} from '@hooks/useCommand';
 import { createErrorNotification } from '@modules/error_notification';
 import {
   AssetHistory,
@@ -16,6 +15,7 @@ import {
   createEmptyAccountname,
   Reconciliation,
   Transaction,
+  TransactionArray,
 } from '@modules/types';
 
 import {
@@ -47,6 +47,7 @@ export const DashboardView = () => {
     transactionsData: transactions, // rename GlobalState.transactionsData to transactions here
     transactionsMeta,
     setTransactions,
+    addTransactions,
   } = useGlobalState();
 
   useEffect(() => {
@@ -57,105 +58,82 @@ export const DashboardView = () => {
     }
   }, [transactionsStatus]);
 
+  // clean up mouse control when we unmount
   useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      if (currentAddress?.slice(0, 2) === '0x') {
-        const eitherResponse = await runCommand('list', {
-          count: true,
-          appearances: true,
-          addrs: currentAddress,
-        });
-
-        if (cancelled) {
-          return;
-        }
-
-        const result: Result = pipe(
-          eitherResponse,
-          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-        );
-
-        setTotalRecords(result.status === 'success' ? result.data[0]?.nRecords : 0);
-      }
-    })();
+    Mousetrap.bind('esc', () => setCancel(true));
 
     return () => {
-      cancelled = true;
+      Mousetrap.unbind(['esc']);
     };
-  }, [currentAddress, setTotalRecords]);
+  }, []);
+
+  const [listRequest] = useCommand(
+    'list',
+    {
+      count: true,
+      appearances: true,
+      addrs: currentAddress as string,
+    },
+    () => currentAddress?.slice(0, 2) === '0x',
+    [currentAddress],
+  );
+
+  useEffect(() => {
+    setTotalRecords(listRequest.status === 'success' ? listRequest.data[0]?.nRecords : 0);
+  }, [listRequest.data, listRequest.status, setTotalRecords]);
 
   // Run this effect until we fetch the last transaction
+  const [transactionsRequest, transactionsLoading] = useCommand(
+    'export',
+    {
+      addrs: currentAddress as string,
+      fmt: 'json',
+      cache_txs: true,
+      cache_traces: true,
+      staging: false, // staging,
+      unripe: false, // unripe: true,
+      ether: true,
+      dollars: false,
+      articulate: true,
+      accounting: true,
+      reversed: false,
+      relevant: true,
+      // summarize_by: 'monthly',
+      first_record: transactions.length,
+      max_records: (() => {
+        if (transactions.length < 50) return 10;
+
+        if (transactions.length < 150) return 71;
+
+        if (transactions.length < 1500) return 239;
+
+        return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
+      })(),
+    },
+    () => Boolean(!cancel && currentAddress && totalRecords && transactions.length < totalRecords),
+    [currentAddress, totalRecords, transactions.length],
+  );
+
   useEffect(() => {
-    let cancelled = false;
+    const stateToSet = !transactionsLoading ? false : transactions.length < 10;
 
-    (async () => {
-      const transactionCount = transactions.length;
+    setLoading(stateToSet);
+  }, [transactions.length, transactionsLoading]);
 
-      if (!cancel && totalRecords && transactionCount < totalRecords) {
-        setLoading(transactionCount < 10);
-        const eitherResponse = await runCommand('export', {
-          addrs: currentAddress || '', // TODO: this is a quick and dirty fix
-          fmt: 'json',
-          cache_txs: true,
-          cache_traces: true,
-          staging: false, // staging,
-          unripe: false, // unripe: true,
-          ether: true,
-          dollars: false,
-          articulate: true,
-          accounting: true,
-          reversed: false,
-          relevant: true,
-          // summarize_by: 'monthly',
-          first_record: transactionCount,
-          max_records: (() => {
-            if (transactionCount < 50) return 10;
+  useEffect(() => {
+    if (!transactionsRequest.data.length) return;
 
-            if (transactionCount < 150) return 71;
-
-            if (transactionCount < 1500) return 239;
-
-            return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
-          })(),
-        });
-
-        if (cancelled) {
-          return;
-        }
-
-        const result: Result = pipe(
-          eitherResponse,
-          Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-        );
-
-        setTransactions({
-          result: toSuccessfulData({
-            data: [
-              ...transactions,
-              ...(result.data as []),
-            ],
-            meta: transactionsMeta,
-          }),
-          loading: false,
-        });
-        setLoading(false);
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, [currentAddress, setTransactions, totalRecords, transactions, transactionsMeta, cancel]);
-
-  // clean up mouse control when we unmount
-  useEffect(() => () => {
-    Mousetrap.unbind(['esc']);
-  }, []);
-  Mousetrap.bind('esc', () => setCancel(true));
+    addTransactions(
+      transactionsRequest.data as TransactionArray,
+    );
+  }, [addTransactions, transactionsRequest, transactionsRequest.data]);
 
   // Store raw data, because it can be huge and we don't want to have to reload it
   // every time a user toggles "hide reconciled".
   const transactionModels = useMemo(() => (transactions as Transaction[])
+    // TODO: remove this filter when we fix emptyData in useCommand (it should never
+    // return an array with an empty object)
+    .filter(({ hash }) => Boolean(hash))
     .map((transaction, index) => {
       const newId = String(index + 1);
       const fromName = namesMap.get(transaction.from) || createEmptyAccountname();

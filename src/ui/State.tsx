@@ -9,9 +9,17 @@ import { ReactNode } from 'react-markdown';
 
 import Cookies from 'js-cookie';
 
-import { toSuccessfulData, useCommand } from '@hooks/useCommand';
-import { getThemeByName, Theme, ThemeName } from '@modules/themes';
-import { Accountname, address as Address } from '@modules/types';
+import {
+  getThemeByName, Theme, ThemeName,
+} from '@modules/themes';
+import {
+  Accountname,
+  address as Address,
+  createEmptyTransactionsQuery,
+  createTransactionsQuery,
+  TransactionArray,
+  TransactionsQueryState,
+} from '@modules/types';
 
 const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');
@@ -25,11 +33,6 @@ type NamesEditModalState = {
   tags: string
 }
 
-export type TransactionsQueryState = {
-  result: ReturnType<typeof useCommand>[0],
-  loading: ReturnType<typeof useCommand>[1]
-};
-
 type State = {
   theme: Theme,
   denom: string,
@@ -41,15 +44,6 @@ type State = {
   transactions: TransactionsQueryState,
   totalRecords: number,
 }
-
-const createDefaultTransaction = () => toSuccessfulData({
-  data: [], meta: {},
-});
-
-const getDefaultTransactionsValue = () => ({
-  result: createDefaultTransaction(),
-  loading: false,
-});
 
 const getDefaultNamesEditModalValue = () => ({
   address: '',
@@ -67,7 +61,7 @@ const initialState: State = {
   namesArray: [],
   namesEditModalVisible: false,
   namesEditModal: getDefaultNamesEditModalValue(),
-  transactions: getDefaultTransactionsValue(),
+  transactions: createEmptyTransactionsQuery(),
   totalRecords: 0,
 };
 
@@ -111,6 +105,11 @@ type SetTransactions = {
   transactions: State['transactions'],
 };
 
+type AddTransactions = {
+  type: 'ADD_TRANSACTIONS',
+  transactions: TransactionArray,
+};
+
 type SetTotalRecords = {
   type: 'SET_TOTAL_RECORDS',
   records: State['totalRecords'],
@@ -125,6 +124,7 @@ type GlobalAction =
   | SetNamesEditModal
   | SetNamesEditModalVisible
   | SetTransactions
+  | AddTransactions
   | SetTotalRecords;
 
 const GlobalStateContext = createContext<[
@@ -154,7 +154,7 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
         return {
           ...state,
           currentAddress: action.address,
-          transactions: getDefaultTransactionsValue(),
+          transactions: createEmptyTransactionsQuery(),
           totalRecords: 0,
         };
       }
@@ -185,6 +185,20 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
         ...state,
         transactions: action.transactions,
       };
+    case 'ADD_TRANSACTIONS': {
+      const currentTransactions = state.transactions.result.data;
+
+      return {
+        ...state,
+        transactions: createTransactionsQuery({
+          queryData: [
+            ...(typeof currentTransactions === 'string' ? [] : currentTransactions),
+            ...action.transactions,
+          ],
+          meta: state.transactions.result.meta,
+        }),
+      };
+    }
     case 'SET_TOTAL_RECORDS':
       return {
         ...state,
@@ -210,13 +224,13 @@ export const useGlobalState = () => {
     dispatch({ type: 'SET_CURRENT_ADDRESS', address });
   };
 
-  const setNamesMap = (namesMap: SetNamesMap['namesMap']) => {
+  const setNamesMap = useCallback((namesMap: SetNamesMap['namesMap']) => {
     dispatch({ type: 'SET_NAMES_MAP', namesMap });
-  };
+  }, [dispatch]);
 
-  const setNamesArray = (namesArray: SetNamesArray['namesArray']) => {
+  const setNamesArray = useCallback((namesArray: SetNamesArray['namesArray']) => {
     dispatch({ type: 'SET_NAMES_ARRAY', namesArray });
-  };
+  }, [dispatch]);
 
   const setNamesEditModal = (val: SetNamesEditModal['val']) => {
     dispatch({ type: 'SET_NAMES_EDIT_MODAL', val });
@@ -228,6 +242,10 @@ export const useGlobalState = () => {
 
   const setTransactions = useCallback((transactions: SetTransactions['transactions']) => {
     dispatch({ type: 'SET_TRANSACTIONS', transactions });
+  }, [dispatch]);
+
+  const addTransactions = useCallback((transactions: TransactionArray) => {
+    dispatch({ type: 'ADD_TRANSACTIONS', transactions });
   }, [dispatch]);
 
   const setTotalRecords = useCallback((records: SetTotalRecords['records']) => {
@@ -255,6 +273,7 @@ export const useGlobalState = () => {
     transactionsMeta: state.transactions.result.meta,
     transactionsLoading: state.transactions.loading,
     setTransactions,
+    addTransactions,
     totalRecords: state.totalRecords,
     setTotalRecords,
   };

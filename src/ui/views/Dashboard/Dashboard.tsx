@@ -171,6 +171,7 @@ export const DashboardView = () => {
 
       unique.forEach((asset: AssetHistory, index: number) => {
         const found = tx.statements?.find((statement: Reconciliation) => asset.assetAddr === statement.assetAddr);
+        // TODO: do not convert the below to strings
         if (found) {
           unique[index].balHistory = [
             ...unique[index].balHistory,

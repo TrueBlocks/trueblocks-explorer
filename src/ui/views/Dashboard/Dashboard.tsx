@@ -36,7 +36,7 @@ export const DashboardView = () => {
   const [hideReconciled, setHideReconciled] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [period, setPeriod] = useState('by tx');
-  const [, setCancel] = useState(false);
+  const [cancel, setCancel] = useState(false);
 
   const { currentAddress } = useGlobalState();
   const { namesMap } = useGlobalNames();
@@ -109,7 +109,7 @@ export const DashboardView = () => {
         return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
       })(),
     },
-    () => Boolean(currentAddress && totalRecords && transactions.length < totalRecords),
+    () => Boolean(!cancel && currentAddress && totalRecords && transactions.length < totalRecords),
     [currentAddress, totalRecords, transactions.length],
   );
 
@@ -130,6 +130,9 @@ export const DashboardView = () => {
   // Store raw data, because it can be huge and we don't want to have to reload it
   // every time a user toggles "hide reconciled".
   const transactionModels = useMemo(() => (transactions as Transaction[])
+    // TODO: remove this filter when we fix emptyData in useCommand (it should never
+    // return an array with an empty object)
+    .filter(({ hash }) => Boolean(hash))
     .map((transaction, index) => {
       const newId = String(index + 1);
       const fromName = namesMap.get(transaction.from) || createEmptyAccountname();

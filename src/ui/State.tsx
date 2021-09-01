@@ -187,6 +187,7 @@ const GlobalStateReducer = (state: State, action: GlobalAction) => {
       };
     case 'ADD_TRANSACTIONS': {
       const currentTransactions = state.transactions.result.data;
+
       return {
         ...state,
         transactions: createTransactionsQuery({

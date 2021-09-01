@@ -161,9 +161,6 @@ export const Names = () => {
     })
       .then((result) => result.json())
       .then(() => {
-        // TODO(tjayrush): Does this check for backend error?
-        // (dawid): no, it does not. Also it does not check for network error,
-        //          but we will fix it together with runCommand
         const newAddresses = [...addresses];
         const foundAddressIndex = newAddresses.findIndex(
           (item: Accountname) => item.address === namesEditModal.address,

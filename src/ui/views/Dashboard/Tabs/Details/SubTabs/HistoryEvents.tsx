@@ -4,13 +4,15 @@ import { Card } from 'antd';
 
 import { LogentryArray, Transaction } from '@modules/types';
 
-import { useAcctStyles } from '../Details';
+import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
 export const HistoryEvents = ({ record }: { record: Transaction }) => {
+  const styles = useAcctStyles();
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
-  const styles = useAcctStyles();
+  // TODO: Comment by @dszlachta
+  // TODO: Line 28-29 should not require `?`, but if I remove them, it complains
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
@@ -23,8 +25,8 @@ export const HistoryEvents = ({ record }: { record: Transaction }) => {
           hoverable
           title='Events'
         >
-          {showLogs(record?.receipt?.logs, key, true)}
-          {showLogs(record?.receipt?.logs, key, false)}
+          {showLogs(record?.receipt?.logs, true)}
+          {showLogs(record?.receipt?.logs, false)}
         </Card>
       </div>
     </div>
@@ -32,12 +34,12 @@ export const HistoryEvents = ({ record }: { record: Transaction }) => {
 };
 
 //-----------------------------------------------------------------
-const showLogs = (logs: LogentryArray, key: string, relevant: boolean) => {
+const showLogs = (logs: LogentryArray, relevant: boolean) => {
   if (!logs) return <></>;
   return logs.map((log, index) => {
-    if ((relevant && !log.address) || (!relevant && log.address)) return <div key={key + index} />;
+    if ((relevant && !log.address) || (!relevant && log.address)) return <div key={log.logIndex} />;
     return (
-      <pre key={key + index}>
+      <pre key={log.logIndex}>
         [
         {index}
         {log.address ? `-${log.logIndex}` : ''}

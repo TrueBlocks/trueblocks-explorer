@@ -1,7 +1,12 @@
 import React from 'react';
 
+import { ColumnsType } from 'antd/lib/table';
+
 import { BaseView } from '@components/BaseView';
-import { BaseTable } from '@components/Table';
+import { addColumn, BaseTable } from '@components/Table';
+import {
+  Transaction,
+} from '@modules/types';
 
 import {
   DashboardAccountsHistoryCustomLocation,
@@ -9,10 +14,13 @@ import {
   DashboardAccountsHistoryFunctionsLocation,
   DashboardAccountsHistoryReconsLocation,
   DashboardAccountsHistoryTracesLocation,
-} from '../../../../Routes';
-import { useGlobalState } from '../../../../State';
-import { AccountViewParams } from '../../Dashboard';
-import { transactionSchema } from '../Details';
+} from '../../../../../Routes';
+import { useGlobalState } from '../../../../../State';
+import { AccountViewParams } from '../../../Dashboard';
+import { DateDisplay } from '../components/DateDisplay';
+import { ExtraDisplay } from '../components/ExtraDisplay';
+import { FromToDisplay } from '../components/FromToDisplay';
+import { StatementDisplay } from '../components/StatementDisplay';
 import { HistoryEvents } from './HistoryEvents';
 import { HistoryFunctions } from './HistoryFunctions';
 import { HistoryRecons } from './HistoryRecons';
@@ -65,3 +73,38 @@ export const AccountHistorySider = ({ record, params }: { record: any; params: A
 
   return <BaseView title='' cookieName='COOKIE_DASHBOARD_DETAILS' tabs={tabs} />;
 };
+
+export const transactionSchema: ColumnsType<Transaction> = [
+  addColumn({
+    title: 'Date',
+    dataIndex: 'date',
+    configuration: {
+      width: '15%',
+      render: (unused, record) => <DateDisplay record={record} />,
+    },
+  }),
+  addColumn({
+    title: 'From / To',
+    dataIndex: 'from',
+    configuration: {
+      width: '30%',
+      render: (unused, record) => <FromToDisplay record={record} />,
+    },
+  }),
+  addColumn({
+    title: 'Reconciliations (asset, beg, in, out, gasOut, end, check)',
+    dataIndex: 'compressedTx',
+    configuration: {
+      width: '50%',
+      render: (unused, record) => <StatementDisplay record={record} />,
+    },
+  }),
+  addColumn({
+    title: '',
+    dataIndex: 'statements',
+    configuration: {
+      width: '5%',
+      render: (unused, record) => <ExtraDisplay record={record} />,
+    },
+  }),
+];

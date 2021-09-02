@@ -4,7 +4,7 @@ import { Card } from 'antd';
 
 import { LogentryArray, Transaction } from '@modules/types';
 
-import { useAcctStyles } from '../Details';
+import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
 export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {

@@ -7,10 +7,10 @@ import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
 import { AssetHistory, Balance } from '@modules/types';
 
-import { DashboardAccountsHistoryLocation } from '../../../../Routes';
-import { useGlobalNames, useGlobalState } from '../../../../State';
-import { chartColors } from '../../../../Utilities';
-import { AccountViewParams } from '../../Dashboard';
+import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
+import { useGlobalNames, useGlobalState } from '../../../../../State';
+import { chartColors } from '../../../../../Utilities';
+import { AccountViewParams } from '../../../Dashboard';
 
 export const Charts = ({ params }: { params: AccountViewParams }) => {
   const { uniqAssets } = params;
@@ -58,7 +58,7 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
   const { namesMap } = useGlobalNames();
   const { currentAddress } = useGlobalState();
 
-  const links: any = [];
+  const links = [];
   links.push(<Link to={`${DashboardAccountsHistoryLocation}?asset=${asset.assetAddr}`}>History</Link>);
   if (!namesMap.get(asset.assetAddr)) {
     links.push(
@@ -85,14 +85,21 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
     </a>,
   );
 
+  // TODO: Comment from @dszlachta
+  // TODO: I think that it would be good to use useMemo here, so we don't have
+  // TODO: to perform the lookup when the component re-renders:
+  // TODO: const tokenSymbol = useMemo(() => /* lookupHere */, [deps]);
+  // TODO: You could then cache namesMap.get(asset.assetAddrs) and
+  // TODO: asset.assetSymbol.substr(0, 15) in variables
+  const tokenSymbol = namesMap.get(asset.assetAddr)
+    ? namesMap.get(asset.assetAddr)?.name?.substr(0, 15) + (asset.assetSymbol
+      ? ` (${asset.assetSymbol.substr(0, 15)})`
+      : '')
+    : asset.assetSymbol.substr(0, 15);
+
   return (
     <div key={`${index}d1`} style={{ overflowX: 'hidden' }}>
-      {asset.assetSymbol === 'ETH'
-        ? asset.assetSymbol
-        : namesMap.get(asset.assetAddr)
-          ? namesMap.get(asset.assetAddr)?.name?.substr(0, 15)
-          + (asset.assetSymbol ? ` (${asset.assetSymbol.substr(0, 15)})` : '')
-          : asset.assetSymbol.substr(0, 15)}
+      {asset.assetSymbol === 'ETH' ? asset.assetSymbol : tokenSymbol}
       <br />
       <small>
         (
@@ -101,8 +108,8 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
         txs)
         {' '}
         <small>
-          {links.map((link: any, index: number) => (
-            <div key={index} style={{ display: 'inline' }}>
+          {links.map((link) => (
+            <div key={`${link}`} style={{ display: 'inline' }}>
               [
               {link}
               ]

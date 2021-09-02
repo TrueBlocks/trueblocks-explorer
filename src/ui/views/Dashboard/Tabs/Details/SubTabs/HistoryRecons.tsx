@@ -6,8 +6,8 @@ import {
   double, priceReconciliation, Reconciliation, Transaction,
 } from '@modules/types';
 
-import { AccountViewParams } from '../../Dashboard';
-import { useAcctStyles } from '../Details';
+import { AccountViewParams } from '../../../Dashboard';
+import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
 export const HistoryRecons = ({ record, params }: { record: Transaction; params: AccountViewParams }) => {
@@ -20,9 +20,8 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
-        {record?.statements?.map((statement, index) => {
+        {record?.statements?.map((statement: Reconciliation, index: number) => {
           const statementIn = priceReconciliation(statement, denom);
-          // TODO: oneStatement should be a component
           return oneStatement(statementIn, index, prefs.showDetails, prefs.setShowDetails, styles, key);
         })}
       </div>
@@ -75,7 +74,6 @@ const statementHeader = (statement: Reconciliation, details: boolean, setShowDet
 //-----------------------------------------------------------------
 const statementBody = (statement: Reconciliation, details: boolean, styles: any) => {
   const rowStyle = styles.tableRow;
-  // TODO: Make all the components instead of function calls
   const detailView = !details ? <></> : (
     <>
       {DividerRow(rowStyle)}
@@ -122,7 +120,6 @@ const statementBody = (statement: Reconciliation, details: boolean, styles: any)
 };
 
 //-----------------------------------------------------------------
-// TODO: Why the '2', this should be a component.
 const clip2 = (num: double) => {
   if (!num) return <div style={{ color: 'lightgrey' }}>-</div>;
   return <div>{Number(num).toFixed(5)}</div>;
@@ -132,34 +129,43 @@ const clip2 = (num: double) => {
 const BodyRow = (
   style: string,
   name: string,
-  valueIn: double = 0.0,
-  valueOut: double = 0.0,
-  balance: double = 0.0,
-  diffIn: double = 0.0,
-) => (
-  <tr>
-    <td className={style} style={{ width: '100px' }}>
-      {name}
-    </td>
-    <td className={style} style={{ width: '20px' }} />
-    <td className={style} style={{ width: '100px' }}>
-      {clip2(valueIn)}
-    </td>
-    <td className={style} style={{ width: '100px' }}>
-      {clip2(valueOut)}
-    </td>
-    <td className={style} style={{ width: '100px' }}>
-      {clip2(balance)}
-    </td>
-    <td className={style} style={{ width: '100px', color: 'red' }}>
-      {clip2(diffIn)}
-    </td>
-  </tr>
-);
+  valueIn: double = 0,
+  valueOut: double = 0,
+  balance: double = 0,
+  diffIn: double = 0,
+) => {
+  // TODO: Comment by @dszlachta
+  // TODO: If I remove Number here, the test fails and empty rows show up on Reconciliation component
+  if (Number(valueIn) === 0
+    && Number(valueOut) === 0
+    && Number(balance) === 0
+    && Number(diffIn) === 0
+    && (name !== 'begBal' && name !== 'endBal')) { return <></>; }
+  return (
+    <tr>
+      <td className={style} style={{ width: '100px' }}>
+        {name}
+      </td>
+      <td className={style} style={{ width: '20px' }} />
+      <td className={style} style={{ width: '100px' }}>
+        {clip2(valueIn)}
+      </td>
+      <td className={style} style={{ width: '100px' }}>
+        {clip2(valueOut)}
+      </td>
+      <td className={style} style={{ width: '100px' }}>
+        {clip2(balance)}
+      </td>
+      <td className={style} style={{ width: '100px', color: 'red' }}>
+        {clip2(diffIn)}
+      </td>
+    </tr>
+  );
+};
 
 //-----------------------------------------------------------------
 const DetailRow = (style: string, name: string, value: double | string) => {
-  const isErr: boolean = name?.includes('Diff') && value !== 0.0;
+  const isErr: boolean = name?.includes('Diff') && value !== 0;
   const disp = (
     <tr>
       <td className={style} style={{ width: '100px' }} colSpan={2}>

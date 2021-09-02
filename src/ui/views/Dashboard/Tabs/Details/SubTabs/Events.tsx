@@ -9,18 +9,31 @@ import {
   ItemCounter, ItemCounterArray, Transaction, TransactionArray,
 } from '@modules/types';
 
-import { DashboardAccountsHistoryLocation } from '../../../../Routes';
+import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
 
 export const Events = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
   if (!theData) return <></>;
 
-  const counts = Object.create(null);
-  theData.forEach((item: Transaction, i: number) => {
-    item.receipt?.logs?.map((item: any) => {
-      if (item.articulatedLog) {
-        if (!counts[item.articulatedLog?.name]) counts[item.articulatedLog?.name] = 1;
-        else counts[item.articulatedLog?.name] = Number(counts[item.articulatedLog?.name]) + 1;
+  const counts: Record<string, number> = {};
+  // TODO: Comment by @dszlachta
+  // TODO: Would you say that it's worth it to move the inner loop (map) outside?
+  // TODO: I find it easier to understand the code when loops are outside, but
+  // TODO: this is a personal preference.
+  // TODO: note that you don't need type annotations here, TS can infer them.
+  // TODO: flatMap is like map, but it flattens the resulting array of arrays
+  // TODO:  theData.flatMap((item) => item.receipt.logs)
+  // TODO:     .forEach((log) => {
+  // TODO:       if (!log.articulatedLog) return; // BTW, type definition says it's always present
+  // TODO:       const countKey = log.articulatedLog.name;
+  // TODO:       counts[countKey] = (counts[countKey] || 0) + 1;
+  // TODO:     });
+  theData.forEach((item: Transaction) => {
+    item.receipt?.logs?.map((log: any) => {
+      if (log.articulatedLog) {
+        if (!counts[log.articulatedLog?.name]) counts[log.articulatedLog?.name] = 1;
+        else counts[log.articulatedLog?.name] = Number(counts[log.articulatedLog?.name]) + 1;
       }
+      return null;
     });
   });
 
@@ -30,6 +43,7 @@ export const Events = ({ theData, loading }: { theData: TransactionArray; loadin
       evt: key,
       count: counts[key],
     });
+    return null;
   });
 
   uniqItems.sort((a: ItemCounter, b: ItemCounter) => {

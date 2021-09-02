@@ -9,13 +9,13 @@ import {
   ItemCounter, ItemCounterArray, Transaction, TransactionArray,
 } from '@modules/types';
 
-import { DashboardAccountsHistoryLocation } from '../../../../Routes';
+import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
 
 export const Functions = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
   if (!theData) return <></>;
 
-  const counts = Object.create(null);
-  theData.forEach((item: Transaction, i: number) => {
+  const counts: Record<string, number> = {};
+  theData.forEach((item: Transaction) => {
     if (item.articulatedTx) {
       const k = item.articulatedTx.name + (item.isError ? ' (errored)' : '');
       if (!counts[k]) counts[k] = 1;
@@ -29,6 +29,7 @@ export const Functions = ({ theData, loading }: { theData: TransactionArray; loa
       evt: key,
       count: counts[key],
     });
+    return null;
   });
 
   uniqItems.sort((a: ItemCounter, b: ItemCounter) => {

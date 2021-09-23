@@ -3,18 +3,18 @@ import {
 } from '@modules/types';
 
 export type Receipt = {
-  blockHash: hash;
-  blockNumber: blknum;
+  blockHash?: hash;
+  blockNumber?: blknum;
   contractAddress: address;
-  cumulativeGasUsed: wei;
-  from: address;
+  cumulativeGasUsed?: wei;
+  from?: address;
   gasUsed: gas;
   effectiveGasPrice: gas;
-  logs: LogentryArray;
-  root: bytes32;
-  status: string;
-  to: address;
-  transactionHash: hash;
-  transactionIndex: blknum;
+  logs?: LogentryArray;
+  root?: bytes32;
+  status: string | number;
+  to?: address;
+  transactionHash?: hash;
+  transactionIndex?: blknum;
 };
 export type ReceiptArray = Receipt[];

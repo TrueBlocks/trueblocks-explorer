@@ -10,7 +10,7 @@ export const Pills = ({ record } : {record: Transaction}) => {
   const isErr = record.isError;
   const isInt = record.to !== record.extraData && record.from !== record.extraData;
   const isCon = record.to === '0x0';
-  const is20 = record.toName?.is_erc20 || record?.statements?.length > 1;
+  const is20 = record.toName?.is_erc20 || (record?.statements?.length || 0) > 1;
   const is721 = record.toName?.is_erc721;
   const Pill = (name: string, tag: string, show: boolean) => (
     show
@@ -20,10 +20,10 @@ export const Pills = ({ record } : {record: Transaction}) => {
   return (
     <div style={{ display: 'flex' }}>
       {Pill('int', style.intTag, isInt)}
-      {Pill('err', style.errTag, isErr)}
+      {Pill('err', style.errTag, Boolean(isErr))}
       {Pill('con', style.conTag, isCon)}
       {Pill('erc20', style.tok20Tag, is20 && !is721)}
-      {Pill('erc721', style.tok721Tag, is721)}
+      {Pill('erc721', style.tok721Tag, Boolean(is721))}
     </div>
   );
 };

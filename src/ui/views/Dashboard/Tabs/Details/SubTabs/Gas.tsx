@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Transaction, TransactionArray } from '@modules/types';
 
-export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
+export const Gas = ({ theData }: { theData: TransactionArray }) => {
   if (!theData) return <></>;
   const usesGas = theData.filter((tx: Transaction) => {
     if (!tx.statements) return false;
@@ -10,14 +10,14 @@ export const Gas = ({ theData, loading }: { theData: TransactionArray; loading: 
     return stmts.length > 0;
   });
 
-  const stmts = usesGas.map((tx: Transaction) => tx.statements.map((st) => ({
+  const stmts = usesGas.map((tx: Transaction) => (tx.statements || []).map((st) => ({
     blockNumber: tx.blockNumber,
     transactionIndex: tx.transactionIndex,
     hash: tx.hash,
     from: tx.from,
-    fromName: tx.fromName.name,
+    fromName: tx.fromName?.name,
     to: tx.to,
-    toName: tx.toName.name,
+    toName: tx.toName?.name,
     isError: tx.isError,
     asset: st.assetSymbol,
     gasCostOut: st.gasCostOut,

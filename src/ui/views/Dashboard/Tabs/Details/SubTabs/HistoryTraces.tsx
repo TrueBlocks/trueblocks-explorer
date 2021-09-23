@@ -8,9 +8,9 @@ import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
 export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
+  const styles = useAcctStyles();
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
-  const styles = useAcctStyles();
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
@@ -23,7 +23,7 @@ export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
           hoverable
           title='Events'
         >
-          {showLogs(record?.receipt?.logs)}
+          {showLogs(record?.receipt?.logs || [])}
         </Card>
       </div>
     </div>

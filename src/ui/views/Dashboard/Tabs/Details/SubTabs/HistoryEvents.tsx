@@ -25,8 +25,8 @@ export const HistoryEvents = ({ record }: { record: Transaction }) => {
           hoverable
           title='Events'
         >
-          {showLogs(record?.receipt?.logs, true)}
-          {showLogs(record?.receipt?.logs, false)}
+          {showLogs(record?.receipt?.logs || [], true)}
+          {showLogs(record?.receipt?.logs || [], false)}
         </Card>
       </div>
     </div>

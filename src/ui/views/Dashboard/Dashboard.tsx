@@ -150,7 +150,7 @@ export const DashboardView = () => {
   const theData = useMemo(() => transactionModels.filter((transaction) => {
     if (!hideReconciled) return true;
 
-    return transaction.statements.some(({ reconciled }) => !reconciled);
+    return transaction?.statements?.some?.(({ reconciled }) => !reconciled);
   }), [hideReconciled, transactionModels]);
 
   const uniqAssets = useMemo(() => {

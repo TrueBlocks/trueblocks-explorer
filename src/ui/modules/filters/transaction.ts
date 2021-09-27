@@ -21,8 +21,8 @@ export function createTransactionFilter(filter: (v: string, t: TransactionArray)
 
 export const filterTransactionsByAsset = createTransactionFilter(
   (assetAddress, transactions) => transactions
-    .filter(({ receipt }) => receipt?.logs
-      ?.find?.(({ articulatedLog }) => articulatedLog?.inputs.token === assetAddress)),
+    .filter(({ statements }) => statements
+      ?.find?.(({ assetAddr }) => assetAddr === assetAddress)),
 );
 
 export function filterTransactionsByEventName(eventName: string, transactions: TransactionArray) {

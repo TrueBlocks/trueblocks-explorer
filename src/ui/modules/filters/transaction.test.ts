@@ -35,8 +35,8 @@ describe('filterTransactionsByAsset', () => {
 
     const expected = typedSampleTransactions
       .filter(
-        ({ receipt }) => receipt?.logs
-          ?.find?.(({ articulatedLog }) => articulatedLog?.inputs.token === assetAddress),
+        ({ statements }) => statements
+          ?.find?.(({ assetAddr }) => assetAddr === assetAddress),
       );
 
     expect(result).toEqual(expected);

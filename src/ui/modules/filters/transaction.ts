@@ -9,7 +9,9 @@ export const TransactionEquality: Eq<Transaction> = {
   },
 };
 
-export function createTransactionFilter(filter: (v: string, t: TransactionArray) => TransactionArray) {
+export function createTransactionFilter(
+  filter: (valueToFilterBy: string, transactions: TransactionArray) => TransactionArray,
+) {
   return (valueToFilterBy: string, transactions: TransactionArray) => {
     if (!valueToFilterBy) return none;
 
@@ -21,25 +23,62 @@ export function createTransactionFilter(filter: (v: string, t: TransactionArray)
 
 export const filterTransactionsByAsset = createTransactionFilter(
   (assetAddress, transactions) => transactions
-    .filter(({ statements }) => statements
-      ?.find?.(({ assetAddr }) => assetAddr === assetAddress)),
+    .filter((transaction) => hasTransactionAsset(transaction, assetAddress)),
 );
 
-export function filterTransactionsByEventName(eventName: string, transactions: TransactionArray) {
-  if (!eventName) return none;
+export const filterTransactionsByEventName = createTransactionFilter(
+  (eventName, transactions) => transactions
+    .filter((transaction) => hasTransactionEvent(transaction, eventName)),
+);
 
-  const foundTransactions = transactions
-    .filter(({ receipt }) => receipt?.logs
-      ?.find?.(({ articulatedLog }) => articulatedLog?.name === eventName));
+export const filterTransactionsByFunctionName = createTransactionFilter(
+  (functionName, transactions) => transactions
+    .filter((transaction) => hasTransactionFunction(transaction, functionName)),
+);
 
-  return foundTransactions.length ? some(foundTransactions) : none;
+export function hasTransactionAsset({ statements }: Transaction, assetAddress: string) {
+  if (!assetAddress) return false;
+
+  return Boolean(
+    statements
+      ?.find?.(({ assetAddr }) => assetAddr === assetAddress),
+  );
 }
 
-export function filterTransactionsByFunctionName(functionName: string, transactions: TransactionArray) {
-  if (!functionName) return none;
+export function hasTransactionEvent({ receipt }: Transaction, eventName: string) {
+  if (!eventName) return false;
 
-  const foundTransactions = transactions
-    .filter(({ articulatedTx }) => articulatedTx?.name === functionName);
+  return Boolean(
+    receipt?.logs
+      ?.find?.(({ articulatedLog }) => articulatedLog?.name === eventName),
+  );
+}
 
-  return foundTransactions.length ? some(foundTransactions) : none;
+export function hasTransactionFunction({ articulatedTx }: Transaction, functionName: string) {
+  if (!functionName) return false;
+
+  return articulatedTx?.name === functionName;
+}
+
+export function applyFilters(
+  transactions: TransactionArray,
+  { assetAddress, eventName, functionName }: { assetAddress?: string, eventName?: string, functionName?: string },
+) {
+  return transactions.filter((transaction) => {
+    const results = [];
+
+    if (assetAddress) {
+      results.push(hasTransactionAsset(transaction, assetAddress));
+    }
+
+    if (eventName) {
+      results.push(hasTransactionEvent(transaction, eventName));
+    }
+
+    if (functionName) {
+      results.push(hasTransactionFunction(transaction, functionName));
+    }
+
+    return results.every(Boolean);
+  });
 }

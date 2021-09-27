@@ -11,7 +11,7 @@ type ArticulatedLog = {
 }
 
 export type Logentry = {
-  address: address;
+  address?: address;
   blockHash?: hash;
   blockNumber?: blknum;
   logIndex: blknum;

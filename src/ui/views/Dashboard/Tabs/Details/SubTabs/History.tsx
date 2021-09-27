@@ -4,18 +4,13 @@ import React, {
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { ColumnsType } from 'antd/lib/table';
-import { intersection } from 'fp-ts/lib/Array';
-import { fold } from 'fp-ts/lib/Option';
 
 import { BaseView } from '@components/BaseView';
 import { FilterButton } from '@components/FilterButton';
 import { addColumn, BaseTable } from '@components/Table';
 import { useSearchParams } from '@hooks/useSearchParams';
 import {
-  filterTransactionsByAsset,
-  filterTransactionsByEventName,
-  filterTransactionsByFunctionName,
-  TransactionEquality,
+  applyFilters,
 } from '@modules/filters/transaction';
 import {
   Transaction,
@@ -82,28 +77,11 @@ export const History = ({ params }: { params: AccountViewParams }) => {
   const filteredData = useMemo(() => {
     if (!assetToFilterBy && !eventToFilterBy && !functionToFilterBy) return theData;
 
-    const getSubsetOfData = fold<Transaction[], Transaction[]>(
-      () => [],
-      (someTransactions) => someTransactions,
-    );
-
-    const byAsset = filterTransactionsByAsset(assetToFilterBy, theData);
-    const byEvent = filterTransactionsByEventName(eventToFilterBy, theData);
-    const byFunction = filterTransactionsByFunctionName(functionToFilterBy, theData);
-
-    // This is very naive and suboptimal implementation of filtering feature. We have to
-    // come up with some general and performant method of filtering large datasets, then
-    // we can improve here.
-    const nonEmptyResults = [byAsset, byEvent, byFunction]
-      .map(getSubsetOfData)
-      .filter(({ length }) => length > 0);
-
-    if (nonEmptyResults.length === 1) return nonEmptyResults[0];
-
-    if (!nonEmptyResults.length) return [];
-
-    return nonEmptyResults
-      .reduce(intersection(TransactionEquality));
+    return applyFilters(theData, {
+      assetAddress: assetToFilterBy,
+      eventName: eventToFilterBy,
+      functionName: functionToFilterBy,
+    });
   }, [assetToFilterBy, eventToFilterBy, functionToFilterBy, theData]);
 
   const makeClearFilter = (searchParamKey: string) => () => {

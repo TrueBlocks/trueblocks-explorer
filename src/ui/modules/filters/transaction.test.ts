@@ -72,3 +72,23 @@ describe('filterTransactionsByFunctionName', () => {
     expect(result).toEqual(expected);
   });
 });
+
+describe('applyFilters', () => {
+  const USDC = '0xdac17f958d2ee523a2206206994597c13d831ec7';
+  it('applies single filter', () => {
+    const result = TransactionFilters.applyFilters(typedSampleTransactions, {
+      assetAddress: USDC,
+    });
+
+    expect(result[0].hash).toBe('0x18b427cc805527fb9a16900d722a950a21ea53ed38b4250ed054105158992ceb');
+  });
+
+  it('applies multiple filters', () => {
+    const result = TransactionFilters.applyFilters(typedSampleTransactions, {
+      assetAddress: USDC,
+      functionName: 'donate',
+    });
+
+    expect(result[0].hash).toBe('0x18b427cc805527fb9a16900d722a950a21ea53ed38b4250ed054105158992ceb');
+  });
+});

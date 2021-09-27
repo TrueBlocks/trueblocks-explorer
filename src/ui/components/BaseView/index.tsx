@@ -25,12 +25,12 @@ export const BaseView = ({
   cookieName, tabs, extraContent, title = '', position = 'top',
 }: ViewParams) => {
   const history = useHistory();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const [lastVisited, setLastVisited] = useState(localStorage.getItem(cookieName) || tabs[0].location);
 
   const onTabChange = (key: string) => {
     localStorage.setItem(cookieName, key);
-    history.push(key);
+    history.push(`${key}${search}`);
   };
 
   // needed for <Link> to work

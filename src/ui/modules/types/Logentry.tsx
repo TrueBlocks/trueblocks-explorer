@@ -4,7 +4,10 @@ import {
 
 type ArticulatedLog = {
   name: string,
-  inputs: {}
+  inputs: {
+    name?: string,
+    [param: string]: string | undefined
+  }
 }
 
 export type Logentry = {

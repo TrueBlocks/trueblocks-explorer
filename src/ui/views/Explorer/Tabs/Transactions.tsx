@@ -8,8 +8,8 @@ export const Transactions = () => {
   // TODO(tjayrush): hard coded data
   const { theData, loading, status } = useFetchData('transactions', {
     transactions: '12001001.0',
-    cache: true,
-    articulate: true,
+    cache: '',
+    articulate: '',
   });
 
   if (status === 'fail') {

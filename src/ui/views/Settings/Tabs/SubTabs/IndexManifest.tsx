@@ -8,7 +8,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import { ManifestRecord } from '@modules/types';
 
 export const IndexManifest = () => {
-  const { theData, loading, status } = useFetchData('pins', { list: true });
+  const { theData, loading, status } = useFetchData('pins', { list: '' });
   if (status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch manifest',

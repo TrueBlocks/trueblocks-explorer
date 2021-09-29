@@ -66,7 +66,7 @@ export const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const [namesRequest] = useCommand('names', { expand: true, all: true });
+  const [namesRequest] = useCommand('names', { expand: '', all: '' });
 
   useEffect(() => {
     const resultMap = (() => {

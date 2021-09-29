@@ -41,8 +41,8 @@ export const Names = () => {
 
   // App also makes this request, maybe we can use global state?
   const [namesRequest, loading] = useCommand('names', {
-    expand: true,
-    all: true,
+    expand: '',
+    all: '',
   });
 
   useEffect(() => {

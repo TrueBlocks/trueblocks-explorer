@@ -20,7 +20,7 @@ import { IndexManifest } from './SubTabs/IndexManifest';
 import { IndexTable } from './SubTabs/IndexTable';
 
 export const IndexesView = () => {
-  const { theData, loading, status } = useFetchDataCaches('status', { mode: 'index', details: true });
+  const { theData, loading, status } = useFetchDataCaches('status', { mode: 'index', details: '' });
   if (status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch indexes',

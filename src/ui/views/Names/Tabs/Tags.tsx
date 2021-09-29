@@ -10,7 +10,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import { Tag } from '@modules/types/Tag';
 
 export const Tags = () => {
-  const { theData, loading, status } = useFetchData('names', { tags: true });
+  const { theData, loading, status } = useFetchData('names', { tags: '' });
 
   if (status === 'fail') {
     createErrorNotification({

@@ -70,8 +70,8 @@ export const DashboardView = () => {
   const [listRequest] = useCommand(
     'list',
     {
-      count: true,
-      appearances: true,
+      count: '',
+      appearances: '',
       addrs: currentAddress as string,
     },
     () => currentAddress?.slice(0, 2) === '0x',
@@ -88,16 +88,16 @@ export const DashboardView = () => {
     {
       addrs: currentAddress as string,
       fmt: 'json',
-      cache_txs: true,
-      cache_traces: true,
-      staging: false, // staging,
-      unripe: false, // unripe: true,
-      ether: true,
-      dollars: false,
-      articulate: true,
-      accounting: true,
-      reversed: false,
-      relevant: true,
+      cache_txs: '',
+      cache_traces: '',
+      // staging: false, // staging,
+      // unripe: false, // unripe: '',
+      ether: '',
+      // dollars: false,
+      articulate: '',
+      accounting: '',
+      // reversed: false,
+      relevant: '',
       // summarize_by: 'monthly',
       first_record: transactions.length,
       max_records: (() => {
@@ -150,7 +150,7 @@ export const DashboardView = () => {
   const theData = useMemo(() => transactionModels.filter((transaction) => {
     if (!hideReconciled) return true;
 
-    return transaction.statements.some(({ reconciled }) => !reconciled);
+    return transaction?.statements?.some?.(({ reconciled }) => !reconciled);
   }), [hideReconciled, transactionModels]);
 
   const uniqAssets = useMemo(() => {

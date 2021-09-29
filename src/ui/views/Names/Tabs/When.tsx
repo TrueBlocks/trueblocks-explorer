@@ -10,7 +10,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import { Block } from '@modules/types';
 
 export const When = () => {
-  const { theData, loading, status } = useFetchData('when', { list: true });
+  const { theData, loading, status } = useFetchData('when', { list: '' });
 
   if (status === 'fail') {
     createErrorNotification({

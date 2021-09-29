@@ -6,7 +6,7 @@ import { createErrorNotification } from '@modules/error_notification';
 
 export const Logs = () => {
   // TODO(tjayrush): hard coded data
-  const { theData, loading, status } = useFetchData('logs', { transactions: '12001001.1', articulate: true });
+  const { theData, loading, status } = useFetchData('logs', { transactions: '12001001.1', articulate: '' });
 
   if (status === 'fail') {
     createErrorNotification({

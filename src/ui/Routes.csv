@@ -1,4 +1,4 @@
-path                                   ,hotKey ,helpText
+api_route                              ,hotkey ,description
 /                                      ,       ,The dashboard overview page gives you an overview of your holdings among other things.
 /dashboard                             ,       ,The dashboard overview page gives you an overview of your holdings among other things.
 /dashboard/monitors                    ,s m    ,Monitors are named addresses that you have indicated are of interest and should be monitored by the scrapers.

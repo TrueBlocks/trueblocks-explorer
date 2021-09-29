@@ -5,6 +5,7 @@ import { ColumnsType } from 'antd/lib/table';
 
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
+import { createWrapper } from '@hooks/useSearchParams';
 import {
   ItemCounter, ItemCounterArray, Transaction, TransactionArray,
 } from '@modules/types';
@@ -69,7 +70,15 @@ export const evtCountSchema: ColumnsType<ItemCounter> = [
     configuration: {
       render: (field: string, record: ItemCounter) => {
         if (!record) return <></>;
-        return <Link to={`${DashboardAccountsHistoryLocation}?event=${field}`}>{field}</Link>;
+
+        return (
+          <Link to={
+            ({ search }) => `${DashboardAccountsHistoryLocation}?${createWrapper(search).set('event', field)}`
+          }
+          >
+            {field}
+          </Link>
+        );
       },
     },
   }),

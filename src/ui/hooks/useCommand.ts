@@ -1,9 +1,11 @@
+import { DependencyList, useEffect, useState } from 'react';
+
+import { either as Either } from 'fp-ts';
+import { pipe } from 'fp-ts/function';
+
 import {
   CommandParams, CoreCommand, JsonResponse, runCommand,
 } from '@modules/core';
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/function';
-import { DependencyList, useEffect, useState } from 'react';
 
 type DataResult = {
   status: 'success';
@@ -74,7 +76,7 @@ export function useCommand(
   dependencies: DependencyList = [],
 ) {
   const [response, setData] = useState<Result>(toSuccessfulData(emptyData));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -82,11 +84,11 @@ export function useCommand(
     if (!predicate()) return () => undefined;
 
     (async () => {
+      setLoading(true);
+
       const eitherResponse = await runCommand(command, params);
 
-      if (cancelled) {
-        return;
-      }
+      if (cancelled) return;
 
       const result: Result = pipe(
         eitherResponse,

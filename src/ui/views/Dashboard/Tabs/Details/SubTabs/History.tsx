@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {
+  useEffect, useMemo, useState,
+} from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { ColumnsType } from 'antd/lib/table';
 
 import { BaseView } from '@components/BaseView';
+import { FilterButton } from '@components/FilterButton';
 import { addColumn, BaseTable } from '@components/Table';
+import { useSearchParams } from '@hooks/useSearchParams';
+import {
+  applyFilters,
+} from '@modules/filters/transaction';
 import {
   Transaction,
 } from '@modules/types';
@@ -25,20 +33,112 @@ import { HistoryEvents } from './HistoryEvents';
 import { HistoryFunctions } from './HistoryFunctions';
 import { HistoryRecons } from './HistoryRecons';
 
+const searchParamAsset = 'asset';
+const searchParamEvent = 'event';
+const searchParamFunction = 'function';
+
 export const History = ({ params }: { params: AccountViewParams }) => {
   const { theData, loading } = params;
-  const { currentAddress } = useGlobalState();
+  const { currentAddress, namesMap } = useGlobalState();
+  const history = useHistory();
+  const { pathname } = useLocation();
+  const [assetToFilterBy, setAssetToFilterBy] = useState('');
+  const [eventToFilterBy, setEventToFilterBy] = useState('');
+  const [functionToFilterBy, setFunctionToFilterBy] = useState('');
+  const searchParams = useSearchParams();
+
+  const assetNameToDisplay = useMemo(() => {
+    if (!assetToFilterBy) return '';
+
+    const matchedName = namesMap.get(assetToFilterBy);
+
+    if (!matchedName) return '';
+
+    return matchedName.name;
+  }, [assetToFilterBy, namesMap]);
+
+  useEffect(
+    () => {
+      setAssetToFilterBy(
+        searchParams.get(searchParamAsset) || '',
+      );
+
+      setEventToFilterBy(
+        searchParams.get(searchParamEvent) || '',
+      );
+
+      setFunctionToFilterBy(
+        searchParams.get(searchParamFunction) || '',
+      );
+    },
+    [searchParams],
+  );
+
+  const filteredData = useMemo(() => {
+    if (!assetToFilterBy && !eventToFilterBy && !functionToFilterBy) return theData;
+
+    return applyFilters(theData, {
+      assetAddress: assetToFilterBy,
+      eventName: eventToFilterBy,
+      functionName: functionToFilterBy,
+    });
+  }, [assetToFilterBy, eventToFilterBy, functionToFilterBy, theData]);
+
+  const makeClearFilter = (searchParamKey: string) => () => {
+    const searchString = searchParams.delete(searchParamKey).toString();
+    history.replace(`${pathname}?${searchString}`);
+  };
+
+  const activeAssetFilter = (
+    <FilterButton
+      visible={Boolean(assetToFilterBy)}
+      onClick={makeClearFilter(searchParamAsset)}
+    >
+      Asset:
+      {' '}
+      {assetNameToDisplay || assetToFilterBy}
+    </FilterButton>
+  );
+
+  const activeEventFilter = (
+    <FilterButton
+      visible={Boolean(eventToFilterBy)}
+      onClick={makeClearFilter(searchParamEvent)}
+    >
+      Event:
+      {' '}
+      {eventToFilterBy}
+    </FilterButton>
+  );
+
+  const activeFunctionFilter = (
+    <FilterButton
+      visible={Boolean(functionToFilterBy)}
+      onClick={makeClearFilter(searchParamFunction)}
+    >
+      Function:
+      {' '}
+      {functionToFilterBy}
+    </FilterButton>
+  );
+
   const siderRender = (record: any) => (
     <AccountHistorySider key='account-transactions' record={record} params={params} />
   );
   return (
-    <BaseTable
-      dataSource={theData}
-      columns={transactionSchema}
-      loading={loading}
-      extraData={currentAddress}
-      siderRender={siderRender}
-    />
+    <div>
+      {activeAssetFilter}
+      {activeEventFilter}
+      {activeFunctionFilter}
+
+      <BaseTable
+        dataSource={filteredData}
+        columns={transactionSchema}
+        loading={loading}
+        extraData={currentAddress}
+        siderRender={siderRender}
+      />
+    </div>
   );
 };
 

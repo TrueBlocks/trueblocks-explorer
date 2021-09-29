@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
+import { createWrapper } from '@hooks/useSearchParams';
 import { AssetHistory, Balance } from '@modules/types';
 
 import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
@@ -59,7 +60,14 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
   const { currentAddress } = useGlobalState();
 
   const links = [];
-  links.push(<Link to={`${DashboardAccountsHistoryLocation}?asset=${asset.assetAddr}`}>History</Link>);
+  links.push(
+    <Link to={
+      ({ search }) => `${DashboardAccountsHistoryLocation}?${createWrapper(search).set('asset', asset.assetAddr)}`
+    }
+    >
+      History
+    </Link>,
+  );
   if (!namesMap.get(asset.assetAddr)) {
     links.push(
       <a target='_blank' href={`http://localhost:8080/names?autoname=${asset.assetAddr}`} rel='noreferrer'>
@@ -109,7 +117,7 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
         {' '}
         <small>
           {links.map((link) => (
-            <div key={`${link}`} style={{ display: 'inline' }}>
+            <div key={`${link.props.href}`} style={{ display: 'inline' }}>
               [
               {link}
               ]

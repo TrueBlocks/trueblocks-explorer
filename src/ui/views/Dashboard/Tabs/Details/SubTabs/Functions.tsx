@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 
 import { ColumnsType } from 'antd/lib/table';
 
+import { Loading } from '@components/Loading';
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
+import { createWrapper } from '@hooks/useSearchParams';
 import {
   ItemCounter, ItemCounterArray, Transaction, TransactionArray,
 } from '@modules/types';
@@ -41,10 +43,12 @@ export const Functions = ({ theData, loading }: { theData: TransactionArray; loa
   const remains = uniqItems.filter((item: ItemCounter, i: number) => i >= 10);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-      <MyAreaChart title='Top Ten Functions' items={top} columns={funcCountSchema} table />
-      <MyAreaChart title='Other Functions' items={remains} columns={funcCountSchema} table />
-    </div>
+    <Loading loading={loading}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <MyAreaChart title='Top Ten Functions' items={top} columns={funcCountSchema} table />
+        <MyAreaChart title='Other Functions' items={remains} columns={funcCountSchema} table />
+      </div>
+    </Loading>
   );
 };
 
@@ -55,7 +59,14 @@ export const funcCountSchema: ColumnsType<ItemCounter> = [
     configuration: {
       render: (field: string, record: ItemCounter) => {
         if (!record) return <></>;
-        return <Link to={`${DashboardAccountsHistoryLocation}?function=${field}`}>{field}</Link>;
+        return (
+          <Link to={
+            ({ search }) => `${DashboardAccountsHistoryLocation}?${createWrapper(search).set('function', field)}`
+          }
+          >
+            {field}
+          </Link>
+        );
       },
     },
   }),

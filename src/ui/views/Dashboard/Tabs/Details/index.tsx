@@ -50,7 +50,7 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
     {
       name: 'Gas',
       location: DashboardAccountsGasLocation,
-      component: <Gas theData={theData} loading={loading} />,
+      component: <Gas theData={theData} />,
     },
     {
       name: 'Neighbors',

@@ -17,6 +17,7 @@ export const Pills = ({ record } : {record: Transaction}) => {
       ? <div className={`${style.tag} ${tag}`}>{name}</div>
       : <></>
   );
+  // TODO(data): isErr and erc20 should be booleans from the back end
   return (
     <div style={{ display: 'flex' }}>
       {Pill('int', style.intTag, isInt)}

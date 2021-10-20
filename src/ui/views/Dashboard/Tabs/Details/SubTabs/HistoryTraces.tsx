@@ -11,6 +11,7 @@ export const AccountHistoryTraces = ({ record }: { record: Transaction }) => {
   const styles = useAcctStyles();
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
+  // TODO(data): fix line 27 -- should not require '?'
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>

@@ -147,6 +147,7 @@ export const DashboardView = () => {
       };
     }), [namesMap, transactions]);
 
+  // TODO(data): fix this if you can
   const theData = useMemo(() => transactionModels.filter((transaction) => {
     if (!hideReconciled) return true;
 

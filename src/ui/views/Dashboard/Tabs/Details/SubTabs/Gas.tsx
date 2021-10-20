@@ -10,6 +10,7 @@ export const Gas = ({ theData }: { theData: TransactionArray }) => {
     return stmts.length > 0;
   });
 
+  // TODO(data): fix this if you can
   const stmts = usesGas.map((tx: Transaction) => (tx.statements || []).map((st) => ({
     blockNumber: tx.blockNumber,
     transactionIndex: tx.transactionIndex,

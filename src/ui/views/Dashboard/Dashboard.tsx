@@ -99,7 +99,9 @@ export const DashboardView = () => {
       // reversed: false,
       relevant: '',
       // summarize_by: 'monthly',
-      first_record: transactions.length,
+      // If there's only 1 transaction, it's probably the default empty one, so we can
+      // start from 0
+      first_record: transactions.length === 1 ? 0 : transactions.length,
       max_records: (() => {
         if (transactions.length < 50) return 10;
 

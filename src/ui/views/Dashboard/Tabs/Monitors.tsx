@@ -35,7 +35,7 @@ export const Monitors = () => {
   const [selectedNameTags, setSelectedNameTags] = useState('');
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  const [monitors, loading] = useCommand('status', { mode: 'monitors', details: '' });
+  const [monitors, loading] = useCommand('status', { modes: ['monitors'], details: '' });
   if (monitors.status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch monitors',

@@ -11,7 +11,7 @@ import { createErrorNotification } from '@modules/error_notification';
 import { Block } from '@modules/types';
 
 export const Blocks = () => {
-  const { theData, loading, status } = useFetchData('blocks', { list: 0, list_count: 12, cache: '' });
+  const { theData, loading, status } = useFetchData('blocks', { list: 0, listCount: 12, cache: '' });
 
   if (status === 'fail') {
     createErrorNotification({

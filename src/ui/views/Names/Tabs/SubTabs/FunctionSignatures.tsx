@@ -9,7 +9,7 @@ import { abiSignature } from '../Signatures';
 
 export const FunctionSignatures = () => {
   const filterFunc = (item: Function) => item.type !== 'function';
-  const { theData, loading, status } = useFetchData('abis', { known: '', source: '', log_level: 2 }, filterFunc);
+  const { theData, loading, status } = useFetchData('abis', { known: '', source: '', logLevel: 2 }, filterFunc);
   if (status === 'fail') {
     createErrorNotification({
       description: 'Could not fetch function signature data',

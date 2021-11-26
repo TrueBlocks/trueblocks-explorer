@@ -25,7 +25,7 @@ export type CoreCommand =
   | 'slurp'
   | 'pins';
 
-export type CommandParams = Record<string, string | boolean | number>;
+export type CommandParams = Record<string, string | boolean | number | string[]>;
 
 /* Helper functions that transform the response */
 
@@ -37,7 +37,7 @@ function turnResponseIntoJson(response: Response) {
     // Try to parse response as JSON
     (): Promise<JsonResponse> => response.json(),
     // If there is an error, just keep it
-    Either.toError
+    Either.toError,
   );
 }
 
@@ -54,8 +54,8 @@ function validateStatus(response: Response): TaskEither.TaskEither<Error, Respon
     // is fine, this will use `response` from the line above
     TaskEither.fromPredicate(
       () => response.ok,
-      () => Either.toError(response.statusText)
-    )
+      () => Either.toError(response.statusText),
+    ),
   );
 }
 
@@ -70,16 +70,16 @@ export function runCommand(command: CoreCommand, params?: CommandParams) {
     TaskEither.tryCatch(
       () => fetch(url.toString()),
       (error) => {
-        notification['warning']({
+        notification.warning({
           message: `Error running "${command}"`,
           description: `${error}`,
         });
         return Either.toError(error);
-      }
+      },
     ),
     // Validate response status (only if there was no Error)
     TaskEither.chain(validateStatus),
     // Extract JSON from the response
-    TaskEither.chain(turnResponseIntoJson)
+    TaskEither.chain(turnResponseIntoJson),
   )();
 }

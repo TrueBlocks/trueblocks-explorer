@@ -89,7 +89,7 @@ export const DashboardView = () => {
       addrs: currentAddress as string,
       fmt: 'json',
       cache: '',
-      cache_traces: '',
+      cacheTraces: '',
       // staging: false, // staging,
       // unripe: false, // unripe: '',
       ether: '',
@@ -101,8 +101,8 @@ export const DashboardView = () => {
       // summarize_by: 'monthly',
       // If there's only 1 transaction, it's probably the default empty one, so we can
       // start from 0
-      first_record: transactions.length === 1 ? 0 : transactions.length,
-      max_records: (() => {
+      firstRecord: transactions.length === 1 ? 0 : transactions.length,
+      maxRecords: (() => {
         if (transactions.length < 50) return 10;
 
         if (transactions.length < 150) return 71;

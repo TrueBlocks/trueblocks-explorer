@@ -4,24 +4,30 @@ import { Project } from 'ts-morph';
 import * as helpers from './helpers';
 import * as types from './type';
 
+/**
+ * Turns data extracted from OpenAPI schema into Typescript type definition
+ */
 export function makeType(project: Project, typeName: string, schema: OpenAPIV3.SchemaObject) {
   if (!schema.properties) {
     // It seems that by a mistake we do have schemas with no properties
     // throw new Error(`Empty properties: ${typeName}`);
-    return;
+    return '';
   }
 
-  if (typeName === 'response') return;
+  // This is a utility type that we don't really need
+  if (typeName === 'response') return '';
 
-  const uppercased = helpers.makeUpperCase(typeName);
+  // We want to use capital letters for complex types (objects)
+  const uppercased = helpers.capitalize(typeName);
   const fileName = `${typeName}`;
 
   const namesAndTypes = types.getTypesFromSchemaProperties(schema.properties as OpenAPIV3.SchemaObject);
   const typesToImport: Set<string> = new Set();
 
+  // Save the names of the types that we use, so we can import them
   namesAndTypes.types
     .filter(types.isNotBuiltinType)
-  // Don't import the type if we're using recursive types
+    // Don't import the type if we're using recursive types
     .filter(({ name }) => name !== uppercased)
     .forEach(({ name }) => typesToImport.add(name));
 
@@ -35,6 +41,7 @@ export function makeType(project: Project, typeName: string, schema: OpenAPIV3.S
       });
   }, { overwrite: true });
 
+  // Import the used types
   source.addImportDeclaration({
     moduleSpecifier: '../types',
     namedImports: [...typesToImport.values()],

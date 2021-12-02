@@ -4,7 +4,7 @@ describe('findType', () => {
   test('simple type', () => {
     const result = types.findType({
       type: 'string',
-      format: 'gas'
+      format: 'gas',
     });
     expect(result[0].name).toBe('gas');
   });
@@ -19,8 +19,8 @@ describe('findType', () => {
       type: 'array',
       items: {
         type: 'string',
-        format: 'address'
-      }
+        format: 'address',
+      },
     });
     expect(result[0].name).toBe('address');
     expect(result[0].isArray).toBe(true);
@@ -30,12 +30,12 @@ describe('findType', () => {
       type: 'array',
       items: {
         oneOf: [
-          { $ref: "#/components/schemas/pinnedChunk" },
-          { $ref: "#/components/schemas/appearance" },
-          { $ref: "#/components/schemas/block" },
-          { $ref: "#/components/schemas/transaction" },
-        ]
-      }
+          { $ref: '#/components/schemas/pinnedChunk' },
+          { $ref: '#/components/schemas/appearance' },
+          { $ref: '#/components/schemas/block' },
+          { $ref: '#/components/schemas/transaction' },
+        ],
+      },
     });
     expect(result.length).toBe(4);
 
@@ -53,8 +53,8 @@ describe('findType', () => {
     const result = types.findType({
       type: 'array',
       items: {
-        $ref: "#/components/schemas/appearance"
-      }
+        $ref: '#/components/schemas/appearance',
+      },
     });
     expect(result[0].name).toBe('Appearance');
     expect(result[0].isArray).toBe(true);
@@ -65,7 +65,7 @@ describe('getResponseBodyType', () => {
   test('get type from response body', () => {
     const result = types.getResponseBodyType({
       responses: {
-        "200": {
+        200: {
           description: '',
           content: {
             'application/json': {
@@ -75,17 +75,17 @@ describe('getResponseBodyType', () => {
                     type: 'array',
                     items: {
                       oneOf: [
-                        { $ref: "#/components/schemas/status" },
-                        { $ref: "#/components/schemas/cache" },
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                        { $ref: '#/components/schemas/status' },
+                        { $ref: '#/components/schemas/cache' },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
     expect(result.length).toBe(2);
     expect(result[0].name).toBe('Status');
@@ -100,7 +100,7 @@ describe('makeUnionType', () => {
     const result = types.makeUnionType([{
       name: 'string',
       isRequired: false,
-      isArray: false
+      isArray: false,
     }]);
     expect(result).toBe('string');
   });
@@ -109,17 +109,17 @@ describe('makeUnionType', () => {
       {
         name: 'string',
         isRequired: false,
-        isArray: false
+        isArray: false,
       },
       {
         name: 'number',
         isRequired: true,
-        isArray: false
+        isArray: false,
       },
       {
         name: 'Appearance',
         isRequired: true,
-        isArray: false
+        isArray: false,
       },
     ]);
     expect(result).toBe('string | number | Appearance');
@@ -129,12 +129,12 @@ describe('makeUnionType', () => {
       {
         name: 'string',
         isRequired: false,
-        isArray: true
+        isArray: true,
       },
       {
         name: 'number',
         isRequired: true,
-        isArray: true
+        isArray: true,
       },
     ]);
     expect(result).toBe('string[] | number[]');

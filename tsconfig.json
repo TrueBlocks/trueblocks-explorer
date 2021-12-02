@@ -18,8 +18,8 @@
             "@modules/*": [
                 "src/ui/modules/*"
             ],
-            "@sdk/*": [
-                "src/sdk/generated_ts/*"
+            "@sdk": [
+                "src/sdk/generated_ts/index"
             ]
         }
     },

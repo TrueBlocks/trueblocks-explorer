@@ -8,9 +8,9 @@ export const joinGeneratedPath = (...paths: FilePathPart) => joinWorkingPath(gen
 
 export const outDir = 'out';
 export const inputDir = 'input';
-export const generatedTsDir = 'generated_ts';
-export const typesOutDir = `${generatedTsDir}/types`;
-export const pathsOutDir = `${generatedTsDir}/paths`;
+export const generatedTsDir = '../generated_ts';
+export const typesOutDir = joinGeneratedPath('/types');
+export const pathsOutDir = joinGeneratedPath('/paths');
 
 export const makeUpperCase = (s: string) => s.replace(/^[a-z]/, (letter) => letter.toUpperCase());
 

@@ -26,12 +26,12 @@ export async function addDeps(project: Project) {
       ];
     });
 
-  project.createDirectory(`${helpers.generatedTsDir}/lib`);
+  project.createDirectory(helpers.joinGeneratedPath('/lib'));
   const fileData = await Promise.all(readPromises);
   fileData.forEach(([fileName, source]) => {
-    let destinationDirectory = `${helpers.generatedTsDir}/lib`;
+    let destinationDirectory = helpers.joinGeneratedPath('/lib');
     if (fileName === 'base_types.ts') {
-      destinationDirectory = `${helpers.generatedTsDir}/types`;
+      destinationDirectory = helpers.typesOutDir;
     }
 
     project.createSourceFile(`${destinationDirectory}/${fileName}`, String(source), { overwrite: true }).save();
@@ -39,7 +39,7 @@ export async function addDeps(project: Project) {
 }
 
 export async function makeMasterIndex(project: Project) {
-  project.createSourceFile(`${helpers.generatedTsDir}/index.ts`, (writer) => {
+  project.createSourceFile(helpers.joinGeneratedPath('/index.ts'), (writer) => {
     [
       'lib/api_callers',
       'paths',

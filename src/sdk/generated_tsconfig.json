@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "sourceMap": true,
+        "target": "ES2020",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "outDir": "out",
+        "declaration": true,
+        "noEmit": true
+    },
+    "include": [
+        "generated_ts"
+    ]
+}

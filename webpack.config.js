@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const tsconfigLocation = path.resolve(__dirname, './tsconfig_ui.json');
-const getSourceLocation = (...subdirectories) =>
-  ['./src/ui', ...subdirectories].join('/');
+const getSourceLocation = (...subdirectories) => ['./src/ui', ...subdirectories].join('/');
 
 module.exports = () => ({
   entry: getSourceLocation('index.tsx'),
@@ -21,6 +20,7 @@ module.exports = () => ({
       '@components': path.resolve(__dirname, 'src/ui/components/'),
       '@hooks': path.resolve(__dirname, 'src/ui/hooks'),
       '@modules': path.resolve(__dirname, 'src/ui/modules'),
+      '@sdk': path.resolve(__dirname, 'src/sdk/generated_ts'),
     },
   },
   devServer: {

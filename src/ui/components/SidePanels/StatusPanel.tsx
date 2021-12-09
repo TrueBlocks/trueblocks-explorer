@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import {
   ApiFilled, ClockCircleFilled, ExperimentFilled, EyeFilled,
 } from '@ant-design/icons';
+import { SuccessResponse } from '@sdk';
 import { Badge } from 'antd';
 import filesize from 'filesize';
 
 import { Loading } from '@components/Loading';
-import { Result } from '@hooks/useCommand';
-import { JsonResponse } from '@modules/core';
+import { createEmptyMeta, FixedStatus } from '@modules/type_fixes';
 
 const useStyles = createUseStyles({
   container: { paddingBottom: '16px' },
@@ -35,15 +35,18 @@ const useStyles = createUseStyles({
 });
 
 interface StatusPanelProps {
-  status: Result;
+  // status is always a { data: ..., meta: ... } because of the way we fetch it in App.ts
+  status: Pick<SuccessResponse<FixedStatus>, 'data' | 'meta'>;
+  error: boolean;
   loading: boolean;
 }
 
-export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
+export const StatusPanel = ({ status, loading, error }: StatusPanelProps) => {
   const styles = useStyles();
 
-  const statusData = status.data[0] as JsonResponse;
-  const statusMeta = status.meta as JsonResponse;
+  const statusData = status.data;
+  const statusMeta = useMemo(() => (error ? createEmptyMeta() : status.meta), [error, status.meta]);
+
   const ripe = statusMeta.ripe !== statusMeta.staging ? (
     <ScraperProgress value={statusMeta.ripe} client={statusMeta.client} word='RIPE' color='#fadb14' />
   ) : (
@@ -62,8 +65,8 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>STATUS</div>
           <div>
-            <Badge status={status.status === 'success' ? 'success' : 'error'} />
-            {status.status === 'success' ? 'Connected' : 'Error'}
+            <Badge status={error ? 'error' : 'success'} />
+            {error ? 'Error' : 'Connected'}
           </div>
         </div>
         <div className={styles.itemContainer}>
@@ -80,15 +83,15 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>API</div>
           <div>
-            <Badge status={statusData.is_api ? 'success' : 'error'} />
-            {statusData.is_api ? 'Connected' : 'Not connected'}
+            <Badge status={statusData.isApi ? 'success' : 'error'} />
+            {statusData.isApi ? 'Connected' : 'Not connected'}
           </div>
         </div>
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>SCRAPER</div>
           <div>
-            <Badge status={statusData.is_scraping ? 'success' : 'error'} />
-            {statusData.is_scraping ? 'Scraping' : 'Not scraping'}
+            <Badge status={statusData.isScraping ? 'success' : 'error'} />
+            {statusData.isScraping ? 'Scraping' : 'Not scraping'}
           </div>
         </div>
 
@@ -103,10 +106,10 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
           <div className={styles.itemHeader}>MONITORS</div>
           <div>
             <EyeFilled className={styles.itemIcon} />
-            {statusData.caches && statusData.caches[1].nFiles}
+            {statusData.cache && statusData.cache[1].nFiles}
             {' '}
             (
-            {statusData.caches && filesize(statusData.caches[1].sizeInBytes)}
+            {statusData.cache && filesize(statusData.cache[1].sizeInBytes)}
             )
           </div>
         </div>
@@ -115,10 +118,10 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
           <div className={styles.itemHeader}>SLURPS</div>
           <div>
             <ExperimentFilled className={styles.itemIcon} />
-            {statusData.caches && statusData.caches[3].nFiles}
+            {statusData.cache && statusData.cache[3].nFiles}
             {' '}
             (
-            {statusData.caches && filesize(statusData.caches[3].sizeInBytes)}
+            {statusData.cache && filesize(statusData.cache[3].sizeInBytes)}
             )
           </div>
         </div>
@@ -129,12 +132,12 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>RPC</div>
-          <div>{statusData.rpc_provider}</div>
+          <div>{statusData.rpcProvider}</div>
         </div>
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>BALANCE PROVIDER</div>
-          <div>{statusData.balance_provider}</div>
+          <div>{statusData.balanceProvider}</div>
         </div>
 
         <div className={styles.itemContainer}>
@@ -144,12 +147,12 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>CACHE</div>
-          <div>{statusData.cache_path}</div>
+          <div>{statusData.cachePath}</div>
         </div>
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>INDEX</div>
-          <div>{statusData.index_path}</div>
+          <div>{statusData.indexPath}</div>
         </div>
 
         <div className={styles.header} style={{ marginTop: '24px' }}>
@@ -157,12 +160,12 @@ export const StatusPanel = ({ status, loading }: StatusPanelProps) => {
         </div>
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>CLIENT</div>
-          <div>{statusData.client_version}</div>
+          <div>{statusData.clientVersion}</div>
         </div>
 
         <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>TRUEBLOCKS</div>
-          <div>{statusData.trueblocks_version}</div>
+          <div>{statusData.trueblocksVersion}</div>
         </div>
       </div>
     </Loading>

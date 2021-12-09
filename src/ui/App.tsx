@@ -9,22 +9,24 @@ import {
   SettingOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import {
+  getNames, getStatus, Name, SuccessResponse,
+} from '@sdk';
 import { Layout, Typography } from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { either as Either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
 
 import { Console } from '@components/Console';
 import { MainMenu, MenuItems } from '@components/MainMenu';
 import { HelpPanel } from '@components/SidePanels/HelpPanel';
 import { PanelDirection, SidePanel } from '@components/SidePanels/SidePanel';
 import { StatusPanel } from '@components/SidePanels/StatusPanel';
+import { useSdk } from '@hooks/useSdk';
 import {
-  Result, toFailedResult, toSuccessfulData, useCommand,
-} from '@hooks/useCommand';
-import { runCommand } from '@modules/core';
-import { Accountname } from '@modules/types';
+  CallError,
+  CallSuccess, isFailedCall, isSuccessfulCall, wrapResponse,
+} from '@modules/api/call_status';
+import { createEmptyMeta, createEmptyStatus, FixedStatus } from '@modules/type_fixes';
 
 import {
   ExplorerLocation, NamesLocation, RootLocation, Routes, SettingsLocation, SupportLocation,
@@ -45,18 +47,26 @@ export const App = () => {
   dayjs.extend(relativeTime);
 
   const { setNamesMap, setNamesArray } = useGlobalNames();
-  const [status, setStatus] = useState<Result>(toSuccessfulData({ data: [{}], meta: {} }) as Result);
+  const [status, setStatus] = useState<Pick<SuccessResponse<FixedStatus>, 'data' | 'meta'>>({
+    data: createEmptyStatus(),
+    meta: createEmptyMeta(),
+  });
+  const [statusError, setStatusError] = useState(false);
   const [loadingStatus] = useState(false);
   const styles = useStyles();
 
   useEffect(() => {
     const fetchStatus = async () => {
-      const eitherResponse = await runCommand('status');
-      const result: Result = pipe(
-        eitherResponse,
-        Either.fold(toFailedResult, (serverResponse) => toSuccessfulData(serverResponse) as Result),
-      );
-      setStatus(result);
+      // FIXME: typecase
+      const statusResponse = wrapResponse(await getStatus()) as CallSuccess<FixedStatus> | CallError;
+
+      if (isSuccessfulCall(statusResponse)) {
+        setStatus(statusResponse);
+      }
+
+      if (isFailedCall(statusResponse)) {
+        setStatusError(true);
+      }
     };
 
     fetchStatus();
@@ -66,15 +76,17 @@ export const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const [namesRequest] = useCommand('names', { expand: '', all: '' });
+  const namesRequest = useSdk(() => getNames({ terms: [''], expand: true, all: true }));
 
   useEffect(() => {
     const resultMap = (() => {
+      if (!isSuccessfulCall(namesRequest)) return new Map();
+
       const { data: fetchedNames } = namesRequest;
 
       if (typeof fetchedNames === 'string') return new Map();
 
-      return new Map((fetchedNames as Accountname[]).map((name: Accountname) => [name.address, name]));
+      return new Map((fetchedNames as Name[]).map((name) => [name.address, name]));
     })();
 
     setNamesMap(resultMap);
@@ -132,7 +144,7 @@ export const App = () => {
               <Routes />
             </Content>
             <SidePanel header='Status' cookieName='STATUS_EXPANDED' dir={PanelDirection.Right}>
-              <StatusPanel status={status} loading={loadingStatus} />
+              <StatusPanel status={status} loading={loadingStatus} error={statusError} />
             </SidePanel>
             <SidePanel
               header='Help'

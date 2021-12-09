@@ -83,7 +83,7 @@ export function makePathsInSameFile(project: Project, models: PathModel[]) {
         .writeLine(`export function ${functionName}(`)
         .setIndentationLevel(1)
         .write('')
-        .write('parameters: ')
+        .write('parameters?: ')
         .inlineBlock(() => {
           parameters
             .types

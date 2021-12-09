@@ -1,6 +1,7 @@
 import React, {
   useEffect, useMemo, useState,
 } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Mousetrap from 'mousetrap';
 
@@ -39,7 +40,7 @@ export const DashboardView = () => {
   const [cancel, setCancel] = useState(false);
   const { denom } = useGlobalState();
 
-  const { currentAddress } = useGlobalState();
+  const { currentAddress, setCurrentAddress } = useGlobalState();
   const { namesMap } = useGlobalNames();
   const { totalRecords, setTotalRecords } = useGlobalState();
   const {
@@ -49,6 +50,16 @@ export const DashboardView = () => {
     setTransactions,
     addTransactions,
   } = useGlobalState();
+
+  const { search: searchParams } = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const addressParam = params.get('address');
+
+    if (addressParam) {
+      setCurrentAddress(addressParam);
+    }
+  }, [searchParams, setCurrentAddress]);
 
   useEffect(() => {
     if (transactionsStatus === 'fail') {

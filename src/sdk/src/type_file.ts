@@ -1,6 +1,7 @@
 import { OpenAPIV3 } from 'openapi-types';
 import { Project } from 'ts-morph';
 
+import { formatSource } from './format_source';
 import * as helpers from './helpers';
 import * as types from './type';
 
@@ -41,6 +42,8 @@ export function makeType(project: Project, typeName: string, schema: OpenAPIV3.S
       });
   }, { overwrite: true });
 
+  formatSource(source);
+
   // Import the used types
   source.addImportDeclaration({
     moduleSpecifier: '../types',
@@ -59,8 +62,11 @@ export function makeTypesFromSchema(project: Project, schemas: Record<string, Op
 }
 
 export function makeTypesIndex(project: Project, fileNames: string[]) {
-  project.createSourceFile(`${helpers.typesOutDir}/index.ts`, (writer) => {
+  const source = project.createSourceFile(`${helpers.typesOutDir}/index.ts`, (writer) => {
     writer.writeLine('export * from \'./base_types\'');
     fileNames.forEach((fileName) => writer.writeLine(`export * from './${fileName}'`));
-  }, { overwrite: true }).save();
+  }, { overwrite: true });
+
+  formatSource(source);
+  source.save();
 }

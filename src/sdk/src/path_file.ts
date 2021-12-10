@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { basename } from 'path';
 import { Project } from 'ts-morph';
 
+import { formatSource } from './format_source';
 import * as helpers from './helpers';
 import * as types from './type';
 
@@ -101,6 +102,8 @@ export function makePathsInSameFile(project: Project, models: PathModel[]) {
     });
   }, { overwrite: true });
 
+  formatSource(source);
+
   // Add ApiCallers dependency so we can actually call the API
   source.addImportDeclaration({
     moduleSpecifier: '../lib/api_callers',
@@ -140,9 +143,12 @@ export function makePathsFromOpenApi(paths: OpenAPIV3.PathsObject): PathModel[][
 export function makePathIndex(project: Project, filePaths: StandardizedFilePath[]) {
   const fileNames = filePaths.map((path) => basename(path, '.ts'));
 
-  project.createSourceFile(`${helpers.pathsOutDir}/index.ts`, (writer) => {
+  const source = project.createSourceFile(`${helpers.pathsOutDir}/index.ts`, (writer) => {
     fileNames.forEach((fileName) => {
       writer.writeLine(`export * from './${fileName}';`);
     });
-  }, { overwrite: true }).save();
+  }, { overwrite: true });
+
+  formatSource(source);
+  source.save();
 }

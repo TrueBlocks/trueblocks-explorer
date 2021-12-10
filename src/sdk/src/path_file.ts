@@ -92,7 +92,7 @@ export function makePathsInSameFile(project: Project, models: PathModel[]) {
             );
         })
         .write(',')
-        .writeLine('options?: RequestInit')
+        .writeLine('options?: RequestInit,')
         .setIndentationLevel(0)
         .write(')')
         .block(() => {

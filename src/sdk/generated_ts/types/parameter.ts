@@ -1,10 +1,10 @@
 import "../types";
 
 export type Parameter = {
-    type: string
-    name: string
-    strDefault: string
-    indexed: boolean
-    internalType: string
-    components: Parameter[]
+  type: string
+  name: string
+  strDefault: string
+  indexed: boolean
+  internalType: string
+  components: Parameter[]
 }

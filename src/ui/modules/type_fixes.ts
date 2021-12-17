@@ -1,8 +1,14 @@
 // FIXME: this is a temporary file and it should never get merged
 
-import { Cache, Status } from '@sdk';
+import {
+  Cache, getBlocks, getExport, Status,
+} from '@sdk';
 
-export type FixedStatus = Status & { cache: Cache[] };
+export type FixedCache = Cache & {
+  items: [],
+}
+
+export type FixedStatus = Status & { caches: FixedCache[] };
 
 export function createEmptyStatus(): FixedStatus {
   return {
@@ -24,8 +30,9 @@ export function createEmptyStatus(): FixedStatus {
     hasEskey: false,
     hasPinkey: false,
     ts: 0,
-    cache: [
+    caches: [
       {
+        items: [],
         type: '',
         path: '',
         nFiles: 0,
@@ -33,6 +40,7 @@ export function createEmptyStatus(): FixedStatus {
         sizeInBytes: 0,
       },
       {
+        items: [],
         type: '',
         path: '',
         nFiles: 0,
@@ -40,6 +48,7 @@ export function createEmptyStatus(): FixedStatus {
         sizeInBytes: 0,
       },
       {
+        items: [],
         type: '',
         path: '',
         nFiles: 0,
@@ -47,6 +56,7 @@ export function createEmptyStatus(): FixedStatus {
         sizeInBytes: 0,
       },
       {
+        items: [],
         type: '',
         path: '',
         nFiles: 0,
@@ -66,3 +76,28 @@ export function createEmptyMeta() {
     client: 0,
   };
 }
+
+export type FixedListCount = {
+  address: string,
+  nRecords: number,
+  fileSize: number,
+}
+
+export type FixedExportParameters = Parameters<typeof getExport>[0] & {
+  ether: boolean,
+  fmt: string,
+}
+
+export type FixedGetBlocksParameters = Parameters<typeof getBlocks>[0] & {
+  list: number,
+}
+
+type ScraperDetails = {
+  Name: string,
+  Running: boolean,
+}
+
+export type FixedScrape = {
+  monitor: ScraperDetails,
+  indexer: ScraperDetails,
+};

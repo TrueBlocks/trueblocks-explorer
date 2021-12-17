@@ -1,25 +1,35 @@
 import React from 'react';
 
+import { getBlocks } from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 
 import {
   addColumn, addNumColumn, BaseTable, TableActions,
 } from '@components/Table';
-import { useFetchData } from '@hooks/useFetchData';
+import { useSdk } from '@hooks/useSdk';
+import { isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
+import { FixedGetBlocksParameters } from '@modules/type_fixes';
 import { Block } from '@modules/types';
 
 export const Blocks = () => {
-  const { theData, loading, status } = useFetchData('blocks', { list: 0, listCount: 12, cache: '' });
+  // FIXME: typecast
+  const blocksCall = useSdk(() => getBlocks({
+    list: 0,
+    listCount: 12,
+    cache: true,
+  } as unknown as FixedGetBlocksParameters));
 
-  if (status === 'fail') {
+  if (isFailedCall(blocksCall)) {
     createErrorNotification({
       description: 'Could not fetch blocks',
     });
   }
 
-  return <BaseTable dataSource={theData} columns={blockListSchema} loading={loading} />;
+  const theData = isSuccessfulCall(blocksCall) ? blocksCall.data : [];
+
+  return <BaseTable dataSource={theData} columns={blockListSchema} loading={blocksCall.loading} />;
 };
 
 const blockListSchema: ColumnsType<Block> = [

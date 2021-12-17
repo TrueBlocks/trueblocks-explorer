@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import { SearchOutlined } from '@ant-design/icons';
+import { getNames, Name } from '@sdk';
 import {
   Button, Input, Space, Spin,
 } from 'antd';
@@ -12,15 +13,16 @@ import { ColumnsType } from 'antd/lib/table';
 import {
   addActionsColumn, addColumn, addFlagColumn, addTagsColumn, BaseTable, TableActions,
 } from '@components/Table';
-import { useCommand } from '@hooks/useCommand';
+import { useSdk } from '@hooks/useSdk';
+import { isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
-import { Accountname, AccountnameArray } from '@modules/types';
+import { Accountname } from '@modules/types';
 
 import { useGlobalState } from '../../../State';
 
 type NameModel =
-  & Accountname
+  & Name
   & {
     id: string,
     searchStr: string,
@@ -40,24 +42,25 @@ export const Names = () => {
   const [addresses, setAddresses] = useState<NameModel[]>([]);
 
   // App also makes this request, maybe we can use global state?
-  const [namesRequest, loading] = useCommand('names', {
-    expand: '',
-    all: '',
-  });
+  const namesCall = useSdk(() => getNames({
+    terms: [],
+    expand: true,
+    all: true,
+  }));
 
   useEffect(() => {
-    if (namesRequest.status === 'fail') {
+    if (isFailedCall(namesCall)) {
       createErrorNotification({
         description: 'Could not fetch addresses',
       });
     }
-  }, [namesRequest.status]);
+  }, [namesCall]);
 
   useEffect(() => {
     const newAddressesValue = (() => {
-      if (namesRequest.status === 'fail') return [];
+      if (!isSuccessfulCall(namesCall)) return [];
 
-      return (namesRequest.data as AccountnameArray).map((item, index) => ({
+      return (namesCall.data).map((item, index) => ({
         id: String(index + 1),
         searchStr: `${item.address} ${item.name}`,
         ...item,
@@ -65,7 +68,7 @@ export const Names = () => {
     })();
 
     setAddresses(newAddressesValue);
-  }, [namesRequest.data, namesRequest.status]);
+  }, [namesCall]);
 
   const theData = useMemo(() => addresses, [addresses]);
 
@@ -163,7 +166,7 @@ export const Names = () => {
       .then(() => {
         const newAddresses = [...addresses];
         const foundAddressIndex = newAddresses.findIndex(
-          (item: Accountname) => item.address === namesEditModal.address,
+          (item) => item.address === namesEditModal.address,
         );
 
         newAddresses[foundAddressIndex] = {
@@ -200,7 +203,7 @@ export const Names = () => {
         columns={addressSchema.map((item) =>
           // @ts-ignore
           ({ ...item, ...getColumnSearchProps(item.dataIndex) }))}
-        loading={loading}
+        loading={namesCall.loading}
       />
     </>
   );

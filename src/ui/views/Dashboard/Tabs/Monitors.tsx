@@ -1,8 +1,9 @@
 import React, {
-  useCallback, useMemo, useRef, useState,
+  useMemo, useRef, useState,
 } from 'react';
 
 import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
+import { getStatus } from '@sdk';
 import {
   Button, Form, Input, Spin,
 } from 'antd';
@@ -12,17 +13,21 @@ import { ColumnsType } from 'antd/lib/table';
 import {
   addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions,
 } from '@components/Table';
-import { useCommand } from '@hooks/useCommand';
+import { useSdk } from '@hooks/useSdk';
+import {
+  CallStatus, isFailedCall, isPendingCall, isSuccessfulCall,
+} from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
+import { FixedStatus } from '@modules/type_fixes';
 import { Monitor } from '@modules/types';
 
 import { useGlobalState } from '../../../State';
 import { goToUrl } from '../../../Utilities';
 
 export const Monitors = () => {
-  const [searchText, setSearchText] = useState('');
-  const [_, setSearchedColumn] = useState('');
+  const [, setSearchText] = useState('');
+  const [, setSearchedColumn] = useState('');
   const searchInputRef = useRef(null);
   const {
     namesEditModalVisible,
@@ -35,22 +40,23 @@ export const Monitors = () => {
   const [selectedNameTags, setSelectedNameTags] = useState('');
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  const [monitors, loading] = useCommand('status', { modes: ['monitors'], details: '' });
-  if (monitors.status === 'fail') {
+  const monitorsCall = useSdk(() => getStatus({ modes: ['monitors'], details: true })) as CallStatus<FixedStatus[]>;
+  if (isFailedCall(monitorsCall)) {
     createErrorNotification({
       description: 'Could not fetch monitors',
     });
   }
   const theData = useMemo(() => {
-    const response = monitors;
-    return response.status === 'fail' || !response.data[0].caches
-      ? []
-      : response.data[0].caches[0].items?.map((item: any, i: number) => ({
-        id: (i + 1).toString(),
-        searchStr: `${item.address} ${item.name}`,
-        ...item,
-      }));
-  }, [monitors]);
+    if (isFailedCall(monitorsCall)) return [];
+    if (isSuccessfulCall(monitorsCall) && !monitorsCall.data[0].caches) return [];
+    if (isPendingCall(monitorsCall)) return [];
+
+    return monitorsCall.data[0].caches[0].items?.map((item: any, i: number) => ({
+      id: (i + 1).toString(),
+      searchStr: `${item.address} ${item.name}`,
+      ...item,
+    }));
+  }, [monitorsCall]);
 
   // Antd filter routine requires this structure
   // export interface FilterDropdownProps {
@@ -111,7 +117,7 @@ export const Monitors = () => {
       }),
     })
       .then((result) => result.json())
-      .then((response) => {
+      .then(() => {
         /* let newAddresses = { ...addresses };
         //@ts-ignore
         let foundAddress = newAddresses.data.map((item) => item.address).indexOf(namesEditModal.address);
@@ -302,12 +308,6 @@ const SearchButton = ({ onClick }: { onClick: any }) => (
 const ResetButton = ({ onClick }: { onClick: any }) => (
   <Button onClick={onClick} size='small' style={{ width: 90 }}>
     Reset
-  </Button>
-);
-
-const FilterButton = ({ onClick }: { onClick: any }) => (
-  <Button type='link' size='small' onClick={onClick}>
-    Filter
   </Button>
 );
 

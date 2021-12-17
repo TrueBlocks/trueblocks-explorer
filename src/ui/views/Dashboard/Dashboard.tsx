@@ -3,20 +3,20 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { getExport, getList } from '@sdk';
 import Mousetrap from 'mousetrap';
 
 import { BaseView } from '@components/BaseView';
-import {
-  useCommand,
-} from '@hooks/useCommand';
+import { useSdk } from '@hooks/useSdk';
+import { CallStatus, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
+import { FixedExportParameters, FixedListCount } from '@modules/type_fixes';
 import {
   AssetHistory,
   AssetHistoryArray,
   createEmptyAccountname,
   Reconciliation,
   Transaction,
-  TransactionArray,
 } from '@modules/types';
 
 import {
@@ -78,68 +78,63 @@ export const DashboardView = () => {
     };
   }, []);
 
-  const [listRequest] = useCommand(
-    'list',
-    {
-      count: '',
-      appearances: '',
-      addrs: currentAddress as string,
-    },
-    () => currentAddress?.slice(0, 2) === '0x',
-    [currentAddress],
-  );
+  const listRequest = useSdk(() => getList({
+    count: true,
+    appearances: true,
+    addrs: [currentAddress as string],
+  }),
+  () => currentAddress?.slice(0, 2) === '0x',
+  [currentAddress]) as CallStatus<FixedListCount[]>;
 
   useEffect(() => {
-    setTotalRecords(listRequest.status === 'success' ? listRequest.data[0]?.nRecords : 0);
-  }, [listRequest.data, listRequest.status, setTotalRecords]);
+    setTotalRecords(isSuccessfulCall(listRequest) ? listRequest.data[0]?.nRecords : 0);
+  }, [listRequest, listRequest.type, setTotalRecords]);
 
   // Run this effect until we fetch the last transaction
-  const [transactionsRequest, transactionsLoading] = useCommand(
-    'export',
-    {
-      addrs: currentAddress as string,
-      fmt: 'json',
-      cache: '',
-      cacheTraces: '',
-      // staging: false, // staging,
-      // unripe: false, // unripe: '',
-      ether: '',
-      // dollars: false,
-      articulate: '',
-      accounting: '',
-      // reversed: false,
-      relevant: '',
-      // summarize_by: 'monthly',
-      // If there's only 1 transaction, it's probably the default empty one, so we can
-      // start from 0
-      firstRecord: transactions.length === 1 ? 0 : transactions.length,
-      maxRecords: (() => {
-        if (transactions.length < 50) return 10;
+  const transactionsRequest = useSdk(() => getExport({
+    addrs: [currentAddress as string],
+    fmt: 'json',
+    cache: true,
+    cacheTraces: true,
+    // staging: false, // staging,
+    // unripe: false, // unripe: '',
+    ether: true,
+    // dollars: false,
+    articulate: true,
+    accounting: true,
+    // reversed: false,
+    relevant: true,
+    // summarize_by: 'monthly',
+    // If there's only 1 transaction, it's probably the default empty one, so we can
+    // start from 0
+    firstRecord: String(Number(transactions.length === 1 ? 0 : transactions.length)),
+    maxRecords: String((() => {
+      if (transactions.length < 50) return 10;
 
-        if (transactions.length < 150) return 71;
+      if (transactions.length < 150) return 71;
 
-        if (transactions.length < 1500) return 239;
+      if (transactions.length < 1500) return 239;
 
-        return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
-      })(),
-    },
-    () => Boolean(!cancel && currentAddress && totalRecords && transactions.length < totalRecords),
-    [currentAddress, totalRecords, transactions.length],
-  );
+      return 639; /* an arbitrary number not too big, not too small, that appears not to repeat */
+    })()),
+  } as unknown as FixedExportParameters),
+  () => Boolean(!cancel && currentAddress && totalRecords && transactions.length < totalRecords),
+  [currentAddress, totalRecords, transactions.length]);
 
   useEffect(() => {
-    const stateToSet = !transactionsLoading ? false : transactions.length < 10;
+    const stateToSet = !transactionsRequest.loading ? false : transactions.length < 10;
 
     setLoading(stateToSet);
-  }, [transactions.length, transactionsLoading]);
+  }, [transactions.length, transactionsRequest.loading]);
 
   useEffect(() => {
-    if (!transactionsRequest.data.length) return;
+    if (!isSuccessfulCall(transactionsRequest)) return;
 
     addTransactions(
-      transactionsRequest.data as TransactionArray,
+      // FIXME: typecast needed to make it work
+      transactionsRequest.data as unknown as Transaction[],
     );
-  }, [addTransactions, transactionsRequest, transactionsRequest.data]);
+  }, [addTransactions, transactionsRequest]);
 
   // Store raw data, because it can be huge and we don't want to have to reload it
   // every time a user toggles "hide reconciled".

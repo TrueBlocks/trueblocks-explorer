@@ -1,18 +1,16 @@
-import { Result, toSuccessfulData, useCommand } from '@hooks/useCommand';
-
 export type TransactionsQueryState = {
-  result: ReturnType<typeof useCommand>[0],
-  loading: ReturnType<typeof useCommand>[1]
+  result: {},
+  loading: boolean,
 };
 
 export function createTransactionsQuery(
-  { queryData = [], meta = {} }: { queryData: Result['data'], meta: Result['meta'] },
+  { queryData = [], meta = {} }: { queryData: {}, meta: {} },
 ) {
   return {
-    result: toSuccessfulData({
+    result: {
       data: queryData,
       meta,
-    }),
+    },
     loading: false,
   };
 }

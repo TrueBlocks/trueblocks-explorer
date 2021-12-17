@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
+import { fetch as sdkFetch } from '@sdk';
 import {
   Card, Col, Row, Switch,
 } from 'antd';
-import { either } from 'fp-ts';
-import { pipe } from 'fp-ts/lib/function';
 
-import { ScraperResult, toFailedScrapeResult, toSuccessfulScraperData } from '@hooks/useCommand';
-import { JsonResponse, runCommand } from '@modules/core';
+import {
+  isSuccessfulCall, wrapResponse,
+} from '@modules/api/call_status';
+import { JsonResponse } from '@modules/core';
+import { FixedScrape } from '@modules/type_fixes';
 
 const useStyles = createUseStyles({
   card: {
@@ -19,53 +21,88 @@ const useStyles = createUseStyles({
   },
 });
 
-const formatResponse = (response: either.Either<Error, Record<string, any>>) => {
-  const result: ScraperResult = pipe(
-    response,
-    either.fold(toFailedScrapeResult, (serverResponse) => toSuccessfulScraperData(serverResponse) as ScraperResult),
-  );
-  return result;
-};
+// const formatResponse = (response: either.Either<Error, Record<string, any>>) => {
+//   const result: ScraperResult = pipe(
+//     response,
+//     either.fold(toFailedScrapeResult, (serverResponse) => toSuccessfulScraperData(serverResponse) as ScraperResult),
+//   );
+//   return result;
+// };
 
 export const Scrapers = () => {
   const [indexer, setIndexer] = useState({} as JsonResponse);
   const [monitors, setMonitors] = useState({} as JsonResponse);
+  // const [scraperCall, setScraperCall] = useState(createPendingCall<FixedScrape>());
+
+  const getScrape = async (parameters: { toggle: 'both' | 'indexer' | 'monitors', mode: boolean }) => {
+    // FIXME: MISSING ROUTE
+    return wrapResponse(await sdkFetch<FixedScrape>({
+      endpoint: 'scrape',
+      method: 'get',
+      parameters,
+    }));
+  });
 
   const toggleIndexer = async () => {
-    const response = await runCommand('scraper', {
-      toggle: 'indexer',
-      mode: !indexer.Running,
-    });
-    const result = formatResponse(response);
-    setIndexer(result.indexer);
+    // FIXME: MISSING ROUTE
+    const scraperCall = wrapResponse(await sdkFetch<FixedScrape>({
+      endpoint: 'scrape',
+      method: 'get',
+      parameters: {
+        toggle: 'indexer',
+        mode: !indexer.Running,
+      },
+    }));
+
+    if (isSuccessfulCall(scraperCall)) {
+      setIndexer(scraperCall.data.indexer);
+    }
   };
 
   const toggleMonitors = async () => {
-    const response = await runCommand('scraper', {
-      toggle: 'monitors',
-      mode: !monitors.Running,
-    });
-    const result = formatResponse(response);
-    setMonitors(result.monitor);
+    const scraperCall = wrapResponse(await sdkFetch<FixedScrape>({
+      endpoint: 'scrape',
+      method: 'get',
+      parameters: {
+        toggle: 'monitors',
+        mode: !monitors.Running,
+      },
+    }));
+
+    if (isSuccessfulCall(scraperCall)) {
+      setMonitors(scraperCall.data.monitor);
+    }
   };
 
   const toggleBoth = async () => {
     const bothOn = !(indexer.Running && monitors.Running);
-    const response = await runCommand('scraper', {
-      toggle: 'both',
-      mode: bothOn,
-    });
-    const result = formatResponse(response);
-    setIndexer(result.indexer);
-    setMonitors(result.monitor);
+    const scraperCall = wrapResponse(await sdkFetch<FixedScrape>({
+      endpoint: 'scrape',
+      method: 'get',
+      parameters: {
+        toggle: 'both',
+        mode: bothOn,
+      },
+    }));
+
+    if (isSuccessfulCall(scraperCall)) {
+      setIndexer(scraperCall.data.indexer);
+      setMonitors(scraperCall.data.monitor);
+    }
   };
 
   useEffect(() => {
     (async () => {
-      const response = await runCommand('scraper', { status: 'both' });
-      const result = formatResponse(response);
-      setIndexer(result.indexer);
-      setMonitors(result.monitor);
+      const scraperCall = wrapResponse(await sdkFetch<FixedScrape>({
+        endpoint: 'scrape',
+        method: 'get',
+        parameters: { status: 'both' },
+      }));
+
+      if (isSuccessfulCall(scraperCall)) {
+        setIndexer(scraperCall.data.indexer);
+        setMonitors(scraperCall.data.monitor);
+      }
     })();
   }, []);
 

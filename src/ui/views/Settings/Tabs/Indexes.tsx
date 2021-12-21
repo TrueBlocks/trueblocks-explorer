@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 
+import { getStatus } from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 
 import { BaseView } from '@components/BaseView';
 import { addColumn, addNumColumn } from '@components/Table';
-import { useFetchDataCaches } from '@hooks/useFetchData';
+import { useSdk } from '@hooks/useSdk';
+import { isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
+import { createEmptyStatus } from '@modules/type_fixes';
 import { Chunk } from '@modules/types';
 
 import {
@@ -20,28 +23,36 @@ import { IndexManifest } from './SubTabs/IndexManifest';
 import { IndexTable } from './SubTabs/IndexTable';
 
 export const IndexesView = () => {
-  const { theData, loading, status } = useFetchDataCaches('status', { mode: 'index', details: '' });
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch indexes',
-    });
-  }
+  const statusCall = useSdk(() => getStatus({ modes: ['index'], details: true }));
+  const theData = useMemo(() => {
+    if (isSuccessfulCall(statusCall)) return statusCall.data;
+
+    return [createEmptyStatus()];
+  }, [statusCall]);
+
+  useEffect(() => {
+    if (isFailedCall(statusCall)) {
+      createErrorNotification({
+        description: 'Could not fetch indexes',
+      });
+    }
+  }, [statusCall]);
 
   const tabs = [
     {
       name: 'Grid',
       location: SettingsIndexesGridLocation,
-      component: <IndexGrid key='grid' theData={theData} loading={loading} />,
+      component: <IndexGrid key='grid' theData={theData} loading={statusCall.loading} />,
     },
     {
       name: 'Table',
       location: SettingsIndexesTableLocation,
-      component: <IndexTable key='table' theData={theData} loading={loading} />,
+      component: <IndexTable key='table' theData={theData} loading={statusCall.loading} />,
     },
     {
       name: 'Charts',
       location: SettingsIndexesChartsLocation,
-      component: <IndexCharts key='chart' theData={theData} loading={loading} />,
+      component: <IndexCharts key='chart' theData={theData} loading={statusCall.loading} />,
     },
     {
       name: 'Manifest',

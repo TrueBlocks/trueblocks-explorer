@@ -1,6 +1,10 @@
-import { renderActionsAsColumn, renderFlag, renderTagsWithClickHandler, TagClickHandler } from './mappers';
-import { ColumnType } from 'antd/lib/table';
 import { ReactNode } from 'react-markdown';
+
+import { ColumnType } from 'antd/lib/table';
+
+import {
+  renderActionsAsColumn, renderFlag, renderTagsWithClickHandler, TagClickHandler,
+} from './mappers';
 
 export type ColumnConfiguration<RecordType> = {
   title: string | ReactNode;
@@ -53,7 +57,7 @@ export function addFlagColumn<RecordType>(configuration: ColumnConfiguration<Rec
 
 export function addTagsColumn<RecordType>(
   configuration: ColumnConfiguration<RecordType>,
-  onActionClick: TagClickHandler
+  onActionClick: TagClickHandler,
 ) {
   return {
     ...addColumn(configuration),
@@ -72,7 +76,7 @@ export function addActionsColumn<RecordType>(
   }: {
     width: number;
     getComponent: (item: RecordType) => JSX.Element;
-  }
+  },
 ) {
   return {
     ...addColumn(configuration),

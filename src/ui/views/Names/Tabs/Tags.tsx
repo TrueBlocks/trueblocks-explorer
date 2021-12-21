@@ -1,24 +1,25 @@
 import React from 'react';
 
+import { getNames } from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 
+import { ResourceTable } from '@components/ResourceTable';
 import {
-  addActionsColumn, addColumn, BaseTable, TableActions,
+  addActionsColumn, addColumn, TableActions,
 } from '@components/Table';
-import { useFetchData } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
+import { useSdk } from '@hooks/useSdk';
 import { Tag } from '@modules/types/Tag';
 
 export const Tags = () => {
-  const { theData, loading, status } = useFetchData('names', { tags: '' });
+  const dataCall = useSdk(() => getNames({ terms: [], tags: true }));
 
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch tags',
-    });
-  }
-
-  return <BaseTable dataSource={theData} columns={tagSchema} loading={loading} />;
+  return (
+    <ResourceTable
+      resourceName='tags'
+      call={dataCall}
+      columns={tagSchema}
+    />
+  );
 };
 
 const tagSchema: ColumnsType<Tag> = [

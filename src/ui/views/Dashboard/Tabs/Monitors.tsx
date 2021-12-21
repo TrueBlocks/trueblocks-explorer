@@ -5,11 +5,11 @@ import React, {
 import { PlusCircleFilled, SearchOutlined } from '@ant-design/icons';
 import { getStatus } from '@sdk';
 import {
-  Button, Form, Input, Spin,
+  Button, Input,
 } from 'antd';
-import Modal from 'antd/lib/modal/Modal';
 import { ColumnsType } from 'antd/lib/table';
 
+import { NamesEditModal } from '@components/NameEditModal';
 import {
   addActionsColumn, addColumn, addNumColumn, addTagsColumn, BaseTable, TableActions,
 } from '@components/Table';
@@ -30,14 +30,13 @@ export const Monitors = () => {
   const [, setSearchedColumn] = useState('');
   const searchInputRef = useRef(null);
   const {
-    namesEditModalVisible,
     setNamesEditModalVisible,
   } = useGlobalState();
-  const [selectedNameAddress, setSelectedNameAddress] = useState('');
-  const [selectedNameName, setSelectedNameName] = useState('');
-  const [selectedNameDescription, setSelectedNameDescription] = useState('');
-  const [selectedNameSource, setSelectedNameSource] = useState('');
-  const [selectedNameTags, setSelectedNameTags] = useState('');
+  const [selectedNameAddress] = useState('');
+  const [selectedNameName] = useState('');
+  const [selectedNameDescription] = useState('');
+  const [selectedNameSource] = useState('');
+  const [selectedNameTags] = useState('');
   const [loadingEdit, setLoadingEdit] = useState(false);
 
   const monitorsCall = useSdk(() => getStatus({ modes: ['monitors'], details: true })) as CallStatus<FixedStatus[]>;
@@ -145,119 +144,43 @@ export const Monitors = () => {
     { name: 'M', address: '0x054993ab0f2b1acc0fdc65405ee203b4271bebe6' },
   ];
 
+  const columns = useMemo(() => monitorSchema
+    .map((item) => {
+      if ('children' in item) return item;
+      return { ...item, ...getColumnSearchProps(item.dataIndex) };
+    }), []);
+
   return (
     <>
-      <Modal
-        visible={namesEditModalVisible}
-        footer={null}
-        onCancel={() => setNamesEditModalVisible(false)}
-      >
-        {loadingEdit ? (
-          <div style={{
-            padding: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center',
-          }}
-          >
-            <Spin />
-          </div>
-        ) : (
-          <Form onFinish={() => onEditItem()}>
-            <div style={{ marginTop: '24px' }}>
-              <div style={{ marginTop: '16px' }}>
-                <Form.Item
-                  label={<div style={{ minWidth: '64px' }}>Address</div>}
-                  name='address'
-                  rules={[{ required: true, message: 'Address required' }]}
-                  {...(selectedNameAddress.length > 0
-                    && (selectedNameAddress.slice(0, 2) !== '0x' || selectedNameAddress.length !== 42) && {
-                    help: 'Address must begin with 0x and be 42 characters',
-                    validateStatus: 'error',
-                  })}
-                >
-                  <Input
-                    placeholder='Address'
-                    value={selectedNameAddress}
-                    onChange={(e) => setSelectedNameAddress(e.target.value)}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ marginTop: '16px' }}>
-                <Form.Item
-                  label={<div style={{ minWidth: '64px' }}>Name</div>}
-                  name='name'
-                  rules={[{ required: true, message: 'Name is required' }]}
-                >
-                  <Input
-                    placeholder='Name'
-                    value={selectedNameName}
-                    onChange={(e) => setSelectedNameName(e.target.value)}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ marginTop: '16px' }}>
-                <Form.Item label={<div style={{ minWidth: '74px' }}>Description</div>} name='description'>
-                  <Input
-                    placeholder='Description'
-                    value={selectedNameDescription}
-                    onChange={(e) => setSelectedNameDescription(e.target.value)}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ marginTop: '16px' }}>
-                <Form.Item label={<div style={{ minWidth: '74px' }}>Source</div>} name='source'>
-                  <Input
-                    placeholder='Source'
-                    value={selectedNameSource}
-                    onChange={(e) => setSelectedNameSource(e.target.value)}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ marginTop: '16px' }}>
-                <Form.Item label={<div style={{ minWidth: '74px' }}>Tags</div>} name='tags'>
-                  <Input
-                    placeholder='Tags'
-                    value={selectedNameTags}
-                    onChange={(e) => setSelectedNameTags(e.target.value)}
-                  />
-                </Form.Item>
-              </div>
-              <Form.Item>
-                <div style={{ marginTop: '16px' }}>
-                  <Button type='primary' htmlType='submit'>
-                    Submit
-                  </Button>
-                </div>
-              </Form.Item>
-            </div>
-          </Form>
-        )}
-      </Modal>
-      <div
+      <NamesEditModal
+        loading={loadingEdit}
+        onEdit={onEditItem}
+      />
+      <Button
         onClick={() => setNamesEditModalVisible(true)}
-        style={{
-          marginTop: '16px',
-          marginBottom: '24px',
-          color: 'rgb(24, 144, 255)',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          fontSize: '20px',
-        }}
+        // style={{
+        //   marginTop: '16px',
+        //   marginBottom: '24px',
+        //   color: 'rgb(24, 144, 255)',
+        //   fontWeight: 'bold',
+        //   cursor: 'pointer',
+        //   fontSize: '20px',
+        // }}
       >
         <PlusCircleFilled style={{ marginRight: '8px' }} />
         Add new monitor
-      </div>
+      </Button>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 5fr' }}>
         <div style={{ borderRight: '1px solid lightgrey', marginLeft: '5' }}>
           <h2>Recents</h2>
-          {recents.map((item, index) => (
-            <div key={index}>{renderClickableAddress(item.name, item.address)}</div>
+          {recents.map((item) => (
+            <div key={item.address}>{renderClickableAddress(item.name, item.address)}</div>
           ))}
         </div>
         <BaseTable
           dataSource={theData}
-          columns={monitorSchema.map((item) =>
-            // @ts-ignore
-            ({ ...item, ...getColumnSearchProps(item.dataIndex) }))}
-          loading={loading}
+          columns={columns}
+          loading={monitorsCall.loading}
         />
       </div>
     </>
@@ -368,10 +291,10 @@ const monitorSchema: ColumnsType<Monitor> = [
 ];
 
 function getTableActions(item: Monitor) {
-  const onClick = (action: string, item: Monitor) => {
+  const onClick = (action: string, monitor: Monitor) => {
     switch (action) {
       case 'info':
-        goToUrl(`https://etherscan.io/address/${item.address}`);
+        goToUrl(`https://etherscan.io/address/${monitor.address}`);
         break;
       case 'delete':
         console.log('DELETE');
@@ -383,7 +306,7 @@ function getTableActions(item: Monitor) {
         console.log('VIEW');
         break;
       default:
-        console.log('Unknown action', action, item.name);
+        console.log('Unknown action', action, monitor.name);
         break;
     }
   };

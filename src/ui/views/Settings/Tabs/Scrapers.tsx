@@ -34,14 +34,14 @@ export const Scrapers = () => {
   const [monitors, setMonitors] = useState({} as JsonResponse);
   // const [scraperCall, setScraperCall] = useState(createPendingCall<FixedScrape>());
 
-  const getScrape = async (parameters: { toggle: 'both' | 'indexer' | 'monitors', mode: boolean }) => {
-    // FIXME: MISSING ROUTE
-    return wrapResponse(await sdkFetch<FixedScrape>({
-      endpoint: 'scrape',
-      method: 'get',
-      parameters,
-    }));
-  });
+  // const getScrape = async (parameters: { toggle: 'both' | 'indexer' | 'monitors', mode: boolean }) => {
+  //   // FIXME: MISSING ROUTE
+  //   return wrapResponse(await sdkFetch<FixedScrape>({
+  //     endpoint: 'scrape',
+  //     method: 'get',
+  //     parameters,
+  //   }));
+  // };
 
   const toggleIndexer = async () => {
     // FIXME: MISSING ROUTE

@@ -3,7 +3,9 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { getExport, getList } from '@sdk';
+import {
+  getExport, getList, Reconciliation, Transaction,
+} from '@sdk';
 import Mousetrap from 'mousetrap';
 
 import { BaseView } from '@components/BaseView';
@@ -12,11 +14,11 @@ import { CallStatus, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { FixedExportParameters, FixedListCount } from '@modules/type_fixes';
 import {
+  // This type seems like a part of UI (presentation layer)
   AssetHistory,
   AssetHistoryArray,
   createEmptyAccountname,
-  Reconciliation,
-  Transaction,
+  // Reconciliation,
 } from '@modules/types';
 
 import {
@@ -44,9 +46,8 @@ export const DashboardView = () => {
   const { namesMap } = useGlobalNames();
   const { totalRecords, setTotalRecords } = useGlobalState();
   const {
-    transactionsStatus,
-    transactionsData: transactions, // rename GlobalState.transactionsData to transactions here
-    transactionsMeta,
+    transactions, // rename GlobalState.transactionsData to transactions here
+    meta: transactionsMeta,
     setTransactions,
     addTransactions,
   } = useGlobalState();
@@ -60,14 +61,6 @@ export const DashboardView = () => {
       setCurrentAddress(addressParam);
     }
   }, [searchParams, setCurrentAddress]);
-
-  useEffect(() => {
-    if (transactionsStatus === 'fail') {
-      createErrorNotification({
-        description: 'Could not fetch transactions',
-      });
-    }
-  }, [transactionsStatus]);
 
   // clean up mouse control when we unmount
   useEffect(() => {
@@ -122,6 +115,14 @@ export const DashboardView = () => {
   [currentAddress, totalRecords, transactions.length]);
 
   useEffect(() => {
+    if (transactionsRequest.type === 'error') {
+      createErrorNotification({
+        description: 'Could not fetch transactions',
+      });
+    }
+  }, [transactionsRequest.type]);
+
+  useEffect(() => {
     const stateToSet = !transactionsRequest.loading ? false : transactions.length < 10;
 
     setLoading(stateToSet);
@@ -138,9 +139,9 @@ export const DashboardView = () => {
 
   // Store raw data, because it can be huge and we don't want to have to reload it
   // every time a user toggles "hide reconciled".
-  const transactionModels = useMemo(() => (transactions as Transaction[])
-    // TODO: remove this filter when we fix emptyData in useCommand (it should never
-    // return an array with an empty object)
+  const transactionModels = useMemo(() => transactions
+  // TODO: remove this filter when we fix emptyData in useCommand (it should never
+  // return an array with an empty object)
     .filter(({ hash }) => Boolean(hash))
     .map((transaction, index) => {
       const newId = String(index + 1);

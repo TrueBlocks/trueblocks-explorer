@@ -1,19 +1,16 @@
 import React from 'react';
 
-import { BaseTable } from '@components/Table';
-import { useFetchData } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
-import { Function } from '@modules/types';
+import { Function } from '@sdk';
 
-import { abiSignature } from '../Signatures';
+import { GenericSubTab } from './GenericSubTab';
 
 export const EventSignatures = () => {
   const filterFunc = (item: Function) => item.type !== 'event';
-  const { theData, loading, status } = useFetchData('abis', { known: '', source: '', logLevel: 2 }, filterFunc);
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch function signature data',
-    });
-  }
-  return <BaseTable dataSource={theData} columns={abiSignature} loading={loading} />;
+
+  return (
+    <GenericSubTab
+      resourceName='event signature data'
+      filterFunc={filterFunc}
+    />
+  );
 };

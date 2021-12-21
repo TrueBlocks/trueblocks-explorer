@@ -1,22 +1,13 @@
 import React from 'react';
 
-import { Loading } from '@components/Loading';
-import { useFetchData } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
+import { getTraces } from '@sdk';
 
-export const Traces = () => {
-  // TODO(tjayrush): hard coded data
-  const { theData, loading, status } = useFetchData('traces', { transactions: '12001001.0', articulate: '' });
+import { RawDataTab } from '@components/RawDataTab';
 
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch traces',
-    });
-  }
-
-  return (
-    <Loading loading={loading}>
-      <pre>{JSON.stringify(theData, null, 2)}</pre>
-    </Loading>
-  );
-};
+// TODO(tjayrush): hard coded data
+export const Traces = () => (
+  <RawDataTab
+    name='logs'
+    makeRequest={() => getTraces({ transactions: ['12001001.0'], articulate: true })}
+  />
+);

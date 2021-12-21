@@ -1,7 +1,7 @@
 // FIXME: this is a temporary file and it should never get merged
 
 import {
-  Cache, getBlocks, getExport, Status,
+  Cache, getBlocks, getExport, getWhen, Status,
 } from '@sdk';
 
 export type FixedCache = Cache & {
@@ -67,6 +67,14 @@ export function createEmptyStatus(): FixedStatus {
   };
 }
 
+export type Meta = {
+  unripe: number,
+  ripe: number,
+  staging: number,
+  finalized: number,
+  client: number,
+}
+
 export function createEmptyMeta() {
   return {
     unripe: 0,
@@ -100,4 +108,8 @@ type ScraperDetails = {
 export type FixedScrape = {
   monitor: ScraperDetails,
   indexer: ScraperDetails,
+};
+
+export type FixedWhenParameters = Parameters<typeof getWhen>[0] & {
+  list?: boolean
 };

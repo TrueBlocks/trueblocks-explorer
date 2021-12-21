@@ -1,22 +1,13 @@
 import React from 'react';
 
-import { Loading } from '@components/Loading';
-import { useFetchData } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
+import { getReceipts } from '@sdk';
 
-export const Receipts = () => {
-  // TODO(tjayrush): hard coded data
-  const { theData, loading, status } = useFetchData('receipts', { transactions: '12001001.1', articulate: '' });
+import { RawDataTab } from '@components/RawDataTab';
 
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch receipts',
-    });
-  }
-
-  return (
-    <Loading loading={loading}>
-      <pre>{JSON.stringify(theData, null, 2)}</pre>
-    </Loading>
-  );
-};
+// TODO(tjayrush): hard coded data
+export const Receipts = () => (
+  <RawDataTab
+    name='logs'
+    makeRequest={() => getReceipts({ transactions: ['12001001.1'], articulate: true })}
+  />
+);

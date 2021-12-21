@@ -1,21 +1,23 @@
 import React from 'react';
 
+import { getPins } from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 
-import { addColumn, BaseTable } from '@components/Table';
-import { useFetchData } from '@hooks/useFetchData';
-import { createErrorNotification } from '@modules/error_notification';
+import { ResourceTable } from '@components/ResourceTable';
+import { addColumn } from '@components/Table';
+import { useSdk } from '@hooks/useSdk';
 import { ManifestRecord } from '@modules/types';
 
 export const IndexManifest = () => {
-  const { theData, loading, status } = useFetchData('pins', { list: '' });
-  if (status === 'fail') {
-    createErrorNotification({
-      description: 'Could not fetch manifest',
-    });
-  }
+  const pinsCall = useSdk(() => getPins({ list: true }));
 
-  return <BaseTable dataSource={theData} columns={manifestSchema} loading={loading} />;
+  return (
+    <ResourceTable
+      resourceName='manifest'
+      call={pinsCall}
+      columns={manifestSchema}
+    />
+  );
 };
 
 export const manifestSchema: ColumnsType<ManifestRecord> = [

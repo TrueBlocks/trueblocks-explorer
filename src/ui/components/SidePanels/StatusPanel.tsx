@@ -106,10 +106,10 @@ export const StatusPanel = ({ status, loading, error }: StatusPanelProps) => {
           <div className={styles.itemHeader}>MONITORS</div>
           <div>
             <EyeFilled className={styles.itemIcon} />
-            {statusData.cache && statusData.cache[1].nFiles}
+            {statusData.caches && statusData.caches[1].nFiles}
             {' '}
             (
-            {statusData.cache && filesize(statusData.cache[1].sizeInBytes)}
+            {statusData.caches && filesize(statusData.caches[1].sizeInBytes)}
             )
           </div>
         </div>
@@ -118,10 +118,10 @@ export const StatusPanel = ({ status, loading, error }: StatusPanelProps) => {
           <div className={styles.itemHeader}>SLURPS</div>
           <div>
             <ExperimentFilled className={styles.itemIcon} />
-            {statusData.cache && statusData.cache[3].nFiles}
+            {statusData.caches && statusData.caches[3].nFiles}
             {' '}
             (
-            {statusData.cache && filesize(statusData.cache[3].sizeInBytes)}
+            {statusData.caches && filesize(statusData.caches[3].sizeInBytes)}
             )
           </div>
         </div>

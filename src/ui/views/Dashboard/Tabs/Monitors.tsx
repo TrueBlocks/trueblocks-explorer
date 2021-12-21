@@ -103,7 +103,7 @@ export const Monitors = () => {
       cache: 'no-cache',
       credentials: 'omit',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',

@@ -7,17 +7,19 @@ import { Loading } from '@components/Loading';
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
 import { createWrapper } from '@hooks/useSearchParams';
+import { FixedTransaction } from '@modules/type_fixes';
+// FIXME: UI-related types
 import {
-  ItemCounter, ItemCounterArray, Transaction, TransactionArray,
+  ItemCounter, ItemCounterArray,
 } from '@modules/types';
 
 import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
 
-export const Functions = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
+export const Functions = ({ theData, loading }: { theData: FixedTransaction[]; loading: boolean }) => {
   if (!theData) return <></>;
 
   const counts: Record<string, number> = {};
-  theData.forEach((item: Transaction) => {
+  theData.forEach((item: FixedTransaction) => {
     if (item.articulatedTx) {
       const k = item.articulatedTx.name + (item.isError ? ' (errored)' : '');
       if (!counts[k]) counts[k] = 1;

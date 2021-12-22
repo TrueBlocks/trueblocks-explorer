@@ -7,19 +7,13 @@ import React, {
 } from 'react';
 import { ReactNode } from 'react-markdown';
 
-import { Transaction } from '@sdk';
+import { address as Address, Name, Transaction } from '@sdk';
 import Cookies from 'js-cookie';
 
 import {
   getThemeByName, Theme, ThemeName,
 } from '@modules/themes';
 import { createEmptyMeta, Meta } from '@modules/type_fixes';
-import {
-  Accountname,
-  address as Address,
-  // TransactionArray,
-  // TransactionsQueryState,
-} from '@modules/types';
 
 const THEME: ThemeName = Cookies.get('theme') as ThemeName || 'default';
 const ADDRESS = Cookies.get('address');
@@ -37,8 +31,8 @@ type State = {
   theme: Theme,
   denom: string,
   currentAddress?: string,
-  namesMap: Map<Address, Accountname>
-  namesArray?: Accountname[],
+  namesMap: Map<Address, Name>
+  namesArray?: Name[],
   namesEditModalVisible: boolean,
   namesEditModal: NamesEditModalState,
   transactions: Transaction[],

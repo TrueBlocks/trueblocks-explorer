@@ -1,13 +1,12 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import {
-  Transaction,
-} from '@modules/types';
+import { FixedTransaction } from '@modules/type_fixes';
+import { Reconciliation } from '@modules/types';
 
 import { Statement } from './Statement';
 
-export const StatementDisplay = ({ record }: { record: Transaction}) => {
+export const StatementDisplay = ({ record }: { record: FixedTransaction}) => {
   const style = useStyles();
 
   if (record.statements === null) return <></>;
@@ -22,7 +21,7 @@ export const StatementDisplay = ({ record }: { record: Transaction}) => {
       <div>
         <table>
           <tbody>
-            {record.statements?.map((statement, i) => (
+            {(record.statements as unknown as Reconciliation[])?.map((statement, i) => (
               <Statement
                 key={`statement.assetAddr + ${i.toString()}`}
                 statement={statement}

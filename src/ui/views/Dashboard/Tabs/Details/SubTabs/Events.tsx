@@ -6,13 +6,15 @@ import { ColumnsType } from 'antd/lib/table';
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
 import { createWrapper } from '@hooks/useSearchParams';
+import { FixedTransaction } from '@modules/type_fixes';
+// FIXME: UI-related types
 import {
-  ItemCounter, ItemCounterArray, Transaction, TransactionArray,
+  ItemCounter, ItemCounterArray,
 } from '@modules/types';
 
 import { DashboardAccountsHistoryLocation } from '../../../../../Routes';
 
-export const Events = ({ theData, loading }: { theData: TransactionArray; loading: boolean }) => {
+export const Events = ({ theData }: { theData: FixedTransaction[] }) => {
   if (!theData) return <></>;
 
   const counts: Record<string, number> = {};
@@ -28,7 +30,7 @@ export const Events = ({ theData, loading }: { theData: TransactionArray; loadin
   // TODO:       const countKey = log.articulatedLog.name;
   // TODO:       counts[countKey] = (counts[countKey] || 0) + 1;
   // TODO:     });
-  theData.forEach((item: Transaction) => {
+  theData.forEach((item: FixedTransaction) => {
     item.receipt?.logs?.map((log: any) => {
       if (log.articulatedLog) {
         if (!counts[log.articulatedLog?.name]) counts[log.articulatedLog?.name] = 1;

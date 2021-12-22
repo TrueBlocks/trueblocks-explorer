@@ -7,10 +7,9 @@ import {
   RightCircleFilled,
   UpCircleFilled,
 } from '@ant-design/icons';
-
 import {
   Reconciliation,
-} from '@modules/types';
+} from '@sdk';
 
 export const ReconIcon = ({ statement }: { statement: Reconciliation }) => {
   if (!statement) return <></>;

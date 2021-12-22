@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Transaction, TransactionArray } from '@modules/types';
+import { TransactionModel } from '@modules/type_fixes';
 
-export const Gas = ({ theData }: { theData: TransactionArray }) => {
+export const Gas = ({ theData }: { theData: TransactionModel[] }) => {
   if (!theData) return <></>;
-  const usesGas = theData.filter((tx: Transaction) => {
+  const usesGas = theData.filter((tx: TransactionModel) => {
     if (!tx.statements) return false;
     const stmts = tx.statements.filter((st) => st.gasCostOut);
     return stmts.length > 0;
   });
 
   // TODO(data): fix this if you can
-  const stmts = usesGas.map((tx: Transaction) => (tx.statements || []).map((st) => ({
+  const stmts = usesGas.map((tx: TransactionModel) => (tx.statements || []).map((st) => ({
     blockNumber: tx.blockNumber,
     transactionIndex: tx.transactionIndex,
     hash: tx.hash,

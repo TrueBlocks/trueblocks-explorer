@@ -1,13 +1,14 @@
 import React from 'react';
 
+import { Log } from '@sdk';
 import { Card } from 'antd';
 
-import { LogentryArray, Transaction } from '@modules/types';
+import { FixedTransaction } from '@modules/type_fixes';
 
 import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
-export const HistoryEvents = ({ record }: { record: Transaction }) => {
+export const HistoryEvents = ({ record }: { record: FixedTransaction }) => {
   const styles = useAcctStyles();
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
@@ -34,7 +35,7 @@ export const HistoryEvents = ({ record }: { record: Transaction }) => {
 };
 
 //-----------------------------------------------------------------
-const showLogs = (logs: LogentryArray, relevant: boolean) => {
+const showLogs = (logs: Log[], relevant: boolean) => {
   if (!logs) return <></>;
   return logs.map((log, index) => {
     if ((relevant && !log.address) || (!relevant && log.address)) return <div key={log.logIndex} />;

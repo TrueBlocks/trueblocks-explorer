@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Card } from 'antd';
 
-import { Transaction } from '@modules/types';
+import { FixedTransaction } from '@modules/type_fixes';
 
 import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
-export const HistoryFunctions = ({ record }: { record: Transaction }) => {
+export const HistoryFunctions = ({ record }: { record: FixedTransaction }) => {
   if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
   const styles = useAcctStyles();
@@ -31,7 +31,7 @@ export const HistoryFunctions = ({ record }: { record: Transaction }) => {
 };
 
 //-----------------------------------------------------------------
-const showInput = (record: Transaction, key: string) => {
+const showInput = (record: FixedTransaction, key: string) => {
   if (!record || !record.input) return <></>;
   let str = record.input;
   if (str?.length < 10) <pre>{str}</pre>;

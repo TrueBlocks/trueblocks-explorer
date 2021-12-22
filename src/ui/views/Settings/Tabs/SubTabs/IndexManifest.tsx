@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { getPins } from '@sdk';
+import { getPins, Manifest } from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 
 import { ResourceTable } from '@components/ResourceTable';
 import { addColumn } from '@components/Table';
 import { useSdk } from '@hooks/useSdk';
-import { ManifestRecord } from '@modules/types';
 
 export const IndexManifest = () => {
   const pinsCall = useSdk(() => getPins({ list: true }));
@@ -20,7 +19,7 @@ export const IndexManifest = () => {
   );
 };
 
-export const manifestSchema: ColumnsType<ManifestRecord> = [
+export const manifestSchema: ColumnsType<Manifest> = [
   addColumn({
     title: 'File Name',
     dataIndex: 'fileName',

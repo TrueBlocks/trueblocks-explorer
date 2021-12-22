@@ -8,8 +8,7 @@ import {
   addActionsColumn, addColumn, addNumColumn, TableActions,
 } from '@components/Table';
 import { useSdk } from '@hooks/useSdk';
-import { FixedWhenParameters } from '@modules/type_fixes';
-import { Block } from '@modules/types';
+import { FixedBlock, FixedWhenParameters } from '@modules/type_fixes';
 
 export const When = () => {
   const dataCall = useSdk(() => getWhen({ list: true } as FixedWhenParameters));
@@ -23,7 +22,7 @@ export const When = () => {
   );
 };
 
-const whenSchema: ColumnsType<Block> = [
+const whenSchema: ColumnsType<FixedBlock> = [
   addNumColumn({
     title: 'Block Number',
     dataIndex: 'blockNumber',
@@ -55,6 +54,6 @@ const whenSchema: ColumnsType<Block> = [
   ),
 ];
 
-function getTableActions(item: Block) {
+function getTableActions(item: FixedBlock) {
   return <TableActions item={item} onClick={(action, tableItem) => console.log('Clicked action', action, tableItem)} />;
 }

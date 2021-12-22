@@ -17,7 +17,6 @@ import { useSdk } from '@hooks/useSdk';
 import { isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
-import { Accountname } from '@modules/types';
 
 import { useGlobalState } from '../../../State';
 
@@ -300,8 +299,8 @@ const ModalEditRow = ({
   </div>
 );
 
-const addressSchema: ColumnsType<Accountname> = [
-  addColumn<Accountname>({
+const addressSchema: ColumnsType<Name> = [
+  addColumn({
     title: 'Name / Address',
     dataIndex: 'searchStr',
     configuration: {
@@ -359,7 +358,7 @@ const addressSchema: ColumnsType<Accountname> = [
     title: 'Monitor',
     dataIndex: 'mon',
   }),
-  addActionsColumn<Accountname>(
+  addActionsColumn(
     {
       title: '',
       dataIndex: '',
@@ -371,7 +370,7 @@ const addressSchema: ColumnsType<Accountname> = [
   ),
 ];
 
-function getTableActions(item: Accountname) {
+function getTableActions(item: Name) {
   const { setNamesEditModal, setNamesEditModalVisible } = useGlobalState();
   return (
     <TableActions

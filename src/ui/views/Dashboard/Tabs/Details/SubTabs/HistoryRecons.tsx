@@ -2,15 +2,17 @@ import React from 'react';
 
 import { Card } from 'antd';
 
+import { FixedTransaction } from '@modules/type_fixes';
+// FIXME: legacy type Reconciliation
 import {
-  double, priceReconciliation, Reconciliation, Transaction,
+  double, priceReconciliation, Reconciliation,
 } from '@modules/types';
 
 import { AccountViewParams } from '../../../Dashboard';
 import { useAcctStyles } from '..';
 
 //-----------------------------------------------------------------
-export const HistoryRecons = ({ record, params }: { record: Transaction; params: AccountViewParams }) => {
+export const HistoryRecons = ({ record, params }: { record: FixedTransaction; params: AccountViewParams }) => {
   const { prefs } = params;
   const { denom } = params.prefs;
   const styles = useAcctStyles();
@@ -20,7 +22,7 @@ export const HistoryRecons = ({ record, params }: { record: Transaction; params:
   return (
     <div key={key} className={styles.container}>
       <div key={key} className={styles.cardHolder}>
-        {record?.statements?.map((statement: Reconciliation, index: number) => {
+        {(record?.statements as unknown as Reconciliation[])?.map((statement: Reconciliation, index: number) => {
           const statementIn = priceReconciliation(statement, denom);
           return oneStatement(statementIn, index, prefs.showDetails, prefs.setShowDetails, styles, key);
         })}

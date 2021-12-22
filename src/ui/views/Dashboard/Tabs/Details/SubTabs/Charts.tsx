@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { MyAreaChart } from '@components/MyAreaChart';
 import { addColumn } from '@components/Table';
 import { createWrapper } from '@hooks/useSearchParams';
+// FIXME: these look like UI-related types
 import { AssetHistory, Balance } from '@modules/types';
 
 import { DashboardAccountsHistoryLocation } from '../../../../../Routes';

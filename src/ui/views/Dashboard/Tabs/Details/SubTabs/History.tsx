@@ -12,9 +12,7 @@ import { useSearchParams } from '@hooks/useSearchParams';
 import {
   applyFilters,
 } from '@modules/filters/transaction';
-import {
-  Transaction,
-} from '@modules/types';
+import { TransactionModel } from '@modules/type_fixes';
 
 import {
   DashboardAccountsHistoryCustomLocation,
@@ -174,7 +172,7 @@ export const AccountHistorySider = ({ record, params }: { record: any; params: A
   return <BaseView title='' cookieName='COOKIE_DASHBOARD_DETAILS' tabs={tabs} />;
 };
 
-export const transactionSchema: ColumnsType<Transaction> = [
+export const transactionSchema: ColumnsType<TransactionModel> = [
   addColumn({
     title: 'Date',
     dataIndex: 'date',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { address } from '@modules/types';
+import { address } from '@sdk';
 
 import { DashboardAccountsAddressLocation } from '../../Routes';
 import { useGlobalState } from '../../State';

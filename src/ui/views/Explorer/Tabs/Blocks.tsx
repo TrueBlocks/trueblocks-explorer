@@ -5,13 +5,12 @@ import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 
 import {
-  addColumn, addNumColumn, BaseTable, TableActions,
+  addColumn, addNumColumn, BaseTable,
 } from '@components/Table';
 import { useSdk } from '@hooks/useSdk';
 import { isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
-import { FixedGetBlocksParameters } from '@modules/type_fixes';
-import { Block } from '@modules/types';
+import { FixedBlock, FixedGetBlocksParameters } from '@modules/type_fixes';
 
 export const Blocks = () => {
   // FIXME: typecast
@@ -32,8 +31,8 @@ export const Blocks = () => {
   return <BaseTable dataSource={theData} columns={blockListSchema} loading={blocksCall.loading} />;
 };
 
-const blockListSchema: ColumnsType<Block> = [
-  addColumn<Block>({
+const blockListSchema: ColumnsType<FixedBlock> = [
+  addColumn({
     title: 'Date',
     dataIndex: 'timestamp',
     configuration: {
@@ -45,7 +44,7 @@ const blockListSchema: ColumnsType<Block> = [
       ),
     },
   }),
-  addColumn<Block>({
+  addColumn({
     title: 'Hash',
     dataIndex: 'hash',
     configuration: {
@@ -58,7 +57,7 @@ const blockListSchema: ColumnsType<Block> = [
       width: 620,
     },
   }),
-  addColumn<Block>({
+  addColumn({
     title: 'Miner',
     dataIndex: 'miner',
     configuration: {
@@ -73,27 +72,23 @@ const blockListSchema: ColumnsType<Block> = [
       width: 400,
     },
   }),
-  addNumColumn<Block>({
+  addNumColumn({
     title: 'Difficulty',
     dataIndex: 'difficulty',
     configuration: {
       width: 180,
     },
   }),
-  addNumColumn<Block>({
+  addNumColumn({
     title: 'Gas Used',
     dataIndex: 'gasUsed',
   }),
-  addNumColumn<Block>({
+  addNumColumn({
     title: 'Gas Limit',
     dataIndex: 'gasLimit',
   }),
-  addNumColumn<Block>({
+  addNumColumn({
     title: 'nTransactions',
     dataIndex: 'transactionsCnt',
   }),
 ];
-
-function getTableActions(item: Block) {
-  return <TableActions item={item} onClick={(action, tableItem) => console.log('Clicked action', action, tableItem)} />;
-}

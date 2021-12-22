@@ -1,18 +1,17 @@
-import dayjs from 'dayjs';
-
 import {
-  TransactionArray,
-} from '@modules/types';
+  Transaction,
+} from '@sdk';
+import dayjs from 'dayjs';
 
 import { sendTheExport } from '../../../../../../Utilities';
 
 //-------------------------------------------------------------------------
-export const exportToCsv = (theData: TransactionArray) => {
+export const exportToCsv = (theData: Transaction[]) => {
   sendTheExport('csv', convertToText(theData, ','));
 };
 
 //-------------------------------------------------------------------------
-export const exportToTxt = (theData: TransactionArray) => {
+export const exportToTxt = (theData: Transaction[]) => {
   sendTheExport('txt', convertToText(theData, '\t'));
 };
 
@@ -52,7 +51,7 @@ export const incomeFields = [
 export const outflowFields = ['amountOut', 'internalOut', 'selfDestructOut', 'gasCostOut'];
 
 //-------------------------------------------------------------------------
-export const convertToText = (theData: TransactionArray, delim: string) => {
+export const convertToText = (theData: Transaction[], delim: string) => {
   const sorted = theData;
   const txs = sorted.flatMap((trans: any) => trans.statements.flatMap((statement: any) => {
     const {

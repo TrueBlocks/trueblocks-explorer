@@ -19,8 +19,7 @@ import {
 } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { renderClickableAddress } from '@modules/renderers';
-import { FixedStatus } from '@modules/type_fixes';
-import { Monitor } from '@modules/types';
+import { FixedMonitor, FixedStatus } from '@modules/type_fixes';
 
 import { useGlobalState } from '../../../State';
 import { goToUrl } from '../../../Utilities';
@@ -234,8 +233,8 @@ const ResetButton = ({ onClick }: { onClick: any }) => (
   </Button>
 );
 
-const monitorSchema: ColumnsType<Monitor> = [
-  addColumn<Monitor>({
+const monitorSchema: ColumnsType<FixedMonitor> = [
+  addColumn({
     title: 'Name / Address',
     dataIndex: 'searchStr',
     configuration: {
@@ -253,7 +252,7 @@ const monitorSchema: ColumnsType<Monitor> = [
     },
     (tag: string) => console.log('tag click', tag),
   ),
-  addNumColumn<Monitor>({
+  addNumColumn({
     title: 'nAppearances',
     dataIndex: 'nApps',
     configuration: {
@@ -275,7 +274,7 @@ const monitorSchema: ColumnsType<Monitor> = [
     title: 'sizeInBytes',
     dataIndex: 'sizeInBytes',
   }),
-  addActionsColumn<Monitor>(
+  addActionsColumn<FixedMonitor>(
     {
       title: 'Actions',
       dataIndex: '',
@@ -290,8 +289,8 @@ const monitorSchema: ColumnsType<Monitor> = [
   ),
 ];
 
-function getTableActions(item: Monitor) {
-  const onClick = (action: string, monitor: Monitor) => {
+function getTableActions(item: FixedMonitor) {
+  const onClick = (action: string, monitor: typeof item) => {
     switch (action) {
       case 'info':
         goToUrl(`https://etherscan.io/address/${monitor.address}`);

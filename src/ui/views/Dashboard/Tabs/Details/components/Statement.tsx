@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
+import { useGlobalState } from '@state';
+
 import {
-  priceReconciliation, Reconciliation,
+  priceReconciliation,
+  Reconciliation,
 } from '@modules/types';
 
-import { useGlobalState } from '../../../../../State';
 import { ReconIcon } from './ReconIcon';
 
 export const Statement = ({ statement }: { statement: Reconciliation }) => {
@@ -43,6 +45,7 @@ export const Statement = ({ statement }: { statement: Reconciliation }) => {
         {showValue(pricedRecon.endBal.toString(), true)}
       </td>
       <td key={`${k}-7`} className={style.col} style={{ width: '4%' }}>
+        {/* @ts-ignore */}
         <ReconIcon statement={pricedRecon} />
       </td>
     </tr>

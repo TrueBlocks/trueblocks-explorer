@@ -1,7 +1,9 @@
 // FIXME: this is a temporary file and it should never get merged
 
 import {
-  Cache, getBlocks, getExport, getWhen, Status,
+  blknum,
+  Block,
+  Cache, Function, getBlocks, getExport, getWhen, Log, Monitor, Name, PinnedChunk, Receipt, Status, Transaction,
 } from '@sdk';
 
 export type FixedCache = Cache & {
@@ -113,3 +115,55 @@ export type FixedScrape = {
 export type FixedWhenParameters = Parameters<typeof getWhen>[0] & {
   list?: boolean
 };
+
+export type FixedMonitor =
+  Monitor
+  & { name: string };
+
+export type FixedTransaction =
+  Transaction
+  & {
+    extraData: {},
+    isError: boolean,
+    date: string,
+    receipt: FixedReceipt,
+  };
+
+export type FixedReceipt =
+  Receipt
+  & {
+    logs: FixedLog[],
+  }
+
+export type FixedLog =
+  Log
+  & {
+    articulatedLog: {
+      name: string,
+      inputs: {
+        name?: string,
+        [param: string]: string | undefined
+      }
+    }[]
+  }
+
+export type TransactionModel =
+  FixedTransaction
+  & {
+    id: string,
+    fromName: Name,
+    toName: Name,
+  }
+
+export type FixedBlock =
+  Block
+  & {
+    unclesCnt: number,
+  };
+
+export type FixedPinnedChunk =
+  PinnedChunk
+  & {
+    firstApp: blknum,
+    latestApp: blknum,
+  };

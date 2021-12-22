@@ -1,17 +1,15 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import {
-  Transaction,
-} from '@modules/types';
+import { TransactionModel } from '@modules/type_fixes';
 
-export const Pills = ({ record } : {record: Transaction}) => {
+export const Pills = ({ record } : {record: TransactionModel}) => {
   const style = useStyles();
   const isErr = record.isError;
   const isInt = record.to !== record.extraData && record.from !== record.extraData;
   const isCon = record.to === '0x0';
-  const is20 = record.toName?.is_erc20 || (record?.statements?.length || 0) > 1;
-  const is721 = record.toName?.is_erc721;
+  const is20 = record.toName?.isErc20 || (record?.statements?.length || 0) > 1;
+  const is721 = record.toName?.isErc721;
   const Pill = (name: string, tag: string, show: boolean) => (
     show
       ? <div className={`${style.tag} ${tag}`}>{name}</div>

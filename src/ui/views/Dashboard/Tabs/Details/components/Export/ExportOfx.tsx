@@ -1,16 +1,15 @@
-import dayjs from 'dayjs';
-import Mustache from 'mustache';
-
 // import Handlebars from 'handlebars';
 import {
-  TransactionArray,
-} from '@modules/types';
+  Transaction,
+} from '@sdk';
+import dayjs from 'dayjs';
+import Mustache from 'mustache';
 
 import { sendTheExport } from '../../../../../../Utilities';
 import { incomeFields, outflowFields } from './ExportText';
 
 //-------------------------------------------------------------------------
-export const exportToOfx = (theData: TransactionArray) => {
+export const exportToOfx = (theData: Transaction[]) => {
   const transactions = {
     assetSymbol: 'USD',
     transactions: JSON.parse(convertToOfx(theData)),

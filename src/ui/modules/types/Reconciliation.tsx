@@ -2,6 +2,7 @@ import {
   address, blknum, double, timestamp, uint64,
 } from '@modules/types';
 
+// FIXME: All of these values are defined as strings in @sdk
 export type Reconciliation = {
   blockNumber: blknum;
   transactionIndex: blknum;

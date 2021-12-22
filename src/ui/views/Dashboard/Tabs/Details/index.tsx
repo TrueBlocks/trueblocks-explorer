@@ -22,7 +22,7 @@ import {
 
 export const DetailsView = ({ params }: { params: AccountViewParams }) => {
   const {
-    theData, theMeta, uniqAssets, loading,
+    theData, uniqAssets, loading,
   } = params;
   if (!theData || !uniqAssets) return <></>;
 
@@ -40,7 +40,7 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
     {
       name: 'Events',
       location: DashboardAccountsEventsLocation,
-      component: <Events theData={theData} loading={loading} />,
+      component: <Events theData={theData} />,
     },
     {
       name: 'Functions',
@@ -55,7 +55,7 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
     {
       name: 'Neighbors',
       location: DashboardAccountsNeighborsLocation,
-      component: <Neighbors theData={theData} theMeta={theMeta} loading={loading} />,
+      component: <Neighbors theData={theData} />,
     },
   ];
 

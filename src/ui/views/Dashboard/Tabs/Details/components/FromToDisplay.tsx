@@ -1,13 +1,11 @@
 import React from 'react';
 
-import {
-  Transaction,
-} from '@modules/types';
+import { TransactionModel } from '@modules/type_fixes';
 
 import { Pills } from './Pills';
 import { RenderedAddress } from './RenderedAddress';
 
-export const FromToDisplay = ({ record }: { record: Transaction}) => {
+export const FromToDisplay = ({ record }: { record: TransactionModel}) => {
   if (!record) return <div />;
   return (
     <>

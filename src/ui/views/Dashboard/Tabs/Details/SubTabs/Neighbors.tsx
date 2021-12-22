@@ -1,27 +1,22 @@
 import React from 'react';
 
-import { TransactionArray } from '@modules/types';
+import { FixedTransaction } from '@modules/type_fixes';
 
 export const Neighbors = ({
   theData,
-  theMeta,
-  loading,
 }: {
-  theData: TransactionArray;
-  theMeta: any;
-  loading: boolean;
+  theData: FixedTransaction[],
 }) => {
-  const neighbors: any = [];
-  theData.map((item) => {
-    neighbors.push({
+  const neighbors = theData.flatMap((item) => [
+    {
       key: `${item.from}-from`,
       count: 1,
-    });
-    neighbors.push({
+    },
+    {
       key: `${item.to}-to`,
       count: 1,
-    });
-  });
+    },
+  ]);
 
   return (
     <div>

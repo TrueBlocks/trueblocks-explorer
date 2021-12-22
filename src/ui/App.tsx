@@ -57,7 +57,7 @@ export const App = () => {
 
   useEffect(() => {
     const fetchStatus = async () => {
-      // FIXME: typecase
+      // FIXME: typecast
       const statusResponse = wrapResponse(await getStatus({})) as CallSuccess<FixedStatus> | CallError;
 
       if (isSuccessfulCall(statusResponse)) {

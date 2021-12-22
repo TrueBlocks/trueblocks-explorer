@@ -1,5 +1,13 @@
 import { AnyResponse, ErrorResponse, SuccessResponse } from '@sdk';
 
+// CallStatus<T> holds information about an API call: has it been initialized,
+// is pending, failed (if yes then the error is also present) or successful (and
+// the returned data of type T)
+export type CallStatus<Resource> =
+  | CallPending
+  | CallError
+  | CallSuccess<Resource>;
+
 export type CallPending = {
   type: 'pending',
 } & CallStatusBase;
@@ -17,12 +25,8 @@ export type CallStatusBase = {
   initiated: boolean,
 };
 
-export type CallStatus<Resource> =
-  | CallPending
-  | CallError
-  | CallSuccess<Resource>;
-
-export function createPendingCall<T>(): CallStatus<T> {
+// Creates a pending call. Usefull when initializing values
+export function createPendingCall<Resource>(): CallStatus<Resource> {
   return {
     type: 'pending',
     loading: false,
@@ -30,8 +34,11 @@ export function createPendingCall<T>(): CallStatus<T> {
   };
 }
 
-export function wrapResponse<T>(response: AnyResponse<T>): CallStatus<T> {
-  const partial = {
+// Creates a new CallStatus with the data or error contained in response.
+// This is usefull if we already have the response, but will need the call
+// information later on (e.g. for subsequent requests).
+export function wrapResponse<Resource>(response: AnyResponse<Resource>): CallStatus<Resource> {
+  const base = {
     loading: false,
     initiated: true,
   };
@@ -40,17 +47,18 @@ export function wrapResponse<T>(response: AnyResponse<T>): CallStatus<T> {
     return {
       type: 'error',
       ...response,
-      ...partial,
+      ...base,
     };
   }
 
   return {
     type: 'success',
     ...response,
-    ...partial,
+    ...base,
   };
 }
 
+// Type guards help to ensure that all required properties are defined
 export function isFailedCall(cs: CallStatus<unknown>): cs is CallError {
   return cs.type === 'error';
 }

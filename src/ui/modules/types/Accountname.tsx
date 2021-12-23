@@ -1,23 +1,6 @@
-import { address, uint64 } from '@modules/types';
+import { Name } from '@sdk';
 
-export type Accountname = {
-  tags: string;
-  address: address;
-  name: string;
-  symbol: string;
-  source: string;
-  decimals: uint64;
-  description: string;
-  is_custom: boolean;
-  is_prefund: boolean;
-  is_contract: boolean;
-  is_erc20: boolean;
-  is_erc721: boolean;
-  deleted: boolean;
-};
-export type AccountnameArray = Accountname[];
-
-export function createEmptyAccountname(): Accountname {
+export function createEmptyAccountname(): Name {
   return {
     tags: '',
     address: '',
@@ -26,11 +9,11 @@ export function createEmptyAccountname(): Accountname {
     source: '',
     decimals: 0,
     description: '',
-    is_custom: false,
-    is_prefund: false,
-    is_contract: false,
-    is_erc20: false,
-    is_erc721: false,
+    isCustom: false,
+    isPrefund: false,
+    isContract: false,
+    isErc20: false,
+    isErc721: false,
     deleted: false,
   };
 }

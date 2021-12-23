@@ -1,10 +1,12 @@
 import React from 'react';
 
+import {
+  Function,
+} from '@sdk';
 import { ColumnsType } from 'antd/lib/table';
 
 import { BaseView } from '@components/BaseView';
 import { addActionsColumn, addColumn, TableActions } from '@components/Table';
-import { Function } from '@modules/types';
 
 import { NamesSignaturesEventsLocation, NamesSignaturesFunctionsLocation } from '../../../Routes';
 import { EventSignatures } from './SubTabs/EventSignatures';

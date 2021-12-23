@@ -1,0 +1,18 @@
+.network-error .ant-empty-image {
+    /* Make the icon 5 times larger than text */
+    height: 5em;
+}
+
+.network-error .ant-empty-image .anticon,
+.network-error .ant-empty-image .anticon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.network-error .ant-empty-image .anticon svg {
+    fill: #cf1322;
+}
+
+.network-error .ant-empty-description {
+    font-size: larger;
+}

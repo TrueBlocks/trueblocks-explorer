@@ -1,6 +1,6 @@
 import { DependencyList, useEffect, useState } from 'react';
 
-import { AnyResponse } from '@sdk';
+import { AnyResponse, ErrorResponse } from '@sdk';
 
 import { CallStatus, createPendingCall } from '@modules/api/call_status';
 
@@ -31,7 +31,18 @@ export function useSdk<ResponseData>(
       // The request has been fired and is pending
       updateCallStatus({ loading: true, initiated: true });
 
-      const response = await makeRequest();
+      const response = await (async () => {
+        try {
+          return await makeRequest();
+        } catch (e) {
+          // If we are here, a NetworkError has occured. Usually it means that
+          // the server or user's connection is down
+          return {
+            status: 0,
+            errors: ['Network error'],
+          } as ErrorResponse;
+        }
+      })();
 
       if (cancelled) return;
 

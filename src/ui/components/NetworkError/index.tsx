@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { getBaseUrl } from '@sdk';
 import { Empty } from 'antd';
+
+import './NetworkError.css';
 
 type NetworkErrorProps = {
   resourceName: string,
@@ -14,8 +17,20 @@ export function NetworkError({ resourceName = 'data' }: NetworkErrorProps) {
 
   return (
     <Empty
+      className='network-error'
       image={<ExclamationCircleOutlined />}
-      description={description}
+      description={(
+        <div>
+          {description}
+          <p>
+            Check if the server is running at
+            {' '}
+            <strong>
+              {getBaseUrl()}
+            </strong>
+          </p>
+        </div>
+      )}
     />
   );
 }

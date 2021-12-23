@@ -4,12 +4,18 @@ import { AnyResponse } from '@sdk';
 
 import { CallStatus, createPendingCall } from '@modules/api/call_status';
 
+// useSdk makes an API request by calling `makeRequest` function.
+// `predicate` can be used to make the request only for certain conditions.
 export function useSdk<ResponseData>(
   makeRequest: () => Promise<AnyResponse<ResponseData>>,
   predicate = () => true,
   dependencies: DependencyList = [],
 ) {
+  // we will store the response here
   const [responseData, setData] = useState<CallStatus<ResponseData>>(createPendingCall<ResponseData>());
+  // because we use CallStatus to carry not only the returned data or error, but also UI-specific
+  // state information(e.g.if the request is pending), we will need a helper to make updating the
+  // state information easier
   const updateCallStatus = (properties: Partial<CallStatus<ResponseData>>) => setData((currentStatus: CallStatus<ResponseData>) => ({
     ...currentStatus,
     ...properties,
@@ -18,9 +24,11 @@ export function useSdk<ResponseData>(
   useEffect(() => {
     let cancelled = false;
 
+    // Don't do the request if we shouldn't
     if (!predicate()) return () => undefined;
 
     (async () => {
+      // The request has been fired and is pending
       updateCallStatus({ loading: true, initiated: true });
 
       const response = await makeRequest();
@@ -28,6 +36,7 @@ export function useSdk<ResponseData>(
       if (cancelled) return;
 
       if ('errors' in response) {
+        // We got error, so we need to store this information
         setData({
           type: 'error',
           loading: false,
@@ -37,6 +46,7 @@ export function useSdk<ResponseData>(
         return;
       }
 
+      // Otherwise it is a success
       setData({
         type: 'success',
         loading: false,

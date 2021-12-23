@@ -1,9 +1,9 @@
-// FIXME: this is a temporary file and it should never get merged
+// FIXME: this is a temporary file and it should be removed as soon as we fix OpenAPI.yaml
 
 import {
   blknum,
   Block,
-  Cache, Function, getBlocks, getExport, getWhen, Log, Monitor, Name, PinnedChunk, Receipt, Status, Transaction,
+  Cache, getBlocks, getExport, getWhen, Log, Monitor, Name, PinnedChunk, Receipt, Status, Transaction,
 } from '@sdk';
 
 export type FixedCache = Cache & {

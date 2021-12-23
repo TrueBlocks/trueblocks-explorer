@@ -21,27 +21,9 @@ const useStyles = createUseStyles({
   },
 });
 
-// const formatResponse = (response: either.Either<Error, Record<string, any>>) => {
-//   const result: ScraperResult = pipe(
-//     response,
-//     either.fold(toFailedScrapeResult, (serverResponse) => toSuccessfulScraperData(serverResponse) as ScraperResult),
-//   );
-//   return result;
-// };
-
 export const Scrapers = () => {
   const [indexer, setIndexer] = useState({} as JsonResponse);
   const [monitors, setMonitors] = useState({} as JsonResponse);
-  // const [scraperCall, setScraperCall] = useState(createPendingCall<FixedScrape>());
-
-  // const getScrape = async (parameters: { toggle: 'both' | 'indexer' | 'monitors', mode: boolean }) => {
-  //   // FIXME: MISSING ROUTE
-  //   return wrapResponse(await sdkFetch<FixedScrape>({
-  //     endpoint: 'scrape',
-  //     method: 'get',
-  //     parameters,
-  //   }));
-  // };
 
   const toggleIndexer = async () => {
     // FIXME: MISSING ROUTE

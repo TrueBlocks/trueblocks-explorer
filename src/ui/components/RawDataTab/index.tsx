@@ -9,6 +9,9 @@ type RawDataTabProps = {
   makeRequest: Parameters<typeof useSdk>[0],
   name: string,
 }
+
+// RawDataTab can be used to simply output the raw data into the view,
+// mostly for work-in-progress views
 export function RawDataTab({ makeRequest, name }: RawDataTabProps) {
   const dataCall = useSdk(makeRequest);
 

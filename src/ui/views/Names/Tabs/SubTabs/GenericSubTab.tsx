@@ -13,6 +13,7 @@ type GenericSubTabProps = {
   resourceName: string,
 };
 
+// This component encapsulates all the similarities that Event and Function signatures tabs share
 export function GenericSubTab({ filterFunc, resourceName }: GenericSubTabProps) {
   // FIXME: type casts (wrong function parameters in OpenAPI.yaml, wrong return type
   const dataCall = useSdk(() => getAbis({

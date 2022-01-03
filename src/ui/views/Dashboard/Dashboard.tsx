@@ -10,7 +10,7 @@ import Mousetrap from 'mousetrap';
 
 import { BaseView } from '@components/BaseView';
 import { useSdk } from '@hooks/useSdk';
-import { CallStatus, isSuccessfulCall } from '@modules/api/call_status';
+import { CallStatus, isFailedCall, isSuccessfulCall } from '@modules/api/call_status';
 import { createErrorNotification } from '@modules/error_notification';
 import { FixedExportParameters, FixedListCount } from '@modules/type_fixes';
 import {
@@ -46,7 +46,7 @@ export const DashboardView = () => {
   const { namesMap } = useGlobalNames();
   const { totalRecords, setTotalRecords } = useGlobalState();
   const {
-    transactions, // rename GlobalState.transactionsData to transactions here
+    transactions,
     meta: transactionsMeta,
     setTransactions,
     addTransactions,
@@ -80,7 +80,8 @@ export const DashboardView = () => {
   [currentAddress]) as CallStatus<FixedListCount[]>;
 
   useEffect(() => {
-    setTotalRecords(isSuccessfulCall(listRequest) ? listRequest.data[0]?.nRecords : 0);
+    if (!isSuccessfulCall(listRequest)) return;
+    setTotalRecords(listRequest.data[0]?.nRecords);
   }, [listRequest, listRequest.type, setTotalRecords]);
 
   // Run this effect until we fetch the last transaction
@@ -98,9 +99,7 @@ export const DashboardView = () => {
     // reversed: false,
     relevant: true,
     // summarize_by: 'monthly',
-    // If there's only 1 transaction, it's probably the default empty one, so we can
-    // start from 0
-    firstRecord: String(Number(transactions.length === 1 ? 0 : transactions.length)),
+    firstRecord: transactions.length,
     maxRecords: String((() => {
       if (transactions.length < 50) return 10;
 
@@ -115,12 +114,12 @@ export const DashboardView = () => {
   [currentAddress, totalRecords, transactions.length]);
 
   useEffect(() => {
-    if (transactionsRequest.type === 'error') {
+    if (isFailedCall(transactionsRequest)) {
       createErrorNotification({
         description: 'Could not fetch transactions',
       });
     }
-  }, [transactionsRequest.type]);
+  }, [transactionsRequest]);
 
   useEffect(() => {
     const stateToSet = !transactionsRequest.loading ? false : transactions.length < 10;

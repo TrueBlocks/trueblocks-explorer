@@ -16,10 +16,6 @@ export function useSdk<ResponseData>(
   // because we use CallStatus to carry not only the returned data or error, but also UI-specific
   // state information(e.g.if the request is pending), we will need a helper to make updating the
   // state information easier
-  const updateCallStatus = (properties: Partial<CallStatus<ResponseData>>) => setData((currentStatus: CallStatus<ResponseData>) => ({
-    ...currentStatus,
-    ...properties,
-  } as CallStatus<ResponseData>));
 
   useEffect(() => {
     let cancelled = false;
@@ -29,7 +25,11 @@ export function useSdk<ResponseData>(
 
     (async () => {
       // The request has been fired and is pending
-      updateCallStatus({ loading: true, initiated: true });
+      setData({
+        type: 'pending',
+        loading: true,
+        initiated: true,
+      });
 
       const response = await (async () => {
         try {

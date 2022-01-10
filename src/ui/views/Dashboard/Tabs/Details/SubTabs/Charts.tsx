@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from 'dayjs';
@@ -16,9 +16,15 @@ import { AccountViewParams } from '../../../Dashboard';
 
 export const Charts = ({ params }: { params: AccountViewParams }) => {
   const { uniqAssets } = params;
+  const [cols, setCols] = useState('1fr 1fr')
+
+  useEffect(() => {
+    console.log("Here: ", uniqAssets.length)
+    setCols(uniqAssets.length > 4 ? '1fr 1fr 1fr 1fr 1fr 1fr' : '1fr 1fr 1fr 1fr');
+  }, [uniqAssets]);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: `${cols}` }}>
       {uniqAssets.map((asset: AssetHistory, index: number) => {
         const color = asset.assetSymbol === 'ETH'
           ? '#63b598'
@@ -71,20 +77,20 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
   );
   if (!namesMap.get(asset.assetAddr)) {
     links.push(
-      <a target='_blank' href={`http://localhost:8080/names?autoname=${asset.assetAddr}`} rel='noreferrer'>
+      <a target='_blank' href={`http://192.168.0.117:8080/names?autoname=${asset.assetAddr}`} rel='noreferrer'>
         Name
       </a>,
     );
   }
   if (asset.assetSymbol !== 'ETH') {
     links.push(
-      <a target='_blank' href={`https://etherscan.io/token/${asset.assetAddr}?a=${currentAddress}`} rel='noreferrer'>
+      <a target='_blank' href={`https://blockscout.com/xdai/mainnet/address/${currentAddress}/tokens`} rel='noreferrer'>
         Holdings
       </a>,
     );
   }
   links.push(
-    <a target='_blank' href={`https://etherscan.io/address/${asset.assetAddr}`} rel='noreferrer'>
+    <a target='_blank' href={`https://blockscout.com/xdai/mainnet/address/${asset.assetAddr}/transactions`} rel='noreferrer'>
       Token
     </a>,
   );

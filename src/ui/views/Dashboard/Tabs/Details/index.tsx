@@ -26,38 +26,49 @@ export const DetailsView = ({ params }: { params: AccountViewParams }) => {
   } = params;
   if (!theData || !uniqAssets) return <></>;
 
-  const leftSideTabs: ViewTab[] = [
-    {
-      name: 'Charts',
-      location: DashboardAccountsChartsLocation,
-      component: <Charts params={params} />,
-    },
-    {
-      name: 'History',
-      location: DashboardAccountsHistoryLocation,
-      component: <History params={params} />,
-    },
-    {
-      name: 'Events',
-      location: DashboardAccountsEventsLocation,
-      component: <Events theData={theData} />,
-    },
-    {
-      name: 'Functions',
-      location: DashboardAccountsFunctionsLocation,
-      component: <Functions theData={theData} loading={loading} />,
-    },
-    {
-      name: 'Gas',
-      location: DashboardAccountsGasLocation,
-      component: <Gas theData={theData} />,
-    },
-    {
-      name: 'Neighbors',
-      location: DashboardAccountsNeighborsLocation,
-      component: <Neighbors theData={theData} />,
-    },
-  ];
+  let leftSideTabs: ViewTab[];
+  if (theData.length) {
+    leftSideTabs = [
+      {
+        name: 'Charts',
+        location: DashboardAccountsChartsLocation,
+        component: <Charts params={params} />,
+      },
+      {
+        name: 'History',
+        location: DashboardAccountsHistoryLocation,
+        component: <History params={params} />,
+      },
+      {
+        name: 'Events',
+        location: DashboardAccountsEventsLocation,
+        component: <Events theData={theData} />,
+      },
+      {
+        name: 'Functions',
+        location: DashboardAccountsFunctionsLocation,
+        component: <Functions theData={theData} loading={loading} />,
+      },
+      {
+        name: 'Gas',
+        location: DashboardAccountsGasLocation,
+        component: <Gas theData={theData} />,
+      },
+      {
+        name: 'Neighbors',
+        location: DashboardAccountsNeighborsLocation,
+        component: <Neighbors theData={theData} />,
+      },
+    ];
+  } else {
+    leftSideTabs = [
+      {
+        name: 'History',
+        location: DashboardAccountsHistoryLocation,
+        component: <History params={params} />,
+      },
+    ];
+  }
 
   return (
     <div>

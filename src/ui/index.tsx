@@ -6,7 +6,7 @@ import { App } from './App';
 import { GlobalStateProvider } from './State';
 import { setup as setupWebsocket } from './websockets';
 
-const host = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'localhost';
+const host = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '192.168.0.117';
 const port = process.env.REACT_APP_API_PORT ? process.env.REACT_APP_API_PORT : '8080';
 // @ts-ignore
 setupWebsocket({ host, port, path: 'websocket' });

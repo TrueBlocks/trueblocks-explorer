@@ -292,7 +292,7 @@ function getTableActions(item: Monitor) {
   const onClick = (action: string, monitor: typeof item) => {
     switch (action) {
       case 'info':
-        goToUrl(`https://etherscan.io/address/${monitor.address}`);
+        goToUrl(`https://blockscout.com/xdai/mainnet/address/${monitor.address}/transactions`);
         break;
       case 'delete':
         console.log('DELETE');

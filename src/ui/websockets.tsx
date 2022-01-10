@@ -72,7 +72,7 @@ export function clear() {
   messageQueue = state.messageQueue;
 }
 
-export function setup({ host = 'localhost', port = 8080, path = 'websocket' } = {}) {
+export function setup({ host = '192.168.0.117', port = 8080, path = 'websocket' } = {}) {
   // @ts-ignore
   socket = new WebSocket(`ws://${host}:${port}/${path}`);
   // @ts-ignore

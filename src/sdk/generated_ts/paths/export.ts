@@ -3,7 +3,6 @@ import { address, topic, fourbyte, Appearance, Reconciliation, Transaction, Rece
 
 export function getExport(
   parameters?: {
-    fmt?: 'json' | 'csv' | 'txt' | 'api',
     addrs: address[],
     topics?: topic[],
     fourbytes?: fourbyte[],
@@ -25,6 +24,25 @@ export function getExport(
     topic?: topic[],
     clean?: boolean,
     ether?: boolean,
+    fmt?: string,
+    verbose?: boolean,
+    loglevel?: number,
+    noheader?: boolean,
+    chain?: string,
+    wei?: boolean,
+    dollars?: boolean,
+    help?: boolean,
+    raw?: boolean,
+    tofile?: boolean,
+    file?: string,
+    version?: boolean,
+    noop?: boolean,
+    mocked?: boolean,
+    nocolor?: boolean,
+    outputfn?: string,
+    format?: string,
+    testmode?: boolean,
+    apimode?: boolean,
   },
   options?: RequestInit,
 ) {

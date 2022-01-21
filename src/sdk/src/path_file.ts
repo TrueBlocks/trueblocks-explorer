@@ -64,6 +64,32 @@ export function makeFunctionParameters(refs: SwaggerParser.$Refs, parameters: Op
   };
 }
 
+function getGlobals(): Map<string, { name: string }> {
+  return new Map([
+    // parameter variable name to type name
+    ['fmt', { name: 'string' }],
+    ['verbose', { name: 'boolean' }],
+    ['loglevel', { name: 'number' }],
+    ['noheader', { name: 'boolean' }],
+    ['chain', { name: 'string' }],
+    ['wei', { name: 'boolean' }],
+    ['ether', { name: 'boolean' }],
+    ['dollars', { name: 'boolean' }],
+    ['help', { name: 'boolean' }],
+    ['raw', { name: 'boolean' }],
+    ['tofile', { name: 'boolean' }],
+    ['file', { name: 'string' }],
+    ['version', { name: 'boolean' }],
+    ['noop', { name: 'boolean' }],
+    ['mocked', { name: 'boolean' }],
+    ['nocolor', { name: 'boolean' }],
+    ['outputfn', { name: 'string' }],
+    ['format', { name: 'string' }],
+    ['testmode', { name: 'boolean' }],
+    ['apimode', { name: 'boolean' }],
+  ]);
+}
+
 /**
  * Generates all REST functions operating on a given resource in the same file
  */
@@ -81,6 +107,19 @@ export function makePathsInSameFile(project: Project, refs: SwaggerParser.$Refs,
       console.log('[path]', method.toUpperCase(), route);
       // Get function parameters (the options that we want to send with the request)
       const parameters = makeFunctionParameters(refs, path.parameters as OpenAPIV3.ParameterObject[]);
+      // inject global parameters
+      const globals = new Map(
+        [...getGlobals().entries()]
+          .filter(([name]) => !parameters.names.find((alreadyPresent) => alreadyPresent.replace('?', '') === name)),
+      );
+      parameters.names = parameters.names.concat(
+        [...globals.keys()]
+          .map((name) => `${name}?`),
+      );
+      parameters.types = parameters.types.concat(
+        [...globals.values()]
+          .map((value) => ({ ...value, isRequired: false, isArray: false })),
+      );
       // Get the type of the data we will get in the response
       const responseType = types.getResponseBodyType(path);
       // Save all types so we can import them (unless they are built in)

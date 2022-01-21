@@ -5,7 +5,6 @@ export type Status = {
   clientIds: string
   trueblocksVersion: string
   rpcProvider: string
-  balanceProvider: string
   configPath: string
   cachePath: string
   indexPath: string

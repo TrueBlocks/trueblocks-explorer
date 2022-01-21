@@ -18,7 +18,7 @@ export type AnyResponse<DataType> =
     | ErrorResponse
     | SuccessResponse<DataType>
 
-let baseUrl = 'http://192.168.0.117:8080';
+let baseUrl = `${process.env.CORE_URL}`;
 let fetchToUse = global.fetch;
 
 export function setBaseUrl(url: string) {

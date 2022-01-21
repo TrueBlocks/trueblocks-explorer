@@ -6,7 +6,6 @@ export function createEmptyStatus(): Status {
     clientIds: '',
     trueblocksVersion: '',
     rpcProvider: '',
-    balanceProvider: '',
     configPath: '',
     cachePath: '',
     indexPath: '',

@@ -77,7 +77,7 @@ const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) =>
   );
   if (!namesMap.get(asset.assetAddr)) {
     links.push(
-      <a target='_blank' href={`http://192.168.0.117:8080/names?autoname=${asset.assetAddr}`} rel='noreferrer'>
+      <a target='_blank' href={`${process.env.CORE_URL}/names?autoname=${asset.assetAddr}`} rel='noreferrer'>
         Name
       </a>,
     );

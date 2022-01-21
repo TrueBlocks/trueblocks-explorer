@@ -1,13 +1,13 @@
-import { blknum, address, topic, bytes, ArticulatedLog, timestamp } from "../types";
+import { blknum, timestamp, address, topic, bytes, ArticulatedLog } from "../types";
 
 export type Log = {
   blockNumber: blknum
   transactionIndex: blknum
-  address: address
   logIndex: blknum
+  timestamp: timestamp
+  address: address
   topics: topic[]
   data: bytes
   articulatedLog: ArticulatedLog
   compressedLog: string
-  timestamp: timestamp
 }

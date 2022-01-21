@@ -136,11 +136,6 @@ export const StatusPanel = ({ status, loading, error }: StatusPanelProps) => {
         </div>
 
         <div className={styles.itemContainer}>
-          <div className={styles.itemHeader}>BALANCE PROVIDER</div>
-          <div>{statusData.balanceProvider}</div>
-        </div>
-
-        <div className={styles.itemContainer}>
           <div className={styles.itemHeader}>API</div>
           <div>{process.env.CORE_URL}</div>
         </div>

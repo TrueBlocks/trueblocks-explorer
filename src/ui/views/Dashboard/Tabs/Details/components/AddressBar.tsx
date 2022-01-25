@@ -46,8 +46,8 @@ const ProgressBar = ({ params }: { params: AccountViewParams }): JSX.Element => 
   if (!theData) return <></>;
   if (!totalRecords) return <></>;
   if (theData.length === totalRecords) return <></>;
-  const done = (totalRecords - theData.length) == 1; // for some reason, it's off by one
-  if (done) return <></>
+  const done = (totalRecords - theData.length) === 1; // for some reason, it's off by one
+  if (done) return <></>;
 
   const pct = Math.floor((theData.length / (totalRecords || 1)) * 100);
   return (

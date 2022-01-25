@@ -14,9 +14,7 @@ export const RenderedAddress = ({ record, which }: {record: Transaction, which: 
   const acctFor = record.extraData;
   const isCurrent = address === acctFor;
 
-  // TODO: Comment by @dszlachta
-  // TODO: We don't need these tests because we have this data (but do we?)
-  let name = namesMap && namesMap.get(address) && namesMap.get(address)?.name;
+  let name = namesMap.get(address)?.name;
   if (!isSpecial && !isCurrent && !name) {
     return <div style={{ color: 'grey' }}>{address}</div>;
   }

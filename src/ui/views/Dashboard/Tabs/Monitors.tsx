@@ -37,7 +37,11 @@ export const Monitors = () => {
   const [selectedNameTags] = useState('');
   const [loadingEdit, setLoadingEdit] = useState(false);
 
-  const monitorsCall = useSdk(() => getStatus({ modes: ['monitors'], details: true })) as CallStatus<Status[]>;
+  const monitorsCall = useSdk(() => getStatus({
+    chain: `${process.env.CHAIN}`,
+    modes: ['monitors'],
+    details: true,
+  })) as CallStatus<Status[]>;
   if (isFailedCall(monitorsCall)) {
     createErrorNotification({
       description: 'Could not fetch monitors',

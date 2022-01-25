@@ -44,6 +44,8 @@ const oneStatement = (
     className={styles.card}
     headStyle={{
       backgroundColor: 'lightgrey',
+      fontSize: '16pt',
+      color: 'darkBlue',
     }}
     hoverable
     title={statementHeader(statement, details, setShowDetails)}

@@ -120,9 +120,14 @@ export const History = ({ params }: { params: AccountViewParams }) => {
     </FilterButton>
   );
 
-  const siderRender = (record: any) => (
-    <AccountHistorySider key='account-transactions' record={record} params={params} />
-  );
+  const siderRender = (record: any) => {
+    // TODO: Do we need this test? Why?
+    if (!record) return <></>;
+    return (
+      <AccountHistorySider key='account-transactions' record={record} params={params} />
+    );
+  };
+
   return (
     <div>
       {activeAssetFilter}
@@ -143,11 +148,6 @@ export const History = ({ params }: { params: AccountViewParams }) => {
 export const AccountHistorySider = ({ record, params }: { record: any; params: AccountViewParams }) => {
   const tabs = [
     {
-      name: 'Recons',
-      location: DashboardAccountsHistoryReconsLocation,
-      component: <HistoryRecons record={record} params={params} />,
-    },
-    {
       name: 'Events',
       location: DashboardAccountsHistoryEventsLocation,
       component: <HistoryEvents record={record} />,
@@ -158,9 +158,9 @@ export const AccountHistorySider = ({ record, params }: { record: any; params: A
       component: <HistoryFunctions record={record} />,
     },
     {
-      name: 'Traces',
-      location: DashboardAccountsHistoryTracesLocation,
-      component: <pre>{JSON.stringify(record?.traces, null, 2)}</pre>,
+      name: 'Reconciliations',
+      location: DashboardAccountsHistoryReconsLocation,
+      component: <HistoryRecons record={record} params={params} />,
     },
     {
       name: 'Custom',

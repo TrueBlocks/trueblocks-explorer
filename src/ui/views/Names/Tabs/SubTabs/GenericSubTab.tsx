@@ -15,6 +15,7 @@ type GenericSubTabProps = {
 // This component encapsulates all the similarities that Event and Function signatures tabs share
 export function GenericSubTab({ filterFunc, resourceName }: GenericSubTabProps) {
   const dataCall = useSdk(() => getAbis({
+    chain: `${process.env.CHAIN}`,
     addrs: [],
     known: true,
     source: true,

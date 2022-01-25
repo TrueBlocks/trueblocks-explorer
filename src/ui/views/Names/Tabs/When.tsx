@@ -10,7 +10,10 @@ import {
 import { useSdk } from '@hooks/useSdk';
 
 export const When = () => {
-  const dataCall = useSdk(() => getWhen({ list: true }));
+  const dataCall = useSdk(() => getWhen({
+    chain: `${process.env.CHAIN}`,
+    list: true,
+  }));
 
   return (
     <ResourceTable

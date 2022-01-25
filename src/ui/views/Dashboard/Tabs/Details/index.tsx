@@ -91,11 +91,12 @@ export const useAcctStyles = createUseStyles({
     display: 'flex',
     flexWrap: 'wrap',
     rowGap: '2px',
-    padding: '4px',
+    padding: '1px',
   },
   card: {
-    border: '1px solid lightgrey',
-    width: '600px',
+    border: '2px solid darkgrey',
+    width: '620px',
+    marginBottom: '4px',
   },
   tableHead: {
     padding: '0px',
@@ -113,3 +114,9 @@ export const useAcctStyles = createUseStyles({
     textAlign: 'right',
   },
 });
+
+export const headerStyle = {
+  backgroundColor: 'lightgrey',
+  fontSize: '16pt',
+  color: 'darkBlue',
+};

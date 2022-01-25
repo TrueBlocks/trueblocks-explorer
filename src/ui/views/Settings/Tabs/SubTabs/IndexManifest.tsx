@@ -8,7 +8,10 @@ import { addColumn } from '@components/Table';
 import { useSdk } from '@hooks/useSdk';
 
 export const IndexManifest = () => {
-  const pinsCall = useSdk(() => getPins({ list: true }));
+  const pinsCall = useSdk(() => getPins({
+    chain: `${process.env.CHAIN}`,
+    list: true,
+  }));
 
   return (
     <ResourceTable

@@ -11,7 +11,11 @@ import { useSdk } from '@hooks/useSdk';
 import { Tag } from '@modules/types/Tag';
 
 export const Tags = () => {
-  const dataCall = useSdk(() => getNames({ terms: [], tags: true }));
+  const dataCall = useSdk(() => getNames({
+    chain: `${process.env.CHAIN}`,
+    terms: [],
+    tags: true,
+  }));
 
   return (
     <ResourceTable

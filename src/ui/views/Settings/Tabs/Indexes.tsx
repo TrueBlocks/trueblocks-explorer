@@ -23,7 +23,11 @@ import { IndexManifest } from './SubTabs/IndexManifest';
 import { IndexTable } from './SubTabs/IndexTable';
 
 export const IndexesView = () => {
-  const statusCall = useSdk(() => getStatus({ modes: ['index'], details: true }));
+  const statusCall = useSdk(() => getStatus({
+    chain: `${process.env.CHAIN}`,
+    modes: ['index'],
+    details: true,
+  }));
   const theData = useMemo(() => {
     if (isSuccessfulCall(statusCall)) return statusCall.data;
 

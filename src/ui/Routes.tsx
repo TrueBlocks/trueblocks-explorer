@@ -255,7 +255,7 @@ export const routes = [
     path: NamesBlocksLocation,
     exact: true,
     component: NamesView,
-    helpText: 'The blocks tab allows you to name particular blocks such as notable smart contract deployments, hard forks, or other blocks.',
+    helpText: 'The blocks tab allows you to name particular blocks such as smart contract deployments or hard forks.',
   },
   {
     path: ExplorerLocation,

@@ -4,10 +4,14 @@ import { getTraces } from '@sdk';
 
 import { RawDataTab } from '@components/RawDataTab';
 
-// TODO(tjayrush): hard coded data
 export const Traces = () => (
   <RawDataTab
     name='logs'
-    makeRequest={() => getTraces({ transactions: ['12001001.0'], articulate: true })}
+    makeRequest={() => getTraces({
+      chain: `${process.env.CHAIN}`,
+      // TODO(tjayrush): hard coded data
+      transactions: ['12001001.0'],
+      articulate: true,
+    })}
   />
 );

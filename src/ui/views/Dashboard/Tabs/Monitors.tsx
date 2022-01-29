@@ -293,6 +293,7 @@ const monitorSchema: ColumnsType<Monitor> = [
 ];
 
 function getTableActions(item: Monitor) {
+  // TODO: BOGUS - per chain data
   const onClick = (action: string, monitor: typeof item) => {
     switch (action) {
       case 'info':

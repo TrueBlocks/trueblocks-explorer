@@ -76,7 +76,6 @@
     "electron-store": "^7.0.2",
     "filesize": "^6.3.0",
     "fp-ts": "^2.9.5",
-    "jest-fetch-mock": "^3.0.3",
     "js-cookie": "^2.2.1",
     "mousetrap": "^1.6.5",
     "mustache": "^4.2.0",

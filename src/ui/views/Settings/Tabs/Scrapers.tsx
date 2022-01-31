@@ -5,7 +5,7 @@ import {
   Card, Col, Row, Switch,
 } from 'antd';
 
-import { JsonResponse } from '@modules/core';
+type JsonResponse = Record<string, any>;
 
 const useStyles = createUseStyles({
   card: {

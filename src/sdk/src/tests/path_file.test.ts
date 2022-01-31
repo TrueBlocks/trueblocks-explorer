@@ -58,11 +58,13 @@ describe('makeFunctionParameters', () => {
         isRequired: false,
       },
       {
+        doNotImport: false,
         name: 'boolean',
         isArray: false,
         isRequired: false,
       },
       {
+        doNotImport: false,
         name: 'boolean',
         isArray: false,
         isRequired: false,

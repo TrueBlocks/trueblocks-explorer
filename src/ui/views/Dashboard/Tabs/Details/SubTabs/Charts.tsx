@@ -46,7 +46,7 @@ export const Charts = ({ params }: { params: AccountViewParams }) => {
             columns={columns}
             key={asset.assetAddr}
             index={asset.assetAddr}
-            title={<ChartTitle asset={asset} index={index} chain={params.theMeta.chain} />}
+            title={<ChartTitle asset={asset} index={index} />}
             table={false}
             color={color}
           />
@@ -56,19 +56,20 @@ export const Charts = ({ params }: { params: AccountViewParams }) => {
   );
 };
 
-export function getLink(chain: string, type: string, addr1: string, addr2?: string) {
-  if (chain === 'gnosis') {
-    if (type === 'uni') {
-      return `https://info.uniswap.org/#/tokens/${addr1}`;
-    } if (type === 'token') {
-      return `https://etherscan.io/address/${addr1}`;
+export function getLink(type: string, addr1: string, addr2?: string) {
+  if (type === 'uni') {
+    return `https://info.uniswap.org/#/tokens/${addr1}`;
+  }
+
+  // TODO: BOGUS - per chain data
+  if (process.env.CHAIN === 'gnosis') {
+    if (type === 'token') {
+      return `https://blockscout.com/xdai/mainnet/address/${addr1}`;
     } if (type === 'holding') {
-      return `https://etherscan.io/token/${addr1}?a=${addr2}`;
+      return `https://blockscout.com/xdai/mainnet/address/${addr1}`;
     }
   } else {
-    if (type === 'uni') {
-      return `https://info.uniswap.org/#/tokens/${addr1}`;
-    } if (type === 'token') {
+    if (type === 'token') {
       return `https://etherscan.io/address/${addr1}`;
     } if (type === 'holding') {
       return `https://etherscan.io/token/${addr1}?a=${addr2}`;
@@ -77,7 +78,7 @@ export function getLink(chain: string, type: string, addr1: string, addr2?: stri
   return '';
 }
 
-const ChartTitle = ({ index, asset, chain }: { asset: AssetHistory; index: number, chain: string }) => {
+const ChartTitle = ({ index, asset }: { asset: AssetHistory; index: number }) => {
   const { namesMap } = useGlobalNames();
   const { currentAddress } = useGlobalState();
 
@@ -99,18 +100,18 @@ const ChartTitle = ({ index, asset, chain }: { asset: AssetHistory; index: numbe
   }
   if (asset.assetSymbol !== 'ETH') {
     links.push(
-      <a target='_blank' href={getLink(chain, 'holding', asset.assetAddr, currentAddress)} rel='noreferrer'>
+      <a target='_blank' href={getLink('holding', asset.assetAddr, currentAddress)} rel='noreferrer'>
         Holdings
       </a>,
     );
   }
   links.push(
-    <a target='_blank' href={getLink(chain, 'token', asset.assetAddr, '')} rel='noreferrer'>
+    <a target='_blank' href={getLink('token', asset.assetAddr, '')} rel='noreferrer'>
       Token
     </a>,
   );
   links.push(
-    <a target='_blank' href={getLink(chain, 'uni', asset.assetAddr, '')} rel='noreferrer'>
+    <a target='_blank' href={getLink('uni', asset.assetAddr, '')} rel='noreferrer'>
       Uniswap
     </a>,
   );

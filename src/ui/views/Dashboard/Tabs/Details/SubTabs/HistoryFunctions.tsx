@@ -3,69 +3,29 @@ import React from 'react';
 import { Transaction } from '@sdk';
 import { Card } from 'antd';
 
-import { useAcctStyles } from '..';
+import { headerStyle, useAcctStyles } from '..';
+import { FunctionDisplay } from '../components/FunctionDisplay';
 
 //-----------------------------------------------------------------
 export const HistoryFunctions = ({ record }: { record: Transaction }) => {
-  if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
   const styles = useAcctStyles();
+
+  let title = record.articulatedTx?.name;
+  if (!title) { title = (record.input !== '0x' ? '[unknown]' : '[native send]'); }
+
   return (
     <div key={key} className={styles.container}>
-      <div key={key} className={styles.cardHolder}>
+      <div className={styles.cardHolder}>
         <Card
-          key={key}
           className={styles.card}
-          headStyle={{
-            backgroundColor: 'lightgrey',
-          }}
+          headStyle={headerStyle}
           hoverable
-          title='Input'
+          title={title}
         >
-          {showInput(record, key)}
+          <FunctionDisplay func={record.articulatedTx} bytes={record.input} />
         </Card>
       </div>
     </div>
   );
 };
-
-//-----------------------------------------------------------------
-const showInput = (record: Transaction, key: string) => {
-  if (!record || !record.input) return <></>;
-  let str = record.input;
-  if (str?.length < 10) <pre>{str}</pre>;
-  const head = str.slice(0, 10);
-  str = str.replace(head, '');
-
-  const json = <pre>{JSON.stringify(record.articulatedTx, null, 2)}</pre>;
-  const comp = <div>{JSON.stringify(record.compressedTx).replace(/"/g, '')}</div>;
-  const bytes = (
-    <pre>
-      <div>{head}</div>
-      {str?.match(/.{1,64}/g)?.map((s, index) => (
-        <div key={`${key}.${index}`}>{s}</div>
-      ))}
-    </pre>
-  );
-  return (
-    <div>
-      {oneItem('Articulated', json)}
-      {/* {oneItem('Compressed Tx', comp)} */}
-      {oneItem('Input bytes', bytes)}
-    </div>
-  );
-};
-
-//-----------------------------------------------------------------
-const oneItem = (title: string, component: React.ReactElement) => (
-  <div>
-    <b>
-      <u>
-        {title}
-        :
-      </u>
-    </b>
-    {component}
-    <br />
-  </div>
-);

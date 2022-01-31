@@ -3,29 +3,61 @@ import React from 'react';
 import { Log, Transaction } from '@sdk';
 import { Card } from 'antd';
 
-import { useAcctStyles } from '..';
+import { useGlobalNames } from '../../../../../State';
+import { headerStyle, useAcctStyles } from '..';
+import { FunctionDisplay } from '../components/FunctionDisplay';
 
 //-----------------------------------------------------------------
 export const HistoryEvents = ({ record }: { record: Transaction }) => {
-  const styles = useAcctStyles();
-  if (!record) return <></>;
   const key = `${record.blockNumber}.${record.transactionIndex}`;
-  // TODO: Comment by @dszlachta
-  // TODO: Line 28-29 should not require `?`, but if I remove them, it complains
+  const styles = useAcctStyles();
+  const { namesMap } = useGlobalNames();
+
+  let title = '[no logs]';
+  if (record.receipt && record.receipt.logs && record.receipt.logs.length > 0) {
+    let titles = record.receipt.logs.map((log) => {
+      const hasAddress = log.address !== null && log.address !== undefined;
+      if (hasAddress) {
+        const n = namesMap.get(log.address);
+        const name = n ? ` from ${n.name}` : ` from ${log.address.slice(0, 6)}`;
+        if (log.articulatedLog) {
+          return `${log.articulatedLog.name}${name}`;
+        }
+        return `[unknown]${name}`;
+      }
+      return '';
+    });
+    titles = titles?.filter((log) => log !== '');
+    if (titles.length !== 0) {
+      title = titles.join(', ');
+    } else {
+      title = '[no relevant logs]';
+    }
+  }
+
+  const relevants = record.receipt?.logs?.map((log, index) => {
+    const hasAddress = log.address !== null && log.address !== undefined;
+    if (!hasAddress) return <></>;
+    return <RelevantLog log={log} index={log.logIndex} />;
+  });
+
+  const irrelevants = record.receipt?.logs?.map((log, index) => {
+    const hasAddress = log.address !== null && log.address !== undefined;
+    if (hasAddress) return <></>;
+    return <IrrelevantLog index={index} />;
+  });
+
   return (
     <div key={key} className={styles.container}>
-      <div key={key} className={styles.cardHolder}>
+      <div className={styles.cardHolder}>
         <Card
-          key={key}
           className={styles.card}
-          headStyle={{
-            backgroundColor: 'lightgrey',
-          }}
+          headStyle={headerStyle}
           hoverable
-          title='Events'
+          title={title}
         >
-          {showLogs(record?.receipt?.logs || [], true)}
-          {showLogs(record?.receipt?.logs || [], false)}
+          {relevants}
+          {irrelevants}
         </Card>
       </div>
     </div>
@@ -33,18 +65,28 @@ export const HistoryEvents = ({ record }: { record: Transaction }) => {
 };
 
 //-----------------------------------------------------------------
-const showLogs = (logs: Log[], relevant: boolean) => {
-  if (!logs) return <></>;
-  return logs.map((log, index) => {
-    if ((relevant && !log.address) || (!relevant && log.address)) return <div key={log.logIndex} />;
-    return (
-      <pre key={log.logIndex}>
-        [
+const RelevantLog = ({ log, index } : {log: Log, index: number}) => ((
+  <pre key={log.logIndex}>
+    <b>
+      <u>
+        log
+        {' '}
         {index}
-        {log.address ? `-${log.logIndex}` : ''}
-        ]:
-        {JSON.stringify(log, null, 2)}
-      </pre>
-    );
-  });
+        :
+      </u>
+    </b>
+    <br />
+    {JSON.stringify(log, null, 2)}
+  </pre>
+));
+
+//-----------------------------------------------------------------
+const IrrelevantLog = ({ index } : {index: number}) => {
+  let s = `${index}`;
+  while (s.length < 4) s = ` ${s}`;
+  return (
+    <div key={s} style={{ fontStyle: 'italic', color: 'darkgrey' }}>
+      {`[log ${s}] is irrelevant`}
+    </div>
+  );
 };

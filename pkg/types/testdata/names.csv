@@ -1,0 +1,108 @@
+section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+columns,all,1,Address,false,address,340,false,false,address
+columns,all,2,Name,false,name,200,false,false,
+columns,all,3,Tags,false,tags,150,false,false,
+columns,all,4,Source,false,source,120,false,false,
+columns,all,5,Symbol,false,symbol,100,false,false,
+columns,all,6,Decimals,false,decimals,100,false,false,
+columns,all,7,Actions,false,actions,80,false,false,
+columns,custom,1,Address,false,address,340,false,false,address
+columns,custom,2,Name,false,name,200,false,false,
+columns,custom,3,Tags,false,tags,150,false,false,
+columns,custom,4,Source,false,source,120,false,false,
+columns,custom,5,Symbol,false,symbol,100,false,false,
+columns,custom,6,Decimals,false,decimals,100,false,false,
+columns,custom,7,Actions,false,actions,80,false,false,
+columns,prefund,1,Address,false,address,340,false,false,address
+columns,prefund,2,Name,false,name,200,false,false,
+columns,prefund,3,Tags,false,tags,150,false,false,
+columns,prefund,4,Source,false,source,120,false,false,
+columns,prefund,5,Symbol,false,symbol,100,false,false,
+columns,prefund,6,Decimals,false,decimals,100,false,false,
+columns,prefund,7,Actions,false,actions,80,false,false,
+columns,regular,1,Address,false,address,340,false,false,address
+columns,regular,2,Name,false,name,200,false,false,
+columns,regular,3,Tags,false,tags,150,false,false,
+columns,regular,4,Source,false,source,120,false,false,
+columns,regular,5,Symbol,false,symbol,100,false,false,
+columns,regular,6,Decimals,false,decimals,100,false,false,
+columns,regular,7,Actions,false,actions,80,false,false,
+columns,baddress,1,Address,false,address,340,false,false,address
+columns,baddress,2,Name,false,name,200,false,false,
+columns,baddress,3,Tags,false,tags,150,false,false,
+columns,baddress,4,Source,false,source,120,false,false,
+columns,baddress,5,Symbol,false,symbol,100,false,false,
+columns,baddress,6,Decimals,false,decimals,100,false,false,
+columns,baddress,7,Actions,false,actions,80,false,false,
+
+section,facet,panel,detailOrder,label,isForm,key,formatter
+details,all,Name Identity,1,Address,false,address,address
+details,all,Name Identity,2,Name,false,name,
+details,all,Name Identity,3,Symbol,false,symbol,
+details,all,Name Identity,4,Decimals,false,decimals,
+details,all,Classification,5,Source,false,source,
+details,all,Classification,6,Tags,false,tags,
+details,all,Classification,7,Deleted,false,deleted,boolean
+details,all,Contract Properties,8,Is Contract,false,isContract,boolean
+details,all,Contract Properties,9,Is Custom,false,isCustom,boolean
+details,all,Contract Properties,10,Is ERC20,false,isErc20,boolean
+details,all,Contract Properties,11,Is ERC721,false,isErc721,boolean
+details,all,Contract Properties,12,Is Prefund,false,isPrefund,boolean
+details,all,Prefund Information,13,Prefund Amount,false,prefund,wei
+details,all,Prefund Information,14,Parts,false,parts,
+details,custom,Name Identity,1,Address,false,address,address
+details,custom,Name Identity,2,Name,false,name,
+details,custom,Name Identity,3,Symbol,false,symbol,
+details,custom,Name Identity,4,Decimals,false,decimals,
+details,custom,Classification,5,Source,false,source,
+details,custom,Classification,6,Tags,false,tags,
+details,custom,Classification,7,Deleted,false,deleted,boolean
+details,custom,Contract Properties,8,Is Contract,false,isContract,boolean
+details,custom,Contract Properties,9,Is Custom,false,isCustom,boolean
+details,custom,Contract Properties,10,Is ERC20,false,isErc20,boolean
+details,custom,Contract Properties,11,Is ERC721,false,isErc721,boolean
+details,custom,Contract Properties,12,Is Prefund,false,isPrefund,boolean
+details,custom,Prefund Information,13,Prefund Amount,false,prefund,wei
+details,custom,Prefund Information,14,Parts,false,parts,
+details,prefund,Name Identity,1,Address,false,address,address
+details,prefund,Name Identity,2,Name,false,name,
+details,prefund,Name Identity,3,Symbol,false,symbol,
+details,prefund,Name Identity,4,Decimals,false,decimals,
+details,prefund,Classification,5,Source,false,source,
+details,prefund,Classification,6,Tags,false,tags,
+details,prefund,Classification,7,Deleted,false,deleted,boolean
+details,prefund,Contract Properties,8,Is Contract,false,isContract,boolean
+details,prefund,Contract Properties,9,Is Custom,false,isCustom,boolean
+details,prefund,Contract Properties,10,Is ERC20,false,isErc20,boolean
+details,prefund,Contract Properties,11,Is ERC721,false,isErc721,boolean
+details,prefund,Contract Properties,12,Is Prefund,false,isPrefund,boolean
+details,prefund,Prefund Information,13,Prefund Amount,false,prefund,wei
+details,prefund,Prefund Information,14,Parts,false,parts,
+details,regular,Name Identity,1,Address,false,address,address
+details,regular,Name Identity,2,Name,false,name,
+details,regular,Name Identity,3,Symbol,false,symbol,
+details,regular,Name Identity,4,Decimals,false,decimals,
+details,regular,Classification,5,Source,false,source,
+details,regular,Classification,6,Tags,false,tags,
+details,regular,Classification,7,Deleted,false,deleted,boolean
+details,regular,Contract Properties,8,Is Contract,false,isContract,boolean
+details,regular,Contract Properties,9,Is Custom,false,isCustom,boolean
+details,regular,Contract Properties,10,Is ERC20,false,isErc20,boolean
+details,regular,Contract Properties,11,Is ERC721,false,isErc721,boolean
+details,regular,Contract Properties,12,Is Prefund,false,isPrefund,boolean
+details,regular,Prefund Information,13,Prefund Amount,false,prefund,wei
+details,regular,Prefund Information,14,Parts,false,parts,
+details,baddress,Name Identity,1,Address,false,address,address
+details,baddress,Name Identity,2,Name,false,name,
+details,baddress,Name Identity,3,Symbol,false,symbol,
+details,baddress,Name Identity,4,Decimals,false,decimals,
+details,baddress,Classification,5,Source,false,source,
+details,baddress,Classification,6,Tags,false,tags,
+details,baddress,Classification,7,Deleted,false,deleted,boolean
+details,baddress,Contract Properties,8,Is Contract,false,isContract,boolean
+details,baddress,Contract Properties,9,Is Custom,false,isCustom,boolean
+details,baddress,Contract Properties,10,Is ERC20,false,isErc20,boolean
+details,baddress,Contract Properties,11,Is ERC721,false,isErc721,boolean
+details,baddress,Contract Properties,12,Is Prefund,false,isPrefund,boolean
+details,baddress,Prefund Information,13,Prefund Amount,false,prefund,wei
+details,baddress,Prefund Information,14,Parts,false,parts,

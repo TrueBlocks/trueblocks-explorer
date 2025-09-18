@@ -1,0 +1,19 @@
+name         , type  , strDefault, attributes, upgrades, docOrder, description
+cachePath    , string,           ,           ,         ,        1, path to the cache directory
+chain        , string,           ,           ,         ,        2, the chain identifier
+chainConfig  , string,           ,           ,         ,        3, path to chain configuration
+chainId      , string,           ,           ,         ,        4, the chain ID
+clientVersion, string,           ,           ,         ,        5, version of the client
+hasEsKey     , bool  ,           ,           ,         ,        6, whether Etherscan API key is available
+hasPinKey    , bool  ,           ,           ,         ,        7, whether Pinata API key is available
+indexPath    , string,           ,           ,         ,        8, path to the index directory
+isApi        , bool  ,           ,           ,         ,        9, whether running in API mode
+isArchive    , bool  ,           ,           ,         ,       10, whether node is archive node
+isScraping   , bool  ,           ,           ,         ,       11, whether scraper is running
+isTesting    , bool  ,           ,           ,         ,       12, whether in testing mode
+isTracing    , bool  ,           ,           ,         ,       13, whether tracing is enabled
+networkId    , string,           ,           ,         ,       14, the network ID
+progress     , string,           ,           ,         ,       15, progress information
+rootConfig   , string,           ,           ,         ,       16, path to root configuration
+rpcProvider  , string,           ,           ,         ,       17, RPC provider URL
+version      , string,           ,           ,         ,       18, Application version

@@ -1,0 +1,314 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+import { FC, createElement, useMemo } from 'react';
+
+import { IconType } from 'react-icons';
+
+import * as Icons from './Icons';
+
+export type IconSet = {
+{{- range .Structures }}
+{{- if and .Class (not .DisableGo) }}
+  {{ .Class }}: IconType;
+{{- end }}
+{{- end }}
+
+  Home: IconType;
+  Khedra: IconType;
+  Settings: IconType;
+  Wizard: IconType;
+
+  Switch: IconType;
+  File: IconType;
+
+  Twitter: IconType;
+  Github: IconType;
+  Website: IconType;
+  Email: IconType;
+
+  Create: IconType;
+  Update: IconType;
+  Copy: IconType;
+  Delete: IconType;
+  Undelete: IconType;
+  Remove: IconType;
+  Autoname: IconType;
+  Export: IconType;
+  Publish: IconType;
+  Pin: IconType;
+  Speak: IconType;
+
+  ChevronLeft: IconType;
+  ChevronRight: IconType;
+  ChevronUp: IconType;
+  ChevronDown: IconType;
+
+  Light: IconType;
+  Dark: IconType;
+
+  DebugOn: IconType;
+  DebugOff: IconType;
+
+  Missing: IconType;
+};
+
+const faIcons: IconSet = {
+  // Collections
+{{- range .Structures }}
+{{- if and .Class (not .DisableGo) }}
+  {{ .Class }}: Icons.Fa{{ .Class }},
+{{- end }}
+{{- end }}
+
+  // App navigation
+  Home: Icons.FaHome,
+  Khedra: Icons.FaIndustry,
+  Settings: Icons.FaCog,
+  Wizard: Icons.FaHatWizard,
+
+  // General
+  Switch: Icons.FaRandom,
+  File: Icons.FaFile,
+
+  // Social
+  Twitter: Icons.FaTwitter,
+  Github: Icons.FaGithub,
+  Website: Icons.FaGlobe,
+  Email: Icons.FaEnvelope,
+
+  // Actions
+  Create: Icons.FaPlus,
+  Update: Icons.FaEdit,
+  Copy: Icons.FaCopy,
+  Delete: Icons.FaTimes,
+  Undelete: Icons.FaUndo,
+  Remove: Icons.FaEraser,
+  Autoname: Icons.FaMagic,
+  Export: Icons.FaDownload,
+  Publish: Icons.FaGlobe,
+  Pin: Icons.FaListAlt,
+  Speak: Icons.FaBullhorn,
+
+  // Navigation
+  ChevronLeft: Icons.FaAngleDoubleLeft,
+  ChevronRight: Icons.FaAngleDoubleRight,
+  ChevronUp: Icons.FaAngleDoubleUp,
+  ChevronDown: Icons.FaAngleDoubleDown,
+
+  // Theme
+  Light: Icons.FaSun,
+  Dark: Icons.FaMoon,
+
+  // Debug
+  DebugOn: Icons.FaEye,
+  DebugOff: Icons.FaEyeSlash,
+
+  // Fallback
+  Missing: Icons.FaMissing,
+};
+
+const biIcons: IconSet = {
+  // Collections
+{{- range .Structures }}
+{{- if and .Class (not .DisableGo) }}
+  {{ .Class }}: Icons.Bi{{ .Class }},
+{{- end }}
+{{- end }}
+
+  // App navigation
+  Home: Icons.BiHome,
+  Khedra: Icons.BiBuildings,
+  Settings: Icons.BiCog,
+  Wizard: Icons.BiCog,
+
+  // General
+  Switch: Icons.BiTransfer,
+  File: Icons.BiFile,
+
+  // Social
+  Twitter: Icons.BiLogoTwitter,
+  Github: Icons.BiLogoGithub,
+  Website: Icons.BiGlobe,
+  Email: Icons.BiEnvelope,
+
+  // Actions
+  Create: Icons.BiPlus,
+  Update: Icons.BiPencil,
+  Copy: Icons.BiCopy,
+  Delete: Icons.BiX,
+  Undelete: Icons.BiUndo,
+  Remove: Icons.BiTrash,
+  Autoname: Icons.BiBot,
+  Export: Icons.BiDownload,
+  Publish: Icons.BiGlobe,
+  Pin: Icons.BiListUl,
+  Speak: Icons.BiVolumeFull,
+
+  // Navigation
+  ChevronLeft: Icons.BiChevronsLeft,
+  ChevronRight: Icons.BiChevronsRight,
+  ChevronUp: Icons.BiChevronsUp,
+  ChevronDown: Icons.BiChevronsDown,
+
+  // Theme
+  Light: Icons.BiSun,
+  Dark: Icons.BiMoon,
+
+  // Debug
+  DebugOn: Icons.BiShow,
+  DebugOff: Icons.BiHide,
+
+  // Fallback
+  Missing: Icons.BiMissing,
+};
+
+const iconSets: Record<string, IconSet> = {
+  fa: faIcons,
+  bi: biIcons,
+};
+
+export const getIconSet = (name: string): IconSet => {
+  const iconSet = iconSets[name];
+  if (!iconSet) {
+    throw new Error(`Icon set "${name}" not found`);
+  }
+  return iconSet;
+};
+
+const DEFAULT_SIZE = 16;
+const DEFAULT_ICON_SET = 'fa';
+
+// Define types for icon components
+type IconProps = React.SVGAttributes<SVGElement> & {
+  style?: React.CSSProperties;
+  size?: number;
+};
+
+export const useIconSets = (
+  iconSetName = DEFAULT_ICON_SET,
+  size = DEFAULT_SIZE,
+) => {
+  const iconSet = getIconSet(iconSetName);
+
+  return useMemo(() => {
+{{- range .Structures }}
+{{- if and .Class (not .DisableGo) }}
+    const {{ .Class }}: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.{{ .Class }}, { size, ...props });
+{{- end }}
+{{- end }}
+
+    const Home: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Home, { size, ...props });
+    const Khedra: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Khedra, { size, ...props });
+    const Settings: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Settings, { size, ...props });
+    const Wizard: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Wizard, { size, ...props });
+
+    const Switch: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Switch, { size, ...props });
+    const File: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.File, { size, ...props });
+
+    const Twitter: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Twitter, { size, ...props });
+    const Github: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Github, { size, ...props });
+    const Website: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Website, { size, ...props });
+    const Email: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Email, { size, ...props });
+
+    const Create: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Create, { size, ...props });
+    const Update: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Update, { size, ...props });
+    const Copy: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Copy, { size, ...props });
+    const Delete: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Delete, { size, ...props });
+    const Undelete: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Undelete, { size, ...props });
+    const Remove: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Remove, { size, ...props });
+    const Autoname: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Autoname, { size, ...props });
+    const Export: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Export, { size, ...props });
+    const Publish: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Publish, { size, ...props });
+    const Pin: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Pin, { size, ...props });
+    const Speak: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Speak, { size, ...props });
+
+    const ChevronLeft: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.ChevronLeft, { size, ...props });
+    const ChevronRight: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.ChevronRight, { size, ...props });
+    const ChevronUp: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.ChevronUp, { size, ...props });
+    const ChevronDown: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.ChevronDown, { size, ...props });
+    const Light: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Light, { size, ...props });
+    const Dark: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Dark, { size, ...props });
+    const DebugOn: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.DebugOn, { size, ...props });
+    const DebugOff: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.DebugOff, { size, ...props });
+    const Missing: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Missing, { size, ...props });
+
+    return {
+{{- range .Structures }}
+{{- if and .Class (not .DisableGo) }}
+    {{ .Class }},
+{{- end }}
+{{- end }}
+
+      Home,
+      Khedra,
+      Settings,
+      Wizard,
+
+      Switch,
+      File,
+
+      Twitter,
+      Github,
+      Website,
+      Email,
+
+      Create,
+      Update,
+      Copy,
+      Delete,
+      Undelete,
+      Remove,
+      Autoname,
+      Export,
+      Publish,
+      Pin,
+      Speak,
+
+      ChevronLeft,
+      ChevronRight,
+      ChevronUp,
+      ChevronDown,
+      Light,
+      Dark,
+      DebugOn,
+      DebugOff,
+      Missing,
+    };
+  }, [iconSet, size]);
+};

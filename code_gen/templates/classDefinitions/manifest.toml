@@ -1,0 +1,8 @@
+[settings]
+class = "Manifest"
+doc_group = "04-Admin"
+doc_descr = "Manifest information for a Chunks data facet."
+doc_route = "412-chunkIndex-manifest"
+attributes = ""
+produced_by = "chunks"
+disable_go = true

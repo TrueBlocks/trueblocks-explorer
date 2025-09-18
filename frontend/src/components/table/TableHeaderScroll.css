@@ -1,0 +1,40 @@
+.table-header-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  /* Ensures the header aligns with the body and allows horizontal scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.table-header-scroll .table-header-container {
+  min-width: 100%;
+  /* Ensures the header table stretches to match the body table width */
+}
+
+.table-header-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.table-body-scroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  min-height: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.table-body-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Optional: Remove double scrollbars if present */
+.table-header-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-header-scroll::-webkit-scrollbar-thumb {
+  background: var(--mantine-color-gray-3);
+  border-radius: 4px;
+}

@@ -1,0 +1,9 @@
+name    , type   , docOrder, description
+database, string ,        1, The database value
+name    , string ,        2, The name value
+bytes   , string ,        3, The bytes value
+number  , uint64 ,        4, The number value
+factor  , float64,        5, The factor value
+count   , uint64 ,        6, The count value
+selector, uint64 ,        7, The selector value
+value   , string ,        8, The value value

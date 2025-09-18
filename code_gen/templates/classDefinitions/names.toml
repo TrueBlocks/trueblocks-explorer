@@ -1,0 +1,40 @@
+[settings]
+class = "Names"
+doc_group = "001-Route"
+doc_descr = "an association between a human-readable name and an address"
+doc_route = "400-names"
+attributes = ""
+produced_by = "names"
+disable_go = false
+
+[[facets]]
+name = "All"
+store = "Names"
+actions = ["autoname", "create", "export", "update"]
+viewType = ""
+
+[[facets]]
+name = "Custom"
+store = "Names"
+actions = ["autoname", "create", "delete", "export", "pin", "publish", "remove", "undelete", "update"]
+viewType = ""
+
+[[facets]]
+name = "Prefund"
+store = "Names"
+actions = ["create", "export", "update"]
+viewType = ""
+attributes = "dividerBefore"
+
+[[facets]]
+name = "Regular"
+store = "Names"
+actions = ["autoname", "create", "export", "update"]
+viewType = ""
+
+[[facets]]
+name = "Baddress"
+store = "Names"
+actions = ["create", "export"]
+viewType = ""
+

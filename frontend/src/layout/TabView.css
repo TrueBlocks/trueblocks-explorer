@@ -1,0 +1,29 @@
+/* TabView.css */
+.tab-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Make the tabs sticky at the top */
+.tab-view-container .mantine-Tabs-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tab-view-container .mantine-Tabs-tabsList {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Make only the content scrollable */
+.tab-view-container .mantine-Tabs-panel {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

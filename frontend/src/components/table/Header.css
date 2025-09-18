@@ -1,0 +1,26 @@
+.header-cell {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-label {
+  flex: 1;
+  text-align: center;
+}
+
+.sort-indicator {
+  flex: none;
+  text-align: right;
+  font-weight: bold;
+  min-width: 1.5em;
+}
+
+th.sortable {
+  cursor: pointer;
+}
+
+th.sortable:hover .sort-indicator {
+  opacity: 0.8;
+}

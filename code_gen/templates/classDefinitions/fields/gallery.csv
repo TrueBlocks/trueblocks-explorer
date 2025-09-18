@@ -1,0 +1,8 @@
+name       , type    , required, docOrder, description
+thumbnail  , string  , true    ,        1, Path to thumbnail image
+filename   , string  , true    ,        2, Image filename
+series     , string  , true    ,        3, Series name
+orientation, string  , false   ,        4, Image orientation
+enhanced   , bool    , false   ,        5, Has enhanced prompt
+createdAt  , datetime, true    ,        6, Image creation timestamp
+sizeKB     , value   , false   ,        7, Image file size in KB

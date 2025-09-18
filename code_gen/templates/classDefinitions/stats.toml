@@ -1,0 +1,8 @@
+[settings]
+class = "Stats"
+doc_group = "04-Admin"
+doc_descr = "Statistics for a Chunks data facet."
+doc_route = "412-chunkIndex-stats"
+attributes = ""
+produced_by = "chunks"
+disable_go = true

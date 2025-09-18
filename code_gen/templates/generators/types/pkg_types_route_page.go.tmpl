@@ -1,0 +1,171 @@
+{{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+{{- $single := toSingular $class -}}
+{{- $isAbis := eq $class "Abis" -}}
+{{- $isExports := eq $class "Exports" -}}
+{{- $isMonitors := eq $class "Monitors" -}}
+{{- $shouldBePtr := or (or $isAbis $isMonitors) $isExports -}}
+{{- $isPtr := not $shouldBePtr -}}
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+
+package {{toLower .Class}}
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	//
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	// EXISTING_CODE
+	// EXISTING_CODE
+)
+
+{{- if $shouldBePtr}}
+
+// TODO: The slices should be slices to pointers{{end}}
+type {{.Class}}Page struct {
+	Facet         types.DataFacet      `json:"facet"`
+	{{range .Stores}}{{.Name}} []{{if $shouldBePtr}}{{else}}*{{end}}{{toSingular .Name}} `json:"{{toLower .Name}}"`
+{{end -}}
+	TotalItems    int                  `json:"totalItems"`
+	ExpectedTotal int                  `json:"expectedTotal"`
+	IsFetching    bool                 `json:"isFetching"`
+	State         types.LoadState      `json:"state"`
+}
+
+func (p *{{.Class}}Page) GetFacet() types.DataFacet {
+	return p.Facet
+}
+
+func (p *{{.Class}}Page) GetTotalItems() int {
+	return p.TotalItems
+}
+
+func (p *{{.Class}}Page) GetExpectedTotal() int {
+	return p.ExpectedTotal
+}
+
+func (p *{{.Class}}Page) GetIsFetching() bool {
+	return p.IsFetching
+}
+
+func (p *{{.Class}}Page) GetState() types.LoadState {
+	return p.State
+}
+
+func (c *{{.Class}}Collection) GetPage(
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+	filter string,
+) (types.Page, error) {
+	dataFacet := payload.DataFacet
+
+	page := &{{.Class}}Page{
+		Facet: dataFacet,
+	}
+	filter = strings.ToLower(filter)
+
+	if c.shouldSummarize(payload) {
+		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
+	}
+
+	switch dataFacet {
+	{{range .Facets -}}
+	{{- $sing := toSingular .Name -}}
+	{{- $sing2 := toSingular .Store -}}
+	case {{$class}}{{.Name}}:
+		facet := c.{{toLower .Name}}Facet
+		var filterFunc func(*{{$sing2}}) bool
+		if filter != "" {
+			filterFunc = func(item *{{$sing2}}) bool {
+				return c.matches{{$sing}}Filter(item, filter)
+			}
+		}
+		sortFunc := func(items []{{$sing2}}, sort sdk.SortSpec) error {
+			return sdk.Sort{{.Store}}(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("{{toLower $class}}", dataFacet, "GetPage", err)
+		} else {
+			{{if $isPtr -}}{{toLower $sing}} := make([]*{{toSingular .Store}}, 0, len(result.Items))
+			for i := range result.Items {
+				{{toLower $sing}} = append({{toLower $sing}}, &result.Items[i])
+			}{{end}}
+			page.{{.Store}}, page.TotalItems, page.State = {{if $isPtr}}{{toLower $sing}}{{else}}result.Items{{end}}, result.TotalItems, result.State
+		}
+		page.IsFetching = facet.IsFetching()
+		page.ExpectedTotal = facet.ExpectedCount()
+		{{end -}}
+	default:
+		return nil, types.NewValidationError("{{toLower .Class}}", dataFacet, "GetPage",
+			fmt.Errorf("[GetPage] unsupported dataFacet: %v", dataFacet))
+	}
+
+	return page, nil
+}
+
+// shouldSummarize returns true if the current facet can be simmarized by period
+func (c *{{.Class}}Collection) shouldSummarize(payload *types.Payload) bool {
+	if !payload.ShouldSummarize() {
+		return false
+	}
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return false
+}
+
+// getSummaryPage returns paginated summary data for a given period
+func (c *{{.Class}}Collection) getSummaryPage(
+	dataFacet types.DataFacet,
+	period string,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+	filter string,
+) (types.Page, error) {
+	// TODO: Use these
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	_ = filter
+	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
+	// For summary periods, we need the blockly (raw) data to be loaded first
+	c.LoadData(dataFacet)
+	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
+		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
+	}
+
+	page := &{{.Class}}Page{
+		Facet: dataFacet,
+	}
+
+	switch dataFacet {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	default:
+		return nil, types.NewValidationError("{{$lower}}", dataFacet, "getSummaryPage",
+			fmt.Errorf("[getSummaryPage] unsupported dataFacet: %v %v", dataFacet, page.Facet))
+	}
+}
+
+// generateSummariesForPeriod ensures summaries are generated for the given period
+func (c *{{.Class}}Collection) generateSummariesForPeriod(dataFacet types.DataFacet, period string) error {
+	// TODO: Use this
+	_ = period
+	switch dataFacet {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	default:
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+	}
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

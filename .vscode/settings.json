@@ -1,0 +1,53 @@
+{
+  "typescript.tsdk": "./frontend/node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": "./frontend/.prettierrc",
+  "prettier.resolveGlobalModules": false,
+  "prettier.requireConfig": true,
+  "prettier.prettierPath": "./frontend/node_modules/prettier",
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+    }
+  },
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true
+  },
+  "[toml]": {
+    "editor.formatOnSave": true
+  },
+  "gopls": {
+    "directoryFilters": [
+      "-usr/local/go/src"
+    ]
+  },
+  "files.exclude": {
+    "**/usr/local/go/src/**": true // Exclude Go source code from the file explorer
+  },
+  "search.exclude": {
+    "**/usr/local/go/src/**": true // Exclude Go source code from search results
+  },
+  "files.associations": {
+    "*.ts.tmpl": "gotemplate"
+  }
+}

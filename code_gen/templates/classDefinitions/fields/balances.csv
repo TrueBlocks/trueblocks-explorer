@@ -1,0 +1,12 @@
+name            , type     , strDefault, attributes , upgrades, docOrder, description
+blockNumber     , blknum   ,           , noui       ,         ,        1, the number of the block
+transactionIndex, txnum    ,           , noui       ,         ,        2, the zero-indexed position of the transaction in the block
+timestamp       , timestamp,           , noui       ,         ,        3, the timestamp of the block this log appears in
+date            , datetime ,           , calc       ,         ,        4, the timestamp as a date
+holder          , address  ,           , readOnly   ,         ,        5, Holder
+address         , address  ,           , readOnly   ,         ,        6, Token Address
+symbol          , string   ,           ,            ,         ,        7, Symbol
+name            , string   ,           ,            ,         ,        8, Token Name
+balance         , ether    ,           ,            ,         ,        9, Balance
+priorBalance    , ether    ,           , calc       ,         ,       10, Prior Balance
+decimals        , int64    ,           ,            ,         ,       11, Decimals

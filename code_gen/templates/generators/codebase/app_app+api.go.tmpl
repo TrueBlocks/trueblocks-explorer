@@ -1,0 +1,72 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+
+package app
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+// Reload dispatches reload requests to the appropriate view-specific reload function
+func (a *App) Reload(payload *types.Payload) error {
+	switch a.GetLastView() {
+	{{- range .Structures }}
+	{{- if and (not (eq .Class "")) (not .DisableGo) }}
+	case "{{ toLower .Class }}":
+		return a.Reload{{ .Class }}(payload)
+	{{- end }}
+	{{- end }}
+	default:
+		panic("unknown view in Reload" + a.GetLastView())
+	}
+}
+
+// GetRegisteredViews returns all registered view names
+func (a *App) GetRegisteredViews() []string {
+	return []string{
+	{{- range .Structures }}
+	{{- if and (not (eq .Class "")) (not .DisableGo) }}
+		"{{ toLower .Class }}",
+	{{- end }}
+	{{- end }}
+	}
+}
+
+func getCollection(payload *types.Payload, missingOk bool) types.Collection {
+	switch payload.Collection {
+	{{- range .Structures }}
+	{{- if and (not (eq .Class "")) (not .DisableGo) }}
+	case "{{toLower .Class}}":
+		return {{toLower .Class}}.Get{{ .Class }}Collection(payload)
+	{{- end }}
+	{{- end }}
+	default:
+		if !missingOk {
+			logging.LogBackend(fmt.Sprintf("Warning: Unknown collection type: %s", payload.Collection))
+		}
+		return nil
+	}
+}
+
+// IsDisabled returns true if the collection is disable or if all of its facets are disabled
+func (a *App) IsDisabled(viewName string) bool {
+	payload := &types.Payload{
+		Collection: viewName,
+	}
+	collection := getCollection(payload, true)
+	if collection == nil {
+		return false // not disabled if not found
+	}
+	if cfg, err := collection.GetConfig(); err == nil {
+		return cfg.IsDisabled()
+	} else {
+		return false // not disabled if not found
+	}
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

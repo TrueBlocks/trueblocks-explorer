@@ -1,0 +1,20 @@
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  color: var(--mantine-color-white);
+  background-color: transparent;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border: none;
+}
+
+.page-size-selector select {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border: 1px solid var(--mantine-color-dark-7);
+  border-radius: var(--mantine-radius-sm);
+  cursor: pointer;
+}
+
+.page-size-selector select:focus {
+  outline: none;
+}

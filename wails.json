@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "TrueBlocks Explorer",
+  "outputfilename": "trueblocks-explorer",
+  "frontend:install": "yarn install",
+  "frontend:build": "yarn build",
+  "frontend:dev:watcher": "yarn dev",
+  "frontend:dev:serverUrl": "http://localhost:5173",
+  "author": {
+    "name": "TrueBlocks",
+    "email": "info@trueblocks.io"
+  }
+}

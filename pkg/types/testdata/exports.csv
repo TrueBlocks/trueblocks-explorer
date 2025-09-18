@@ -1,0 +1,242 @@
+section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+columns,statements,1,Date,false,date,120,false,false,datetime
+columns,statements,2,Asset,false,asset,340,false,false,address
+columns,statements,3,Symbol,false,symbol,200,false,false,
+columns,statements,4,Decimals,false,decimals,100,false,false,
+columns,statements,5,Begin Balance,false,begBal,150,false,false,wei
+columns,statements,6,In,false,amountIn,150,false,false,wei
+columns,statements,7,Out,false,amountOut,150,false,false,wei
+columns,statements,8,End Balance,false,endBal,150,false,false,wei
+columns,statements,9,Gas Used,false,gasUsed,120,false,false,gas
+columns,statements,10,Type,false,reconciliationType,100,false,false,
+columns,statements,11,Actions,false,actions,80,false,false,
+columns,balances,1,Date,false,date,120,false,false,datetime
+columns,balances,2,Holder,false,holder,340,false,false,address
+columns,balances,3,Address,false,address,340,false,false,address
+columns,balances,4,Symbol,false,symbol,100,false,false,
+columns,balances,5,Balance,false,balance,150,false,false,wei
+columns,balances,6,Decimals,false,decimals,100,false,false,
+columns,balances,7,Actions,false,actions,80,false,false,
+columns,transfers,1,Block,false,blockNumber,100,false,false,
+columns,transfers,2,Tx Index,false,transactionIndex,80,false,false,
+columns,transfers,3,Log Index,false,logIndex,80,false,false,
+columns,transfers,4,From,false,from,340,false,false,address
+columns,transfers,5,To,false,to,340,false,false,address
+columns,transfers,6,Asset,false,asset,340,false,false,address
+columns,transfers,7,Amount,false,amount,150,false,false,wei
+columns,transfers,8,Actions,false,actions,80,false,false,
+columns,transactions,1,Block,false,blockNumber,100,false,false,
+columns,transactions,2,Index,false,transactionIndex,80,false,false,
+columns,transactions,3,Hash,false,hash,340,false,false,hash
+columns,transactions,4,From,false,from,340,false,false,address
+columns,transactions,5,To,false,to,340,false,false,address
+columns,transactions,6,Value,false,value,150,false,false,wei
+columns,transactions,7,Gas Used,false,gasUsed,120,false,false,gas
+columns,transactions,8,Actions,false,actions,80,false,false,
+columns,withdrawals,1,Block,false,blockNumber,100,false,false,
+columns,withdrawals,2,Index,false,index,80,false,false,
+columns,withdrawals,3,Validator,false,validatorIndex,100,false,false,
+columns,withdrawals,4,Address,false,address,340,false,false,address
+columns,withdrawals,5,Amount,false,amount,150,false,false,ether
+columns,withdrawals,6,Actions,false,actions,80,false,false,
+columns,assets,1,Address,false,address,340,false,false,address
+columns,assets,2,Holder,false,holder,340,false,false,address
+columns,assets,3,Symbol,false,symbol,100,false,false,
+columns,assets,4,Name,false,name,200,false,false,
+columns,assets,5,Decimals,false,decimals,100,false,false,
+columns,assets,6,Total Supply,false,totalSupply,150,false,false,wei
+columns,assets,7,Actions,false,actions,80,false,false,
+columns,logs,1,Block,false,blockNumber,100,false,false,
+columns,logs,2,Tx Index,false,transactionIndex,80,false,false,
+columns,logs,3,Log Index,false,logIndex,80,false,false,
+columns,logs,4,Address,false,address,340,false,false,address
+columns,logs,5,Topic0,false,topic0,340,false,false,hash
+columns,logs,6,Topic1,false,topic1,340,false,false,hash
+columns,logs,7,Actions,false,actions,80,false,false,
+columns,traces,1,Block,false,blockNumber,100,false,false,
+columns,traces,2,Tx Index,false,transactionIndex,80,false,false,
+columns,traces,3,Trace Index,false,traceIndex,80,false,false,
+columns,traces,4,From,false,from,340,false,false,address
+columns,traces,5,To,false,to,340,false,false,address
+columns,traces,6,Value,false,value,150,false,false,wei
+columns,traces,7,Type,false,type,100,false,false,
+columns,traces,8,Actions,false,actions,80,false,false,
+columns,receipts,1,Block,false,blockNumber,100,false,false,
+columns,receipts,2,Index,false,transactionIndex,80,false,false,
+columns,receipts,3,Tx Hash,false,transactionHash,340,false,false,hash
+columns,receipts,4,From,false,from,340,false,false,address
+columns,receipts,5,To,false,to,340,false,false,address
+columns,receipts,6,Gas Used,false,gasUsed,120,false,false,gas
+columns,receipts,7,Status,false,status,80,false,false,
+columns,receipts,8,Actions,false,actions,80,false,false,
+
+section,facet,panel,detailOrder,label,isForm,key,formatter
+details,statements,Statement Summary,1,Date,false,date,datetime
+details,statements,Statement Summary,2,Account,false,accountedFor,address
+details,statements,Statement Summary,3,Reconciled,false,reconciled,
+details,statements,Statement Summary,4,Type,false,reconciliationType,
+details,statements,Statement Summary,5,Gas Used,false,gasUsed,gas
+details,statements,Asset Information,6,Asset,false,asset,address
+details,statements,Asset Information,7,Symbol,false,symbol,
+details,statements,Asset Information,8,Decimals,false,decimals,
+details,statements,Asset Information,9,Spot Price,false,spotPrice,
+details,statements,Asset Information,10,Price Source,false,priceSource,
+details,statements,Balance Reconciliation,11,Begin Balance,false,begBal,wei
+details,statements,Balance Reconciliation,12,Total In,false,totalIn,wei
+details,statements,Balance Reconciliation,13,Total Out,false,totalOut,wei
+details,statements,Balance Reconciliation,14,Net Amount,false,amountNet,wei
+details,statements,Balance Reconciliation,15,End Balance,false,endBal,wei
+details,statements,Balance Reconciliation,16,Calculated End Balance,false,endBalCalc,wei
+details,statements,Inflow Details,17,Amount In,false,amountIn,wei
+details,statements,Inflow Details,18,Internal In,false,internalIn,wei
+details,statements,Inflow Details,19,Self Destruct In,false,selfDestructIn,wei
+details,statements,Inflow Details,20,Base Reward In,false,minerBaseRewardIn,wei
+details,statements,Inflow Details,21,Tx Fee In,false,minerTxFeeIn,wei
+details,statements,Inflow Details,22,Prefund In,false,prefundIn,wei
+details,statements,Outflow Details,23,Amount Out,false,amountOut,wei
+details,statements,Outflow Details,24,Internal Out,false,internalOut,wei
+details,statements,Outflow Details,25,Self Destruct Out,false,selfDestructOut,wei
+details,statements,Outflow Details,26,Gas Out,false,gasOut,wei
+details,statements,Transaction Details,27,Block Number,false,blockNumber,
+details,statements,Transaction Details,28,Transaction Index,false,transactionIndex,
+details,statements,Transaction Details,29,Log Index,false,logIndex,
+details,statements,Transaction Details,30,Transaction Hash,false,transactionHash,hash
+details,statements,Transaction Details,31,Sender,false,sender,address
+details,statements,Transaction Details,32,Recipient,false,recipient,address
+details,statements,Reconciliation Analysis,33,Previous Balance,false,prevBal,wei
+details,statements,Reconciliation Analysis,34,Begin Balance Diff,false,begBalDiff,wei
+details,statements,Reconciliation Analysis,35,End Balance Diff,false,endBalDiff,wei
+details,statements,Reconciliation Analysis,36,Correcting Reasons,false,correctingReasons,
+details,statements,Correction Entries,37,Correct Begin Bal In,false,correctBegBalIn,wei
+details,statements,Correction Entries,38,Correct Amount In,false,correctAmountIn,wei
+details,statements,Correction Entries,39,Correct End Bal In,false,correctEndBalIn,wei
+details,statements,Correction Entries,40,Correct Begin Bal Out,false,correctBegBalOut,wei
+details,statements,Correction Entries,41,Correct Amount Out,false,correctAmountOut,wei
+details,statements,Correction Entries,42,Correct End Bal Out,false,correctEndBalOut,wei
+details,balances,Balance Information,1,Date,false,date,datetime
+details,balances,Balance Information,2,Balance,false,balance,wei
+details,balances,Balance Information,3,Prior Balance,false,priorBalance,wei
+details,balances,Balance Information,4,Total Supply,false,totalSupply,wei
+details,balances,Balance Information,5,Token Type,false,type,
+details,balances,Token Details,6,Token Address,false,address,address
+details,balances,Token Details,7,Holder,false,holder,address
+details,balances,Token Details,8,Symbol,false,symbol,
+details,balances,Token Details,9,Token Name,false,name,
+details,balances,Token Details,10,Decimals,false,decimals,
+details,balances,Transaction Context,11,Block Number,false,blockNumber,
+details,balances,Transaction Context,12,Transaction Index,false,transactionIndex,
+details,balances,Transaction Context,13,Timestamp,false,timestamp,datetime
+details,transfers,Transaction Info,18,Block,false,blockNumber,
+details,transfers,Transaction Info,19,Tx Index,false,transactionIndex,
+details,transfers,Transaction Info,20,Log Index,false,logIndex,
+details,transfers,Transfer Details,1,From,false,from,address
+details,transfers,Transfer Details,2,To,false,to,address
+details,transfers,Transfer Details,3,Holder,false,holder,address
+details,transfers,Transfer Details,3,Sender,false,sender,address
+details,transfers,Transfer Details,4,Asset,false,asset,address
+details,transfers,Transfer Details,4,Recipient,false,recipient,address
+details,transfers,Transfer Details,5,Decimals,false,decimals,
+details,transfers,Amount Breakdown,6,Amount,false,amount,wei
+details,transfers,Amount Breakdown,7,Amount In,false,amountIn,wei
+details,transfers,Amount Breakdown,8,Amount Out,false,amountOut,wei
+details,transfers,Amount Breakdown,8,Internal In,false,internalIn,wei
+details,transfers,Amount Breakdown,9,Internal Out,false,internalOut,wei
+details,transfers,Amount Breakdown,10,Gas Out,false,gasOut,wei
+details,transfers,Mining Rewards,11,Base Reward In,false,minerBaseRewardIn,wei
+details,transfers,Mining Rewards,12,Nephew Reward In,false,minerNephewRewardIn,wei
+details,transfers,Mining Rewards,13,Tx Fee In,false,minerTxFeeIn,wei
+details,transfers,Mining Rewards,14,Uncle Reward In,false,minerUncleRewardIn,wei
+details,transfers,Special Transfers,15,Self Destruct In,false,selfDestructIn,wei
+details,transfers,Special Transfers,16,Self Destruct Out,false,selfDestructOut,wei
+details,transfers,Special Transfers,17,Prefund In,false,prefundIn,wei
+details,transactions,Block Context,15,Block Number,false,blockNumber,
+details,transactions,Block Context,16,Block Hash,false,blockHash,hash
+details,transactions,Block Context,17,Transaction Index,false,transactionIndex,
+details,transactions,Transaction Overview,1,Hash,false,hash,hash
+details,transactions,Transaction Overview,2,From,false,from,address
+details,transactions,Transaction Overview,3,To,false,to,address
+details,transactions,Transaction Overview,4,Value,false,value,wei
+details,transactions,Transaction Overview,5,Timestamp,false,timestamp,datetime
+details,transactions,Transaction Overview,6,Input Data,false,input,
+details,transactions,Transaction Overview,7,Articulated Transaction,false,articulatedTx,json
+details,transactions,Transaction Overview,8,Error Status,false,isError,
+details,transactions,Transaction Overview,9,Has Token,false,hasToken,
+details,transactions,Gas Information,10,Gas Limit,false,gas,
+details,transactions,Gas Information,11,Gas Used,false,gasUsed,gas
+details,transactions,Gas Information,12,Gas Price,false,gasPrice,gas
+details,transactions,Gas Information,13,Max Fee Per Gas,false,maxFeePerGas,gas
+details,transactions,Gas Information,14,Max Priority Fee,false,maxPriorityFeePerGas,gas
+details,transactions,Transaction Details,18,Nonce,false,nonce,
+details,transactions,Transaction Details,19,Transaction Type,false,type,
+details,withdrawals,Block Information,5,Block Number,false,blockNumber,
+details,withdrawals,Block Information,6,Timestamp,false,timestamp,datetime
+details,withdrawals,Withdrawal Details,1,Recipient Address,false,address,address
+details,withdrawals,Withdrawal Details,2,Amount,false,amount,ether
+details,withdrawals,Withdrawal Details,3,Validator Index,false,validatorIndex,
+details,withdrawals,Withdrawal Details,4,Withdrawal Index,false,index,
+details,assets,Asset Information,1,Contract Address,false,address,address
+details,assets,Asset Information,2,Holder,false,holder,address
+details,assets,Asset Information,3,Token Name,false,name,
+details,assets,Asset Information,4,Symbol,false,symbol,
+details,assets,Asset Information,5,Decimals,false,decimals,
+details,assets,Asset Information,6,Total Supply,false,totalSupply,wei
+details,assets,Asset Classification,7,Source,false,source,
+details,assets,Asset Classification,8,Tags,false,tags,
+details,assets,Asset Classification,9,Is Contract,false,isContract,
+details,assets,Asset Classification,10,Is Custom,false,isCustom,
+details,assets,Asset Classification,11,Is ERC20,false,isErc20,
+details,assets,Asset Classification,12,Is ERC721,false,isErc721,
+details,assets,Asset Classification,13,Is Prefund,false,isPrefund,
+details,assets,Asset Classification,14,Deleted,false,deleted,
+details,assets,Additional Data,15,Parts,false,parts,
+details,assets,Additional Data,16,Prefund Amount,false,prefund,wei
+details,logs,Transaction Context,8,Block Number,false,blockNumber,
+details,logs,Transaction Context,9,Block Hash,false,blockHash,hash
+details,logs,Transaction Context,10,Transaction Hash,false,transactionHash,hash
+details,logs,Transaction Context,11,Transaction Index,false,transactionIndex,
+details,logs,Transaction Context,12,Timestamp,false,timestamp,datetime
+details,logs,Log Overview,1,Contract Address,false,address,address
+details,logs,Log Overview,2,Data,false,data,
+details,logs,Log Overview,3,Log Index,false,logIndex,
+details,logs,Topics,4,Topic 0 (Event Signature),false,topic0,hash
+details,logs,Topics,5,Topic 1,false,topic1,hash
+details,logs,Topics,6,Topic 2,false,topic2,hash
+details,logs,Topics,7,Topic 3,false,topic3,hash
+details,logs,Articulated Information,13,Articulated Log,false,articulatedLog,json
+details,logs,Articulated Information,14,Compressed Log,false,compressedLog,
+details,traces,Transaction Context,15,Block Number,false,blockNumber,
+details,traces,Transaction Context,16,Block Hash,false,blockHash,hash
+details,traces,Transaction Context,17,Transaction Hash,false,transactionHash,hash
+details,traces,Transaction Context,18,Transaction Index,false,transactionIndex,
+details,traces,Transaction Context,19,Timestamp,false,timestamp,datetime
+details,traces,Transaction Context,20,Trace Index,false,traceIndex,
+details,traces,Trace Action,5,From,false,from,address
+details,traces,Trace Action,6,To,false,to,address
+details,traces,Trace Action,7,Value,false,value,wei
+details,traces,Trace Action,8,Gas Limit,false,gas,
+details,traces,Trace Action,9,Call Type,false,callType,
+details,traces,Trace Action,10,Input Data,false,input,
+details,traces,Trace Overview,1,Trace Type,false,type,
+details,traces,Trace Overview,2,Error,false,error,
+details,traces,Trace Overview,3,Subtraces Count,false,subtraces,
+details,traces,Trace Overview,4,Trace Address,false,traceAddress,
+details,traces,Trace Result,11,Gas Used,false,gasUsed,gas
+details,traces,Trace Result,12,Output,false,output,
+details,traces,Trace Result,13,Created Address,false,address,address
+details,traces,Trace Result,14,Code,false,code,
+details,traces,Articulated Information,21,Articulated Trace,false,articulatedTrace,json
+details,traces,Articulated Information,22,Compressed Trace,false,compressedTrace,
+details,receipts,Block Context,11,Block Number,false,blockNumber,
+details,receipts,Block Context,12,Block Hash,false,blockHash,hash
+details,receipts,Transaction Details,5,From,false,from,address
+details,receipts,Transaction Details,6,To,false,to,address
+details,receipts,Transaction Details,7,Transaction Index,false,transactionIndex,
+details,receipts,Receipt Overview,1,Transaction Hash,false,transactionHash,hash
+details,receipts,Receipt Overview,2,Status,false,status,
+details,receipts,Receipt Overview,3,Is Error,false,isError,
+details,receipts,Receipt Overview,4,Contract Address,false,contractAddress,address
+details,receipts,Gas Information,8,Gas Used,false,gasUsed,gas
+details,receipts,Gas Information,9,Cumulative Gas Used,false,cumulativeGasUsed,gas
+details,receipts,Gas Information,10,Effective Gas Price,false,effectiveGasPrice,gas
+details,receipts,Additional Information,13,Logs Bloom,false,logsBloom,
+details,receipts,Additional Information,14,Log Count,false,logs,

@@ -1,0 +1,61 @@
+{{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+{{- $isNames := and (eq $class "Names") }}
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+
+package {{$lower}}
+
+import (
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+)
+
+// GetConfig returns the ViewConfig for the {{$class}} view
+func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
+	facets := map[string]types.FacetConfig{
+		{{- range .Facets}}
+		"{{toLower .Name}}": {
+			Name:          "{{toProper .Name}}",
+			Store:         "{{toLower .StoreName}}",
+			IsForm:        {{.IsForm}},
+			DividerBefore: {{and (eq .Name "Prefund") $isNames}},
+			Fields:        get{{toProper .StoreName}}Fields(),
+			Actions:       []string{ {{if ne (.RowActionsBe .Name) "\"\""}}{{.RowActionsBe .Name}}{{else}}{{end}} },
+			HeaderActions: []string{ {{if ne (.HeaderActionsBe .Name) "\"\""}}{{.HeaderActionsBe .Name}}{{else}}{{end}} },
+			RendererTypes: "{{.Renderer}}",
+		},
+		{{- end}}
+	}
+
+	cfg := &types.ViewConfig{
+		ViewName:   "{{$lower}}",
+		Facets:     facets,
+		FacetOrder: []string{ {{- range .Facets}}{{printf "%q" (toLower .Name)}}, {{- end}}},
+		Actions:    map[string]types.ActionConfig{
+		{{- range .AllActions }}
+			{{.}}
+		{{- end }}
+		},
+	}
+	types.DeriveFacets(cfg)
+	types.NormalizeOrders(cfg)
+	types.SetDisablements(cfg)
+	return cfg, nil
+}
+{{- range .Stores }}
+
+func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
+	return []types.FieldConfig{
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
+}
+{{- end }}
+
+// EXISTING_CODE
+// EXISTING_CODE

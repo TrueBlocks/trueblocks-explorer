@@ -1,0 +1,5 @@
+name        , type  , required, docOrder, description
+databaseName, string, true    ,        1, Name of the database
+count       , value , false   ,        2, Number of entries
+sample      , string, false   ,        3, Sample entry
+filtered    , bool  , false   ,        4, Is database filtered by series

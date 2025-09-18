@@ -1,0 +1,4 @@
+name,type,docOrder,description
+string,string,,A basic string type
+address,string,,An Ethereum address
+hash,string,,A hash value

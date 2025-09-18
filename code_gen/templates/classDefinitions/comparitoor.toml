@@ -1,0 +1,43 @@
+[settings]
+class = "Comparitoor"
+doc_group = "001-Comparisons"
+doc_descr = "Compare transactions across multiple sources for a given address"
+doc_route = "comparitoor"
+attributes = ""
+produced_by = "comparitoor"
+disable_go = false
+
+[[facets]]
+name = "Comparitoor"
+store = "Transaction"
+actions = ["export"]
+viewType = ""
+renderer = "facet"
+
+[[facets]]
+name = "Chifra"
+store = "Transaction"
+actions = ["export"]
+viewType = ""
+renderer = ""
+
+[[facets]]
+name = "EtherScan"
+store = "Transaction"
+actions = ["export"]
+viewType = ""
+renderer = ""
+
+[[facets]]
+name = "Covalent"
+store = "Transaction"
+actions = ["export"]
+viewType = ""
+renderer = ""
+
+[[facets]]
+name = "Alchemy"
+store = "Transaction"
+actions = ["export"]
+viewType = ""
+renderer = ""

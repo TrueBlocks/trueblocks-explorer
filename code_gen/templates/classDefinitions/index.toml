@@ -1,0 +1,8 @@
+[settings]
+class = "Index"
+doc_group = "04-Admin"
+doc_descr = "Index information for a Chunks data facet."
+doc_route = "412-chunkIndex-index"
+attributes = ""
+produced_by = "chunks"
+disable_go = true

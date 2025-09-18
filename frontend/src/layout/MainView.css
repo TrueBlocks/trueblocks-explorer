@@ -1,0 +1,6 @@
+.mainView {
+  padding: var(--mantine-spacing-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

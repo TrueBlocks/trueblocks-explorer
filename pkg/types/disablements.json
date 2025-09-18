@@ -1,0 +1,88 @@
+{
+  "views": {
+    "dresses": {
+      "disabled": false,
+      "facets": {
+        "generator": false,
+        "series": false,
+        "databases": false,
+        "events": false,
+        "gallery": false
+      }
+    },
+    "exports": {
+      "disabled": false,
+      "facets": {
+        "statements": false,
+        "balances": false,
+        "transfers": false,
+        "transactions": false,
+        "withdrawals": false,
+        "assets": false,
+        "logs": false,
+        "traces": false,
+        "receipts": false
+      }
+    },
+    "chunks": {
+      "disabled": false,
+      "facets": {
+        "stats": false,
+        "index": false,
+        "blooms": false,
+        "manifest": false
+      }
+    },
+    "status": {
+      "disabled": false,
+      "facets": {
+        "status": false,
+        "caches": false,
+        "chains": false
+      }
+    },
+    "contracts": {
+      "disabled": false,
+      "facets": {
+        "dashboard": false,
+        "execute": false,
+        "events": false
+      }
+    },
+    "comparitoor": {
+      "disabled": false,
+      "facets": {
+        "comparitoor": false,
+        "chifra": false,
+        "etherscan": false,
+        "covalent": false,
+        "alchemy": false
+      }
+    },
+    "names": {
+      "disabled": false,
+      "facets": {
+        "all": false,
+        "custom": false,
+        "prefund": false,
+        "regular": false,
+        "baddress": false
+      }
+    },
+    "abis": {
+      "disabled": false,
+      "facets": {
+        "downloaded": false,
+        "known": false,
+        "functions": false,
+        "events": false
+      }
+    },
+    "monitors": {
+      "disabled": false,
+      "facets": {
+        "monitors": false
+      }
+    }
+  }
+}

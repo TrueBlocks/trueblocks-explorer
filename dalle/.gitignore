@@ -1,0 +1,12 @@
+.env
+node_modules
+databases
+series
+bin/
+*.exe
+*.test
+*.out
+*.log
+*.tmp
+*.swp
+.DS_Store

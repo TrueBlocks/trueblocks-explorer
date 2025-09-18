@@ -1,0 +1,64 @@
+[settings]
+class = "Exports"
+doc_group = "001-Route"
+doc_descr = "internal-use only data model detailing a single index chunk file"
+doc_route = "100-exports"
+attributes = ""
+produced_by = "exports"
+disable_go = false
+
+[[facets]]
+name = "Statements"
+store = "Statements"
+actions = ["export"]
+viewType = ""
+renderer = "panel"
+
+[[facets]]
+name = "Balances"
+store = "Balances"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Transfers"
+store = "Transfers"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Transactions"
+store = "Transactions"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Withdrawals"
+store = "Withdrawals"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Assets"
+store = "Assets"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Logs"
+store = "Logs"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Traces"
+store = "Traces"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Receipts"
+store = "Receipts"
+actions = ["export"]
+viewType = ""
+

@@ -1,0 +1,5 @@
+name       , type , required, docOrder, description
+nChifra    , value, true    ,        1, The values for Chifra
+nEtherScan , value, true    ,        2, The values for EtherScan
+nCovalent  , value, true    ,        2, The values for Covalent
+nAlchemy   , value, true    ,        2, The values for Alchemy

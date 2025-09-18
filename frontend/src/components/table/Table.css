@@ -1,0 +1,383 @@
+@import './TableHeaderScroll.css';
+
+.table-container {
+  width: 100%;
+  white-space: nowrap;
+  border-top: 1px solid var(--mantine-color-dark-4);
+}
+
+.data-table {
+  width: 100%;
+  min-width: max-content;
+  table-layout: fixed;
+  border-collapse: collapse;
+  outline: none;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  /* Hide scrollbars from table itself if any */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  height: auto;
+  max-height: max-content;
+}
+
+.data-table::-webkit-scrollbar {
+  display: none;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  border-right: 1px solid rgba(128, 128, 128, 0.25);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  border-right: none;
+}
+
+.data-table th {
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.header-label {
+  margin-right: 0.25em;
+}
+
+.sort-indicator {
+  font-size: 0.9em;
+  color: var(--mantine-color-orange-2);
+  margin-left: 0.1em;
+  vertical-align: middle;
+  padding-right: 2rem;
+}
+
+.data-table tbody tr {
+  cursor: pointer;
+}
+
+.data-table tbody tr.selected {
+  background-color: var(--mantine-primary-color-light);
+  border-left: 3px solid var(--mantine-primary-color-filled);
+}
+
+/* Dark theme selected */
+[data-mantine-color-scheme='dark'] .data-table tbody tr.selected {
+  background-color: var(--mantine-color-dark-5);
+  border-left-color: var(--mantine-primary-color-light);
+}
+
+/* Enhanced focus state for keyboard navigation */
+.data-table:focus tbody tr.selected {
+  background-color: var(--mantine-primary-color-light);
+  border-left-color: var(--mantine-primary-color-filled);
+  box-shadow: 0 0 0 2px var(--mantine-primary-color-light-hover);
+}
+
+/* Dark theme focus */
+[data-mantine-color-scheme='dark'] .data-table:focus tbody tr.selected {
+  background-color: var(--mantine-color-dark-4);
+  border-left-color: var(--mantine-primary-color-light);
+  box-shadow: 0 0 0 2px var(--mantine-primary-color-light-hover);
+}
+
+.data-table:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.table-outer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+}
+
+.table-header-container {
+  flex: 0 0 auto;
+  z-index: 2;
+  min-width: 100%;
+}
+
+.table-header-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex: 0 0 auto;
+}
+
+.table-body-scroll {
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.top-pagination-container {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  z-index: 2;
+  border-bottom: 1px solid var(--mantine-color-dark-4);
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px 0 10px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.table-footer {
+  flex: 0 0 auto;
+  z-index: 2;
+  border-top: 1px solid var(--mantine-color-dark-4);
+}
+
+.showing-entries {
+  font-size: 0.9rem;
+  color: var(--mantine-color-gray-6);
+}
+
+.pagination {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination button {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button.active {
+  font-weight: bold;
+}
+
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: none;
+}
+
+.page-size-selector select {
+  border-radius: var(--mantine-radius-sm);
+  cursor: pointer;
+}
+
+.page-size-selector select:focus {
+  outline: none;
+}
+
+.mainView .mantine-Tabs-tabsList {
+  margin-bottom: 0;
+}
+
+.mainView .mantine-Tabs-panel {
+  padding-top: 0;
+}
+
+.data-table tr:focus {
+  outline: 2px solid var(--mantine-color-primary-5);
+  outline-offset: -2px;
+}
+
+.mantine-integrated-table .data-table th {
+  background-color: var(--mantine-primary-color-filled);
+  color: var(--mantine-primary-color-contrast);
+}
+
+.data-table tr.deleted-row {
+  text-decoration: line-through;
+  opacity: 0.7;
+  background-color: rgba(255, 100, 100, 0.1);
+}
+
+.data-table tr.deleted-row td {
+  color: var(--mantine-color-gray-5);
+}
+
+.deleted-label {
+  font-size: 0.7rem;
+  color: var(--mantine-color-red-6);
+  background-color: rgba(255, 100, 100, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: var(--mantine-radius-sm);
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.table-main-content {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  align-items: flex-start;
+}
+
+.table-main-content.with-detail-panel .table-section {
+  flex: 0 0 60%;
+  border-right: 1px solid var(--mantine-color-dark-4);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.table-section {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 60%;
+  min-height: 0;
+  height: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.detail-panel {
+  flex: 0 0 40%;
+  background-color: var(--mantine-primary-color-light);
+  color: black;
+  border-radius: var(--mantine-radius-md);
+  box-shadow: var(--mantine-shadow-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mantine-color-dark-4);
+  height: auto;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+[data-mantine-color-scheme='dark'] .detail-panel {
+  background-color: white;
+  color: black;
+  box-shadow: var(--mantine-shadow-md);
+  border-color: var(--mantine-color-dark-4);
+}
+
+.detail-panel-content {
+  padding: var(--mantine-spacing-lg);
+  flex: 1 1 auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mantine-color-gray-4) transparent;
+}
+
+.detail-panel-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.detail-panel-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.detail-panel-content::-webkit-scrollbar-thumb {
+  background-color: var(--mantine-color-gray-4);
+  border-radius: var(--mantine-radius-sm);
+}
+
+.detail-panel-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--mantine-color-gray-5);
+}
+
+.detail-panel-placeholder h4 {
+  margin: 0 0 var(--mantine-spacing-md) 0;
+  color: black;
+  font-size: var(--mantine-font-size-lg);
+  font-weight: 600;
+  padding-bottom: var(--mantine-spacing-xs);
+  border-bottom: 2px solid black;
+}
+
+[data-mantine-color-scheme='dark'] .detail-panel-placeholder h4 {
+  color: black;
+  border-bottom-color: black;
+}
+
+.detail-panel-default {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+}
+
+.detail-row {
+  padding: var(--mantine-spacing-sm);
+  background-color: transparent;
+  border-radius: var(--mantine-radius-sm);
+  font-size: var(--mantine-font-size-sm);
+  color: black;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+  word-break: break-word;
+  display: flex;
+  align-items: flex-start;
+}
+
+.detail-row:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-mantine-color-scheme='dark'] .detail-row {
+  background-color: transparent;
+  color: black;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-mantine-color-scheme='dark'] .detail-row:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.detail-row strong {
+  color: black;
+  margin-right: var(--mantine-spacing-sm);
+  font-weight: bold;
+  flex: 0 0 120px;
+  text-align: left;
+}
+
+[data-mantine-color-scheme='dark'] .detail-row strong {
+  color: black;
+}
+
+.no-selection {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+  padding: var(--mantine-spacing-xl);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--mantine-radius-sm);
+  border: 2px dashed rgba(0, 0, 0, 0.2);
+  margin: var(--mantine-spacing-md);
+}
+
+[data-mantine-color-scheme='dark'] .no-selection {
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.2);
+}

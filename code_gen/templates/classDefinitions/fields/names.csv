@@ -1,0 +1,13 @@
+name      , type   , strDefault, attributes        , upgrades, docOrder, description
+address   , address,           , width=340|readOnly,         ,        1, the address associated with this name
+name      , string ,           , required          ,         ,        2, the name associated with this address
+tags      , string ,           , width=150         ,         ,        3, colon separated list of tags
+source    , string ,           , width=120         ,         ,        4, user supplied source of where this name was found
+symbol    , string ,           , width=100         ,         ,        5, the symbol for this address
+decimals  , uint64 ,           , width=100         ,         ,        6, number of decimals retrieved from an ERC20 smart contract
+deleted   , bool   ,           , noui              ,         ,        7, if deleted
+isCustom  , bool   ,           , noui              ,         ,        8, if the address is a custom address
+isPrefund , bool   ,           , noui              ,         ,        9, if the address was one of the prefund addresses&#44; `false` otherwise
+isContract, bool   ,           , noui              ,         ,       10, if the address is a smart contract
+isErc20   , bool   ,           , noui              ,         ,       11, if the address is an ERC20
+isErc721  , bool   ,           , noui              ,         ,       12, if the address is an ERC720

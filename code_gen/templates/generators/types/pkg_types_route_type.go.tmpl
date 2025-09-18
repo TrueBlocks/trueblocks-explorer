@@ -1,0 +1,178 @@
+{{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+{{- $single := toSingular $class -}}
+{{- $isAbis := eq $class "Abis" -}}
+{{- $isMonitors := eq $class "Monitors" -}}
+{{- $isContracts := eq $class "Contracts" -}}
+{{- $isPtr := or $isAbis $isMonitors -}}
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+
+package {{$lower}}
+
+import (
+	"fmt"
+	"sync"
+	"time"
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+)
+
+const (
+{{range .Facets}}{{$class}}{{.Name}} types.DataFacet = "{{toLower .Name}}"
+{{end}}
+)
+
+func init() {
+{{range .Facets}}types.RegisterDataFacet({{$class}}{{.Name}})
+{{end}}}
+
+type {{$class}}Collection struct {
+	{{- range .Facets}}
+	{{toLower .Name}}Facet *facets.Facet[{{toSingular .Store}}]
+	{{- end}}
+	summary         types.Summary
+	summaryMutex    sync.RWMutex
+}
+
+func New{{$class}}Collection(payload *types.Payload) *{{$class}}Collection {
+	c := &{{$class}}Collection{}
+	c.ResetSummary()
+	c.initializeFacets(payload)
+	return c
+}
+
+func (c *{{$class}}Collection) initializeFacets(payload *types.Payload) {
+	{{- range .Facets}}
+	c.{{toLower .Name}}Facet = facets.NewFacet(
+		{{$class}}{{.Name}},
+		is{{toSingular .Name}},
+		isDup{{.SingleStore}}(),
+		c.get{{.Store}}Store(payload, {{$class}}{{.Name}}),
+		"{{toLower $class}}",
+		c,
+	)
+	{{end}}}
+
+{{range .Facets}}
+func is{{toSingular .Name}}(item *{{toSingular .Store}}) bool {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+{{end}}
+
+{{range .Stores}}
+func isDup{{toSingular .Name}}() func(existing []*{{toSingular .Name}}, newItem *{{toSingular .Name}}) bool {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+{{end}}
+
+func (c *{{$class}}Collection) LoadData(dataFacet types.DataFacet) {
+	if !c.NeedsUpdate(dataFacet) {
+		return
+	}
+
+	go func() {
+		switch dataFacet {
+		{{- range .Facets}}
+		case {{$class}}{{.Name}}:
+			if err := c.{{toLower .Name}}Facet.Load(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
+		{{- end}}
+		default:
+			logging.LogError("LoadData: unexpected dataFacet: %v", fmt.Errorf("invalid dataFacet: %s", dataFacet), nil)
+			return
+		}
+	}()
+}
+
+func (c *{{$class}}Collection) Reset(dataFacet types.DataFacet) {
+	switch dataFacet {
+	{{- range .Facets}}
+	case {{$class}}{{.Name}}:
+		c.{{toLower .Name}}Facet.GetStore().Reset()
+	{{- end}}
+	default:
+		return
+	}
+}
+
+func (c *{{$class}}Collection) NeedsUpdate(dataFacet types.DataFacet) bool {
+	switch dataFacet {
+	{{- range .Facets}}
+	case {{$class}}{{.Name}}:
+		return c.{{toLower .Name}}Facet.NeedsUpdate()
+	{{- end}}
+	default:
+		return false
+	}
+}
+
+func (c *{{$class}}Collection) GetSupportedFacets() []types.DataFacet {
+	return []types.DataFacet{
+		{{- range .Facets}}
+		{{$class}}{{.Name}},
+		{{- end}}
+	}
+}
+
+func (c *{{$class}}Collection) AccumulateItem(item interface{}, summary *types.Summary) {
+	// EXISTING_CODE
+	// EXISTING_CODE
+}
+
+func (c *{{$class}}Collection) GetSummary() types.Summary {
+	c.summaryMutex.RLock()
+	defer c.summaryMutex.RUnlock()
+
+	summary := c.summary
+	summary.FacetCounts = make(map[types.DataFacet]int)
+	for k, v := range c.summary.FacetCounts {
+		summary.FacetCounts[k] = v
+	}
+
+	if c.summary.CustomData != nil {
+		summary.CustomData = make(map[string]interface{})
+		for k, v := range c.summary.CustomData {
+			summary.CustomData[k] = v
+		}
+	}
+
+	return summary
+}
+
+func (c *{{$class}}Collection) ResetSummary() {
+	c.summaryMutex.Lock()
+	defer c.summaryMutex.Unlock()
+	c.summary = types.Summary{
+		TotalCount:  0,
+		FacetCounts: make(map[types.DataFacet]int),
+		CustomData:  make(map[string]interface{}),
+		LastUpdated: time.Now().Unix(),
+	}
+}
+
+func (c *{{$class}}Collection) ExportData(payload *types.Payload) (string, error) {
+	switch payload.DataFacet {
+	{{- range .Facets}}
+	case {{$class}}{{.Name}}:
+		return c.{{toLower .Name}}Facet.ExportData{{if $isContracts}}Pointers{{end}}(payload, string({{$class}}{{.Name}}))
+	{{- end}}
+	default:
+		return "", fmt.Errorf("[ExportData] unsupported {{$lower}} facet: %s", payload.DataFacet)
+	}
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

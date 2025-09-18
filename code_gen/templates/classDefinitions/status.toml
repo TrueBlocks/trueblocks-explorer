@@ -1,0 +1,28 @@
+[settings]
+class = "Status"
+doc_group = "001-Route"
+doc_descr = "data model for various status facets"
+doc_route = "600-status"
+attributes = ""
+produced_by = "status"
+disable_go = false
+
+[[facets]]
+name = "Status"
+store = "Status"
+viewType = "dashboard"
+
+[[facets]]
+name = "Caches"
+store = "Caches"
+# TODO: BOGUS - Add clean
+actions = ["export"]
+viewType = ""
+
+[[facets]]
+name = "Chains"
+store = "Chains"
+# TODO: BOGUS - Add clean
+actions = ["export"]
+viewType = ""
+

@@ -1,0 +1,7 @@
+name    , type   , strDefault, attributes           , upgrades, docOrder, description
+address , address,           , readOnly       ,         ,        1, Address
+name    , string ,           ,                 ,         ,        2, Name
+symbol  , string ,           ,                 ,         ,        3, Symbol
+decimals, int64  ,           ,                 ,         ,        4, Decimals
+source  , string ,           ,                 ,         ,        5, Source
+tags    , string ,           ,                 ,         ,        6, Tags

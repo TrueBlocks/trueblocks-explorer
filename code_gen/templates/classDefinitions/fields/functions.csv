@@ -1,0 +1,6 @@
+name      , type   , strDefault, attributes                , upgrades, docOrder, description
+address   , address,           , width=340px|readOnly,         ,        1, Address
+name      , string ,           , width=200px         ,         ,        2, Name
+fileSize  , int64  ,           , width=120px         ,         ,        3, File Size
+nFunctions, int64  ,           , width=120px         ,         ,        4, Functions
+nEvents   , int64  ,           , width=120px         ,         ,        5, Events

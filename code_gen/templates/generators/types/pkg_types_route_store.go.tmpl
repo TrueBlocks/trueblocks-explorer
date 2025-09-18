@@ -1,0 +1,139 @@
+{{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+{{- $single := toSingular $class -}}
+{{- $isExports := eq .Class "Exports" -}}
+{{- $isContracts := eq .Class "Contracts" -}}
+{{- $isNames := eq .Class "Names" -}}
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * Parts of this file were auto generated. Edit only those parts of
+ * the code inside of 'EXISTING_CODE' tags.
+ */
+
+package {{toLower .Class}}
+
+import (
+	"fmt"
+	"sync"
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+)
+
+// EXISTING_CODE
+// EXISTING_CODE
+
+{{range .Stores}}type {{toSingular .Name}} = sdk.{{toSingular .Name}}
+{{end}}
+
+var (
+	{{range .Stores}}
+	{{toLower .Name}}Store {{if $isExports}}= make(map[string]{{end}}*store.Store[{{toSingular .Name}}]{{if $isExports}}){{end}}
+	{{toLower .Name}}StoreMu   sync.Mutex
+	{{end}}
+)
+
+{{range .Stores}}
+func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet types.DataFacet) *store.Store[{{toSingular .Name}}] {
+	{{toLower .Name}}StoreMu.Lock()
+	defer {{toLower .Name}}StoreMu.Unlock()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+	
+	chain := payload.Chain
+	address := payload.Address
+{{if $isExports}}	storeKey := getStoreKey(chain, address)
+	theStore := {{toLower .Name}}Store[storeKey]
+{{else}}	theStore := {{toLower .Name}}Store
+{{end -}}
+	if theStore == nil {
+		queryFunc := func(ctx *output.RenderCtx) error {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil
+		}
+
+		processFunc := func(item interface{}) *{{toSingular .Name}} {
+			if it, ok := item.(*{{toSingular .Name}}); ok {
+				return it
+			}
+			return nil
+		}
+
+		mappingFunc := func(item *{{toSingular .Name}}) (key interface{}, includeInMap bool) {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil, false
+		}
+
+		storeName := c.GetStoreName(facet, chain, address)
+		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+		
+		{{toLower .Name}}Store{{if $isExports}}[storeKey]{{end}} = theStore
+	}
+
+	return theStore
+}
+{{end}}
+
+func (c *{{$class}}Collection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+	{{- if not $isExports}}
+	_ = chain
+	_ = address
+	{{- end}}
+	name := ""
+	switch dataFacet {
+	{{range .Facets}}case {{$class}}{{.Name}}:
+		name = "{{toLower $class}}-{{toLower .Store}}"
+	{{end -}}
+	default:
+		return ""
+	}
+	{{- if $isExports}}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	{{- end}}
+	return name
+}
+
+var (
+	collections   = make(map[store.CollectionKey]*{{.Class}}Collection)
+	collectionsMu sync.Mutex
+)
+
+func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
+	collectionsMu.Lock()
+	defer collectionsMu.Unlock()
+
+	pl := *payload
+	{{- if $isNames}}
+		pl.Address = ""
+		pl.Chain = ""
+	{{else}}
+		{{- if not $isExports}}
+			pl.Address = ""
+		{{end}}
+	{{end}}
+	key := store.GetCollectionKey(&pl)
+	if collection, exists := collections[key]; exists {
+		return collection
+	}
+
+	collection := New{{.Class}}Collection(payload)
+	collections[key] = collection
+	return collection
+}
+
+// EXISTING_CODE
+// EXISTING_CODE

@@ -1,0 +1,8 @@
+[settings]
+class = "Blooms"
+doc_group = "04-Admin"
+doc_descr = "Bloom filter information for a Chunks data facet."
+doc_route = "412-chunkIndex-blooms"
+attributes = ""
+produced_by = "chunks"
+disable_go = true

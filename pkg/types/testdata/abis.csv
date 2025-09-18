@@ -1,0 +1,79 @@
+section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+columns,downloaded,1,Address,false,address,340,false,false,address
+columns,downloaded,2,Name,false,name,200,false,false,
+columns,downloaded,3,Functions,false,nFunctions,100,false,false,number
+columns,downloaded,4,Events,false,nEvents,100,false,false,number
+columns,downloaded,5,File Size,false,fileSize,120,false,false,fileSize
+columns,downloaded,6,Empty,false,isEmpty,80,false,false,boolean
+columns,downloaded,7,Known,false,isKnown,80,false,false,boolean
+columns,downloaded,8,Last Modified,false,lastModDate,150,false,false,timestamp
+columns,downloaded,9,Actions,false,actions,80,false,false,
+columns,known,1,Address,false,address,340,false,false,address
+columns,known,2,Name,false,name,200,false,false,
+columns,known,3,Functions,false,nFunctions,100,false,false,number
+columns,known,4,Events,false,nEvents,100,false,false,number
+columns,known,5,File Size,false,fileSize,120,false,false,fileSize
+columns,known,6,Empty,false,isEmpty,80,false,false,boolean
+columns,known,7,Known,false,isKnown,80,false,false,boolean
+columns,known,8,Last Modified,false,lastModDate,150,false,false,timestamp
+columns,known,9,Actions,false,actions,80,false,false,
+columns,functions,1,Name,false,name,200,false,false,
+columns,functions,2,Type,false,type,100,false,false,
+columns,functions,3,Encoding,false,encoding,250,false,false,
+columns,functions,4,Signature,false,signature,300,false,false,
+columns,functions,5,State Mutability,false,stateMutability,150,false,false,
+columns,functions,6,Constant,false,constant,100,false,false,boolean
+columns,functions,7,Anonymous,false,anonymous,100,false,false,boolean
+columns,events,1,Name,false,name,200,false,false,
+columns,events,2,Type,false,type,100,false,false,
+columns,events,3,Encoding,false,encoding,250,false,false,
+columns,events,4,Signature,false,signature,300,false,false,
+columns,events,5,State Mutability,false,stateMutability,150,false,false,
+columns,events,6,Constant,false,constant,100,false,false,boolean
+columns,events,7,Anonymous,false,anonymous,100,false,false,boolean
+
+section,facet,panel,detailOrder,label,isForm,key,formatter
+details,downloaded,ABI Identity,1,Address,false,address,address
+details,downloaded,ABI Identity,2,Name,false,name,
+details,downloaded,ABI Identity,3,File Path,false,path,
+details,downloaded,Content Statistics,4,Number of Functions,false,nFunctions,number
+details,downloaded,Content Statistics,5,Number of Events,false,nEvents,number
+details,downloaded,Content Statistics,6,File Size,false,fileSize,fileSize
+details,downloaded,ABI Properties,7,Is Empty,false,isEmpty,boolean
+details,downloaded,ABI Properties,8,Is Known,false,isKnown,boolean
+details,downloaded,ABI Properties,9,Has Constructor,false,hasConstructor,boolean
+details,downloaded,ABI Properties,10,Has Fallback Function,false,hasFallback,boolean
+details,downloaded,File Metadata,11,Last Modified,false,lastModDate,timestamp
+details,downloaded,Functions List,12,Available Functions,false,functions,json
+details,known,ABI Identity,1,Address,false,address,address
+details,known,ABI Identity,2,Name,false,name,
+details,known,ABI Identity,3,File Path,false,path,
+details,known,Content Statistics,4,Number of Functions,false,nFunctions,number
+details,known,Content Statistics,5,Number of Events,false,nEvents,number
+details,known,Content Statistics,6,File Size,false,fileSize,fileSize
+details,known,ABI Properties,7,Is Empty,false,isEmpty,boolean
+details,known,ABI Properties,8,Is Known,false,isKnown,boolean
+details,known,ABI Properties,9,Has Constructor,false,hasConstructor,boolean
+details,known,ABI Properties,10,Has Fallback Function,false,hasFallback,boolean
+details,known,File Metadata,11,Last Modified,false,lastModDate,timestamp
+details,known,Functions List,12,Available Functions,false,functions,json
+details,functions,Function Overview,1,Function Name,false,name,
+details,functions,Function Overview,2,Function Type,false,type,
+details,functions,Function Overview,3,Encoding Hash,false,encoding,
+details,functions,Function Overview,4,Function Signature,false,signature,
+details,functions,Function Properties,5,State Mutability,false,stateMutability,
+details,functions,Function Properties,6,Constant,false,constant,boolean
+details,functions,Function Properties,7,Anonymous,false,anonymous,boolean
+details,functions,Input Parameters,8,Input Parameters,false,inputs,json
+details,functions,Output Parameters,9,Output Parameters,false,outputs,json
+details,functions,Additional Information,10,Error Message,false,message,
+details,events,Function Overview,1,Function Name,false,name,
+details,events,Function Overview,2,Function Type,false,type,
+details,events,Function Overview,3,Encoding Hash,false,encoding,
+details,events,Function Overview,4,Function Signature,false,signature,
+details,events,Function Properties,5,State Mutability,false,stateMutability,
+details,events,Function Properties,6,Constant,false,constant,boolean
+details,events,Function Properties,7,Anonymous,false,anonymous,boolean
+details,events,Input Parameters,8,Input Parameters,false,inputs,json
+details,events,Output Parameters,9,Output Parameters,false,outputs,json
+details,events,Additional Information,10,Error Message,false,message,

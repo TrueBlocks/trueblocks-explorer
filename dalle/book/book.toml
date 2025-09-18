@@ -1,0 +1,6 @@
+[book]
+authors = ["Thomas Jay Rush"]
+language = "en"
+multilingual = false
+src = "src"
+title = "DalleDress: Local-First Image Generation for Go"

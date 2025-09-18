@@ -1,0 +1,15 @@
+name            , type        , strDefault, attributes      , upgrades     , docOrder, description
+blockHash       , hash        ,           , noui            ,              ,        1, the hash of the block containing this trace
+blockNumber     , blknum      ,           , noui            ,              ,        2, the number of the block
+timestamp       , timestamp   ,           , noui            ,              ,        3, the timestamp of the block
+date            , datetime    ,           , calc|width=120px,              ,        4, the timestamp as a date
+transactionHash , hash        ,           , noui            ,              ,        5, the transaction's hash containing this trace
+transactionIndex, txnum       ,           , noui            ,              ,        6, the zero-indexed position of the transaction in the block
+subtraces       , uint64      ,           , noui            ,              ,        7, the number of children traces that the trace hash
+type            , string      ,           ,                 ,              ,        8, the type of the trace
+compressedTrace , string      ,           , calc            , 2.5.10:string,        9, a compressed string version of the articulated trace
+error           , string      ,           ,                 ,              ,       10, 
+traceAddress    , []uint64    ,           , noui            ,              ,       11, a particular trace's address in the trace tree
+action          , *TraceAction,           , noui            ,              ,       12, the trace action for this trace
+result          , *TraceResult,           , noui            ,              ,       13, the trace result of this trace
+articulatedTrace, *Function   ,           , noui            ,              ,       14, human readable version of the trace action input data

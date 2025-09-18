@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build": "cd frontend && yarn build && cd .. && wails build",
+    "clean": "make clean",
+    "dev": "wails dev -debounce 1000 | grep -v 'AssetHandler'",
+    "install": "cd frontend && yarn install && cd - && go mod tidy && yarn build",
+    "lint": "cd frontend && yarn lint && cd .. && golangci-lint run",
+    "lint:check": "lint",
+    "start": "yarn dev",
+    "test-go": "go test ./...",
+    "test-go-detail": "echo 'detailed testing may take 30 seconds...' ; cd ./pkg/types ; go test -tags=detailed ./... ; cd -",
+    "test-dalle": "cd dalle && go test .",
+    "test-tsx": "cd frontend && yarn test",
+    "test": "export $(grep -v '^#' ./.env | xargs) >/dev/null && yarn test-go && yarn test-tsx",
+    "test-detail": "export $(grep -v '^#' ./.env | xargs) >/dev/null && yarn test-go-detail",
+    "CONVENTIONS": "echo 'See copilot.md for development conventions'"
+  }
+}

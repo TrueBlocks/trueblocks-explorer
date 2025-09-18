@@ -1,0 +1,8 @@
+[settings]
+class = "Chains"
+doc_group = "002-Support"
+doc_descr = "data model for chains"
+doc_route = "600-status"
+attributes = ""
+produced_by = "status"
+disable_go = true

@@ -1,0 +1,5 @@
+.tableContainer {
+  /* Added from useStyles */
+  flex-grow: 1;
+  overflow-y: auto;
+}

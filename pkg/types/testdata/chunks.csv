@@ -1,0 +1,59 @@
+section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+columns,stats,1,Range,false,range,150,true,true,blkrange
+columns,stats,2,Addrs,false,nAddrs,120,true,true,number
+columns,stats,3,Apps,false,nApps,100,true,true,number
+columns,stats,4,Blocks,false,nBlocks,120,true,true,number
+columns,stats,5,Blooms,false,nBlooms,120,true,true,number
+columns,stats,6,Rec Wid,false,recWid,120,true,true,number
+columns,stats,7,Bloom Sz,false,bloomSz,120,true,true,number
+columns,stats,8,Chunk Sz,false,chunkSz,120,true,true,number
+columns,stats,9,Addrs Per Block,false,addrsPerBlock,100,true,true,float64
+columns,stats,10,Apps Per Block,false,appsPerBlock,100,true,true,float64
+columns,stats,11,Apps Per Addr,false,appsPerAddr,100,true,true,float64
+columns,stats,12,Ratio,false,ratio,100,true,true,float64
+columns,index,1,Range,false,range,150,true,true,blkrange
+columns,index,2,Magic,false,magic,150,true,true,text
+columns,index,3,Hash,false,hash,150,true,true,hash
+columns,index,4,Addresses,false,nAddresses,150,true,true,number
+columns,index,5,Appearances,false,nAppearances,150,true,true,number
+columns,index,6,Size,false,size,150,true,true,number
+columns,blooms,1,Range,false,range,150,true,true,blkrange
+columns,blooms,2,Magic,false,magic,150,true,true,text
+columns,blooms,3,Hash,false,hash,150,true,true,hash
+columns,blooms,4,Blooms,false,nBlooms,150,true,true,number
+columns,blooms,5,Inserted,false,nInserted,150,true,true,number
+columns,blooms,6,Size,false,size,150,true,true,number
+columns,blooms,7,Byte Width,false,byteWidth,150,true,true,number
+columns,manifest,1,Version,true,version,100,false,false,
+columns,manifest,2,Chain,true,chain,120,false,false,
+columns,manifest,3,Specification,true,specification,200,false,false,hash
+
+section,facet,panel,detailOrder,label,isForm,key,formatter
+details,stats,Range,1,Range,false,range,blkrange
+details,stats,Counts,2,Addresses,false,nAddrs,number
+details,stats,Counts,3,Apps,false,nApps,number
+details,stats,Counts,4,Blocks,false,nBlocks,number
+details,stats,Counts,5,Blooms,false,nBlooms,number
+details,stats,Sizes,6,Record Width,false,recWid,number
+details,stats,Sizes,7,Bloom Size,false,bloomSz,number
+details,stats,Sizes,8,Chunk Size,false,chunkSz,number
+details,stats,Efficiency,9,Addrs/Block,false,addrsPerBlock,float64
+details,stats,Efficiency,10,Apps/Block,false,appsPerBlock,float64
+details,stats,Efficiency,11,Apps/Addr,false,appsPerAddr,float64
+details,stats,Efficiency,12,Ratio,false,ratio,float64
+details,index,Range,1,Range,false,range,blkrange
+details,index,Identity,2,Magic,false,magic,text
+details,index,Identity,3,Hash,false,hash,hash
+details,index,Counts,4,Addresses,false,nAddresses,number
+details,index,Counts,5,Appearances,false,nAppearances,number
+details,index,Sizes,6,Size,false,size,number
+details,blooms,Range,1,Range,false,range,blkrange
+details,blooms,Identity,2,Magic,false,magic,text
+details,blooms,Identity,3,Hash,false,hash,hash
+details,blooms,Counts,4,Blooms,false,nBlooms,number
+details,blooms,Counts,5,Inserted,false,nInserted,number
+details,blooms,Sizes,6,Size,false,size,number
+details,blooms,Sizes,7,Byte Width,false,byteWidth,number
+details,manifest,Manifest,1,Version,true,version,
+details,manifest,Manifest,2,Chain,true,chain,
+details,manifest,Manifest,3,Specification,true,specification,hash

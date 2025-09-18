@@ -1,0 +1,387 @@
+import { useCallback, useEffect, useMemo } from 'react';
+
+import { CancelFetch, Reload } from '@app';
+import {
+  useActiveProject,
+  useEnabledMenuItems,
+  usePayload,
+  usePreferences,
+} from '@hooks';
+import { msgs, types } from '@models';
+import { LogError, emitEvent, useEmitters } from '@utils';
+import { useLocation } from 'wouter';
+
+type Hotkey = {
+  type: 'navigation' | 'dev' | 'toggle';
+  hotkey: string;
+  label: string;
+  path?: string;
+  action?: (() => void) | (() => Promise<void>);
+};
+
+export const useAppHotkeys = (): void => {
+  const [currentLocation] = useLocation();
+  const { getLastFacet } = useActiveProject();
+  const createPayload = usePayload();
+  const {
+    debugCollapsed,
+    setDebugCollapsed,
+    menuCollapsed,
+    setMenuCollapsed,
+    helpCollapsed,
+    setHelpCollapsed,
+    chromeCollapsed,
+    setChromeCollapsed,
+    detailCollapsed,
+    setDetailCollapsed,
+  } = usePreferences();
+  const enabledMenuItems = useEnabledMenuItems();
+
+  // Helper function to get current facet for the current route
+  const vR = currentLocation.replace(/^\/+/, '');
+  const currentFacet = getLastFacet(vR);
+
+  const [, navigate] = useLocation();
+  const { emitStatus, emitError } = useEmitters();
+
+  const handleHotkey = useCallback(
+    async (hkType: Hotkey, _e: KeyboardEvent): Promise<void> => {
+      try {
+        switch (hkType.type) {
+          case 'navigation':
+            if (hkType.path) {
+              if (
+                currentLocation === hkType.path ||
+                currentLocation.startsWith(hkType.path + '/')
+              ) {
+                emitEvent(msgs.EventType.TAB_CYCLE, 'Tab cycle triggered', {
+                  route: hkType.path,
+                  key: hkType.hotkey,
+                });
+              } else {
+                navigate(hkType.path);
+              }
+            }
+            break;
+
+          case 'dev':
+            if (!import.meta.env.DEV) return;
+            if (hkType.action) await hkType.action();
+            if (hkType.path) navigate(hkType.path);
+            break;
+
+          case 'toggle':
+            if (hkType.action) hkType.action();
+            break;
+        }
+      } catch (error) {
+        LogError(error instanceof Error ? error.message : String(error));
+
+        if (
+          (hkType.type === 'navigation' || hkType.type === 'dev') &&
+          hkType.path
+        ) {
+          window.location.href = hkType.path;
+        }
+      }
+    },
+    [currentLocation, navigate],
+  );
+
+  const toggleHotkeys = [
+    {
+      key: 'mod+m',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+m',
+            label: 'Toggle menu panel',
+            action: () => {
+              if (!chromeCollapsed) setMenuCollapsed(!menuCollapsed);
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+h',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+h',
+            label: 'Toggle help panel',
+            action: () => {
+              if (!chromeCollapsed) setHelpCollapsed(!helpCollapsed);
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+j',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+j',
+            label: 'Toggle header and footer',
+            action: () => {
+              setChromeCollapsed(!chromeCollapsed);
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+p',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+p',
+            label: 'Toggle detail panel',
+            action: () => {
+              setDetailCollapsed(!detailCollapsed);
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+d',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+d',
+            label: 'Toggle debug info',
+            action: () => {
+              setDebugCollapsed(!debugCollapsed);
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+r',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+r',
+            label: 'Reload',
+            action: () => {
+              Reload(createPayload(currentFacet as types.DataFacet)).then(
+                () => {},
+              );
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+  ];
+
+  // Dynamically assign hotkeys based on menu order and rules
+  // Build hotkey registry: key -> handler
+  const hotkeyRegistry = useMemo(() => {
+    const registry: Record<string, (e: KeyboardEvent) => void> = {};
+    let idx = 1;
+    enabledMenuItems.forEach((item) => {
+      if (item.path === '/wizard') {
+        registry['mod+w'] = (e: KeyboardEvent) => {
+          handleHotkey(
+            {
+              type: item.type || 'navigation',
+              hotkey: 'mod+w',
+              path: item.path,
+              label: `Navigate to ${item.label}`,
+              action: item.action,
+            },
+            e,
+          );
+        };
+        return; // do not increment idx, no alt variant
+      }
+      if (item.path === '/settings') {
+        registry['mod+comma'] = (e: KeyboardEvent) => {
+          handleHotkey(
+            {
+              type: item.type || 'navigation',
+              hotkey: 'mod+comma',
+              path: item.path,
+              label: `Navigate to ${item.label}`,
+              action: item.action,
+            },
+            e,
+          );
+        };
+        registry['alt+comma'] = (e: KeyboardEvent) => {
+          handleHotkey(
+            {
+              type: item.type || 'navigation',
+              hotkey: 'alt+comma',
+              path: item.path,
+              label: `Navigate to ${item.label} (alt)`,
+              action: item.action,
+            },
+            e,
+          );
+        };
+        return; // Do not increment idx so numbering unaffected
+      }
+      let hotkey: string;
+      if (idx <= 9) hotkey = `mod+${idx}`;
+      else if (idx === 10) hotkey = 'mod+0';
+      else hotkey = `mod+shift+${idx - 10}`;
+      registry[hotkey] = (e: KeyboardEvent) => {
+        handleHotkey(
+          {
+            type: item.type || 'navigation',
+            hotkey,
+            path: item.path,
+            label: `Navigate to ${item.label}`,
+            action: item.action,
+          },
+          e,
+        );
+      };
+      if (idx <= 10) {
+        const altHotkey = idx === 10 ? 'alt+0' : `alt+${idx}`;
+        registry[altHotkey] = (e: KeyboardEvent) => {
+          handleHotkey(
+            {
+              type: item.type || 'navigation',
+              hotkey: altHotkey,
+              path: item.path,
+              label: `Navigate to ${item.label} (alt)`,
+              action: item.action,
+            },
+            e,
+          );
+        };
+      }
+      idx++;
+    });
+    return registry;
+  }, [enabledMenuItems, handleHotkey]);
+
+  // Edit (text) hotkeys (allow native behavior)
+  const editHotkeys = [
+    {
+      key: 'mod+c',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+v',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+x',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+z',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+shift+z',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+y',
+      handler: (_e: KeyboardEvent) => {},
+      options: { preventDefault: false, enableOnFormTags: true },
+    },
+  ];
+
+  const globalHotkeys = [
+    {
+      key: 'escape',
+      handler: (_e: KeyboardEvent) => {
+        CancelFetch(currentFacet as types.DataFacet)
+          .then(() => {
+            emitStatus('Cancellation request processed.');
+          })
+          .catch((err: Error) => {
+            emitError(
+              `Failed to send cancellation request via Escape key: ${
+                err.message || 'Unknown error'
+              }`,
+            );
+          });
+      },
+      options: { enableOnFormTags: true, preventDefault: true },
+    },
+  ];
+
+  function normalizeHotkey(e: KeyboardEvent): string {
+    if (
+      e.key === 'Alt' ||
+      e.key === 'Meta' ||
+      e.key === 'Control' ||
+      e.key === 'Shift'
+    )
+      return '';
+    let key = '';
+    if (e.metaKey || e.ctrlKey) key += 'mod+';
+    if (e.altKey) key += 'alt+';
+    if (e.shiftKey) key += 'shift+';
+    if (e.code.startsWith('Digit')) key += e.code.replace('Digit', '');
+    else if (e.code === 'Comma') key += 'comma';
+    else key += e.key.toLowerCase();
+    return key;
+  }
+
+  const memoToggleHotkeys = toggleHotkeys;
+  const memoEditHotkeys = editHotkeys;
+  const memoGlobalHotkeys = globalHotkeys;
+
+  useEffect(() => {
+    function onKeydown(e: KeyboardEvent) {
+      const key = normalizeHotkey(e);
+      if (!key) return;
+      let handled = false;
+      if (hotkeyRegistry[key]) {
+        hotkeyRegistry[key](e);
+        handled = true;
+      }
+      memoToggleHotkeys.forEach((hk) => {
+        if (hk.key === key) {
+          hk.handler(e);
+          handled = true;
+        }
+      });
+      memoEditHotkeys.forEach((hk) => {
+        if (hk.key === key) {
+          hk.handler(e);
+          handled = true;
+        }
+      });
+      memoGlobalHotkeys.forEach((hk) => {
+        if (hk.key === key) {
+          hk.handler(e);
+          handled = true;
+        }
+      });
+      if (handled) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+    window.addEventListener('keydown', onKeydown);
+    return () => window.removeEventListener('keydown', onKeydown);
+  }, [hotkeyRegistry, memoToggleHotkeys, memoEditHotkeys, memoGlobalHotkeys]);
+};

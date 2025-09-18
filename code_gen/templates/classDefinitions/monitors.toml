@@ -1,0 +1,17 @@
+[settings]
+class = "Monitors"
+doc_group = "001-Route"
+doc_descr = "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account"
+doc_route = "200-monitors"
+attributes = ""
+produced_by = "monitors, list, export, slurp"
+contains = "appearance, appearancetable"
+cache_type = "marshal_only"
+disable_go = false
+
+[[facets]]
+name = "Monitors"
+store = "Monitors"
+actions = ["delete", "undelete", "remove-confirm", "export"]
+viewType = ""
+

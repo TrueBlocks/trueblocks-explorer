@@ -1,0 +1,27 @@
+[settings]
+    class = "Contracts"
+    doc_group = "001-Route"
+    doc_descr = "smart contract state and interaction data including read function results, write function forms, and event history"
+    doc_route = "500-contracts"
+    attributes = ""
+    produced_by = "contracts"
+    contains = "function"
+    disable_go = false
+
+[[facets]]
+    name = "Dashboard"
+    store = "Contracts"
+    viewType = "dashboard"
+    renderer = "facet"
+
+[[facets]]
+    name = "Execute"
+    store = "Contracts"
+    viewType = "dashboard"
+    renderer = "facet"
+
+[[facets]]
+    name = "Events" 
+    store = "Logs"
+    actions = ["export"]
+    viewType = ""

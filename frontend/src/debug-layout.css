@@ -1,0 +1,90 @@
+/**
+ * Debug Layout CSS Classes
+ * Provides visual debugging for component hierarchy with background colors and margins
+ */
+
+.debug-level-0 {
+  background-color: rgba(255, 68, 68, 0.1);
+  margin: 4px;
+}
+
+.debug-level-1 {
+  background-color: rgba(68, 255, 68, 0.1);
+  margin: 4px;
+}
+
+.debug-level-2 {
+  background-color: rgba(68, 68, 255, 0.1);
+  margin: 4px;
+}
+
+.debug-level-3 {
+  background-color: rgba(255, 170, 68, 0.1);
+  margin: 4px;
+}
+
+.debug-level-4 {
+  background-color: rgba(170, 68, 255, 0.1);
+  margin: 4px;
+}
+
+.debug-level-5 {
+  background-color: rgba(68, 170, 255, 0.1);
+  margin: 4px;
+}
+
+/* Additional levels cycle back through colors */
+.debug-level-6 {
+  background-color: rgba(255, 68, 68, 0.15);
+  margin: 4px;
+}
+
+.debug-level-7 {
+  background-color: rgba(68, 255, 68, 0.15);
+  margin: 4px;
+}
+
+.debug-level-8 {
+  background-color: rgba(68, 68, 255, 0.15);
+  margin: 4px;
+}
+
+.debug-level-9 {
+  background-color: rgba(255, 170, 68, 0.15);
+  margin: 4px;
+}
+
+.debug-level-10 {
+  background-color: rgba(170, 68, 255, 0.15);
+  margin: 4px;
+}
+
+.debug-level-11 {
+  background-color: rgba(68, 170, 255, 0.15);
+  margin: 4px;
+}
+
+.debug-level-12 {
+  background-color: rgba(255, 68, 68, 0.2);
+  margin: 4px;
+}
+
+.debug-level-13 {
+  background-color: rgba(68, 255, 68, 0.2);
+  margin: 4px;
+}
+
+.debug-level-14 {
+  background-color: rgba(68, 68, 255, 0.2);
+  margin: 4px;
+}
+
+.debug-level-15 {
+  background-color: rgba(255, 170, 68, 0.2);
+  margin: 4px;
+}
+
+.debug-level-16 {
+  background-color: rgba(170, 68, 255, 0.2);
+  margin: 4px;
+}

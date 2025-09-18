@@ -42,10 +42,10 @@
     ]
   },
   "files.exclude": {
-    "**/usr/local/go/src/**": true // Exclude Go source code from the file explorer
+    "**/usr/local/go/src/**": true
   },
   "search.exclude": {
-    "**/usr/local/go/src/**": true // Exclude Go source code from search results
+    "**/usr/local/go/src/**": true
   },
   "files.associations": {
     "*.ts.tmpl": "gotemplate"

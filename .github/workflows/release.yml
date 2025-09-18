@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: "trueblocks-exporter ${{ github.ref_name }}"
+          release_name: "trueblocks-explorer ${{ github.ref_name }}"
           body: |
             # Changelog
 
@@ -67,8 +67,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ./build/bin/trueblocks-exporter.dmg
-          asset_name: trueblocks-exporter-${{ github.ref_name }}-macos.dmg
+          asset_path: ./build/bin/trueblocks-explorer.dmg
+          asset_name: trueblocks-explorer-${{ github.ref_name }}-macos.dmg
           asset_content_type: application/octet-stream
   build_linux:
     runs-on: ubuntu-latest
@@ -107,6 +107,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ./build/bin/trueblocks-exporter
-          asset_name: trueblocks-exporter-${{ github.ref_name }}-linux
+          asset_path: ./build/bin/trueblocks-explorer
+          asset_name: trueblocks-explorer-${{ github.ref_name }}-linux
           asset_content_type: application/octet-streams

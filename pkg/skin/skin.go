@@ -128,6 +128,11 @@ func (sm *SkinManager) loadSkinsFromDirectory(dir string, isBuiltIn bool) error 
 			continue
 		}
 
+		// Skip manifest.json file - it's not a skin
+		if entry.Name() == "manifest.json" {
+			continue
+		}
+
 		skinPath := filepath.Join(dir, entry.Name())
 		skin, err := sm.loadSkinFromFile(skinPath, isBuiltIn)
 		if err != nil {
@@ -258,35 +263,7 @@ func (sm *SkinManager) DeleteCustomSkin(name string) error {
 	return nil
 }
 
-// createBuiltInSkins creates the default built-in skins if they don't exist
+// createBuiltInSkins creates the default built-in skins from embedded files
 func (sm *SkinManager) createBuiltInSkins() error {
-	builtInSkins := map[string]*Skin{
-		"darkMode":     createDarkModeSkin(),
-		"lightMode":    createLightModeSkin(),
-		"yellowBelly":  createYellowBellySkin(),
-		"blueSky":      createBlueSky(),
-		"greenLand":    createGreenLandSkin(),
-		"violets":      createVioletsSkin(),
-		"pinkPonyClub": createPinkPonyClubSkin(),
-	}
-
-	for name, skin := range builtInSkins {
-		skinPath := filepath.Join(sm.builtInPath, name+".json")
-
-		// Only create if file doesn't exist
-		if file.FileExists(skinPath) {
-			continue
-		}
-
-		data, err := json.MarshalIndent(skin, "", "  ")
-		if err != nil {
-			return fmt.Errorf("failed to marshal built-in skin %s: %w", name, err)
-		}
-
-		if err := os.WriteFile(skinPath, data, 0644); err != nil {
-			return fmt.Errorf("failed to write built-in skin %s: %w", name, err)
-		}
-	}
-
-	return nil
+	return sm.initializeEmbeddedSkins()
 }

@@ -1,0 +1,49 @@
+{
+  "name": "greenLand",
+  "displayName": "Green Land",
+  "description": "Nature-inspired green theme with earthy tones",
+  "author": "TrueBlocks",
+  "version": "1.0.0",
+  "isBuiltIn": true,
+  "primary": [
+    "#E8F5E8", "#C8E6C9", "#A5D6A7", "#81C784",
+    "#66BB6A", "#4CAF50", "#43A047", "#388E3C", "#2E7D32"
+  ],
+  "success": [
+    "#F1F8E9", "#DCEDC8", "#C5E1A5", "#AED581",
+    "#9CCC65", "#8BC34A", "#7CB342", "#689F38", "#558B2F"
+  ],
+  "warning": [
+    "#FFF8E1", "#FFECB3", "#FFE082", "#FFD54F",
+    "#FFCA28", "#FFC107", "#FFB300", "#FFA000", "#FF8F00"
+  ],
+  "error": [
+    "#FFEBEE", "#FFCDD2", "#EF9A9A", "#E57373",
+    "#EF5350", "#F44336", "#E53935", "#D32F2F", "#C62828"
+  ],
+  "fontFamily": "Nunito, -apple-system, BlinkMacSystemFont, sans-serif",
+  "fontFamilyMono": "Roboto Mono, Monaco, monospace",
+  "defaultRadius": "lg",
+  "radius": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "0.75rem",
+    "lg": "1rem",
+    "xl": "2rem"
+  },
+  "shadows": {
+    "xs": "0 2px 4px rgba(76, 175, 80, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08)",
+    "sm": "0 4px 8px rgba(76, 175, 80, 0.15), 0 2px 4px rgba(0, 0, 0, 0.10)",
+    "md": "0 8px 16px rgba(76, 175, 80, 0.15), 0 4px 8px rgba(0, 0, 0, 0.10)",
+    "lg": "0 12px 24px rgba(76, 175, 80, 0.15), 0 6px 12px rgba(0, 0, 0, 0.10)",
+    "xl": "0 20px 40px rgba(76, 175, 80, 0.15), 0 10px 20px rgba(0, 0, 0, 0.10)"
+  },
+  "defaultGradient": {
+    "from": "green.5",
+    "to": "teal.6",
+    "deg": 120
+  },
+  "autoContrast": true,
+  "smallSize": "0.875rem",
+  "normalSize": "1rem"
+}

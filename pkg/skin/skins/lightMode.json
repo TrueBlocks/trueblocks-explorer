@@ -1,0 +1,49 @@
+{
+  "name": "lightMode",
+  "displayName": "Light Mode",
+  "description": "Based on Mantine light mode defaults with enhanced visual properties",
+  "author": "TrueBlocks",
+  "version": "1.0.0",
+  "isBuiltIn": true,
+  "primary": [
+    "#F8F9FA", "#F1F3F4", "#E9ECEF", "#DEE2E6",
+    "#CED4DA", "#ADB5BD", "#6C757D", "#495057", "#343A40"
+  ],
+  "success": [
+    "#EBFBEE", "#D3F9D8", "#B2F2BB", "#8CE99A",
+    "#51CF66", "#40C057", "#37B24D", "#2F9E44", "#2B8A3E"
+  ],
+  "warning": [
+    "#FFF9DB", "#FFF3BF", "#FFEC99", "#FFE066",
+    "#FFD43B", "#FCC419", "#FAB005", "#F59F00", "#F08C00"
+  ],
+  "error": [
+    "#FFE3E3", "#FFC9C9", "#FFA8A8", "#FF8787",
+    "#FF6B6B", "#FF5252", "#F03E3E", "#E03131", "#C92A2A"
+  ],
+  "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+  "fontFamilyMono": "JetBrains Mono, Consolas, Monaco, Courier New, monospace",
+  "defaultRadius": "md",
+  "radius": {
+    "xs": "0.125rem",
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "1rem",
+    "xl": "2rem"
+  },
+  "shadows": {
+    "xs": "0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.08)",
+    "sm": "0 3px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05)",
+    "md": "0 6px 12px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.05)",
+    "lg": "0 10px 20px rgba(0, 0, 0, 0.08), 0 6px 12px rgba(0, 0, 0, 0.05)",
+    "xl": "0 15px 30px rgba(0, 0, 0, 0.08), 0 10px 20px rgba(0, 0, 0, 0.05)"
+  },
+  "defaultGradient": {
+    "from": "blue.5",
+    "to": "blue.7",
+    "deg": 45
+  },
+  "autoContrast": true,
+  "smallSize": "0.875rem",
+  "normalSize": "1rem"
+}

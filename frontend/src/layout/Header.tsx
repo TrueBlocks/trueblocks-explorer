@@ -12,8 +12,13 @@ import { AppShell, Group, Text } from '@mantine/core';
 
 export const Header = () => {
   const [appName, setAppName] = useState('AppName');
-  const { setDebugCollapsed, debugCollapsed, chromeCollapsed } =
-    usePreferences();
+  const {
+    setDebugCollapsed,
+    debugCollapsed,
+    chromeCollapsed,
+    toggleTheme,
+    isDarkMode,
+  } = usePreferences();
 
   useEffect(() => {
     GetAppId().then((id) => {
@@ -43,6 +48,19 @@ export const Header = () => {
             }
             variant="default"
             color={debugCollapsed ? 'gray' : 'red'}
+          />
+          <Action
+            icon="Light"
+            iconOff="Dark"
+            isOn={!isDarkMode}
+            onClick={() => toggleTheme()}
+            title={
+              isDarkMode
+                ? 'Dark mode ON - Click for light mode'
+                : 'Light mode ON - Click for dark mode'
+            }
+            variant="default"
+            color={isDarkMode ? 'yellow' : 'blue'}
           />
           <SkinSwitcher collapsed />
           <WalletConnectButton />

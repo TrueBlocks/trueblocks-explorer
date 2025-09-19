@@ -7,6 +7,7 @@ import {base} from '../models';
 import {menu} from '../models';
 import {sdk} from '../models';
 import {abis} from '../models';
+import {skin} from '../models';
 import {preferences} from '../models';
 import {utils} from '../models';
 import {chunks} from '../models';
@@ -42,9 +43,13 @@ export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function DalleDressCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
+export function DeleteCustomSkin(arg1:string):Promise<void>;
+
 export function Encode(arg1:types.Function,arg2:Array<any>):Promise<string>;
 
 export function ExportData(arg1:types.Payload):Promise<void>;
+
+export function ExportSkin(arg1:string):Promise<string>;
 
 export function FileNew(arg1:menu.CallbackData):Promise<void>;
 
@@ -70,9 +75,13 @@ export function GetActiveProjectData():Promise<types.ProjectPayload>;
 
 export function GetActiveProjectPath():Promise<string>;
 
+export function GetAllSkins():Promise<Record<string, skin.Skin>>;
+
 export function GetAppId():Promise<preferences.Id>;
 
 export function GetAppPreferences():Promise<preferences.AppPreferences>;
+
+export function GetAvailableSkins():Promise<Array<skin.SkinMetadata>>;
 
 export function GetChainList():Promise<utils.ChainList>;
 
@@ -158,6 +167,8 @@ export function GetRegisteredViews():Promise<Array<string>>;
 
 export function GetSkin():Promise<string>;
 
+export function GetSkinByName(arg1:string):Promise<skin.Skin>;
+
 export function GetStatusConfig(arg1:types.Payload):Promise<types.ViewConfig>;
 
 export function GetStatusPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<status.StatusPage>;
@@ -173,6 +184,8 @@ export function GetUserPreferences():Promise<preferences.UserPreferences>;
 export function GetWizardReturn():Promise<string>;
 
 export function HasActiveProject():Promise<boolean>;
+
+export function ImportSkin(arg1:string):Promise<void>;
 
 export function IsDialogSilenced(arg1:string):Promise<boolean>;
 
@@ -217,6 +230,8 @@ export function ReloadExports(arg1:types.Payload):Promise<void>;
 export function ReloadMonitors(arg1:types.Payload):Promise<void>;
 
 export function ReloadNames(arg1:types.Payload):Promise<void>;
+
+export function ReloadSkins():Promise<void>;
 
 export function ReloadStatus(arg1:types.Payload):Promise<void>;
 

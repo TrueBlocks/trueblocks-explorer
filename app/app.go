@@ -14,6 +14,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/skin"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/exports"
 
@@ -47,6 +48,7 @@ type App struct {
 	apiKeys     map[string]string
 	ensMap      map[string]base.Address
 	Dalle       *dalle.Context
+	skinManager *skin.SkinManager
 }
 
 func NewApp(assets embed.FS) (*App, *menu.Menu) {
@@ -80,6 +82,13 @@ func NewApp(assets embed.FS) (*App, *menu.Menu) {
 	}
 
 	app.Dalle = dalle.NewContext()
+
+	configPath := config.PathToRootConfig()
+	app.skinManager = skin.NewSkinManager(configPath)
+	if err := app.skinManager.Initialize(); err != nil {
+		log.Printf("Warning: Failed to initialize skin manager: %v", err)
+	}
+
 	appMenu := app.buildAppMenu()
 	return app, appMenu
 }

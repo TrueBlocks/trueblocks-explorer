@@ -1162,6 +1162,81 @@ export namespace sdk {
 
 }
 
+export namespace skin {
+	
+	export class Skin {
+	    name: string;
+	    displayName: string;
+	    description: string;
+	    author?: string;
+	    version?: string;
+	    isBuiltIn: boolean;
+	    primary: string[];
+	    success: string[];
+	    warning: string[];
+	    error: string[];
+	    fontFamily: string;
+	    fontFamilyMono: string;
+	    defaultRadius: string;
+	    radius: Record<string, string>;
+	    shadows: Record<string, string>;
+	    defaultGradient: Record<string, any>;
+	    autoContrast: boolean;
+	    smallSize: string;
+	    normalSize: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Skin(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.displayName = source["displayName"];
+	        this.description = source["description"];
+	        this.author = source["author"];
+	        this.version = source["version"];
+	        this.isBuiltIn = source["isBuiltIn"];
+	        this.primary = source["primary"];
+	        this.success = source["success"];
+	        this.warning = source["warning"];
+	        this.error = source["error"];
+	        this.fontFamily = source["fontFamily"];
+	        this.fontFamilyMono = source["fontFamilyMono"];
+	        this.defaultRadius = source["defaultRadius"];
+	        this.radius = source["radius"];
+	        this.shadows = source["shadows"];
+	        this.defaultGradient = source["defaultGradient"];
+	        this.autoContrast = source["autoContrast"];
+	        this.smallSize = source["smallSize"];
+	        this.normalSize = source["normalSize"];
+	    }
+	}
+	export class SkinMetadata {
+	    name: string;
+	    displayName: string;
+	    description: string;
+	    author?: string;
+	    version?: string;
+	    isBuiltIn: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new SkinMetadata(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.displayName = source["displayName"];
+	        this.description = source["description"];
+	        this.author = source["author"];
+	        this.version = source["version"];
+	        this.isBuiltIn = source["isBuiltIn"];
+	    }
+	}
+
+}
+
 export namespace status {
 	
 	export class StatusPage {
@@ -1213,14 +1288,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum LoadState {
-	    STALE = "stale",
-	    FETCHING = "fetching",
-	    PARTIAL = "partial",
-	    LOADED = "loaded",
-	    PENDING = "pending",
-	    ERROR = "error",
-	}
 	export enum DataFacet {
 	    DOWNLOADED = "downloaded",
 	    KNOWN = "known",
@@ -1259,6 +1326,14 @@ export namespace types {
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
+	}
+	export enum LoadState {
+	    STALE = "stale",
+	    FETCHING = "fetching",
+	    PARTIAL = "partial",
+	    LOADED = "loaded",
+	    PENDING = "pending",
+	    ERROR = "error",
 	}
 	export class Parameter {
 	    components?: Parameter[];

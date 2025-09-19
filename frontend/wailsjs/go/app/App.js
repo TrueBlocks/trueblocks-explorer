@@ -46,12 +46,20 @@ export function DalleDressCrud(arg1, arg2, arg3) {
   return window['go']['app']['App']['DalleDressCrud'](arg1, arg2, arg3);
 }
 
+export function DeleteCustomSkin(arg1) {
+  return window['go']['app']['App']['DeleteCustomSkin'](arg1);
+}
+
 export function Encode(arg1, arg2) {
   return window['go']['app']['App']['Encode'](arg1, arg2);
 }
 
 export function ExportData(arg1) {
   return window['go']['app']['App']['ExportData'](arg1);
+}
+
+export function ExportSkin(arg1) {
+  return window['go']['app']['App']['ExportSkin'](arg1);
 }
 
 export function FileNew(arg1) {
@@ -102,12 +110,20 @@ export function GetActiveProjectPath() {
   return window['go']['app']['App']['GetActiveProjectPath']();
 }
 
+export function GetAllSkins() {
+  return window['go']['app']['App']['GetAllSkins']();
+}
+
 export function GetAppId() {
   return window['go']['app']['App']['GetAppId']();
 }
 
 export function GetAppPreferences() {
   return window['go']['app']['App']['GetAppPreferences']();
+}
+
+export function GetAvailableSkins() {
+  return window['go']['app']['App']['GetAvailableSkins']();
 }
 
 export function GetChainList() {
@@ -278,6 +294,10 @@ export function GetSkin() {
   return window['go']['app']['App']['GetSkin']();
 }
 
+export function GetSkinByName(arg1) {
+  return window['go']['app']['App']['GetSkinByName'](arg1);
+}
+
 export function GetStatusConfig(arg1) {
   return window['go']['app']['App']['GetStatusConfig'](arg1);
 }
@@ -308,6 +328,10 @@ export function GetWizardReturn() {
 
 export function HasActiveProject() {
   return window['go']['app']['App']['HasActiveProject']();
+}
+
+export function ImportSkin(arg1) {
+  return window['go']['app']['App']['ImportSkin'](arg1);
 }
 
 export function IsDialogSilenced(arg1) {
@@ -396,6 +420,10 @@ export function ReloadMonitors(arg1) {
 
 export function ReloadNames(arg1) {
   return window['go']['app']['App']['ReloadNames'](arg1);
+}
+
+export function ReloadSkins() {
+  return window['go']['app']['App']['ReloadSkins']();
 }
 
 export function ReloadStatus(arg1) {

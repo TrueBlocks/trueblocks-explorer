@@ -1,143 +1,297 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
-import { useSkinContext } from '@contexts';
+import { GetSkinByName } from '@app';
 import { usePreferences } from '@hooks';
 import {
+  CSSVariablesResolver,
   MantineColorScheme,
+  MantineColorsTuple,
   MantineProvider,
   createTheme,
 } from '@mantine/core';
+import { skin } from '@models';
+import { Log } from '@utils';
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const theme = createTheme({
-  primaryColor: 'green',
-  fontFamily: 'Roman',
-});
-
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const { isDarkMode, loading } = usePreferences();
-  const { currentSkin } = useSkinContext();
+  const { isDarkMode, loading, lastSkin } = usePreferences();
+  const [backendSkin, setBackendSkin] = useState<skin.Skin | null>(null);
+  const [_skinError, setSkinError] = useState<string | null>(null);
   const [colorScheme, setColorScheme] = useState<MantineColorScheme>('dark');
 
-  // Create a dynamic theme that integrates our skin colors
-  const skinTheme = useMemo(
-    () =>
-      createTheme({
-        ...theme,
-        colors: {
-          ...theme.colors,
-          // Override key Mantine colors with our skin colors
-          dark: [
-            currentSkin.textPrimary, // text on dark backgrounds
-            currentSkin.surface, // lighter surface
-            currentSkin.surface, // surface
-            currentSkin.border, // border
-            currentSkin.border, // border
-            currentSkin.background, // main background
-            currentSkin.background, // darker background
-            currentSkin.background, // darkest background
-            currentSkin.background, // body background
-            currentSkin.background, // page background
-          ],
-        },
-        other: {
-          // Store skin colors for CSS variable access
-          skinBackground: currentSkin.background,
-          skinTextPrimary: currentSkin.textPrimary,
-          skinTextSecondary: currentSkin.textSecondary,
-        },
-      }),
-    [currentSkin],
-  );
+  // Load skin from backend
+  useEffect(() => {
+    async function loadSkin() {
+      try {
+        setSkinError(null);
+        const skinData = await GetSkinByName(lastSkin);
+        setBackendSkin(skinData);
+        Log(`Loaded backend skin: ${skinData.displayName}`);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        Log(`Failed to load skin ${lastSkin}: ${errorMessage}`);
+        setSkinError(errorMessage);
 
-  // Update Mantine color scheme when app preferences change
+        // Fallback to darkMode skin
+        try {
+          const defaultSkin = await GetSkinByName('darkMode');
+          setBackendSkin(defaultSkin);
+          setSkinError(null);
+        } catch (fallbackError) {
+          const fallbackMessage =
+            fallbackError instanceof Error
+              ? fallbackError.message
+              : String(fallbackError);
+          Log(`Failed to load fallback skin: ${fallbackMessage}`);
+          setSkinError(`Unable to load any skins: ${fallbackMessage}`);
+
+          // Create a minimal fallback skin to prevent crashes
+          setBackendSkin({
+            name: 'emergency',
+            displayName: 'Emergency Fallback',
+            description: 'Minimal fallback skin',
+            isBuiltIn: true,
+            primary: [
+              '#E7F5FF',
+              '#D0EBFF',
+              '#A5D8FF',
+              '#74C0FC',
+              '#339AF0',
+              '#228BE6',
+              '#1C7ED6',
+              '#1971C2',
+              '#1864AB',
+            ],
+            success: [
+              '#EBFBEE',
+              '#D3F9D8',
+              '#B2F2BB',
+              '#8CE99A',
+              '#51CF66',
+              '#40C057',
+              '#37B24D',
+              '#2F9E44',
+              '#2B8A3E',
+            ],
+            warning: [
+              '#FFF9DB',
+              '#FFF3BF',
+              '#FFEC99',
+              '#FFE066',
+              '#FFD43B',
+              '#FCC419',
+              '#FAB005',
+              '#F59F00',
+              '#F08C00',
+            ],
+            error: [
+              '#FFE3E3',
+              '#FFC9C9',
+              '#FFA8A8',
+              '#FF8787',
+              '#FF6B6B',
+              '#FF5252',
+              '#F03E3E',
+              '#E03131',
+              '#C92A2A',
+            ],
+            fontFamily: 'system-ui, sans-serif',
+            fontFamilyMono: 'monospace',
+            defaultRadius: 'md',
+            radius: {
+              xs: '0.125rem',
+              sm: '0.25rem',
+              md: '0.5rem',
+              lg: '1rem',
+              xl: '2rem',
+            },
+            shadows: {
+              xs: '0 1px 3px rgba(0,0,0,0.1)',
+              sm: '0 2px 4px rgba(0,0,0,0.1)',
+              md: '0 4px 6px rgba(0,0,0,0.1)',
+              lg: '0 8px 12px rgba(0,0,0,0.1)',
+              xl: '0 12px 20px rgba(0,0,0,0.1)',
+            },
+            defaultGradient: { from: '#000000', to: '#ffffff', deg: 45 },
+            autoContrast: true,
+            smallSize: '0.75rem',
+            normalSize: '1rem',
+          } as skin.Skin);
+        }
+      }
+    }
+
+    loadSkin();
+  }, [lastSkin]);
+
+  // Use isDarkMode to control Mantine's color scheme independently of skin
   useEffect(() => {
     setColorScheme(isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
-  // Apply skin colors to CSS variables at the document level
-  useEffect(() => {
-    const root = document.documentElement;
-    const body = document.body;
+  // Convert backend color arrays to Mantine ColorsTuple
+  const createColorTuple = (
+    colors: string[] | null | undefined,
+  ): MantineColorsTuple => {
+    // Handle null/undefined colors with a fallback
+    const safeColors = colors || [
+      '#000000',
+      '#333333',
+      '#666666',
+      '#999999',
+      '#cccccc',
+    ];
+    const paddedColors = [...safeColors];
+    while (paddedColors.length < 10) {
+      paddedColors.push(paddedColors[paddedColors.length - 1] || '#000000');
+    }
+    return paddedColors.slice(0, 10) as unknown as MantineColorsTuple;
+  };
 
-    // Apply skin colors as CSS custom properties
-    root.style.setProperty('--skin-background', currentSkin.background);
-    root.style.setProperty('--skin-text-primary', currentSkin.textPrimary);
-    root.style.setProperty('--skin-text-secondary', currentSkin.textSecondary);
-    root.style.setProperty('--skin-primary', currentSkin.primary);
-    root.style.setProperty('--skin-primary-hover', currentSkin.primaryHover);
-    root.style.setProperty(
-      '--skin-primary-selected',
-      currentSkin.primarySelected,
-    );
-    root.style.setProperty(
-      '--skin-primary-selected-border',
-      currentSkin.primarySelectedBorder,
-    );
-    root.style.setProperty('--skin-surface', currentSkin.surface);
-    root.style.setProperty('--skin-border', currentSkin.border);
-    root.style.setProperty(
-      '--skin-input-background',
-      currentSkin.inputBackground,
-    );
-    root.style.setProperty('--skin-hover', currentSkin.hover);
-    root.style.setProperty('--skin-focus', currentSkin.focus);
-    root.style.setProperty('--skin-disabled', currentSkin.disabled);
-
-    // Force override the base background and text colors with !important
-    root.style.setProperty(
-      'background-color',
-      `${currentSkin.background} !important`,
-    );
-    root.style.setProperty('color', `${currentSkin.textPrimary} !important`);
-
-    // Also force body styles to ensure they persist
-    body.style.setProperty(
-      'background-color',
-      `${currentSkin.background} !important`,
-    );
-    body.style.setProperty('color', `${currentSkin.textPrimary} !important`);
-
-    // Override Mantine's default dark theme colors by setting CSS variables
-    root.style.setProperty('--mantine-color-dark-0', currentSkin.textPrimary);
-    root.style.setProperty('--mantine-color-dark-6', currentSkin.background);
-    root.style.setProperty('--mantine-color-dark-7', currentSkin.background);
-    root.style.setProperty('--mantine-color-dark-8', currentSkin.background);
-    root.style.setProperty('--mantine-color-dark-9', currentSkin.background);
-
-    // Inject a style element with high-priority overrides
-    let styleElement = document.getElementById('skin-override-styles');
-    if (!styleElement) {
-      styleElement = document.createElement('style');
-      styleElement.id = 'skin-override-styles';
-      document.head.appendChild(styleElement);
+  // CSS Variables Resolver for enhanced properties
+  const cssVariablesResolver: CSSVariablesResolver = useMemo(() => {
+    if (!backendSkin) {
+      return () => ({
+        variables: {},
+        light: {},
+        dark: {},
+      });
     }
 
-    styleElement.textContent = `
-      /* Force skin colors with highest priority */
-      html, body, #root, [data-mantine-color-scheme] {
-        background-color: ${currentSkin.background} !important;
-        color: ${currentSkin.textPrimary} !important;
-      }
-      
-      /* Override Mantine's body background */
-      .mantine-AppShell-root, .mantine-AppShell-main {
-        background-color: ${currentSkin.background} !important;
-        color: ${currentSkin.textPrimary} !important;
-      }
-    `;
-  }, [currentSkin]); // React to skin changes
+    return () => {
+      try {
+        const variables = {
+          // Typography from backend
+          '--mantine-font-family': backendSkin.fontFamily,
+          '--mantine-font-family-monospace': backendSkin.fontFamilyMono,
 
-  // Don't render until preferences are loaded to avoid theme flicker
-  if (loading) {
-    return <div>Loading...</div>;
+          // Radius from backend
+          '--mantine-radius-default': backendSkin.defaultRadius,
+          '--mantine-radius-xs': backendSkin.radius?.xs || '0.125rem',
+          '--mantine-radius-sm': backendSkin.radius?.sm || '0.25rem',
+          '--mantine-radius-md': backendSkin.radius?.md || '0.5rem',
+          '--mantine-radius-lg': backendSkin.radius?.lg || '1rem',
+          '--mantine-radius-xl': backendSkin.radius?.xl || '2rem',
+
+          // Shadows from backend
+          '--mantine-shadow-xs':
+            backendSkin.shadows?.xs || '0 1px 3px rgba(0,0,0,0.1)',
+          '--mantine-shadow-sm':
+            backendSkin.shadows?.sm || '0 2px 4px rgba(0,0,0,0.1)',
+          '--mantine-shadow-md':
+            backendSkin.shadows?.md || '0 4px 6px rgba(0,0,0,0.1)',
+          '--mantine-shadow-lg':
+            backendSkin.shadows?.lg || '0 8px 12px rgba(0,0,0,0.1)',
+          '--mantine-shadow-xl':
+            backendSkin.shadows?.xl || '0 12px 20px rgba(0,0,0,0.1)',
+
+          // Font sizes
+          '--mantine-font-size-xs': backendSkin.smallSize,
+          '--mantine-font-size-sm': backendSkin.smallSize,
+          '--mantine-font-size-md': backendSkin.normalSize,
+          '--mantine-font-size-lg': backendSkin.normalSize,
+          '--mantine-font-size-xl': backendSkin.normalSize,
+
+          // Primary color variations (most important for visual changes)
+          '--mantine-primary-color': 'var(--mantine-color-primary-6)',
+          '--mantine-color-primary-text': 'var(--mantine-color-primary-6)',
+          '--mantine-color-primary-filled': 'var(--mantine-color-primary-6)',
+          '--mantine-color-primary-filled-hover':
+            'var(--mantine-color-primary-7)',
+
+          // Custom skin variables for components
+          '--skin-primary-background': backendSkin.primary?.[1] || '#E7F5FF',
+          '--skin-primary-text': backendSkin.primary?.[8] || '#1864AB',
+          '--skin-header-background': backendSkin.primary?.[1] || '#E7F5FF',
+          '--skin-header-border': backendSkin.primary?.[3] || '#A5D8FF',
+          '--skin-accent-color': backendSkin.primary?.[6] || '#339AF0',
+        };
+
+        // Debug logging
+        Log(
+          `FRONTEND CSS Variables: ${backendSkin.name} - Primary Array: ${JSON.stringify(backendSkin.primary)} - Header: ${variables['--skin-header-background']}`,
+        );
+
+        return {
+          variables,
+          light: {
+            // Light mode: use skin colors as-is
+            '--mantine-color-body': backendSkin.primary?.[0] || '#ffffff',
+            '--mantine-color-text': backendSkin.primary?.[8] || '#000000',
+          },
+          dark: {
+            // Dark mode: invert the skin colors
+            '--mantine-color-body': backendSkin.primary?.[8] || '#000000',
+            '--mantine-color-text': backendSkin.primary?.[0] || '#ffffff',
+          },
+        };
+      } catch (error) {
+        Log(
+          `Error in cssVariablesResolver: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        return {
+          variables: {},
+          light: {},
+          dark: {},
+        };
+      }
+    };
+  }, [backendSkin]);
+
+  // Create dynamic theme using backend skin
+  const dynamicTheme = useMemo(() => {
+    if (!backendSkin) {
+      return createTheme({
+        primaryColor: 'blue',
+      });
+    }
+
+    Log(`Creating theme with skin: ${backendSkin.displayName}`);
+
+    return createTheme({
+      primaryColor: 'primary',
+      fontFamily: backendSkin.fontFamily,
+      fontFamilyMonospace: backendSkin.fontFamilyMono,
+      defaultRadius: backendSkin.defaultRadius as
+        | 'xs'
+        | 'sm'
+        | 'md'
+        | 'lg'
+        | 'xl',
+      autoContrast: backendSkin.autoContrast,
+      colors: {
+        primary: createColorTuple(backendSkin.primary),
+        success: createColorTuple(backendSkin.success),
+        warning: createColorTuple(backendSkin.warning),
+        error: createColorTuple(backendSkin.error),
+      },
+      defaultGradient: {
+        from: (backendSkin.defaultGradient?.from as string) || '#000000',
+        to: (backendSkin.defaultGradient?.to as string) || '#ffffff',
+        deg: (backendSkin.defaultGradient?.deg as number) || 45,
+      },
+      other: {
+        backendSkin,
+      },
+    });
+  }, [backendSkin]);
+
+  // Don't render until skin is loaded
+  if (loading || !backendSkin) {
+    return <div>Loading theme...</div>;
   }
 
   return (
-    <MantineProvider theme={skinTheme} defaultColorScheme={colorScheme}>
+    <MantineProvider
+      key={backendSkin.name} // Force re-mount when skin changes
+      theme={dynamicTheme}
+      forceColorScheme={colorScheme === 'auto' ? undefined : colorScheme}
+      cssVariablesResolver={cssVariablesResolver}
+    >
       {children}
     </MantineProvider>
   );

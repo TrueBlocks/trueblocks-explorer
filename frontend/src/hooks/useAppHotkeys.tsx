@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { CancelFetch, Reload } from '@app';
+import { CancelFetch, GetAvailableSkins, Reload } from '@app';
 import {
   useActiveProject,
   useEnabledMenuItems,
@@ -34,6 +34,9 @@ export const useAppHotkeys = (): void => {
     setChromeCollapsed,
     detailCollapsed,
     setDetailCollapsed,
+    lastSkin,
+    setSkin,
+    toggleTheme,
   } = usePreferences();
   const enabledMenuItems = useEnabledMenuItems();
 
@@ -181,6 +184,54 @@ export const useAppHotkeys = (): void => {
               Reload(createPayload(currentFacet as types.DataFacet)).then(
                 () => {},
               );
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+shift+s',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+shift+s',
+            label: 'Cycle skin',
+            action: async () => {
+              try {
+                const availableSkins = await GetAvailableSkins();
+                const currentIndex = availableSkins.findIndex(
+                  (skin) => skin.name === lastSkin,
+                );
+                const nextIndex = (currentIndex + 1) % availableSkins.length;
+                const nextSkin = availableSkins[nextIndex];
+                if (nextSkin) {
+                  await setSkin(nextSkin.name);
+                }
+              } catch (error) {
+                LogError(`Failed to cycle skin: ${error}`);
+              }
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+shift+d',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+shift+d',
+            label: 'Toggle light/dark mode',
+            action: async () => {
+              try {
+                await toggleTheme();
+              } catch (error) {
+                LogError(`Failed to toggle theme: ${error}`);
+              }
             },
           },
           e,

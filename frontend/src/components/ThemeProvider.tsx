@@ -29,16 +29,15 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         setSkinError(null);
         const skinData = await GetSkinByName(lastSkin);
         setBackendSkin(skinData);
-        Log(`Loaded backend skin: ${skinData.displayName}`);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
         Log(`Failed to load skin ${lastSkin}: ${errorMessage}`);
         setSkinError(errorMessage);
 
-        // Fallback to darkMode skin
+        // Fallback to default skin
         try {
-          const defaultSkin = await GetSkinByName('darkMode');
+          const defaultSkin = await GetSkinByName('default');
           setBackendSkin(defaultSkin);
           setSkinError(null);
         } catch (fallbackError) {
@@ -209,12 +208,41 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           '--skin-header-background': backendSkin.primary?.[1] || '#E7F5FF',
           '--skin-header-border': backendSkin.primary?.[3] || '#A5D8FF',
           '--skin-accent-color': backendSkin.primary?.[6] || '#339AF0',
-        };
 
-        // Debug logging
-        Log(
-          `FRONTEND CSS Variables: ${backendSkin.name} - Primary Array: ${JSON.stringify(backendSkin.primary)} - Header: ${variables['--skin-header-background']}`,
-        );
+          // Surface colors
+          '--skin-surface-base': backendSkin.primary?.[0] || '#ffffff',
+          '--skin-surface-raised': backendSkin.primary?.[1] || '#f8f9fa',
+          '--skin-surface-sunken': backendSkin.primary?.[2] || '#e9ecef',
+          '--skin-surface-subtle': backendSkin.primary?.[1] || '#f8f9fa',
+          '--skin-surface-elevated': '#fffbf0', // Pale yellow for debug/elevated surfaces
+
+          // Text colors
+          '--skin-text-primary': backendSkin.primary?.[8] || '#000000',
+          '--skin-text-secondary': backendSkin.primary?.[6] || '#495057',
+          '--skin-text-dimmed': backendSkin.primary?.[5] || '#6c757d',
+          '--skin-text-inverse': backendSkin.primary?.[0] || '#ffffff',
+
+          // Border colors
+          '--skin-border-default': backendSkin.primary?.[3] || '#ced4da',
+          '--skin-border-subtle': backendSkin.primary?.[2] || '#e9ecef',
+          '--skin-border-focus': backendSkin.primary?.[6] || '#339AF0',
+
+          // Interactive colors
+          '--skin-primary': backendSkin.primary?.[6] || '#339AF0',
+          '--skin-primary-hover': backendSkin.primary?.[7] || '#1c7ed6',
+          '--skin-primary-alpha-10':
+            backendSkin.primary?.[1] || 'rgba(51, 154, 240, 0.1)',
+          '--skin-primary-alpha-50':
+            backendSkin.primary?.[4] || 'rgba(51, 154, 240, 0.5)',
+
+          // Status colors
+          '--skin-error': '#fa5252',
+          '--skin-error-background': '#fff5f5',
+          '--skin-success': '#51cf66',
+          '--skin-success-background': '#f3f9f3',
+          '--skin-warning': '#fd7e14',
+          '--skin-warning-background': '#fff4e6',
+        };
 
         return {
           variables,
@@ -249,8 +277,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         primaryColor: 'blue',
       });
     }
-
-    Log(`Creating theme with skin: ${backendSkin.displayName}`);
 
     return createTheme({
       primaryColor: 'primary',

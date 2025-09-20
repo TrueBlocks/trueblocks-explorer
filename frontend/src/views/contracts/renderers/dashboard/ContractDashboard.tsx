@@ -273,7 +273,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
 
   if (!hasReadFunctions) {
     return (
-      <Alert color="blue">
+      <Alert variant="light">
         This contract has no read functions (view/pure) to display
       </Alert>
     );
@@ -306,7 +306,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                   <div
                     key={functionName}
                     style={{
-                      borderBottom: '1px solid var(--mantine-color-gray-3)',
+                      borderBottom: '1px solid var(--skin-border-subtle)',
                       paddingBottom: '8px',
                       marginBottom: '8px',
                     }}
@@ -323,7 +323,6 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                         <Badge
                           size="xs"
                           variant="light"
-                          color="blue"
                           style={{ fontSize: '10px', height: '16px' }}
                         >
                           {func.outputs && func.outputs.length > 0
@@ -370,8 +369,8 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                           style={{
                             fontFamily: 'monospace',
                             wordBreak: 'break-all',
-                            background: 'var(--mantine-color-gray-1)',
-                            color: 'var(--mantine-color-dark-7)',
+                            background: 'var(--skin-surface-sunken)',
+                            color: 'var(--skin-text-primary)',
                             padding: '4px',
                             borderRadius: '2px',
                             lineHeight: 1.2,
@@ -419,7 +418,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                                 (input)
                               </Text>
                             </Text>
-                            <Badge size="xs" variant="light" color="blue">
+                            <Badge size="xs" variant="light">
                               {func.outputs && func.outputs.length > 0
                                 ? func.outputs.length === 1
                                   ? func.outputs[0]?.type || 'unknown'
@@ -450,7 +449,12 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                               </Text>
                             </Group>
                           ) : result && getFunctionError(result) ? (
-                            <Alert color="red">
+                            <Alert
+                              variant="light"
+                              style={{
+                                borderColor: 'var(--skin-status-error)',
+                              }}
+                            >
                               <Text size="xs">{getFunctionError(result)}</Text>
                             </Alert>
                           ) : (
@@ -460,12 +464,12 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                                 style={{
                                   fontFamily: 'monospace',
                                   wordBreak: 'break-all',
-                                  background: 'var(--mantine-color-dark-6)',
-                                  color: 'var(--mantine-color-gray-0)',
+                                  background: 'var(--skin-surface-elevated)',
+                                  color: 'var(--skin-text-primary)',
                                   padding: '8px',
                                   borderRadius: '4px',
                                   border:
-                                    '1px solid var(--mantine-color-gray-4)',
+                                    '1px solid var(--skin-border-secondary)',
                                 }}
                               >
                                 {result

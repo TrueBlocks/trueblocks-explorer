@@ -95,7 +95,7 @@ describe('Names View + useActiveFacet Integration Tests', () => {
     // Mock usePreferences (theme, language, debug)
     mockedUsePreferences.mockReturnValue({
       lastTheme: 'dark',
-      lastSkin: 'darkMode',
+      lastSkin: 'default',
       lastLanguage: 'en',
       debugCollapsed: true,
       menuCollapsed: false,

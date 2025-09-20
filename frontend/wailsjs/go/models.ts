@@ -940,6 +940,7 @@ export namespace preferences {
 	}
 	export class Id {
 	    appName: string;
+	    baseName: string;
 	    orgName: string;
 	    github: string;
 	    domain: string;
@@ -952,6 +953,7 @@ export namespace preferences {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.appName = source["appName"];
+	        this.baseName = source["baseName"];
 	        this.orgName = source["orgName"];
 	        this.github = source["github"];
 	        this.domain = source["domain"];

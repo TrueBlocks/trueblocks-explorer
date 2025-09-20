@@ -103,11 +103,11 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
             style={{
               ...(isHighlighted
                 ? {
-                    backgroundColor: 'var(--mantine-color-blue-1)',
-                    color: 'var(--mantine-color-blue-9)',
+                    backgroundColor: 'var(--skin-primary-alpha-10)',
+                    color: 'var(--skin-primary)',
                     padding: '2px 6px',
                     borderRadius: '4px',
-                    border: '1px solid var(--mantine-color-blue-3)',
+                    border: '1px solid var(--skin-border-focus)',
                   }
                 : {}),
             }}
@@ -168,21 +168,21 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
             input: {
               ...(field.error
                 ? {
-                    borderColor: '#fa5252',
-                    backgroundColor: 'rgba(250, 82, 82, 0.1)',
+                    borderColor: 'var(--skin-error)',
+                    backgroundColor: 'var(--skin-error-background)',
                   }
                 : {}),
               ...(field.readOnly
                 ? {
-                    color: 'var(--mantine-color-text)', // Use Mantine's text color variable for theme adaptability
+                    color: 'var(--skin-text-primary)', // Use skin text color for theme adaptability
                     opacity: 0.6, // Slightly reduce opacity to differentiate but keep readable
                   }
                 : {}),
               ...(isHighlighted
                 ? {
-                    backgroundColor: 'var(--mantine-color-blue-1)',
-                    borderColor: 'var(--mantine-color-blue-4)',
-                    color: 'var(--mantine-color-blue-9)',
+                    backgroundColor: 'var(--skin-primary-alpha-10)',
+                    borderColor: 'var(--skin-border-focus)',
+                    color: 'var(--skin-primary)',
                   }
                 : {}),
             },

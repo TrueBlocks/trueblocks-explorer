@@ -38,10 +38,14 @@ export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
       tabs.some((tab) => tab.value === savedTab);
     const targetTab = isValidSavedTab ? savedTab : tabs[0]?.value || '';
 
-    if (targetTab && targetTab !== activeTab) {
-      setActiveTab(targetTab);
-    }
-  }, [activeTab, getLastFacet, route, tabs, loading]);
+    // Only set initial tab if we don't have one yet
+    setActiveTab((currentTab) => {
+      if (!currentTab && targetTab) {
+        return targetTab;
+      }
+      return currentTab;
+    });
+  }, [getLastFacet, route, tabs, loading]);
 
   const nextTab = useCallback((): string => {
     const currentIndex = tabs.findIndex((tab) => tab.value === activeTab);

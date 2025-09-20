@@ -73,20 +73,22 @@ func ToCamel(s string) string {
 }
 
 type Id struct {
-	AppName string `json:"appName"`
-	OrgName string `json:"orgName"`
-	Github  string `json:"github"`
-	Domain  string `json:"domain"`
-	Twitter string `json:"twitter"`
+	AppName  string `json:"appName"`
+	BaseName string `json:"baseName"`
+	OrgName  string `json:"orgName"`
+	Github   string `json:"github"`
+	Domain   string `json:"domain"`
+	Twitter  string `json:"twitter"`
 }
 
 func GetAppId() Id {
 	return Id{
-		AppName: strings.Join([]string{theOrg.DeveloperName, configBaseApp}, " "),
-		OrgName: theOrg.DeveloperName,
-		Github:  configBaseGithub,
-		Domain:  configBaseDomain,
-		Twitter: strings.ToLower(theOrg.DeveloperName),
+		AppName:  strings.Join([]string{theOrg.DeveloperName, configBaseApp}, " "),
+		BaseName: configBaseApp,
+		OrgName:  theOrg.DeveloperName,
+		Github:   configBaseGithub,
+		Domain:   configBaseDomain,
+		Twitter:  strings.ToLower(theOrg.DeveloperName),
 	}
 }
 

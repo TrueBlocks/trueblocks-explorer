@@ -17,7 +17,7 @@ interface TabDividerProps {
  */
 export const TabDivider = ({
   height = '24px',
-  color = 'var(--mantine-color-gray-4)',
+  color = 'var(--skin-border-secondary)',
   margin = '0 8px',
   style = {},
 }: TabDividerProps) => (

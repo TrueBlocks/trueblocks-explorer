@@ -64,6 +64,7 @@ func NewAppPreferences() *AppPreferences {
 	return &AppPreferences{
 		Version:         "1.0",
 		LastTheme:       "dark",
+		LastSkin:        "default",
 		LastFormat:      "csv",
 		LastLanguage:    "en",
 		DetailCollapsed: true,

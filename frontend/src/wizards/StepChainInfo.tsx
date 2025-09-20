@@ -301,11 +301,13 @@ export const StepChainInfo = ({
                 value={index.toString()}
                 rightSection={
                   <ActionIcon
-                    color="red"
                     variant="subtle"
                     size="xs"
                     onClick={(e) => handleRemoveChain(index, e)}
                     tabIndex={0}
+                    style={{
+                      color: 'var(--skin-error)',
+                    }}
                   >
                     <Delete size={12} />
                   </ActionIcon>

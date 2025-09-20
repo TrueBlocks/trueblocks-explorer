@@ -11,7 +11,7 @@ import { usePreferences } from '@hooks';
 import { AppShell, Group, Text } from '@mantine/core';
 
 export const Header = () => {
-  const [appName, setAppName] = useState('AppName');
+  const [baseName, setBaseName] = useState('');
   const {
     setDebugCollapsed,
     debugCollapsed,
@@ -22,7 +22,7 @@ export const Header = () => {
 
   useEffect(() => {
     GetAppId().then((id) => {
-      setAppName(id.appName);
+      setBaseName(id.baseName);
     });
   }, []);
 
@@ -31,8 +31,8 @@ export const Header = () => {
   return (
     <AppShell.Header>
       <Group justify="space-between" p="md" h="100%">
-        <Text size="xl" fw={700}>
-          {appName}
+        <Text size="36px" fw={700} style={{ lineHeight: 1 }}>
+          {baseName}
         </Text>
         <ProjectContextBar />
         <Group justify="flex-end" align="center" gap="xs">
@@ -46,8 +46,7 @@ export const Header = () => {
                 ? 'Debug mode OFF - Click to enable'
                 : 'Debug mode ON - Click to disable'
             }
-            variant="default"
-            color={debugCollapsed ? 'gray' : 'red'}
+            variant={debugCollapsed ? 'default' : 'filled'}
           />
           <Action
             icon="Light"
@@ -59,8 +58,7 @@ export const Header = () => {
                 ? 'Dark mode ON - Click for light mode'
                 : 'Light mode ON - Click for dark mode'
             }
-            variant="default"
-            color={isDarkMode ? 'yellow' : 'blue'}
+            variant={isDarkMode ? 'default' : 'filled'}
           />
           <SkinSwitcher collapsed />
           <WalletConnectButton />

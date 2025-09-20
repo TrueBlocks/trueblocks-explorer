@@ -49,7 +49,7 @@ interface PreferencesState {
 
 const initialPreferencesState: PreferencesState = {
   lastTheme: 'dark',
-  lastSkin: 'darkMode',
+  lastSkin: 'default',
   lastLanguage: 'en',
   debugCollapsed: true,
   menuCollapsed: false,
@@ -164,7 +164,7 @@ class PreferencesStore {
 
       this.setState({
         lastTheme: prefs.lastTheme || 'dark',
-        lastSkin: prefs.lastSkin || 'darkMode',
+        lastSkin: prefs.lastSkin || 'default',
         lastLanguage: prefs.lastLanguage || 'en',
         debugCollapsed: prefs.debugCollapsed ?? true,
         menuCollapsed: prefs.menuCollapsed ?? false,

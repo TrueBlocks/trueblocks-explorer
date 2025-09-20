@@ -123,9 +123,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
       title={
         <Group gap="sm">
           <Text fw={600}>Review Transaction</Text>
-          <Badge variant="light" color="blue">
-            {transactionData.function.name}
-          </Badge>
+          <Badge variant="light">{transactionData.function.name}</Badge>
         </Group>
       }
       size="lg"
@@ -140,11 +138,10 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
                 Function
               </Text>
               <Badge
-                variant="light"
-                color={
+                variant={
                   transactionData.function.stateMutability === 'payable'
-                    ? 'orange'
-                    : 'blue'
+                    ? 'filled'
+                    : 'light'
                 }
               >
                 {transactionData.function.stateMutability}
@@ -256,7 +253,14 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
 
         {/* Error Display */}
         {error && (
-          <Alert title="Error" color="red" variant="light">
+          <Alert
+            title="Error"
+            variant="light"
+            style={{
+              borderColor: 'var(--skin-error)',
+              backgroundColor: 'var(--skin-error-background)',
+            }}
+          >
             {error}
           </Alert>
         )}

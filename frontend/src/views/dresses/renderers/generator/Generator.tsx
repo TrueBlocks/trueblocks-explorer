@@ -282,7 +282,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
           />
           <Button
             size="xs"
-            variant="default"
+            variant="filled"
             onClick={handleGenerate}
             disabled={!selectedItem?.original || !selectedItem?.series}
             style={{ alignSelf: 'flex-end' }}
@@ -297,8 +297,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
             <Title order={6}>Image</Title>
             <div
               style={{
-                border: '1px solid #444',
-                background: '#222',
+                border: '1px solid var(--skin-border-default)',
+                background: 'var(--skin-surface-sunken)',
                 marginTop: 4,
                 width: '100%',
                 position: 'relative',
@@ -347,8 +347,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                 offsetScrollbars
                 style={{
                   marginTop: 4,
-                  border: '1px solid #444',
-                  background: '#222',
+                  border: '1px solid var(--skin-border-default)',
+                  background: 'var(--skin-surface-sunken)',
                   padding: 6,
                 }}
               >
@@ -362,7 +362,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     </Text>
                   )}
                   {attributes.map((a, i) => (
-                    <Text key={i} size="xs">
+                    <Text key={i} size="xs" c="dark">
                       {a.name}:{' '}
                       {a.value || a.selector || a.number || a.count || ''}
                     </Text>
@@ -379,13 +379,14 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                 offsetScrollbars
                 style={{
                   marginTop: 4,
-                  border: '1px solid #444',
-                  background: '#222',
+                  border: '1px solid var(--skin-border-default)',
+                  background: 'var(--skin-surface-sunken)',
                   padding: 6,
                 }}
               >
                 <Text
                   size="xs"
+                  c="dark"
                   style={{
                     fontFamily: 'monospace',
                     fontSize: 12,
@@ -403,7 +404,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     Enhanced Prompt
                   </Title>
                   <Button
-                    variant="default"
+                    variant="subtle"
                     size="xs"
                     loading={speaking}
                     onClick={speak}
@@ -431,13 +432,14 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                   offsetScrollbars
                   style={{
                     marginTop: 4,
-                    border: '1px solid #444',
-                    background: '#222',
+                    border: '1px solid var(--skin-border-default)',
+                    background: 'var(--skin-surface-sunken)',
                     padding: 6,
                   }}
                 >
                   <Text
                     size="xs"
+                    c="dark"
                     style={{
                       fontFamily: 'monospace',
                       fontSize: 12,
@@ -497,7 +499,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                 (label) => (
                   <Button
                     key={label}
-                    variant="default"
+                    variant="light"
                     size="xs"
                     fullWidth
                     onClick={() =>

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/skin"
 )
 
@@ -18,9 +17,7 @@ func (a *App) GetAvailableSkins() []skin.SkinMetadata {
 
 // GetSkinByName returns a specific skin by name
 func (a *App) GetSkinByName(name string) (*skin.Skin, error) {
-	logging.LogBackend(fmt.Sprintf("App.GetSkinByName: Called with name: %s", name))
 	if a.skinManager == nil {
-		logging.LogBackend("App.GetSkinByName: skinManager is nil!")
 		return nil, fmt.Errorf("skin manager not initialized")
 	}
 	return a.skinManager.GetSkinByName(name)

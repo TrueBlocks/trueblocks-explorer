@@ -159,7 +159,6 @@ describe('Action Component', () => {
           onClick={mockOnClick}
           variant="filled"
           size="lg"
-          color="blue"
           data-testid="action-button"
         />,
       );

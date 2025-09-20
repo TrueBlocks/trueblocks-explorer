@@ -78,7 +78,6 @@ export const ProjectsList = () => {
                   <Action
                     icon="Switch"
                     title="Switch to this project"
-                    color="blue"
                     variant="light"
                     onClick={() => handleSwitchProject(project.id)}
                   />
@@ -86,9 +85,11 @@ export const ProjectsList = () => {
                 <Action
                   icon="Delete"
                   title="Close project"
-                  color="red"
                   variant="light"
                   onClick={() => handleCloseProject(project.id)}
+                  style={{
+                    color: 'var(--skin-error)',
+                  }}
                 />
               </Group>
             </Group>

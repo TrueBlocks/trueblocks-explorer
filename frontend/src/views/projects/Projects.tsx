@@ -107,7 +107,7 @@ export const Projects = () => {
                 {project.name}
               </Title>
               {project.isActive && (
-                <Badge size="xs" color="green">
+                <Badge size="xs" variant="filled">
                   Active
                 </Badge>
               )}
@@ -141,8 +141,7 @@ export const Projects = () => {
               <Action
                 icon="Switch"
                 title="Switch to this project"
-                color="blue"
-                variant="light"
+                variant="filled"
                 size="sm"
                 onClick={() => handleSwitchProject(project.id)}
               />
@@ -150,7 +149,6 @@ export const Projects = () => {
             <Action
               icon="Update"
               title="Update project"
-              color="gray"
               variant="light"
               size="sm"
               onClick={() => {
@@ -161,8 +159,7 @@ export const Projects = () => {
             <Action
               icon="Delete"
               title="Close project"
-              color="red"
-              variant="light"
+              variant="outline"
               size="sm"
               onClick={() => {
                 // TODO: Implement project closing with confirmation

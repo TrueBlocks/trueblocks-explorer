@@ -7,12 +7,12 @@
 
 .detail-section-header {
   grid-column: 1 / -1;
-  background: var(--mantine-color-gray-0);
+  background: var(--skin-surface-raised);
   text-align: left;
   font-weight: 600;
   padding: 8px 6px;
   cursor: pointer;
-  border-bottom: 1px solid var(--mantine-color-gray-4);
+  border-bottom: 1px solid var(--skin-border-default);
 }
 
 .detail-section-header.first-section-header {
@@ -21,12 +21,13 @@
 
 .detail-row-prompt {
   padding: 4px 6px;
-  white-space: nowrap;
-  color: var(--mantine-color-dimmed);
+  font-weight: 500;
+  color: var(--skin-text-dimmed);
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: top;
-  border-bottom: 1px solid var(--mantine-color-gray-2);
+  border-bottom: 1px solid var(--skin-border-subtle);
+  background: var(--skin-surface-subtle);
 }
 
 .detail-row-value {
@@ -34,12 +35,14 @@
   overflow-x: auto;
   word-break: break-word;
   vertical-align: top;
-  border-bottom: 1px solid var(--mantine-color-gray-2);
+  border-bottom: 1px solid var(--skin-border-subtle);
+  background: var(--skin-surface-base);
+  color: var(--skin-text-primary);
 }
 
 .detail-separator {
   grid-column: 1 / -1;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--skin-border-default);
   height: 1px;
   margin: 4px 0;
 }
@@ -51,10 +54,11 @@
 .detail-json-block {
   font-family: monospace;
   font-size: 12px;
-  background: var(--mantine-color-gray-1);
+  background: var(--skin-surface-sunken);
+  color: var(--skin-text-primary);
   padding: 8px;
   border-radius: 4px;
   max-height: 300px;
   overflow: auto;
-  border: 1px solid var(--mantine-color-gray-4);
+  border: 1px solid var(--skin-border-default);
 }

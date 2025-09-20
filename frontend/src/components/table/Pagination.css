@@ -5,14 +5,26 @@
 
 .pagination button {
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
-  border: 1px solid var(--mantine-grey-7);
-  background-color: var(--mantine-primary-color);
+  border: none;
+  background: transparent;
   cursor: pointer;
   border-radius: var(--mantine-radius-sm);
+  color: var(--skin-text-primary);
+  transition: opacity 0.15s ease;
+  font-size: 14px;
+}
+
+/* Make navigation chevrons larger to match other UI elements */
+.pagination button:first-child,
+.pagination button:nth-child(2),
+.pagination button:nth-last-child(2),
+.pagination button:last-child {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .pagination button:hover:not(:disabled) {
-  background-color: var(--mantine-color-dark-5);
+  opacity: 0.7;
 }
 
 .pagination button:disabled {
@@ -22,4 +34,6 @@
 
 .pagination button.active {
   font-weight: bold;
+  color: var(--skin-text-primary);
+  opacity: 1;
 }

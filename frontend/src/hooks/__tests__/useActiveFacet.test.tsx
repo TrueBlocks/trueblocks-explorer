@@ -92,7 +92,7 @@ describe('useActiveFacet Hook Tests (Focused Hook implementation)', () => {
     // Mock usePreferences (theme, language, debug)
     mockedUsePreferences.mockReturnValue({
       lastTheme: 'dark',
-      lastSkin: 'darkMode',
+      lastSkin: 'default',
       lastLanguage: 'en',
       debugCollapsed: true,
       menuCollapsed: false,

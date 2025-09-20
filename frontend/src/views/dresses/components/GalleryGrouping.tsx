@@ -79,8 +79,8 @@ export const GalleryGrouping = ({
       {sortMode === 'address' && descriptiveText && (
         <Box
           style={{
-            backgroundColor: '#f8f9fa',
-            border: '2px solid #e9ecef',
+            backgroundColor: 'var(--skin-surface-raised)',
+            border: '2px solid var(--skin-border-default)',
             borderRadius: '4px',
             padding: '12px',
             marginBottom: '16px',
@@ -91,7 +91,7 @@ export const GalleryGrouping = ({
             style={{
               fontFamily: 'monospace',
               fontWeight: 600,
-              color: '#495057',
+              color: 'var(--skin-text-primary)',
               fontSize: '16px',
               lineHeight: 1.4,
             }}

@@ -23,13 +23,13 @@ export const Debugger: React.FC<DebuggerProps> = ({
       <ActionDebugger rowActions={rowActions} headerActions={headerActions} />
       <div
         style={{
-          backgroundColor: '#29272aff',
-          color: 'white',
+          backgroundColor: 'var(--skin-surface-elevated)',
+          color: '#2e2e2e',
           padding: '8px 12px',
           margin: '5px 0',
           fontSize: '12px',
           fontFamily: 'monospace',
-          border: '1px solid #9b59b6',
+          border: '1px solid var(--skin-primary)',
           borderRadius: '4px',
           boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
           display: 'inline-block',
@@ -59,13 +59,13 @@ export const ActionDebugger: React.FC<ActionDebuggerProps> = ({
   return (
     <div
       style={{
-        backgroundColor: '#2c3e50',
-        color: 'white',
+        backgroundColor: 'var(--skin-surface-elevated)',
+        color: '#2e2e2e',
         padding: '10px',
         marginBottom: '10px',
         fontSize: '13px',
         fontFamily: 'monospace',
-        border: '1px solid #34495e',
+        border: '1px solid var(--skin-border-secondary)',
         borderRadius: '4px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         display: 'flex',
@@ -87,9 +87,9 @@ const ActionsList: React.FC<{
 }> = ({ prompt, actions }) => {
   return (
     <>
-      <strong style={{ color: '#ecf0f1' }}>{prompt}:</strong>{' '}
+      <strong style={{ color: '#2e2e2e' }}>{prompt}:</strong>{' '}
       {actions.length === 0 ? (
-        <span style={{ color: '#e74c3c', fontStyle: 'italic' }}>None</span>
+        <span style={{ color: '#2e2e2e', fontStyle: 'italic' }}>None</span>
       ) : (
         actions.map((action) => {
           const actionTypeStyles: Record<
@@ -107,7 +107,7 @@ const ActionsList: React.FC<{
 
           const { bgColor, textColor } = actionTypeStyles[action.type] || {
             bgColor: '#3498db',
-            textColor: 'white',
+            textColor: '#2e2e2e',
           };
 
           return (

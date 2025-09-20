@@ -52,7 +52,7 @@ export const HelpBar = () => {
         style={{
           transition: 'width 0.2s ease',
           width: 25,
-          borderLeft: '1px solid var(--mantine-color-dark-4)',
+          borderLeft: '1px solid var(--skin-border-secondary)',
           padding: 0,
           display: 'flex',
           flexDirection: 'column',

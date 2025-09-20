@@ -41,6 +41,11 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
         px={menuCollapsed ? 0 : 'md'}
         style={{
           marginLeft: menuCollapsed ? -9 : 0,
+          ...(currentLocation === path && {
+            backgroundColor: 'var(--skin-surface-raised)',
+            color: 'var(--skin-text-primary)',
+            borderRadius: 'var(--mantine-radius-sm)',
+          }),
         }}
         disabled={disabled}
         onClick={() => {
@@ -60,7 +65,7 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
           height: 'calc(100vh - 30px)',
           width: 25,
           transition: 'width 0.2s ease',
-          borderRight: '1px solid var(--mantine-color-dark-4)',
+          borderRight: '1px solid var(--skin-border-secondary)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

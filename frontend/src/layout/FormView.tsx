@@ -23,7 +23,7 @@ export const FormView = <T extends Record<string, unknown>>({
       size="md"
       mt="xl"
       style={{
-        backgroundColor: '#1a1a1a',
+        backgroundColor: 'var(--skin-surface-raised)',
         padding: '1rem',
         borderRadius: '8px',
       }}

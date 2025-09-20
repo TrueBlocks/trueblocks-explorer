@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 )
 
 //go:embed skins/*
@@ -76,14 +75,11 @@ func (sm *SkinManager) shouldUpdateSkins() (bool, error) {
 	userManifest, err := sm.loadUserManifest()
 	if err != nil {
 		// If user manifest doesn't exist, we need to update
-		logging.LogBackend("User manifest not found, updating skins")
 		return true, nil
 	}
 
 	// Compare versions first
 	if embeddedManifest.Version != userManifest.Version {
-		logging.LogBackend(fmt.Sprintf("Manifest version mismatch: embedded=%s, user=%s",
-			embeddedManifest.Version, userManifest.Version))
 		return true, nil
 	}
 
@@ -91,25 +87,19 @@ func (sm *SkinManager) shouldUpdateSkins() (bool, error) {
 	for skinName, embeddedEntry := range embeddedManifest.Skins {
 		userEntry, exists := userManifest.Skins[skinName]
 		if !exists {
-			logging.LogBackend(fmt.Sprintf("Skin %s not found in user manifest", skinName))
 			return true, nil
 		}
 
 		if embeddedEntry.Hash != userEntry.Hash {
-			logging.LogBackend(fmt.Sprintf("Hash mismatch for skin %s: embedded=%s, user=%s",
-				skinName, embeddedEntry.Hash, userEntry.Hash))
 			return true, nil
 		}
 	}
 
-	logging.LogBackend("All skins are up to date")
 	return false, nil
 }
 
 // extractEmbeddedSkins extracts embedded skins to the user config folder
 func (sm *SkinManager) extractEmbeddedSkins() error {
-	logging.LogBackend("Extracting embedded skins to config folder")
-
 	// Ensure the built-in directory exists
 	if err := file.EstablishFolder(sm.builtInPath); err != nil {
 		return fmt.Errorf("failed to create built-in skins directory: %w", err)
@@ -141,18 +131,12 @@ func (sm *SkinManager) extractEmbeddedSkins() error {
 		if err := file.StringToAsciiFile(userPath, string(data)); err != nil {
 			return fmt.Errorf("failed to write file %s: %w", userPath, err)
 		}
-
-		logging.LogBackend(fmt.Sprintf("Extracted %s to %s", fileName, userPath))
 	}
-
-	logging.LogBackend("Successfully extracted all embedded skins")
 	return nil
 }
 
 // updateEmbeddedManifestHashes updates the embedded manifest with actual file hashes
 func (sm *SkinManager) updateEmbeddedManifestHashes() error {
-	logging.LogBackend("Updating embedded manifest with calculated hashes")
-
 	manifestPath := filepath.Join(sm.builtInPath, "manifest.json")
 
 	// Load the current manifest
@@ -165,13 +149,11 @@ func (sm *SkinManager) updateEmbeddedManifestHashes() error {
 	for skinName := range manifest.Skins {
 		skinPath := filepath.Join(sm.builtInPath, skinName+".json")
 		if !file.FileExists(skinPath) {
-			logging.LogBackend(fmt.Sprintf("Warning: skin file %s not found for hash calculation", skinPath))
 			continue
 		}
 
 		data := file.AsciiFileToString(skinPath)
 		if data == "" {
-			logging.LogBackend(fmt.Sprintf("Warning: failed to read skin file %s", skinPath))
 			continue
 		}
 
@@ -180,8 +162,6 @@ func (sm *SkinManager) updateEmbeddedManifestHashes() error {
 		entry.Hash = actualHash
 		entry.Size = len(data)
 		manifest.Skins[skinName] = entry
-
-		logging.LogBackend(fmt.Sprintf("Updated hash for %s: %s", skinName, actualHash))
 	}
 
 	// Save the updated manifest
@@ -194,18 +174,14 @@ func (sm *SkinManager) updateEmbeddedManifestHashes() error {
 		return fmt.Errorf("failed to write updated manifest: %w", err)
 	}
 
-	logging.LogBackend("Successfully updated manifest hashes")
 	return nil
 }
 
 // initializeEmbeddedSkins replaces the old createBuiltInSkins method
 func (sm *SkinManager) initializeEmbeddedSkins() error {
-	logging.LogBackend("Initializing embedded skins system")
-
 	// Check if we need to update skins
 	shouldUpdate, err := sm.shouldUpdateSkins()
 	if err != nil {
-		logging.LogBackend(fmt.Sprintf("Error checking skin update status: %v, proceeding with update", err))
 		shouldUpdate = true
 	}
 
@@ -221,6 +197,5 @@ func (sm *SkinManager) initializeEmbeddedSkins() error {
 		}
 	}
 
-	logging.LogBackend("Embedded skins system initialized successfully")
 	return nil
 }

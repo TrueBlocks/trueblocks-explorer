@@ -16,7 +16,7 @@ function Dashboard({
   if (!contractState) {
     return (
       <Container size="lg" py="xl">
-        <Alert color="yellow" title="No contract data">
+        <Alert variant="light" title="No contract data">
           No contract data available
         </Alert>
       </Container>
@@ -44,7 +44,7 @@ function Execute({ contractState }: { contractState?: types.Contract }) {
   if (!contractState) {
     return (
       <Container size="lg" py="xl">
-        <Alert color="yellow" title="No contract data">
+        <Alert variant="light" title="No contract data">
           No contract data available
         </Alert>
       </Container>

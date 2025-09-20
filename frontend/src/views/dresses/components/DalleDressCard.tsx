@@ -33,13 +33,11 @@ export const DalleDressCard = ({
       onDoubleClick={handleDoubleClick}
       style={{
         cursor: 'pointer',
-        borderColor: selected ? 'var(--mantine-color-blue-5)' : undefined,
+        borderColor: selected ? 'var(--skin-primary)' : undefined,
         boxShadow: selected
-          ? '0 0 0 2px var(--mantine-color-blue-6), 0 0 6px 2px rgba(51,154,240,0.55)'
+          ? '0 0 0 2px var(--skin-primary), 0 0 6px 2px var(--skin-primary-alpha-50)'
           : undefined,
-        background: selected
-          ? 'linear-gradient(135deg, rgba(51,154,240,0.18), rgba(51,154,240,0.05))'
-          : undefined,
+        background: selected ? 'var(--skin-primary-alpha-10)' : undefined,
         transition: 'box-shadow 120ms, border-color 120ms, background 160ms',
       }}
       data-key={itemKey}
@@ -50,7 +48,7 @@ export const DalleDressCard = ({
             position: 'relative',
             width: '100%',
             aspectRatio: '1 / 1',
-            background: selected ? 'rgba(51,154,240,0.12)' : undefined,
+            background: selected ? 'var(--skin-primary-alpha-10)' : undefined,
             borderRadius: 4,
             overflow: 'hidden',
           }}

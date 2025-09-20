@@ -17,7 +17,9 @@ export const WalletConnectButton = () => {
           variant="subtle"
           size="xs"
           onClick={handleDisconnect}
-          color="red"
+          style={{
+            color: 'var(--skin-error)',
+          }}
         >
           Disconnect
         </Button>
@@ -31,7 +33,6 @@ export const WalletConnectButton = () => {
       loading={isConnecting}
       variant="filled"
       size="xs"
-      color="green"
     >
       Connect Wallet
     </Button>

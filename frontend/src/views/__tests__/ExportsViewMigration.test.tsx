@@ -91,7 +91,7 @@ describe('Exports View Migration Tests (useActiveFacet integration)', () => {
     // Mock usePreferences (theme, language, debug)
     mockedUsePreferences.mockReturnValue({
       lastTheme: 'dark',
-      lastSkin: 'darkMode',
+      lastSkin: 'default',
       lastLanguage: 'en',
       debugCollapsed: true,
       menuCollapsed: false,

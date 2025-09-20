@@ -254,20 +254,12 @@ export const ProjectSelectionModal = ({
                                       {project.name}
                                     </Text>
                                     {project.isActive && (
-                                      <Badge
-                                        size="xs"
-                                        color="blue"
-                                        variant="light"
-                                      >
+                                      <Badge size="xs" variant="filled">
                                         Active
                                       </Badge>
                                     )}
                                     {isRecent && (
-                                      <Badge
-                                        size="xs"
-                                        color="green"
-                                        variant="light"
-                                      >
+                                      <Badge size="xs" variant="light">
                                         Recent
                                       </Badge>
                                     )}

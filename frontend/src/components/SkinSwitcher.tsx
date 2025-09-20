@@ -47,7 +47,7 @@ export const SkinSwitcher = ({ collapsed = false }: SkinSwitcherProps) => {
 
     return (
       <Button
-        variant="subtle"
+        variant="default"
         size="xs"
         w={36}
         h={36}

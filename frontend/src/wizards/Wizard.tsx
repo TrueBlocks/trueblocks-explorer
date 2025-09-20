@@ -94,7 +94,7 @@ export const Wizard = () => {
             borderColor:
               state.data.isFirstTimeSetup || state.ui.activeStep === 2
                 ? undefined
-                : '#FFA000',
+                : 'var(--skin-warning)',
             borderWidth:
               state.data.isFirstTimeSetup || state.ui.activeStep === 2
                 ? undefined

@@ -129,11 +129,18 @@ export const SeriesModal = ({
           placeholder="0"
         />
         <Group gap="xs">
-          <Badge
-            variant="light"
-            color="blue"
-          >{`Existing: ${existing.length}`}</Badge>
-          {isDup && <Badge color="red">Duplicate</Badge>}
+          <Badge variant="light">{`Existing: ${existing.length}`}</Badge>
+          {isDup && (
+            <Badge
+              variant="light"
+              style={{
+                borderColor: 'var(--skin-error)',
+                backgroundColor: 'var(--skin-error-background)',
+              }}
+            >
+              Duplicate
+            </Badge>
+          )}
         </Group>
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={onClose}>

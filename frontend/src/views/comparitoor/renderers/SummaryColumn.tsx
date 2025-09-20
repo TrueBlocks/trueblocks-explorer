@@ -144,7 +144,7 @@ export const SummaryColumn = ({
         ) : null}
         {active && rowValues ? (
           <>
-            <Text size="sm" mt={4} ta="center" color="blue">
+            <Text size="sm" mt={4} ta="center" fw={500}>
               Selected: {active.blockNum}.{active.txid}
             </Text>
             <Stack gap={2} mt={2}>

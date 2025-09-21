@@ -480,7 +480,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
       {currentFunction.inputs.length > 0 && (
         <Card withBorder>
           <Stack gap="md">
-            <Text fw={500} size="sm">
+            <Text size="sm" fw={600}>
               Function Parameters
             </Text>
             <Divider />

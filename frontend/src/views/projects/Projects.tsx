@@ -279,7 +279,7 @@ export const Projects = () => {
               <Stack align="center" gap="md">
                 <File size={48} opacity={0.5} />
                 <div style={{ textAlign: 'center' }}>
-                  <Text size="lg" fw={500}>
+                  <Text size="lg" fw={600}>
                     {searchQuery
                       ? 'No projects match your search'
                       : 'No open projects'}

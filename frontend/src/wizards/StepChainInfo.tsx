@@ -287,7 +287,7 @@ export const StepChainInfo = ({
       onCancel={onCancel}
     >
       <Group justify="space-between" mb="md">
-        <Text size="xl" fw={700}>
+        <Text size="xl" fw={600}>
           Chain Configuration
         </Text>
       </Group>

@@ -409,7 +409,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                       <Stack gap="xs">
                         <Group justify="space-between" align="flex-start">
                           <div style={{ flex: 1 }}>
-                            <Text fw={500} size="sm">
+                            <Text size="sm" fw={600}>
                               {functionName}
                               <Text
                                 component="span"

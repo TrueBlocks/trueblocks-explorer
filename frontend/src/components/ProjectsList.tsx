@@ -68,7 +68,7 @@ export const ProjectsList = () => {
           >
             <Group justify="space-between" wrap="nowrap">
               <div>
-                <Text fw={project.isActive ? 700 : 400}>{project.name}</Text>
+                <Text fw={project.isActive ? 600 : 400}>{project.name}</Text>
                 <StyledText variant="dimmed" size="xs">
                   {project.path}
                 </StyledText>

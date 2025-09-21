@@ -170,7 +170,7 @@ export const ProjectSelectionModal = ({
         </div>
 
         {error && (
-          <StyledText variant="error" size="sm" style={{ textAlign: 'center' }}>
+          <StyledText variant="error" size="sm">
             {error}
           </StyledText>
         )}
@@ -228,7 +228,7 @@ export const ProjectSelectionModal = ({
 
               {projects.length > 0 && (
                 <>
-                  <Text size="sm" fw={500} mt="md">
+                  <Text size="sm" fw={600} mt="md">
                     Recent Projects
                   </Text>
                   <Stack gap="sm">

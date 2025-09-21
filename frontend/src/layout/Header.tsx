@@ -26,7 +26,7 @@ export const Header = () => {
   return (
     <AppShell.Header>
       <Group justify="space-between" p="md" h="100%">
-        <Text size="36px" fw={700} style={{ lineHeight: 1 }}>
+        <Text size="36px" fw={600}>
           {baseName}
         </Text>
         <ProjectContextBar />

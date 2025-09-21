@@ -149,7 +149,7 @@ export const SummaryColumn = ({
             </Text>
             <Stack gap={2} mt={2}>
               {rowValues.map((item, idx) => (
-                <Text key={sourceKeys[idx]} size="sm" ta="center">
+                <Text size="sm" key={sourceKeys[idx]} ta="center">
                   <b>{sourceKeys[idx]}</b>: {item?.value ?? '[missing]'}
                   {item?.missing ? ' (missing)' : ''}
                 </Text>

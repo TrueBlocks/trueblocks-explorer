@@ -135,7 +135,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
         <Card withBorder>
           <Stack gap="sm">
             <Group justify="space-between">
-              <Text size="sm" fw={500}>
+              <Text size="sm" fw={600}>
                 Function
               </Text>
               <StyledBadge
@@ -161,13 +161,13 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
         {transactionData.inputs.length > 0 && (
           <Card withBorder>
             <Stack gap="sm">
-              <Text size="sm" fw={500}>
+              <Text size="sm" fw={600}>
                 Parameters
               </Text>
               {transactionData.inputs.map((input, index) => (
                 <Group key={index} justify="space-between">
                   <Group gap="xs">
-                    <Text size="sm" fw={500}>
+                    <Text size="sm" fw={600}>
                       {input.name}
                     </Text>
                     <StyledBadge variant="light" size="xs">
@@ -186,7 +186,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
           <Card withBorder>
             <Group justify="space-between">
               <Group gap="xs">
-                <Text size="sm" fw={500}>
+                <Text size="sm" fw={600}>
                   ETH Value
                 </Text>
               </Group>
@@ -202,25 +202,25 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
           <Card withBorder>
             <Stack gap="sm">
               <Group gap="xs">
-                <Text size="sm" fw={500}>
+                <Text size="sm" fw={600}>
                   Gas Estimation
                 </Text>
               </Group>
               <Group justify="space-between">
                 <Text size="sm">Gas Limit</Text>
-                <Text size="sm" fw={500}>
+                <Text size="sm" fw={600}>
                   {parseInt(preparedTx.gas || '0').toLocaleString()}
                 </Text>
               </Group>
               <Group justify="space-between">
                 <Text size="sm">Gas Price</Text>
-                <Text size="sm" fw={500}>
+                <Text size="sm" fw={600}>
                   {formatGwei(preparedTx.gasPrice || '0')} Gwei
                 </Text>
               </Group>
               <Group justify="space-between">
                 <Text size="sm">Max Fee</Text>
-                <Text size="sm" fw={500}>
+                <Text size="sm" fw={600}>
                   ~
                   {formatEther(
                     (
@@ -239,7 +239,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
         {preparedTx && (
           <Card withBorder>
             <Stack gap="sm">
-              <Text size="sm" fw={500}>
+              <Text size="sm" fw={600}>
                 Transaction Data
               </Text>
               <Code block>

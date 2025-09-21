@@ -80,7 +80,7 @@ export const AddAddressModal = ({
         </StyledText>
 
         {error && (
-          <StyledText size="sm" variant="error">
+          <StyledText variant="error" size="sm">
             {error}
           </StyledText>
         )}

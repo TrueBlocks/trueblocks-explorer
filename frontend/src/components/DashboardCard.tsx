@@ -80,11 +80,11 @@ export const DashboardCard = ({
       </div>
 
       {error ? (
-        <StyledText size="sm" variant="error">
+        <StyledText variant="error" size="sm">
           {error}
         </StyledText>
       ) : loading ? (
-        <StyledText size="sm" variant="dimmed">
+        <StyledText variant="dimmed" size="sm">
           Loading...
         </StyledText>
       ) : (

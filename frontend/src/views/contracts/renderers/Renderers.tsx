@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 
-import { Alert, Container, Stack, Text, Title } from '@mantine/core';
+import { StyledText } from '@components';
+import { Alert, Container, Stack, Title } from '@mantine/core';
 import { contracts, types } from '@models';
 
 import { ContractDashboard } from './dashboard/ContractDashboard';
@@ -27,9 +28,9 @@ function Dashboard({
       <Stack gap="md">
         <Title order={3}>Contract Dashboard</Title>
         {contractState.name && (
-          <Text size="sm" color="dimmed">
+          <StyledText variant="dimmed" size="sm">
             {contractState.name} ({contractState.address?.toString()})
-          </Text>
+          </StyledText>
         )}
         <ContractDashboard
           contractState={contractState}
@@ -55,9 +56,9 @@ function Execute({ contractState }: { contractState?: types.Contract }) {
       <Stack gap="md">
         <Title order={3}>Contract Interactions</Title>
         {contractState.name && (
-          <Text size="sm" color="dimmed">
+          <StyledText variant="dimmed" size="sm">
             {contractState.name} ({contractState.address?.toString()})
-          </Text>
+          </StyledText>
         )}
         <ContractExecute contractState={contractState} functionName="all" />
       </Stack>

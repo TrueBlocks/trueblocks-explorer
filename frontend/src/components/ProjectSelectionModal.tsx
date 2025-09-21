@@ -285,7 +285,7 @@ export const ProjectSelectionModal = ({
                               justify="space-between"
                               style={{ fontSize: '11px' }}
                             >
-                              <StyledText size="xs" variant="dimmed">
+                              <StyledText variant="dimmed" size="xs">
                                 {new Date(
                                   project.lastOpened,
                                 ).toLocaleDateString()}{' '}

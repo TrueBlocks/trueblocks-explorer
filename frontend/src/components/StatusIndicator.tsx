@@ -1,7 +1,7 @@
-import { StyledText } from '@components';
-import { Badge, Group, Text } from '@mantine/core';
+import { StyledBadge, StyledText } from '@components';
+import { Group } from '@mantine/core';
 
-type StatusType = 'healthy' | 'warning' | 'error' | 'loading' | 'inactive';
+type StatusType = 'healthy' | 'inactive';
 
 interface StatusIndicatorProps {
   status: StatusType;
@@ -10,12 +10,20 @@ interface StatusIndicatorProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
-const statusConfig: Record<StatusType, { color: string; label: string }> = {
-  healthy: { color: 'green', label: 'Healthy' },
-  warning: { color: 'orange', label: 'Warning' },
-  error: { color: 'red', label: 'Error' },
-  loading: { color: 'blue', label: 'Loading' },
-  inactive: { color: 'gray', label: 'Inactive' },
+const statusConfig: Record<
+  StatusType,
+  { colorVar: string; backgroundVar: string; label: string }
+> = {
+  healthy: {
+    colorVar: 'var(--skin-success)',
+    backgroundVar: 'var(--skin-success-background)',
+    label: 'Healthy',
+  },
+  inactive: {
+    colorVar: 'var(--skin-text-dimmed)',
+    backgroundVar: 'var(--skin-surface-subtle)',
+    label: 'Inactive',
+  },
 };
 
 export const StatusIndicator = ({
@@ -29,23 +37,27 @@ export const StatusIndicator = ({
 
   return (
     <Group gap="xs" align="center" role="status" aria-label={statusText}>
-      <Badge
-        color={config.color}
+      <StyledBadge
         variant="light"
         size={size}
         aria-label={`Status: ${config.label}`}
+        style={{
+          backgroundColor: config.backgroundVar,
+          color: config.colorVar,
+          border: 'none',
+        }}
       >
         {config.label}
-      </Badge>
+      </StyledBadge>
 
-      <StyledText size={size} variant="dimmed" aria-hidden="true">
+      <StyledText variant="dimmed" size={size} aria-hidden="true">
         {label}
       </StyledText>
 
       {count !== undefined && (
-        <Text size={size} fw={500} aria-hidden="true">
+        <StyledText size={size} fw={500} aria-hidden="true">
           ({count})
-        </Text>
+        </StyledText>
       )}
     </Group>
   );

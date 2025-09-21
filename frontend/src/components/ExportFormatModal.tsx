@@ -96,7 +96,7 @@ export const ExportFormatModal = ({
       withCloseButton={false}
     >
       <Stack gap="md">
-        <StyledText size="sm" variant="dimmed">
+        <StyledText variant="dimmed" size="sm">
           Choose the format for your exported data:
         </StyledText>
 

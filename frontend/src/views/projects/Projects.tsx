@@ -112,7 +112,7 @@ export const Projects = () => {
               )}
             </Group>
 
-            <StyledText size="xs" variant="dimmed" mt="2px">
+            <StyledText variant="dimmed" size="xs" mt="2px">
               {project.path}
             </StyledText>
 
@@ -123,7 +123,7 @@ export const Projects = () => {
             )}
 
             <Group gap="xs" mt="xs">
-              <StyledText size="xs" variant="dimmed">
+              <StyledText variant="dimmed" size="xs">
                 Last opened: {new Date(project.lastOpened).toLocaleDateString()}
               </StyledText>
               {project.addresses && project.addresses.length > 0 && (

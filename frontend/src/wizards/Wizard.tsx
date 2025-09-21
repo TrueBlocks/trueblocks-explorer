@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 
 import { GetAppId, GetWizardReturn } from '@app';
 import { StyledText } from '@components';
-import { Card, Container, Stepper, Text } from '@mantine/core';
+import { Card, Container, Stepper } from '@mantine/core';
 import { checkAndNavigateToWizard } from '@utils';
 import { useLocation } from 'wouter';
 
@@ -103,14 +103,14 @@ export const Wizard = () => {
           },
         }}
       >
-        <Text
+        <StyledText
           size="xl"
           fw={700}
           mb="md"
-          c={
+          variant={
             state.data.isFirstTimeSetup || state.ui.activeStep === 2
               ? undefined
-              : 'orange.6'
+              : 'warning'
           }
         >
           {state.data.isFirstTimeSetup
@@ -118,7 +118,7 @@ export const Wizard = () => {
             : state.ui.activeStep === 2
               ? 'All Issues Resolved'
               : 'Something is Wrong'}
-        </Text>
+        </StyledText>
         <StyledText variant="dimmed" mb="xl">
           {state.data.isFirstTimeSetup
             ? 'Complete the following steps to get started'

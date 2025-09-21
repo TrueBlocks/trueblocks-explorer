@@ -291,7 +291,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
           style={{ minWidth: '280px', maxWidth: '320px', flex: '0 0 auto' }}
         >
           <Stack gap="xs">
-            <StyledText fw={600} size="sm" variant="dimmed">
+            <StyledText variant="dimmed" size="sm" fw={600}>
               Read Functions (No Input)
             </StyledText>
             {Object.entries(functionResults)
@@ -355,12 +355,12 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                       {result?.loading ? (
                         <Group gap="xs">
                           <Loader size="xs" />
-                          <StyledText size="xs" variant="dimmed">
+                          <StyledText variant="dimmed" size="xs">
                             Loading...
                           </StyledText>
                         </Group>
                       ) : result && getFunctionError(result) ? (
-                        <StyledText size="xs" variant="error">
+                        <StyledText variant="error" size="xs">
                           Error: {getFunctionError(result)}
                         </StyledText>
                       ) : (
@@ -444,7 +444,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                           {result?.loading ? (
                             <Group gap="xs">
                               <Loader size="xs" />
-                              <StyledText size="xs" variant="dimmed">
+                              <StyledText variant="dimmed" size="xs">
                                 Loading...
                               </StyledText>
                             </Group>
@@ -477,7 +477,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                                   : 'No result'}
                               </Text>
                               {result?.lastUpdated && (
-                                <StyledText size="xs" variant="dimmed" mt="xs">
+                                <StyledText variant="dimmed" size="xs" mt="xs">
                                   Updated:{' '}
                                   {new Date(
                                     result.lastUpdated,

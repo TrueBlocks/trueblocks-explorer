@@ -152,7 +152,7 @@ export const AddressSelector = () => {
       >
         <form onSubmit={form.onSubmit(handleAddAddress)}>
           <Stack gap="md">
-            <StyledText size="sm" variant="dimmed">
+            <StyledText variant="dimmed" size="sm">
               Add a new Ethereum address to this project. You can use ENS names
               (like vitalik.eth) or standard addresses (0x...).
             </StyledText>

@@ -151,7 +151,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
             <Text size="lg" fw={600}>
               {transactionData.function.name}
             </Text>
-            <StyledText size="sm" variant="dimmed">
+            <StyledText variant="dimmed" size="sm">
               Contract: {transactionData.to}
             </StyledText>
           </Stack>

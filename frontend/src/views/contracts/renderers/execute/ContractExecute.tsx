@@ -469,7 +469,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         </Group>
 
         {currentFunction.inputs.length === 0 && (
-          <StyledText size="sm" variant="dimmed" mt="sm">
+          <StyledText variant="dimmed" size="sm" mt="sm">
             This function takes no parameters
           </StyledText>
         )}

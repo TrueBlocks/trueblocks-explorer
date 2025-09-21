@@ -204,7 +204,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           autoFocus={autoFocus}
         />
         {hint && (
-          <StyledText size="sm" variant="dimmed">
+          <StyledText variant="dimmed" size="sm">
             {hint}
           </StyledText>
         )}

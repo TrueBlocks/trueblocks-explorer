@@ -320,7 +320,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                 />
               ) : (
                 <Center h={160}>
-                  <StyledText size="xs" variant="dimmed">
+                  <StyledText variant="dimmed" size="xs">
                     No image
                   </StyledText>
                 </Center>
@@ -356,12 +356,12 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                   style={{ fontFamily: 'monospace', fontSize: 11 }}
                 >
                   {attributes.length === 0 && (
-                    <StyledText size="xs" variant="dimmed">
+                    <StyledText variant="dimmed" size="xs">
                       No attributes
                     </StyledText>
                   )}
                   {attributes.map((a, i) => (
-                    <StyledText key={i} size="xs" variant="secondary">
+                    <StyledText variant="secondary" key={i} size="xs">
                       {a.name}:{' '}
                       {a.value || a.selector || a.number || a.count || ''}
                     </StyledText>

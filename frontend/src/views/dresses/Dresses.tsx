@@ -474,7 +474,7 @@ export const Dresses = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet, 'Dresses Details'),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet),
     [viewConfig, getCurrentDataFacet],
   );
 

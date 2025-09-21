@@ -213,7 +213,7 @@ export const Status = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet, 'Status Details'),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet),
     [viewConfig, getCurrentDataFacet],
   );
 

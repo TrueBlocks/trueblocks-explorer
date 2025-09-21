@@ -221,8 +221,7 @@ export const Comparitoor = () => {
   );
 
   const detailPanel = useMemo(
-    () =>
-      createDetailPanel(viewConfig, getCurrentDataFacet, 'Comparitoor Details'),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet),
     [viewConfig, getCurrentDataFacet],
   );
 

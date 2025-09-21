@@ -222,13 +222,7 @@ export const Exports = () => {
   );
 
   const detailPanel = useMemo(
-    () =>
-      createDetailPanel(
-        viewConfig,
-        getCurrentDataFacet,
-        'Exports Details',
-        renderers,
-      ),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers),
     [viewConfig, getCurrentDataFacet],
   );
 

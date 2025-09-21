@@ -4,9 +4,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReactNode } from 'react';
 
+import { DetailTable, ShouldNotHappen } from '@components';
 import { types } from '@models';
-
-import { DetailTable } from '../../components/detail/DetailTable';
 
 /**
  * Type definition for MetaOverlay configuration
@@ -31,7 +30,6 @@ export type DetailPanelFn<T = any> = (row: T | null) => ReactNode;
 export const createDetailPanel = <T extends Record<string, unknown>>(
   viewConfig: types.ViewConfig | null | undefined,
   getCurrentDataFacet: () => string,
-  fallbackName = 'Details',
   customPanels: Record<string, DetailPanelFn<any>> = {},
 ): DetailPanelFn<T> => {
   // Get the current facet configuration
@@ -46,31 +44,7 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
       return customPanels[viewConfig.viewName] as DetailPanelFn<T>;
   }
 
-  // If we have ViewConfig detail panels, use them
-  if (currentFacetConfig?.detailPanels?.length) {
-    return buildDetailPanelFromConfigs<T>(currentFacetConfig.detailPanels);
-  }
-
-  // Otherwise, return a fallback detail panel
-  const FallbackDetailPanel = (rowData: T | null) => {
-    if (!rowData) {
-      return <div className="no-selection">Select a row to view details</div>;
-    }
-    return (
-      <div>
-        <h4>{fallbackName}</h4>
-        <div className="detail-panel-default">
-          {Object.entries(rowData).map(([key, value]) => (
-            <div key={key} className="detail-row">
-              <strong>{key}:</strong> {String(value)}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-  FallbackDetailPanel.displayName = `${fallbackName}DetailPanel`;
-  return FallbackDetailPanel;
+  return buildDetailPanelFromConfigs<T>(currentFacetConfig?.detailPanels);
 };
 
 /**
@@ -83,7 +57,7 @@ export const createDefaultDetailPanel = <
 >() => {
   const DefaultDetailPanel = (rowData: T | null) => {
     if (!rowData) {
-      return <div className="no-selection">Select a row to view details</div>;
+      return <div className="no-selection">Loading...</div>;
     }
 
     return (
@@ -122,9 +96,9 @@ export const buildDetailPanelFromColumns = <T extends Record<string, unknown>>(
     extras?: Record<string, any>;
   },
 ) => {
-  const DetailPanel = (rowData: T | null) => {
+  const dp = (rowData: T | null) => {
     if (!rowData) {
-      return <div className="no-selection">Select a row to view details</div>;
+      return <div className="no-selection">Loading...</div>;
     }
 
     // Group columns by section if meta is provided
@@ -185,8 +159,8 @@ export const buildDetailPanelFromColumns = <T extends Record<string, unknown>>(
     );
   };
 
-  DetailPanel.displayName = `DetailPanel_${options?.title || 'Columns'}`;
-  return DetailPanel;
+  dp.displayName = `DetailPanel_${options?.title || 'Columns'}`;
+  return dp;
 };
 
 /**
@@ -196,9 +170,9 @@ export const buildDetailPanelFromColumns = <T extends Record<string, unknown>>(
 export const buildDetailPanelFromConfig = <T extends Record<string, unknown>>(
   panelConfig: types.DetailPanelConfig,
 ) => {
-  const DetailPanel = (rowData: T | null) => {
+  const dp = (rowData: T | null) => {
     if (!rowData) {
-      return <div className="no-selection">Select a row to view details</div>;
+      return <div className="no-selection">Loading...</div>;
     }
 
     return (
@@ -221,8 +195,8 @@ export const buildDetailPanelFromConfig = <T extends Record<string, unknown>>(
     );
   };
 
-  DetailPanel.displayName = `DetailPanel_${panelConfig.title}`;
-  return DetailPanel;
+  dp.displayName = `DetailPanel_${panelConfig.title}`;
+  return dp;
 };
 
 /**
@@ -230,14 +204,19 @@ export const buildDetailPanelFromConfig = <T extends Record<string, unknown>>(
  * This creates a combined panel with multiple sections using proper DetailTable styling.
  */
 export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
-  panelConfigs: types.DetailPanelConfig[],
+  panelConfigs?: types.DetailPanelConfig[],
 ) => {
-  const DetailPanel = (rowData: T | null) => {
+  const dp = (rowData: T | null) => {
     if (!rowData) {
-      return <div className="no-selection">Select a row to view details</div>;
+      return <div className="no-selection">Loading...</div>;
     }
 
-    // Convert DetailPanelConfig to DetailTable format
+    if (!panelConfigs || !panelConfigs.length) {
+      return (
+        <ShouldNotHappen message="buildDetailPanelFromConfigs called with empty panelConfigs" />
+      );
+    }
+
     const sections = panelConfigs.map((panelConfig) => ({
       name: panelConfig.title,
       rows: panelConfig.fields
@@ -266,8 +245,8 @@ export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
     );
   };
 
-  DetailPanel.displayName = `DetailPanel_Combined`;
-  return DetailPanel;
+  dp.displayName = `DetailPanel_Combined`;
+  return dp;
 };
 
 /**

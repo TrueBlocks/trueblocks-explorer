@@ -61,13 +61,18 @@ export const Action = ({
       : [],
   );
 
-  const style: React.CSSProperties = {};
+  const style: React.CSSProperties = {
+    backgroundColor: 'transparent',
+    color: 'var(--mantine-color-text)',
+  };
+
   return (
     <ActionIcon
       onClick={handleClick}
       disabled={disabled}
       title={title}
       style={style}
+      variant="transparent"
       {...mantineProps}
     >
       <IconComponent />

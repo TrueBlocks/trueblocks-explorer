@@ -78,14 +78,14 @@ export const NodeStatus = () => {
       onClick={handleClick}
       style={{
         position: 'absolute',
-        bottom: 0,
+        top: 0,
         right: 0,
         padding: '0px 10px',
         whiteSpace: 'nowrap',
         textAlign: 'right',
         zIndex: 9999,
         cursor: 'pointer',
-        backgroundColor: 'rgba(100, 100, 220, 0.2)',
+        backgroundColor: 'var(--skin-surface-hover)',
       }}
     >
       {status}

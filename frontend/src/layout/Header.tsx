@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { GetAppId } from '@app';
 import {
-  Action,
+  DebugToggle,
+  LightDarkToggle,
   ProjectContextBar,
   SkinSwitcher,
   WalletConnectButton,
@@ -12,13 +13,7 @@ import { AppShell, Group, Text } from '@mantine/core';
 
 export const Header = () => {
   const [baseName, setBaseName] = useState('');
-  const {
-    setDebugCollapsed,
-    debugCollapsed,
-    chromeCollapsed,
-    toggleTheme,
-    isDarkMode,
-  } = usePreferences();
+  const { chromeCollapsed } = usePreferences();
 
   useEffect(() => {
     GetAppId().then((id) => {
@@ -36,30 +31,8 @@ export const Header = () => {
         </Text>
         <ProjectContextBar />
         <Group justify="flex-end" align="center" gap="xs">
-          <Action
-            icon="DebugOn"
-            iconOff="DebugOff"
-            isOn={!debugCollapsed}
-            onClick={() => setDebugCollapsed(!debugCollapsed)}
-            title={
-              debugCollapsed
-                ? 'Debug mode OFF - Click to enable'
-                : 'Debug mode ON - Click to disable'
-            }
-            variant={debugCollapsed ? 'default' : 'filled'}
-          />
-          <Action
-            icon="Light"
-            iconOff="Dark"
-            isOn={!isDarkMode}
-            onClick={() => toggleTheme()}
-            title={
-              isDarkMode
-                ? 'Dark mode ON - Click for light mode'
-                : 'Light mode ON - Click for dark mode'
-            }
-            variant={isDarkMode ? 'default' : 'filled'}
-          />
+          <DebugToggle />
+          <LightDarkToggle />
           <SkinSwitcher collapsed />
           <WalletConnectButton />
         </Group>

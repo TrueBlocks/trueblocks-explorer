@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
 import { AddAddressesToProject } from '@app';
+import { StyledModal, StyledText } from '@components';
 import { useActiveProject, useIconSets } from '@hooks';
-import { Button, Group, Modal, Paper, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, Paper, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { LogError } from '@utils';
 
@@ -59,7 +60,7 @@ export const AddAddressModal = ({
   };
 
   return (
-    <Modal
+    <StyledModal
       opened={opened}
       onClose={onCancel}
       centered
@@ -74,14 +75,14 @@ export const AddAddressModal = ({
       }}
     >
       <Stack gap="lg">
-        <Text c="dimmed" size="sm">
+        <StyledText variant="dimmed" size="sm">
           Add multiple Ethereum addresses or ENS names to your current project
-        </Text>
+        </StyledText>
 
         {error && (
-          <Text c="red" size="sm">
+          <StyledText size="sm" variant="error">
             {error}
-          </Text>
+          </StyledText>
         )}
 
         <Paper p="md" withBorder>
@@ -93,7 +94,15 @@ export const AddAddressModal = ({
               </Group>
               <AddressInput form={form} fieldName="addresses" rows={6} />
               <Group justify="flex-end" gap="sm">
-                <Button variant="outline" onClick={onCancel} disabled={loading}>
+                <Button
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--skin-primary)',
+                    border: '1px solid var(--skin-border)',
+                  }}
+                  onClick={onCancel}
+                  disabled={loading}
+                >
                   Cancel
                 </Button>
                 <Button
@@ -108,6 +117,6 @@ export const AddAddressModal = ({
           </form>
         </Paper>
       </Stack>
-    </Modal>
+    </StyledModal>
   );
 };

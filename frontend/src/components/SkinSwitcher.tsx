@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { GetAvailableSkins } from '@app';
+import { StyledSelect } from '@components';
 import { usePreferences } from '@hooks';
-import { Button, Select } from '@mantine/core';
+import { Button } from '@mantine/core';
 import { skin } from '@models';
 import { Log } from '@utils';
 
@@ -47,16 +48,17 @@ export const SkinSwitcher = ({ collapsed = false }: SkinSwitcherProps) => {
 
     return (
       <Button
-        variant="default"
         size="xs"
-        w={36}
-        h={36}
+        w={34}
+        h={34}
         px={0}
         onClick={handleCycleSkin}
         title={`Current skin: ${currentSkin?.displayName || lastSkin}. Click to cycle.`}
         style={{
-          marginLeft: -9,
+          backgroundColor: 'transparent',
+          color: 'var(--mantine-color-text)',
         }}
+        variant="transparent"
       >
         🎨
       </Button>
@@ -65,14 +67,14 @@ export const SkinSwitcher = ({ collapsed = false }: SkinSwitcherProps) => {
 
   // When expanded, show a proper select
   return (
-    <Select
+    <StyledSelect
       size="xs"
       value={lastSkin}
       data={availableSkins.map((skinMetadata) => ({
         value: skinMetadata.name,
         label: skinMetadata.displayName,
       }))}
-      onChange={(value) => {
+      onChange={(value: string | null) => {
         if (value) {
           setSkin(value);
         }

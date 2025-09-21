@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { AddAddressesToProject, SaveProject } from '@app';
-import { Action, AddressInput, StatusIndicator } from '@components';
+import {
+  Action,
+  AddressInput,
+  StatusIndicator,
+  StyledBadge,
+  StyledModal,
+  StyledText,
+} from '@components';
 import { useViewContext } from '@contexts';
 import { useActiveProject, useIconSets } from '@hooks';
 import {
-  Badge,
   Button,
   Card,
   Group,
-  Modal,
   Paper,
   Stack,
   Text,
@@ -137,7 +142,7 @@ export const ProjectSelectionModal = ({
   const canCancel = hasActiveProject && !!onCancel;
 
   return (
-    <Modal
+    <StyledModal
       opened={opened}
       onClose={canCancel ? (onCancel ?? (() => {})) : () => {}}
       centered
@@ -157,17 +162,17 @@ export const ProjectSelectionModal = ({
               ? 'Select or Create a Project'
               : 'Project Required'}
           </Title>
-          <Text c="dimmed">
+          <StyledText variant="dimmed">
             {hasActiveProject
               ? 'Choose a different project or create a new one'
               : 'An active project with at least one address is required to continue'}
-          </Text>
+          </StyledText>
         </div>
 
         {error && (
-          <Text c="red" size="sm" style={{ textAlign: 'center' }}>
+          <StyledText variant="error" size="sm" style={{ textAlign: 'center' }}>
             {error}
-          </Text>
+          </StyledText>
         )}
 
         <Group gap="xl" align="flex-start" grow>
@@ -254,14 +259,14 @@ export const ProjectSelectionModal = ({
                                       {project.name}
                                     </Text>
                                     {project.isActive && (
-                                      <Badge size="xs" variant="filled">
+                                      <StyledBadge size="xs" variant="filled">
                                         Active
-                                      </Badge>
+                                      </StyledBadge>
                                     )}
                                     {isRecent && (
-                                      <Badge size="xs" variant="light">
+                                      <StyledBadge size="xs" variant="light">
                                         Recent
-                                      </Badge>
+                                      </StyledBadge>
                                     )}
                                   </Group>
                                 </div>
@@ -280,7 +285,7 @@ export const ProjectSelectionModal = ({
                               justify="space-between"
                               style={{ fontSize: '11px' }}
                             >
-                              <Text size="xs" c="dimmed">
+                              <StyledText size="xs" variant="dimmed">
                                 {new Date(
                                   project.lastOpened,
                                 ).toLocaleDateString()}{' '}
@@ -291,7 +296,7 @@ export const ProjectSelectionModal = ({
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
-                              </Text>
+                              </StyledText>
                               <StatusIndicator
                                 status={
                                   project.isActive ? 'healthy' : 'inactive'
@@ -311,6 +316,6 @@ export const ProjectSelectionModal = ({
           </Paper>
         </Group>
       </Stack>
-    </Modal>
+    </StyledModal>
   );
 };

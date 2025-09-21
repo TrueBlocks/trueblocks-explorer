@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { AddAddressToProject, ConvertToAddress, SetActiveAddress } from '@app';
+import { StyledModal, StyledText } from '@components';
 import { useActiveProject, useIconSets } from '@hooks';
 import {
   ActionIcon,
   Button,
   Group,
-  Modal,
   Select,
   Stack,
-  Text,
   TextInput,
   Tooltip,
 } from '@mantine/core';
@@ -142,7 +141,7 @@ export const AddressSelector = () => {
         </Tooltip>
       </Group>
 
-      <Modal
+      <StyledModal
         opened={addModalOpened}
         onClose={() => {
           setAddModalOpened(false);
@@ -153,10 +152,10 @@ export const AddressSelector = () => {
       >
         <form onSubmit={form.onSubmit(handleAddAddress)}>
           <Stack gap="md">
-            <Text size="sm" c="dimmed">
+            <StyledText size="sm" variant="dimmed">
               Add a new Ethereum address to this project. You can use ENS names
               (like vitalik.eth) or standard addresses (0x...).
-            </Text>
+            </StyledText>
 
             <TextInput
               label="Address"
@@ -181,7 +180,7 @@ export const AddressSelector = () => {
             </Group>
           </Stack>
         </form>
-      </Modal>
+      </StyledModal>
     </>
   );
 };

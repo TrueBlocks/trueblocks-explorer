@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
+import { AddAddressModal, StyledSelect, StyledText } from '@components';
 import { useActiveProject } from '@hooks';
-import { Group, Loader, Select, Text } from '@mantine/core';
+import { Group, Loader } from '@mantine/core';
 import { PeriodOptions, getDisplayAddress } from '@utils';
-
-import { AddAddressModal } from './AddAddressModal';
 
 export const ProjectContextBar = ({}) => {
   const [addModalOpened, setAddModalOpened] = useState(false);
@@ -87,8 +86,10 @@ export const ProjectContextBar = ({}) => {
   if (loading) {
     return (
       <Group justify="center" p="md">
-        <Loader size="sm" />
-        <Text size="sm">Loading project context...</Text>
+        <Loader size="sm" color="var(--skin-primary)" />
+        <StyledText size="sm" variant="primary">
+          Loading project context...
+        </StyledText>
       </Group>
     );
   }
@@ -96,7 +97,7 @@ export const ProjectContextBar = ({}) => {
   return (
     <>
       <Group gap="xs">
-        <Select
+        <StyledSelect
           size="xs"
           placeholder="Project"
           value={currentProject?.id || ''}
@@ -104,7 +105,7 @@ export const ProjectContextBar = ({}) => {
           onChange={handleProjectChange}
           w={120}
         />
-        <Select
+        <StyledSelect
           size="xs"
           placeholder="Address"
           value={activeAddress}
@@ -112,7 +113,7 @@ export const ProjectContextBar = ({}) => {
           onChange={handleAddressChange}
           w={140}
         />
-        <Select
+        <StyledSelect
           size="xs"
           placeholder="Chain"
           value={activeChain}
@@ -120,7 +121,7 @@ export const ProjectContextBar = ({}) => {
           onChange={handleChainChange}
           w={100}
         />
-        <Select
+        <StyledSelect
           size="xs"
           placeholder="Contract"
           value={activeContract}
@@ -128,7 +129,7 @@ export const ProjectContextBar = ({}) => {
           onChange={handleContractChange}
           w={140}
         />
-        <Select
+        <StyledSelect
           size="xs"
           placeholder="Period"
           value={activePeriod}

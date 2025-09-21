@@ -1,3 +1,4 @@
+import { StyledText } from '@components';
 import { Badge, Group, Text } from '@mantine/core';
 
 type StatusType = 'healthy' | 'warning' | 'error' | 'loading' | 'inactive';
@@ -37,9 +38,9 @@ export const StatusIndicator = ({
         {config.label}
       </Badge>
 
-      <Text size={size} c="dimmed" aria-hidden="true">
+      <StyledText size={size} variant="dimmed" aria-hidden="true">
         {label}
-      </Text>
+      </StyledText>
 
       {count !== undefined && (
         <Text size={size} fw={500} aria-hidden="true">

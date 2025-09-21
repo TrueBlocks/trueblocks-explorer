@@ -1,10 +1,14 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 
-import { ChevronButton, useTableContext, useTableKeys } from '@components';
+import {
+  ChevronButton,
+  StyledModal,
+  useTableContext,
+  useTableKeys,
+} from '@components';
 import { Form, FormField } from '@components';
 import { useFiltering } from '@contexts';
 import { usePreferences } from '@hooks';
-import { Modal } from '@mantine/core';
 import { project } from '@models';
 import { getDebugClass } from '@utils';
 
@@ -330,7 +334,7 @@ export const Table = <T extends Record<string, unknown>>({
         )}
       </div>
 
-      <Modal
+      <StyledModal
         opened={isModalOpen}
         onClose={closeModal}
         centered
@@ -387,7 +391,7 @@ export const Table = <T extends Record<string, unknown>>({
             validate={validate}
           />
         </div>
-      </Modal>
+      </StyledModal>
     </div>
   );
 };

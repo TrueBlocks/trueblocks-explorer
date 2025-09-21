@@ -10,16 +10,17 @@ export const WalletConnectButton = () => {
   if (isWalletConnected) {
     return (
       <Group gap="xs">
-        <Text size="sm" c="green">
+        <Text size="sm" style={{ color: 'var(--skin-success)' }}>
           {formatAddress(walletAddress || '')}
         </Text>
         <Button
-          variant="subtle"
           size="xs"
           onClick={handleDisconnect}
           style={{
+            backgroundColor: 'transparent',
             color: 'var(--skin-error)',
           }}
+          variant="transparent"
         >
           Disconnect
         </Button>
@@ -31,8 +32,12 @@ export const WalletConnectButton = () => {
     <Button
       onClick={handleConnect}
       loading={isConnecting}
-      variant="filled"
       size="xs"
+      style={{
+        backgroundColor: 'var(--skin-primary)',
+        color: 'var(--skin-text-inverse)',
+      }}
+      variant="filled"
     >
       Connect Wallet
     </Button>

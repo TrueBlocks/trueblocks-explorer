@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
+import { StyledSelect, StyledText } from '@components';
 import { useIconSets } from '@hooks';
 import {
   Button,
@@ -8,9 +9,7 @@ import {
   Group,
   Image,
   ScrollArea,
-  Select,
   Stack,
-  Text,
   Title,
 } from '@mantine/core';
 import { dresses, model, project } from '@models';
@@ -257,7 +256,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
     <Container size="xl" py="md">
       <Stack gap="sm">
         <Group align="flex-end" gap="sm" wrap="nowrap">
-          <Select
+          <StyledSelect
             label="Address"
             placeholder="Select address"
             searchable
@@ -267,7 +266,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
             w={380}
             size="xs"
           />
-          <Select
+          <StyledSelect
             label="Series"
             placeholder="Series"
             value={series || ''}
@@ -321,9 +320,9 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                 />
               ) : (
                 <Center h={160}>
-                  <Text size="xs" c="dimmed">
+                  <StyledText size="xs" variant="dimmed">
                     No image
-                  </Text>
+                  </StyledText>
                 </Center>
               )}
             </div>
@@ -357,15 +356,15 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                   style={{ fontFamily: 'monospace', fontSize: 11 }}
                 >
                   {attributes.length === 0 && (
-                    <Text size="xs" c="dimmed">
+                    <StyledText size="xs" variant="dimmed">
                       No attributes
-                    </Text>
+                    </StyledText>
                   )}
                   {attributes.map((a, i) => (
-                    <Text key={i} size="xs" c="dark">
+                    <StyledText key={i} size="xs" variant="secondary">
                       {a.name}:{' '}
                       {a.value || a.selector || a.number || a.count || ''}
-                    </Text>
+                    </StyledText>
                   ))}
                 </Stack>
               </ScrollArea>
@@ -384,9 +383,9 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                   padding: 6,
                 }}
               >
-                <Text
+                <StyledText
                   size="xs"
-                  c="dark"
+                  variant="secondary"
                   style={{
                     fontFamily: 'monospace',
                     fontSize: 12,
@@ -394,7 +393,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                   }}
                 >
                   {selectedItem?.prompt || ''}
-                </Text>
+                </StyledText>
               </ScrollArea>
             </div>
             {!!selectedItem?.enhancedPrompt && (
@@ -437,9 +436,9 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     padding: 6,
                   }}
                 >
-                  <Text
+                  <StyledText
                     size="xs"
-                    c="dark"
+                    variant="secondary"
                     style={{
                       fontFamily: 'monospace',
                       fontSize: 12,
@@ -447,7 +446,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     }}
                   >
                     {selectedItem?.enhancedPrompt || ''}
-                  </Text>
+                  </StyledText>
                 </ScrollArea>
               </div>
             )}

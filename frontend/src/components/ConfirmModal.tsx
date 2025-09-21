@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { GetAppPreferences, SetAppPreferences } from '@app';
-import { Button, Checkbox, Group, Modal, Stack, Text } from '@mantine/core';
+import { StyledModal } from '@components';
+import { Button, Checkbox, Group, Stack, Text } from '@mantine/core';
 import { LogError, updateAppPreferencesSafely } from '@utils';
 
 interface ConfirmModalProps {
@@ -63,7 +64,7 @@ export const ConfirmModal = ({
   }, [opened]);
 
   return (
-    <Modal
+    <StyledModal
       opened={opened}
       onClose={handleCancel}
       title={title}
@@ -84,12 +85,19 @@ export const ConfirmModal = ({
         />
 
         <Group justify="flex-end" gap="sm">
-          <Button variant="subtle" onClick={handleCancel}>
+          <Button
+            style={{
+              backgroundColor: 'transparent',
+              color: 'var(--skin-text-dimmed)',
+              border: 'none',
+            }}
+            onClick={handleCancel}
+          >
             {cancelButtonText}
           </Button>
           <Button onClick={handleConfirm}>{confirmButtonText}</Button>
         </Group>
       </Stack>
-    </Modal>
+    </StyledModal>
   );
 };

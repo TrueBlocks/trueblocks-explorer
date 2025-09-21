@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 import { GetAppId, GetWizardReturn } from '@app';
+import { StyledText } from '@components';
 import { Card, Container, Stepper, Text } from '@mantine/core';
 import { checkAndNavigateToWizard } from '@utils';
 import { useLocation } from 'wouter';
@@ -118,13 +119,13 @@ export const Wizard = () => {
               ? 'All Issues Resolved'
               : 'Something is Wrong'}
         </Text>
-        <Text c="dimmed" mb="xl">
+        <StyledText variant="dimmed" mb="xl">
           {state.data.isFirstTimeSetup
             ? 'Complete the following steps to get started'
             : state.ui.activeStep === 2
               ? 'Your application is now ready to use again.'
               : "Let's fix the issue to get you back on track"}
-        </Text>
+        </StyledText>
 
         <Stepper active={state.ui.activeStep}>
           <Stepper.Step

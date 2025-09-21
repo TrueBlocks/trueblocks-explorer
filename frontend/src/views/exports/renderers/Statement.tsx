@@ -1,3 +1,4 @@
+import { StyledText } from '@components';
 import { Divider, Grid, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { types } from '@models';
 import { addressToHex } from '@utils';
@@ -134,28 +135,28 @@ export const renderStatementDetailPanel = (
       </Text>
       <Grid gutter={4}>
         <Grid.Col span={6}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Accounted For
-          </Text>
+          </StyledText>
           <Text size="md">
             {displayAddress8(statement.accountedFor || statement.holder)}
           </Text>
-          <Text size="md" c="dimmed" mt={8}>
+          <StyledText size="md" variant="dimmed" mt={8}>
             Asset
-          </Text>
+          </StyledText>
           <Text size="md">
             {displayAddress8(statement.asset)}
             {statement.symbol ? ` (${statement.symbol})` : ''}
           </Text>
         </Grid.Col>
         <Grid.Col span={6}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Sender
-          </Text>
+          </StyledText>
           <Text size="md">{displayAddress8(statement.sender)}</Text>
-          <Text size="md" c="dimmed" mt={8}>
+          <StyledText size="md" variant="dimmed" mt={8}>
             Recipient
-          </Text>
+          </StyledText>
           <Text size="md">{displayAddress8(statement.recipient)}</Text>
         </Grid.Col>
       </Grid>
@@ -165,9 +166,9 @@ export const renderStatementDetailPanel = (
       </Text>
       <Grid gutter={4} columns={100}>
         <Grid.Col span={24}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Beg Bal
-          </Text>
+          </StyledText>
           <Tooltip label={beginBalRaw.toString()} withArrow>
             <Text
               size="md"
@@ -180,9 +181,9 @@ export const renderStatementDetailPanel = (
           </Tooltip>
         </Grid.Col>
         <Grid.Col span={24}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Income
-          </Text>
+          </StyledText>
           <Tooltip label={totalInRaw.toString()} withArrow>
             <Text
               size="md"
@@ -196,9 +197,9 @@ export const renderStatementDetailPanel = (
         </Grid.Col>
         <Grid.Col span={4}></Grid.Col>
         <Grid.Col span={24}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Outflow
-          </Text>
+          </StyledText>
           <Tooltip label={totalOutRaw.toString()} withArrow>
             <Text
               size="md"
@@ -211,9 +212,9 @@ export const renderStatementDetailPanel = (
           </Tooltip>
         </Grid.Col>
         <Grid.Col span={24}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             End Bal
-          </Text>
+          </StyledText>
           <Tooltip label={endBalRaw.toString()} withArrow>
             <Text
               size="md"
@@ -245,9 +246,9 @@ export const renderStatementDetailPanel = (
             const raw = toBig(val);
             return (
               <Group key={label} justify="space-between" gap={4} wrap="nowrap">
-                <Text size="md" c="dimmed">
+                <StyledText size="md" variant="dimmed">
                   {label}
-                </Text>
+                </StyledText>
                 <Tooltip label={raw.toString()} withArrow>
                   <Text
                     size="md"
@@ -275,9 +276,9 @@ export const renderStatementDetailPanel = (
             const raw = toBig(val);
             return (
               <Group key={label} justify="space-between" gap={4} wrap="nowrap">
-                <Text size="md" c="dimmed">
+                <StyledText size="md" variant="dimmed">
                   {label}
-                </Text>
+                </StyledText>
                 <Tooltip label={raw.toString()} withArrow>
                   <Text
                     size="md"
@@ -296,9 +297,9 @@ export const renderStatementDetailPanel = (
       <Divider variant="dashed" />
       <Grid gutter={4}>
         <Grid.Col span={4}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Spot Price
-          </Text>
+          </StyledText>
           <Tooltip label={toBig(statement.spotPrice).toString()} withArrow>
             <Text
               size="md"
@@ -311,21 +312,21 @@ export const renderStatementDetailPanel = (
           </Tooltip>
         </Grid.Col>
         <Grid.Col span={5}>
-          <Text size="md" c="dimmed">
+          <StyledText size="md" variant="dimmed">
             Price Source
-          </Text>
+          </StyledText>
           <Text size="md">{statement.priceSource || '-'}</Text>
         </Grid.Col>
       </Grid>
       {!isReconciled && statement.correctingReasons && (
-        <Text size="md" c="red">
+        <StyledText size="md" variant="error">
           {statement.correctingReasons}
-        </Text>
+        </StyledText>
       )}
       {statement.correctionId ? (
-        <Text size="md" c="dimmed">
+        <StyledText size="md" variant="dimmed">
           Correction Id: {statement.correctionId}
-        </Text>
+        </StyledText>
       ) : null}
     </Stack>
   );

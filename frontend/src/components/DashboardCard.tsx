@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { StyledText } from '@components';
 import { Card, Text, Title } from '@mantine/core';
 
 interface DashboardCardProps {
@@ -67,7 +68,11 @@ export const DashboardCard = ({
             {title}
           </Title>
           {subtitle && (
-            <Text size="sm" c="dimmed" id={`${title.toLowerCase()}-subtitle`}>
+            <Text
+              size="sm"
+              style={{ color: 'var(--skin-text-dimmed)' }}
+              id={`${title.toLowerCase()}-subtitle`}
+            >
               {subtitle}
             </Text>
           )}
@@ -75,13 +80,13 @@ export const DashboardCard = ({
       </div>
 
       {error ? (
-        <Text c="red" size="sm">
+        <StyledText size="sm" variant="error">
           {error}
-        </Text>
+        </StyledText>
       ) : loading ? (
-        <Text c="dimmed" size="sm">
+        <StyledText size="sm" variant="dimmed">
           Loading...
-        </Text>
+        </StyledText>
       ) : (
         children
       )}

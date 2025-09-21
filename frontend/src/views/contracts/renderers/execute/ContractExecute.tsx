@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { StyledBadge, StyledText } from '@components';
 import { useWalletGatedAction } from '@hooks';
 import {
   Alert,
-  Badge,
   Button,
   Card,
   Divider,
@@ -281,7 +281,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     return (
       <Stack gap="md" align="center" style={{ padding: '2rem' }}>
         <Loader size="lg" />
-        <Text c="dimmed">Loading write functions...</Text>
+        <StyledText variant="dimmed">Loading write functions...</StyledText>
       </Stack>
     );
   }
@@ -458,18 +458,20 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
           <div>
             <Title order={4}>{currentFunction.name}</Title>
             <Group gap="xs">
-              <Badge variant="light">{currentFunction.stateMutability}</Badge>
+              <StyledBadge variant="light">
+                {currentFunction.stateMutability}
+              </StyledBadge>
               {currentFunction.stateMutability === 'payable' && (
-                <Badge variant="filled">Requires ETH</Badge>
+                <StyledBadge variant="filled">Requires ETH</StyledBadge>
               )}
             </Group>
           </div>
         </Group>
 
         {currentFunction.inputs.length === 0 && (
-          <Text size="sm" c="dimmed" mt="sm">
+          <StyledText size="sm" variant="dimmed" mt="sm">
             This function takes no parameters
-          </Text>
+          </StyledText>
         )}
       </div>
 

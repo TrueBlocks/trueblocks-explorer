@@ -1,8 +1,8 @@
 import { ChangeEvent, forwardRef, isValidElement } from 'react';
 
-import { FormField } from '@components';
+import { FormField, StyledText } from '@components';
 import { useActiveProject } from '@hooks';
-import { Fieldset, Stack, Text, TextInput } from '@mantine/core';
+import { Fieldset, Stack, TextInput } from '@mantine/core';
 import { formatWeiToEther, formatWeiToGigawei } from '@utils';
 
 export interface FieldRendererProps {
@@ -87,9 +87,9 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         return (
           <div key={keyProp}>
             {parts.map((part, idx) => (
-              <Text key={idx} size="sm" fw={idx === 0 ? 500 : undefined}>
+              <StyledText key={idx} size="sm" fw={idx === 0 ? 500 : undefined}>
                 {idx === 0 ? `${field.label}: ${part}` : part}
-              </Text>
+              </StyledText>
             ))}
           </div>
         );
@@ -97,7 +97,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
 
       return (
         <div key={keyProp}>
-          <Text
+          <StyledText
             size="sm"
             fw={500}
             style={{
@@ -113,7 +113,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
             }}
           >
             {field.label}: {displayValue}
-          </Text>
+          </StyledText>
         </div>
       );
     }
@@ -165,7 +165,13 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
             (field.required && !field.value && `${field.label} is required`)
           }
           styles={{
+            label: {
+              color: 'var(--skin-text-primary)',
+            },
             input: {
+              color: 'var(--skin-text-primary)',
+              backgroundColor: 'var(--skin-surface-default)',
+              borderColor: 'var(--skin-border-default)',
               ...(field.error
                 ? {
                     borderColor: 'var(--skin-error)',
@@ -174,7 +180,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
                 : {}),
               ...(field.readOnly
                 ? {
-                    color: 'var(--skin-text-primary)', // Use skin text color for theme adaptability
+                    color: 'var(--skin-text-primary)',
                     opacity: 0.6, // Slightly reduce opacity to differentiate but keep readable
                   }
                 : {}),
@@ -198,9 +204,9 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           autoFocus={autoFocus}
         />
         {hint && (
-          <Text size="sm" c="dimmed">
+          <StyledText size="sm" variant="dimmed">
             {hint}
-          </Text>
+          </StyledText>
         )}
       </div>
     );

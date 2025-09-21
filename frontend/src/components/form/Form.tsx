@@ -1,8 +1,13 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
-import { FieldRenderer, FormField, usePreprocessedFields } from '@components';
+import {
+  FieldRenderer,
+  FormField,
+  StyledText,
+  usePreprocessedFields,
+} from '@components';
 import { useFormHotkeys } from '@components';
-import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Group, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 // Helper function to recursively extract initial values
@@ -265,23 +270,46 @@ export const Form = <
   return (
     <Stack gap={compact ? 'xs' : 'md'}>
       {title && (
-        <Title order={3} mt="md">
+        <Title
+          order={3}
+          mt="md"
+          style={{
+            color: 'var(--skin-text-primary)',
+            fontWeight: 600,
+          }}
+        >
           {title}
         </Title>
       )}
-      {description && <Text>{description}</Text>}
+      {description && <StyledText>{description}</StyledText>}
       <form role="form" onSubmit={handleFormSubmit}>
         <Stack gap={compact ? 'xs' : 'md'}>
           {processedFields.map((field, index) => renderField(field, index))}
           <Group justify="flex-end" mt={compact ? 'xs' : 'md'}>
             {mode === 'display' && (
-              <Button tabIndex={0} variant="outline" onClick={handleEdit}>
+              <Button
+                tabIndex={0}
+                style={{
+                  backgroundColor: 'transparent',
+                  color: 'var(--skin-primary)',
+                  border: '1px solid var(--skin-border)',
+                }}
+                onClick={handleEdit}
+              >
                 Edit
               </Button>
             )}
             {mode === 'edit' && (
               <>
-                <Button tabIndex={0} variant="outline" onClick={handleCancel}>
+                <Button
+                  tabIndex={0}
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: 'var(--skin-primary)',
+                    border: '1px solid var(--skin-border)',
+                  }}
+                  onClick={handleCancel}
+                >
                   Cancel
                 </Button>
                 <Button

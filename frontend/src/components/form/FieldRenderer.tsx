@@ -87,7 +87,12 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         return (
           <div key={keyProp}>
             {parts.map((part, idx) => (
-              <StyledText key={idx} size="sm" fw={idx === 0 ? 500 : undefined}>
+              <StyledText
+                variant="primary"
+                size="sm"
+                fw={idx === 0 ? 500 : undefined}
+                key={idx}
+              >
                 {idx === 0 ? `${field.label}: ${part}` : part}
               </StyledText>
             ))}
@@ -98,6 +103,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       return (
         <div key={keyProp}>
           <StyledText
+            variant="primary"
             size="sm"
             fw={500}
             style={{

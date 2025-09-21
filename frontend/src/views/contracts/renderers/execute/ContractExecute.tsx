@@ -281,7 +281,9 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     return (
       <Stack gap="md" align="center" style={{ padding: '2rem' }}>
         <Loader size="lg" />
-        <StyledText variant="dimmed">Loading write functions...</StyledText>
+        <StyledText variant="dimmed" size="md">
+          Loading write functions...
+        </StyledText>
       </Stack>
     );
   }
@@ -469,7 +471,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         </Group>
 
         {currentFunction.inputs.length === 0 && (
-          <StyledText variant="dimmed" size="sm" mt="sm">
+          <StyledText variant="dimmed" size="sm">
             This function takes no parameters
           </StyledText>
         )}

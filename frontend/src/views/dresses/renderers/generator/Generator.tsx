@@ -361,7 +361,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     </StyledText>
                   )}
                   {attributes.map((a, i) => (
-                    <StyledText variant="secondary" key={i} size="xs">
+                    <StyledText variant="secondary" size="xs" key={i}>
                       {a.name}:{' '}
                       {a.value || a.selector || a.number || a.count || ''}
                     </StyledText>

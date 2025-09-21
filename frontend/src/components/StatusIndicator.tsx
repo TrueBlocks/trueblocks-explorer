@@ -30,7 +30,6 @@ export const StatusIndicator = ({
   status,
   label,
   count,
-  size = 'sm',
 }: StatusIndicatorProps) => {
   const config = statusConfig[status];
   const statusText = `${config.label}: ${label}${count !== undefined ? ` (${count})` : ''}`;
@@ -39,7 +38,7 @@ export const StatusIndicator = ({
     <Group gap="xs" align="center" role="status" aria-label={statusText}>
       <StyledBadge
         variant="light"
-        size={size}
+        size="xs"
         aria-label={`Status: ${config.label}`}
         style={{
           backgroundColor: config.backgroundVar,
@@ -50,12 +49,12 @@ export const StatusIndicator = ({
         {config.label}
       </StyledBadge>
 
-      <StyledText variant="dimmed" size={size} aria-hidden="true">
+      <StyledText variant="dimmed" size="xs">
         {label}
       </StyledText>
 
       {count !== undefined && (
-        <StyledText size={size} fw={500} aria-hidden="true">
+        <StyledText variant="primary" size="xs" fw={600}>
           ({count})
         </StyledText>
       )}

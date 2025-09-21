@@ -3,13 +3,7 @@ import { ReactNode } from 'react';
 import { Text, TextProps } from '@mantine/core';
 
 export interface StyledTextProps extends Omit<TextProps, 'c'> {
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'dimmed'
-    | 'success'
-    | 'error'
-    | 'warning';
+  variant: 'primary' | 'secondary' | 'dimmed' | 'success' | 'error' | 'warning';
   children?: ReactNode;
 }
 

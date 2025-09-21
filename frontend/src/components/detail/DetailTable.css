@@ -36,7 +36,7 @@
   word-break: break-word;
   vertical-align: top;
   border-bottom: 1px solid var(--skin-border-subtle);
-  background: var(--skin-surface-base);
+  /* background: var(--skin-surface-base); */
   color: var(--skin-text-primary);
 }
 

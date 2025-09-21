@@ -112,7 +112,7 @@ export const Projects = () => {
               )}
             </Group>
 
-            <StyledText variant="dimmed" size="xs" mt="2px">
+            <StyledText variant="dimmed" size="xs">
               {project.path}
             </StyledText>
 
@@ -178,7 +178,9 @@ export const Projects = () => {
         <Group justify="space-between" align="center">
           <div>
             <Title order={2}>Project Manager</Title>
-            <StyledText variant="dimmed">Manage your projects</StyledText>
+            <StyledText variant="dimmed" size="md">
+              Manage your projects
+            </StyledText>
           </div>
 
           <Button

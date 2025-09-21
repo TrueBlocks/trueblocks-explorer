@@ -266,7 +266,9 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
     return (
       <Stack gap="md" align="center" style={{ padding: '2rem' }}>
         <Loader size="lg" />
-        <StyledText variant="dimmed">Loading contract functions...</StyledText>
+        <StyledText variant="dimmed" size="md">
+          Loading contract functions...
+        </StyledText>
       </Stack>
     );
   }
@@ -477,7 +479,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                                   : 'No result'}
                               </Text>
                               {result?.lastUpdated && (
-                                <StyledText variant="dimmed" size="xs" mt="xs">
+                                <StyledText variant="dimmed" size="xs">
                                   Updated:{' '}
                                   {new Date(
                                     result.lastUpdated,

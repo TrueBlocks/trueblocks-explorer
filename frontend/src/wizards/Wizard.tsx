@@ -109,7 +109,7 @@ export const Wizard = () => {
           mb="md"
           variant={
             state.data.isFirstTimeSetup || state.ui.activeStep === 2
-              ? undefined
+              ? 'primary'
               : 'warning'
           }
         >
@@ -119,7 +119,7 @@ export const Wizard = () => {
               ? 'All Issues Resolved'
               : 'Something is Wrong'}
         </StyledText>
-        <StyledText variant="dimmed" mb="xl">
+        <StyledText variant="dimmed" size="md">
           {state.data.isFirstTimeSetup
             ? 'Complete the following steps to get started'
             : state.ui.activeStep === 2

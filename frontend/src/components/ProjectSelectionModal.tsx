@@ -162,7 +162,7 @@ export const ProjectSelectionModal = ({
               ? 'Select or Create a Project'
               : 'Project Required'}
           </Title>
-          <StyledText variant="dimmed">
+          <StyledText variant="dimmed" size="md">
             {hasActiveProject
               ? 'Choose a different project or create a new one'
               : 'An active project with at least one address is required to continue'}
@@ -302,7 +302,6 @@ export const ProjectSelectionModal = ({
                                   project.isActive ? 'healthy' : 'inactive'
                                 }
                                 label=""
-                                size="xs"
                               />
                             </Group>
                           </Stack>

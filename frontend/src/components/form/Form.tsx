@@ -281,7 +281,7 @@ export const Form = <
           {title}
         </Title>
       )}
-      {description && <StyledText>{description}</StyledText>}
+      {description && <StyledText variant="primary">{description}</StyledText>}
       <form role="form" onSubmit={handleFormSubmit}>
         <Stack gap={compact ? 'xs' : 'md'}>
           {processedFields.map((field, index) => renderField(field, index))}

@@ -67,7 +67,7 @@ export const WizardForm = <T extends Record<string, unknown>>({
           {title}
         </Title>
       )}
-      {description && <StyledText>{description}</StyledText>}
+      {description && <StyledText variant="primary">{description}</StyledText>}
       {children ? (
         children
       ) : (

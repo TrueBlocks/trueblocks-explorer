@@ -1,6 +1,7 @@
+import { StyledButton, StyledText } from '@components';
 import { useWalletConnectContext } from '@contexts';
 import { useWallet } from '@hooks';
-import { Button, Group, Text } from '@mantine/core';
+import { Group } from '@mantine/core';
 
 export const WalletConnectButton = () => {
   const { isConnecting, handleConnect, handleDisconnect, formatAddress } =
@@ -10,36 +11,24 @@ export const WalletConnectButton = () => {
   if (isWalletConnected) {
     return (
       <Group gap="xs">
-        <Text size="sm" style={{ color: 'var(--skin-success)' }}>
+        <StyledText variant="success" size="sm">
           {formatAddress(walletAddress || '')}
-        </Text>
-        <Button
-          size="xs"
-          onClick={handleDisconnect}
-          style={{
-            backgroundColor: 'transparent',
-            color: 'var(--skin-error)',
-          }}
-          variant="transparent"
-        >
+        </StyledText>
+        <StyledButton size="xs" onClick={handleDisconnect} variant="warning">
           Disconnect
-        </Button>
+        </StyledButton>
       </Group>
     );
   }
 
   return (
-    <Button
+    <StyledButton
       onClick={handleConnect}
       loading={isConnecting}
       size="xs"
-      style={{
-        backgroundColor: 'var(--skin-primary)',
-        color: 'var(--skin-text-inverse)',
-      }}
-      variant="filled"
+      variant="primary"
     >
       Connect Wallet
-    </Button>
+    </StyledButton>
   );
 };

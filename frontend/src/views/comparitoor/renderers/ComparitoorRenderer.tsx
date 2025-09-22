@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 
+import { StyledText } from '@components';
 import {
   Box,
   Group,
   Paper,
   Stack,
-  Text,
   TextInput,
   Title,
   useMantineTheme,
@@ -173,20 +173,12 @@ export const ComparitoorRenderer = ({
                           })
                         }
                       >
-                        <Text
+                        <StyledText
+                          variant={isMissing ? 'error' : 'warning'}
                           size="sm"
-                          style={{
-                            fontFamily: 'monospace',
-                            color: isMissing
-                              ? theme.colors.red[6] // bright red
-                              : item.unique
-                                ? theme.colors.green[6] // bright green
-                                : undefined,
-                            background: 'transparent',
-                          }}
                         >
                           {isMissing ? '[missing]' : item.value}
-                        </Text>
+                        </StyledText>
                         {item.value === '100.100' && src.key === 'chifra' ? (
                           <MaterialIcon />
                         ) : null}
@@ -194,11 +186,11 @@ export const ComparitoorRenderer = ({
                     );
                   })}
                 </Stack>
-                <Text size="xs" mt={4} ta="center" style={{ flexShrink: 0 }}>
+                <StyledText variant="primary" size="xs">
                   {src.stats.appearances.toLocaleString()} appearances
                   <br />
                   {src.stats.unique} unique
-                </Text>
+                </StyledText>
               </Stack>
             </Paper>
           );

@@ -8,9 +8,9 @@ import {
 } from 'react';
 
 import { GetUserPreferences, SetUserPreferences } from '@app';
-import { FormField, WizardForm } from '@components';
+import { FormField, StyledText, WizardForm } from '@components';
 import { useIconSets } from '@hooks';
-import { ActionIcon, Card, Group, Tabs, Text } from '@mantine/core';
+import { ActionIcon, Card, Group, Tabs } from '@mantine/core';
 import { preferences } from '@models';
 import { LogError, useEmitters } from '@utils';
 
@@ -287,9 +287,9 @@ export const StepChainInfo = ({
       onCancel={onCancel}
     >
       <Group justify="space-between" mb="md">
-        <Text size="xl" fw={600}>
+        <StyledText variant="primary" size="xl" fw={600}>
           Chain Configuration
-        </Text>
+        </StyledText>
       </Group>
 
       <Card p="md" withBorder>

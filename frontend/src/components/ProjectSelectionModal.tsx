@@ -6,21 +6,13 @@ import {
   AddressInput,
   StatusIndicator,
   StyledBadge,
+  StyledButton,
   StyledModal,
   StyledText,
 } from '@components';
 import { useViewContext } from '@contexts';
 import { useActiveProject, useIconSets } from '@hooks';
-import {
-  Button,
-  Card,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Card, Group, Paper, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useLocation } from 'wouter';
 
@@ -193,7 +185,7 @@ export const ProjectSelectionModal = ({
                     {...form.getInputProps('name')}
                   />
                   <AddressInput form={form} fieldName="addresses" rows={4} />
-                  <Button
+                  <StyledButton
                     type="submit"
                     loading={loadingCreate}
                     disabled={isLoading}
@@ -201,7 +193,7 @@ export const ProjectSelectionModal = ({
                     fullWidth
                   >
                     Create Project
-                  </Button>
+                  </StyledButton>
                 </Stack>
               </form>
             </Stack>
@@ -215,7 +207,7 @@ export const ProjectSelectionModal = ({
                 <Title order={4}>Open Project</Title>
               </Group>
 
-              <Button
+              <StyledButton
                 variant="outline"
                 leftSection={<File size={16} />}
                 onClick={handleOpenFile}
@@ -224,13 +216,13 @@ export const ProjectSelectionModal = ({
                 fullWidth
               >
                 Browse for Project File
-              </Button>
+              </StyledButton>
 
               {projects.length > 0 && (
                 <>
-                  <Text size="sm" fw={600} mt="md">
+                  <StyledText variant="primary" size="sm" fw={600}>
                     Recent Projects
-                  </Text>
+                  </StyledText>
                   <Stack gap="sm">
                     {projects.map((project, index) => {
                       const isRecent =
@@ -247,24 +239,20 @@ export const ProjectSelectionModal = ({
                                 <File size={16} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <Group gap="xs" wrap="nowrap">
-                                    <Text
+                                    <StyledText
+                                      variant="primary"
                                       size="sm"
-                                      fw={project.isActive ? 600 : 500}
-                                      style={{
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                        whiteSpace: 'nowrap',
-                                      }}
+                                      fw={project.isActive ? 600 : 400}
                                     >
                                       {project.name}
-                                    </Text>
+                                    </StyledText>
                                     {project.isActive && (
-                                      <StyledBadge size="xs" variant="filled">
+                                      <StyledBadge variant="filled" size="xs">
                                         Active
                                       </StyledBadge>
                                     )}
                                     {isRecent && (
-                                      <StyledBadge size="xs" variant="light">
+                                      <StyledBadge variant="light" size="xs">
                                         Recent
                                       </StyledBadge>
                                     )}

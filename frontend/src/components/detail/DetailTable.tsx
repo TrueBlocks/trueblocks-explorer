@@ -1,4 +1,11 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
+
+import {
+  DetailField,
+  DetailPanelContainer,
+  DetailRow,
+  DetailSection,
+} from '@components';
 
 import './DetailTable.css';
 
@@ -20,41 +27,39 @@ export const DetailTable = ({
   const [collapsed, setCollapsed] = useState<Set<string>>(
     new Set(defaultCollapsedSections),
   );
-  const toggle = (name: string) => {
-    setCollapsed((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
-  };
+
   return (
-    <div className={`detail-table${className ? ` ${className}` : ''}`}>
-      {sections.map((s, sectionIndex) => {
-        const isCollapsed = collapsed.has(s.name);
-        return (
-          <Fragment key={s.name}>
-            <div
-              key={`${s.name}-header`}
-              onClick={() => toggle(s.name)}
-              className={`detail-section-header ${sectionIndex === 0 ? 'first-section-header' : ''}`}
-            >
-              <span style={{ fontSize: '0.75em' }}>
-                {isCollapsed ? '▶' : '▼'}
-              </span>{' '}
-              {s.name}
-            </div>
-            {!isCollapsed &&
-              s.rows.map((r, i) => (
-                <Fragment key={`${s.name}-${i}`}>
-                  <div className="detail-row-prompt">{r.label}</div>
-                  <div className="detail-row-value">{r.value}</div>
-                </Fragment>
-              ))}
-            <div className="detail-separator" key={`${s.name}-separator`} />
-          </Fragment>
-        );
-      })}
-    </div>
+    <DetailPanelContainer
+      className={`detail-panel-componentized${className ? ` ${className}` : ''}`}
+      title=""
+    >
+      {sections.map((section, sectionIndex) => (
+        <DetailSection
+          key={section.name}
+          title={section.name}
+          defaultCollapsed={collapsed.has(section.name)}
+          onToggle={(isCollapsed) => {
+            if (isCollapsed) {
+              setCollapsed((prev) => new Set([...prev, section.name]));
+            } else {
+              setCollapsed((prev) => {
+                const next = new Set(prev);
+                next.delete(section.name);
+                return next;
+              });
+            }
+          }}
+          headerProps={{
+            className: sectionIndex === 0 ? 'first-section-header' : undefined,
+          }}
+        >
+          {section.rows.map((row, rowIndex) => (
+            <DetailRow key={`${section.name}-${rowIndex}`}>
+              <DetailField label={row.label} value={row.value} type="custom" />
+            </DetailRow>
+          ))}
+        </DetailSection>
+      ))}
+    </DetailPanelContainer>
   );
 };

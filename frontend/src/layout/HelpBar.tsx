@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { GetLastFacet, GetMarkdown } from '@app';
-import { ChevronButton } from '@components';
+import { ChevronButton, StyledText } from '@components';
 import { useActiveProject, usePreferences } from '@hooks';
-import { AppShell, Stack, Text } from '@mantine/core';
+import { AppShell, Stack } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
 import { useLocation } from 'wouter';
 
@@ -78,7 +78,8 @@ export const HelpBar = () => {
         direction="right"
       />
       {helpCollapsed ? (
-        <Text
+        <StyledText
+          variant="primary"
           style={{
             transform: 'rotate(90deg)',
             whiteSpace: 'nowrap',
@@ -90,7 +91,7 @@ export const HelpBar = () => {
           }}
         >
           {markdown.split('\n')[0]?.replace('# ', '')}
-        </Text>
+        </StyledText>
       ) : (
         <Stack gap="sm" style={{ overflowY: 'auto' }}>
           <Markdown>{markdown}</Markdown>

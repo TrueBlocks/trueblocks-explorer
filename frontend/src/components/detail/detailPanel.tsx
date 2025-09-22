@@ -201,7 +201,7 @@ export const buildDetailPanelFromConfig = <T extends Record<string, unknown>>(
 
 /**
  * Builds detail panels from multiple DetailPanelConfig objects.
- * This creates a combined panel with multiple sections using proper DetailTable styling.
+ * This creates a combined panel with multiple sections using proper styling.
  */
 export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
   panelConfigs?: types.DetailPanelConfig[],

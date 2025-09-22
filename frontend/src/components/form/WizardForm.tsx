@@ -3,11 +3,12 @@ import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from 'react';
 import {
   FieldRenderer,
   FormField,
+  StyledButton,
   StyledText,
   usePreprocessedFields,
 } from '@components';
 import { useFormHotkeys } from '@components';
-import { Button, Group, Stack, Title } from '@mantine/core';
+import { Group, Stack, Title } from '@mantine/core';
 
 export interface WizardFormProps<T extends Record<string, unknown>> {
   children?: ReactNode;
@@ -76,25 +77,17 @@ export const WizardForm = <T extends Record<string, unknown>>({
             {processedFields.map((field, index) => renderField(field, index))}
             <Group justify="flex-end" mt="md">
               {onBack && (
-                <Button
-                  tabIndex={0}
-                  style={{
-                    backgroundColor: 'transparent',
-                    color: 'var(--skin-primary)',
-                    border: '1px solid var(--skin-border)',
-                  }}
-                  onClick={onBack}
-                >
+                <StyledButton tabIndex={0} variant="outline" onClick={onBack}>
                   Back
-                </Button>
+                </StyledButton>
               )}
-              <Button
+              <StyledButton
                 type="submit"
                 tabIndex={0}
                 ref={submitButtonRef as React.RefObject<HTMLButtonElement>}
               >
                 {submitText}
-              </Button>
+              </StyledButton>
             </Group>
           </Stack>
         </form>

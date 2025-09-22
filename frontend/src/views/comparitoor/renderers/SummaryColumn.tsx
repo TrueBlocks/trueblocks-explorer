@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { StyledSelect, StyledText } from '@components';
 import { BarChart } from '@mantine/charts';
-import { Divider, Paper, Select, Stack, Text, Title } from '@mantine/core';
+import { Divider, Paper, Stack, Title } from '@mantine/core';
 
 import type { AppearanceItem } from './ComparitoorRenderer';
 
@@ -96,13 +97,13 @@ export const SummaryColumn = ({
         <Title order={5} ta="center" mb={2}>
           Summary
         </Title>
-        <Text size="sm" mb={4}>
+        <StyledText variant="primary" size="sm">
           This summary compares the effectiveness and speed of each source. Use
           the dropdowns below to switch metrics and see how each provider
           performs in terms of total found, unique, missing, present, and
           completion speed.
-        </Text>
-        <Select
+        </StyledText>
+        <StyledSelect
           label="Effectiveness Metric"
           data={effectivenessOptions}
           value={effectivenessMetric}
@@ -144,15 +145,15 @@ export const SummaryColumn = ({
         ) : null}
         {active && rowValues ? (
           <>
-            <Text size="sm" mt={4} ta="center" fw={500}>
+            <StyledText variant="primary" size="sm" fw={600}>
               Selected: {active.blockNum}.{active.txid}
-            </Text>
+            </StyledText>
             <Stack gap={2} mt={2}>
               {rowValues.map((item, idx) => (
-                <Text size="sm" key={sourceKeys[idx]} ta="center">
+                <StyledText variant="primary" size="sm" key={sourceKeys[idx]}>
                   <b>{sourceKeys[idx]}</b>: {item?.value ?? '[missing]'}
                   {item?.missing ? ' (missing)' : ''}
-                </Text>
+                </StyledText>
               ))}
             </Stack>
           </>

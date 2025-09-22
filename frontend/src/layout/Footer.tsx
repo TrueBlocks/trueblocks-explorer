@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { GetFilename, GetOrgPreferences } from '@app';
-import { ChevronButton, Socials, getBarSize } from '@components';
+import { ChevronButton, Socials, StyledText, getBarSize } from '@components';
 import { useEvent, usePreferences } from '@hooks';
-import { AppShell, Flex, Text } from '@mantine/core';
+import { AppShell, Flex } from '@mantine/core';
 import { msgs, preferences, project } from '@models';
 
 export const Footer = () => {
@@ -40,9 +40,9 @@ export const Footer = () => {
         </Flex>
         <Flex align="center" justify="center" style={{ flex: 1 }}>
           {!chromeCollapsed && (
-            <Text size="sm" ta="center">
+            <StyledText variant="primary" size="sm" ta="center">
               {org.developerName} © 2025
-            </Text>
+            </StyledText>
           )}
         </Flex>
         <Flex align="center" justify="flex-end" style={{ flex: 1 }}>
@@ -68,6 +68,10 @@ export const FilePanel = () => {
   });
 
   return (
-    <>{status ? <Text>{status.name}</Text> : <Text>No Open Project</Text>}</>
+    <>
+      <StyledText variant="primary">
+        {status ? status.name : 'No Open Project'}
+      </StyledText>
+    </>
   );
 };

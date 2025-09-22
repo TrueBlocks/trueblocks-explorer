@@ -1,4 +1,5 @@
-import { Badge, Card, Image, Stack, Text } from '@mantine/core';
+import { StyledBadge, StyledText } from '@components';
+import { Card, Image, Stack } from '@mantine/core';
 import { model } from '@models';
 
 export interface GeneratorThumbProps {
@@ -41,9 +42,9 @@ export const GeneratorThumb = ({
             radius="xs"
             style={{ width: '100%', height: '100%' }}
           />
-          <Badge
-            size="xs"
+          <StyledBadge
             variant="light"
+            size="xs"
             style={{
               position: 'absolute',
               top: 2,
@@ -52,11 +53,11 @@ export const GeneratorThumb = ({
             }}
           >
             {item.series || '—'}
-          </Badge>
+          </StyledBadge>
         </div>
-        <Text size="10px" truncate>
+        <StyledText variant="primary" size="sm">
           {item.fileName.replace(/\.png$/i, '')}
-        </Text>
+        </StyledText>
       </Stack>
     </Card>
   );

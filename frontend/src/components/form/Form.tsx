@@ -3,11 +3,12 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import {
   FieldRenderer,
   FormField,
+  StyledButton,
   StyledText,
   usePreprocessedFields,
 } from '@components';
 import { useFormHotkeys } from '@components';
-import { Button, Group, Stack, Title } from '@mantine/core';
+import { Group, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 // Helper function to recursively extract initial values
@@ -287,38 +288,26 @@ export const Form = <
           {processedFields.map((field, index) => renderField(field, index))}
           <Group justify="flex-end" mt={compact ? 'xs' : 'md'}>
             {mode === 'display' && (
-              <Button
-                tabIndex={0}
-                style={{
-                  backgroundColor: 'transparent',
-                  color: 'var(--skin-primary)',
-                  border: '1px solid var(--skin-border)',
-                }}
-                onClick={handleEdit}
-              >
+              <StyledButton tabIndex={0} variant="outline" onClick={handleEdit}>
                 Edit
-              </Button>
+              </StyledButton>
             )}
             {mode === 'edit' && (
               <>
-                <Button
+                <StyledButton
                   tabIndex={0}
-                  style={{
-                    backgroundColor: 'transparent',
-                    color: 'var(--skin-primary)',
-                    border: '1px solid var(--skin-border)',
-                  }}
+                  variant="outline"
                   onClick={handleCancel}
                 >
                   Cancel
-                </Button>
-                <Button
+                </StyledButton>
+                <StyledButton
                   type="submit"
                   tabIndex={0}
                   ref={submitButtonRef as React.RefObject<HTMLButtonElement>}
                 >
                   Save
-                </Button>
+                </StyledButton>
               </>
             )}
           </Group>

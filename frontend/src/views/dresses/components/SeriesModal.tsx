@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { StyledBadge, StyledModal } from '@components';
-import { Badge, Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import {
+  StyledBadge,
+  StyledButton,
+  StyledModal,
+  StyledText,
+} from '@components';
+import { Group, Stack, TextInput } from '@mantine/core';
 import { dalle } from '@models';
 
 interface SeriesModalProps {
@@ -98,11 +103,11 @@ export const SeriesModal = ({
       size="lg"
     >
       <Stack gap="sm">
-        <Text size="sm">
+        <StyledText variant="primary" size="sm">
           {mode === 'edit'
             ? 'Update fields and save.'
             : 'Enter series details.'}
-        </Text>
+        </StyledText>
         <TextInput
           label="Suffix"
           value={suffix}
@@ -123,32 +128,15 @@ export const SeriesModal = ({
         />
         <Group gap="xs">
           <StyledBadge variant="light">{`Existing: ${existing.length}`}</StyledBadge>
-          {isDup && (
-            <Badge
-              style={{
-                borderColor: 'var(--skin-error)',
-                backgroundColor: 'var(--skin-error-background)',
-                color: 'var(--skin-error)',
-              }}
-            >
-              Duplicate
-            </Badge>
-          )}
+          {isDup && <StyledBadge variant="error">Duplicate</StyledBadge>}
         </Group>
         <Group justify="flex-end" mt="md">
-          <Button
-            style={{
-              backgroundColor: 'transparent',
-              color: 'var(--skin-text-dimmed)',
-              border: 'none',
-            }}
-            onClick={onClose}
-          >
+          <StyledButton variant="transparent" onClick={onClose}>
             Cancel
-          </Button>
-          <Button disabled={!canSubmit} onClick={handleSubmit}>
+          </StyledButton>
+          <StyledButton disabled={!canSubmit} onClick={handleSubmit}>
             {mode === 'edit' ? 'Save' : 'Submit'}
-          </Button>
+          </StyledButton>
         </Group>
       </Stack>
     </StyledModal>

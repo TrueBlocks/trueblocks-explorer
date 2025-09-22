@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { GetAppPreferences, SetAppPreferences } from '@app';
-import { StyledModal } from '@components';
-import { Button, Checkbox, Group, Stack, Text } from '@mantine/core';
+import { StyledButton, StyledModal, StyledText } from '@components';
+import { Checkbox, Group, Stack } from '@mantine/core';
 import { LogError, updateAppPreferencesSafely } from '@utils';
 
 interface ConfirmModalProps {
@@ -76,7 +76,9 @@ export const ConfirmModal = ({
       }}
     >
       <Stack gap="md">
-        <Text size="sm">{message}</Text>
+        <StyledText variant="primary" size="sm">
+          {message}
+        </StyledText>
 
         <Checkbox
           label="Don't ask again"
@@ -85,17 +87,12 @@ export const ConfirmModal = ({
         />
 
         <Group justify="flex-end" gap="sm">
-          <Button
-            style={{
-              backgroundColor: 'transparent',
-              color: 'var(--skin-text-dimmed)',
-              border: 'none',
-            }}
-            onClick={handleCancel}
-          >
+          <StyledButton variant="transparent" onClick={handleCancel}>
             {cancelButtonText}
-          </Button>
-          <Button onClick={handleConfirm}>{confirmButtonText}</Button>
+          </StyledButton>
+          <StyledButton onClick={handleConfirm}>
+            {confirmButtonText}
+          </StyledButton>
         </Group>
       </Stack>
     </StyledModal>

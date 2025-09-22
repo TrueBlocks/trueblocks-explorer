@@ -1,16 +1,19 @@
 import React, { useCallback, useState } from 'react';
 
-import { StyledBadge, StyledModal, StyledText } from '@components';
+import {
+  StyledBadge,
+  StyledButton,
+  StyledModal,
+  StyledText,
+} from '@components';
 import {
   Alert,
-  Button,
   Card,
   Code,
   Divider,
   Group,
   LoadingOverlay,
   Stack,
-  Text,
 } from '@mantine/core';
 import {
   PreparedTransaction,
@@ -121,7 +124,9 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
       onClose={onClose}
       title={
         <Group gap="sm">
-          <Text fw={600}>Review Transaction</Text>
+          <StyledText variant="primary" size="md" fw={600}>
+            Review Transaction
+          </StyledText>
           <StyledBadge variant="light">
             {transactionData.function.name}
           </StyledBadge>
@@ -131,13 +136,12 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
       centered
     >
       <Stack gap="md">
-        {/* Function Details */}
         <Card withBorder>
           <Stack gap="sm">
             <Group justify="space-between">
-              <Text size="sm" fw={600}>
+              <StyledText variant="primary" size="sm" fw={600}>
                 Function
-              </Text>
+              </StyledText>
               <StyledBadge
                 variant={
                   transactionData.function.stateMutability === 'payable'
@@ -148,9 +152,9 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
                 {transactionData.function.stateMutability}
               </StyledBadge>
             </Group>
-            <Text size="lg" fw={600}>
+            <StyledText variant="primary" size="lg" fw={600}>
               {transactionData.function.name}
-            </Text>
+            </StyledText>
             <StyledText variant="dimmed" size="sm">
               Contract: {transactionData.to}
             </StyledText>
@@ -161,15 +165,15 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
         {transactionData.inputs.length > 0 && (
           <Card withBorder>
             <Stack gap="sm">
-              <Text size="sm" fw={600}>
+              <StyledText variant="primary" size="sm" fw={600}>
                 Parameters
-              </Text>
+              </StyledText>
               {transactionData.inputs.map((input, index) => (
                 <Group key={index} justify="space-between">
                   <Group gap="xs">
-                    <Text size="sm" fw={600}>
+                    <StyledText variant="primary" size="sm" fw={600}>
                       {input.name}
-                    </Text>
+                    </StyledText>
                     <StyledBadge variant="light" size="xs">
                       {input.type}
                     </StyledBadge>
@@ -186,13 +190,13 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
           <Card withBorder>
             <Group justify="space-between">
               <Group gap="xs">
-                <Text size="sm" fw={600}>
+                <StyledText variant="primary" size="sm" fw={600}>
                   ETH Value
-                </Text>
+                </StyledText>
               </Group>
-              <Text size="lg" fw={600}>
+              <StyledText variant="primary" size="lg" fw={600}>
                 {formatEther(transactionData.value)} ETH
-              </Text>
+              </StyledText>
             </Group>
           </Card>
         )}
@@ -202,25 +206,31 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
           <Card withBorder>
             <Stack gap="sm">
               <Group gap="xs">
-                <Text size="sm" fw={600}>
+                <StyledText variant="primary" size="sm" fw={600}>
                   Gas Estimation
-                </Text>
+                </StyledText>
               </Group>
               <Group justify="space-between">
-                <Text size="sm">Gas Limit</Text>
-                <Text size="sm" fw={600}>
+                <StyledText variant="primary" size="sm">
+                  Gas Limit
+                </StyledText>
+                <StyledText variant="primary" size="sm" fw={600}>
                   {parseInt(preparedTx.gas || '0').toLocaleString()}
-                </Text>
+                </StyledText>
               </Group>
               <Group justify="space-between">
-                <Text size="sm">Gas Price</Text>
-                <Text size="sm" fw={600}>
+                <StyledText variant="primary" size="sm">
+                  Gas Price
+                </StyledText>
+                <StyledText variant="primary" size="sm" fw={600}>
                   {formatGwei(preparedTx.gasPrice || '0')} Gwei
-                </Text>
+                </StyledText>
               </Group>
               <Group justify="space-between">
-                <Text size="sm">Max Fee</Text>
-                <Text size="sm" fw={600}>
+                <StyledText variant="primary" size="sm">
+                  Max Fee
+                </StyledText>
+                <StyledText variant="primary" size="sm" fw={600}>
                   ~
                   {formatEther(
                     (
@@ -229,7 +239,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
                     ).toString(),
                   )}{' '}
                   ETH
-                </Text>
+                </StyledText>
               </Group>
             </Stack>
           </Card>
@@ -239,9 +249,9 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
         {preparedTx && (
           <Card withBorder>
             <Stack gap="sm">
-              <Text size="sm" fw={600}>
+              <StyledText variant="primary" size="sm" fw={600}>
                 Transaction Data
-              </Text>
+              </StyledText>
               <Code block>
                 {preparedTx.data.slice(0, 100)}
                 {preparedTx.data.length > 100 && '...'}
@@ -275,24 +285,20 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
 
         {/* Action Buttons */}
         <Group justify="flex-end" gap="sm">
-          <Button
-            style={{
-              backgroundColor: 'transparent',
-              color: 'var(--skin-text-dimmed)',
-              border: 'none',
-            }}
+          <StyledButton
+            variant="transparent"
             onClick={onClose}
             disabled={confirming}
           >
             Cancel
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
             onClick={handleConfirm}
             disabled={!preparedTx || preparing}
             loading={confirming}
           >
             Sign & Send Transaction
-          </Button>
+          </StyledButton>
         </Group>
       </Stack>
     </StyledModal>

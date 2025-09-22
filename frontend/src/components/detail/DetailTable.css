@@ -26,7 +26,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: top;
-  border-bottom: 1px solid var(--skin-border-subtle);
   background: var(--skin-surface-subtle);
 }
 
@@ -35,7 +34,6 @@
   overflow-x: auto;
   word-break: break-word;
   vertical-align: top;
-  border-bottom: 1px solid var(--skin-border-subtle);
   color: var(--skin-text-primary);
 }
 
@@ -61,3 +59,34 @@
   overflow: auto;
   border: 1px solid var(--skin-border-default);
 }
+
+/* Componentized DetailPanel styles */
+.detail-panel-componentized {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-row {
+  display: grid;
+  width: 100%;
+  gap: 0;
+}
+
+.detail-row[data-columns='1'] {
+  grid-template-columns: 25% 75%;
+}
+
+.detail-row .detail-row-prompt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-row .detail-row-value {
+  overflow-x: auto;
+  word-break: break-word;
+}
+
+/* Title now reuses .detail-section-header (optionally with .first-section-header) */

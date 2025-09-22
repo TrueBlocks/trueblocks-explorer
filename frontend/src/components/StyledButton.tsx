@@ -1,4 +1,8 @@
+import { MouseEventHandler, ReactNode, RefObject } from 'react';
+
 import { Button, ButtonProps } from '@mantine/core';
+
+import './StyledButton.css';
 
 export interface StyledButtonProps extends Omit<ButtonProps, 'variant'> {
   variant?:
@@ -7,15 +11,46 @@ export interface StyledButtonProps extends Omit<ButtonProps, 'variant'> {
     | 'light'
     | 'outline'
     | 'default'
-    | 'transparent';
+    | 'transparent'
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'menu'
+    | 'menu-selected';
+  children?: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  type?: 'button' | 'submit' | 'reset';
+  tabIndex?: number;
+  title?: string;
+  ref?: RefObject<HTMLButtonElement>;
+  disabled?: boolean;
+  loading?: boolean;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  leftSection?: ReactNode;
+  fullWidth?: boolean;
 }
 
 export const StyledButton = ({
   variant = 'filled',
-  ...props
+  children,
+  onClick,
+  type,
+  tabIndex,
+  title,
+  ref,
+  disabled,
+  loading,
+  size,
+  leftSection,
+  fullWidth,
+  ...restProps
 }: StyledButtonProps) => {
   const getStyles = () => {
     switch (variant) {
+      case 'menu':
+      case 'menu-selected':
+        // These variants use CSS classes for proper hover handling
+        return {};
       case 'filled':
         return {
           backgroundColor: 'var(--skin-primary)',
@@ -27,17 +62,17 @@ export const StyledButton = ({
         };
       case 'subtle':
         return {
-          backgroundColor: 'transparent',
-          color: 'var(--skin-primary)',
+          backgroundColor: 'var(--skin-surface-subtle)',
+          color: 'var(--mantine-color-text)',
           border: 'none',
           '&:hover': {
-            backgroundColor: 'var(--skin-surface-subtle)',
+            backgroundColor: 'var(--skin-surface-hover)',
           },
         };
       case 'light':
         return {
-          backgroundColor: 'var(--skin-surface-raised)',
-          color: 'var(--skin-text-primary)',
+          backgroundColor: 'var(--skin-surface-light)',
+          color: 'var(--mantine-color-text)',
           border: 'none',
           '&:hover': {
             backgroundColor: 'var(--skin-surface-hover)',
@@ -46,8 +81,8 @@ export const StyledButton = ({
       case 'outline':
         return {
           backgroundColor: 'transparent',
-          color: 'var(--skin-text-primary)',
-          border: '1px solid var(--skin-border-default)',
+          color: 'var(--skin-primary)',
+          border: '1px solid var(--skin-border)',
           '&:hover': {
             backgroundColor: 'var(--skin-surface-subtle)',
           },
@@ -55,8 +90,8 @@ export const StyledButton = ({
       case 'default':
         return {
           backgroundColor: 'var(--skin-surface-base)',
-          color: 'var(--skin-text-primary)',
-          border: '1px solid var(--skin-border-subtle)',
+          color: 'var(--mantine-color-text)',
+          border: '1px solid var(--skin-border)',
           '&:hover': {
             backgroundColor: 'var(--skin-surface-hover)',
           },
@@ -64,10 +99,37 @@ export const StyledButton = ({
       case 'transparent':
         return {
           backgroundColor: 'transparent',
-          color: 'var(--mantine-color-text)',
+          color: 'var(--skin-text-dimmed)',
           border: 'none',
           '&:hover': {
             backgroundColor: 'var(--skin-surface-subtle)',
+          },
+        };
+      case 'primary':
+        return {
+          backgroundColor: 'var(--skin-primary)',
+          color: 'var(--skin-text-inverse)',
+          border: 'none',
+          '&:hover': {
+            backgroundColor: 'var(--skin-primary-hover)',
+          },
+        };
+      case 'success':
+        return {
+          backgroundColor: 'var(--skin-success)',
+          color: 'var(--skin-text-inverse)',
+          border: 'none',
+          '&:hover': {
+            backgroundColor: 'var(--skin-success-hover)',
+          },
+        };
+      case 'warning':
+        return {
+          backgroundColor: 'var(--skin-warning)',
+          color: 'var(--skin-text-inverse)',
+          border: 'none',
+          '&:hover': {
+            backgroundColor: 'var(--skin-warning-hover)',
           },
         };
       default:
@@ -75,18 +137,45 @@ export const StyledButton = ({
           backgroundColor: 'var(--skin-primary)',
           color: 'var(--skin-text-inverse)',
           border: 'none',
+          '&:hover': {
+            backgroundColor: 'var(--skin-primary-hover)',
+          },
         };
+    }
+  };
+
+  const getClassName = () => {
+    switch (variant) {
+      case 'menu':
+        return 'styled-button-menu';
+      case 'menu-selected':
+        return 'styled-button-menu-selected';
+      default:
+        return '';
     }
   };
 
   return (
     <Button
-      {...props}
+      onClick={onClick}
+      type={type}
+      tabIndex={tabIndex}
+      title={title}
+      ref={ref}
+      disabled={disabled}
+      loading={loading}
+      size={size}
+      leftSection={leftSection}
+      fullWidth={fullWidth}
       variant="unstyled"
+      className={getClassName()}
       style={{
         ...getStyles(),
-        ...props.style,
+        ...restProps.style,
       }}
-    />
+      {...restProps}
+    >
+      {children}
+    </Button>
   );
 };

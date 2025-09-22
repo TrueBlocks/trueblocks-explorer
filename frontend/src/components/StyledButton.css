@@ -1,0 +1,48 @@
+/* StyledButton.css */
+
+/* Menu button variants */
+.styled-button-menu {
+  background-color: transparent !important;
+  color: var(--skin-text-dimmed) !important;
+  border: none !important;
+}
+
+.styled-button-menu:hover:not(:disabled) {
+  background-color: var(--skin-surface-subtle) !important;
+  color: var(--skin-text-primary) !important;
+}
+
+.styled-button-menu-selected {
+  background-color: var(--skin-surface-raised) !important;
+  color: var(--skin-text-primary) !important;
+  border-radius: var(--mantine-radius-sm) !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.styled-button-menu-selected:hover:not(:disabled) {
+  background-color: var(--skin-surface-raised) !important;
+  color: var(--skin-text-primary) !important;
+}
+
+/* Dark mode specific styling */
+[data-mantine-color-scheme='dark'] .styled-button-menu {
+  background-color: transparent !important;
+  color: var(--skin-text-dimmed) !important;
+}
+
+[data-mantine-color-scheme='dark'] .styled-button-menu:hover:not(:disabled) {
+  background-color: var(--skin-surface-subtle) !important;
+  color: var(--skin-text-primary) !important;
+}
+
+[data-mantine-color-scheme='dark'] .styled-button-menu-selected {
+  background-color: var(--skin-surface-raised) !important;
+  color: var(--skin-text-primary) !important;
+}
+
+[data-mantine-color-scheme='dark']
+  .styled-button-menu-selected:hover:not(:disabled) {
+  background-color: var(--skin-surface-raised) !important;
+  color: var(--skin-text-primary) !important;
+}

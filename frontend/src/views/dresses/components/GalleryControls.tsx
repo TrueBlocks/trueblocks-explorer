@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
-import { Group, NumberInput, Select } from '@mantine/core';
+import { StyledSelect } from '@components';
+import { Group, NumberInput } from '@mantine/core';
 import { types } from '@models';
 
 import { useGalleryStore } from '../store';
@@ -46,7 +47,7 @@ export function GalleryControls({ disabled = false }: GalleryControlsProps) {
 
   return (
     <Group gap="md">
-      <Select
+      <StyledSelect
         label="Sort by"
         data={[
           { value: 'series', label: 'Series' },

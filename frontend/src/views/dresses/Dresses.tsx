@@ -12,6 +12,7 @@ import { GetDalleDressPage, Reload } from '@app';
 import { DalleDressCrud } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
+import { createDetailPanel } from '@components';
 import { useFiltering, useSorting } from '@contexts';
 import {
   DataFacetConfig,
@@ -33,7 +34,6 @@ import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { ViewRoute, assertRouteConsistency } from '../routes';
-import { createDetailPanel } from '../utils/detailPanel';
 import { SeriesModal } from './components';
 import { useSeriesModal } from './hooks/seriesModal';
 import { renderers } from './renderers';

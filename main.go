@@ -32,7 +32,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed frontend/dist/* frontend/src/assets/help/* frontend/src/assets/views/* wails.json
+//go:embed frontend/src/assets/help/* frontend/src/assets/views/* wails.json
 var assets embed.FS
 
 func main() {

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { GetAvailableSkins } from '@app';
-import { StyledSelect } from '@components';
+import { StyledButton, StyledSelect } from '@components';
 import { usePreferences } from '@hooks';
-import { Button } from '@mantine/core';
 import { skin } from '@models';
 import { Log } from '@utils';
 
@@ -47,21 +46,17 @@ export const SkinSwitcher = ({ collapsed = false }: SkinSwitcherProps) => {
     const currentSkin = availableSkins.find((skin) => skin.name === lastSkin);
 
     return (
-      <Button
+      <StyledButton
+        variant="transparent"
         size="xs"
         w={34}
         h={34}
         px={0}
         onClick={handleCycleSkin}
         title={`Current skin: ${currentSkin?.displayName || lastSkin}. Click to cycle.`}
-        style={{
-          backgroundColor: 'transparent',
-          color: 'var(--mantine-color-text)',
-        }}
-        variant="transparent"
       >
         🎨
-      </Button>
+      </StyledButton>
     );
   }
 

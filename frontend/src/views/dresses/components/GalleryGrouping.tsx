@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { FromTemplate } from '@app';
-import { Box, SimpleGrid, Text, Title } from '@mantine/core';
+import { StyledText } from '@components';
+import { Box, SimpleGrid, Title } from '@mantine/core';
 import { model, types } from '@models';
 
 import { getItemKey } from '../store';
@@ -86,18 +87,9 @@ export const GalleryGrouping = ({
             marginBottom: '16px',
           }}
         >
-          <Text
-            size="md"
-            style={{
-              fontFamily: 'monospace',
-              fontWeight: 600,
-              color: 'var(--skin-text-primary)',
-              fontSize: '16px',
-              lineHeight: 1.4,
-            }}
-          >
+          <StyledText variant="primary" size="md">
             {descriptiveText}
-          </Text>
+          </StyledText>
         </Box>
       )}
       <SimpleGrid cols={columns} spacing={6} verticalSpacing={6}>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { AddAddressesToProject } from '@app';
-import { StyledModal, StyledText } from '@components';
+import { StyledButton, StyledModal, StyledText } from '@components';
 import { useActiveProject, useIconSets } from '@hooks';
-import { Button, Group, Paper, Stack, Title } from '@mantine/core';
+import { Group, Paper, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { LogError } from '@utils';
 
@@ -94,24 +94,20 @@ export const AddAddressModal = ({
               </Group>
               <AddressInput form={form} fieldName="addresses" rows={6} />
               <Group justify="flex-end" gap="sm">
-                <Button
-                  style={{
-                    backgroundColor: 'transparent',
-                    color: 'var(--skin-primary)',
-                    border: '1px solid var(--skin-border)',
-                  }}
+                <StyledButton
+                  variant="outline"
                   onClick={onCancel}
                   disabled={loading}
                 >
                   Cancel
-                </Button>
-                <Button
+                </StyledButton>
+                <StyledButton
                   type="submit"
                   loading={loading}
                   leftSection={<Create size={16} />}
                 >
                   Add Addresses
-                </Button>
+                </StyledButton>
               </Group>
             </Stack>
           </form>

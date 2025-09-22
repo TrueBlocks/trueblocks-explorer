@@ -6,10 +6,11 @@ import {
   LightDarkToggle,
   ProjectContextBar,
   SkinSwitcher,
+  StyledText,
   WalletConnectButton,
 } from '@components';
 import { usePreferences } from '@hooks';
-import { AppShell, Group, Text } from '@mantine/core';
+import { AppShell, Group } from '@mantine/core';
 
 export const Header = () => {
   const [baseName, setBaseName] = useState('');
@@ -26,9 +27,9 @@ export const Header = () => {
   return (
     <AppShell.Header>
       <Group justify="space-between" p="md" h="100%">
-        <Text size="36px" fw={600}>
+        <StyledText variant="primary" size="36px" fw={600}>
           {baseName}
-        </Text>
+        </StyledText>
         <ProjectContextBar />
         <Group justify="flex-end" align="center" gap="xs">
           <DebugToggle />

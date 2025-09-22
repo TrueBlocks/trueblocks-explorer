@@ -1,4 +1,5 @@
-import { Box, Card, Image, Stack, Text } from '@mantine/core';
+import { StyledText } from '@components';
+import { Box, Card, Image, Stack } from '@mantine/core';
 import { model } from '@models';
 import { getDisplayAddress } from '@utils';
 
@@ -62,9 +63,9 @@ export const DalleDressCard = ({
             style={{ width: '100%', height: '100%' }}
           />
         </Box>
-        <Text size="xs" fw={500} truncate>
+        <StyledText variant="primary" size="xs" fw={600}>
           {getDisplayAddress(item.original || '')}
-        </Text>
+        </StyledText>
       </Stack>
     </Card>
   );

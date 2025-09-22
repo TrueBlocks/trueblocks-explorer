@@ -85,34 +85,8 @@ export const Wizard = () => {
 
   return (
     <Container size="md" mt="xl">
-      <Card
-        shadow="sm"
-        p="lg"
-        radius="md"
-        withBorder
-        styles={{
-          root: {
-            borderColor:
-              state.data.isFirstTimeSetup || state.ui.activeStep === 2
-                ? undefined
-                : 'var(--skin-warning)',
-            borderWidth:
-              state.data.isFirstTimeSetup || state.ui.activeStep === 2
-                ? undefined
-                : '2px',
-          },
-        }}
-      >
-        <StyledText
-          size="xl"
-          fw={700}
-          mb="md"
-          variant={
-            state.data.isFirstTimeSetup || state.ui.activeStep === 2
-              ? 'primary'
-              : 'warning'
-          }
-        >
+      <Card shadow="sm" p="lg" radius="md" withBorder>
+        <StyledText variant="primary" size="xl" fw={600}>
           {state.data.isFirstTimeSetup
             ? welcomeText
             : state.ui.activeStep === 2

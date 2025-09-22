@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { AddAddressToProject, ConvertToAddress, SetActiveAddress } from '@app';
-import { StyledModal, StyledText } from '@components';
-import { useActiveProject, useIconSets } from '@hooks';
 import {
-  ActionIcon,
-  Button,
-  Group,
-  Select,
-  Stack,
-  TextInput,
-  Tooltip,
-} from '@mantine/core';
+  StyledButton,
+  StyledModal,
+  StyledSelect,
+  StyledText,
+} from '@components';
+import { useActiveProject, useIconSets } from '@hooks';
+import { ActionIcon, Group, Stack, TextInput, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { base } from '@models';
 import { Log, LogError, addressToHex, getDisplayAddress } from '@utils';
@@ -117,7 +114,7 @@ export const AddressSelector = () => {
   return (
     <>
       <Group gap="xs">
-        <Select
+        <StyledSelect
           value={activeAddress}
           onChange={handleAddressChange}
           data={addressOptions}
@@ -165,7 +162,7 @@ export const AddressSelector = () => {
             />
 
             <Group justify="flex-end">
-              <Button
+              <StyledButton
                 variant="light"
                 onClick={() => {
                   setAddModalOpened(false);
@@ -173,10 +170,10 @@ export const AddressSelector = () => {
                 }}
               >
                 Cancel
-              </Button>
-              <Button type="submit" loading={loading}>
+              </StyledButton>
+              <StyledButton type="submit" loading={loading}>
                 Add Address
-              </Button>
+              </StyledButton>
             </Group>
           </Stack>
         </form>

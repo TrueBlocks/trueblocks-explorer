@@ -30,30 +30,30 @@ export const Socials = () => {
   return (
     <Flex gap="sm" align="center">
       <Action
+        icon="Website"
         variant="subtle"
         size="sm"
-        icon="Website"
         onClick={() => handleClick(`https://${appName}`)}
         title="Visit our website"
       />
       <Action
+        icon="Github"
         variant="subtle"
         size="sm"
-        icon="Github"
         onClick={() => handleClick(`${github}`)}
         title="Check our GitHub"
       />
       <Action
+        icon="Twitter"
         variant="subtle"
         size="sm"
-        icon="Twitter"
         onClick={() => handleClick(`https://x.com/${twitter}`)}
         title="Follow us on X/Twitter"
       />
       <Action
+        icon="Email"
         variant="subtle"
         size="sm"
-        icon="Email"
         onClick={handleEmailClick}
         title="Contact us via email"
       />

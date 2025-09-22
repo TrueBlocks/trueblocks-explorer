@@ -1,6 +1,6 @@
-import { ChevronButton, getBarSize } from '@components';
+import { ChevronButton, StyledButton, getBarSize } from '@components';
 import { useEnabledMenuItems, useIconSets, usePreferences } from '@hooks';
-import { AppShell, Button, Stack } from '@mantine/core';
+import { AppShell, Stack } from '@mantine/core';
 import { MenuItem } from 'src/Menu';
 import { useLocation } from 'wouter';
 
@@ -30,9 +30,9 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
     const Icon = icons[label as keyof typeof icons] || icons.Missing;
 
     return (
-      <Button
+      <StyledButton
+        variant={currentLocation === path ? 'menu-selected' : 'menu'}
         key={path}
-        variant={currentLocation === path ? 'filled' : 'subtle'}
         fullWidth
         h={36}
         w={menuCollapsed ? 36 : '100%'}
@@ -41,11 +41,6 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
         px={menuCollapsed ? 0 : 'md'}
         style={{
           marginLeft: menuCollapsed ? -9 : 0,
-          ...(currentLocation === path && {
-            backgroundColor: 'var(--skin-surface-raised)',
-            color: 'var(--skin-text-primary)',
-            borderRadius: 'var(--mantine-radius-sm)',
-          }),
         }}
         disabled={disabled}
         onClick={() => {
@@ -53,7 +48,7 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
         }}
       >
         {!menuCollapsed && label}
-      </Button>
+      </StyledButton>
     );
   };
 

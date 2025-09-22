@@ -19,4 +19,3 @@ export { Khedra } from './khedra';
 export { Projects } from './projects';
 
 export * from './settings';
-export * from './utils';

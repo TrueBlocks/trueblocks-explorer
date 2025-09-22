@@ -58,7 +58,7 @@ import { {{if and (not $hasCrud) (not (or $isExports $isChunks) )}}crud, {{end}}
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { ViewRoute, assertRouteConsistency } from '../routes';
-import { createDetailPanel } from '../utils/detailPanel';
+import { createDetailPanel } from '@components';
 {{- if ne .RendererTypes "" }}
 import { renderers } from './renderers';
 {{- end }}

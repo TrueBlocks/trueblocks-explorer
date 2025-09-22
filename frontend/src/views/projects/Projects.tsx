@@ -1,16 +1,14 @@
 import { useState } from 'react';
 
-import { Action, StyledBadge, StyledText } from '@components';
+import { Action, StyledBadge, StyledButton, StyledText } from '@components';
 import { useViewContext } from '@contexts';
 import { ProjectInfo, useActiveProject, useIconSets } from '@hooks';
 import {
-  Button,
   Card,
   Container,
   Grid,
   Group,
   Stack,
-  Text,
   TextInput,
   Title,
 } from '@mantine/core';
@@ -106,7 +104,7 @@ export const Projects = () => {
                 {project.name}
               </Title>
               {project.isActive && (
-                <StyledBadge size="xs" variant="filled">
+                <StyledBadge variant="filled" size="xs">
                   Active
                 </StyledBadge>
               )}
@@ -117,9 +115,9 @@ export const Projects = () => {
             </StyledText>
 
             {project.description && (
-              <Text size="xs" mt="xs" lineClamp={2}>
+              <StyledText variant="primary" size="sm">
                 {project.description}
-              </Text>
+              </StyledText>
             )}
 
             <Group gap="xs" mt="xs">
@@ -127,7 +125,7 @@ export const Projects = () => {
                 Last opened: {new Date(project.lastOpened).toLocaleDateString()}
               </StyledText>
               {project.addresses && project.addresses.length > 0 && (
-                <StyledBadge size="xs" variant="light">
+                <StyledBadge variant="light" size="xs">
                   {project.addresses.length} address
                   {project.addresses.length > 1 ? 'es' : ''}
                 </StyledBadge>
@@ -183,13 +181,13 @@ export const Projects = () => {
             </StyledText>
           </div>
 
-          <Button
+          <StyledButton
             leftSection={<Create size={16} />}
             onClick={() => setShowCreateForm(!showCreateForm)}
             variant={showCreateForm ? 'light' : 'filled'}
           >
             {showCreateForm ? 'Cancel' : 'New Project'}
-          </Button>
+          </StyledButton>
         </Group>
 
         {/* Error Display */}
@@ -234,14 +232,14 @@ export const Projects = () => {
                 />
 
                 <Group gap="xs">
-                  <Button
+                  <StyledButton
                     type="submit"
                     loading={creating}
                     leftSection={<Create size={16} />}
                   >
                     Create Project
-                  </Button>
-                  <Button
+                  </StyledButton>
+                  <StyledButton
                     variant="light"
                     onClick={() => {
                       setShowCreateForm(false);
@@ -249,7 +247,7 @@ export const Projects = () => {
                     }}
                   >
                     Cancel
-                  </Button>
+                  </StyledButton>
                 </Group>
               </Stack>
             </form>
@@ -273,17 +271,17 @@ export const Projects = () => {
           </Title>
 
           {loading ? (
-            <Text>Loading projects...</Text>
+            <StyledText variant="primary">Loading projects...</StyledText>
           ) : filteredProjects.length === 0 ? (
             <Card shadow="sm" padding="xl" radius="md" withBorder>
               <Stack align="center" gap="md">
                 <File size={48} opacity={0.5} />
                 <div style={{ textAlign: 'center' }}>
-                  <Text size="lg" fw={600}>
+                  <StyledText variant="primary" size="lg" fw={600}>
                     {searchQuery
                       ? 'No projects match your search'
                       : 'No open projects'}
-                  </Text>
+                  </StyledText>
                   <StyledText variant="dimmed" size="sm">
                     {searchQuery
                       ? 'Try a different search term or clear the search'
@@ -291,12 +289,12 @@ export const Projects = () => {
                   </StyledText>
                 </div>
                 {!searchQuery && (
-                  <Button
+                  <StyledButton
                     leftSection={<Create size={16} />}
                     onClick={() => setShowCreateForm(true)}
                   >
                     Create Your First Project
-                  </Button>
+                  </StyledButton>
                 )}
               </Stack>
             </Card>

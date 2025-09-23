@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { StyledButton, StyledSelect, StyledText } from '@components';
-import { useIconSets } from '@hooks';
+import { useIconSets, usePreferences } from '@hooks';
 import {
   Center,
-  Container,
+  Grid,
   Group,
   Image,
   ScrollArea,
@@ -29,10 +29,12 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
   const hasScrolledOnMount = useRef(false);
   const icons = useIconSets();
   const SpeakIcon = icons.Speak;
+  const { chromeCollapsed } = usePreferences();
 
   const {
     orig,
     series,
+    sortMode,
     getSelectionKey,
     getSelectedItem,
     setSelection,
@@ -104,9 +106,14 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
     hasEnhancedPrompt: !!selectedItem?.enhancedPrompt,
   });
 
-  const handleGenerate = useCallback(() => {
-    if (!selectedItem?.original || !selectedItem.series) return;
-  }, [selectedItem?.original, selectedItem?.series]);
+  const handleButtonClick = useCallback(
+    (label: string) => {
+      if (!selectedItem?.original || !selectedItem.series) return;
+      Log('generator:button:' + label.toLowerCase());
+      // TODO: Implement actual button click logic
+    },
+    [selectedItem?.original, selectedItem?.series],
+  );
 
   const handleThumbSelect = useCallback(
     (item: model.DalleDress) => {
@@ -206,9 +213,14 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
   }, [selectedKey]); // This will only scroll once due to the ref guard
 
   const thumbItems = useMemo(() => {
-    if (!orig) return galleryItems;
-    return galleryItems.filter((g) => g.original === orig);
-  }, [galleryItems, orig]);
+    if (sortMode === 'series') {
+      if (!series) return galleryItems;
+      return galleryItems.filter((g) => g.series === series);
+    } else {
+      if (!orig) return galleryItems;
+      return galleryItems.filter((g) => g.original === orig);
+    }
+  }, [galleryItems, orig, series, sortMode]);
 
   useEffect(() => {
     if (thumbRowRef.current) {
@@ -252,250 +264,251 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
   }, [selectedItem, galleryItems, orig]);
 
   return (
-    <Container size="xl" py="md">
-      <Stack gap="sm">
-        <Group align="flex-end" gap="sm" wrap="nowrap">
-          <StyledSelect
-            label="Address"
-            placeholder="Select address"
-            searchable
-            value={orig || ''}
-            data={addressOptions.map((a) => ({ value: a, label: a }))}
-            onChange={handleAddressChange}
-            w={380}
-            size="xs"
-          />
-          <StyledSelect
-            label="Series"
-            placeholder="Series"
-            value={series || ''}
-            data={seriesOptions.map((s) => ({
-              value: s,
-              label: s,
-            }))}
-            onChange={handleSeriesChange}
-            w={220}
-            size="xs"
-            disabled={!seriesOptions.length}
-          />
-          <StyledButton
-            size="xs"
-            variant="filled"
-            onClick={handleGenerate}
-            disabled={!selectedItem?.original || !selectedItem?.series}
-            style={{ alignSelf: 'flex-end' }}
-          >
-            Generate
-          </StyledButton>
-        </Group>
-        <div
-          style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}
-        >
-          <div style={{ flex: '0 0 55%', maxWidth: '55%' }}>
-            <Title order={6}>Image</Title>
-            <div
-              style={{
-                border: '1px solid var(--skin-border-default)',
-                background: 'var(--skin-surface-sunken)',
-                marginTop: 4,
-                width: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {displayImageUrl ? (
-                <Image
-                  alt="Generated"
-                  fit="contain"
-                  radius="sm"
-                  src={displayImageUrl}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'contain',
-                  }}
-                  onError={() => Log('generator:image:error')}
-                />
-              ) : (
-                <Center h={160}>
-                  <StyledText variant="dimmed" size="xs">
-                    No image
-                  </StyledText>
-                </Center>
-              )}
-            </div>
-          </div>
-          <div
-            style={{
-              flex: '0 0 35%',
-              maxWidth: '35%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              paddingLeft: 12,
-            }}
-          >
-            <div>
-              <Title order={6}>Attributes</Title>
-              <ScrollArea
-                h={140}
-                scrollbarSize={4}
-                type="auto"
-                offsetScrollbars
-                style={{
-                  marginTop: 4,
-                  border: '1px solid var(--skin-border-default)',
-                  background: 'var(--skin-surface-sunken)',
-                  padding: 6,
-                }}
+    <div
+      style={{
+        padding: '16px',
+      }}
+    >
+      <Grid gutter="md">
+        {!chromeCollapsed && <Grid.Col span={1}></Grid.Col>}
+        <Grid.Col span={chromeCollapsed ? 7 : 6}>
+          <Stack gap="md">
+            <Group align="flex-end" gap="sm" wrap="nowrap">
+              <StyledSelect
+                label="Address"
+                placeholder="Select address"
+                searchable
+                value={orig || ''}
+                data={addressOptions.map((a) => ({ value: a, label: a }))}
+                onChange={handleAddressChange}
+                style={{ flex: 1 }}
+                size="xs"
+              />
+              <StyledSelect
+                label="Series"
+                placeholder="Series"
+                value={series || ''}
+                data={seriesOptions.map((s) => ({
+                  value: s,
+                  label: s,
+                }))}
+                onChange={handleSeriesChange}
+                style={{ flex: 1 }}
+                size="xs"
+                disabled={!seriesOptions.length}
+              />
+              <StyledButton
+                size="xs"
+                variant="primary"
+                onClick={() => handleButtonClick('generate')}
+                disabled={!selectedItem?.original || !selectedItem.series}
               >
-                <Stack
-                  gap={2}
-                  style={{ fontFamily: 'monospace', fontSize: 11 }}
-                >
-                  {attributes.length === 0 && (
-                    <StyledText variant="dimmed" size="xs">
-                      No attributes
-                    </StyledText>
-                  )}
-                  {attributes.map((a, i) => (
-                    <StyledText variant="secondary" size="sm" key={i}>
-                      {a.name}:{' '}
-                      {a.value || a.selector || a.number || a.count || ''}
-                    </StyledText>
-                  ))}
-                </Stack>
-              </ScrollArea>
-            </div>
+                Generate
+              </StyledButton>
+            </Group>
+
             <div>
-              <Title order={6}>Prompt</Title>
-              <ScrollArea
-                h={160}
-                scrollbarSize={4}
-                type="auto"
-                offsetScrollbars
-                style={{
-                  marginTop: 4,
-                  border: '1px solid var(--skin-border-default)',
-                  background: 'var(--skin-surface-sunken)',
-                  padding: 6,
-                }}
-              >
-                <StyledText variant="secondary" size="xs">
-                  {selectedItem?.prompt || ''}
-                </StyledText>
-              </ScrollArea>
-            </div>
-            {!!selectedItem?.enhancedPrompt && (
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Title order={6} style={{ flexGrow: 1 }}>
-                    Enhanced Prompt
-                  </Title>
-                  <StyledButton
-                    variant="subtle"
-                    size="xs"
-                    loading={speaking}
-                    onClick={speak}
-                    leftSection={<SpeakIcon size={12} />}
-                  >
-                    Speak
-                  </StyledButton>
-                </div>
-                {audioUrl && (
-                  <audio
-                    ref={audioRef}
-                    src={audioUrl}
-                    controls
-                    style={{ width: '100%', marginTop: 6 }}
-                    onPlay={() => Log('readtome:play:start')}
-                    onEnded={() => Log('readtome:play:end')}
-                    onError={() => Log('readtome:play:error')}
-                    autoPlay
-                  />
-                )}
-                <ScrollArea
-                  h={160}
-                  scrollbarSize={4}
-                  type="auto"
-                  offsetScrollbars
-                  style={{
-                    marginTop: 4,
-                    border: '1px solid var(--skin-border-default)',
-                    background: 'var(--skin-surface-sunken)',
-                    padding: 6,
-                  }}
-                >
-                  <StyledText variant="secondary" size="xs">
-                    {selectedItem?.enhancedPrompt || ''}
-                  </StyledText>
-                </ScrollArea>
-              </div>
-            )}
-            <div>
-              <Title order={6}>Thumbnails</Title>
+              <Title order={6}>Image</Title>
               <div
                 style={{
-                  display: 'flex',
-                  gap: 4,
-                  overflowX: 'auto',
-                  padding: '4px 2px',
+                  border: '1px solid var(--skin-border-default)',
+                  background: 'var(--skin-surface-sunken)',
                   marginTop: 4,
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
-                ref={thumbRowRef}
-                tabIndex={0}
-                onKeyDown={handleKey}
               >
-                {thumbItems.map((g) => {
-                  const itemKey = getItemKey(g);
-                  return (
-                    <div
-                      key={itemKey}
-                      data-key={itemKey}
-                      style={{ width: 72, flex: '0 0 auto' }}
-                    >
-                      <DalleDressCard
-                        item={g}
-                        onClick={handleThumbSelect}
-                        onDoubleClick={handleThumbDouble}
-                        selected={itemKey === getSelectionKey()}
-                      />
-                    </div>
-                  );
-                })}
+                {displayImageUrl ? (
+                  <Image
+                    alt="Generated"
+                    fit="contain"
+                    radius="sm"
+                    src={displayImageUrl}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                      objectFit: 'contain',
+                    }}
+                    onError={() => Log('generator:image:error')}
+                  />
+                ) : (
+                  <Center h={160}>
+                    <StyledText variant="dimmed" size="xs">
+                      No image
+                    </StyledText>
+                  </Center>
+                )}
               </div>
             </div>
-          </div>
-          <div
-            style={{
-              flex: '0 0 10%',
-              maxWidth: '10%',
-              display: 'flex',
-              flexDirection: 'column',
-              paddingLeft: 12,
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {['Claim', 'Mint', 'Burn', 'Trade', 'Eject', 'Merch'].map(
-                (label) => (
-                  <StyledButton
-                    key={label}
-                    variant="light"
-                    size="xs"
-                    fullWidth
-                    onClick={() =>
-                      Log('generator:button:' + label.toLowerCase())
-                    }
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={chromeCollapsed ? 5 : 4}>
+          <Grid gutter="sm">
+            <Grid.Col span={10}>
+              <Stack gap="sm">
+                <div>
+                  <Title order={6}>Attributes</Title>
+                  <ScrollArea
+                    h={80}
+                    scrollbarSize={4}
+                    type="auto"
+                    offsetScrollbars
+                    style={{
+                      marginTop: 4,
+                      border: '1px solid var(--skin-border-default)',
+                      background: 'var(--skin-surface-sunken)',
+                      padding: 6,
+                    }}
                   >
-                    {label}
-                  </StyledButton>
-                ),
-              )}
-            </div>
-          </div>
-        </div>
-      </Stack>
-    </Container>
+                    <Stack
+                      gap={2}
+                      style={{ fontFamily: 'monospace', fontSize: 11 }}
+                    >
+                      {attributes.length === 0 && (
+                        <StyledText variant="dimmed" size="xs">
+                          No attributes
+                        </StyledText>
+                      )}
+                      {attributes.map((a, i) => (
+                        <StyledText variant="secondary" size="sm" key={i}>
+                          {a.name}:{' '}
+                          {a.value || a.selector || a.number || a.count || ''}
+                        </StyledText>
+                      ))}
+                    </Stack>
+                  </ScrollArea>
+                </div>
+
+                <div>
+                  <Title order={6}>Prompt</Title>
+                  <ScrollArea
+                    h={90}
+                    scrollbarSize={4}
+                    type="auto"
+                    offsetScrollbars
+                    style={{
+                      marginTop: 4,
+                      border: '1px solid var(--skin-border-default)',
+                      background: 'var(--skin-surface-sunken)',
+                      padding: 6,
+                    }}
+                  >
+                    <StyledText variant="secondary" size="xs">
+                      {selectedItem?.prompt || ''}
+                    </StyledText>
+                  </ScrollArea>
+                </div>
+
+                {!!selectedItem?.enhancedPrompt && (
+                  <div>
+                    <div
+                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                    >
+                      <Title order={6} style={{ flexGrow: 1 }}>
+                        Enhanced Prompt
+                      </Title>
+                      <StyledButton
+                        variant="primary"
+                        size="xs"
+                        loading={speaking}
+                        onClick={() => {
+                          Log('generator:button:speak');
+                          speak();
+                        }}
+                        leftSection={<SpeakIcon size={12} />}
+                      >
+                        Speak
+                      </StyledButton>
+                    </div>
+                    {audioUrl && (
+                      <audio
+                        ref={audioRef}
+                        src={audioUrl}
+                        controls
+                        style={{ width: '100%', marginTop: 6 }}
+                        onPlay={() => Log('readtome:play:start')}
+                        onEnded={() => Log('readtome:play:end')}
+                        onError={() => Log('readtome:play:error')}
+                        autoPlay
+                      />
+                    )}
+                    <ScrollArea
+                      h={90}
+                      scrollbarSize={4}
+                      type="auto"
+                      offsetScrollbars
+                      style={{
+                        marginTop: 4,
+                        border: '1px solid var(--skin-border-default)',
+                        background: 'var(--skin-surface-sunken)',
+                        padding: 6,
+                      }}
+                    >
+                      <StyledText variant="secondary" size="xs">
+                        {selectedItem?.enhancedPrompt || ''}
+                      </StyledText>
+                    </ScrollArea>
+                  </div>
+                )}
+
+                <div>
+                  <Title order={6}>Thumbnails</Title>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 4,
+                      overflowX: 'auto',
+                      padding: '4px 2px',
+                      marginTop: 4,
+                    }}
+                    ref={thumbRowRef}
+                    tabIndex={0}
+                    onKeyDown={handleKey}
+                  >
+                    {thumbItems.map((g) => {
+                      const itemKey = getItemKey(g);
+                      return (
+                        <div
+                          key={itemKey}
+                          data-key={itemKey}
+                          style={{ width: 72, flex: '0 0 auto' }}
+                        >
+                          <DalleDressCard
+                            item={g}
+                            onClick={handleThumbSelect}
+                            onDoubleClick={handleThumbDouble}
+                            selected={itemKey === getSelectionKey()}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Stack gap="xs">
+                <Title order={6}>Actions</Title>
+                {['Claim', 'Mint', 'Burn', 'Trade', 'Eject', 'Merch'].map(
+                  (label) => (
+                    <StyledButton
+                      key={label}
+                      size="xs"
+                      variant="primary"
+                      fullWidth
+                      onClick={() => handleButtonClick(label)}
+                    >
+                      {label}
+                    </StyledButton>
+                  ),
+                )}
+              </Stack>
+            </Grid.Col>
+          </Grid>
+        </Grid.Col>
+        {!chromeCollapsed && <Grid.Col span={1}></Grid.Col>}
+      </Grid>
+    </div>
   );
 };

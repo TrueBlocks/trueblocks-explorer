@@ -7,6 +7,7 @@ type ViewConfig struct {
 	Facets     map[string]FacetConfig  `json:"facets"`
 	Actions    map[string]ActionConfig `json:"actions"`
 	FacetOrder []string                `json:"facetOrder"`
+	MenuOrder  int                     `json:"menuOrder,omitempty"`
 }
 
 // FacetConfig represents configuration for a single facet within a view

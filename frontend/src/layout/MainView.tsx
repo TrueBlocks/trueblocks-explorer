@@ -18,7 +18,7 @@ function isComponentMenuItem(
 export const MainView = () => {
   const [currentLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const enabledMenuItems = useEnabledMenuItems();
+  const { items: enabledMenuItems } = useEnabledMenuItems();
 
   useEffect(() => {
     if (scrollContainerRef.current) {

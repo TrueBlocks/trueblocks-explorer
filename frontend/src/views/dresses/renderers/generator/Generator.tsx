@@ -417,9 +417,7 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                           speak();
                         }}
                         leftSection={<SpeakIcon size={12} />}
-                      >
-                        Speak
-                      </StyledButton>
+                      />
                     </div>
                     {audioUrl && (
                       <audio

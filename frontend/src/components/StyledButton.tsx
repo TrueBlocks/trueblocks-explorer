@@ -137,6 +137,9 @@ export const StyledButton = ({
     }
   };
 
+  // If there are no children but there's a leftSection (icon), center it
+  const shouldCenterIcon = !children && leftSection;
+
   return (
     <Button
       onClick={onClick}
@@ -147,17 +150,22 @@ export const StyledButton = ({
       disabled={disabled}
       loading={loading}
       size={size}
-      leftSection={leftSection}
+      leftSection={shouldCenterIcon ? undefined : leftSection}
       fullWidth={fullWidth}
       variant="unstyled"
       className={getClassName()}
       style={{
         ...getStyles(),
+        ...(shouldCenterIcon && {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }),
         ...restProps.style,
       }}
       {...restProps}
     >
-      {children}
+      {shouldCenterIcon ? leftSection : children}
     </Button>
   );
 };

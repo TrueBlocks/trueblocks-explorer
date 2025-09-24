@@ -2880,6 +2880,7 @@ export namespace types {
 	    facets: Record<string, FacetConfig>;
 	    actions: Record<string, ActionConfig>;
 	    facetOrder: string[];
+	    menuOrder?: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ViewConfig(source);
@@ -2892,6 +2893,7 @@ export namespace types {
 	        this.facets = this.convertValues(source["facets"], FacetConfig, true);
 	        this.actions = this.convertValues(source["actions"], ActionConfig, true);
 	        this.facetOrder = source["facetOrder"];
+	        this.menuOrder = source["menuOrder"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

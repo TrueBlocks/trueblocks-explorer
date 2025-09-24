@@ -17,13 +17,13 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
     setChromeCollapsed,
   } = usePreferences();
 
-  const enabledMenuItems = useEnabledMenuItems();
-  const topMenuItems = enabledMenuItems.filter(
-    (item) => item.position === 'top',
-  );
-  const botMenuItems = enabledMenuItems.filter(
-    (item) => item.position === 'bottom',
-  );
+  const { items: enabledMenuItems, isLoading } = useEnabledMenuItems();
+
+  // Use empty array while loading to prevent rendering incomplete menu
+  const menuItems = isLoading ? [] : enabledMenuItems;
+
+  const topMenuItems = menuItems.filter((item) => item.position === 'top');
+  const botMenuItems = menuItems.filter((item) => item.position === 'bottom');
   const icons = useIconSets();
 
   const renderMenuItem = ({ label, path }: MenuItem) => {

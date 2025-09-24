@@ -113,6 +113,62 @@ type WailsConfig struct {
 	Github string `json:"github"`
 }
 
+// AppConfig represents the structure of the .create-local-app.json configuration file
+type AppConfig struct {
+	Organization  string                     `json:"Organization"`
+	ProjectName   string                     `json:"ProjectName"`
+	Github        string                     `json:"Github"`
+	Domain        string                     `json:"Domain"`
+	Template      string                     `json:"Template"`
+	PreserveFiles []string                   `json:"PreserveFiles"`
+	ViewConfig    map[string]ViewConfigEntry `json:"ViewConfig,omitempty"`
+}
+
+// ViewConfigEntry represents configuration for a single view in .create-local-app.json
+type ViewConfigEntry struct {
+	MenuOrder      int             `json:"menuOrder,omitempty"`
+	Disabled       bool            `json:"disabled,omitempty"`
+	DisabledFacets map[string]bool `json:"disabledFacets,omitempty"`
+}
+
+// LoadAppConfig reads and parses the .create-local-app.json file from the root directory
+func LoadAppConfig() (*AppConfig, error) {
+	configPath := ".create-local-app.json"
+
+	// Check if file exists
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		// Return default config if file doesn't exist
+		return &AppConfig{
+			Organization:  "TrueBlocks, LLC",
+			ProjectName:   "explorer",
+			Github:        "github.com/TrueBlocks/trueblocks-core",
+			Domain:        "trueblocks.io",
+			Template:      "default",
+			PreserveFiles: []string{},
+			ViewConfig:    make(map[string]ViewConfigEntry),
+		}, nil
+	}
+
+	// Read file
+	data, err := os.ReadFile(configPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read .create-local-app.json: %w", err)
+	}
+
+	// Parse JSON
+	var config AppConfig
+	if err := json.Unmarshal(data, &config); err != nil {
+		return nil, fmt.Errorf("failed to parse .create-local-app.json: %w", err)
+	}
+
+	// Ensure ViewConfig is initialized
+	if config.ViewConfig == nil {
+		config.ViewConfig = make(map[string]ViewConfigEntry)
+	}
+
+	return &config, nil
+}
+
 func LoadIdentifiers(embedFS embed.FS) {
 	configData, err := embedFS.ReadFile("wails.json")
 	if err != nil {

@@ -39,8 +39,8 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeOrders(cfg)
-	types.SetDisablements(cfg)
+	types.NormalizeFields(cfg)
+	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 

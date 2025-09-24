@@ -38,7 +38,8 @@ export const useAppHotkeys = (): void => {
     setSkin,
     toggleTheme,
   } = usePreferences();
-  const enabledMenuItems = useEnabledMenuItems();
+  const { items: enabledMenuItems, isLoading: menuLoading } =
+    useEnabledMenuItems();
 
   // Helper function to get current facet for the current route
   const vR = currentLocation.replace(/^\/+/, '');
@@ -240,12 +241,19 @@ export const useAppHotkeys = (): void => {
     },
   ];
 
-  // Dynamically assign hotkeys based on menu order and rules
+  // Dynamically assign hotkeys based on visual menu order
   // Build hotkey registry: key -> handler
   const hotkeyRegistry = useMemo(() => {
     const registry: Record<string, (e: KeyboardEvent) => void> = {};
+
+    // Don't build hotkeys while menu is still loading
+    if (menuLoading) {
+      return registry;
+    }
+
     let idx = 1;
     enabledMenuItems.forEach((item) => {
+      // Special hotkeys that don't use sequential numbering
       if (item.path === '/wizard') {
         registry['mod+w'] = (e: KeyboardEvent) => {
           handleHotkey(
@@ -259,7 +267,7 @@ export const useAppHotkeys = (): void => {
             e,
           );
         };
-        return; // do not increment idx, no alt variant
+        return; // Don't increment idx for wizard
       }
       if (item.path === '/settings') {
         registry['mod+comma'] = (e: KeyboardEvent) => {
@@ -286,12 +294,30 @@ export const useAppHotkeys = (): void => {
             e,
           );
         };
-        return; // Do not increment idx so numbering unaffected
+        return; // Don't increment idx for settings
       }
+      if (item.path === '/khedra') {
+        registry['mod+k'] = (e: KeyboardEvent) => {
+          handleHotkey(
+            {
+              type: item.type || 'navigation',
+              hotkey: 'mod+k',
+              path: item.path,
+              label: `Navigate to ${item.label}`,
+              action: item.action,
+            },
+            e,
+          );
+        };
+        return; // Don't increment idx for khedra
+      }
+
+      // Sequential numbering for all other items based on their visual position
       let hotkey: string;
       if (idx <= 9) hotkey = `mod+${idx}`;
       else if (idx === 10) hotkey = 'mod+0';
       else hotkey = `mod+shift+${idx - 10}`;
+
       registry[hotkey] = (e: KeyboardEvent) => {
         handleHotkey(
           {
@@ -304,6 +330,7 @@ export const useAppHotkeys = (): void => {
           e,
         );
       };
+
       if (idx <= 10) {
         const altHotkey = idx === 10 ? 'alt+0' : `alt+${idx}`;
         registry[altHotkey] = (e: KeyboardEvent) => {
@@ -319,10 +346,10 @@ export const useAppHotkeys = (): void => {
           );
         };
       }
-      idx++;
+      idx++; // Increment for next visual position
     });
     return registry;
-  }, [enabledMenuItems, handleHotkey]);
+  }, [enabledMenuItems, handleHotkey, menuLoading]);
 
   // Edit (text) hotkeys (allow native behavior)
   const editHotkeys = [

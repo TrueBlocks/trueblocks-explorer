@@ -14,11 +14,11 @@ func TestSeriesDeleteUndeleteActions(t *testing.T) {
 	// Setup payload
 	payload := &types.Payload{
 		Collection: "dresses",
-		DataFacet:  DalleDressSeries,
+		DataFacet:  DressesSeries,
 	}
 
 	// Create collection
-	coll := NewDalleDressCollection(payload)
+	coll := NewDressesCollection(payload)
 
 	// Create a test series - this will work because it doesn't require file operations in this context
 	testSeries := &Series{
@@ -53,7 +53,7 @@ func TestSeriesDeleteUndeleteActions(t *testing.T) {
 
 func TestSeriesViewConfig(t *testing.T) {
 	// Test that the view config includes the new actions
-	coll := &DalleDressCollection{}
+	coll := &DressesCollection{}
 	config, err := coll.GetConfig()
 	if err != nil {
 		t.Fatalf("Failed to get config: %v", err)

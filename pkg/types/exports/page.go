@@ -24,6 +24,7 @@ import (
 // TODO: The slices should be slices to pointers
 type ExportsPage struct {
 	Facet         types.DataFacet `json:"facet"`
+	Approvals     []Approval      `json:"approvals"`
 	Assets        []Asset         `json:"assets"`
 	Balances      []Balance       `json:"balances"`
 	Logs          []Log           `json:"logs"`
@@ -150,6 +151,25 @@ func (c *ExportsCollection) GetPage(
 		} else {
 
 			page.Transactions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+		}
+		page.IsFetching = facet.IsFetching()
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsApprovals:
+		facet := c.approvalsFacet
+		var filterFunc func(*Approval) bool
+		if filter != "" {
+			filterFunc = func(item *Approval) bool {
+				return c.matchesApprovalFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Approval, sort sdk.SortSpec) error {
+			return nil // sdk.SortApprovals(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+
+			page.Approvals, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
@@ -517,6 +537,13 @@ func (c *ExportsCollection) matchesTraceFilter(item *Trace, filter string) bool 
 }
 
 func (c *ExportsCollection) matchesReceiptFilter(item *Receipt, filter string) bool {
+	_ = item    // delint
+	_ = filter  // delint
+	return true // strings.Contains(strings.ToLower(item.TransactionHash.Hex()), filter) ||
+	// strings.Contains(strings.ToLower(item.ContractAddress.Hex()), filter)
+}
+
+func (c *ExportsCollection) matchesApprovalFilter(item *Approval, filter string) bool {
 	_ = item    // delint
 	_ = filter  // delint
 	return true // strings.Contains(strings.ToLower(item.TransactionHash.Hex()), filter) ||

@@ -1,0 +1,8 @@
+[settings]
+    class = "DalleDress"
+    doc_group = "001-Route"
+    doc_descr = "multi-facet generative art collection for DalleDress"
+    doc_route = "700-dresses"
+    attributes = ""
+    produced_by = "dresses"
+    disable_go = true

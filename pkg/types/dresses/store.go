@@ -51,7 +51,7 @@ var (
 	seriesStoreMu sync.Mutex
 )
 
-func (c *DalleDressCollection) getLogsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Log] {
+func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Log] {
 	logsStoreMu.Lock()
 	defer logsStoreMu.Unlock()
 
@@ -93,7 +93,7 @@ func (c *DalleDressCollection) getLogsStore(payload *types.Payload, facet types.
 	return theStore
 }
 
-func (c *DalleDressCollection) getDalleDressStore(payload *types.Payload, facet types.DataFacet) *store.Store[DalleDress] {
+func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet types.DataFacet) *store.Store[DalleDress] {
 	dressesStoreMu.Lock()
 	defer dressesStoreMu.Unlock()
 
@@ -170,7 +170,7 @@ func (c *DalleDressCollection) getDalleDressStore(payload *types.Payload, facet 
 	return theStore
 }
 
-func (c *DalleDressCollection) getDatabasesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Database] {
+func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Database] {
 	databasesStoreMu.Lock()
 	defer databasesStoreMu.Unlock()
 
@@ -212,7 +212,7 @@ func (c *DalleDressCollection) getDatabasesStore(payload *types.Payload, facet t
 	return theStore
 }
 
-func (c *DalleDressCollection) getSeriesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Series] {
+func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Series] {
 	seriesStoreMu.Lock()
 	defer seriesStoreMu.Unlock()
 
@@ -267,21 +267,21 @@ func (c *DalleDressCollection) getSeriesStore(payload *types.Payload, facet type
 	return theStore
 }
 
-func (c *DalleDressCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *DressesCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
 	_ = chain
 	_ = address
 	name := ""
 	switch dataFacet {
-	case DalleDressGenerator:
-		name = "dresses-dresses"
-	case DalleDressSeries:
+	case DressesGenerator:
+		name = "dresses-dalledress"
+	case DressesSeries:
 		name = "dresses-series"
-	case DalleDressDatabases:
+	case DressesDatabases:
 		name = "dresses-databases"
-	case DalleDressEvents:
+	case DressesEvents:
 		name = "dresses-logs"
-	case DalleDressGallery:
-		name = "dresses-dresses"
+	case DressesGallery:
+		name = "dresses-dalledress"
 	default:
 		return ""
 	}
@@ -289,11 +289,11 @@ func (c *DalleDressCollection) GetStoreName(dataFacet types.DataFacet, chain, ad
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*DalleDressCollection)
+	collections   = make(map[store.CollectionKey]*DressesCollection)
 	collectionsMu sync.Mutex
 )
 
-func GetDalleDressCollection(payload *types.Payload) *DalleDressCollection {
+func GetDressesCollection(payload *types.Payload) *DressesCollection {
 	collectionsMu.Lock()
 	defer collectionsMu.Unlock()
 
@@ -305,14 +305,14 @@ func GetDalleDressCollection(payload *types.Payload) *DalleDressCollection {
 		return collection
 	}
 
-	collection := NewDalleDressCollection(payload)
+	collection := NewDressesCollection(payload)
 	collections[key] = collection
 	return collection
 }
 
 // EXISTING_CODE
 // getGalleryItems returns cached items performing incremental scan per series
-func (c *DalleDressCollection) getGalleryItems() (items []*DalleDress) {
+func (c *DressesCollection) getGalleryItems() (items []*DalleDress) {
 	root := storage.OutputDir()
 	seriesList := make([]*DalleDress, 0, 512)
 

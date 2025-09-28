@@ -25,6 +25,7 @@ import (
 // EXISTING_CODE
 // EXISTING_CODE
 
+type Approval = sdk.Approval
 type Asset = sdk.Asset
 type Balance = sdk.Balance
 type Log = sdk.Log
@@ -36,6 +37,9 @@ type Transfer = sdk.Transfer
 type Withdrawal = sdk.Withdrawal
 
 var (
+	approvalsStore   = make(map[string]*store.Store[Approval])
+	approvalsStoreMu sync.Mutex
+
 	assetsStore   = make(map[string]*store.Store[Asset])
 	assetsStoreMu sync.Mutex
 
@@ -63,6 +67,49 @@ var (
 	withdrawalsStore   = make(map[string]*store.Store[Withdrawal])
 	withdrawalsStoreMu sync.Mutex
 )
+
+func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Approval] {
+	approvalsStoreMu.Lock()
+	defer approvalsStoreMu.Unlock()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	chain := payload.Chain
+	address := payload.Address
+	storeKey := getStoreKey(chain, address)
+	theStore := approvalsStore[storeKey]
+	if theStore == nil {
+		queryFunc := func(ctx *output.RenderCtx) error {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil
+		}
+
+		processFunc := func(item interface{}) *Approval {
+			if it, ok := item.(*Approval); ok {
+				return it
+			}
+			return nil
+		}
+
+		mappingFunc := func(item *Approval) (key interface{}, includeInMap bool) {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil, false
+		}
+
+		storeName := c.GetStoreName(facet, chain, address)
+		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+
+		approvalsStore[storeKey] = theStore
+	}
+
+	return theStore
+}
 
 func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Asset] {
 	assetsStoreMu.Lock()
@@ -555,6 +602,8 @@ func (c *ExportsCollection) GetStoreName(dataFacet types.DataFacet, chain, addre
 		name = "exports-transfers"
 	case ExportsTransactions:
 		name = "exports-transactions"
+	case ExportsApprovals:
+		name = "exports-approvals"
 	case ExportsWithdrawals:
 		name = "exports-withdrawals"
 	case ExportsAssets:

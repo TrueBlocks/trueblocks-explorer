@@ -35,7 +35,7 @@ import { Debugger, LogError, useErrorHandler } from '@utils';
 import { ViewRoute, assertRouteConsistency } from '../routes';
 import { renderers } from './renderers';
 
-const ROUTE = 'comparitoor' as ViewRoute;
+const ROUTE: ViewRoute = 'comparitoor';
 export const Comparitoor = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

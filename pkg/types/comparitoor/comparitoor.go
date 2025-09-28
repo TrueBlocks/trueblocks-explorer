@@ -65,7 +65,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 
 	c.chifraFacet = facets.NewFacet(
 		ComparitoorChifra,
-		isTrueBlock,
+		isChifra,
 		isDupTransaction(),
 		c.getTransactionStore(payload, ComparitoorChifra),
 		"comparitoor",
@@ -106,7 +106,7 @@ func isComparitoor(item *Transaction) bool {
 	// EXISTING_CODE
 }
 
-func isTrueBlock(item *Transaction) bool {
+func isChifra(item *Transaction) bool {
 	// EXISTING_CODE
 	return true
 	// EXISTING_CODE

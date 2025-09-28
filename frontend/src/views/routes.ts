@@ -5,6 +5,7 @@ import { LogError } from '@utils';
 export const VIEW_ROUTES = [
   'abis',
   'chunks',
+  'comparitoor',
   'contracts',
   'exports',
   'monitors',

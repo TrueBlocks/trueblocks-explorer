@@ -12,15 +12,15 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
-// GetConfig returns the ViewConfig for the DalleDress view
-func (c *DalleDressCollection) GetConfig() (*types.ViewConfig, error) {
+// GetConfig returns the ViewConfig for the Dresses view
+func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 	facets := map[string]types.FacetConfig{
 		"generator": {
 			Name:          "Generator",
-			Store:         "dresses",
+			Store:         "dalledress",
 			IsForm:        true,
 			DividerBefore: false,
-			Fields:        getDressesFields(),
+			Fields:        getDalledressFields(),
 			Actions:       []string{},
 			HeaderActions: []string{},
 			RendererTypes: "facet",
@@ -57,10 +57,10 @@ func (c *DalleDressCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 		"gallery": {
 			Name:          "Gallery",
-			Store:         "dresses",
+			Store:         "dalledress",
 			IsForm:        true,
 			DividerBefore: false,
-			Fields:        getDressesFields(),
+			Fields:        getDalledressFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "facet",
@@ -85,29 +85,7 @@ func (c *DalleDressCollection) GetConfig() (*types.ViewConfig, error) {
 	return cfg, nil
 }
 
-func getLogsFields() []types.FieldConfig {
-	return []types.FieldConfig{
-		// EXISTING_CODE
-		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 8},
-		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 11},
-		{Key: "logIndex", Label: "Log Index", ColumnLabel: "Log Index", DetailLabel: "Log Index", Section: "Log Overview", Width: 80, Order: 3, DetailOrder: 3},
-		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Contract Address", Formatter: "address", Section: "Log Overview", Width: 340, Order: 4, DetailOrder: 1},
-		{Key: "topic0", Label: "Topic0", ColumnLabel: "Topic0", DetailLabel: "Topic 0 (Event Signature)", Formatter: "hash", Section: "Topics", Width: 340, Order: 5, DetailOrder: 4},
-		{Key: "topic1", Label: "Topic1", ColumnLabel: "Topic1", DetailLabel: "Topic 1", Formatter: "hash", Section: "Topics", Width: 340, Order: 6, DetailOrder: 5},
-		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Order: 7},
-		{Key: "data", Label: "Data", DetailLabel: "Data", Section: "Log Overview", NoTable: true, DetailOrder: 2},
-		{Key: "topic2", Label: "Topic 2", DetailLabel: "Topic 2", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 6},
-		{Key: "topic3", Label: "Topic 3", DetailLabel: "Topic 3", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 7},
-		{Key: "blockHash", Label: "Block Hash", DetailLabel: "Block Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 9},
-		{Key: "transactionHash", Label: "Transaction Hash", DetailLabel: "Transaction Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 10},
-		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Transaction Context", NoTable: true, DetailOrder: 12},
-		{Key: "articulatedLog", Label: "Articulated Log", DetailLabel: "Articulated Log", Formatter: "json", Section: "Articulated Information", NoTable: true, DetailOrder: 13},
-		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
-		// EXISTING_CODE
-	}
-}
-
-func getDressesFields() []types.FieldConfig {
+func getDalledressFields() []types.FieldConfig {
 	return []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "original", Label: "Original", ColumnLabel: "Original", DetailLabel: "Original Value", Section: "General", Order: 1, DetailOrder: 1},
@@ -141,6 +119,28 @@ func getDatabasesFields() []types.FieldConfig {
 		{Key: "count", Label: "Count", ColumnLabel: "Count", DetailLabel: "Count", Section: "General", Width: 100, Order: 2, DetailOrder: 2},
 		{Key: "sample", Label: "Sample", ColumnLabel: "Sample", DetailLabel: "Sample", Section: "General", Width: 300, Order: 3, DetailOrder: 3},
 		{Key: "filtered", Label: "Filtered", ColumnLabel: "Filtered", DetailLabel: "Filtered", Section: "General", Width: 80, Order: 4, DetailOrder: 4},
+		// EXISTING_CODE
+	}
+}
+
+func getLogsFields() []types.FieldConfig {
+	return []types.FieldConfig{
+		// EXISTING_CODE
+		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 8},
+		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 11},
+		{Key: "logIndex", Label: "Log Index", ColumnLabel: "Log Index", DetailLabel: "Log Index", Section: "Log Overview", Width: 80, Order: 3, DetailOrder: 3},
+		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Contract Address", Formatter: "address", Section: "Log Overview", Width: 340, Order: 4, DetailOrder: 1},
+		{Key: "topic0", Label: "Topic0", ColumnLabel: "Topic0", DetailLabel: "Topic 0 (Event Signature)", Formatter: "hash", Section: "Topics", Width: 340, Order: 5, DetailOrder: 4},
+		{Key: "topic1", Label: "Topic1", ColumnLabel: "Topic1", DetailLabel: "Topic 1", Formatter: "hash", Section: "Topics", Width: 340, Order: 6, DetailOrder: 5},
+		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Order: 7},
+		{Key: "data", Label: "Data", DetailLabel: "Data", Section: "Log Overview", NoTable: true, DetailOrder: 2},
+		{Key: "topic2", Label: "Topic 2", DetailLabel: "Topic 2", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 6},
+		{Key: "topic3", Label: "Topic 3", DetailLabel: "Topic 3", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 7},
+		{Key: "blockHash", Label: "Block Hash", DetailLabel: "Block Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 9},
+		{Key: "transactionHash", Label: "Transaction Hash", DetailLabel: "Transaction Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 10},
+		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Transaction Context", NoTable: true, DetailOrder: 12},
+		{Key: "articulatedLog", Label: "Articulated Log", DetailLabel: "Articulated Log", Formatter: "json", Section: "Articulated Information", NoTable: true, DetailOrder: 13},
+		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
 }

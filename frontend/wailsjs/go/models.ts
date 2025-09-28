@@ -401,11 +401,11 @@ export namespace dalle {
 
 export namespace dresses {
 	
-	export class DalleDressPage {
+	export class DressesPage {
 	    facet: types.DataFacet;
-	    logs: types.Log[];
-	    dresses: model.DalleDress[];
+	    dalledress: model.DalleDress[];
 	    databases: model.Database[];
+	    logs: types.Log[];
 	    series: dalle.Series[];
 	    totalItems: number;
 	    expectedTotal: number;
@@ -413,15 +413,15 @@ export namespace dresses {
 	    state: types.LoadState;
 	
 	    static createFrom(source: any = {}) {
-	        return new DalleDressPage(source);
+	        return new DressesPage(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.facet = source["facet"];
-	        this.logs = this.convertValues(source["logs"], types.Log);
-	        this.dresses = this.convertValues(source["dresses"], model.DalleDress);
+	        this.dalledress = this.convertValues(source["dalledress"], model.DalleDress);
 	        this.databases = this.convertValues(source["databases"], model.Database);
+	        this.logs = this.convertValues(source["logs"], types.Log);
 	        this.series = this.convertValues(source["series"], dalle.Series);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
@@ -454,6 +454,7 @@ export namespace exports {
 	
 	export class ExportsPage {
 	    facet: types.DataFacet;
+	    approvals: types.Approval[];
 	    assets: types.Name[];
 	    balances: types.Token[];
 	    logs: types.Log[];
@@ -475,6 +476,7 @@ export namespace exports {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.facet = source["facet"];
+	        this.approvals = this.convertValues(source["approvals"], types.Approval);
 	        this.assets = this.convertValues(source["assets"], types.Name);
 	        this.balances = this.convertValues(source["balances"], types.Token);
 	        this.logs = this.convertValues(source["logs"], types.Log);
@@ -1314,6 +1316,7 @@ export namespace types {
 	    BALANCES = "balances",
 	    TRANSFERS = "transfers",
 	    TRANSACTIONS = "transactions",
+	    APPROVALS = "approvals",
 	    WITHDRAWALS = "withdrawals",
 	    ASSETS = "assets",
 	    LOGS = "logs",
@@ -1496,6 +1499,55 @@ export namespace types {
 	        this.icon = source["icon"];
 	        this.confirmation = source["confirmation"];
 	    }
+	}
+	export class Approval {
+	    // Go type: base
+	    allowance: any;
+	    blockNumber: number;
+	    owner: base.Address;
+	    spender: base.Address;
+	    timestamp: number;
+	    token: base.Address;
+	    lastAppBlock: number;
+	    lastAppTs: number;
+	    lastAppLogID: number;
+	    lastAppTxID: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Approval(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.allowance = this.convertValues(source["allowance"], null);
+	        this.blockNumber = source["blockNumber"];
+	        this.owner = this.convertValues(source["owner"], base.Address);
+	        this.spender = this.convertValues(source["spender"], base.Address);
+	        this.timestamp = source["timestamp"];
+	        this.token = this.convertValues(source["token"], base.Address);
+	        this.lastAppBlock = source["lastAppBlock"];
+	        this.lastAppTs = source["lastAppTs"];
+	        this.lastAppLogID = source["lastAppLogID"];
+	        this.lastAppTxID = source["lastAppTxID"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 	export class CacheItem {
 	    items: any[];

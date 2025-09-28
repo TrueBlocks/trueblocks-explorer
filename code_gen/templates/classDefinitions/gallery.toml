@@ -1,0 +1,8 @@
+[settings]
+class = "Gallery"
+contained_by = ""
+doc_group = "09-DalleDress"
+doc_descr = "Gallery used to generate dalle dress prompts"
+doc_route = "215-gallery"
+attributes = ""
+disable_go = true

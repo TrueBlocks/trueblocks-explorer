@@ -42,12 +42,12 @@ export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
-export function DalleDressCrud(arg1, arg2, arg3) {
-  return window['go']['app']['App']['DalleDressCrud'](arg1, arg2, arg3);
-}
-
 export function DeleteCustomSkin(arg1) {
   return window['go']['app']['App']['DeleteCustomSkin'](arg1);
+}
+
+export function DressesCrud(arg1, arg2, arg3) {
+  return window['go']['app']['App']['DressesCrud'](arg1, arg2, arg3);
 }
 
 export function Encode(arg1, arg2) {
@@ -174,14 +174,6 @@ export function GetDalleAudioURL(arg1, arg2) {
   return window['go']['app']['App']['GetDalleAudioURL'](arg1, arg2);
 }
 
-export function GetDalleDressPage(arg1, arg2, arg3, arg4, arg5) {
-  return window['go']['app']['App']['GetDalleDressPage'](arg1, arg2, arg3, arg4, arg5);
-}
-
-export function GetDalleDressSummary(arg1) {
-  return window['go']['app']['App']['GetDalleDressSummary'](arg1);
-}
-
 export function GetDebugCollapsed() {
   return window['go']['app']['App']['GetDebugCollapsed']();
 }
@@ -192,6 +184,14 @@ export function GetDefaultAppPreferences() {
 
 export function GetDressesConfig(arg1) {
   return window['go']['app']['App']['GetDressesConfig'](arg1);
+}
+
+export function GetDressesPage(arg1, arg2, arg3, arg4, arg5) {
+  return window['go']['app']['App']['GetDressesPage'](arg1, arg2, arg3, arg4, arg5);
+}
+
+export function GetDressesSummary(arg1) {
+  return window['go']['app']['App']['GetDressesSummary'](arg1);
 }
 
 export function GetExportsConfig(arg1) {
@@ -406,8 +406,8 @@ export function ReloadContracts(arg1) {
   return window['go']['app']['App']['ReloadContracts'](arg1);
 }
 
-export function ReloadDalleDress(arg1) {
-  return window['go']['app']['App']['ReloadDalleDress'](arg1);
+export function ReloadDresses(arg1) {
+  return window['go']['app']['App']['ReloadDresses'](arg1);
 }
 
 export function ReloadExports(arg1) {

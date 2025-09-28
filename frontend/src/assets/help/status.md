@@ -57,7 +57,7 @@ the code inside of 'EXISTING_CODE' tags.
   - progress: progress information
   - rootConfig: path to root configuration
   - rpcProvider: RPC provider URL
-  - version: package version
+  - version: Application version
 
 // EXISTING_CODE
 // EXISTING_CODE

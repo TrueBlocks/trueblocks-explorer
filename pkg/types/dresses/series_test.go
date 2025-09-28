@@ -36,8 +36,8 @@ func TestSeriesCrudEmitsOperation(t *testing.T) {
 
 	_ = os.Setenv("TRUEBLOCKS_DALLE_DATA_DIR", tmp)
 	defer func() { _ = os.Unsetenv("TRUEBLOCKS_DALLE_DATA_DIR") }()
-	payload := &types.Payload{Collection: "dresses", DataFacet: DalleDressSeries, ProjectPath: tmp}
-	coll := GetDalleDressCollection(payload)
+	payload := &types.Payload{Collection: "dresses", DataFacet: DressesSeries, ProjectPath: tmp}
+	coll := GetDressesCollection(payload)
 
 	gotOps := []string{}
 	unsub := msgs.On(msgs.EventDataLoaded, func(args ...interface{}) {
@@ -46,7 +46,7 @@ func TestSeriesCrudEmitsOperation(t *testing.T) {
 			return
 		}
 		if p, ok := args[1].(types.DataLoadedPayload); ok {
-			if p.DataFacet == DalleDressSeries && p.Operation != "" {
+			if p.DataFacet == DressesSeries && p.Operation != "" {
 				gotOps = append(gotOps, p.Operation)
 			}
 		}
@@ -89,8 +89,8 @@ func TestSeriesExportCSV(t *testing.T) {
 
 	_ = os.Setenv("TRUEBLOCKS_DALLE_DATA_DIR", tmp)
 	defer func() { _ = os.Unsetenv("TRUEBLOCKS_DALLE_DATA_DIR") }()
-	payload := &types.Payload{Collection: "dresses", DataFacet: DalleDressSeries, ProjectPath: tmp, Format: "csv"}
-	coll := GetDalleDressCollection(payload)
+	payload := &types.Payload{Collection: "dresses", DataFacet: DressesSeries, ProjectPath: tmp, Format: "csv"}
+	coll := GetDressesCollection(payload)
 
 	// seed two series
 	s1 := &Series{Suffix: "one", Last: 3, Adverbs: []string{"quick"}}

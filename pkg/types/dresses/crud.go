@@ -8,7 +8,7 @@ import (
 )
 
 // Crud implements CRUD operations for chunks - placeholder implementation
-func (c *DalleDressCollection) Crud(
+func (c *DressesCollection) Crud(
 	payload *types.Payload,
 	op crud.Operation,
 	item interface{},
@@ -17,7 +17,7 @@ func (c *DalleDressCollection) Crud(
 	case *Series:
 		return c.seriesCrud(payload, op, v)
 	case map[string]interface{}:
-		if payload.DataFacet == DalleDressSeries {
+		if payload.DataFacet == DressesSeries {
 			var series Series
 			if suffix, ok := v["suffix"].(string); ok {
 				series.Suffix = suffix

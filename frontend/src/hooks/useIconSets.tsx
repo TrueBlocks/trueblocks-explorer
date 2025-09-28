@@ -19,7 +19,7 @@ export type IconSet = {
   Chunks: IconType;
   Contracts: IconType;
   Status: IconType;
-  DalleDress: IconType;
+  Dresses: IconType;
   Comparitoor: IconType;
 
   Home: IconType;
@@ -70,7 +70,7 @@ const faIcons: IconSet = {
   Chunks: Icons.FaChunks,
   Contracts: Icons.FaContracts,
   Status: Icons.FaStatus,
-  DalleDress: Icons.FaDalleDress,
+  Dresses: Icons.FaDresses,
   Comparitoor: Icons.FaComparitoor,
 
   // App navigation
@@ -129,7 +129,7 @@ const biIcons: IconSet = {
   Chunks: Icons.BiChunks,
   Contracts: Icons.BiContracts,
   Status: Icons.BiStatus,
-  DalleDress: Icons.BiDalleDress,
+  Dresses: Icons.BiDresses,
   Comparitoor: Icons.BiComparitoor,
 
   // App navigation
@@ -222,8 +222,8 @@ export const useIconSets = (
       createElement(iconSet.Contracts, { size, ...props });
     const Status: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Status, { size, ...props });
-    const DalleDress: FC<IconProps> = (props = {}) =>
-      createElement(iconSet.DalleDress, { size, ...props });
+    const Dresses: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Dresses, { size, ...props });
     const Comparitoor: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Comparitoor, { size, ...props });
 
@@ -300,7 +300,7 @@ export const useIconSets = (
       Chunks,
       Contracts,
       Status,
-      DalleDress,
+      Dresses,
       Comparitoor,
 
       Home,

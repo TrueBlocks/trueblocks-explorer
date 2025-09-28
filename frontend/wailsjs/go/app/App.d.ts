@@ -41,9 +41,9 @@ export function CloseProject(arg1:string):Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
-export function DalleDressCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
-
 export function DeleteCustomSkin(arg1:string):Promise<void>;
+
+export function DressesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function Encode(arg1:types.Function,arg2:Array<any>):Promise<string>;
 
@@ -107,15 +107,15 @@ export function GetContractsSummary(arg1:types.Payload):Promise<types.Summary>;
 
 export function GetDalleAudioURL(arg1:types.Payload,arg2:string):Promise<string>;
 
-export function GetDalleDressPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<dresses.DalleDressPage>;
-
-export function GetDalleDressSummary(arg1:types.Payload):Promise<types.Summary>;
-
 export function GetDebugCollapsed():Promise<boolean>;
 
 export function GetDefaultAppPreferences():Promise<preferences.AppPreferences>;
 
 export function GetDressesConfig(arg1:types.Payload):Promise<types.ViewConfig>;
+
+export function GetDressesPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<dresses.DressesPage>;
+
+export function GetDressesSummary(arg1:types.Payload):Promise<types.Summary>;
 
 export function GetExportsConfig(arg1:types.Payload):Promise<types.ViewConfig>;
 
@@ -223,7 +223,7 @@ export function ReloadComparitoor(arg1:types.Payload):Promise<void>;
 
 export function ReloadContracts(arg1:types.Payload):Promise<void>;
 
-export function ReloadDalleDress(arg1:types.Payload):Promise<void>;
+export function ReloadDresses(arg1:types.Payload):Promise<void>;
 
 export function ReloadExports(arg1:types.Payload):Promise<void>;
 

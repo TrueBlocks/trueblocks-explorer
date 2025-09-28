@@ -7,7 +7,7 @@ import { Gallery } from './gallery';
 import { Generator } from './generator';
 
 export function renderers(
-  pageData: dresses.DalleDressPage | null,
+  pageData: dresses.DressesPage | null,
   viewStateKey: project.ViewStateKey, // Required for persistence
   setActiveFacet?: (f: DataFacet) => void,
 ) {

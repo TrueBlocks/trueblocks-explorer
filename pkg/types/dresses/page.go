@@ -21,11 +21,11 @@ import (
 	// EXISTING_CODE
 )
 
-type DalleDressPage struct {
+type DressesPage struct {
 	Facet         types.DataFacet `json:"facet"`
-	Logs          []*Log          `json:"logs"`
-	Dresses       []*DalleDress   `json:"dresses"`
+	DalleDress    []*DalleDress   `json:"dalledress"`
 	Databases     []*Database     `json:"databases"`
+	Logs          []*Log          `json:"logs"`
 	Series        []*Series       `json:"series"`
 	TotalItems    int             `json:"totalItems"`
 	ExpectedTotal int             `json:"expectedTotal"`
@@ -33,27 +33,27 @@ type DalleDressPage struct {
 	State         types.LoadState `json:"state"`
 }
 
-func (p *DalleDressPage) GetFacet() types.DataFacet {
+func (p *DressesPage) GetFacet() types.DataFacet {
 	return p.Facet
 }
 
-func (p *DalleDressPage) GetTotalItems() int {
+func (p *DressesPage) GetTotalItems() int {
 	return p.TotalItems
 }
 
-func (p *DalleDressPage) GetExpectedTotal() int {
+func (p *DressesPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *DalleDressPage) GetIsFetching() bool {
+func (p *DressesPage) GetIsFetching() bool {
 	return p.IsFetching
 }
 
-func (p *DalleDressPage) GetState() types.LoadState {
+func (p *DressesPage) GetState() types.LoadState {
 	return p.State
 }
 
-func (c *DalleDressCollection) GetPage(
+func (c *DressesCollection) GetPage(
 	payload *types.Payload,
 	first, pageSize int,
 	sortSpec sdk.SortSpec,
@@ -63,13 +63,13 @@ func (c *DalleDressCollection) GetPage(
 	// BINGY_JOE
 	// TODO: BOGUS - CLEAN THIS UP?
 	const UnpaginatedPageSize = 1_000_000_000
-	if dataFacet == DalleDressGenerator || dataFacet == DalleDressGallery {
+	if dataFacet == DressesGenerator || dataFacet == DressesGallery {
 		first = 0
 		pageSize = UnpaginatedPageSize
 	}
 	// BINGY_JOE
 
-	page := &DalleDressPage{
+	page := &DressesPage{
 		Facet: dataFacet,
 	}
 	filter = strings.ToLower(filter)
@@ -79,7 +79,7 @@ func (c *DalleDressCollection) GetPage(
 	}
 
 	switch dataFacet {
-	case DalleDressGenerator:
+	case DressesGenerator:
 		facet := c.generatorFacet
 		var filterFunc func(*DalleDress) bool
 		filterFunc = func(item *DalleDress) bool {
@@ -108,11 +108,11 @@ func (c *DalleDressCollection) GetPage(
 			for i := range result.Items {
 				generator = append(generator, &result.Items[i])
 			}
-			page.Dresses, page.TotalItems, page.State = generator, result.TotalItems, result.State
+			page.DalleDress, page.TotalItems, page.State = generator, result.TotalItems, result.State
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-	case DalleDressSeries:
+	case DressesSeries:
 		facet := c.seriesFacet
 		var filterFunc func(*Series) bool
 		if filter != "" {
@@ -134,7 +134,7 @@ func (c *DalleDressCollection) GetPage(
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-	case DalleDressDatabases:
+	case DressesDatabases:
 		facet := c.databasesFacet
 		var filterFunc func(*Database) bool
 		if filter != "" {
@@ -156,7 +156,7 @@ func (c *DalleDressCollection) GetPage(
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-	case DalleDressEvents:
+	case DressesEvents:
 		facet := c.eventsFacet
 		var filterFunc func(*Log) bool
 		if filter != "" {
@@ -178,7 +178,7 @@ func (c *DalleDressCollection) GetPage(
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-	case DalleDressGallery:
+	case DressesGallery:
 		facet := c.galleryFacet
 		var filterFunc func(*DalleDress) bool
 		filterFunc = func(item *DalleDress) bool {
@@ -207,7 +207,7 @@ func (c *DalleDressCollection) GetPage(
 			for i := range result.Items {
 				gallery = append(gallery, &result.Items[i])
 			}
-			page.Dresses, page.TotalItems, page.State = gallery, result.TotalItems, result.State
+			page.DalleDress, page.TotalItems, page.State = gallery, result.TotalItems, result.State
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
@@ -220,7 +220,7 @@ func (c *DalleDressCollection) GetPage(
 }
 
 // shouldSummarize returns true if the current facet can be simmarized by period
-func (c *DalleDressCollection) shouldSummarize(payload *types.Payload) bool {
+func (c *DressesCollection) shouldSummarize(payload *types.Payload) bool {
 	if !payload.ShouldSummarize() {
 		return false
 	}
@@ -230,7 +230,7 @@ func (c *DalleDressCollection) shouldSummarize(payload *types.Payload) bool {
 }
 
 // getSummaryPage returns paginated summary data for a given period
-func (c *DalleDressCollection) getSummaryPage(
+func (c *DressesCollection) getSummaryPage(
 	dataFacet types.DataFacet,
 	period string,
 	first, pageSize int,
@@ -249,7 +249,7 @@ func (c *DalleDressCollection) getSummaryPage(
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
 
-	page := &DalleDressPage{
+	page := &DressesPage{
 		Facet: dataFacet,
 	}
 
@@ -263,7 +263,7 @@ func (c *DalleDressCollection) getSummaryPage(
 }
 
 // generateSummariesForPeriod ensures summaries are generated for the given period
-func (c *DalleDressCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period string) error {
+func (c *DressesCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period string) error {
 	// TODO: Use this
 	_ = period
 	switch dataFacet {
@@ -275,13 +275,13 @@ func (c *DalleDressCollection) generateSummariesForPeriod(dataFacet types.DataFa
 }
 
 // EXISTING_CODE
-func (c *DalleDressCollection) matchesGeneratorFilter(item *DalleDress, filter string) bool {
+func (c *DressesCollection) matchesGeneratorFilter(item *DalleDress, filter string) bool {
 	_ = item   // delint
 	_ = filter // delint
 	return true
 }
 
-func (c *DalleDressCollection) matchesSeriesFilter(item *Series, filter string) bool {
+func (c *DressesCollection) matchesSeriesFilter(item *Series, filter string) bool {
 	if item == nil {
 		return false
 	}
@@ -293,19 +293,19 @@ func (c *DalleDressCollection) matchesSeriesFilter(item *Series, filter string) 
 	return strings.Contains(strings.ToLower(item.Suffix), lf)
 }
 
-func (c *DalleDressCollection) matchesDatabaseFilter(item *Database, filter string) bool {
+func (c *DressesCollection) matchesDatabaseFilter(item *Database, filter string) bool {
 	_ = item   // delint
 	_ = filter // delint
 	return true
 }
 
-func (c *DalleDressCollection) matchesEventFilter(item *Log, filter string) bool {
+func (c *DressesCollection) matchesEventFilter(item *Log, filter string) bool {
 	_ = item   // delint
 	_ = filter // delint
 	return true
 }
 
-func (c *DalleDressCollection) matchesGalleryFilter(item *DalleDress, filter string) bool {
+func (c *DressesCollection) matchesGalleryFilter(item *DalleDress, filter string) bool {
 	_ = item   // delint
 	_ = filter // delint
 	return true

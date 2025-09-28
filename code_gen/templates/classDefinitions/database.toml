@@ -1,0 +1,8 @@
+[settings]
+class = "Database"
+contained_by = ""
+doc_group = "09-DalleDress"
+doc_descr = "Database used to generate dalle dress prompts"
+doc_route = "215-database"
+attributes = ""
+disable_go = true

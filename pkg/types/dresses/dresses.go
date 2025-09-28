@@ -22,22 +22,22 @@ import (
 )
 
 const (
-	DalleDressGenerator types.DataFacet = "generator"
-	DalleDressSeries    types.DataFacet = "series"
-	DalleDressDatabases types.DataFacet = "databases"
-	DalleDressEvents    types.DataFacet = "events"
-	DalleDressGallery   types.DataFacet = "gallery"
+	DressesGenerator types.DataFacet = "generator"
+	DressesSeries    types.DataFacet = "series"
+	DressesDatabases types.DataFacet = "databases"
+	DressesEvents    types.DataFacet = "events"
+	DressesGallery   types.DataFacet = "gallery"
 )
 
 func init() {
-	types.RegisterDataFacet(DalleDressGenerator)
-	types.RegisterDataFacet(DalleDressSeries)
-	types.RegisterDataFacet(DalleDressDatabases)
-	types.RegisterDataFacet(DalleDressEvents)
-	types.RegisterDataFacet(DalleDressGallery)
+	types.RegisterDataFacet(DressesGenerator)
+	types.RegisterDataFacet(DressesSeries)
+	types.RegisterDataFacet(DressesDatabases)
+	types.RegisterDataFacet(DressesEvents)
+	types.RegisterDataFacet(DressesGallery)
 }
 
-type DalleDressCollection struct {
+type DressesCollection struct {
 	generatorFacet *facets.Facet[DalleDress]
 	seriesFacet    *facets.Facet[Series]
 	databasesFacet *facets.Facet[Database]
@@ -47,55 +47,55 @@ type DalleDressCollection struct {
 	summaryMutex   sync.RWMutex
 }
 
-func NewDalleDressCollection(payload *types.Payload) *DalleDressCollection {
-	c := &DalleDressCollection{}
+func NewDressesCollection(payload *types.Payload) *DressesCollection {
+	c := &DressesCollection{}
 	c.ResetSummary()
 	c.initializeFacets(payload)
 	return c
 }
 
-func (c *DalleDressCollection) initializeFacets(payload *types.Payload) {
+func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 	c.generatorFacet = facets.NewFacet(
-		DalleDressGenerator,
+		DressesGenerator,
 		isGenerator,
 		isDupDalleDress(),
-		c.getDalleDressStore(payload, DalleDressGenerator),
+		c.getDalleDressStore(payload, DressesGenerator),
 		"dresses",
 		c,
 	)
 
 	c.seriesFacet = facets.NewFacet(
-		DalleDressSeries,
+		DressesSeries,
 		isSeries,
 		isDupSeries(),
-		c.getSeriesStore(payload, DalleDressSeries),
+		c.getSeriesStore(payload, DressesSeries),
 		"dresses",
 		c,
 	)
 
 	c.databasesFacet = facets.NewFacet(
-		DalleDressDatabases,
+		DressesDatabases,
 		isDatabase,
 		isDupDatabase(),
-		c.getDatabasesStore(payload, DalleDressDatabases),
+		c.getDatabasesStore(payload, DressesDatabases),
 		"dresses",
 		c,
 	)
 
 	c.eventsFacet = facets.NewFacet(
-		DalleDressEvents,
+		DressesEvents,
 		isEvent,
 		isDupLog(),
-		c.getLogsStore(payload, DalleDressEvents),
+		c.getLogsStore(payload, DressesEvents),
 		"dresses",
 		c,
 	)
 
 	c.galleryFacet = facets.NewFacet(
-		DalleDressGallery,
+		DressesGallery,
 		isGallery,
 		isDupDalleDress(),
-		c.getDalleDressStore(payload, DalleDressGallery),
+		c.getDalleDressStore(payload, DressesGallery),
 		"dresses",
 		c,
 	)
@@ -131,12 +131,6 @@ func isGallery(item *DalleDress) bool {
 	// EXISTING_CODE
 }
 
-func isDupLog() func(existing []*Log, newItem *Log) bool {
-	// EXISTING_CODE
-	return nil
-	// EXISTING_CODE
-}
-
 func isDupDalleDress() func(existing []*DalleDress, newItem *DalleDress) bool {
 	// EXISTING_CODE
 	return nil
@@ -149,36 +143,42 @@ func isDupDatabase() func(existing []*Database, newItem *Database) bool {
 	// EXISTING_CODE
 }
 
+func isDupLog() func(existing []*Log, newItem *Log) bool {
+	// EXISTING_CODE
+	return nil
+	// EXISTING_CODE
+}
+
 func isDupSeries() func(existing []*Series, newItem *Series) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
 }
 
-func (c *DalleDressCollection) LoadData(dataFacet types.DataFacet) {
+func (c *DressesCollection) LoadData(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
 
 	go func() {
 		switch dataFacet {
-		case DalleDressGenerator:
+		case DressesGenerator:
 			if err := c.generatorFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case DalleDressSeries:
+		case DressesSeries:
 			if err := c.seriesFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case DalleDressDatabases:
+		case DressesDatabases:
 			if err := c.databasesFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case DalleDressEvents:
+		case DressesEvents:
 			if err := c.eventsFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case DalleDressGallery:
+		case DressesGallery:
 			if err := c.galleryFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
@@ -189,56 +189,56 @@ func (c *DalleDressCollection) LoadData(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *DalleDressCollection) Reset(dataFacet types.DataFacet) {
+func (c *DressesCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
-	case DalleDressGenerator:
+	case DressesGenerator:
 		c.generatorFacet.GetStore().Reset()
-	case DalleDressSeries:
+	case DressesSeries:
 		c.seriesFacet.GetStore().Reset()
-	case DalleDressDatabases:
+	case DressesDatabases:
 		c.databasesFacet.GetStore().Reset()
-	case DalleDressEvents:
+	case DressesEvents:
 		c.eventsFacet.GetStore().Reset()
-	case DalleDressGallery:
+	case DressesGallery:
 		c.galleryFacet.GetStore().Reset()
 	default:
 		return
 	}
 }
 
-func (c *DalleDressCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
+func (c *DressesCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	switch dataFacet {
-	case DalleDressGenerator:
+	case DressesGenerator:
 		return c.generatorFacet.NeedsUpdate()
-	case DalleDressSeries:
+	case DressesSeries:
 		return c.seriesFacet.NeedsUpdate()
-	case DalleDressDatabases:
+	case DressesDatabases:
 		return c.databasesFacet.NeedsUpdate()
-	case DalleDressEvents:
+	case DressesEvents:
 		return c.eventsFacet.NeedsUpdate()
-	case DalleDressGallery:
+	case DressesGallery:
 		return c.galleryFacet.NeedsUpdate()
 	default:
 		return false
 	}
 }
 
-func (c *DalleDressCollection) GetSupportedFacets() []types.DataFacet {
+func (c *DressesCollection) GetSupportedFacets() []types.DataFacet {
 	return []types.DataFacet{
-		DalleDressGenerator,
-		DalleDressSeries,
-		DalleDressDatabases,
-		DalleDressEvents,
-		DalleDressGallery,
+		DressesGenerator,
+		DressesSeries,
+		DressesDatabases,
+		DressesEvents,
+		DressesGallery,
 	}
 }
 
-func (c *DalleDressCollection) AccumulateItem(item interface{}, summary *types.Summary) {
+func (c *DressesCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
 
-func (c *DalleDressCollection) GetSummary() types.Summary {
+func (c *DressesCollection) GetSummary() types.Summary {
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -258,7 +258,7 @@ func (c *DalleDressCollection) GetSummary() types.Summary {
 	return summary
 }
 
-func (c *DalleDressCollection) ResetSummary() {
+func (c *DressesCollection) ResetSummary() {
 	c.summaryMutex.Lock()
 	defer c.summaryMutex.Unlock()
 	c.summary = types.Summary{
@@ -269,18 +269,18 @@ func (c *DalleDressCollection) ResetSummary() {
 	}
 }
 
-func (c *DalleDressCollection) ExportData(payload *types.Payload) (string, error) {
+func (c *DressesCollection) ExportData(payload *types.Payload) (string, error) {
 	switch payload.DataFacet {
-	case DalleDressGenerator:
-		return c.generatorFacet.ExportData(payload, string(DalleDressGenerator))
-	case DalleDressSeries:
-		return c.seriesFacet.ExportData(payload, string(DalleDressSeries))
-	case DalleDressDatabases:
-		return c.databasesFacet.ExportData(payload, string(DalleDressDatabases))
-	case DalleDressEvents:
-		return c.eventsFacet.ExportData(payload, string(DalleDressEvents))
-	case DalleDressGallery:
-		return c.galleryFacet.ExportData(payload, string(DalleDressGallery))
+	case DressesGenerator:
+		return c.generatorFacet.ExportData(payload, string(DressesGenerator))
+	case DressesSeries:
+		return c.seriesFacet.ExportData(payload, string(DressesSeries))
+	case DressesDatabases:
+		return c.databasesFacet.ExportData(payload, string(DressesDatabases))
+	case DressesEvents:
+		return c.eventsFacet.ExportData(payload, string(DressesEvents))
+	case DressesGallery:
+		return c.galleryFacet.ExportData(payload, string(DressesGallery))
 	default:
 		return "", fmt.Errorf("[ExportData] unsupported dresses facet: %s", payload.DataFacet)
 	}

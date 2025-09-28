@@ -1,0 +1,8 @@
+[settings]
+class = "Generator"
+contained_by = ""
+doc_group = "09-DalleDress"
+doc_descr = "Generator used to create dalle dress prompts"
+doc_route = "215-generator"
+attributes = ""
+disable_go = true

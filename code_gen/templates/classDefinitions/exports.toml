@@ -33,6 +33,12 @@ actions = ["export"]
 viewType = ""
 
 [[facets]]
+name = "Approvals"
+store = "Approvals"
+actions = ["export"]
+viewType = ""
+
+[[facets]]
 name = "Withdrawals"
 store = "Withdrawals"
 actions = ["export"]

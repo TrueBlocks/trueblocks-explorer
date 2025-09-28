@@ -45,7 +45,7 @@ func (a *App) Reload(payload *types.Payload) error {
 	case "status":
 		return a.ReloadStatus(payload)
 	case "dresses":
-		return a.ReloadDalleDress(payload)
+		return a.ReloadDresses(payload)
 	case "comparitoor":
 		return a.ReloadComparitoor(payload)
 	default:
@@ -85,7 +85,7 @@ func getCollection(payload *types.Payload, missingOk bool) types.Collection {
 	case "status":
 		return status.GetStatusCollection(payload)
 	case "dresses":
-		return dresses.GetDalleDressCollection(payload)
+		return dresses.GetDressesCollection(payload)
 	case "comparitoor":
 		return comparitoor.GetComparitoorCollection(payload)
 	default:

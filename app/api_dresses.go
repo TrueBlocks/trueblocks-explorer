@@ -22,32 +22,32 @@ import (
 	// EXISTING_CODE
 )
 
-func (a *App) GetDalleDressPage(
+func (a *App) GetDressesPage(
 	payload *types.Payload,
 	first, pageSize int,
 	sort sdk.SortSpec,
 	filter string,
-) (*dresses.DalleDressPage, error) {
-	collection := dresses.GetDalleDressCollection(payload)
-	return getCollectionPage[*dresses.DalleDressPage](collection, payload, first, pageSize, sort, filter)
+) (*dresses.DressesPage, error) {
+	collection := dresses.GetDressesCollection(payload)
+	return getCollectionPage[*dresses.DressesPage](collection, payload, first, pageSize, sort, filter)
 }
 
-func (a *App) DalleDressCrud(
+func (a *App) DressesCrud(
 	payload *types.Payload,
 	op crud.Operation,
 	item *any,
 ) error {
-	collection := dresses.GetDalleDressCollection(payload)
+	collection := dresses.GetDressesCollection(payload)
 	return collection.Crud(payload, op, item)
 }
 
-func (a *App) GetDalleDressSummary(payload *types.Payload) types.Summary {
-	collection := dresses.GetDalleDressCollection(payload)
+func (a *App) GetDressesSummary(payload *types.Payload) types.Summary {
+	collection := dresses.GetDressesCollection(payload)
 	return collection.GetSummary()
 }
 
-func (a *App) ReloadDalleDress(payload *types.Payload) error {
-	collection := dresses.GetDalleDressCollection(payload)
+func (a *App) ReloadDresses(payload *types.Payload) error {
+	collection := dresses.GetDressesCollection(payload)
 	collection.Reset(payload.DataFacet)
 	collection.LoadData(payload.DataFacet)
 	return nil
@@ -55,7 +55,7 @@ func (a *App) ReloadDalleDress(payload *types.Payload) error {
 
 // GetDressesConfig returns the view configuration for dresses
 func (a *App) GetDressesConfig(payload types.Payload) (*types.ViewConfig, error) {
-	collection := dresses.GetDalleDressCollection(&payload)
+	collection := dresses.GetDressesCollection(&payload)
 	return collection.GetConfig()
 }
 

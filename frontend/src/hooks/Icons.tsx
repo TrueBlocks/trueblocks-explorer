@@ -41,7 +41,7 @@ import {
 // Chunks
 // Contracts
 // Status
-// DalleDress
+// Dresses
 // Comparitoor
 
 /*
@@ -153,7 +153,7 @@ export const FaChunks = FaIndustry;
 export const FaContracts = FaFileContract;
 export const FaAbis = FaListAlt;
 export const FaNames = FaUser;
-export const FaDalleDress = FaPalette;
+export const FaDresses = FaPalette;
 export const FaComparitoor = FaColumns;
 export const FaMissing = FaQuestionCircle;
 
@@ -164,7 +164,7 @@ export const BiChunks = BiBuildings;
 export const BiContracts = BiFile;
 export const BiAbis = BiListUl;
 export const BiNames = BiUser;
-export const BiDalleDress = BiPalette;
+export const BiDresses = BiPalette;
 export const BiComparitoor = BiColumns;
 export const BiMissing = BiQuestionMark;
 
@@ -178,5 +178,5 @@ export const BiMissing = BiQuestionMark;
 // Chunks
 // Contracts
 // Status
-// DalleDress
+// Dresses
 // Comparitoor

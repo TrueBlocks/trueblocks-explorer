@@ -25,6 +25,7 @@ const (
 	ExportsBalances     types.DataFacet = "balances"
 	ExportsTransfers    types.DataFacet = "transfers"
 	ExportsTransactions types.DataFacet = "transactions"
+	ExportsApprovals    types.DataFacet = "approvals"
 	ExportsWithdrawals  types.DataFacet = "withdrawals"
 	ExportsAssets       types.DataFacet = "assets"
 	ExportsLogs         types.DataFacet = "logs"
@@ -37,6 +38,7 @@ func init() {
 	types.RegisterDataFacet(ExportsBalances)
 	types.RegisterDataFacet(ExportsTransfers)
 	types.RegisterDataFacet(ExportsTransactions)
+	types.RegisterDataFacet(ExportsApprovals)
 	types.RegisterDataFacet(ExportsWithdrawals)
 	types.RegisterDataFacet(ExportsAssets)
 	types.RegisterDataFacet(ExportsLogs)
@@ -49,6 +51,7 @@ type ExportsCollection struct {
 	balancesFacet     *facets.Facet[Balance]
 	transfersFacet    *facets.Facet[Transfer]
 	transactionsFacet *facets.Facet[Transaction]
+	approvalsFacet    *facets.Facet[Approval]
 	withdrawalsFacet  *facets.Facet[Withdrawal]
 	assetsFacet       *facets.Facet[Asset]
 	logsFacet         *facets.Facet[Log]
@@ -98,6 +101,15 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		isTransaction,
 		isDupTransaction(),
 		c.getTransactionsStore(payload, ExportsTransactions),
+		"exports",
+		c,
+	)
+
+	c.approvalsFacet = facets.NewFacet(
+		ExportsApprovals,
+		isApproval,
+		isDupApproval(),
+		c.getApprovalsStore(payload, ExportsApprovals),
 		"exports",
 		c,
 	)
@@ -190,6 +202,12 @@ func isLog(item *Log) bool {
 	// EXISTING_CODE
 }
 
+func isApproval(item *Approval) bool {
+	// EXISTING_CODE
+	return true
+	// EXISTING_CODE
+}
+
 func isTrace(item *Trace) bool {
 	// EXISTING_CODE
 	return true
@@ -215,6 +233,12 @@ func isDupBalance() func(existing []*Balance, newItem *Balance) bool {
 }
 
 func isDupLog() func(existing []*Log, newItem *Log) bool {
+	// EXISTING_CODE
+	return nil
+	// EXISTING_CODE
+}
+
+func isDupApproval() func(existing []*Approval, newItem *Approval) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
@@ -279,6 +303,10 @@ func (c *ExportsCollection) LoadData(dataFacet types.DataFacet) {
 			if err := c.transactionsFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
+		case ExportsApprovals:
+			if err := c.approvalsFacet.Load(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
 		case ExportsWithdrawals:
 			if err := c.withdrawalsFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
@@ -316,6 +344,8 @@ func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
 		c.transfersFacet.GetStore().Reset()
 	case ExportsTransactions:
 		c.transactionsFacet.GetStore().Reset()
+	case ExportsApprovals:
+		c.approvalsFacet.GetStore().Reset()
 	case ExportsWithdrawals:
 		c.withdrawalsFacet.GetStore().Reset()
 	case ExportsAssets:
@@ -341,6 +371,8 @@ func (c *ExportsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 		return c.transfersFacet.NeedsUpdate()
 	case ExportsTransactions:
 		return c.transactionsFacet.NeedsUpdate()
+	case ExportsApprovals:
+		return c.approvalsFacet.NeedsUpdate()
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.NeedsUpdate()
 	case ExportsAssets:
@@ -362,6 +394,7 @@ func (c *ExportsCollection) GetSupportedFacets() []types.DataFacet {
 		ExportsBalances,
 		ExportsTransfers,
 		ExportsTransactions,
+		ExportsApprovals,
 		ExportsWithdrawals,
 		ExportsAssets,
 		ExportsLogs,
@@ -506,6 +539,8 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 		return c.transfersFacet.ExportData(payload, string(ExportsTransfers))
 	case ExportsTransactions:
 		return c.transactionsFacet.ExportData(payload, string(ExportsTransactions))
+	case ExportsApprovals:
+		return c.approvalsFacet.ExportData(payload, string(ExportsApprovals))
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.ExportData(payload, string(ExportsWithdrawals))
 	case ExportsAssets:

@@ -1,0 +1,21 @@
+name           , type       , required, docOrder, description
+original       , string     ,         ,        1, The original value
+fileName       , string     ,         ,        2, The fileName value
+seed           , string     ,         ,        3, The seed value
+prompt         , string     ,         ,        4, The prompt value
+dataPrompt     , string     ,         ,        5, The dataPrompt value
+titlePrompt    , string     ,         ,        6, The titlePrompt value
+tersePrompt    , string     ,         ,        7, The tersePrompt value
+enhancedPrompt , string     ,         ,        8, The enhancedPrompt value
+attributes     , []Attribute,         ,        9, The attributes value
+seedChunks     , []string   ,         ,       10, The seedChunks value
+selectedTokens , []string   ,         ,       11, The selectedTokens value
+selectedRecords, []string   ,         ,       12, The selectedRecords value
+imageUrl       , string     ,         ,       13, The imageUrl value
+generatedPath  , string     ,         ,       14, The generatedPath value
+annotatedPath  , string     ,         ,       15, The annotatedPath value
+downloadMode   , string     ,         ,       16, The downloadMode value
+ipfsHash       , string     ,         ,       17, The ipfsHash value
+cacheHit       , bool       ,         ,       18, The cacheHit value
+completed      , bool       ,         ,       19, The completed value
+series         , string     ,         ,       20, The series value

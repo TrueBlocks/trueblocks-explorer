@@ -55,6 +55,16 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
 		},
+		"approvals": {
+			Name:          "Approvals",
+			Store:         "approvals",
+			IsForm:        false,
+			DividerBefore: false,
+			Fields:        getApprovalsFields(),
+			Actions:       []string{},
+			HeaderActions: []string{"export"},
+			RendererTypes: "",
+		},
 		"withdrawals": {
 			Name:          "Withdrawals",
 			Store:         "withdrawals",
@@ -110,7 +120,7 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 	cfg := &types.ViewConfig{
 		ViewName:   "exports",
 		Facets:     facets,
-		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "withdrawals", "assets", "logs", "traces", "receipts"},
+		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "approvals", "withdrawals", "assets", "logs", "traces", "receipts"},
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
@@ -119,6 +129,13 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 	types.NormalizeFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
+}
+
+func getApprovalsFields() []types.FieldConfig {
+	return []types.FieldConfig{
+		// EXISTING_CODE
+		// EXISTING_CODE
+	}
 }
 
 func getAssetsFields() []types.FieldConfig {

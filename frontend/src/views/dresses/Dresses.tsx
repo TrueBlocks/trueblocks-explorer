@@ -8,8 +8,8 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GetDalleDressPage, Reload } from '@app';
-import { DalleDressCrud } from '@app';
+import { GetDressesPage, Reload } from '@app';
+import { DressesCrud } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -60,7 +60,7 @@ export const Dresses = () => {
   const { availableFacets, getCurrentDataFacet, setActiveFacet } =
     activeFacetHook;
 
-  const [pageData, setPageData] = useState<dresses.DalleDressPage | null>(null);
+  const [pageData, setPageData] = useState<dresses.DressesPage | null>(null);
   const viewStateKey = useMemo(
     (): project.ViewStateKey => ({
       viewName: ROUTE,
@@ -84,7 +84,7 @@ export const Dresses = () => {
   const fetchData = useCallback(async () => {
     clearError();
     try {
-      const result = await GetDalleDressPage(
+      const result = await GetDressesPage(
         createPayload(getCurrentDataFacet()),
         pagination.currentPage * pagination.pageSize,
         pagination.pageSize,
@@ -113,7 +113,7 @@ export const Dresses = () => {
     const facet = getCurrentDataFacet();
     switch (facet) {
       case types.DataFacet.GENERATOR:
-        return pageData.dresses || [];
+        return pageData.dalledress || [];
       case types.DataFacet.SERIES:
         return pageData.series || [];
       case types.DataFacet.DATABASES:
@@ -121,9 +121,9 @@ export const Dresses = () => {
       case types.DataFacet.EVENTS:
         return pageData.logs || [];
       case types.DataFacet.GALLERY:
-        return pageData.dresses || [];
+        return pageData.dalledress || [];
       default:
-        LogError('[DalleDress] unexpected facet=' + String(facet));
+        LogError('[Dresses] unexpected facet=' + String(facet));
         return [];
     }
   }, [pageData, getCurrentDataFacet]);
@@ -179,15 +179,11 @@ export const Dresses = () => {
       _item: unknown,
     ) => {
       if (getCurrentDataFacet() !== types.DataFacet.SERIES) {
-        await DalleDressCrud(
-          _payload,
-          _op,
-          _item as unknown as model.DalleDress,
-        );
+        await DressesCrud(_payload, _op, _item as unknown as model.DalleDress);
       }
     },
-    pageFunc: GetDalleDressPage,
-    pageClass: dresses.DalleDressPage,
+    pageFunc: GetDressesPage,
+    pageClass: dresses.DressesPage,
     updateItem: model.DalleDress.createFrom({}),
     createPayload,
     getCurrentDataFacet,
@@ -279,7 +275,7 @@ export const Dresses = () => {
           ? crud.Operation.UNDELETE
           : crud.Operation.DELETE;
 
-        await DalleDressCrud(createPayload(types.DataFacet.SERIES), operation, {
+        await DressesCrud(createPayload(types.DataFacet.SERIES), operation, {
           suffix,
         });
 
@@ -316,7 +312,7 @@ export const Dresses = () => {
       if (!suffix) return;
 
       try {
-        await DalleDressCrud(
+        await DressesCrud(
           createPayload(types.DataFacet.SERIES),
           crud.Operation.REMOVE,
           { suffix },

@@ -11,9 +11,9 @@
     "abis": { "menuOrder": 40 },
     "names": { "menuOrder": 50 },
     "chunks": { "menuOrder": 60 },
-    "contracts": { "menuOrder": 70, "disabled": true },
+    "contracts": { "menuOrder": 70 },
     "status": { "menuOrder": 80 },
-    "dresses": { "menuOrder": 15, "disabled": true },
-    "comparitoor": { "menuOrder": 100, "disabled": true }
+    "dresses": { "menuOrder": 15 },
+    "comparitoor": { "menuOrder": 100 }
   }
 }

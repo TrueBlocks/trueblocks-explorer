@@ -9,7 +9,7 @@ import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView
 import { getItemKey, useGalleryStore } from '../../store';
 
 export type GalleryProps = {
-  pageData: dresses.DalleDressPage | null;
+  pageData: dresses.DressesPage | null;
   viewStateKey: project.ViewStateKey; // Make required since persistence depends on it
   setActiveFacet?: (f: DataFacet) => void;
 };
@@ -39,9 +39,9 @@ export const Gallery = ({
 
   // Ingest all dresses data - backend now filters out deleted series
   useEffect(() => {
-    const allDresseses = pageData?.dresses || [];
+    const allDresseses = pageData?.dalledress || [];
     ingestItems(allDresseses);
-  }, [pageData?.dresses, ingestItems]);
+  }, [pageData?.dalledress, ingestItems]);
 
   useEffect(() => {
     keyScopeRef.current?.focus({ preventScroll: true });

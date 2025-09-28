@@ -20,7 +20,7 @@ import { useSpeakPrompt } from '../../hooks/useSpeakPrompt';
 import { getItemKey, useGalleryStore } from '../../store';
 
 export type GeneratorProps = {
-  pageData: dresses.DalleDressPage | null;
+  pageData: dresses.DressesPage | null;
   viewStateKey: project.ViewStateKey; // Make required since persistence depends on it
 };
 
@@ -48,9 +48,9 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
 
   // Ingest all dresses data - backend now filters out deleted series
   useEffect(() => {
-    const allDresseses = pageData?.dresses || [];
+    const allDresseses = pageData?.dalledress || [];
     ingestItems(allDresseses);
-  }, [pageData?.dresses, ingestItems]);
+  }, [pageData?.dalledress, ingestItems]);
 
   useEffect(() => {
     ensureHydrated(viewStateKey);

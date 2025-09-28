@@ -44,6 +44,7 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 	}
 	types.DeriveFacets(cfg)
 	types.NormalizeFields(cfg)
+	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 {{- range .Stores }}

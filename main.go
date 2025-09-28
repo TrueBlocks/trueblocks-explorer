@@ -63,7 +63,7 @@ func main() {
 			&chunks.ChunksCollection{},
 			&contracts.ContractsCollection{},
 			&status.StatusCollection{},
-			&dresses.DalleDressCollection{},
+			&dresses.DressesCollection{},
 			&comparitoor.ComparitoorCollection{},
 		},
 		EnumBind: []interface{}{

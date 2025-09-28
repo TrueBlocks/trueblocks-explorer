@@ -23,7 +23,7 @@ const iconNames = [
   'Chunks',
   'Contracts',
   'Status',
-  'DalleDress',
+  'Dresses',
   'Comparitoor',
   'Settings',
   'Wizard',

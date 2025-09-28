@@ -7,19 +7,19 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-func TestDalleDressGalleryPageUsesDresses(t *testing.T) {
-	payload := &types.Payload{Collection: "dresses", DataFacet: DalleDressGallery}
-	coll := GetDalleDressCollection(payload)
-	coll.LoadData(DalleDressGallery)
+func TestDressesGalleryPageUsesDresses(t *testing.T) {
+	payload := &types.Payload{Collection: "dresses", DataFacet: DressesGallery}
+	coll := GetDressesCollection(payload)
+	coll.LoadData(DressesGallery)
 	pageAny, err := coll.GetPage(payload, 0, 25, sdk.SortSpec{}, "")
 	if err != nil {
 		t.Fatalf("GetPage gallery failed: %v", err)
 	}
-	page, ok := pageAny.(*DalleDressPage)
+	page, ok := pageAny.(*DressesPage)
 	if !ok {
 		t.Fatalf("unexpected page type: %T", pageAny)
 	}
-	if page.Dresses == nil {
+	if page.DalleDress == nil {
 		t.Fatalf("expected Dresses slice to be non-nil")
 	}
 	if len(page.Logs) != 0 {
@@ -27,22 +27,22 @@ func TestDalleDressGalleryPageUsesDresses(t *testing.T) {
 	}
 }
 
-func TestDalleDressEventsPageStillUsesLogs(t *testing.T) {
-	payload := &types.Payload{Collection: "dresses", DataFacet: DalleDressEvents}
-	coll := GetDalleDressCollection(payload)
-	coll.LoadData(DalleDressEvents)
+func TestDressesEventsPageStillUsesLogs(t *testing.T) {
+	payload := &types.Payload{Collection: "dresses", DataFacet: DressesEvents}
+	coll := GetDressesCollection(payload)
+	coll.LoadData(DressesEvents)
 	pageAny, err := coll.GetPage(payload, 0, 25, sdk.SortSpec{}, "")
 	if err != nil {
 		t.Fatalf("GetPage events failed: %v", err)
 	}
-	page, ok := pageAny.(*DalleDressPage)
+	page, ok := pageAny.(*DressesPage)
 	if !ok {
 		t.Fatalf("unexpected page type: %T", pageAny)
 	}
 	if page.Logs == nil {
 		t.Fatalf("expected Logs slice non-nil for events facet")
 	}
-	if len(page.Dresses) != 0 {
-		t.Fatalf("expected Dresses nil or empty for events facet; got len=%d", len(page.Dresses))
+	if len(page.DalleDress) != 0 {
+		t.Fatalf("expected Dresses nil or empty for events facet; got len=%d", len(page.DalleDress))
 	}
 }

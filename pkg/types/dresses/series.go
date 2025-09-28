@@ -15,12 +15,12 @@ import (
 )
 
 // seriesCrud handles create, update, remove for series facet
-func (c *DalleDressCollection) seriesCrud(
+func (c *DressesCollection) seriesCrud(
 	payload *types.Payload,
 	op crud.Operation,
 	item *Series,
 ) error {
-	if payload.DataFacet != DalleDressSeries {
+	if payload.DataFacet != DressesSeries {
 		return fmt.Errorf("seriesCrud invalid facet: %s", payload.DataFacet)
 	}
 	if item == nil {
@@ -107,7 +107,7 @@ func (c *DalleDressCollection) seriesCrud(
 	// emit enriched event so frontend refreshes with context
 	currentItems := c.seriesFacet.GetStore().GetItems()
 	currentCount := len(currentItems)
-	payloadSummary := types.Summary{TotalCount: currentCount, FacetCounts: map[types.DataFacet]int{DalleDressSeries: currentCount}, LastUpdated: time.Now().Unix()}
+	payloadSummary := types.Summary{TotalCount: currentCount, FacetCounts: map[types.DataFacet]int{DressesSeries: currentCount}, LastUpdated: time.Now().Unix()}
 	operation := "update"
 	switch op {
 	case crud.Create:
@@ -122,7 +122,7 @@ func (c *DalleDressCollection) seriesCrud(
 		operation = "remove"
 	}
 	msgs.EmitLoaded(types.DataLoadedPayload{
-		Payload:       types.Payload{Collection: "dresses", DataFacet: DalleDressSeries},
+		Payload:       types.Payload{Collection: "dresses", DataFacet: DressesSeries},
 		CurrentCount:  currentCount,
 		ExpectedTotal: currentCount,
 		State:         types.StateLoaded,

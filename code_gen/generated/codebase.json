@@ -3,8 +3,8 @@
         {
             "num": 6000,
             "group": "Types",
-            "description": "Shared Types",
-            "summary": "Shared Types"
+            "description": "Chifra Types",
+            "summary": "Chifra Types"
         },
         {
             "num": 6100,
@@ -1270,6 +1270,17 @@
                             "disabled": false
                         },
                         {
+                            "name": "Approvals",
+                            "store": "Approvals",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "",
+                            "renderer": "",
+                            "attributes": "",
+                            "disabled": false
+                        },
+                        {
                             "name": "Withdrawals",
                             "store": "Withdrawals",
                             "actions": [
@@ -1944,183 +1955,6 @@
     ],
     "structures": [
         {
-            "members": [
-                {
-                    "name": "activeAddress",
-                    "type": "string",
-                    "docOrder": 1,
-                    "description": "Current active address in project",
-                    "num": 1
-                },
-                {
-                    "name": "series",
-                    "type": "string",
-                    "docOrder": 2,
-                    "description": "Selected series",
-                    "num": 2
-                },
-                {
-                    "name": "prompt",
-                    "type": "string",
-                    "docOrder": 3,
-                    "description": "Generated prompt",
-                    "num": 3
-                },
-                {
-                    "name": "imagePath",
-                    "type": "string",
-                    "docOrder": 4,
-                    "description": "Path to generated image",
-                    "num": 4
-                },
-                {
-                    "name": "createdAt",
-                    "type": "datetime",
-                    "docOrder": 5,
-                    "description": "Generation timestamp",
-                    "num": 5
-                }
-            ]
-        },
-        {
-            "members": [
-                {
-                    "name": "chain",
-                    "type": "string",
-                    "docOrder": 1,
-                    "description": "the chain identifier",
-                    "num": 1
-                },
-                {
-                    "name": "chainId",
-                    "type": "uint64",
-                    "docOrder": 2,
-                    "description": "the chain ID",
-                    "num": 2
-                },
-                {
-                    "name": "ipfsGateway",
-                    "type": "string",
-                    "docOrder": 3,
-                    "description": "the IPFS gateway URL",
-                    "num": 3
-                },
-                {
-                    "name": "localExplorer",
-                    "type": "string",
-                    "docOrder": 4,
-                    "description": "the local block explorer URL",
-                    "num": 4
-                },
-                {
-                    "name": "remoteExplorer",
-                    "type": "string",
-                    "docOrder": 5,
-                    "description": "the remote block explorer URL",
-                    "num": 5
-                },
-                {
-                    "name": "rpcProvider",
-                    "type": "string",
-                    "docOrder": 6,
-                    "description": "the RPC provider URL",
-                    "num": 6
-                },
-                {
-                    "name": "symbol",
-                    "type": "string",
-                    "docOrder": 7,
-                    "description": "the chain's native token symbol",
-                    "num": 7
-                }
-            ]
-        },
-        {
-            "members": [
-                {
-                    "name": "databaseName",
-                    "type": "string",
-                    "docOrder": 1,
-                    "description": "Name of the database",
-                    "num": 1
-                },
-                {
-                    "name": "count",
-                    "type": "value",
-                    "docOrder": 2,
-                    "description": "Number of entries",
-                    "num": 2
-                },
-                {
-                    "name": "sample",
-                    "type": "string",
-                    "docOrder": 3,
-                    "description": "Sample entry",
-                    "num": 3
-                },
-                {
-                    "name": "filtered",
-                    "type": "bool",
-                    "docOrder": 4,
-                    "description": "Is database filtered by series",
-                    "num": 4
-                }
-            ]
-        },
-        {
-            "members": [
-                {
-                    "name": "thumbnail",
-                    "type": "string",
-                    "docOrder": 1,
-                    "description": "Path to thumbnail image",
-                    "num": 1
-                },
-                {
-                    "name": "filename",
-                    "type": "string",
-                    "docOrder": 2,
-                    "description": "Image filename",
-                    "num": 2
-                },
-                {
-                    "name": "series",
-                    "type": "string",
-                    "docOrder": 3,
-                    "description": "Series name",
-                    "num": 3
-                },
-                {
-                    "name": "orientation",
-                    "type": "string",
-                    "docOrder": 4,
-                    "description": "Image orientation",
-                    "num": 4
-                },
-                {
-                    "name": "enhanced",
-                    "type": "bool",
-                    "docOrder": 5,
-                    "description": "Has enhanced prompt",
-                    "num": 5
-                },
-                {
-                    "name": "createdAt",
-                    "type": "datetime",
-                    "docOrder": 6,
-                    "description": "Image creation timestamp",
-                    "num": 6
-                },
-                {
-                    "name": "sizeKB",
-                    "type": "value",
-                    "docOrder": 7,
-                    "description": "Image file size in KB",
-                    "num": 7
-                }
-            ]
-        },
-        {
             "class": "Exports",
             "doc_group": "001-Route",
             "doc_route": "100-exports",
@@ -2216,6 +2050,17 @@
                 {
                     "name": "Transactions",
                     "store": "Transactions",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "",
+                    "renderer": "",
+                    "attributes": "",
+                    "disabled": false
+                },
+                {
+                    "name": "Approvals",
+                    "store": "Approvals",
                     "actions": [
                         "export"
                     ],
@@ -2780,6 +2625,94 @@
                     "description": "if a token transfer, the log that triggered the transfer",
                     "num": 23,
                     "isPointer": true
+                }
+            ]
+        },
+        {
+            "class": "Approvals",
+            "doc_group": "01-Accounts",
+            "doc_route": "122-approvals",
+            "doc_descr": "an ERC-20 token approval granting spending permission from owner to spender",
+            "produced_by": "tokens",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "allowance",
+                    "type": "wei",
+                    "docOrder": 1,
+                    "description": "the amount of tokens approved for spending",
+                    "num": 1
+                },
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "docOrder": 2,
+                    "description": "the current block number when the report was generated",
+                    "num": 2
+                },
+                {
+                    "name": "timestamp",
+                    "type": "timestamp",
+                    "docOrder": 3,
+                    "description": "the current timestamp when the report was generated",
+                    "num": 3
+                },
+                {
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "calc",
+                    "docOrder": 4,
+                    "description": "the timestamp as a date",
+                    "num": 4
+                },
+                {
+                    "name": "owner",
+                    "type": "address",
+                    "docOrder": 5,
+                    "description": "the address of the owner of the token (the approver)",
+                    "num": 5
+                },
+                {
+                    "name": "spender",
+                    "type": "address",
+                    "docOrder": 6,
+                    "description": "the address being granted approval to spend tokens",
+                    "num": 6
+                },
+                {
+                    "name": "token",
+                    "type": "address",
+                    "docOrder": 7,
+                    "description": "the address of the ERC-20 token being approved",
+                    "num": 7
+                },
+                {
+                    "name": "lastAppBlock",
+                    "type": "blknum",
+                    "docOrder": 8,
+                    "description": "the block number of the last approval event",
+                    "num": 8
+                },
+                {
+                    "name": "lastAppTs",
+                    "type": "timestamp",
+                    "docOrder": 9,
+                    "description": "the timestamp of the last approval event",
+                    "num": 9
+                },
+                {
+                    "name": "lastAppTxID",
+                    "type": "txnum",
+                    "docOrder": 10,
+                    "description": "the transaction index of the last approval event",
+                    "num": 10
+                },
+                {
+                    "name": "lastAppLogID",
+                    "type": "lognum",
+                    "docOrder": 11,
+                    "description": "the log index of the last approval event",
+                    "num": 11
                 }
             ]
         },
@@ -3561,6 +3494,43 @@
             ]
         },
         {
+            "class": "Database",
+            "doc_group": "09-DalleDress",
+            "doc_route": "215-database",
+            "doc_descr": "Database used to generate dalle dress prompts",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "databaseName",
+                    "type": "string",
+                    "docOrder": 1,
+                    "description": "Name of the database",
+                    "num": 1
+                },
+                {
+                    "name": "count",
+                    "type": "value",
+                    "docOrder": 2,
+                    "description": "Number of entries",
+                    "num": 2
+                },
+                {
+                    "name": "sample",
+                    "type": "string",
+                    "docOrder": 3,
+                    "description": "Sample entry",
+                    "num": 3
+                },
+                {
+                    "name": "filtered",
+                    "type": "bool",
+                    "docOrder": 4,
+                    "description": "Is database filtered by series",
+                    "num": 4
+                }
+            ]
+        },
+        {
             "class": "Databases",
             "doc_group": "09-DalleDress",
             "doc_route": "215-database",
@@ -3594,6 +3564,108 @@
                     "docOrder": 4,
                     "description": "Is database filtered by series",
                     "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Gallery",
+            "doc_group": "09-DalleDress",
+            "doc_route": "215-gallery",
+            "doc_descr": "Gallery used to generate dalle dress prompts",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "thumbnail",
+                    "type": "string",
+                    "docOrder": 1,
+                    "description": "Path to thumbnail image",
+                    "num": 1
+                },
+                {
+                    "name": "filename",
+                    "type": "string",
+                    "docOrder": 2,
+                    "description": "Image filename",
+                    "num": 2
+                },
+                {
+                    "name": "series",
+                    "type": "string",
+                    "docOrder": 3,
+                    "description": "Series name",
+                    "num": 3
+                },
+                {
+                    "name": "orientation",
+                    "type": "string",
+                    "docOrder": 4,
+                    "description": "Image orientation",
+                    "num": 4
+                },
+                {
+                    "name": "enhanced",
+                    "type": "bool",
+                    "docOrder": 5,
+                    "description": "Has enhanced prompt",
+                    "num": 5
+                },
+                {
+                    "name": "createdAt",
+                    "type": "datetime",
+                    "docOrder": 6,
+                    "description": "Image creation timestamp",
+                    "num": 6
+                },
+                {
+                    "name": "sizeKB",
+                    "type": "value",
+                    "docOrder": 7,
+                    "description": "Image file size in KB",
+                    "num": 7
+                }
+            ]
+        },
+        {
+            "class": "Generator",
+            "doc_group": "09-DalleDress",
+            "doc_route": "215-generator",
+            "doc_descr": "Generator used to create dalle dress prompts",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "activeAddress",
+                    "type": "string",
+                    "docOrder": 1,
+                    "description": "Current active address in project",
+                    "num": 1
+                },
+                {
+                    "name": "series",
+                    "type": "string",
+                    "docOrder": 2,
+                    "description": "Selected series",
+                    "num": 2
+                },
+                {
+                    "name": "prompt",
+                    "type": "string",
+                    "docOrder": 3,
+                    "description": "Generated prompt",
+                    "num": 3
+                },
+                {
+                    "name": "imagePath",
+                    "type": "string",
+                    "docOrder": 4,
+                    "description": "Path to generated image",
+                    "num": 4
+                },
+                {
+                    "name": "createdAt",
+                    "type": "datetime",
+                    "docOrder": 5,
+                    "description": "Generation timestamp",
+                    "num": 5
                 }
             ]
         },
@@ -5424,6 +5496,65 @@
             ]
         },
         {
+            "class": "Chain",
+            "doc_group": "002-Support",
+            "doc_route": "600-status",
+            "doc_descr": "data model for chains",
+            "produced_by": "status",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "chain",
+                    "type": "string",
+                    "docOrder": 1,
+                    "description": "the chain identifier",
+                    "num": 1
+                },
+                {
+                    "name": "chainId",
+                    "type": "uint64",
+                    "docOrder": 2,
+                    "description": "the chain ID",
+                    "num": 2
+                },
+                {
+                    "name": "ipfsGateway",
+                    "type": "string",
+                    "docOrder": 3,
+                    "description": "the IPFS gateway URL",
+                    "num": 3
+                },
+                {
+                    "name": "localExplorer",
+                    "type": "string",
+                    "docOrder": 4,
+                    "description": "the local block explorer URL",
+                    "num": 4
+                },
+                {
+                    "name": "remoteExplorer",
+                    "type": "string",
+                    "docOrder": 5,
+                    "description": "the remote block explorer URL",
+                    "num": 5
+                },
+                {
+                    "name": "rpcProvider",
+                    "type": "string",
+                    "docOrder": 6,
+                    "description": "the RPC provider URL",
+                    "num": 6
+                },
+                {
+                    "name": "symbol",
+                    "type": "string",
+                    "docOrder": 7,
+                    "description": "the chain's native token symbol",
+                    "num": 7
+                }
+            ]
+        },
+        {
             "class": "Chains",
             "doc_group": "002-Support",
             "doc_route": "600-status",
@@ -5612,7 +5743,7 @@
                     "name": "version",
                     "type": "string",
                     "docOrder": 18,
-                    "description": "version",
+                    "description": "Application version",
                     "num": 18
                 }
             ],
@@ -5652,6 +5783,160 @@
         },
         {
             "class": "DalleDress",
+            "doc_group": "001-Route",
+            "doc_route": "700-dresses",
+            "doc_descr": "multi-facet generative art collection for DalleDress",
+            "produced_by": "dresses",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "original",
+                    "type": "string",
+                    "docOrder": 1,
+                    "description": "The original value",
+                    "num": 1
+                },
+                {
+                    "name": "fileName",
+                    "type": "string",
+                    "docOrder": 2,
+                    "description": "The fileName value",
+                    "num": 2
+                },
+                {
+                    "name": "seed",
+                    "type": "string",
+                    "docOrder": 3,
+                    "description": "The seed value",
+                    "num": 3
+                },
+                {
+                    "name": "prompt",
+                    "type": "string",
+                    "docOrder": 4,
+                    "description": "The prompt value",
+                    "num": 4
+                },
+                {
+                    "name": "dataPrompt",
+                    "type": "string",
+                    "docOrder": 5,
+                    "description": "The dataPrompt value",
+                    "num": 5
+                },
+                {
+                    "name": "titlePrompt",
+                    "type": "string",
+                    "docOrder": 6,
+                    "description": "The titlePrompt value",
+                    "num": 6
+                },
+                {
+                    "name": "tersePrompt",
+                    "type": "string",
+                    "docOrder": 7,
+                    "description": "The tersePrompt value",
+                    "num": 7
+                },
+                {
+                    "name": "enhancedPrompt",
+                    "type": "string",
+                    "docOrder": 8,
+                    "description": "The enhancedPrompt value",
+                    "num": 8
+                },
+                {
+                    "name": "attributes",
+                    "type": "Attribute",
+                    "docOrder": 9,
+                    "description": "The attributes value",
+                    "num": 9,
+                    "isArray": true
+                },
+                {
+                    "name": "seedChunks",
+                    "type": "string",
+                    "docOrder": 10,
+                    "description": "The seedChunks value",
+                    "num": 10,
+                    "isArray": true
+                },
+                {
+                    "name": "selectedTokens",
+                    "type": "string",
+                    "docOrder": 11,
+                    "description": "The selectedTokens value",
+                    "num": 11,
+                    "isArray": true
+                },
+                {
+                    "name": "selectedRecords",
+                    "type": "string",
+                    "docOrder": 12,
+                    "description": "The selectedRecords value",
+                    "num": 12,
+                    "isArray": true
+                },
+                {
+                    "name": "imageUrl",
+                    "type": "string",
+                    "docOrder": 13,
+                    "description": "The imageUrl value",
+                    "num": 13
+                },
+                {
+                    "name": "generatedPath",
+                    "type": "string",
+                    "docOrder": 14,
+                    "description": "The generatedPath value",
+                    "num": 14
+                },
+                {
+                    "name": "annotatedPath",
+                    "type": "string",
+                    "docOrder": 15,
+                    "description": "The annotatedPath value",
+                    "num": 15
+                },
+                {
+                    "name": "downloadMode",
+                    "type": "string",
+                    "docOrder": 16,
+                    "description": "The downloadMode value",
+                    "num": 16
+                },
+                {
+                    "name": "ipfsHash",
+                    "type": "string",
+                    "docOrder": 17,
+                    "description": "The ipfsHash value",
+                    "num": 17
+                },
+                {
+                    "name": "cacheHit",
+                    "type": "bool",
+                    "docOrder": 18,
+                    "description": "The cacheHit value",
+                    "num": 18
+                },
+                {
+                    "name": "completed",
+                    "type": "bool",
+                    "docOrder": 19,
+                    "description": "The completed value",
+                    "num": 19
+                },
+                {
+                    "name": "series",
+                    "type": "string",
+                    "docOrder": 20,
+                    "description": "The series value",
+                    "num": 20
+                }
+            ]
+        },
+        {
+            "class": "Dresses",
             "doc_group": "001-Route",
             "doc_route": "700-dresses",
             "doc_descr": "multi-facet generative art collection for DalleDress",
@@ -5805,7 +6090,7 @@
             "facets": [
                 {
                     "name": "Generator",
-                    "store": "dalle.DalleDress",
+                    "store": "DalleDress",
                     "actions": [],
                     "viewType": "dashboard",
                     "renderer": "facet",
@@ -5814,7 +6099,7 @@
                 },
                 {
                     "name": "Series",
-                    "store": "dalle.Series",
+                    "store": "Series",
                     "actions": [
                         "update",
                         "create",
@@ -5829,7 +6114,7 @@
                 },
                 {
                     "name": "Databases",
-                    "store": "dalle.Databases",
+                    "store": "Databases",
                     "actions": [
                         "export"
                     ],
@@ -5851,7 +6136,7 @@
                 },
                 {
                     "name": "Gallery",
-                    "store": "dalle.DalleDress",
+                    "store": "DalleDress",
                     "actions": [
                         "export"
                     ],

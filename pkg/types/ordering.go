@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 )
 
@@ -41,6 +42,7 @@ func NormalizeFields(vc *ViewConfig) {
 // SetMenuOrder applies menu ordering and facet configurations from .create-local-app.json to ViewConfig
 func SetMenuOrder(vc *ViewConfig) {
 	if vc == nil {
+		logger.ShouldNotHappen("SetMenuOrder called with nil ViewConfig")
 		return
 	}
 

@@ -4,9 +4,9 @@ module github.com/TrueBlocks/trueblocks-explorer
 go 1.25.1
 
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20250923033958-180bbc7ebdbd
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20250928042956-de9ea31404b7
 	github.com/TrueBlocks/trueblocks-dalle/v2 v2.0.0-20250918192706-fe9276cdab92
-	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.1
+	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.3
 	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kbinani/screenshot v0.0.0-20250118074034-a3924b7bbc8c

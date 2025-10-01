@@ -36,6 +36,8 @@ func (f *FieldConfig) normalizeField() {
 			return unCamelize(f.Key[2:]), "boolean"
 		} else if strings.HasPrefix(f.Key, "n") && len(f.Key) > 1 && unicode.IsUpper(rune(f.Key[1])) {
 			return unCamelize(f.Key[1:]), "number"
+		} else if f.Key == "actions" {
+			return unCamelize(f.Key), "actions"
 		} else {
 			return unCamelize(f.Key), ""
 		}
@@ -48,7 +50,12 @@ func (f *FieldConfig) normalizeField() {
 	if f.DetailLabel == "" {
 		f.DetailLabel, fmt = clean(true)
 	}
-	if fmt != "" && f.Formatter == "" {
-		f.Formatter = fmt
+	if f.Formatter == "" {
+		// only change the field's formatter if it's not explicitly set
+		if fmt != "" {
+			f.Formatter = fmt
+		} else {
+			f.Formatter = "text"
+		}
 	}
 }

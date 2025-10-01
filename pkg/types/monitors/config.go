@@ -38,6 +38,7 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 			"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -58,6 +59,7 @@ func getMonitorsFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Sortable: false, Filterable: false, Order: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

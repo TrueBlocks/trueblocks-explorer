@@ -83,6 +83,7 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 			"update":   {Name: "update", Label: "Update", Icon: "Update"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -109,6 +110,7 @@ func getNamesFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", Section: "Name Identity", NoDetail: true, Width: 80, Order: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

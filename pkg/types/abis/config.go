@@ -66,6 +66,7 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 			"remove": {Name: "remove", Label: "Remove", Icon: "Remove"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -90,6 +91,7 @@ func getAbisFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Order: 9},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -108,6 +110,7 @@ func getFunctionsFields() []types.FieldConfig {
 		{Key: "message", Label: "Error Message", ColumnLabel: "Error Message", DetailLabel: "Error Message", Section: "Additional Information", NoTable: true, DetailOrder: 10},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

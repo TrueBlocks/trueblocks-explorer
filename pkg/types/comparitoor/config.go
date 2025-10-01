@@ -75,6 +75,7 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -99,6 +100,7 @@ func getTransactionFields() []types.FieldConfig {
 		{Key: "diffType", Label: "Diff Type", Section: "Diffs", Order: 13, DetailOrder: 13},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

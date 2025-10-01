@@ -125,6 +125,7 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -136,6 +137,7 @@ func getApprovalsFields() []types.FieldConfig {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -161,6 +163,7 @@ func getAssetsFields() []types.FieldConfig {
 		{Key: "prefund", Label: "Prefund Amount", DetailLabel: "Prefund Amount", Formatter: "wei", Section: "Additional Data", NoTable: true, DetailOrder: 16},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -183,6 +186,7 @@ func getBalancesFields() []types.FieldConfig {
 		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Transaction Context", NoTable: true, DetailOrder: 13},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -206,6 +210,7 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -229,6 +234,7 @@ func getReceiptsFields() []types.FieldConfig {
 		{Key: "logs", Label: "Log Count", DetailLabel: "Log Count", Section: "Additional Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -280,6 +286,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Key: "correctEndBalOut", Label: "Correct End Bal Out", DetailLabel: "Correct End Bal Out", Formatter: "wei", Section: "Correction Entries", NoTable: true, DetailOrder: 42},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -311,6 +318,7 @@ func getTracesFields() []types.FieldConfig {
 		{Key: "compressedTrace", Label: "Compressed Trace", DetailLabel: "Compressed Trace", Section: "Articulated Information", NoTable: true, DetailOrder: 22},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -339,6 +347,7 @@ func getTransactionsFields() []types.FieldConfig {
 		{Key: "type", Label: "Transaction Type", DetailLabel: "Transaction Type", Section: "Transaction Details", NoTable: true, DetailOrder: 19},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -371,6 +380,7 @@ func getTransfersFields() []types.FieldConfig {
 		{Key: "prefundIn", Label: "Prefund In", DetailLabel: "Prefund In", Formatter: "wei", Section: "Special Transfers", NoTable: true, DetailOrder: 17},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -386,6 +396,7 @@ func getWithdrawalsFields() []types.FieldConfig {
 		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Block Information", NoTable: true, DetailOrder: 6},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

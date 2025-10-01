@@ -55,6 +55,7 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -72,6 +73,7 @@ func getCachesFields() []types.FieldConfig {
 		{Key: "lastCached", Label: "Last Cached", Section: "Timestamps", Width: 150, Order: 6, DetailOrder: 6},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -87,6 +89,7 @@ func getChainsFields() []types.FieldConfig {
 		{Key: "remoteExplorer", Label: "Remote Explorer", Section: "Explorers", Width: 200, Order: 7, DetailOrder: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -113,6 +116,7 @@ func getStatusFields() []types.FieldConfig {
 		{Key: "isTracing", Label: "Is Tracing", Section: "Flags", Width: 100, Order: 18, DetailOrder: 18},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

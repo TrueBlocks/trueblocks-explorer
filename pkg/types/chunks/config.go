@@ -65,6 +65,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -83,6 +84,7 @@ func getBloomsFields() []types.FieldConfig {
 		{Key: "byteWidth", Label: "Byte Width", ColumnLabel: "Byte Width", DetailLabel: "Byte Width", Formatter: "number", Section: "Sizes", Width: 150, Sortable: true, Filterable: true, Order: 7, DetailOrder: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -97,6 +99,7 @@ func getIndexFields() []types.FieldConfig {
 		{Key: "size", Label: "Size", ColumnLabel: "Size", DetailLabel: "Size", Formatter: "number", Section: "Sizes", Width: 150, Sortable: true, Filterable: true, Order: 6, DetailOrder: 6},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -108,6 +111,7 @@ func getManifestFields() []types.FieldConfig {
 		{Key: "specification", Label: "Specification", ColumnLabel: "Specification", DetailLabel: "Specification", Formatter: "hash", Section: "Manifest", Width: 200, Order: 3, DetailOrder: 3},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -128,6 +132,7 @@ func getStatsFields() []types.FieldConfig {
 		{Key: "ratio", Label: "Ratio", ColumnLabel: "Ratio", DetailLabel: "Ratio", Formatter: "float64", Section: "Efficiency", Width: 100, Sortable: true, Filterable: true, Order: 12, DetailOrder: 12},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

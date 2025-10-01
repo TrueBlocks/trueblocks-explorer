@@ -55,6 +55,7 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -71,6 +72,7 @@ func getContractsFields() []types.FieldConfig {
 		{Key: "source", Label: "Source", ColumnLabel: "Source", DetailLabel: "Source", Section: "Source", Width: 150, Order: 5, DetailOrder: 5},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -87,6 +89,7 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "signature", Label: "Signature", ColumnLabel: "", DetailLabel: "Signature", Section: "Event", NoTable: true, DetailOrder: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

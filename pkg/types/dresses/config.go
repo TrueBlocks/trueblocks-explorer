@@ -79,6 +79,7 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 			"update": {Name: "update", Label: "Update", Icon: "Update"},
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -110,6 +111,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Key: "series", Label: "Series", ColumnLabel: "Series", DetailLabel: "Series", Section: "General", Order: 20, DetailOrder: 20},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -122,6 +124,7 @@ func getDatabasesFields() []types.FieldConfig {
 		{Key: "filtered", Label: "Filtered", ColumnLabel: "Filtered", DetailLabel: "Filtered", Section: "General", Width: 80, Order: 4, DetailOrder: 4},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -145,6 +148,7 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 
@@ -167,6 +171,7 @@ func getSeriesFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", Section: "General", NoDetail: true, Width: 80, Order: 7},
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 

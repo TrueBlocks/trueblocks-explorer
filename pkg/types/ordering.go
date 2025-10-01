@@ -8,9 +8,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 )
 
-// NormalizeFields sorts columns and detail fields by their explicit order values.
+// SortFields sorts columns and detail fields by their explicit order values.
 // It does not assign defaults; ordering must be provided in config.
-func NormalizeFields(vc *ViewConfig) {
+func SortFields(vc *ViewConfig) {
 	if vc == nil || vc.Facets == nil {
 		return
 	}
@@ -39,17 +39,17 @@ func NormalizeFields(vc *ViewConfig) {
 	}
 }
 
-// SetMenuOrder applies menu ordering and facet configurations from .create-local-app.json to ViewConfig
+// SetMenuOrder applies menu ordering and facet configurations from embedded or file-based config to ViewConfig
 func SetMenuOrder(vc *ViewConfig) {
 	if vc == nil {
 		logger.ShouldNotHappen("SetMenuOrder called with nil ViewConfig")
 		return
 	}
 
-	// Load app config
+	// Load app config (embedded or from file)
 	config, err := preferences.LoadAppConfig()
 	if err != nil {
-		panic(fmt.Sprintf("FATAL: Failed to load app config from .create-local-app.json: %v", err))
+		panic(fmt.Sprintf("FATAL: Failed to load app config: %v", err))
 	}
 
 	// Check if this view has configuration

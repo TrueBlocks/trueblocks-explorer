@@ -39,13 +39,13 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getMonitorsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Address", Formatter: "address", Section: "Monitor Overview", Width: 340, Sortable: true, Filterable: true, Order: 1, DetailOrder: 2},
 		{Key: "name", Label: "Name", ColumnLabel: "Name", DetailLabel: "Name", Section: "Monitor Overview", Width: 200, Sortable: true, Filterable: true, Order: 2, DetailOrder: 1},
@@ -58,6 +58,7 @@ func getMonitorsFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Sortable: false, Filterable: false, Order: 7},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

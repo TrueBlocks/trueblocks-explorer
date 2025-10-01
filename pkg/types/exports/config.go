@@ -126,20 +126,21 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getApprovalsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getAssetsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Contract Address", Formatter: "address", Section: "Asset Information", Width: 340, Order: 1, DetailOrder: 1},
 		{Key: "holder", Label: "Holder", ColumnLabel: "Holder", DetailLabel: "Holder", Formatter: "address", Section: "Asset Information", Width: 340, Order: 2, DetailOrder: 2},
@@ -160,10 +161,11 @@ func getAssetsFields() []types.FieldConfig {
 		{Key: "prefund", Label: "Prefund Amount", DetailLabel: "Prefund Amount", Formatter: "wei", Section: "Additional Data", NoTable: true, DetailOrder: 16},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getBalancesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "date", Label: "Date", ColumnLabel: "Date", DetailLabel: "Date", Formatter: "datetime", Section: "Balance Information", Width: 120, Order: 1, DetailOrder: 1},
 		{Key: "holder", Label: "Holder", ColumnLabel: "Holder", DetailLabel: "Holder", Formatter: "address", Section: "Token Details", Width: 340, Order: 2, DetailOrder: 7},
@@ -181,10 +183,11 @@ func getBalancesFields() []types.FieldConfig {
 		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Transaction Context", NoTable: true, DetailOrder: 13},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getLogsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 8},
 		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 11},
@@ -203,10 +206,11 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getReceiptsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Block Context", Width: 100, Order: 1, DetailOrder: 11},
 		{Key: "transactionIndex", Label: "Index", ColumnLabel: "Index", DetailLabel: "Transaction Index", Section: "Transaction Details", Width: 80, Order: 2, DetailOrder: 7},
@@ -225,10 +229,11 @@ func getReceiptsFields() []types.FieldConfig {
 		{Key: "logs", Label: "Log Count", DetailLabel: "Log Count", Section: "Additional Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getStatementsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "date", Label: "Date", ColumnLabel: "Date", DetailLabel: "Date", Formatter: "datetime", Section: "Statement Summary", Width: 120, Order: 1, DetailOrder: 1},
 		{Key: "asset", Label: "Asset", ColumnLabel: "Asset", DetailLabel: "Asset", Formatter: "address", Section: "Asset Information", Width: 340, Order: 2, DetailOrder: 6},
@@ -275,10 +280,11 @@ func getStatementsFields() []types.FieldConfig {
 		{Key: "correctEndBalOut", Label: "Correct End Bal Out", DetailLabel: "Correct End Bal Out", Formatter: "wei", Section: "Correction Entries", NoTable: true, DetailOrder: 42},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getTracesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 15},
 		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 18},
@@ -305,10 +311,11 @@ func getTracesFields() []types.FieldConfig {
 		{Key: "compressedTrace", Label: "Compressed Trace", DetailLabel: "Compressed Trace", Section: "Articulated Information", NoTable: true, DetailOrder: 22},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getTransactionsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Block Context", Width: 100, Order: 1, DetailOrder: 15},
 		{Key: "transactionIndex", Label: "Index", ColumnLabel: "Index", DetailLabel: "Transaction Index", Section: "Block Context", Width: 80, Order: 2, DetailOrder: 17},
@@ -332,10 +339,11 @@ func getTransactionsFields() []types.FieldConfig {
 		{Key: "type", Label: "Transaction Type", DetailLabel: "Transaction Type", Section: "Transaction Details", NoTable: true, DetailOrder: 19},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getTransfersFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block", Section: "Transaction Info", Width: 100, Order: 1, DetailOrder: 18},
 		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Tx Index", Section: "Transaction Info", Width: 80, Order: 2, DetailOrder: 19},
@@ -363,10 +371,11 @@ func getTransfersFields() []types.FieldConfig {
 		{Key: "prefundIn", Label: "Prefund In", DetailLabel: "Prefund In", Formatter: "wei", Section: "Special Transfers", NoTable: true, DetailOrder: 17},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getWithdrawalsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Block Information", Width: 100, Order: 1, DetailOrder: 5},
 		{Key: "index", Label: "Index", ColumnLabel: "Index", DetailLabel: "Withdrawal Index", Section: "Withdrawal Details", Width: 80, Order: 2, DetailOrder: 4},
@@ -377,6 +386,7 @@ func getWithdrawalsFields() []types.FieldConfig {
 		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Block Information", NoTable: true, DetailOrder: 6},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

@@ -11,7 +11,21 @@ import (
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 )
+
+var embeddedConfigData []byte
+
+// SetEmbeddedConfig initializes the embedded configuration data from the main package
+func SetEmbeddedConfig(embedFS embed.FS) error {
+	data, err := embedFS.ReadFile(".create-local-app.json")
+	if err != nil {
+		return fmt.Errorf("failed to read embedded .create-local-app.json: %w", err)
+	}
+	embeddedConfigData = data
+	return nil
+}
 
 var configBase string
 
@@ -131,54 +145,89 @@ type ViewConfigEntry struct {
 	DisabledFacets map[string]bool `json:"disabledFacets,omitempty"`
 }
 
-// LoadAppConfig reads and parses the .create-local-app.json file from the root directory
+// LoadAppConfig reads and parses the configuration from .create-local-app.json file,
+// falling back to embedded configuration if the file doesn't exist
 func LoadAppConfig() (*AppConfig, error) {
 	configPath := ".create-local-app.json"
 
-	// Check if file exists
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		// Return default config if file doesn't exist
-		return &AppConfig{
-			Organization:  "TrueBlocks, LLC",
-			ProjectName:   "explorer",
-			Github:        "github.com/TrueBlocks/trueblocks-core",
-			Domain:        "trueblocks.io",
-			Template:      "default",
-			PreserveFiles: []string{},
-			ViewConfig:    make(map[string]ViewConfigEntry),
-		}, nil
+	// First try to read from file system
+	if _, err := os.Stat(configPath); err == nil {
+		// File exists, read from it
+		data, err := os.ReadFile(configPath)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read .create-local-app.json: %w", err)
+		}
+
+		var config AppConfig
+		if err := json.Unmarshal(data, &config); err != nil {
+			return nil, fmt.Errorf("failed to parse .create-local-app.json: %w", err)
+		}
+
+		// Ensure ViewConfig is initialized
+		if config.ViewConfig == nil {
+			config.ViewConfig = make(map[string]ViewConfigEntry)
+		}
+
+		return &config, nil
 	}
 
-	// Read file
-	data, err := os.ReadFile(configPath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read .create-local-app.json: %w", err)
+	// Fall back to embedded configuration
+	if embeddedConfigData != nil {
+		var config AppConfig
+		if err := json.Unmarshal(embeddedConfigData, &config); err != nil {
+			return nil, fmt.Errorf("failed to parse embedded configuration: %w", err)
+		}
+
+		// Ensure ViewConfig is initialized
+		if config.ViewConfig == nil {
+			config.ViewConfig = make(map[string]ViewConfigEntry)
+		}
+
+		return &config, nil
 	}
 
-	// Parse JSON
-	var config AppConfig
-	if err := json.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to parse .create-local-app.json: %w", err)
-	}
+	// Final fallback to hardcoded default (should not happen in normal operation)
+	return getDefaultAppConfig(), nil
+}
 
-	// Ensure ViewConfig is initialized
-	if config.ViewConfig == nil {
-		config.ViewConfig = make(map[string]ViewConfigEntry)
+// getDefaultAppConfig returns the default application configuration
+func getDefaultAppConfig() *AppConfig {
+	return &AppConfig{
+		Organization:  "TrueBlocks, LLC",
+		ProjectName:   "explorer",
+		Github:        "github.com/TrueBlocks/trueblocks-core",
+		Domain:        "trueblocks.io",
+		Template:      "default",
+		PreserveFiles: []string{},
+		ViewConfig: map[string]ViewConfigEntry{
+			"exports":     {MenuOrder: 20},
+			"monitors":    {MenuOrder: 30},
+			"abis":        {MenuOrder: 40},
+			"names":       {MenuOrder: 50},
+			"chunks":      {MenuOrder: 60},
+			"contracts":   {MenuOrder: 70},
+			"status":      {MenuOrder: 80},
+			"dresses":     {MenuOrder: 90},
+			"comparitoor": {MenuOrder: 100},
+		},
 	}
-
-	return &config, nil
 }
 
 func LoadIdentifiers(embedFS embed.FS) {
+	// Initialize embedded configuration
+	if err := SetEmbeddedConfig(embedFS); err != nil {
+		logging.LogError("Failed to load embedded config", err)
+	}
+
 	configData, err := embedFS.ReadFile("wails.json")
 	if err != nil {
-		fmt.Printf("Error reading wails.json: %v\n", err)
+		logging.LogError("Error reading wails.json", err)
 		return
 	}
 
 	var config WailsConfig
 	if err := json.Unmarshal(configData, &config); err != nil {
-		fmt.Printf("Error parsing wails.json: %v\n", err)
+		logging.LogError("Error parsing wails.json", err)
 		return
 	}
 

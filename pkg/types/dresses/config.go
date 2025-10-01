@@ -80,13 +80,13 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getDalledressFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "original", Label: "Original", ColumnLabel: "Original", DetailLabel: "Original Value", Section: "General", Order: 1, DetailOrder: 1},
 		{Key: "fileName", Label: "File Name", ColumnLabel: "File Name", DetailLabel: "File Name", Section: "General", Order: 2, DetailOrder: 2},
@@ -110,10 +110,11 @@ func getDalledressFields() []types.FieldConfig {
 		{Key: "series", Label: "Series", ColumnLabel: "Series", DetailLabel: "Series", Section: "General", Order: 20, DetailOrder: 20},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getDatabasesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "databaseName", Label: "Database Name", ColumnLabel: "Database", DetailLabel: "Database Name", Section: "General", Width: 200, Order: 1, DetailOrder: 1},
 		{Key: "count", Label: "Count", ColumnLabel: "Count", DetailLabel: "Count", Section: "General", Width: 100, Order: 2, DetailOrder: 2},
@@ -121,10 +122,11 @@ func getDatabasesFields() []types.FieldConfig {
 		{Key: "filtered", Label: "Filtered", ColumnLabel: "Filtered", DetailLabel: "Filtered", Section: "General", Width: 80, Order: 4, DetailOrder: 4},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getLogsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 8},
 		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 11},
@@ -143,10 +145,11 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getSeriesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "suffix", Label: "Series Name", ColumnLabel: "Series", DetailLabel: "Series Name", Section: "General", Width: 150, Order: 1, DetailOrder: 1},
 		{Key: "last", Label: "Last Index", ColumnLabel: "Last", DetailLabel: "Last Index", Section: "General", Width: 80, Order: 2, DetailOrder: 2},
@@ -164,6 +167,7 @@ func getSeriesFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", Section: "General", NoDetail: true, Width: 80, Order: 7},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

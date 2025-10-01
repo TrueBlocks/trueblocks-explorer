@@ -84,13 +84,13 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getNamesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "address", Label: "Address", Section: "Name Identity", Width: 340, Formatter: "address", Order: 1, DetailOrder: 1},
 		{Key: "name", Label: "Name", Section: "Name Identity", Width: 200, Order: 2, DetailOrder: 2},
@@ -109,6 +109,7 @@ func getNamesFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", Section: "Name Identity", NoDetail: true, Width: 80, Order: 7},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

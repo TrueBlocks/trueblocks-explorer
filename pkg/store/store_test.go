@@ -305,12 +305,12 @@ func TestStoreFetchWithStaleData(t *testing.T) {
 	store.dataGeneration.Add(1)
 	close(proceedChannel)
 	<-fetchDone
-	assert.Equal(t, errStaleFetch, fetchErr)
+	assert.Equal(t, ErrStaleFetch, fetchErr)
 }
 
 func TestErrStaleFetch(t *testing.T) {
-	err := ErrStaleFetch()
-	assert.Equal(t, errStaleFetch, err)
+	err := ErrStaleFetch
+	assert.Equal(t, ErrStaleFetch, err)
 	assert.Contains(t, err.Error(), "stale fetch")
 }
 

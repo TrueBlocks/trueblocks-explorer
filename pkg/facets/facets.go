@@ -154,8 +154,8 @@ func (r *Facet[T]) Load() error {
 		for {
 			select {
 			case err := <-done:
-				if err != nil && err != store.ErrStaleFetch() {
-					logging.LogBackend(fmt.Sprintf("Failed fetch: %s", err.Error()))
+				if err != nil && err != store.ErrStaleFetch && err.Error() != "context canceled" {
+					logging.LogBackend(fmt.Sprintf("Fetch error: %s", err.Error()))
 				}
 				return
 

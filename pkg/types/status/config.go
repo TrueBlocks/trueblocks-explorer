@@ -56,13 +56,13 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getCachesFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "type", Label: "Type", Section: "General", Width: 100, Order: 1, DetailOrder: 1},
 		{Key: "path", Label: "Path", Section: "General", Width: 300, Order: 2, DetailOrder: 2},
@@ -72,10 +72,11 @@ func getCachesFields() []types.FieldConfig {
 		{Key: "lastCached", Label: "Last Cached", Section: "Timestamps", Width: 150, Order: 6, DetailOrder: 6},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getChainsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "chain", Label: "Chain", Section: "General", Width: 100, Order: 1, DetailOrder: 1},
 		{Key: "chainId", Label: "Chain ID", Section: "General", Width: 100, Order: 2, DetailOrder: 2},
@@ -86,10 +87,11 @@ func getChainsFields() []types.FieldConfig {
 		{Key: "remoteExplorer", Label: "Remote Explorer", Section: "Explorers", Width: 200, Order: 7, DetailOrder: 7},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getStatusFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "cachePath", Label: "Cache Path", Section: "Paths", Width: 200, Order: 1, DetailOrder: 1},
 		{Key: "indexPath", Label: "Index Path", Section: "Paths", Width: 200, Order: 2, DetailOrder: 2},
@@ -111,6 +113,7 @@ func getStatusFields() []types.FieldConfig {
 		{Key: "isTracing", Label: "Is Tracing", Section: "Flags", Width: 100, Order: 18, DetailOrder: 18},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

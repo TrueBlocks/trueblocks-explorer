@@ -45,11 +45,7 @@ type Store[T any] struct {
 	mutex              sync.RWMutex
 }
 
-var errStaleFetch = errors.New("stale fetch: store was reset")
-
-func ErrStaleFetch() error {
-	return errStaleFetch
-}
+var ErrStaleFetch = errors.New("stale fetch: store was reset")
 
 // NewStore creates a new SDK-based store
 func NewStore[T any](
@@ -227,7 +223,7 @@ func (s *Store[T]) Fetch() error {
 			s.mutex.Lock()
 			if s.dataGeneration.Load() != fetchGeneration {
 				s.mutex.Unlock()
-				return errStaleFetch
+				return ErrStaleFetch
 			}
 
 			if s.mappingFunc != nil {

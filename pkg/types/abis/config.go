@@ -67,13 +67,13 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getAbisFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Address", Formatter: "address", Section: "ABI Identity", Width: 340, Order: 1, DetailOrder: 1},
 		{Key: "name", Label: "Name", ColumnLabel: "Name", DetailLabel: "Name", Section: "ABI Identity", Width: 200, Order: 2, DetailOrder: 2},
@@ -90,10 +90,11 @@ func getAbisFields() []types.FieldConfig {
 		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Order: 9},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getFunctionsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "name", Label: "Name", ColumnLabel: "Name", DetailLabel: "Function Name", Section: "Function Overview", Width: 200, Order: 1, DetailOrder: 1},
 		{Key: "type", Label: "Type", ColumnLabel: "Type", DetailLabel: "Function Type", Section: "Function Overview", Width: 100, Order: 2, DetailOrder: 2},
@@ -107,6 +108,7 @@ func getFunctionsFields() []types.FieldConfig {
 		{Key: "message", Label: "Error Message", ColumnLabel: "Error Message", DetailLabel: "Error Message", Section: "Additional Information", NoTable: true, DetailOrder: 10},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

@@ -76,13 +76,13 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getTransactionFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "hash", Label: "Hash", Section: "General", Order: 1, DetailOrder: 1},
 		{Key: "blockNumber", Label: "Block", Section: "General", Order: 2, DetailOrder: 2},
@@ -99,6 +99,7 @@ func getTransactionFields() []types.FieldConfig {
 		{Key: "diffType", Label: "Diff Type", Section: "Diffs", Order: 13, DetailOrder: 13},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

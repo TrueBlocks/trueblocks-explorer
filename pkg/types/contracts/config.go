@@ -56,13 +56,13 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 	types.DeriveFacets(cfg)
-	types.NormalizeFields(cfg)
+	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
 
 func getContractsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Address", Section: "General", Width: 240, Order: 1, DetailOrder: 1},
 		{Key: "name", Label: "Name", ColumnLabel: "Name", DetailLabel: "Name", Section: "General", Width: 200, Order: 2, DetailOrder: 2},
@@ -71,10 +71,11 @@ func getContractsFields() []types.FieldConfig {
 		{Key: "source", Label: "Source", ColumnLabel: "Source", DetailLabel: "Source", Section: "Source", Width: 150, Order: 5, DetailOrder: 5},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 func getLogsFields() []types.FieldConfig {
-	return []types.FieldConfig{
+	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Key: "date", Label: "Date", ColumnLabel: "Date", DetailLabel: "Date", Section: "Block/Tx", Width: 120, Order: 1, DetailOrder: 1},
 		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Address", Section: "Event", Width: 340, Order: 2, DetailOrder: 5},
@@ -86,6 +87,7 @@ func getLogsFields() []types.FieldConfig {
 		{Key: "signature", Label: "Signature", ColumnLabel: "", DetailLabel: "Signature", Section: "Event", NoTable: true, DetailOrder: 7},
 		// EXISTING_CODE
 	}
+	return ret
 }
 
 // EXISTING_CODE

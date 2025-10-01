@@ -26,7 +26,17 @@ func (a *App) GetMonitorsPage(
 	filter string,
 ) (*monitors.MonitorsPage, error) {
 	collection := monitors.GetMonitorsCollection(payload)
-	return getCollectionPage[*monitors.MonitorsPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*monitors.MonitorsPage](collection, payload, first, pageSize, sort, filter)
+	if err != nil {
+		return nil, err
+	}
+	for i := range ret.Monitors {
+		address := ret.Monitors[i].Address.Hex()
+		if namePtr, ok := a.NameFromAddress(address); ok && namePtr != nil {
+			ret.Monitors[i].Name = namePtr.Name
+		}
+	}
+	return ret, nil
 }
 
 func (a *App) MonitorsCrud(

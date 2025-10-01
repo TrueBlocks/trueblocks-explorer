@@ -10,7 +10,9 @@ import (
 
 // NameFromAddress resolves an Ethereum address to a named entity if one exists
 func (a *App) NameFromAddress(address string) (*names.Name, bool) {
-	collection := names.GetNamesCollection(&types.Payload{})
+	collection := names.GetNamesCollection(&types.Payload{
+		Chain: "mainnet",
+	})
 	return collection.NameFromAddress(base.HexToAddress(address))
 }
 

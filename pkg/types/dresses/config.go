@@ -89,26 +89,26 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 func getDalledressFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "original", Label: "Original", ColumnLabel: "Original", DetailLabel: "Original Value", Section: "General", Order: 1, DetailOrder: 1},
-		{Key: "fileName", Label: "File Name", ColumnLabel: "File Name", DetailLabel: "File Name", Section: "General", Order: 2, DetailOrder: 2},
-		{Key: "seed", Label: "Seed", ColumnLabel: "Seed", DetailLabel: "Seed", Section: "General", Order: 3, DetailOrder: 3},
-		{Key: "prompt", Label: "Prompt", ColumnLabel: "Prompt", DetailLabel: "Prompt", Section: "Prompts", Order: 4, DetailOrder: 4},
-		{Key: "dataPrompt", Label: "Data Prompt", ColumnLabel: "Data Prompt", DetailLabel: "Data Prompt", Section: "Prompts", Order: 5, DetailOrder: 5},
-		{Key: "titlePrompt", Label: "Title Prompt", ColumnLabel: "Title Prompt", DetailLabel: "Title Prompt", Section: "Prompts", Order: 6, DetailOrder: 6},
-		{Key: "tersePrompt", Label: "Terse Prompt", ColumnLabel: "Terse Prompt", DetailLabel: "Terse Prompt", Section: "Prompts", Order: 7, DetailOrder: 7},
-		{Key: "enhancedPrompt", Label: "Enhanced Prompt", ColumnLabel: "Enhanced Prompt", DetailLabel: "Enhanced Prompt", Section: "Prompts", Order: 8, DetailOrder: 8},
-		{Key: "attributes", Label: "Attributes", ColumnLabel: "Attributes", DetailLabel: "Attributes", Section: "Attributes", NoTable: true, DetailOrder: 9},
-		{Key: "seedChunks", Label: "Seed Chunks", ColumnLabel: "Seed Chunks", DetailLabel: "Seed Chunks", Section: "General", NoTable: true, DetailOrder: 10},
-		{Key: "selectedTokens", Label: "Selected Tokens", ColumnLabel: "Selected Tokens", DetailLabel: "Selected Tokens", Section: "General", NoTable: true, DetailOrder: 11},
-		{Key: "selectedRecords", Label: "Selected Records", ColumnLabel: "Selected Records", DetailLabel: "Selected Records", Section: "General", NoTable: true, DetailOrder: 12},
-		{Key: "imageUrl", Label: "Image URL", ColumnLabel: "Image URL", DetailLabel: "Image URL", Section: "Image", Order: 13, DetailOrder: 13},
-		{Key: "generatedPath", Label: "Generated Path", ColumnLabel: "Generated Path", DetailLabel: "Generated Path", Section: "Image", Order: 14, DetailOrder: 14},
-		{Key: "annotatedPath", Label: "Annotated Path", ColumnLabel: "Annotated Path", DetailLabel: "Annotated Path", Section: "Image", Order: 15, DetailOrder: 15},
-		{Key: "downloadMode", Label: "Download Mode", ColumnLabel: "Download Mode", DetailLabel: "Download Mode", Section: "General", Order: 16, DetailOrder: 16},
-		{Key: "ipfsHash", Label: "IPFS Hash", ColumnLabel: "IPFS Hash", DetailLabel: "IPFS Hash", Section: "General", Order: 17, DetailOrder: 17},
-		{Key: "cacheHit", Label: "Cache Hit", ColumnLabel: "Cache Hit", DetailLabel: "Cache Hit", Section: "General", Order: 18, DetailOrder: 18},
-		{Key: "completed", Label: "Completed", ColumnLabel: "Completed", DetailLabel: "Completed", Section: "General", Order: 19, DetailOrder: 19},
-		{Key: "series", Label: "Series", ColumnLabel: "Series", DetailLabel: "Series", Section: "General", Order: 20, DetailOrder: 20},
+		{Key: "original", Formatter: "address", Section: "General"},
+		{Key: "fileName", Formatter: "path", Section: "General"},
+		{Key: "seed", Section: "General"},
+		{Key: "prompt", Section: "Prompts"},
+		{Key: "dataPrompt", Section: "Prompts"},
+		{Key: "titlePrompt", Section: "Prompts"},
+		{Key: "tersePrompt", Section: "Prompts"},
+		{Key: "enhancedPrompt", Section: "Prompts"},
+		{Key: "attributes", Section: "Attributes", NoTable: true},
+		{Key: "seedChunks", Section: "General", NoTable: true},
+		{Key: "selectedTokens", Section: "General", NoTable: true},
+		{Key: "selectedRecords", Section: "General", NoTable: true},
+		{Key: "imageUrl", Formatter: "url", Section: "Image"},
+		{Key: "generatedPath", Formatter: "path", Section: "Image"},
+		{Key: "annotatedPath", Formatter: "path", Section: "Image"},
+		{Key: "downloadMode", Section: "General"},
+		{Key: "ipfsHash", Formatter: "hash", Section: "General"},
+		{Key: "cacheHit", Formatter: "boolean", Section: "General"},
+		{Key: "completed", Formatter: "boolean", Section: "General"},
+		{Key: "series", Section: "General"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -118,10 +118,10 @@ func getDalledressFields() []types.FieldConfig {
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "databaseName", Label: "Database Name", ColumnLabel: "Database", DetailLabel: "Database Name", Section: "General", Width: 200, Order: 1, DetailOrder: 1},
-		{Key: "count", Label: "Count", ColumnLabel: "Count", DetailLabel: "Count", Section: "General", Width: 100, Order: 2, DetailOrder: 2},
-		{Key: "sample", Label: "Sample", ColumnLabel: "Sample", DetailLabel: "Sample", Section: "General", Width: 300, Order: 3, DetailOrder: 3},
-		{Key: "filtered", Label: "Filtered", ColumnLabel: "Filtered", DetailLabel: "Filtered", Section: "General", Width: 80, Order: 4, DetailOrder: 4},
+		{Key: "databaseName", Section: "General"},
+		{Key: "count", Formatter: "number", Section: "General"},
+		{Key: "sample", Section: "General"},
+		{Key: "filtered", Section: "General"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -131,21 +131,21 @@ func getDatabasesFields() []types.FieldConfig {
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "blockNumber", Label: "Block", ColumnLabel: "Block", DetailLabel: "Block Number", Section: "Transaction Context", Width: 100, Order: 1, DetailOrder: 8},
-		{Key: "transactionIndex", Label: "Tx Index", ColumnLabel: "Tx Index", DetailLabel: "Transaction Index", Section: "Transaction Context", Width: 80, Order: 2, DetailOrder: 11},
-		{Key: "logIndex", Label: "Log Index", ColumnLabel: "Log Index", DetailLabel: "Log Index", Section: "Log Overview", Width: 80, Order: 3, DetailOrder: 3},
-		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Contract Address", Formatter: "address", Section: "Log Overview", Width: 340, Order: 4, DetailOrder: 1},
-		{Key: "topic0", Label: "Topic0", ColumnLabel: "Topic0", DetailLabel: "Topic 0 (Event Signature)", Formatter: "hash", Section: "Topics", Width: 340, Order: 5, DetailOrder: 4},
-		{Key: "topic1", Label: "Topic1", ColumnLabel: "Topic1", DetailLabel: "Topic 1", Formatter: "hash", Section: "Topics", Width: 340, Order: 6, DetailOrder: 5},
-		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Order: 7},
-		{Key: "data", Label: "Data", DetailLabel: "Data", Section: "Log Overview", NoTable: true, DetailOrder: 2},
-		{Key: "topic2", Label: "Topic 2", DetailLabel: "Topic 2", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 6},
-		{Key: "topic3", Label: "Topic 3", DetailLabel: "Topic 3", Formatter: "hash", Section: "Topics", NoTable: true, DetailOrder: 7},
-		{Key: "blockHash", Label: "Block Hash", DetailLabel: "Block Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 9},
-		{Key: "transactionHash", Label: "Transaction Hash", DetailLabel: "Transaction Hash", Formatter: "hash", Section: "Transaction Context", NoTable: true, DetailOrder: 10},
-		{Key: "timestamp", Label: "Timestamp", DetailLabel: "Timestamp", Formatter: "datetime", Section: "Transaction Context", NoTable: true, DetailOrder: 12},
-		{Key: "articulatedLog", Label: "Articulated Log", DetailLabel: "Articulated Log", Formatter: "json", Section: "Articulated Information", NoTable: true, DetailOrder: 13},
-		{Key: "compressedLog", Label: "Compressed Log", DetailLabel: "Compressed Log", Section: "Articulated Information", NoTable: true, DetailOrder: 14},
+		{Key: "blockNumber", Formatter: "number", Section: "Transaction Context"},
+		{Key: "transactionIndex", Formatter: "number", Section: "Transaction Context"},
+		{Key: "logIndex", Formatter: "number", Section: "Log Overview"},
+		{Key: "address", Formatter: "address", Section: "Log Overview"},
+		{Key: "topic0", Formatter: "hash", Section: "Topics"},
+		{Key: "topic1", Formatter: "hash", Section: "Topics"},
+		{Key: "data", Section: "Log Overview", NoTable: true},
+		{Key: "topic2", Formatter: "hash", Section: "Topics", NoTable: true},
+		{Key: "topic3", Formatter: "hash", Section: "Topics", NoTable: true},
+		{Key: "blockHash", Formatter: "hash", Section: "Transaction Context", NoTable: true},
+		{Key: "transactionHash", Formatter: "hash", Section: "Transaction Context", NoTable: true},
+		{Key: "timestamp", Formatter: "timestamp", Section: "Transaction Context", NoTable: true},
+		{Key: "articulatedLog", Formatter: "json", Section: "Articulated Information", NoTable: true},
+		{Key: "compressedLog", Section: "Articulated Information", NoTable: true},
+		{Key: "actions", Formatter: "actions", Section: "", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -155,20 +155,20 @@ func getLogsFields() []types.FieldConfig {
 func getSeriesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "suffix", Label: "Series Name", ColumnLabel: "Series", DetailLabel: "Series Name", Section: "General", Width: 150, Order: 1, DetailOrder: 1},
-		{Key: "last", Label: "Last Index", ColumnLabel: "Last", DetailLabel: "Last Index", Section: "General", Width: 80, Order: 2, DetailOrder: 2},
-		{Key: "deleted", Label: "Deleted", ColumnLabel: "Deleted", DetailLabel: "Deleted", Section: "Status", Width: 80, Order: 3, DetailOrder: 13, Formatter: "boolean"},
-		{Key: "adverbs", Label: "Adverbs", ColumnLabel: "", DetailLabel: "Adverbs", Section: "Content", NoTable: true, DetailOrder: 3},
-		{Key: "adjectives", Label: "Adjectives", ColumnLabel: "", DetailLabel: "Adjectives", Section: "Content", NoTable: true, DetailOrder: 4},
-		{Key: "nouns", Label: "Nouns", ColumnLabel: "", DetailLabel: "Nouns", Section: "Content", NoTable: true, DetailOrder: 5},
-		{Key: "emotions", Label: "Emotions", ColumnLabel: "", DetailLabel: "Emotions", Section: "Content", NoTable: true, DetailOrder: 6},
-		{Key: "artstyles", Label: "Art Styles", ColumnLabel: "", DetailLabel: "Art Styles", Section: "Style", NoTable: true, DetailOrder: 7},
-		{Key: "colors", Label: "Colors", ColumnLabel: "", DetailLabel: "Colors", Section: "Style", NoTable: true, DetailOrder: 8},
-		{Key: "orientations", Label: "Orientations", ColumnLabel: "", DetailLabel: "Orientations", Section: "Style", NoTable: true, DetailOrder: 9},
-		{Key: "gazes", Label: "Gazes", ColumnLabel: "", DetailLabel: "Gazes", Section: "Style", NoTable: true, DetailOrder: 10},
-		{Key: "backstyles", Label: "Back Styles", ColumnLabel: "", DetailLabel: "Back Styles", Section: "Style", NoTable: true, DetailOrder: 11},
-		{Key: "modifiedAt", Label: "Modified At", ColumnLabel: "Modified", DetailLabel: "Modified At", Section: "General", Width: 120, Order: 4, DetailOrder: 12},
-		{Key: "actions", Label: "Actions", Section: "General", NoDetail: true, Width: 80, Order: 7},
+		{Key: "suffix", Section: "General"},
+		{Key: "last", Formatter: "timestamp", Section: "General"},
+		{Key: "deleted", Formatter: "boolean", Section: "Status"},
+		{Key: "adverbs", Section: "Content", NoTable: true},
+		{Key: "adjectives", Section: "Content", NoTable: true},
+		{Key: "nouns", Section: "Content", NoTable: true},
+		{Key: "emotions", Section: "Content", NoTable: true},
+		{Key: "artstyles", Section: "Style", NoTable: true},
+		{Key: "colors", Section: "Style", NoTable: true},
+		{Key: "orientations", Section: "Style", NoTable: true},
+		{Key: "gazes", Section: "Style", NoTable: true},
+		{Key: "backstyles", Section: "Style", NoTable: true},
+		{Key: "modifiedAt", Section: "General"},
+		{Key: "actions", Formatter: "actions", Section: "General", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

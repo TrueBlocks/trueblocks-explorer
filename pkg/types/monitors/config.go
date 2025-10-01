@@ -48,15 +48,15 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 func getMonitorsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "address", Label: "Address", ColumnLabel: "Address", DetailLabel: "Address", Formatter: "address", Section: "Monitor Overview", Width: 340, Sortable: true, Filterable: true, Order: 1, DetailOrder: 2},
-		{Key: "name", Label: "Name", ColumnLabel: "Name", DetailLabel: "Name", Section: "Monitor Overview", Width: 200, Sortable: true, Filterable: true, Order: 2, DetailOrder: 1},
-		{Key: "deleted", Label: "Deleted", ColumnLabel: "Deleted", DetailLabel: "Deleted", Formatter: "boolean", Section: "Monitor Overview", NoTable: true, DetailOrder: 3},
-		{Key: "isStaged", Label: "Staged", ColumnLabel: "Staged", DetailLabel: "Staged", Formatter: "boolean", Section: "Monitor Overview", NoTable: true, DetailOrder: 4},
-		{Key: "nRecords", Label: "Records", ColumnLabel: "Records", DetailLabel: "Total Records", Formatter: "number", Section: "File Statistics", Width: 120, Sortable: true, Filterable: false, Order: 3, DetailOrder: 5},
-		{Key: "fileSize", Label: "File Size", ColumnLabel: "File Size", DetailLabel: "File Size", Formatter: "fileSize", Section: "File Statistics", Width: 120, Sortable: true, Filterable: false, Order: 4, DetailOrder: 6},
-		{Key: "isEmpty", Label: "Empty", ColumnLabel: "Empty", DetailLabel: "Is Empty", Formatter: "boolean", Section: "File Statistics", Width: 80, Sortable: true, Filterable: false, Order: 5, DetailOrder: 7},
-		{Key: "lastScanned", Label: "Last Scanned", ColumnLabel: "Last Scanned", DetailLabel: "Last Scanned", Formatter: "timestamp", Section: "Scanning Information", Width: 120, Sortable: true, Filterable: false, Order: 6, DetailOrder: 8},
-		{Key: "actions", Label: "Actions", ColumnLabel: "Actions", DetailLabel: "Actions", Section: "", NoDetail: true, Width: 80, Sortable: false, Filterable: false, Order: 7},
+		{Key: "address", Formatter: "address", Section: "Monitor Overview", Sortable: true},
+		{Key: "name", Section: "Monitor Overview", Sortable: true},
+		{Key: "deleted", Formatter: "boolean", Section: "Monitor Overview", NoTable: true},
+		{Key: "isStaged", Formatter: "boolean", Section: "Monitor Overview", NoTable: true},
+		{Key: "nRecords", Formatter: "number", Section: "File Statistics", Sortable: true},
+		{Key: "fileSize", Formatter: "fileSize", Section: "File Statistics", Sortable: true},
+		{Key: "isEmpty", Formatter: "boolean", Section: "File Statistics", Sortable: true},
+		{Key: "lastScanned", Formatter: "timestamp", Section: "Scanning Information", Sortable: true},
+		{Key: "actions", Section: "", NoDetail: true, Sortable: false},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

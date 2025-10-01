@@ -13,6 +13,8 @@ func NormalizeFields(fields []FieldConfig) {
 }
 
 func unCamelize(s string) string {
+	s = strings.ReplaceAll(s, "Per", "/")
+
 	var result strings.Builder
 	runes := []rune(s)
 	result.WriteRune(unicode.ToUpper(runes[0]))
@@ -38,8 +40,14 @@ func (f *FieldConfig) normalizeField() {
 			return unCamelize(f.Key[1:]), "number"
 		} else if f.Key == "actions" {
 			return unCamelize(f.Key), "actions"
+		} else if f.Key == "fileSize" || f.Key == "size" || strings.HasSuffix(f.Key, "Sz") {
+			return unCamelize(f.Key), "fileSize"
 		} else {
-			return unCamelize(f.Key), ""
+			fmt := ""
+			if strings.Contains(f.Key, "Per") {
+				fmt = "float64"
+			}
+			return unCamelize(f.Key), fmt
 		}
 	}
 

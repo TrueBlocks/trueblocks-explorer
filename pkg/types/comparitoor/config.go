@@ -85,19 +85,19 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 func getTransactionFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "hash", Label: "Hash", Section: "General", Order: 1, DetailOrder: 1},
-		{Key: "blockNumber", Label: "Block", Section: "General", Order: 2, DetailOrder: 2},
-		{Key: "timestamp", Label: "Timestamp", Section: "General", Order: 3, DetailOrder: 3},
-		{Key: "from", Label: "From", Section: "General", Order: 4, DetailOrder: 4},
-		{Key: "to", Label: "To", Section: "General", Order: 5, DetailOrder: 5},
-		{Key: "value", Label: "Value", Section: "General", Order: 6, DetailOrder: 6},
-		{Key: "gasUsed", Label: "Gas Used", Section: "General", Order: 7, DetailOrder: 7},
-		{Key: "status", Label: "Status", Section: "General", Order: 8, DetailOrder: 8},
-		{Key: "presentInChifra", Label: "Chifra", Section: "Presence", Order: 9, DetailOrder: 9},
-		{Key: "presentInEtherscan", Label: "Etherscan", Section: "Presence", Order: 10, DetailOrder: 10},
-		{Key: "presentInCovalent", Label: "Covalent", Section: "Presence", Order: 11, DetailOrder: 11},
-		{Key: "presentInAlchemy", Label: "Alchemy", Section: "Presence", Order: 12, DetailOrder: 12},
-		{Key: "diffType", Label: "Diff Type", Section: "Diffs", Order: 13, DetailOrder: 13},
+		{Key: "hash", Formatter: "hash", Section: "General"},
+		{Key: "blockNumber", Formatter: "number", Section: "General"},
+		{Key: "timestamp", Formatter: "timestamp", Section: "General"},
+		{Key: "from", Formatter: "address", Section: "General"},
+		{Key: "to", Formatter: "address", Section: "General"},
+		{Key: "value", Formatter: "wei", Section: "General"},
+		{Key: "gasUsed", Formatter: "wei", Section: "General"},
+		{Key: "status", Section: "General"},
+		{Key: "presentInChifra", Formatter: "boolean", Section: "Presence"},
+		{Key: "presentInEtherscan", Formatter: "boolean", Section: "Presence"},
+		{Key: "presentInCovalent", Formatter: "boolean", Section: "Presence"},
+		{Key: "presentInAlchemy", Formatter: "boolean", Section: "Presence"},
+		{Key: "diffType", Section: "Diffs"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

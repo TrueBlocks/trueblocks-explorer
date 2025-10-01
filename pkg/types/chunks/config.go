@@ -75,13 +75,13 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 func getBloomsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Label: "Range", ColumnLabel: "Range", DetailLabel: "Range", Formatter: "blkrange", Section: "Range", Width: 150, Sortable: true, Filterable: true, Order: 1, DetailOrder: 1},
-		{Key: "magic", Label: "Magic", ColumnLabel: "Magic", DetailLabel: "Magic", Formatter: "text", Section: "Identity", Width: 150, Sortable: true, Filterable: true, Order: 2, DetailOrder: 2},
-		{Key: "hash", Label: "Hash", ColumnLabel: "Hash", DetailLabel: "Hash", Formatter: "hash", Section: "Identity", Width: 150, Sortable: true, Filterable: true, Order: 3, DetailOrder: 3},
-		{Key: "nBlooms", Label: "Blooms", ColumnLabel: "Blooms", DetailLabel: "Blooms", Formatter: "number", Section: "Counts", Width: 150, Sortable: true, Filterable: true, Order: 4, DetailOrder: 4},
-		{Key: "nInserted", Label: "Inserted", ColumnLabel: "Inserted", DetailLabel: "Inserted", Formatter: "number", Section: "Counts", Width: 150, Sortable: true, Filterable: true, Order: 5, DetailOrder: 5},
-		{Key: "size", Label: "Size", ColumnLabel: "Size", DetailLabel: "Size", Formatter: "number", Section: "Sizes", Width: 150, Sortable: true, Filterable: true, Order: 6, DetailOrder: 6},
-		{Key: "byteWidth", Label: "Byte Width", ColumnLabel: "Byte Width", DetailLabel: "Byte Width", Formatter: "number", Section: "Sizes", Width: 150, Sortable: true, Filterable: true, Order: 7, DetailOrder: 7},
+		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
+		{Key: "magic", Section: "Identity", NoTable: true},
+		{Key: "hash", Formatter: "hash", Section: "Identity", Sortable: true},
+		{Key: "nBlooms", Section: "Counts", Sortable: true},
+		{Key: "nInserted", Section: "Counts", Sortable: true},
+		{Key: "size", Section: "Sizes", Sortable: true},
+		{Key: "byteWidth", Formatter: "number", Section: "Sizes", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -91,12 +91,12 @@ func getBloomsFields() []types.FieldConfig {
 func getIndexFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Label: "Range", ColumnLabel: "Range", DetailLabel: "Range", Formatter: "blkrange", Section: "Range", Width: 150, Sortable: true, Filterable: true, Order: 1, DetailOrder: 1},
-		{Key: "magic", Label: "Magic", ColumnLabel: "Magic", DetailLabel: "Magic", Formatter: "text", Section: "Identity", Width: 150, Sortable: true, Filterable: true, Order: 2, DetailOrder: 2},
-		{Key: "hash", Label: "Hash", ColumnLabel: "Hash", DetailLabel: "Hash", Formatter: "hash", Section: "Identity", Width: 150, Sortable: true, Filterable: true, Order: 3, DetailOrder: 3},
-		{Key: "nAddresses", Label: "Addresses", ColumnLabel: "Addresses", DetailLabel: "Addresses", Formatter: "number", Section: "Counts", Width: 150, Sortable: true, Filterable: true, Order: 4, DetailOrder: 4},
-		{Key: "nAppearances", Label: "Appearances", ColumnLabel: "Appearances", DetailLabel: "Appearances", Formatter: "number", Section: "Counts", Width: 150, Sortable: true, Filterable: true, Order: 5, DetailOrder: 5},
-		{Key: "size", Label: "Size", ColumnLabel: "Size", DetailLabel: "Size", Formatter: "number", Section: "Sizes", Width: 150, Sortable: true, Filterable: true, Order: 6, DetailOrder: 6},
+		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
+		{Key: "magic", Section: "Identity", NoTable: true},
+		{Key: "hash", Formatter: "hash", Section: "Identity", Sortable: true},
+		{Key: "nAddresses", Section: "Counts", Sortable: true},
+		{Key: "nAppearances", Section: "Counts", Sortable: true},
+		{Key: "size", Section: "Sizes", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -106,9 +106,9 @@ func getIndexFields() []types.FieldConfig {
 func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "version", Label: "Version", ColumnLabel: "Version", DetailLabel: "Version", Section: "Manifest", Width: 100, Order: 1, DetailOrder: 1},
-		{Key: "chain", Label: "Chain", ColumnLabel: "Chain", DetailLabel: "Chain", Section: "Manifest", Width: 120, Order: 2, DetailOrder: 2},
-		{Key: "specification", Label: "Specification", ColumnLabel: "Specification", DetailLabel: "Specification", Formatter: "hash", Section: "Manifest", Width: 200, Order: 3, DetailOrder: 3},
+		{Key: "version", Section: "Manifest"},
+		{Key: "chain", Section: "Manifest"},
+		{Key: "specification", Formatter: "hash", Section: "Manifest"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -118,18 +118,18 @@ func getManifestFields() []types.FieldConfig {
 func getStatsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Label: "Range", ColumnLabel: "Range", DetailLabel: "Range", Formatter: "blkrange", Section: "Range", Width: 150, Sortable: true, Filterable: true, Order: 1, DetailOrder: 1},
-		{Key: "nAddrs", Label: "Addresses", ColumnLabel: "Addrs", DetailLabel: "Addresses", Formatter: "number", Section: "Counts", Width: 120, Sortable: true, Filterable: true, Order: 2, DetailOrder: 2},
-		{Key: "nApps", Label: "Apps", ColumnLabel: "Apps", DetailLabel: "Apps", Formatter: "number", Section: "Counts", Width: 100, Sortable: true, Filterable: true, Order: 3, DetailOrder: 3},
-		{Key: "nBlocks", Label: "Blocks", ColumnLabel: "Blocks", DetailLabel: "Blocks", Formatter: "number", Section: "Counts", Width: 120, Sortable: true, Filterable: true, Order: 4, DetailOrder: 4},
-		{Key: "nBlooms", Label: "Blooms", ColumnLabel: "Blooms", DetailLabel: "Blooms", Formatter: "number", Section: "Counts", Width: 120, Sortable: true, Filterable: true, Order: 5, DetailOrder: 5},
-		{Key: "recWid", Label: "Record Width", ColumnLabel: "Rec Wid", DetailLabel: "Record Width", Formatter: "number", Section: "Sizes", Width: 120, Sortable: true, Filterable: true, Order: 6, DetailOrder: 6},
-		{Key: "bloomSz", Label: "Bloom Size", ColumnLabel: "Bloom Sz", DetailLabel: "Bloom Size", Formatter: "number", Section: "Sizes", Width: 120, Sortable: true, Filterable: true, Order: 7, DetailOrder: 7},
-		{Key: "chunkSz", Label: "Chunk Size", ColumnLabel: "Chunk Sz", DetailLabel: "Chunk Size", Formatter: "number", Section: "Sizes", Width: 120, Sortable: true, Filterable: true, Order: 8, DetailOrder: 8},
-		{Key: "addrsPerBlock", Label: "Addrs/Block", ColumnLabel: "Addrs Per Block", DetailLabel: "Addrs/Block", Formatter: "float64", Section: "Efficiency", Width: 100, Sortable: true, Filterable: true, Order: 9, DetailOrder: 9},
-		{Key: "appsPerBlock", Label: "Apps/Block", ColumnLabel: "Apps Per Block", DetailLabel: "Apps/Block", Formatter: "float64", Section: "Efficiency", Width: 100, Sortable: true, Filterable: true, Order: 10, DetailOrder: 10},
-		{Key: "appsPerAddr", Label: "Apps/Addr", ColumnLabel: "Apps Per Addr", DetailLabel: "Apps/Addr", Formatter: "float64", Section: "Efficiency", Width: 100, Sortable: true, Filterable: true, Order: 11, DetailOrder: 11},
-		{Key: "ratio", Label: "Ratio", ColumnLabel: "Ratio", DetailLabel: "Ratio", Formatter: "float64", Section: "Efficiency", Width: 100, Sortable: true, Filterable: true, Order: 12, DetailOrder: 12},
+		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
+		{Key: "nAddrs", Section: "Counts", Sortable: true},
+		{Key: "nApps", Section: "Counts", Sortable: true},
+		{Key: "nBlocks", Section: "Counts", Sortable: true},
+		{Key: "nBlooms", Section: "Counts", Sortable: true},
+		{Key: "recWid", Formatter: "number", Section: "Sizes", Sortable: true},
+		{Key: "bloomSz", Section: "Sizes", Sortable: true},
+		{Key: "chunkSz", Section: "Sizes", Sortable: true},
+		{Key: "ratio", Formatter: "float64", Section: "Efficiency", Sortable: true},
+		{Key: "addrsPerBlock", Section: "Efficiency", Sortable: true},
+		{Key: "appsPerBlock", Section: "Efficiency", Sortable: true},
+		{Key: "appsPerAddr", Section: "Efficiency", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

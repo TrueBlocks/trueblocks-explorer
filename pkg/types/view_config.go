@@ -34,7 +34,6 @@ type FieldConfig struct {
 	Section     string `json:"section"`
 	Width       int    `json:"width"`
 	Sortable    bool   `json:"sortable"`
-	Filterable  bool   `json:"filterable"`
 	Order       int    `json:"order"`
 	DetailOrder int    `json:"detailOrder"`
 	NoTable     bool   `json:"-"`
@@ -45,13 +44,12 @@ type FieldConfig struct {
 
 // ColumnConfig represents a table column configuration
 type ColumnConfig struct {
-	Key        string `json:"key"`
-	Header     string `json:"header"`
-	Width      int    `json:"width"`
-	Sortable   bool   `json:"sortable"`
-	Filterable bool   `json:"filterable"`
-	Formatter  string `json:"formatter"`
-	Order      int    `json:"order"`
+	Key       string `json:"key"`
+	Header    string `json:"header"`
+	Width     int    `json:"width"`
+	Sortable  bool   `json:"sortable"`
+	Formatter string `json:"formatter"`
+	Order     int    `json:"order"`
 }
 
 // DetailPanelConfig represents a detail panel section

@@ -1800,7 +1800,6 @@ export namespace types {
 	    header: string;
 	    width: number;
 	    sortable: boolean;
-	    filterable: boolean;
 	    formatter: string;
 	    order: number;
 	
@@ -1814,7 +1813,6 @@ export namespace types {
 	        this.header = source["header"];
 	        this.width = source["width"];
 	        this.sortable = source["sortable"];
-	        this.filterable = source["filterable"];
 	        this.formatter = source["formatter"];
 	        this.order = source["order"];
 	    }
@@ -1920,7 +1918,6 @@ export namespace types {
 	    section: string;
 	    width: number;
 	    sortable: boolean;
-	    filterable: boolean;
 	    order: number;
 	    detailOrder: number;
 	
@@ -1936,7 +1933,6 @@ export namespace types {
 	        this.section = source["section"];
 	        this.width = source["width"];
 	        this.sortable = source["sortable"];
-	        this.filterable = source["filterable"];
 	        this.order = source["order"];
 	        this.detailOrder = source["detailOrder"];
 	    }

@@ -17,13 +17,12 @@ func DeriveFacets(vc *ViewConfig) {
 			if !f.NoTable {
 				header := f.ColumnLabel
 				cols = append(cols, ColumnConfig{
-					Key:        f.Key,
-					Header:     header,
-					Width:      f.Width,
-					Sortable:   f.Sortable,
-					Filterable: f.Filterable,
-					Formatter:  f.Formatter,
-					Order:      f.Order,
+					Key:       f.Key,
+					Header:    header,
+					Width:     f.Width,
+					Sortable:  f.Sortable,
+					Formatter: f.Formatter,
+					Order:     f.Order,
 				})
 			}
 			if !f.NoDetail {

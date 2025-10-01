@@ -101,13 +101,12 @@ export const ExportFormatModal = ({
           name="exportFormat"
         >
           <Stack gap="xs">
-            {formatOptions.map((option, index) => (
+            {formatOptions.map((option) => (
               <Radio
                 key={option.value}
                 value={option.value}
                 label={option.label}
                 disabled={loading}
-                data-autofocus={index === 0}
               />
             ))}
           </Stack>

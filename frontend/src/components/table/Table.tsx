@@ -218,15 +218,6 @@ export const Table = <T extends Record<string, unknown>>({
     }
   }, [data, loading, focusTable]);
 
-  useEffect(() => {
-    if (isModalOpen) {
-      const firstInput = document.querySelector(
-        '.mantine-Modal input',
-      ) as HTMLInputElement | null;
-      firstInput?.focus();
-    }
-  }, [isModalOpen]);
-
   const handleFormKeyDown = (e: React.KeyboardEvent) => {
     const navigationKeys = [
       'ArrowUp',

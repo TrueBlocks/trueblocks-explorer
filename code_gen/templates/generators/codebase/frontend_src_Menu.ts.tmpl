@@ -19,6 +19,7 @@ export interface MenuItem {
   component?: React.ComponentType;
   type?: 'navigation' | 'dev' | 'toggle';
   action?: () => void | Promise<void>;
+  menuOrder?: number;
 }
 
 export const MenuItems: MenuItem[] = [

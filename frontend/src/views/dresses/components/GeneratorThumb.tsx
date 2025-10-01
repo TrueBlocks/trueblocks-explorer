@@ -22,13 +22,11 @@ export const GeneratorThumb = ({
       radius="xs"
       withBorder
       onClick={handleClick}
+      bd={selected ? '1px solid var(--mantine-color-primary-6)' : undefined}
+      bg={selected ? 'primary.1' : undefined}
       style={{
         cursor: 'pointer',
         width: 72,
-        borderColor: selected
-          ? 'var(--skin-primary-selected-border)'
-          : undefined,
-        background: selected ? 'var(--skin-primary-selected)' : undefined,
       }}
     >
       <Stack gap={2} align="stretch">

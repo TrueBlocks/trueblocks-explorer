@@ -119,7 +119,7 @@ export const SummaryColumn = ({
         <BarChart
           h={120}
           data={getEffectivenessData(sources, effectivenessMetric)}
-          series={[{ name: 'value', color: 'blue' }]}
+          series={[{ name: 'value', color: 'primary' }]}
           dataKey="source"
           barProps={{ radius: 4 }}
         />
@@ -137,7 +137,7 @@ export const SummaryColumn = ({
                 { label: 'Overlap', value: unionStats.overlapCount },
                 { label: 'Intersection', value: unionStats.intersectionCount },
               ]}
-              series={[{ name: 'value', color: 'teal' }]}
+              series={[{ name: 'value', color: 'secondary' }]}
               dataKey="label"
               barProps={{ radius: 4 }}
             />

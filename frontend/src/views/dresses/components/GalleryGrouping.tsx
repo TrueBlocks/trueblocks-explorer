@@ -79,9 +79,9 @@ export const GalleryGrouping = ({
       </Title>
       {sortMode === 'address' && descriptiveText && (
         <Box
+          bg="gray.1"
+          bd="2px solid var(--mantine-color-gray-4)"
           style={{
-            backgroundColor: 'var(--skin-surface-raised)',
-            border: '2px solid var(--skin-border-default)',
             borderRadius: '4px',
             padding: '12px',
             marginBottom: '16px',

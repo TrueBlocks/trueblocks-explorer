@@ -2,8 +2,10 @@
 {{- $lower := toLower $class -}}
 {{- $single := toSingular $class -}}
 {{- $isExports := eq .Class "Exports" -}}
+{{- $isComparitoor := eq .Class "Comparitoor" -}}
 {{- $isContracts := eq .Class "Contracts" -}}
 {{- $isNames := eq .Class "Names" -}}
+{{- $isMultiStore := or $isExports $isComparitoor }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -14,29 +16,12 @@
 
 package {{toLower .Class}}
 
-import (
-	"fmt"
-	"sync"
-
-	// EXISTING_CODE
-	// EXISTING_CODE
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-)
-
 // EXISTING_CODE
 // EXISTING_CODE
-
-{{range .Stores}}type {{toSingular .Name}} = sdk.{{toSingular .Name}}
-{{end}}
 
 var (
 	{{range .Stores}}
-	{{toLower .Name}}Store {{if $isExports}}= make(map[string]{{end}}*store.Store[{{toSingular .Name}}]{{if $isExports}}){{end}}
+	{{toLower .Name}}Store {{if $isMultiStore}}= make(map[string]{{end}}*store.Store[{{toSingular .Name}}]{{if $isMultiStore}}){{end}}
 	{{toLower .Name}}StoreMu   sync.Mutex
 	{{end}}
 )
@@ -51,7 +36,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 	
 	chain := payload.Chain
 	address := payload.Address
-{{if $isExports}}	storeKey := getStoreKey(chain, address)
+{{if $isMultiStore}}	storeKey := getStoreKey(chain, address)
 	theStore := {{toLower .Name}}Store[storeKey]
 {{else}}	theStore := {{toLower .Name}}Store
 {{end -}}
@@ -81,7 +66,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 		// EXISTING_CODE
 		// EXISTING_CODE
 		
-		{{toLower .Name}}Store{{if $isExports}}[storeKey]{{end}} = theStore
+		{{toLower .Name}}Store{{if $isMultiStore}}[storeKey]{{end}} = theStore
 	}
 
 	return theStore
@@ -89,7 +74,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 {{end}}
 
 func (c *{{$class}}Collection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	{{- if not $isExports}}
+	{{- if not $isMultiStore}}
 	_ = chain
 	_ = address
 	{{- end}}
@@ -101,7 +86,7 @@ func (c *{{$class}}Collection) GetStoreName(dataFacet types.DataFacet, chain, ad
 	default:
 		return ""
 	}
-	{{- if $isExports}}
+	{{- if $isMultiStore}}
 	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	{{- end}}
 	return name
@@ -121,7 +106,7 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 		pl.Address = ""
 		pl.Chain = ""
 	{{else}}
-		{{- if not $isExports}}
+		{{- if not $isMultiStore}}
 			pl.Address = ""
 		{{end}}
 	{{end}}
@@ -134,6 +119,11 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 	collections[key] = collection
 	return collection
 }
+
+{{if $isMultiStore}}func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
+}
+{{end}}
 
 // EXISTING_CODE
 // EXISTING_CODE

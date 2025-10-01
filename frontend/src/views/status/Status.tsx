@@ -159,7 +159,7 @@ export const Status = () => {
     crudFunc: async (
       _payload: types.Payload,
       _op: crud.Operation,
-      _item: types.Status,
+      _item: unknown,
     ) => {},
     pageFunc: GetStatusPage,
     pageClass: status.StatusPage,

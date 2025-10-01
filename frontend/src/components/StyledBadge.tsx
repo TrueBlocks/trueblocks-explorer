@@ -12,26 +12,26 @@ export const StyledBadge = ({
     switch (variant) {
       case 'filled':
         return {
-          backgroundColor: 'var(--skin-primary)',
-          color: 'var(--skin-text-inverse)',
+          backgroundColor: 'var(--mantine-color-primary-6)',
+          color: 'var(--mantine-color-white)',
           border: 'none',
         };
       case 'light':
         return {
-          backgroundColor: 'var(--skin-surface-raised)',
-          color: 'var(--skin-primary)',
+          backgroundColor: 'var(--mantine-color-gray-2)',
+          color: 'var(--mantine-color-primary-6)',
           border: 'none',
         };
       case 'error':
         return {
-          backgroundColor: 'var(--skin-error-background)',
-          color: 'var(--skin-error)',
-          border: '1px solid var(--skin-error)',
+          backgroundColor: 'var(--mantine-color-error-1)',
+          color: 'var(--mantine-color-error-6)',
+          border: '1px solid var(--mantine-color-error-6)',
         };
       case 'healthy':
         return {
-          backgroundColor: 'var(--skin-success-background)',
-          color: 'var(--skin-success)',
+          backgroundColor: 'var(--mantine-color-success-1)',
+          color: 'var(--mantine-color-success-6)',
           border: 'none',
         };
       case 'inactive':
@@ -48,8 +48,8 @@ export const StyledBadge = ({
         };
       default:
         return {
-          backgroundColor: 'var(--skin-primary)',
-          color: 'var(--skin-text-inverse)',
+          backgroundColor: 'var(--mantine-color-primary-6)',
+          color: 'var(--mantine-color-white)',
           border: 'none',
         };
     }

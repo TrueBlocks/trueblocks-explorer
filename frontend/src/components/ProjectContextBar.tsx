@@ -86,7 +86,7 @@ export const ProjectContextBar = ({}) => {
   if (loading) {
     return (
       <Group justify="center" p="md">
-        <Loader size="sm" color="var(--skin-primary)" />
+        <Loader size="sm" />
         <StyledText variant="primary" size="sm">
           Loading project context...
         </StyledText>

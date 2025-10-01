@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { NodeStatus, ProjectSelectionModal, getBarSize } from '@components';
+import {
+  NodeStatus,
+  ProjectSelectionModal,
+  SplashScreen,
+  getBarSize,
+} from '@components';
 import { ViewContextProvider, WalletConnectProvider } from '@contexts';
 import {
   initializeAllViewConfigs,
@@ -51,6 +56,7 @@ function globalNavKeySquelcher(e: KeyboardEvent) {
 export const App = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [viewConfigsLoading, setViewConfigsLoading] = useState(true);
+  const [splashDelayComplete, setSplashDelayComplete] = useState(false);
   const { hasActiveProject } = useActiveProject();
 
   useEffect(() => {
@@ -69,10 +75,16 @@ export const App = () => {
       LogError('Failed to initialize preferences defaults: ' + String(error));
     });
 
+    // Set minimum splash screen display time
+    const splashTimer = setTimeout(() => {
+      setSplashDelayComplete(true);
+    }, 750);
+
     window.addEventListener('keydown', globalNavKeySquelcher, {
       capture: true,
     });
     return () => {
+      clearTimeout(splashTimer);
       window.removeEventListener('keydown', globalNavKeySquelcher, {
         capture: true,
       });
@@ -112,7 +124,8 @@ export const App = () => {
     setShowProjectModal(false);
   };
 
-  if (!ready || viewConfigsLoading) return <div>Not ready</div>;
+  if (!ready || viewConfigsLoading || !splashDelayComplete)
+    return <SplashScreen />;
 
   const header = { height: getBarSize('header', chromeCollapsed) };
   const footer = { height: getBarSize('footer', chromeCollapsed) };

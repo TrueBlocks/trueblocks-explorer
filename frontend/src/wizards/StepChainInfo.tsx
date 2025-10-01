@@ -305,9 +305,7 @@ export const StepChainInfo = ({
                     size="xs"
                     onClick={(e) => handleRemoveChain(index, e)}
                     tabIndex={0}
-                    style={{
-                      color: 'var(--skin-error)',
-                    }}
+                    c="error"
                   >
                     <Delete size={12} />
                   </ActionIcon>

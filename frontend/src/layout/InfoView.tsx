@@ -22,7 +22,7 @@ export const InfoView = ({ title }: { title: string }) => {
   }, [title]);
 
   return (
-    <Box style={{ backgroundColor: 'cyan', minHeight: '100%' }}>
+    <Box style={{ backgroundColor: 'gray.1', minHeight: '100%' }}>
       <Stack style={{ color: 'black', padding: '16px' }}>
         <Markdown>{markdownContent}</Markdown>
       </Stack>

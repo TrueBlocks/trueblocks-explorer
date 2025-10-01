@@ -7,12 +7,13 @@
 
 .detail-section-header {
   grid-column: 1 / -1;
-  background: var(--skin-surface-raised);
+  background: transparent;
+  color: var(--mantine-color-text);
   text-align: left;
   font-weight: 600;
   padding: 8px 6px;
   cursor: pointer;
-  border-bottom: 1px solid var(--skin-border-default);
+  border-bottom: 1px solid var(--mantine-color-gray-4);
 }
 
 .detail-section-header.first-section-header {
@@ -22,11 +23,12 @@
 .detail-row-prompt {
   padding: 4px 6px;
   font-weight: 500;
-  color: var(--skin-text-dimmed);
+  color: var(--mantine-color-text);
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: top;
-  background: var(--skin-surface-subtle);
+  background: transparent;
+  border: none;
 }
 
 .detail-row-value {
@@ -34,12 +36,12 @@
   overflow-x: auto;
   word-break: break-word;
   vertical-align: top;
-  color: var(--skin-text-primary);
+  color: var(--mantine-color-text);
 }
 
 .detail-separator {
   grid-column: 1 / -1;
-  border-bottom: 1px solid var(--skin-border-default);
+  border-bottom: 1px solid var(--mantine-color-gray-4);
   height: 1px;
   margin: 4px 0;
 }
@@ -51,13 +53,13 @@
 .detail-json-block {
   font-family: monospace;
   font-size: 12px;
-  background: var(--skin-surface-sunken);
-  color: var(--skin-text-primary);
+  background: transparent;
+  color: var(--mantine-color-text);
   padding: 8px;
   border-radius: 4px;
   max-height: 300px;
   overflow: auto;
-  border: 1px solid var(--skin-border-default);
+  border: 1px solid var(--mantine-color-gray-4);
 }
 
 /* Componentized DetailPanel styles */

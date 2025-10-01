@@ -313,8 +313,8 @@ export const Table = <T extends Record<string, unknown>>({
                     textAlign: 'left',
                     padding: '20px',
                     color: loading
-                      ? 'var(--skin-primary)'
-                      : 'var(--skin-text-secondary)',
+                      ? 'var(--mantine-color-primary-6)'
+                      : 'var(--mantine-color-dimmed)',
                   }}
                 >
                   {loading ? 'Loading...' : 'No data found.'}
@@ -355,7 +355,7 @@ export const Table = <T extends Record<string, unknown>>({
         styles={{
           header: { display: 'none' },
           overlay: {
-            backgroundColor: 'var(--skin-surface-sunken)',
+            backgroundColor: 'var(--mantine-color-gray-2)',
             backdropFilter: 'blur(1px)', // Optional slight blur effect
           },
           inner: {
@@ -364,7 +364,7 @@ export const Table = <T extends Record<string, unknown>>({
           content: {
             // Target the modal content itself
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Add a subtle box shadow
-            border: '1px solid var(--skin-border-default)', // Add a light border, theme-aware
+            border: '1px solid var(--mantine-color-gray-4)', // Add a light border, theme-aware
           },
         }}
       >

@@ -10,6 +10,7 @@
 {{- $isMonitors := eq $class "Monitors" -}}
 {{- $isNames := eq $class "Names" -}}
 {{- $isStatus := eq $class "Status" -}}
+{{- $isComparitoor := eq $class "Comparitoor" -}}
 
 {{/* Determine Features */}}
 {{- $hasForms := .HasForms -}}
@@ -191,12 +192,12 @@ export const {{$class}} = () => {
     crudFunc: async (
       _payload: types.Payload,
       _op: crud.Operation,
-      _item: types.{{$single}},
+      _item: unknown,
     ) => {},
     {{- end }}
     pageFunc: Get{{$class}}Page,
     pageClass: {{$lower}}.{{$class}}Page,
-    {{- if (or $isExports $isChunks) }}
+    {{- if (or (or $isExports $isChunks) $isComparitoor) }}
     updateItem: undefined,
     {{- else }}
     updateItem: types.{{$single}}.createFrom({}),

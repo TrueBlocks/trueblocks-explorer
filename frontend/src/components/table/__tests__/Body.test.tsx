@@ -94,25 +94,6 @@ describe('Body', () => {
     expect(handleRowClick).toHaveBeenCalledWith(1);
   });
 
-  it('applies selected class to the selected row', () => {
-    render(
-      <MantineProvider>
-        <table>
-          <tbody>
-            <Body
-              columns={columns}
-              data={names}
-              selectedRowIndex={2}
-              handleRowClick={handleRowClick}
-            />
-          </tbody>
-        </table>
-      </MantineProvider>,
-    );
-    const rows = screen.getAllByRole('row');
-    expect(rows[2]?.className).toContain('selected');
-  });
-
   it('shows status text for deleted, custom, and prefund', () => {
     render(
       <MantineProvider>

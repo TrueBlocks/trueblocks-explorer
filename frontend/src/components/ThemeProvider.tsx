@@ -132,9 +132,10 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     setColorScheme(isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
-  // Convert backend color arrays to Mantine ColorsTuple
+  // Convert backend color arrays to Mantine ColorsTuple with optional reversal
   const createColorTuple = (
     colors: string[] | null | undefined,
+    reversed = false,
   ): MantineColorsTuple => {
     // Handle null/undefined colors with a fallback
     const safeColors = colors || [
@@ -148,7 +149,13 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     while (paddedColors.length < 10) {
       paddedColors.push(paddedColors[paddedColors.length - 1] || '#000000');
     }
-    return paddedColors.slice(0, 10) as unknown as MantineColorsTuple;
+
+    // Reverse array for dark mode to maintain semantic meaning
+    const orderedColors = reversed
+      ? paddedColors.slice(0, 10).reverse()
+      : paddedColors.slice(0, 10);
+
+    return orderedColors as unknown as MantineColorsTuple;
   };
 
   // CSS Variables Resolver for enhanced properties
@@ -196,11 +203,12 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           '--mantine-font-size-xl': backendSkin.normalSize,
 
           // Primary color variations (most important for visual changes)
-          '--mantine-primary-color': 'var(--mantine-color-primary-6)',
-          '--mantine-color-primary-text': 'var(--mantine-color-primary-6)',
-          '--mantine-color-primary-filled': 'var(--mantine-color-primary-6)',
+          '--mantine-primary-color': backendSkin.primary?.[6] || '#339AF0',
+          '--mantine-color-primary-text': backendSkin.primary?.[6] || '#339AF0',
+          '--mantine-color-primary-filled':
+            backendSkin.primary?.[6] || '#339AF0',
           '--mantine-color-primary-filled-hover':
-            'var(--mantine-color-primary-7)',
+            backendSkin.primary?.[7] || '#1c7ed6',
 
           // Custom skin variables for components
           '--skin-primary-background': backendSkin.primary?.[1] || '#E7F5FF',
@@ -252,7 +260,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
             '--mantine-color-text': backendSkin.primary?.[8] || '#000000',
           },
           dark: {
-            // Dark mode: invert the skin colors
+            // Dark mode: reverse the skin colors
             '--mantine-color-body': backendSkin.primary?.[8] || '#000000',
             '--mantine-color-text': backendSkin.primary?.[0] || '#ffffff',
           },
@@ -278,6 +286,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       });
     }
 
+    const isDarkMode = colorScheme === 'dark';
+
     return createTheme({
       primaryColor: 'primary',
       fontFamily: backendSkin.fontFamily,
@@ -290,10 +300,17 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         | 'xl',
       autoContrast: backendSkin.autoContrast,
       colors: {
-        primary: createColorTuple(backendSkin.primary),
-        success: createColorTuple(backendSkin.success),
-        warning: createColorTuple(backendSkin.warning),
-        error: createColorTuple(backendSkin.error),
+        // Map skin arrays to Mantine color names with reversal for dark mode
+        primary: createColorTuple(backendSkin.primary, isDarkMode),
+        success: createColorTuple(backendSkin.success, isDarkMode),
+        warning: createColorTuple(backendSkin.warning, isDarkMode),
+        error: createColorTuple(backendSkin.error, isDarkMode),
+        gray: createColorTuple(backendSkin.primary, isDarkMode),
+        green: createColorTuple(backendSkin.success, isDarkMode),
+        yellow: createColorTuple(backendSkin.warning, isDarkMode),
+        red: createColorTuple(backendSkin.error, isDarkMode),
+        blue: createColorTuple(backendSkin.primary, isDarkMode),
+        orange: createColorTuple(backendSkin.warning, isDarkMode),
       },
       defaultGradient: {
         from: (backendSkin.defaultGradient?.from as string) || '#000000',
@@ -304,7 +321,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         backendSkin,
       },
     });
-  }, [backendSkin]);
+  }, [backendSkin, colorScheme]);
 
   // Don't render until skin is loaded
   if (loading || !backendSkin) {

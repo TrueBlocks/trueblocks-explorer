@@ -1,5 +1,5 @@
 import { Form, FormField, FormProps } from '@components';
-import { Container, useMantineColorScheme } from '@mantine/core';
+import { Container } from '@mantine/core';
 
 export interface FormViewProps<T> {
   formFields: FormField<T>[];
@@ -18,20 +18,15 @@ export const FormView = <T extends Record<string, unknown>>({
   onChange,
   onCancel,
 }: FormViewProps<T>) => {
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === 'dark';
-
   return (
     <Container
       size="md"
       mt="xl"
+      bg="gray.1"
+      c="text"
       style={{
-        backgroundColor: isDark
-          ? 'rgba(255, 255, 255, 0.1)'
-          : 'var(--skin-surface-raised)',
         padding: '1rem',
         borderRadius: '8px',
-        color: 'var(--skin-text-primary)',
       }}
     >
       <Form<T>

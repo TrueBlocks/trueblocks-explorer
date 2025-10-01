@@ -267,10 +267,8 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
           <Alert
             title="Error"
             variant="light"
-            style={{
-              borderColor: 'var(--skin-error)',
-              backgroundColor: 'var(--skin-error-background)',
-            }}
+            bd="1px solid var(--mantine-color-error-6)"
+            bg="error.1"
           >
             {error}
           </Alert>

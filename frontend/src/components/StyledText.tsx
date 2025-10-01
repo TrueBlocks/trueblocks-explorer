@@ -14,29 +14,21 @@ export const StyledText = ({
   const getColor = () => {
     switch (variant) {
       case 'primary':
-        return 'var(--mantine-color-text)';
+        return 'gray.8';
       case 'secondary':
-        return 'var(--skin-text-secondary)';
+        return 'gray.6';
       case 'dimmed':
-        return 'var(--skin-text-dimmed)';
+        return 'gray.5';
       case 'success':
-        return 'var(--skin-success)';
+        return 'success.6';
       case 'error':
-        return 'var(--skin-error)';
+        return 'error.6';
       case 'warning':
-        return 'var(--skin-warning)';
+        return 'warning.6';
       default:
-        return 'var(--mantine-color-text)';
+        return 'gray.8';
     }
   };
 
-  return (
-    <Text
-      {...props}
-      style={{
-        color: getColor(),
-        ...props.style,
-      }}
-    />
-  );
+  return <Text {...props} c={getColor()} />;
 };

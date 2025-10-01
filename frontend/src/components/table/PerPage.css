@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: var(--mantine-spacing-sm);
-  color: var(--skin-text-primary);
+  color: var(--mantine-color-text);
   background-color: transparent;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border: none;
@@ -10,7 +10,7 @@
 
 .page-size-selector select {
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
-  border: 1px solid var(--skin-border-default);
+  border: 1px solid var(--mantine-color-gray-4);
   border-radius: var(--mantine-radius-sm);
   cursor: pointer;
 }

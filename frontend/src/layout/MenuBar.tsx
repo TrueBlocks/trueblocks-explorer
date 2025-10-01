@@ -1,4 +1,9 @@
-import { ChevronButton, StyledButton, getBarSize } from '@components';
+import {
+  ChevronButton,
+  StyledButton,
+  StyledDivider,
+  getBarSize,
+} from '@components';
 import { useEnabledMenuItems, useIconSets, usePreferences } from '@hooks';
 import { AppShell, Stack } from '@mantine/core';
 import { MenuItem } from 'src/Menu';
@@ -26,10 +31,10 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
   const botMenuItems = menuItems.filter((item) => item.position === 'bottom');
   const icons = useIconSets();
 
-  const renderMenuItem = ({ label, path }: MenuItem) => {
+  const renderMenuItem = ({ label, path, separator }: MenuItem) => {
     const Icon = icons[label as keyof typeof icons] || icons.Missing;
 
-    return (
+    const menuButton = (
       <StyledButton
         variant={currentLocation === path ? 'menu-selected' : 'menu'}
         key={path}
@@ -50,6 +55,21 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
         {!menuCollapsed && label}
       </StyledButton>
     );
+
+    if (separator) {
+      return (
+        <div key={`${path}-with-separator`}>
+          <StyledDivider
+            orientation="horizontal"
+            color="gray.6"
+            margin="8px 0"
+          />
+          {menuButton}
+        </div>
+      );
+    }
+
+    return menuButton;
   };
 
   if (chromeCollapsed) {
@@ -60,7 +80,7 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
           height: 'calc(100vh - 30px)',
           width: 25,
           transition: 'width 0.2s ease',
-          borderRight: '1px solid var(--skin-border-secondary)',
+          borderRight: '1px solid var(--mantine-color-gray-4)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

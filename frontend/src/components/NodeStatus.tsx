@@ -85,7 +85,8 @@ export const NodeStatus = () => {
         textAlign: 'right',
         zIndex: 9999,
         cursor: 'pointer',
-        backgroundColor: 'var(--skin-surface-hover)',
+        backgroundColor: 'transparent',
+        opacity: 0.7,
       }}
     >
       {status}

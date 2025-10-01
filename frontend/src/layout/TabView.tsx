@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import { TabDivider } from '@components';
+import { StyledDivider } from '@components';
 import { useActiveProject, useEvent } from '@hooks';
 import { Tabs } from '@mantine/core';
 import { msgs, types } from '@models';
@@ -97,7 +97,7 @@ export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
         <Tabs.List>
           {tabs.map((tab, index) => (
             <Fragment key={`tab-${index}`}>
-              {tab.dividerBefore && <TabDivider key={`divider-${index}`} />}
+              {tab.dividerBefore && <StyledDivider key={`divider-${index}`} />}
               <Tabs.Tab key={tab.value} value={tab.value}>
                 {tab.label}
               </Tabs.Tab>

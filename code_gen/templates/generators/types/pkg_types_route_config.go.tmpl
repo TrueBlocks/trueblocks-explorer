@@ -42,6 +42,7 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 		{{- end }}
 		},
 	}
+
 	types.DeriveFacets(cfg)
 	types.SortFields(cfg)
 	types.SetMenuOrder(cfg)
@@ -54,6 +55,7 @@ func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
 		// EXISTING_CODE
 		// EXISTING_CODE
 	}
+	types.NormalizeFields(ret)
 	return ret
 }
 {{- end }}

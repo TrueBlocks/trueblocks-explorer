@@ -109,7 +109,7 @@ export const renderStatementDetailPanel = (
           variant="primary"
           size="lg"
           fw={600}
-          style={{ color: 'var(--skin-text-primary)' }}
+          style={{ color: 'var(--mantine-color-text)' }}
         >
           Tx {hashToHex(statement.transactionHash)}
         </StyledText>
@@ -126,7 +126,7 @@ export const renderStatementDetailPanel = (
           variant="primary"
           size="md"
           fw={600}
-          style={{ color: 'var(--skin-text-primary)' }}
+          style={{ color: 'var(--mantine-color-text)' }}
         >
           {new Date(statement.timestamp * 1000).toLocaleString()}
         </StyledText>
@@ -134,7 +134,7 @@ export const renderStatementDetailPanel = (
           variant="primary"
           size="md"
           fw={600}
-          style={{ color: 'var(--skin-text-primary)' }}
+          style={{ color: 'var(--mantine-color-text)' }}
         >
           {statement.blockNumber}.{statement.transactionIndex}
           {statement.logIndex !== undefined && statement.logIndex !== null
@@ -215,8 +215,8 @@ export const renderStatementDetailPanel = (
                       paddingRight: 16,
                       color:
                         totalInRaw === 0n
-                          ? 'var(--skin-text-dimmed)'
-                          : 'var(--skin-text-primary)',
+                          ? 'var(--mantine-color-dimmed)'
+                          : 'var(--mantine-color-text)',
                     }}
                   >
                     {formatRaw(totalInRaw)}
@@ -237,8 +237,8 @@ export const renderStatementDetailPanel = (
                       paddingRight: 16,
                       color:
                         totalOutRaw === 0n
-                          ? 'var(--skin-text-dimmed)'
-                          : 'var(--skin-text-primary)',
+                          ? 'var(--mantine-color-dimmed)'
+                          : 'var(--mantine-color-text)',
                     }}
                   >
                     {formatRaw(totalOutRaw)}
@@ -387,8 +387,8 @@ export const renderStatementDetailPanel = (
               textOverflow: 'clip',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              background: 'var(--skin-surface-subtle)',
-              color: 'var(--skin-text-dimmed)',
+              background: 'transparent',
+              color: 'var(--mantine-color-dimmed)',
             }}
           >
             Spot Price
@@ -401,8 +401,8 @@ export const renderStatementDetailPanel = (
               textAlign: 'right',
               fontSize: 'inherit',
               color: hasPrice
-                ? 'var(--skin-text-dimmed)'
-                : 'var(--skin-text-primary)',
+                ? 'var(--mantine-color-dimmed)'
+                : 'var(--mantine-color-text)',
             }}
           >
             {formatToken(statement.spotPrice)}
@@ -414,8 +414,8 @@ export const renderStatementDetailPanel = (
               textOverflow: 'clip',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              background: 'var(--skin-surface-subtle)',
-              color: 'var(--skin-text-dimmed)',
+              background: 'transparent',
+              color: 'var(--mantine-color-dimmed)',
             }}
           >
             Price Source
@@ -427,7 +427,7 @@ export const renderStatementDetailPanel = (
               textOverflow: 'clip',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              color: 'var(--skin-text-primary)',
+              color: 'var(--mantine-color-text)',
             }}
           >
             {statement.priceSource || '-'}

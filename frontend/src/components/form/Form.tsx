@@ -271,14 +271,7 @@ export const Form = <
   return (
     <Stack gap={compact ? 'xs' : 'md'}>
       {title && (
-        <Title
-          order={3}
-          mt="md"
-          style={{
-            color: 'var(--skin-text-primary)',
-            fontWeight: 600,
-          }}
-        >
+        <Title order={3} mt="md">
           {title}
         </Title>
       )}

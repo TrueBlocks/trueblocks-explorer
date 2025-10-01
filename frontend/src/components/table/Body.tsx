@@ -34,39 +34,49 @@ export const Body = <T extends Record<string, unknown>>({
 
   return (
     <>
-      {data.map((row, rowIndex) => (
-        <Fragment key={rowIndex}>
-          <tr
-            className={selectedRowIndex === rowIndex ? 'selected' : ''}
-            onClick={() => handleRowClick(rowIndex)}
-            aria-selected={selectedRowIndex === rowIndex}
-          >
-            {columns.map((col) => {
-              return (
-                <td key={col.key} style={col.style}>
-                  <FieldRenderer
-                    field={
-                      {
-                        type: col.type || 'text',
-                        value: (col.key !== undefined
-                          ? row[col.key as keyof T]
-                          : '') as string,
-                        customRender: col.render
-                          ? col.render(row, rowIndex)
-                          : undefined,
-                        key: col.key,
-                        name: col.key,
-                      } as FormField<Record<string, unknown>>
-                    }
-                    mode="display"
-                    tableCell
-                  />
-                </td>
-              );
-            })}
-          </tr>
-        </Fragment>
-      ))}
+      {data.map((row, rowIndex) => {
+        const isSelected = selectedRowIndex === rowIndex;
+        return (
+          <Fragment key={rowIndex}>
+            <tr
+              onClick={() => handleRowClick(rowIndex)}
+              aria-selected={isSelected}
+              style={{
+                backgroundColor: isSelected
+                  ? 'var(--mantine-color-gray-2)'
+                  : 'transparent',
+                borderLeft: isSelected
+                  ? '3px solid var(--mantine-color-primary-6)'
+                  : 'none',
+                borderRadius: isSelected ? 'var(--mantine-radius-sm)' : 'none',
+                cursor: 'pointer',
+              }}
+            >
+              {columns.map((col) => {
+                return (
+                  <td key={col.key} style={col.style}>
+                    <FieldRenderer
+                      field={
+                        {
+                          type: col.type || 'text',
+                          value: (col.key !== undefined
+                            ? row[col.key as keyof T]
+                            : '') as string,
+                          customRender: col.render
+                            ? col.render(row, rowIndex)
+                            : undefined,
+                        } as FormField<Record<string, unknown>>
+                      }
+                      mode="display"
+                      tableCell
+                    />
+                  </td>
+                );
+              })}
+            </tr>
+          </Fragment>
+        );
+      })}
     </>
   );
 };

@@ -1,30 +1,26 @@
 import { Select, SelectProps } from '@mantine/core';
 
-// Reusable styled Select component that follows the semantic theming system
+// Reusable Select component that follows Mantine's semantic theming system
 export const StyledSelect = (props: SelectProps) => (
   <Select
     {...props}
     styles={{
       input: {
-        backgroundColor: 'transparent',
-        borderColor: 'var(--skin-border-subtle)',
-        color: 'var(--mantine-color-text)',
-        '&::placeholder': {
-          color: 'var(--skin-text-dimmed)',
-        },
+        backgroundColor: 'var(--mantine-color-gray-2)',
+        borderColor: 'var(--mantine-color-gray-4)',
       },
       dropdown: {
-        backgroundColor: 'var(--skin-surface-base)',
-        borderColor: 'var(--skin-border-default)',
+        backgroundColor: 'var(--mantine-color-gray-2)',
+        borderColor: 'var(--mantine-color-gray-4)',
       },
       option: {
-        color: 'var(--skin-text-primary)',
+        color: 'var(--mantine-color-text)',
         '&[data-selected]': {
-          backgroundColor: 'var(--skin-surface-raised)',
-          color: 'var(--skin-text-primary)',
+          backgroundColor: 'var(--mantine-color-gray-3)',
+          color: 'var(--mantine-color-text)',
         },
         '&:hover': {
-          backgroundColor: 'var(--skin-surface-subtle)',
+          backgroundColor: 'var(--mantine-color-gray-3)',
         },
       },
     }}

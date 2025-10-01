@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { IsDisabled } from '@app';
+import { ConfigOk, IsDisabled } from '@app';
 import { MenuItem, MenuItems } from 'src/Menu';
 
 import { areViewConfigsReady, getViewConfig } from './getViewConfig';
@@ -19,6 +19,9 @@ export function useEnabledMenuItems(): UseEnabledMenuItemsResult {
     let retryTimeout: ReturnType<typeof setTimeout>;
 
     const checkEnabled = async () => {
+      // Check config file availability - this will emit error messages if needed
+      ConfigOk();
+
       // Wait for view configs to be ready
       if (!areViewConfigsReady()) {
         console.warn('ViewConfigs not ready yet, delaying menu item sorting');

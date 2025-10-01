@@ -31,7 +31,6 @@ export const DetailTable = ({
   return (
     <DetailPanelContainer
       className={`detail-panel-componentized${className ? ` ${className}` : ''}`}
-      title=""
     >
       {sections.map((section, sectionIndex) => (
         <DetailSection

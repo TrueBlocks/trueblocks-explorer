@@ -10,18 +10,11 @@ interface StatusIndicatorProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
-const statusConfig: Record<
-  StatusType,
-  { colorVar: string; backgroundVar: string; label: string }
-> = {
+const statusConfig: Record<StatusType, { label: string }> = {
   healthy: {
-    colorVar: 'var(--skin-success)',
-    backgroundVar: 'var(--skin-success-background)',
     label: 'Healthy',
   },
   inactive: {
-    colorVar: 'var(--skin-text-dimmed)',
-    backgroundVar: 'var(--skin-surface-subtle)',
     label: 'Inactive',
   },
 };

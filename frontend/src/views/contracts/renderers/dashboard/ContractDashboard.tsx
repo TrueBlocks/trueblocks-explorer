@@ -306,7 +306,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                   <div
                     key={functionName}
                     style={{
-                      borderBottom: '1px solid var(--skin-border-subtle)',
+                      borderBottom: '1px solid var(--mantine-color-gray-3)',
                       paddingBottom: '8px',
                       marginBottom: '8px',
                     }}
@@ -427,9 +427,7 @@ export const ContractDashboard: React.FC<ContractDashboardProps> = ({
                           ) : result && getFunctionError(result) ? (
                             <Alert
                               variant="light"
-                              style={{
-                                borderColor: 'var(--skin-status-error)',
-                              }}
+                              bd="1px solid var(--mantine-color-error-6)"
                             >
                               <StyledText variant="primary" size="xs">
                                 {getFunctionError(result)}

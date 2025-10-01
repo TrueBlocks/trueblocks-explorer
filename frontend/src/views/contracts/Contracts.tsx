@@ -162,7 +162,7 @@ export const Contracts = () => {
     crudFunc: async (
       _payload: types.Payload,
       _op: crud.Operation,
-      _item: types.Contract,
+      _item: unknown,
     ) => {},
     pageFunc: GetContractsPage,
     pageClass: contracts.ContractsPage,

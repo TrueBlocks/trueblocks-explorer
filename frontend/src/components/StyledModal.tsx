@@ -6,23 +6,23 @@ export const StyledModal = ({ ...props }: ModalProps) => {
       {...props}
       styles={{
         content: {
-          backgroundColor: 'var(--skin-surface-base)',
-          border: '1px solid var(--skin-border-default)',
-          color: 'var(--skin-text-primary)',
+          backgroundColor: 'var(--mantine-color-body)',
+          border: '1px solid var(--mantine-color-gray-4)',
+          color: 'var(--mantine-color-text)',
         },
         header: {
-          backgroundColor: 'var(--skin-surface-raised)',
-          borderBottom: '1px solid var(--skin-border-subtle)',
-          color: 'var(--skin-text-primary)',
+          backgroundColor: 'var(--mantine-color-gray-1)',
+          borderBottom: '1px solid var(--mantine-color-gray-3)',
+          color: 'var(--mantine-color-text)',
         },
         title: {
-          color: 'var(--skin-text-primary)',
+          color: 'var(--mantine-color-text)',
           fontWeight: 600,
         },
         close: {
-          color: 'var(--skin-text-secondary)',
+          color: 'var(--mantine-color-dimmed)',
           '&:hover': {
-            backgroundColor: 'var(--skin-surface-hover)',
+            backgroundColor: 'var(--mantine-color-gray-1)',
           },
         },
         overlay: {

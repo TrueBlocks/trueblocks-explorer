@@ -58,16 +58,7 @@ export const WizardForm = <T extends Record<string, unknown>>({
 
   return (
     <Stack>
-      {title && (
-        <Title
-          order={3}
-          style={{
-            color: 'var(--skin-text-primary)',
-          }}
-        >
-          {title}
-        </Title>
-      )}
+      {title && <Title order={3}>{title}</Title>}
       {description && <StyledText variant="primary">{description}</StyledText>}
       {children ? (
         children

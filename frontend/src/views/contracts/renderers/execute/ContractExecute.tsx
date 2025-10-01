@@ -298,12 +298,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 
   if (!showAllFunctions && !currentFunction) {
     return (
-      <Alert
-        variant="light"
-        style={{
-          borderColor: 'var(--skin-status-error)',
-        }}
-      >
+      <Alert variant="light" bd="1px solid var(--mantine-color-error-6)">
         Function &quot;{functionName}&quot; not found in contract ABI
       </Alert>
     );
@@ -512,17 +507,12 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
       {transactionResult && (
         <Alert
           variant="light"
-          style={
+          bd={
             transactionResult.includes('Error')
-              ? {
-                  borderColor: 'var(--skin-error)',
-                  backgroundColor: 'var(--skin-error-background)',
-                }
-              : {
-                  borderColor: 'var(--skin-success)',
-                  backgroundColor: 'var(--skin-success-background)',
-                }
+              ? '1px solid var(--mantine-color-error-6)'
+              : '1px solid var(--mantine-color-success-6)'
           }
+          bg={transactionResult.includes('Error') ? 'error.1' : 'success.1'}
         >
           {transactionResult}
         </Alert>

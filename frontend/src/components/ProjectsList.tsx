@@ -58,7 +58,7 @@ export const ProjectsList = () => {
             key={project.id}
             icon={
               <ThemeIcon
-                color={project.isActive ? 'blue' : 'gray'}
+                color={project.isActive ? 'primary' : 'dimmed'}
                 size={24}
                 radius="xl"
               >
@@ -93,9 +93,7 @@ export const ProjectsList = () => {
                   title="Close project"
                   variant="light"
                   onClick={() => handleCloseProject(project.id)}
-                  style={{
-                    color: 'var(--skin-error)',
-                  }}
+                  c="error.6"
                 />
               </Group>
             </Group>

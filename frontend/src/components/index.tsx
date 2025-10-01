@@ -16,13 +16,14 @@ export * from './ProjectsList';
 export * from './ShouldNotHappen';
 export * from './SkinSwitcher';
 export * from './Socials';
+export * from './SplashScreen';
 export * from './StatusIndicator';
 export * from './StyledBadge';
 export * from './StyledButton';
+export * from './StyledDivider';
 export * from './StyledModal';
 export * from './StyledSelect';
 export * from './StyledText';
-export * from './TabDivider';
 export * from './ThemeProvider';
 export * from './WalletConnectButton';
 

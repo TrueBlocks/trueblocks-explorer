@@ -311,8 +311,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
               <Title order={6}>Image</Title>
               <div
                 style={{
-                  border: '1px solid var(--skin-border-default)',
-                  background: 'var(--skin-surface-sunken)',
+                  border: '1px solid var(--mantine-color-gray-4)',
+                  background: 'var(--mantine-color-gray-2)',
                   marginTop: 4,
                   position: 'relative',
                   overflow: 'hidden',
@@ -356,8 +356,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     offsetScrollbars
                     style={{
                       marginTop: 4,
-                      border: '1px solid var(--skin-border-default)',
-                      background: 'var(--skin-surface-sunken)',
+                      border: '1px solid var(--mantine-color-gray-4)',
+                      background: 'var(--mantine-color-gray-1)',
                       padding: 6,
                     }}
                   >
@@ -389,8 +389,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                     offsetScrollbars
                     style={{
                       marginTop: 4,
-                      border: '1px solid var(--skin-border-default)',
-                      background: 'var(--skin-surface-sunken)',
+                      border: '1px solid var(--mantine-color-gray-4)',
+                      background: 'var(--mantine-color-gray-1)',
                       padding: 6,
                     }}
                   >
@@ -438,8 +438,8 @@ export const Generator = ({ pageData, viewStateKey }: GeneratorProps) => {
                       offsetScrollbars
                       style={{
                         marginTop: 4,
-                        border: '1px solid var(--skin-border-default)',
-                        background: 'var(--skin-surface-sunken)',
+                        border: '1px solid var(--mantine-color-gray-4)',
+                        background: 'var(--mantine-color-gray-1)',
                         padding: 6,
                       }}
                     >

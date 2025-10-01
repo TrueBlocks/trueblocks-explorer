@@ -32,24 +32,24 @@ export const DalleDressCard = ({
       withBorder
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
+      bd={selected ? '1px solid var(--mantine-color-primary-6)' : undefined}
+      bg={selected ? 'primary.1' : undefined}
       style={{
         cursor: 'pointer',
-        borderColor: selected ? 'var(--skin-primary)' : undefined,
         boxShadow: selected
-          ? '0 0 0 2px var(--skin-primary), 0 0 6px 2px var(--skin-primary-alpha-50)'
+          ? '0 0 0 2px var(--mantine-color-primary-6), 0 0 6px 2px var(--mantine-color-primary-3)'
           : undefined,
-        background: selected ? 'var(--skin-primary-alpha-10)' : undefined,
         transition: 'box-shadow 120ms, border-color 120ms, background 160ms',
       }}
       data-key={itemKey}
     >
       <Stack gap={4} align="stretch">
         <Box
+          bg={selected ? 'primary.1' : undefined}
           style={{
             position: 'relative',
             width: '100%',
             aspectRatio: '1 / 1',
-            background: selected ? 'var(--skin-primary-alpha-10)' : undefined,
             borderRadius: 4,
             overflow: 'hidden',
           }}

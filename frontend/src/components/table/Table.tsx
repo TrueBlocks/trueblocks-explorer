@@ -185,9 +185,29 @@ export const Table = <T extends Record<string, unknown>>({
   useEffect(() => {
     if (data.length > 0 && !loading) {
       const safeFocusTable = () => {
-        if (!isModalOpenRef.current) {
-          focusTable();
+        // Check if table's own modal is open
+        if (isModalOpenRef.current) {
+          return;
         }
+
+        // Check for any modal overlay in the DOM (more comprehensive)
+        const modalOverlay = document.querySelector('.mantine-Modal-overlay');
+        if (modalOverlay) {
+          return;
+        }
+
+        // Check if focus is already intentionally placed somewhere specific
+        const activeElement = document.activeElement;
+        if (
+          activeElement &&
+          activeElement !== document.body &&
+          activeElement.tagName !== 'HTML' &&
+          activeElement.closest('.mantine-Modal-content')
+        ) {
+          return;
+        }
+
+        focusTable();
       };
 
       const timer = setTimeout(() => {

@@ -135,6 +135,17 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 func getApprovalsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
+		{Key: "timestamp", Formatter: "timestamp", Section: "Transaction Context"},
+		{Key: "blockNumber", Formatter: "number", Section: "Transaction Context"},
+		{Key: "owner", Formatter: "address", Section: "Approval Details"},
+		{Key: "spender", Formatter: "address", Section: "Approval Details"},
+		{Key: "token", Formatter: "address", Section: "Token Details"},
+		{Key: "allowance", Formatter: "wei", Section: "Approval Details"},
+		{Key: "lastAppBlock", Formatter: "number", Section: "Additional Data", NoTable: true},
+		{Key: "lastAppLogID", Formatter: "number", Section: "Additional Data", NoTable: true},
+		{Key: "lastAppTs", Formatter: "timestamp", Section: "Additional Data", NoTable: true},
+		{Key: "lastAppTxID", Formatter: "number", Section: "Additional Data", NoTable: true},
+		{Key: "actions", Formatter: "actions", Section: "", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

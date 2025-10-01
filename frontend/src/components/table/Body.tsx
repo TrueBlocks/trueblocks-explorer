@@ -54,6 +54,8 @@ export const Body = <T extends Record<string, unknown>>({
                         customRender: col.render
                           ? col.render(row, rowIndex)
                           : undefined,
+                        key: col.key,
+                        name: col.key,
                       } as FormField<Record<string, unknown>>
                     }
                     mode="display"

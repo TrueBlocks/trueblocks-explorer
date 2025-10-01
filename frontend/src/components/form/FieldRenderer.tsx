@@ -53,6 +53,8 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         displayValue = formatWeiToEther(field.value as string);
       } else if (field.type === 'gas' && field.value) {
         displayValue = formatWeiToGigawei(field.value as string);
+      } else if (field.type === 'timestamp' && field.value) {
+        displayValue = new Date(Number(field.value) * 1000).toLocaleString();
       } else {
         displayValue = field.value || 'N/A';
       }

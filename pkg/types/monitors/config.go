@@ -51,12 +51,12 @@ func getMonitorsFields() []types.FieldConfig {
 		{Key: "address", Formatter: "address", Section: "Monitor Overview", Sortable: true},
 		{Key: "name", Section: "Monitor Overview", Sortable: true},
 		{Key: "deleted", Formatter: "boolean", Section: "Monitor Overview", NoTable: true},
-		{Key: "isStaged", Formatter: "boolean", Section: "Monitor Overview", NoTable: true},
-		{Key: "nRecords", Formatter: "number", Section: "File Statistics", Sortable: true},
-		{Key: "fileSize", Formatter: "fileSize", Section: "File Statistics", Sortable: true},
-		{Key: "isEmpty", Formatter: "boolean", Section: "File Statistics", Sortable: true},
+		{Key: "isStaged", Section: "Monitor Overview", NoTable: true},
+		{Key: "nRecords", Section: "File Statistics", Sortable: true},
+		{Key: "fileSize", Section: "File Statistics", Sortable: true},
+		{Key: "isEmpty", Section: "File Statistics", NoTable: true, Sortable: true},
 		{Key: "lastScanned", Formatter: "timestamp", Section: "Scanning Information", Sortable: true},
-		{Key: "actions", Section: "", NoDetail: true, Sortable: false},
+		{Key: "actions", Section: "actions", NoDetail: true, Sortable: false},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

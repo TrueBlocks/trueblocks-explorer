@@ -38,6 +38,10 @@ export function CloseProject(arg1) {
   return window['go']['app']['App']['CloseProject'](arg1);
 }
 
+export function ConfigOk() {
+  return window['go']['app']['App']['ConfigOk']();
+}
+
 export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }

@@ -39,6 +39,8 @@ export function ClearFilterState(arg1:project.ViewStateKey):Promise<void>;
 
 export function CloseProject(arg1:string):Promise<void>;
 
+export function ConfigOk():Promise<void>;
+
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
 export function DeleteCustomSkin(arg1:string):Promise<void>;

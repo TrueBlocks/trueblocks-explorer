@@ -278,3 +278,13 @@ func getCollectionPage[T any](
 
 	return typedPage, nil
 }
+
+// ConfigOk checks the configuration - with embedded config, this always succeeds
+// but can still emit errors if there are issues loading the configuration
+func (a *App) ConfigOk() {
+	// Try to load the configuration to ensure it's valid
+	_, err := preferences.LoadAppConfig()
+	if err != nil {
+		msgs.EmitError("Configuration error", err)
+	}
+}

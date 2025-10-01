@@ -25,6 +25,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/monitors"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/status"
+
 	//
 	"github.com/wailsapp/wails/v2"
 	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
@@ -32,7 +33,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed frontend/dist/* frontend/src/assets/help/* frontend/src/assets/views/* wails.json
+//go:embed frontend/dist/* frontend/src/assets/help/* frontend/src/assets/views/* wails.json .create-local-app.json
 var assets embed.FS
 
 func main() {

@@ -1504,14 +1504,14 @@ export namespace types {
 	    // Go type: base
 	    allowance: any;
 	    blockNumber: number;
+	    lastAppBlock: number;
+	    lastAppLogID: number;
+	    lastAppTs: number;
+	    lastAppTxID: number;
 	    owner: base.Address;
 	    spender: base.Address;
 	    timestamp: number;
 	    token: base.Address;
-	    lastAppBlock: number;
-	    lastAppTs: number;
-	    lastAppLogID: number;
-	    lastAppTxID: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new Approval(source);
@@ -1521,14 +1521,14 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.allowance = this.convertValues(source["allowance"], null);
 	        this.blockNumber = source["blockNumber"];
+	        this.lastAppBlock = source["lastAppBlock"];
+	        this.lastAppLogID = source["lastAppLogID"];
+	        this.lastAppTs = source["lastAppTs"];
+	        this.lastAppTxID = source["lastAppTxID"];
 	        this.owner = this.convertValues(source["owner"], base.Address);
 	        this.spender = this.convertValues(source["spender"], base.Address);
 	        this.timestamp = source["timestamp"];
 	        this.token = this.convertValues(source["token"], base.Address);
-	        this.lastAppBlock = source["lastAppBlock"];
-	        this.lastAppTs = source["lastAppTs"];
-	        this.lastAppLogID = source["lastAppLogID"];
-	        this.lastAppTxID = source["lastAppTxID"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1822,7 +1822,6 @@ export namespace types {
 	export class Contract {
 	    abi?: Abi;
 	    address: base.Address;
-	    date: string;
 	    errorCount: number;
 	    lastError: string;
 	    lastUpdated: number;
@@ -1837,7 +1836,6 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.abi = this.convertValues(source["abi"], Abi);
 	        this.address = this.convertValues(source["address"], base.Address);
-	        this.date = source["date"];
 	        this.errorCount = source["errorCount"];
 	        this.lastError = source["lastError"];
 	        this.lastUpdated = source["lastUpdated"];

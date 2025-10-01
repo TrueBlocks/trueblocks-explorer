@@ -48,15 +48,15 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 func getMonitorsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "address", Formatter: "address", Section: "Monitor Overview", Sortable: true},
-		{Key: "name", Section: "Monitor Overview", Sortable: true},
-		{Key: "deleted", Formatter: "boolean", Section: "Monitor Overview", NoTable: true},
-		{Key: "isStaged", Section: "Monitor Overview", NoTable: true},
-		{Key: "nRecords", Section: "File Statistics", Sortable: true},
-		{Key: "fileSize", Section: "File Statistics", Sortable: true},
-		{Key: "isEmpty", Section: "File Statistics", NoTable: true, Sortable: true},
-		{Key: "lastScanned", Formatter: "timestamp", Section: "Scanning Information", Sortable: true},
-		{Key: "actions", Section: "actions", NoDetail: true, Sortable: false},
+		{Section: "Overview", Key: "address", Formatter: "address", Sortable: true},
+		{Section: "Overview", Key: "name", Sortable: true},
+		{Section: "Overview", Key: "deleted", Formatter: "boolean", NoTable: true},
+		{Section: "Overview", Key: "isStaged", NoTable: true},
+		{Section: "Statistics", Key: "nRecords", Sortable: true},
+		{Section: "Statistics", Key: "fileSize", Sortable: true},
+		{Section: "Statistics", Key: "isEmpty", NoTable: true, Sortable: true},
+		{Section: "Statistics", Key: "lastScanned", Formatter: "timestamp", Sortable: true},
+		{Section: "", Key: "actions", NoDetail: true, Sortable: false},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

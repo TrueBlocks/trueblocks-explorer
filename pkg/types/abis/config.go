@@ -76,19 +76,19 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 func getAbisFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "address", Section: "ABI Identity", Formatter: "address"},
-		{Key: "name", Section: "ABI Identity"},
-		{Key: "path", Section: "ABI Identity", NoTable: true, Formatter: "path"},
-		{Key: "nFunctions", Section: "Content Statistics"},
-		{Key: "nEvents", Section: "Content Statistics"},
-		{Key: "fileSize", Section: "Content Statistics", Formatter: "fileSize"},
-		{Key: "isEmpty", Section: "ABI Properties", NoTable: true},
-		{Key: "isKnown", Section: "ABI Properties", NoTable: true},
-		{Key: "hasConstructor", Section: "ABI Properties", NoTable: true},
-		{Key: "hasFallback", Section: "ABI Properties", NoTable: true},
-		{Key: "lastModDate", Section: "File Metadata", Formatter: "datetime"},
-		{Key: "functions", Section: "Functions List", Formatter: "json", NoTable: true},
-		{Key: "actions", Section: "", NoDetail: true},
+		{Section: "Identity", Key: "address", Formatter: "address"},
+		{Section: "Identity", Key: "name"},
+		{Section: "Identity", Key: "path", NoTable: true, Formatter: "path"},
+		{Section: "Statistics", Key: "nFunctions"},
+		{Section: "Statistics", Key: "nEvents"},
+		{Section: "Statistics", Key: "fileSize"},
+		{Section: "Properties", Key: "isEmpty", NoTable: true},
+		{Section: "Properties", Key: "isKnown", NoTable: true},
+		{Section: "Properties", Key: "hasConstructor", NoTable: true},
+		{Section: "Properties", Key: "hasFallback", NoTable: true},
+		{Section: "Metadata", Key: "lastModDate", Formatter: "datetime"},
+		{Section: "Metadata", Key: "functions", Formatter: "json", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -98,16 +98,16 @@ func getAbisFields() []types.FieldConfig {
 func getFunctionsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "name", Section: "Function Overview"},
-		{Key: "type", Section: "Function Overview", NoTable: true},
-		{Key: "encoding", Section: "Function Overview"},
-		{Key: "signature", Section: "Function Overview"},
-		{Key: "stateMutability", Section: "Function Properties"},
-		{Key: "constant", Section: "Function Properties", Formatter: "boolean"},
-		{Key: "anonymous", Section: "Function Properties", Formatter: "boolean", NoTable: true},
-		{Key: "inputs", Section: "Parameters", NoTable: true},
-		{Key: "outputs", Section: "Parameters", NoTable: true},
-		{Key: "message", Section: "Parameters", NoTable: true},
+		{Section: "Overview", Key: "name"},
+		{Section: "Overview", Key: "type", NoTable: true},
+		{Section: "Overview", Key: "encoding"},
+		{Section: "Overview", Key: "signature"},
+		{Section: "Properties", Key: "stateMutability"},
+		{Section: "Properties", Key: "constant", Formatter: "boolean"},
+		{Section: "Properties", Key: "anonymous", Formatter: "boolean", NoTable: true},
+		{Section: "Parameters", Key: "inputs", NoTable: true},
+		{Section: "Parameters", Key: "outputs", NoTable: true},
+		{Section: "Parameters", Key: "message", NoTable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

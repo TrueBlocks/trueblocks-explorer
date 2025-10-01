@@ -85,19 +85,19 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 func getTransactionFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "hash", Formatter: "hash", Section: "General"},
-		{Key: "blockNumber", Formatter: "number", Section: "General"},
-		{Key: "timestamp", Formatter: "timestamp", Section: "General"},
-		{Key: "from", Formatter: "address", Section: "General"},
-		{Key: "to", Formatter: "address", Section: "General"},
-		{Key: "value", Formatter: "wei", Section: "General"},
-		{Key: "gasUsed", Formatter: "wei", Section: "General"},
-		{Key: "status", Section: "General"},
-		{Key: "presentInChifra", Formatter: "boolean", Section: "Presence"},
-		{Key: "presentInEtherscan", Formatter: "boolean", Section: "Presence"},
-		{Key: "presentInCovalent", Formatter: "boolean", Section: "Presence"},
-		{Key: "presentInAlchemy", Formatter: "boolean", Section: "Presence"},
-		{Key: "diffType", Section: "Diffs"},
+		{Section: "General", Key: "hash", Formatter: "hash"},
+		{Section: "General", Key: "blockNumber", Formatter: "number"},
+		{Section: "General", Key: "timestamp", Formatter: "timestamp"},
+		{Section: "General", Key: "from", Formatter: "address"},
+		{Section: "General", Key: "to", Formatter: "address"},
+		{Section: "General", Key: "value", Formatter: "wei"},
+		{Section: "General", Key: "gasUsed", Formatter: "wei"},
+		{Section: "General", Key: "status"},
+		{Section: "Presence", Key: "presentInChifra", Formatter: "boolean"},
+		{Section: "Presence", Key: "presentInEtherscan", Formatter: "boolean"},
+		{Section: "Presence", Key: "presentInCovalent", Formatter: "boolean"},
+		{Section: "Presence", Key: "presentInAlchemy", Formatter: "boolean"},
+		{Section: "Diffs", Key: "diffType"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

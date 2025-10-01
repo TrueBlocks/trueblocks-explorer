@@ -65,12 +65,12 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 func getCachesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "type", Section: "General"},
-		{Key: "path", Section: "General"},
-		{Key: "nFiles", Section: "Statistics"},
-		{Key: "nFolders", Section: "Statistics"},
-		{Key: "sizeInBytes", Section: "Statistics"},
-		{Key: "lastCached", Section: "Timestamps"},
+		{Section: "General", Key: "type"},
+		{Section: "General", Key: "path"},
+		{Section: "Statistics", Key: "nFiles"},
+		{Section: "Statistics", Key: "nFolders"},
+		{Section: "Statistics", Key: "sizeInBytes"},
+		{Section: "Timestamps", Key: "lastCached"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -80,13 +80,13 @@ func getCachesFields() []types.FieldConfig {
 func getChainsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "chain", Section: "General"},
-		{Key: "chainId", Section: "General"},
-		{Key: "symbol", Section: "General"},
-		{Key: "rpcProvider", Section: "Providers"},
-		{Key: "ipfsGateway", Section: "Providers"},
-		{Key: "localExplorer", Section: "Explorers"},
-		{Key: "remoteExplorer", Section: "Explorers"},
+		{Section: "General", Key: "chain"},
+		{Section: "General", Key: "chainId"},
+		{Section: "General", Key: "symbol"},
+		{Section: "Providers", Key: "rpcProvider"},
+		{Section: "Providers", Key: "ipfsGateway"},
+		{Section: "Explorers", Key: "localExplorer"},
+		{Section: "Explorers", Key: "remoteExplorer"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -96,24 +96,24 @@ func getChainsFields() []types.FieldConfig {
 func getStatusFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "cachePath", Section: "Paths"},
-		{Key: "indexPath", Section: "Paths"},
-		{Key: "chain", Section: "Chain"},
-		{Key: "chainId", Section: "Chain"},
-		{Key: "networkId", Section: "Chain"},
-		{Key: "chainConfig", Section: "Chain"},
-		{Key: "rootConfig", Section: "Config"},
-		{Key: "clientVersion", Section: "Config"},
-		{Key: "version", Section: "Config"},
-		{Key: "progress", Section: "Progress"},
-		{Key: "rpcProvider", Section: "Providers"},
-		{Key: "hasEsKey", Section: "Flags"},
-		{Key: "hasPinKey", Section: "Flags"},
-		{Key: "isApi", Section: "Flags"},
-		{Key: "isArchive", Section: "Flags"},
-		{Key: "isScraping", Section: "Flags"},
-		{Key: "isTesting", Section: "Flags"},
-		{Key: "isTracing", Section: "Flags"},
+		{Section: "Paths", Key: "cachePath"},
+		{Section: "Paths", Key: "indexPath"},
+		{Section: "Chain", Key: "chain"},
+		{Section: "Chain", Key: "chainId"},
+		{Section: "Chain", Key: "networkId"},
+		{Section: "Chain", Key: "chainConfig"},
+		{Section: "Config", Key: "rootConfig"},
+		{Section: "Config", Key: "clientVersion"},
+		{Section: "Config", Key: "version"},
+		{Section: "Progress", Key: "progress"},
+		{Section: "Providers", Key: "rpcProvider"},
+		{Section: "Flags", Key: "hasEsKey"},
+		{Section: "Flags", Key: "hasPinKey"},
+		{Section: "Flags", Key: "isApi"},
+		{Section: "Flags", Key: "isArchive"},
+		{Section: "Flags", Key: "isScraping"},
+		{Section: "Flags", Key: "isTesting"},
+		{Section: "Flags", Key: "isTracing"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

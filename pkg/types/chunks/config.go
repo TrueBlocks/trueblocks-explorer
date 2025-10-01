@@ -75,13 +75,13 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 func getBloomsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
-		{Key: "magic", Section: "Identity", NoTable: true},
-		{Key: "hash", Formatter: "hash", Section: "Identity", Sortable: true},
-		{Key: "nBlooms", Section: "Counts", Sortable: true},
-		{Key: "nInserted", Section: "Counts", Sortable: true},
-		{Key: "size", Section: "Sizes", Sortable: true},
-		{Key: "byteWidth", Formatter: "number", Section: "Sizes", Sortable: true},
+		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
+		{Section: "Identity", Key: "magic", NoTable: true},
+		{Section: "Identity", Key: "hash", Formatter: "hash", Sortable: true},
+		{Section: "Counts", Key: "nBlooms", Sortable: true},
+		{Section: "Counts", Key: "nInserted", Sortable: true},
+		{Section: "Sizes", Key: "size", Sortable: true},
+		{Section: "Sizes", Key: "byteWidth", Formatter: "number", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -91,12 +91,12 @@ func getBloomsFields() []types.FieldConfig {
 func getIndexFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
-		{Key: "magic", Section: "Identity", NoTable: true},
-		{Key: "hash", Formatter: "hash", Section: "Identity", Sortable: true},
-		{Key: "nAddresses", Section: "Counts", Sortable: true},
-		{Key: "nAppearances", Section: "Counts", Sortable: true},
-		{Key: "size", Section: "Sizes", Sortable: true},
+		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
+		{Section: "Identity", Key: "magic", NoTable: true},
+		{Section: "Identity", Key: "hash", Formatter: "hash", Sortable: true},
+		{Section: "Counts", Key: "nAddresses", Sortable: true},
+		{Section: "Counts", Key: "nAppearances", Sortable: true},
+		{Section: "Sizes", Key: "size", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -106,9 +106,9 @@ func getIndexFields() []types.FieldConfig {
 func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "version", Section: "Manifest"},
-		{Key: "chain", Section: "Manifest"},
-		{Key: "specification", Formatter: "hash", Section: "Manifest"},
+		{Section: "Manifest", Key: "version"},
+		{Section: "Manifest", Key: "chain"},
+		{Section: "Manifest", Key: "specification", Formatter: "hash"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -118,18 +118,18 @@ func getManifestFields() []types.FieldConfig {
 func getStatsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "range", Formatter: "blkrange", Section: "Range", Sortable: true},
-		{Key: "nAddrs", Section: "Counts", Sortable: true},
-		{Key: "nApps", Section: "Counts", Sortable: true},
-		{Key: "nBlocks", Section: "Counts", Sortable: true},
-		{Key: "nBlooms", Section: "Counts", Sortable: true},
-		{Key: "recWid", Formatter: "number", Section: "Sizes", Sortable: true},
-		{Key: "bloomSz", Section: "Sizes", Sortable: true},
-		{Key: "chunkSz", Section: "Sizes", Sortable: true},
-		{Key: "ratio", Formatter: "float64", Section: "Efficiency", Sortable: true},
-		{Key: "addrsPerBlock", Section: "Efficiency", Sortable: true},
-		{Key: "appsPerBlock", Section: "Efficiency", Sortable: true},
-		{Key: "appsPerAddr", Section: "Efficiency", Sortable: true},
+		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
+		{Section: "Counts", Key: "nAddrs", Sortable: true},
+		{Section: "Counts", Key: "nApps", Sortable: true},
+		{Section: "Counts", Key: "nBlocks", Sortable: true},
+		{Section: "Counts", Key: "nBlooms", Sortable: true},
+		{Section: "Sizes", Key: "recWid", Formatter: "number", Sortable: true},
+		{Section: "Sizes", Key: "bloomSz", Sortable: true},
+		{Section: "Sizes", Key: "chunkSz", Sortable: true},
+		{Section: "Efficiency", Key: "ratio", Formatter: "float64", Sortable: true},
+		{Section: "Efficiency", Key: "addrsPerBlock", Sortable: true},
+		{Section: "Efficiency", Key: "appsPerBlock", Sortable: true},
+		{Section: "Efficiency", Key: "appsPerAddr", Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

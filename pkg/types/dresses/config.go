@@ -89,26 +89,26 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 func getDalledressFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "original", Formatter: "address", Section: "General"},
-		{Key: "fileName", Formatter: "path", Section: "General"},
-		{Key: "seed", Section: "General"},
-		{Key: "prompt", Section: "Prompts"},
-		{Key: "dataPrompt", Section: "Prompts"},
-		{Key: "titlePrompt", Section: "Prompts"},
-		{Key: "tersePrompt", Section: "Prompts"},
-		{Key: "enhancedPrompt", Section: "Prompts"},
-		{Key: "attributes", Section: "Attributes", NoTable: true},
-		{Key: "seedChunks", Section: "General", NoTable: true},
-		{Key: "selectedTokens", Section: "General", NoTable: true},
-		{Key: "selectedRecords", Section: "General", NoTable: true},
-		{Key: "imageUrl", Formatter: "url", Section: "Image"},
-		{Key: "generatedPath", Formatter: "path", Section: "Image"},
-		{Key: "annotatedPath", Formatter: "path", Section: "Image"},
-		{Key: "downloadMode", Section: "General"},
-		{Key: "ipfsHash", Formatter: "hash", Section: "General"},
-		{Key: "cacheHit", Formatter: "boolean", Section: "General"},
-		{Key: "completed", Formatter: "boolean", Section: "General"},
-		{Key: "series", Section: "General"},
+		{Section: "General", Key: "original", Formatter: "address"},
+		{Section: "General", Key: "fileName", Formatter: "path"},
+		{Section: "General", Key: "seed"},
+		{Section: "Prompts", Key: "prompt"},
+		{Section: "Prompts", Key: "dataPrompt"},
+		{Section: "Prompts", Key: "titlePrompt"},
+		{Section: "Prompts", Key: "tersePrompt"},
+		{Section: "Prompts", Key: "enhancedPrompt"},
+		{Section: "Attributes", Key: "attributes", NoTable: true},
+		{Section: "General", Key: "seedChunks", NoTable: true},
+		{Section: "General", Key: "selectedTokens", NoTable: true},
+		{Section: "General", Key: "selectedRecords", NoTable: true},
+		{Section: "Image", Key: "imageUrl", Formatter: "url"},
+		{Section: "Image", Key: "generatedPath", Formatter: "path"},
+		{Section: "Image", Key: "annotatedPath", Formatter: "path"},
+		{Section: "General", Key: "downloadMode"},
+		{Section: "General", Key: "ipfsHash", Formatter: "hash"},
+		{Section: "General", Key: "cacheHit", Formatter: "boolean"},
+		{Section: "General", Key: "completed", Formatter: "boolean"},
+		{Section: "General", Key: "series"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -118,10 +118,10 @@ func getDalledressFields() []types.FieldConfig {
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "databaseName", Section: "General"},
-		{Key: "count", Formatter: "number", Section: "General"},
-		{Key: "sample", Section: "General"},
-		{Key: "filtered", Section: "General"},
+		{Section: "General", Key: "databaseName"},
+		{Section: "General", Key: "count", Formatter: "number"},
+		{Section: "General", Key: "sample"},
+		{Section: "General", Key: "filtered"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -131,21 +131,21 @@ func getDatabasesFields() []types.FieldConfig {
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "blockNumber", Formatter: "number", Section: "Transaction Context"},
-		{Key: "transactionIndex", Formatter: "number", Section: "Transaction Context"},
-		{Key: "logIndex", Formatter: "number", Section: "Log Overview"},
-		{Key: "address", Formatter: "address", Section: "Log Overview"},
-		{Key: "topic0", Formatter: "hash", Section: "Topics"},
-		{Key: "topic1", Formatter: "hash", Section: "Topics"},
-		{Key: "data", Section: "Log Overview", NoTable: true},
-		{Key: "topic2", Formatter: "hash", Section: "Topics", NoTable: true},
-		{Key: "topic3", Formatter: "hash", Section: "Topics", NoTable: true},
-		{Key: "blockHash", Formatter: "hash", Section: "Transaction Context", NoTable: true},
-		{Key: "transactionHash", Formatter: "hash", Section: "Transaction Context", NoTable: true},
-		{Key: "timestamp", Formatter: "timestamp", Section: "Transaction Context", NoTable: true},
-		{Key: "articulatedLog", Formatter: "json", Section: "Articulated Information", NoTable: true},
-		{Key: "compressedLog", Section: "Articulated Information", NoTable: true},
-		{Key: "actions", Formatter: "actions", Section: "", NoDetail: true},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "logIndex", Formatter: "number"},
+		{Section: "Context", Key: "address", Formatter: "address"},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "transactionHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "timestamp", Formatter: "timestamp", NoTable: true},
+		{Section: "Data", Key: "topic0", Formatter: "hash"},
+		{Section: "Data", Key: "topic1", Formatter: "hash"},
+		{Section: "Data", Key: "topic2", Formatter: "hash", NoTable: true},
+		{Section: "Data", Key: "topic3", Formatter: "hash", NoTable: true},
+		{Section: "Data", Key: "data", NoTable: true},
+		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -155,20 +155,20 @@ func getLogsFields() []types.FieldConfig {
 func getSeriesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "suffix", Section: "General"},
-		{Key: "last", Formatter: "timestamp", Section: "General"},
-		{Key: "deleted", Formatter: "boolean", Section: "Status"},
-		{Key: "adverbs", Section: "Content", NoTable: true},
-		{Key: "adjectives", Section: "Content", NoTable: true},
-		{Key: "nouns", Section: "Content", NoTable: true},
-		{Key: "emotions", Section: "Content", NoTable: true},
-		{Key: "artstyles", Section: "Style", NoTable: true},
-		{Key: "colors", Section: "Style", NoTable: true},
-		{Key: "orientations", Section: "Style", NoTable: true},
-		{Key: "gazes", Section: "Style", NoTable: true},
-		{Key: "backstyles", Section: "Style", NoTable: true},
-		{Key: "modifiedAt", Section: "General"},
-		{Key: "actions", Formatter: "actions", Section: "General", NoDetail: true},
+		{Section: "General", Key: "suffix"},
+		{Section: "General", Key: "last", Formatter: "timestamp"},
+		{Section: "General", Key: "deleted", Formatter: "boolean"},
+		{Section: "General", Key: "modifiedAt"},
+		{Section: "Content", Key: "adverbs", NoTable: true},
+		{Section: "Content", Key: "adjectives", NoTable: true},
+		{Section: "Content", Key: "nouns", NoTable: true},
+		{Section: "Content", Key: "emotions", NoTable: true},
+		{Section: "Style", Key: "artstyles", NoTable: true},
+		{Section: "Style", Key: "colors", NoTable: true},
+		{Section: "Style", Key: "orientations", NoTable: true},
+		{Section: "Style", Key: "gazes", NoTable: true},
+		{Section: "Style", Key: "backstyles", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

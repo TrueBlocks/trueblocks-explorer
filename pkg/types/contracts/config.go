@@ -65,11 +65,11 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 func getContractsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "address", Section: "General"},
-		{Key: "name", Section: "General"},
-		{Key: "symbol", Section: "General"},
-		{Key: "decimals", Section: "General"},
-		{Key: "source", Section: "Source"},
+		{Section: "General", Key: "address"},
+		{Section: "General", Key: "name"},
+		{Section: "General", Key: "symbol"},
+		{Section: "General", Key: "decimals"},
+		{Section: "Source", Key: "source"},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -79,14 +79,14 @@ func getContractsFields() []types.FieldConfig {
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "date", Section: "Block/Tx"},
-		{Key: "address", Section: "Event"},
-		{Key: "name", Section: "Event"},
-		{Key: "articulatedLog", Section: "Event"},
-		{Key: "blockNumber", Section: "Block/Tx", NoTable: true},
-		{Key: "transactionIndex", Section: "Block/Tx", NoTable: true},
-		{Key: "transactionHash", Section: "Block/Tx", NoTable: true},
-		{Key: "signature", Section: "Event", NoTable: true},
+		{Section: "Block/Tx", Key: "date"},
+		{Section: "Event", Key: "address"},
+		{Section: "Event", Key: "name"},
+		{Section: "Event", Key: "articulatedLog"},
+		{Section: "Block/Tx", Key: "blockNumber", NoTable: true},
+		{Section: "Block/Tx", Key: "transactionIndex", NoTable: true},
+		{Section: "Block/Tx", Key: "transactionHash", NoTable: true},
+		{Section: "Event", Key: "signature", NoTable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

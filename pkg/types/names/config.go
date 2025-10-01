@@ -93,21 +93,21 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 func getNamesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Key: "address", Section: "Name Identity", Formatter: "address"},
-		{Key: "name", Section: "Name Identity"},
-		{Key: "symbol", Section: "Name Identity"},
-		{Key: "decimals", Section: "Name Identity"},
-		{Key: "source", Section: "Classification"},
-		{Key: "tags", Section: "Classification"},
-		{Key: "deleted", Formatter: "boolean", Section: "Classification", NoTable: true},
-		{Key: "isContract", Section: "Contract Properties", NoTable: true},
-		{Key: "isCustom", Section: "Contract Properties", NoTable: true},
-		{Key: "isErc20", Section: "Contract Properties", NoTable: true},
-		{Key: "isErc721", Section: "Contract Properties", NoTable: true},
-		{Key: "isPrefund", Section: "Contract Properties", NoTable: true},
-		{Key: "prefund", Section: "Prefund Information", NoTable: true, Formatter: "wei"},
-		{Key: "parts", Section: "Prefund Information", NoTable: true},
-		{Key: "actions", Formatter: "actions", Section: "Name Identity", NoDetail: true},
+		{Section: "Identity", Key: "address", Formatter: "address"},
+		{Section: "Identity", Key: "name"},
+		{Section: "Identity", Key: "symbol"},
+		{Section: "Identity", Key: "decimals"},
+		{Section: "Classification", Key: "source"},
+		{Section: "Classification", Key: "tags"},
+		{Section: "Classification", Key: "deleted", Formatter: "boolean", NoTable: true},
+		{Section: "Properties", Key: "isContract", NoTable: true},
+		{Section: "Properties", Key: "isCustom", NoTable: true},
+		{Section: "Properties", Key: "isErc20", NoTable: true},
+		{Section: "Properties", Key: "isErc721", NoTable: true},
+		{Section: "Properties", Key: "isPrefund", NoTable: true},
+		{Section: "Data", Key: "prefund", NoTable: true, Formatter: "wei"},
+		{Section: "Data", Key: "parts", NoTable: true},
+		{Section: "Identity", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

@@ -15,10 +15,7 @@ func DeriveFacets(vc *ViewConfig) {
 
 		for _, f := range facet.Fields {
 			if !f.NoTable {
-				header := f.Label
-				if f.ColumnLabel != "" {
-					header = f.ColumnLabel
-				}
+				header := f.ColumnLabel
 				cols = append(cols, ColumnConfig{
 					Key:        f.Key,
 					Header:     header,
@@ -34,10 +31,7 @@ func DeriveFacets(vc *ViewConfig) {
 				if sec == "" {
 					sec = "General"
 				}
-				label := f.Label
-				if f.DetailLabel != "" {
-					label = f.DetailLabel
-				}
+				label := f.DetailLabel
 				panelsMap[sec] = append(panelsMap[sec], DetailFieldConfig{
 					Key:         f.Key,
 					Label:       label,

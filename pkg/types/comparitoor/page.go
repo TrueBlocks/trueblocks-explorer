@@ -8,41 +8,44 @@
 
 package comparitoor
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"strconv"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-	// EXISTING_CODE
-	// EXISTING_CODE
 )
 
+// EXISTING_CODE
+
 type ComparitoorPage struct {
-	Facet         types.DataFacet         `json:"facet"`
-	Transaction   []*AnnotatedTransaction `json:"transaction"`
-	TotalItems    int                     `json:"totalItems"`
-	ExpectedTotal int                     `json:"expectedTotal"`
-	IsFetching    bool                    `json:"isFetching"`
-	State         types.LoadState         `json:"state"`
+	Facet         types.DataFacet `json:"facet"`
+	Transaction   []*Transaction  `json:"transaction"`
+	TotalItems    int             `json:"totalItems"`
+	ExpectedTotal int             `json:"expectedTotal"`
+	IsFetching    bool            `json:"isFetching"`
+	State         types.LoadState `json:"state"`
+	// EXISTING_CODE
 	// Per-source arrays and counts
-	Chifra         []*AnnotatedTransaction `json:"chifra"`
-	ChifraCount    int                     `json:"chifraCount"`
-	Etherscan      []*AnnotatedTransaction `json:"etherscan"`
-	EtherscanCount int                     `json:"etherscanCount"`
-	Covalent       []*AnnotatedTransaction `json:"covalent"`
-	CovalentCount  int                     `json:"covalentCount"`
-	Alchemy        []*AnnotatedTransaction `json:"alchemy"`
-	AlchemyCount   int                     `json:"alchemyCount"`
+	Chifra         []*Transaction `json:"chifra"`
+	ChifraCount    int            `json:"chifraCount"`
+	Etherscan      []*Transaction `json:"etherscan"`
+	EtherscanCount int            `json:"etherscanCount"`
+	Covalent       []*Transaction `json:"covalent"`
+	CovalentCount  int            `json:"covalentCount"`
+	Alchemy        []*Transaction `json:"alchemy"`
+	AlchemyCount   int            `json:"alchemyCount"`
 	// Overlap/union/intersection statistics
 	OverlapCount      int `json:"overlapCount"`
 	UnionCount        int `json:"unionCount"`
 	IntersectionCount int `json:"intersectionCount"`
 	// Optionally, a map of overlap details (e.g., how many sources each tx appears in)
 	OverlapDetails map[string]int `json:"overlapDetails,omitempty"`
+	// EXISTING_CODE
 }
 
 func (p *ComparitoorPage) GetFacet() types.DataFacet {
@@ -123,13 +126,13 @@ func (c *ComparitoorCollection) GetPage(
 		}
 	}
 	// Helper to build annotated array for a source
-	buildAnnotated := func(arr []Transaction) []*AnnotatedTransaction {
+	buildAnnotated := func(arr []Transaction) []*Transaction {
 		present := make(map[string]*Transaction)
 		for i := range arr {
 			tx := &arr[i]
 			present[key(tx)] = tx
 		}
-		out := make([]*AnnotatedTransaction, 0, len(keyCount))
+		out := make([]*Transaction, 0, len(keyCount))
 		for k := range keyCount {
 			found, ok := present[k]
 			missing := !ok
@@ -138,13 +141,21 @@ func (c *ComparitoorCollection) GetPage(
 				unique = true
 			}
 			if found != nil {
-				out = append(out, &AnnotatedTransaction{Transaction: *found, Missing: false, Unique: unique})
+				found.Missing = false
+				found.Unique = unique
+				// Use existing entry, with missing=false and unique flag set
+				out = append(out, found)
 			} else {
 				// Synthesize a missing entry (types must match SDK)
 				// Parse block/tx from key
 				var blk, txidx uint64
 				_, _ = fmt.Sscanf(k, "%d:%d", &blk, &txidx)
-				out = append(out, &AnnotatedTransaction{Transaction: Transaction{BlockNumber: base.Blknum(blk), TransactionIndex: base.Txnum(txidx)}, Missing: true, Unique: false})
+				tx := sdk.Transaction{
+					BlockNumber:      base.Blknum(blk),
+					TransactionIndex: base.Txnum(txidx),
+				}
+				ttx := Transaction{Transaction: tx, Missing: true, Unique: false}
+				out = append(out, &ttx)
 			}
 		}
 		return out

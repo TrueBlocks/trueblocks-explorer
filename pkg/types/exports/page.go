@@ -8,18 +8,18 @@
 
 package exports
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	//
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	storePkg "github.com/TrueBlocks/trueblocks-explorer/pkg/store"
-	// EXISTING_CODE
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
+
+// EXISTING_CODE
 
 // TODO: The slices should be slices to pointers
 type ExportsPage struct {
@@ -38,6 +38,8 @@ type ExportsPage struct {
 	ExpectedTotal int             `json:"expectedTotal"`
 	IsFetching    bool            `json:"isFetching"`
 	State         types.LoadState `json:"state"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func (p *ExportsPage) GetFacet() types.DataFacet {
@@ -163,7 +165,7 @@ func (c *ExportsCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Approval, sort sdk.SortSpec) error {
-			return nil // sdk.SortApprovals(items, sort)
+			return sdk.SortApprovals(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)

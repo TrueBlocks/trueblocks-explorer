@@ -8,31 +8,31 @@
 
 package comparitoor
 
+// EXISTING_CODE
 import (
+	"fmt"
 	"sync"
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-// EXISTING_CODE
-// EXISTING_CODE
-
-type Transaction = sdk.Transaction
-
-type transactionStoreKey struct {
-	Facet   types.DataFacet
-	Chain   string
-	Address string
+// AnnotatedTransaction wraps sdk.Transaction with missing/unique flags for frontend rendering
+type AnnotatedTransaction struct {
+	sdk.Transaction
+	Missing bool `json:"missing"`
+	Unique  bool `json:"unique"`
 }
 
+type Transaction = AnnotatedTransaction
+
+// EXISTING_CODE
+
 var (
-	transactionStores  = make(map[transactionStoreKey]*store.Store[Transaction])
+	transactionStore   = make(map[string]*store.Store[Transaction])
 	transactionStoreMu sync.Mutex
 )
 
@@ -45,8 +45,8 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 
 	chain := payload.Chain
 	address := payload.Address
-	key := transactionStoreKey{Facet: facet, Chain: chain, Address: address}
-	theStore := transactionStores[key]
+	storeKey := getStoreKey(chain, address)
+	theStore := transactionStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -98,15 +98,13 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		transactionStores[key] = theStore
+		transactionStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *ComparitoorCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case ComparitoorComparitoor:
@@ -122,6 +120,7 @@ func (c *ComparitoorCollection) GetStoreName(dataFacet types.DataFacet, chain, a
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -135,7 +134,6 @@ func GetComparitoorCollection(payload *types.Payload) *ComparitoorCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
 
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
@@ -145,6 +143,10 @@ func GetComparitoorCollection(payload *types.Payload) *ComparitoorCollection {
 	collection := NewComparitoorCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
 }
 
 // EXISTING_CODE

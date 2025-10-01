@@ -8,16 +8,16 @@
 
 package abis
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	//
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-	// EXISTING_CODE
-	// EXISTING_CODE
 )
+
+// EXISTING_CODE
 
 // TODO: The slices should be slices to pointers
 type AbisPage struct {
@@ -28,6 +28,8 @@ type AbisPage struct {
 	ExpectedTotal int             `json:"expectedTotal"`
 	IsFetching    bool            `json:"isFetching"`
 	State         types.LoadState `json:"state"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func (p *AbisPage) GetFacet() types.DataFacet {

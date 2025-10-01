@@ -8,12 +8,11 @@
 
 package chunks
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -22,13 +21,12 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-// EXISTING_CODE
-// EXISTING_CODE
-
 type Bloom = sdk.Bloom
 type Index = sdk.Index
 type Manifest = sdk.Manifest
 type Stats = sdk.Stats
+
+// EXISTING_CODE
 
 var (
 	bloomsStore   *store.Store[Bloom]

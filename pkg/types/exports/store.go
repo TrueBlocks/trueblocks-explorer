@@ -8,12 +8,11 @@
 
 package exports
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -21,9 +20,6 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
-
-// EXISTING_CODE
-// EXISTING_CODE
 
 type Approval = sdk.Approval
 type Asset = sdk.Asset
@@ -35,6 +31,8 @@ type Trace = sdk.Trace
 type Transaction = sdk.Transaction
 type Transfer = sdk.Transfer
 type Withdrawal = sdk.Withdrawal
+
+// EXISTING_CODE
 
 var (
 	approvalsStore   = make(map[string]*store.Store[Approval])
@@ -82,6 +80,17 @@ func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet type
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
+			tokensOpts := sdk.TokensOptions{
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				RenderCtx: ctx,
+				Addrs:     []string{address},
+				NoZero:    true,
+			}
+			if _, _, err := tokensOpts.TokensApprovals(); err != nil {
+				wrappedErr := types.NewSDKError("exports", ExportsApprovals, "fetch", err)
+				logging.LogBackend(fmt.Sprintf("Exports approvals SDK query error: %v", wrappedErr))
+				return wrappedErr
+			}
 			// EXISTING_CODE
 			return nil
 		}
@@ -642,111 +651,9 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 	return collection
 }
 
-// EXISTING_CODE
-// ResetExportsStore resets a specific store for a given chain, address, and dataFacet
-func ResetExportsStore(payload *types.Payload, dataFacet types.DataFacet) {
-	storeKey := getStoreKey(payload.Chain, payload.Address)
-
-	switch dataFacet {
-	case ExportsTransactions:
-		transactionsStoreMu.Lock()
-		if store, exists := transactionsStore[storeKey]; exists {
-			store.Reset()
-		}
-		transactionsStoreMu.Unlock()
-	case ExportsStatements:
-		statementsStoreMu.Lock()
-		if store, exists := statementsStore[storeKey]; exists {
-			store.Reset()
-		}
-		statementsStoreMu.Unlock()
-	case ExportsTransfers:
-		transfersStoreMu.Lock()
-		if store, exists := transfersStore[storeKey]; exists {
-			store.Reset()
-		}
-		transfersStoreMu.Unlock()
-	case ExportsBalances:
-		balancesStoreMu.Lock()
-		if store, exists := balancesStore[storeKey]; exists {
-			store.Reset()
-		}
-		balancesStoreMu.Unlock()
-	case ExportsWithdrawals:
-		withdrawalsStoreMu.Lock()
-		if store, exists := withdrawalsStore[storeKey]; exists {
-			store.Reset()
-		}
-		withdrawalsStoreMu.Unlock()
-	case ExportsAssets:
-		assetsStoreMu.Lock()
-		if store, exists := assetsStore[storeKey]; exists {
-			store.Reset()
-		}
-		assetsStoreMu.Unlock()
-	}
-}
-
-// ClearExportsStores clears all cached stores for a given chain and address
-func ClearExportsStores(payload *types.Payload) {
-	chain := payload.Chain
-	address := payload.Address
-	storeKey := getStoreKey(chain, address)
-
-	transactionsStoreMu.Lock()
-	delete(transactionsStore, storeKey)
-	transactionsStoreMu.Unlock()
-
-	statementsStoreMu.Lock()
-	delete(statementsStore, storeKey)
-	statementsStoreMu.Unlock()
-
-	transfersStoreMu.Lock()
-	delete(transfersStore, storeKey)
-	transfersStoreMu.Unlock()
-
-	balancesStoreMu.Lock()
-	delete(balancesStore, storeKey)
-	balancesStoreMu.Unlock()
-
-	withdrawalsStoreMu.Lock()
-	delete(withdrawalsStore, storeKey)
-	withdrawalsStoreMu.Unlock()
-
-	assetsStoreMu.Lock()
-	delete(assetsStore, storeKey)
-	assetsStoreMu.Unlock()
-}
-
-// ClearAllExportsStores clears all cached stores (useful for global reset)
-func ClearAllExportsStores() {
-	transactionsStoreMu.Lock()
-	transactionsStore = make(map[string]*store.Store[Transaction])
-	transactionsStoreMu.Unlock()
-
-	statementsStoreMu.Lock()
-	statementsStore = make(map[string]*store.Store[Statement])
-	statementsStoreMu.Unlock()
-
-	transfersStoreMu.Lock()
-	transfersStore = make(map[string]*store.Store[Transfer])
-	transfersStoreMu.Unlock()
-
-	balancesStoreMu.Lock()
-	balancesStore = make(map[string]*store.Store[Balance])
-	balancesStoreMu.Unlock()
-
-	withdrawalsStoreMu.Lock()
-	withdrawalsStore = make(map[string]*store.Store[Withdrawal])
-	withdrawalsStoreMu.Unlock()
-
-	assetsStoreMu.Lock()
-	assetsStore = make(map[string]*store.Store[Asset])
-	assetsStoreMu.Unlock()
-}
-
 func getStoreKey(chain, address string) string {
 	return fmt.Sprintf("%s_%s", chain, address)
 }
 
+// EXISTING_CODE
 // EXISTING_CODE

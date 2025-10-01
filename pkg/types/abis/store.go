@@ -8,12 +8,11 @@
 
 package abis
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -22,13 +21,11 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-// EXISTING_CODE
 type Parameter = sdk.Parameter
-
-// EXISTING_CODE
-
 type Abi = sdk.Abi
 type Function = sdk.Function
+
+// EXISTING_CODE
 
 var (
 	abisStore   *store.Store[Abi]

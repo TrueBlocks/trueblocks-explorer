@@ -8,12 +8,11 @@
 
 package status
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"sync"
 
-	// EXISTING_CODE
-	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -22,12 +21,11 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-// EXISTING_CODE
-// EXISTING_CODE
-
 type Cache = sdk.Cache
 type Chain = sdk.Chain
 type Status = sdk.Status
+
+// EXISTING_CODE
 
 var (
 	cachesStore   *store.Store[Cache]

@@ -8,16 +8,16 @@
 
 package status
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	//
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-	// EXISTING_CODE
-	// EXISTING_CODE
 )
+
+// EXISTING_CODE
 
 type StatusPage struct {
 	Facet         types.DataFacet `json:"facet"`
@@ -28,6 +28,8 @@ type StatusPage struct {
 	ExpectedTotal int             `json:"expectedTotal"`
 	IsFetching    bool            `json:"isFetching"`
 	State         types.LoadState `json:"state"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func (p *StatusPage) GetFacet() types.DataFacet {

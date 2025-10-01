@@ -184,6 +184,12 @@ func isTransaction(item *Transaction) bool {
 	// EXISTING_CODE
 }
 
+func isApproval(item *Approval) bool {
+	// EXISTING_CODE
+	return true
+	// EXISTING_CODE
+}
+
 func isWithdrawal(item *Withdrawal) bool {
 	// EXISTING_CODE
 	return true
@@ -202,12 +208,6 @@ func isLog(item *Log) bool {
 	// EXISTING_CODE
 }
 
-func isApproval(item *Approval) bool {
-	// EXISTING_CODE
-	return true
-	// EXISTING_CODE
-}
-
 func isTrace(item *Trace) bool {
 	// EXISTING_CODE
 	return true
@@ -217,6 +217,12 @@ func isTrace(item *Trace) bool {
 func isReceipt(item *Receipt) bool {
 	// EXISTING_CODE
 	return true
+	// EXISTING_CODE
+}
+
+func isDupApproval() func(existing []*Approval, newItem *Approval) bool {
+	// EXISTING_CODE
+	return nil
 	// EXISTING_CODE
 }
 
@@ -233,12 +239,6 @@ func isDupBalance() func(existing []*Balance, newItem *Balance) bool {
 }
 
 func isDupLog() func(existing []*Log, newItem *Log) bool {
-	// EXISTING_CODE
-	return nil
-	// EXISTING_CODE
-}
-
-func isDupApproval() func(existing []*Approval, newItem *Approval) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE

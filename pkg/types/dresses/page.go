@@ -8,18 +8,18 @@
 
 package dresses
 
+// EXISTING_CODE
 import (
 	"fmt"
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	//
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
-	// EXISTING_CODE
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
 	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
-	// EXISTING_CODE
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
+
+// EXISTING_CODE
 
 type DressesPage struct {
 	Facet         types.DataFacet `json:"facet"`
@@ -31,6 +31,8 @@ type DressesPage struct {
 	ExpectedTotal int             `json:"expectedTotal"`
 	IsFetching    bool            `json:"isFetching"`
 	State         types.LoadState `json:"state"`
+	// EXISTING_CODE
+	// EXISTING_CODE
 }
 
 func (p *DressesPage) GetFacet() types.DataFacet {

@@ -23,13 +23,13 @@ var etherscanCSV []byte
 //go:embed testdata/covalent.csv
 var covalentCSV []byte
 
-func parseCSVToTransactions(data []byte) []*sdk.Transaction {
+func parseCSVToTransactions(data []byte) []*Transaction {
 	r := csv.NewReader(bufio.NewReader(bytes.NewReader(data)))
 	records, err := r.ReadAll()
 	if err != nil || len(records) < 2 {
 		return nil
 	}
-	var out []*sdk.Transaction
+	var out []*Transaction
 	for _, rec := range records[1:] { // skip header
 		if len(rec) < 2 {
 			continue
@@ -39,10 +39,12 @@ func parseCSVToTransactions(data []byte) []*sdk.Transaction {
 		if err1 != nil || err2 != nil {
 			continue
 		}
-		out = append(out, &sdk.Transaction{
+		tx := sdk.Transaction{
 			BlockNumber:      base.Blknum(blk),
 			TransactionIndex: base.Txnum(idx),
-		})
+		}
+		ttx := Transaction{Transaction: tx, Missing: false, Unique: false}
+		out = append(out, &ttx)
 	}
 	return out
 }

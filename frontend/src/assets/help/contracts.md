@@ -13,9 +13,9 @@ the code inside of 'EXISTING_CODE' tags.
 
 ## Facets
 
-- Dashboard Facet uses sdk.Contracts store.
-- Execute Facet uses sdk.Contracts store.
-- Events Facet uses sdk.Logs store.
+- Dashboard Facet uses the Contracts store.
+- Execute Facet uses the Contracts store.
+- Events Facet uses the Logs store.
 
 ## Stores
 

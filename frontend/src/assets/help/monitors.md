@@ -13,7 +13,7 @@ the code inside of 'EXISTING_CODE' tags.
 
 ## Facets
 
-- Monitors Facet uses sdk.Monitors store.
+- Monitors Facet uses the Monitors store.
 
 ## Stores
 

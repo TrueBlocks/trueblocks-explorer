@@ -13,11 +13,11 @@ the code inside of 'EXISTING_CODE' tags.
 
 ## Facets
 
-- Generator Facet uses dalle.DalleDress store.
-- Series Facet uses dalle.Series store.
-- Databases Facet uses dalle.Databases store.
-- Events Facet uses sdk.Logs store.
-- Gallery Facet uses dalle.DalleDress store.
+- Generator Facet uses the DalleDress store.
+- Series Facet uses the Series store.
+- Databases Facet uses the Databases store.
+- Events Facet uses the Logs store.
+- Gallery Facet uses the DalleDress store.
 
 ## Stores
 

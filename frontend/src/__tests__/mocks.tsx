@@ -216,6 +216,7 @@ const createInitialMockAppBridge = (): AppBridgeFunctions => ({
   SetUserPreferences: vi.fn().mockResolvedValue({}),
   IsReady: vi.fn().mockResolvedValue(true),
   IsDisabled: vi.fn().mockResolvedValue(false),
+  ConfigOk: vi.fn().mockResolvedValue(undefined),
   GetAppPreferences: vi.fn().mockResolvedValue({
     lastView: '/mock-default-view',
     menuCollapsed: false,

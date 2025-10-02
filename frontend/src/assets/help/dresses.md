@@ -6,6 +6,7 @@ be found in the LICENSE file.
 Parts of this file were auto generated. Edit only those parts of
 the code inside of 'EXISTING_CODE' tags.
 -->
+
 # Dresses View
 
 // EXISTING_CODE
@@ -78,9 +79,10 @@ the code inside of 'EXISTING_CODE' tags.
   - emotions: List of emotions
   - artstyles: List of art styles
   - colors: List of colors
-  - orientations: List of orientations
+  - viewpoints: List of viewpoints
   - gazes: List of gazes
   - backstyles: List of back styles
+  - compositions: List of compositions
   - modifiedAt: Last modified timestamp
 
 // EXISTING_CODE

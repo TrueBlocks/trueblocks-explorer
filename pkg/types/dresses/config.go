@@ -165,9 +165,10 @@ func getSeriesFields() []types.FieldConfig {
 		{Section: "Content", Key: "emotions", NoTable: true},
 		{Section: "Style", Key: "artstyles", NoTable: true},
 		{Section: "Style", Key: "colors", NoTable: true},
-		{Section: "Style", Key: "orientations", NoTable: true},
+		{Section: "Style", Key: "viewpoints", NoTable: true},
 		{Section: "Style", Key: "gazes", NoTable: true},
 		{Section: "Style", Key: "backstyles", NoTable: true},
+		{Section: "Style", Key: "compositions", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}

@@ -7,7 +7,9 @@ nouns       , []string, false   ,        5, List of nouns
 emotions    , []string, false   ,        6, List of emotions
 artstyles   , []string, false   ,        7, List of art styles
 colors      , []string, false   ,        8, List of colors
-orientations, []string, false   ,        9, List of orientations
+viewpoints  , []string, false   ,        9, List of viewpoints
 gazes       , []string, false   ,       10, List of gazes
 backstyles  , []string, false   ,       11, List of back styles
-modifiedAt  , datetime, false   ,       12, Last modified timestamp
+compositions, []string, false   ,       12, List of compositions
+createdAt   , datetime, false   ,       13, Creation timestamp
+modifiedAt  , datetime, false   ,       14, Last modified timestamp

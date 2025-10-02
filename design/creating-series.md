@@ -16,7 +16,7 @@ A series file (e.g., `ecstasy-harlem-renaissance-shooting.json`) is a JSON objec
 - `last` (int): Index of the last generated item (for resumability)
 - `deleted` (bool): Marks the series as inactive (soft delete)
 - `modifiedAt` (string): Timestamp of last modification
-- Slices for each category: `adverbs`, `adjectives`, `nouns`, `emotions`, `occupations`, `actions`, `artstyles`, `litstyles`, `colors`, `orientations`, `gazes`, `backstyles`
+- Slices for each category: `adverbs`, `adjectives`, `nouns`, `emotions`, `occupations`, `actions`, `artstyles`, `litstyles`, `colors`, `viewpoints`, `gazes`, `backstyles`, `compositions`
 
 Example:
 ```json
@@ -29,7 +29,6 @@ Example:
   "actions": ["exploding"],
   "artstyles": ["neo-expressionism"],
   "colors": ["scarlet", "smoke gray"],
-  "orientations": ["landscape"]
 }
 ```
 

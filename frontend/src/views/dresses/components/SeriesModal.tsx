@@ -30,9 +30,10 @@ const EMPTY: dalle.Series = {
   artstyles: [],
   litstyles: [],
   colors: [],
-  orientations: [],
+  viewpoints: [],
   gazes: [],
   backstyles: [],
+  compositions: [],
 };
 
 export const SeriesModal = ({

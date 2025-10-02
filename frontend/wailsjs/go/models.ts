@@ -366,9 +366,10 @@ export namespace dalle {
 	    artstyles: string[];
 	    litstyles: string[];
 	    colors: string[];
-	    orientations: string[];
+	    viewpoints: string[];
 	    gazes: string[];
 	    backstyles: string[];
+	    compositions: string[];
 	    modifiedAt?: string;
 	
 	    static createFrom(source: any = {}) {
@@ -390,9 +391,10 @@ export namespace dalle {
 	        this.artstyles = source["artstyles"];
 	        this.litstyles = source["litstyles"];
 	        this.colors = source["colors"];
-	        this.orientations = source["orientations"];
+	        this.viewpoints = source["viewpoints"];
 	        this.gazes = source["gazes"];
 	        this.backstyles = source["backstyles"];
+	        this.compositions = source["compositions"];
 	        this.modifiedAt = source["modifiedAt"];
 	    }
 	}

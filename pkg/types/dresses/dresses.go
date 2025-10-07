@@ -133,7 +133,28 @@ func isGallery(item *DalleDress) bool {
 
 func isDupDalleDress() func(existing []*DalleDress, newItem *DalleDress) bool {
 	// EXISTING_CODE
-	return nil
+	seen := make(map[string]bool)
+	lastExistingLen := 0
+
+	return func(existing []*DalleDress, newItem *DalleDress) bool {
+		if newItem == nil {
+			return false
+		}
+
+		// Reset seen map when starting fresh (e.g., after a store reset)
+		if len(existing) == 0 && lastExistingLen > 0 {
+			seen = make(map[string]bool)
+		}
+		lastExistingLen = len(existing)
+
+		// Create the same unique key as used in mappingFunc
+		key := newItem.Original + ":" + newItem.AnnotatedPath
+		if seen[key] {
+			return true // It's a duplicate
+		}
+		seen[key] = true
+		return false // Not a duplicate
+	}
 	// EXISTING_CODE
 }
 

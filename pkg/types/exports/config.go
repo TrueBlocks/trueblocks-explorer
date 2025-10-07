@@ -252,49 +252,58 @@ func getReceiptsFields() []types.FieldConfig {
 func getStatementsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
-		{Section: "Summary", Key: "date"},
+		{Section: "Asset", Key: "timestamp", Formatter: "timestamp"},
 		{Section: "Asset", Key: "asset"},
-		{Section: "Asset", Key: "symbol"},
-		{Section: "Asset", Key: "decimals"},
-		{Section: "Reconciliation", Key: "begBal"},
-		{Section: "Inflow", Key: "amountIn"},
-		{Section: "Outflow", Key: "amountOut"},
-		{Section: "Reconciliation", Key: "endBal"},
-		{Section: "Summary", Key: "gasUsed"},
-		{Section: "Summary", Key: "reconciliationType"},
-		{Section: "", Key: "actions", NoDetail: true},
-		{Section: "Summary", Key: "accountedFor", NoTable: true},
-		{Section: "Summary", Key: "reconciled", NoTable: true},
-		{Section: "Asset", Key: "spotPrice", NoTable: true},
+		{Section: "Asset", Key: "symbol", NoTable: true},
+		{Section: "Asset", Key: "decimals", NoTable: true},
 		{Section: "Asset", Key: "priceSource", NoTable: true},
+
+		{Section: "Reconciliation", Key: "begBal"},
 		{Section: "Reconciliation", Key: "totalIn", NoTable: true},
 		{Section: "Reconciliation", Key: "totalOut", NoTable: true},
-		{Section: "Reconciliation", Key: "amountNet", NoTable: true},
+		{Section: "Reconciliation", Key: "amountNet"},
+		{Section: "Reconciliation", Key: "endBal"},
+		{Section: "Asset", Key: "spotPrice", Formatter: "float64", NoTable: true},
 		{Section: "Reconciliation", Key: "endBalCalc", NoTable: true},
+
+		{Section: "Summary", Key: "date", NoTable: true},
+		{Section: "Summary", Key: "gasUsed", NoTable: true},
+		{Section: "Summary", Key: "reconciliationType", NoTable: true},
+		{Section: "Summary", Key: "accountedFor", NoTable: true},
+		{Section: "Summary", Key: "reconciled", Formatter: "boolean"},
+
+		{Section: "Inflow", Key: "amountIn", NoTable: true},
 		{Section: "Inflow", Key: "internalIn", NoTable: true},
 		{Section: "Inflow", Key: "selfDestructIn", NoTable: true},
 		{Section: "Inflow", Key: "minerBaseRewardIn", NoTable: true},
 		{Section: "Inflow", Key: "minerTxFeeIn", NoTable: true},
 		{Section: "Inflow", Key: "prefundIn", NoTable: true},
+
+		{Section: "Outflow", Key: "amountOut", NoTable: true},
 		{Section: "Outflow", Key: "internalOut", NoTable: true},
 		{Section: "Outflow", Key: "selfDestructOut", NoTable: true},
 		{Section: "Outflow", Key: "gasOut", NoTable: true},
+
 		{Section: "Details", Key: "blockNumber", NoTable: true},
 		{Section: "Details", Key: "transactionIndex", NoTable: true},
 		{Section: "Details", Key: "logIndex", NoTable: true},
 		{Section: "Details", Key: "transactionHash", NoTable: true},
 		{Section: "Details", Key: "sender", NoTable: true},
 		{Section: "Details", Key: "recipient", NoTable: true},
+
 		{Section: "Analysis", Key: "prevBal", NoTable: true},
 		{Section: "Analysis", Key: "begBalDiff", NoTable: true},
 		{Section: "Analysis", Key: "endBalDiff", NoTable: true},
 		{Section: "Analysis", Key: "correctingReasons", NoTable: true},
+
 		{Section: "Corrections", Key: "correctBegBalIn", NoTable: true},
 		{Section: "Corrections", Key: "correctAmountIn", NoTable: true},
 		{Section: "Corrections", Key: "correctEndBalIn", NoTable: true},
 		{Section: "Corrections", Key: "correctBegBalOut", NoTable: true},
 		{Section: "Corrections", Key: "correctAmountOut", NoTable: true},
 		{Section: "Corrections", Key: "correctEndBalOut", NoTable: true},
+
+		{Section: "", Key: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

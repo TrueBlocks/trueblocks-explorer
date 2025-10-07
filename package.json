@@ -2,7 +2,7 @@
   "scripts": {
     "build": "cd frontend && yarn build && cd .. && wails build",
     "clean": "make clean",
-    "dev": "wails dev -debounce 1000 | grep -v 'AssetHandler'",
+    "dev": "wails dev -debounce 1000 2>&1 | grep -v -e 'AssetHandler|KnownStructures'",
     "install": "cd frontend && yarn install && cd - && go mod tidy && yarn build",
     "lint": "cd frontend && yarn lint && cd .. && golangci-lint run",
     "type-check": "cd frontend && yarn type-check && cd ..",

@@ -67,7 +67,7 @@ export const Table = <T extends Record<string, unknown>>({
   // When detailCollapsed is false, the detail panel is showing, so show fewer columns
   const displayColumns = detailCollapsed
     ? processedColumns
-    : processedColumns.slice(0, 3);
+    : processedColumns.slice(0, 6);
 
   const { pagination } = usePagination(viewStateKey);
   const { filter, setFiltering } = useFiltering(viewStateKey);

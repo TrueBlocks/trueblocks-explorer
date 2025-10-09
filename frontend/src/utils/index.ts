@@ -7,6 +7,7 @@ export * from './eventUtils';
 export * from './log';
 export * from './periods';
 export * from './preferences';
+export * from './propertyAccess';
 export * from './registerHotkeys';
 export * from './wizardUtils';
 export * from './useErrorHandler';

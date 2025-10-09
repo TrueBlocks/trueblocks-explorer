@@ -29,25 +29,31 @@ func unCamelize(s string) string {
 
 func (f *FieldConfig) normalizeField() {
 	clean := func(detail bool) (string, string) {
-		if strings.HasPrefix(f.Key, "has") && len(f.Key) > 3 && unicode.IsUpper(rune(f.Key[3])) {
-			return unCamelize(f.Key), "boolean"
-		} else if strings.HasPrefix(f.Key, "is") && len(f.Key) > 2 && unicode.IsUpper(rune(f.Key[2])) {
+		// Remove "calcs." prefix before normalizing capitalization
+		key := strings.TrimPrefix(f.Key, "calcs.")
+
+		// Remove "Eth" suffix if present
+		key = strings.TrimSuffix(key, "Eth")
+
+		if strings.HasPrefix(key, "has") && len(key) > 3 && unicode.IsUpper(rune(key[3])) {
+			return unCamelize(key), "boolean"
+		} else if strings.HasPrefix(key, "is") && len(key) > 2 && unicode.IsUpper(rune(key[2])) {
 			if detail {
-				return "Is " + unCamelize(f.Key[2:]), "boolean"
+				return "Is " + unCamelize(key[2:]), "boolean"
 			}
-			return unCamelize(f.Key[2:]), "boolean"
-		} else if strings.HasPrefix(f.Key, "n") && len(f.Key) > 1 && unicode.IsUpper(rune(f.Key[1])) {
-			return unCamelize(f.Key[1:]), "number"
-		} else if f.Key == "actions" {
-			return unCamelize(f.Key), "actions"
-		} else if f.Key == "fileSize" || f.Key == "size" || strings.HasSuffix(f.Key, "Sz") {
-			return unCamelize(f.Key), "fileSize"
+			return unCamelize(key[2:]), "boolean"
+		} else if strings.HasPrefix(key, "n") && len(key) > 1 && unicode.IsUpper(rune(key[1])) {
+			return unCamelize(key[1:]), "number"
+		} else if key == "actions" {
+			return unCamelize(key), "actions"
+		} else if key == "fileSize" || key == "size" || strings.HasSuffix(key, "Sz") {
+			return unCamelize(key), "fileSize"
 		} else {
 			fmt := ""
-			if strings.Contains(f.Key, "Per") {
+			if strings.Contains(key, "Per") {
 				fmt = "float64"
 			}
-			return unCamelize(f.Key), fmt
+			return unCamelize(key), fmt
 		}
 	}
 

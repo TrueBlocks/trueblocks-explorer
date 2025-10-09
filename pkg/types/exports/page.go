@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	storePkg "github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
@@ -94,6 +95,21 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
+			props := &sdk.ModelProps{
+				Chain:   payload.Chain,
+				Format:  "json",
+				Verbose: true,
+				// EXISTING_CODE
+				ExtraOpts: map[string]any{
+					"ether": true,
+				},
+				// EXISTING_CODE
+			}
+			for i := range result.Items {
+				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
+					logging.LogBackend(fmt.Sprintf("Failed to calculate fields for statement %d: %v", i, err))
+				}
+			}
 
 			page.Statements, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}

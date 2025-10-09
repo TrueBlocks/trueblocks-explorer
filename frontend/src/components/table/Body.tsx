@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { FieldRenderer, FormField } from '@components';
+import { getNestedProperty, isNestedProperty } from '@utils';
 
 import './Body.css';
 
@@ -60,7 +61,9 @@ export const Body = <T extends Record<string, unknown>>({
                         {
                           type: col.type || 'text',
                           value: (col.key !== undefined
-                            ? row[col.key as keyof T]
+                            ? isNestedProperty(col.key)
+                              ? getNestedProperty(row, col.key)
+                              : row[col.key as keyof T]
                             : '') as string,
                           customRender: col.render
                             ? col.render(row, rowIndex)

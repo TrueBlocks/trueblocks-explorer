@@ -6,11 +6,11 @@ import { LogError } from '@utils';
 /**
  * Converts a Wei value (as string) to Ether with appropriate formatting
  * @param weiValue - The Wei value as a string
- * @returns Formatted Ether value as string with exactly 5 decimal places, rounded up
+ * @returns Formatted Ether value as string with exactly 6 decimal places, rounded up
  */
 export function formatWeiToEther(weiValue: string | number): string {
   if (!weiValue || weiValue === '0') {
-    return '0.00000';
+    return '-';
   }
 
   try {
@@ -25,31 +25,31 @@ export function formatWeiToEther(weiValue: string | number): string {
     // Convert remainder to decimal string with full precision
     const remainderStr = remainder.toString().padStart(18, '0');
 
-    // Get the first 5 decimal places for rounding
-    const first5Decimals = remainderStr.slice(0, 5);
-    const fifth5thDecimal = remainderStr[5];
+    // Get the first 6 decimal places for rounding
+    const first6Decimals = remainderStr.slice(0, 6);
+    const seventh7thDecimal = remainderStr[6];
 
     // Convert to number for rounding calculation
-    let decimalValue = parseInt(first5Decimals, 10);
+    let decimalValue = parseInt(first6Decimals, 10);
 
-    // Round up if the 4th decimal is 5 or greater, or if there are any non-zero digits after
-    if (fifth5thDecimal && parseInt(fifth5thDecimal, 10) >= 5) {
+    // Round up if the 7th decimal is 5 or greater, or if there are any non-zero digits after
+    if (seventh7thDecimal && parseInt(seventh7thDecimal, 10) >= 5) {
       decimalValue += 1;
-    } else if (remainder > BigInt(first5Decimals.padEnd(18, '0'))) {
-      // Check if there are any non-zero digits beyond the 4th decimal
-      const beyondFourth = remainderStr.slice(4);
-      if (beyondFourth && parseInt(beyondFourth, 10) > 0) {
+    } else if (remainder > BigInt(first6Decimals.padEnd(18, '0'))) {
+      // Check if there are any non-zero digits beyond the 6th decimal
+      const beyondSixth = remainderStr.slice(6);
+      if (beyondSixth && parseInt(beyondSixth, 10) > 0) {
         decimalValue += 1;
       }
     }
 
-    // Handle carry-over if rounding goes to 1000
-    if (decimalValue >= 1000) {
-      return `${(etherInt + BigInt(1)).toString()}.000`;
+    // Handle carry-over if rounding goes to 1000000
+    if (decimalValue >= 1000000) {
+      return `${(etherInt + BigInt(1)).toString()}.000000`;
     }
 
-    // Format with exactly 5 decimal places
-    const formattedDecimal = decimalValue.toString().padStart(5, '0');
+    // Format with exactly 6 decimal places
+    const formattedDecimal = decimalValue.toString().padStart(6, '0');
 
     return `${etherInt.toString()}.${formattedDecimal}`;
   } catch (error) {

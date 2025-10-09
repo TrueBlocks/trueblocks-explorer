@@ -44,13 +44,38 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       return <div key={keyProp}>{field.customRender}</div>;
     }
 
-    const isEtherField = field.type === 'ether';
     const isGasField = field.type === 'gas';
 
     if (mode === 'display') {
       let displayValue;
-      if (field.type === 'ether' && field.value) {
-        displayValue = formatWeiToEther(field.value as string);
+      if (field.type === 'wei' && field.value) {
+        // Try to format as Wei, but if it fails (e.g., already in Ether format), format as ether
+        try {
+          displayValue = formatWeiToEther(field.value as string);
+        } catch {
+          // If Wei formatting fails, field might already be in Ether format - format consistently
+          const etherValue = String(field.value);
+          const numericValue = parseFloat(etherValue);
+          if (isNaN(numericValue)) {
+            displayValue = '0.000000';
+          } else {
+            displayValue = numericValue.toFixed(6);
+          }
+        }
+      } else if (field.type === 'ether') {
+        // Fields with type 'ether' are already in Ether format - format to exactly 6 decimal places
+        if (!field.value) {
+          displayValue = '0.000000';
+        } else {
+          const etherValue = String(field.value);
+          const numericValue = parseFloat(etherValue);
+          if (isNaN(numericValue)) {
+            displayValue = '0.000000';
+          } else {
+            // Format to exactly 6 decimal places, ensuring at least one digit before decimal
+            displayValue = numericValue.toFixed(6);
+          }
+        }
       } else if (field.type === 'gas' && field.value) {
         displayValue = formatWeiToGigawei(field.value as string);
       } else if (field.type === 'timestamp' && field.value) {
@@ -138,7 +163,8 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           (field.type as string) === 'float64' ||
           field.type === 'number' ||
           field.type === 'gas' ||
-          field.type === 'ether';
+          field.type === 'ether' ||
+          field.type === 'wei';
 
         if (shouldRightAlign) {
           return <div style={{ textAlign: 'right' }}>{displayValue}</div>;
@@ -172,9 +198,11 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
     }
 
     let placeHolder;
-    if (isEtherField) {
+    if (field.type === 'wei') {
       placeHolder =
         field.placeholder || 'Wei value (e.g., 1000000000000000000 for 1 ETH)';
+    } else if (field.type === 'ether') {
+      placeHolder = field.placeholder || 'Ether value (e.g., 1.000000)';
     } else if (isGasField) {
       placeHolder =
         field.placeholder || 'Wei value (e.g., 21000000000000 for 21 Gwei)';
@@ -183,8 +211,11 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
     }
 
     let hint;
-    if (isEtherField) {
+    if (field.type === 'wei') {
       hint = field.hint || 'Enter value in Wei (smallest unit of Ether)';
+    } else if (field.type === 'ether') {
+      hint =
+        field.hint || 'Enter value in Ether (will be displayed as entered)';
     } else if (isGasField) {
       hint = field.hint || 'Enter value in Wei (will display as Gigawei)';
     } else {

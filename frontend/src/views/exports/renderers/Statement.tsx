@@ -38,27 +38,14 @@ export const renderStatementDetailPanel = (
     }
     return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
   };
-  const sum = (arr: unknown[]): bigint =>
-    arr.reduce<bigint>((acc, v) => acc + toBig(v), 0n);
-  const minerInRaw = sum([
-    statement.minerBaseRewardIn,
-    statement.minerNephewRewardIn,
-    statement.minerTxFeeIn,
-    statement.minerUncleRewardIn,
-  ]);
-  const totalInRaw = sum([
-    statement.amountIn,
-    statement.internalIn,
-    statement.prefundIn,
-    statement.selfDestructIn,
-    minerInRaw,
-  ]);
-  const totalOutRaw = sum([
-    statement.amountOut,
-    statement.internalOut,
-    statement.gasOut,
-    statement.selfDestructOut,
-  ]);
+
+  const totalInRaw = toBig(statement.calcs?.totalIn || '0');
+  const totalOutRaw = toBig(statement.calcs?.totalOut || '0');
+  const minerInRaw =
+    toBig(statement.minerBaseRewardIn || '0') +
+    toBig(statement.minerNephewRewardIn || '0') +
+    toBig(statement.minerTxFeeIn || '0') +
+    toBig(statement.minerUncleRewardIn || '0');
   const hasPrice = toBig(statement.spotPrice) === 0n;
   const formatRaw = (b: bigint) => {
     if (b === 0n) return '-';
@@ -76,7 +63,7 @@ export const renderStatementDetailPanel = (
   };
   const beginBalRaw = toBig(statement.begBal);
   const endBalRaw = toBig(statement.endBal);
-  const isReconciled = !statement.correctingReasons;
+  const isReconciled = statement.calcs?.reconciled ?? false;
 
   type AddressLike = { address?: number[] } | string | null | undefined;
   const displayAddress8 = (addr: AddressLike): string => {

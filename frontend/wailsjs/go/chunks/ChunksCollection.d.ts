@@ -9,8 +9,6 @@ export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
 export function ClearBloomsBucket():Promise<void>;
 
-export function ClearBucketsCache():Promise<void>;
-
 export function ClearIndexBucket():Promise<void>;
 
 export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;

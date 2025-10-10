@@ -10,10 +10,6 @@ export function ClearBloomsBucket() {
   return window['go']['chunks']['ChunksCollection']['ClearBloomsBucket']();
 }
 
-export function ClearBucketsCache() {
-  return window['go']['chunks']['ChunksCollection']['ClearBucketsCache']();
-}
-
 export function ClearIndexBucket() {
   return window['go']['chunks']['ChunksCollection']['ClearIndexBucket']();
 }

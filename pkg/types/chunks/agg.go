@@ -26,37 +26,6 @@ func parseRangeString(rangeStr string) (first, last uint64, err error) {
 	return first, last, nil
 }
 
-func (c *ChunksCollection) initializeBucketsCache() {
-	c.bucketsMutex.Lock()
-	defer c.bucketsMutex.Unlock()
-
-	c.bucketsCache = &ChunksBuckets{
-		NBloomsBuckets:      make([]Bucket, 0),
-		FileSizeBuckets:     make([]Bucket, 0),
-		NAddressesBuckets:   make([]Bucket, 0),
-		NAppearancesBuckets: make([]Bucket, 0),
-		NBloomsStats:        BucketStats{},
-		FileSizeStats:       BucketStats{},
-		NAddressesStats:     BucketStats{},
-		NAppearancesStats:   BucketStats{},
-		GridInfo: GridInfo{
-			Size:        100000, // 100k blocks per bucket
-			Rows:        0,
-			Columns:     20,
-			BucketCount: 0,
-			MaxBlock:    0,
-		},
-	}
-}
-
-// ClearBucketsCache clears the cached buckets data
-// TODO: Integrate this with the reload/refresh mechanism when stores are cleared
-func (c *ChunksCollection) ClearBucketsCache() {
-	c.bucketsMutex.Lock()
-	defer c.bucketsMutex.Unlock()
-	c.initializeBucketsCache()
-}
-
 // ClearBloomsBucket clears the blooms facet bucket cache data
 func (c *ChunksCollection) ClearBloomsBucket() {
 	c.bloomsMutex.Lock()

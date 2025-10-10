@@ -47,16 +47,11 @@ type ChunksCollection struct {
 	indexBucket  *IndexBucket
 	bloomsMutex  sync.RWMutex // Dedicated mutex for BLOOMS cache
 	indexMutex   sync.RWMutex // Dedicated mutex for INDEX cache
-
-	// Legacy cache - will be removed after migration
-	bucketsCache *ChunksBuckets
-	bucketsMutex sync.RWMutex
 }
 
 func NewChunksCollection(payload *types.Payload) *ChunksCollection {
 	c := &ChunksCollection{}
 	c.ResetSummary()
-	c.initializeBucketsCache() // Keep legacy cache for now
 	c.initializeFacets(payload)
 	return c
 }
@@ -183,8 +178,10 @@ func (c *ChunksCollection) Reset(dataFacet types.DataFacet) {
 		c.statsFacet.GetStore().Reset()
 	case ChunksIndex:
 		c.indexFacet.GetStore().Reset()
+		c.ClearIndexBucket()
 	case ChunksBlooms:
 		c.bloomsFacet.GetStore().Reset()
+		c.ClearBloomsBucket()
 	case ChunksManifest:
 		c.manifestFacet.GetStore().Reset()
 	default:

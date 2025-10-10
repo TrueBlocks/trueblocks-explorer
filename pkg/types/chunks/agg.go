@@ -26,6 +26,49 @@ func parseRangeString(rangeStr string) (first, last uint64, err error) {
 	return first, last, nil
 }
 
+// calculateBucketStatsAndColors computes statistics and assigns color values for a slice of buckets.
+// This function modifies the ColorValue field of each bucket in-place and returns the calculated statistics.
+// Color values are calculated as the deviation from average: (value - average) / average
+func calculateBucketStatsAndColors(buckets []Bucket) BucketStats {
+	if len(buckets) == 0 {
+		return BucketStats{}
+	}
+
+	var total, min, max float64
+	min = buckets[0].Total
+
+	// First pass: calculate total, min, and max
+	for _, bucket := range buckets {
+		total += bucket.Total
+		if bucket.Total < min {
+			min = bucket.Total
+		}
+		if bucket.Total > max {
+			max = bucket.Total
+		}
+	}
+
+	// Calculate average
+	avg := total / float64(len(buckets))
+
+	// Second pass: assign color values based on deviation from average
+	for i := range buckets {
+		if avg > 0 {
+			buckets[i].ColorValue = (buckets[i].Total - avg) / avg
+		} else {
+			buckets[i].ColorValue = 0
+		}
+	}
+
+	return BucketStats{
+		Total:   total,
+		Average: avg,
+		Min:     min,
+		Max:     max,
+		Count:   len(buckets),
+	}
+}
+
 // ClearBloomsBucket clears the blooms facet bucket cache data
 func (c *ChunksCollection) ClearBloomsBucket() {
 	c.bloomsMutex.Lock()

@@ -146,90 +146,18 @@ func (c *ChunksCollection) finalizeIndexBucketsStats() {
 		return
 	}
 
-	// Calculate stats for nAddresses
+	// Calculate stats and color values for nAddresses
 	if len(c.indexBucket.NAddressesBuckets) > 0 {
-		var total, min, max float64
-		min = c.indexBucket.NAddressesBuckets[0].Total
-		for i, bucket := range c.indexBucket.NAddressesBuckets {
-			total += bucket.Total
-			if bucket.Total < min {
-				min = bucket.Total
-			}
-			if bucket.Total > max {
-				max = bucket.Total
-			}
-			// Calculate color values based on deviation from average
-			if i == len(c.indexBucket.NAddressesBuckets)-1 { // Last iteration
-				avg := total / float64(len(c.indexBucket.NAddressesBuckets))
-				for j := range c.indexBucket.NAddressesBuckets {
-					c.indexBucket.NAddressesBuckets[j].ColorValue = (c.indexBucket.NAddressesBuckets[j].Total - avg) / avg
-				}
-				c.indexBucket.NAddressesStats = BucketStats{
-					Total:   total,
-					Average: avg,
-					Min:     min,
-					Max:     max,
-					Count:   len(c.indexBucket.NAddressesBuckets),
-				}
-			}
-		}
+		c.indexBucket.NAddressesStats = calculateBucketStatsAndColors(c.indexBucket.NAddressesBuckets)
 	}
 
-	// Calculate stats for nAppearances
+	// Calculate stats and color values for nAppearances
 	if len(c.indexBucket.NAppearancesBuckets) > 0 {
-		var total, min, max float64
-		min = c.indexBucket.NAppearancesBuckets[0].Total
-		for i, bucket := range c.indexBucket.NAppearancesBuckets {
-			total += bucket.Total
-			if bucket.Total < min {
-				min = bucket.Total
-			}
-			if bucket.Total > max {
-				max = bucket.Total
-			}
-			// Calculate color values based on deviation from average
-			if i == len(c.indexBucket.NAppearancesBuckets)-1 { // Last iteration
-				avg := total / float64(len(c.indexBucket.NAppearancesBuckets))
-				for j := range c.indexBucket.NAppearancesBuckets {
-					c.indexBucket.NAppearancesBuckets[j].ColorValue = (c.indexBucket.NAppearancesBuckets[j].Total - avg) / avg
-				}
-				c.indexBucket.NAppearancesStats = BucketStats{
-					Total:   total,
-					Average: avg,
-					Min:     min,
-					Max:     max,
-					Count:   len(c.indexBucket.NAppearancesBuckets),
-				}
-			}
-		}
+		c.indexBucket.NAppearancesStats = calculateBucketStatsAndColors(c.indexBucket.NAppearancesBuckets)
 	}
 
-	// Calculate stats for fileSize
+	// Calculate stats and color values for fileSize
 	if len(c.indexBucket.FileSizeBuckets) > 0 {
-		var total, min, max float64
-		min = c.indexBucket.FileSizeBuckets[0].Total
-		for i, bucket := range c.indexBucket.FileSizeBuckets {
-			total += bucket.Total
-			if bucket.Total < min {
-				min = bucket.Total
-			}
-			if bucket.Total > max {
-				max = bucket.Total
-			}
-			// Calculate color values based on deviation from average
-			if i == len(c.indexBucket.FileSizeBuckets)-1 { // Last iteration
-				avg := total / float64(len(c.indexBucket.FileSizeBuckets))
-				for j := range c.indexBucket.FileSizeBuckets {
-					c.indexBucket.FileSizeBuckets[j].ColorValue = (c.indexBucket.FileSizeBuckets[j].Total - avg) / avg
-				}
-				c.indexBucket.FileSizeStats = BucketStats{
-					Total:   total,
-					Average: avg,
-					Min:     min,
-					Max:     max,
-					Count:   len(c.indexBucket.FileSizeBuckets),
-				}
-			}
-		}
+		c.indexBucket.FileSizeStats = calculateBucketStatsAndColors(c.indexBucket.FileSizeBuckets)
 	}
 }

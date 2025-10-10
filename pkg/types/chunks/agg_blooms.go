@@ -106,61 +106,13 @@ func (c *ChunksCollection) finalizeBloomsBucketsStats() {
 		return
 	}
 
-	// Calculate stats for nBlooms
+	// Calculate stats and color values for nBlooms
 	if len(c.bloomsBucket.NBloomsBuckets) > 0 {
-		var total, min, max float64
-		min = c.bloomsBucket.NBloomsBuckets[0].Total
-		for i, bucket := range c.bloomsBucket.NBloomsBuckets {
-			total += bucket.Total
-			if bucket.Total < min {
-				min = bucket.Total
-			}
-			if bucket.Total > max {
-				max = bucket.Total
-			}
-			// Calculate color values based on deviation from average
-			if i == len(c.bloomsBucket.NBloomsBuckets)-1 { // Last iteration
-				avg := total / float64(len(c.bloomsBucket.NBloomsBuckets))
-				for j := range c.bloomsBucket.NBloomsBuckets {
-					c.bloomsBucket.NBloomsBuckets[j].ColorValue = (c.bloomsBucket.NBloomsBuckets[j].Total - avg) / avg
-				}
-				c.bloomsBucket.NBloomsStats = BucketStats{
-					Total:   total,
-					Average: avg,
-					Min:     min,
-					Max:     max,
-					Count:   len(c.bloomsBucket.NBloomsBuckets),
-				}
-			}
-		}
+		c.bloomsBucket.NBloomsStats = calculateBucketStatsAndColors(c.bloomsBucket.NBloomsBuckets)
 	}
 
-	// Calculate stats for fileSize
+	// Calculate stats and color values for fileSize
 	if len(c.bloomsBucket.FileSizeBuckets) > 0 {
-		var total, min, max float64
-		min = c.bloomsBucket.FileSizeBuckets[0].Total
-		for i, bucket := range c.bloomsBucket.FileSizeBuckets {
-			total += bucket.Total
-			if bucket.Total < min {
-				min = bucket.Total
-			}
-			if bucket.Total > max {
-				max = bucket.Total
-			}
-			// Calculate color values based on deviation from average
-			if i == len(c.bloomsBucket.FileSizeBuckets)-1 { // Last iteration
-				avg := total / float64(len(c.bloomsBucket.FileSizeBuckets))
-				for j := range c.bloomsBucket.FileSizeBuckets {
-					c.bloomsBucket.FileSizeBuckets[j].ColorValue = (c.bloomsBucket.FileSizeBuckets[j].Total - avg) / avg
-				}
-				c.bloomsBucket.FileSizeStats = BucketStats{
-					Total:   total,
-					Average: avg,
-					Min:     min,
-					Max:     max,
-					Count:   len(c.bloomsBucket.FileSizeBuckets),
-				}
-			}
-		}
+		c.bloomsBucket.FileSizeStats = calculateBucketStatsAndColors(c.bloomsBucket.FileSizeBuckets)
 	}
 }

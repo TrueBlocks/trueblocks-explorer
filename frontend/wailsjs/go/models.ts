@@ -95,6 +95,112 @@ export namespace base {
 
 export namespace chunks {
 	
+	export class Bucket {
+	    bucketIndex: number;
+	    startBlock: number;
+	    endBlock: number;
+	    total: number;
+	    colorValue: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Bucket(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bucketIndex = source["bucketIndex"];
+	        this.startBlock = source["startBlock"];
+	        this.endBlock = source["endBlock"];
+	        this.total = source["total"];
+	        this.colorValue = source["colorValue"];
+	    }
+	}
+	export class BucketStats {
+	    total: number;
+	    average: number;
+	    min: number;
+	    max: number;
+	    count: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new BucketStats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.total = source["total"];
+	        this.average = source["average"];
+	        this.min = source["min"];
+	        this.max = source["max"];
+	        this.count = source["count"];
+	    }
+	}
+	export class GridInfo {
+	    rows: number;
+	    columns: number;
+	    maxBlock: number;
+	    size: number;
+	    bucketCount: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new GridInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.rows = source["rows"];
+	        this.columns = source["columns"];
+	        this.maxBlock = source["maxBlock"];
+	        this.size = source["size"];
+	        this.bucketCount = source["bucketCount"];
+	    }
+	}
+	export class ChunksBuckets {
+	    nBloomsBuckets: Bucket[];
+	    fileSizeBuckets: Bucket[];
+	    nAddressesBuckets: Bucket[];
+	    nAppearancesBuckets: Bucket[];
+	    nBloomsStats: BucketStats;
+	    fileSizeStats: BucketStats;
+	    nAddressesStats: BucketStats;
+	    nAppearancesStats: BucketStats;
+	    gridInfo: GridInfo;
+	
+	    static createFrom(source: any = {}) {
+	        return new ChunksBuckets(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.nBloomsBuckets = this.convertValues(source["nBloomsBuckets"], Bucket);
+	        this.fileSizeBuckets = this.convertValues(source["fileSizeBuckets"], Bucket);
+	        this.nAddressesBuckets = this.convertValues(source["nAddressesBuckets"], Bucket);
+	        this.nAppearancesBuckets = this.convertValues(source["nAppearancesBuckets"], Bucket);
+	        this.nBloomsStats = this.convertValues(source["nBloomsStats"], BucketStats);
+	        this.fileSizeStats = this.convertValues(source["fileSizeStats"], BucketStats);
+	        this.nAddressesStats = this.convertValues(source["nAddressesStats"], BucketStats);
+	        this.nAppearancesStats = this.convertValues(source["nAppearancesStats"], BucketStats);
+	        this.gridInfo = this.convertValues(source["gridInfo"], GridInfo);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ChunksPage {
 	    facet: types.DataFacet;
 	    blooms: types.ChunkBloom[];
@@ -880,6 +986,7 @@ export namespace preferences {
 	    debugCollapsed: boolean;
 	    recentProjects: string[];
 	    silencedDialogs: Record<string, boolean>;
+	    chunksMetrics?: Record<string, string>;
 	    bounds?: Bounds;
 	
 	    static createFrom(source: any = {}) {
@@ -902,6 +1009,7 @@ export namespace preferences {
 	        this.debugCollapsed = source["debugCollapsed"];
 	        this.recentProjects = source["recentProjects"];
 	        this.silencedDialogs = source["silencedDialogs"];
+	        this.chunksMetrics = source["chunksMetrics"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
 	    }
 	

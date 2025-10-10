@@ -87,7 +87,11 @@ export function GetAvailableSkins():Promise<Array<skin.SkinMetadata>>;
 
 export function GetChainList():Promise<utils.ChainList>;
 
+export function GetChunksBuckets(arg1:types.Payload):Promise<chunks.ChunksBuckets>;
+
 export function GetChunksConfig(arg1:types.Payload):Promise<types.ViewConfig>;
+
+export function GetChunksMetric(arg1:string):Promise<string>;
 
 export function GetChunksPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<chunks.ChunksPage>;
 
@@ -262,6 +266,8 @@ export function SetAppPreferences(arg1:preferences.AppPreferences):Promise<void>
 export function SetChain(arg1:preferences.Chain):Promise<void>;
 
 export function SetChromeCollapsed(arg1:boolean):Promise<void>;
+
+export function SetChunksMetric(arg1:string,arg2:string):Promise<void>;
 
 export function SetDebugCollapsed(arg1:boolean):Promise<void>;
 

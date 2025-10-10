@@ -134,8 +134,16 @@ export function GetChainList() {
   return window['go']['app']['App']['GetChainList']();
 }
 
+export function GetChunksBuckets(arg1) {
+  return window['go']['app']['App']['GetChunksBuckets'](arg1);
+}
+
 export function GetChunksConfig(arg1) {
   return window['go']['app']['App']['GetChunksConfig'](arg1);
+}
+
+export function GetChunksMetric(arg1) {
+  return window['go']['app']['App']['GetChunksMetric'](arg1);
 }
 
 export function GetChunksPage(arg1, arg2, arg3, arg4, arg5) {
@@ -484,6 +492,10 @@ export function SetChain(arg1) {
 
 export function SetChromeCollapsed(arg1) {
   return window['go']['app']['App']['SetChromeCollapsed'](arg1);
+}
+
+export function SetChunksMetric(arg1, arg2) {
+  return window['go']['app']['App']['SetChunksMetric'](arg1, arg2);
 }
 
 export function SetDebugCollapsed(arg1) {

@@ -41,11 +41,22 @@ type ChunksCollection struct {
 	manifestFacet *facets.Facet[Manifest]
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
+
+	// Facet-specific bucket caches for heat map visualization
+	bloomsBucket *BloomsBucket
+	indexBucket  *IndexBucket
+	bloomsMutex  sync.RWMutex // Dedicated mutex for BLOOMS cache
+	indexMutex   sync.RWMutex // Dedicated mutex for INDEX cache
+
+	// Legacy cache - will be removed after migration
+	bucketsCache *ChunksBuckets
+	bucketsMutex sync.RWMutex
 }
 
 func NewChunksCollection(payload *types.Payload) *ChunksCollection {
 	c := &ChunksCollection{}
 	c.ResetSummary()
+	c.initializeBucketsCache() // Keep legacy cache for now
 	c.initializeFacets(payload)
 	return c
 }

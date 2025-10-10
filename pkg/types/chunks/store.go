@@ -75,6 +75,7 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 
 		processFunc := func(item interface{}) *Bloom {
 			if it, ok := item.(*Bloom); ok {
+				c.updateBloomsBucket(it)
 				return it
 			}
 			return nil
@@ -131,6 +132,7 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 
 		processFunc := func(item interface{}) *Index {
 			if it, ok := item.(*Index); ok {
+				c.updateIndexBucket(it)
 				return it
 			}
 			return nil

@@ -232,3 +232,28 @@ func (a *App) SetChromeCollapsed(collapse bool) {
 		msgs.EmitError("failed to save chrome collapsed preference", err)
 	}
 }
+
+// GetChunksMetric returns the selected metric for a specific chunks facet
+func (a *App) GetChunksMetric(facet string) string {
+	a.prefsMu.RLock()
+	defer a.prefsMu.RUnlock()
+
+	if a.Preferences.App.ChunksMetrics == nil {
+		return ""
+	}
+	return a.Preferences.App.ChunksMetrics[facet]
+}
+
+// SetChunksMetric updates the selected metric for a specific chunks facet
+func (a *App) SetChunksMetric(facet string, metric string) {
+	a.prefsMu.Lock()
+	defer a.prefsMu.Unlock()
+
+	if a.Preferences.App.ChunksMetrics == nil {
+		a.Preferences.App.ChunksMetrics = make(map[string]string)
+	}
+	a.Preferences.App.ChunksMetrics[facet] = metric
+	if err := preferences.SetAppPreferences(&a.Preferences.App); err != nil {
+		msgs.EmitError("failed to save chunks metric preference", err)
+	}
+}

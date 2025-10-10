@@ -46,5 +46,11 @@ func (a *App) GetChunksConfig(payload types.Payload) (*types.ViewConfig, error) 
 	return collection.GetConfig()
 }
 
+// GetChunksBuckets returns bucket visualization data for chunks
+func (a *App) GetChunksBuckets(payload *types.Payload) (*chunks.ChunksBuckets, error) {
+	collection := chunks.GetChunksCollection(payload)
+	return collection.GetChunksBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

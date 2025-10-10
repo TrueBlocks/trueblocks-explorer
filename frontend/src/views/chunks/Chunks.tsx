@@ -32,6 +32,7 @@ import { msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { ViewRoute, assertRouteConsistency } from '../routes';
+import { renderers } from './renderers';
 
 const ROUTE: ViewRoute = 'chunks';
 export const Chunks = () => {
@@ -78,8 +79,8 @@ export const Chunks = () => {
         sort,
         filter,
       );
-      setPageData(result);
-      setTotalItems(result.totalItems || 0);
+      setPageData(result as chunks.ChunksPage);
+      setTotalItems(result?.totalItems || 0);
     } catch (err: unknown) {
       handleError(err, `Failed to fetch ${getCurrentDataFacet()}`);
     }
@@ -211,7 +212,7 @@ export const Chunks = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers),
     [viewConfig, getCurrentDataFacet],
   );
 

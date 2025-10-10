@@ -37,21 +37,22 @@ func (b *Bounds) IsValid() bool {
 }
 
 type AppPreferences struct {
-	Version         string          `json:"version"`
-	Name            string          `json:"name"`
-	LastTheme       string          `json:"lastTheme"`
-	LastSkin        string          `json:"lastSkin"`
-	LastFormat      string          `json:"lastFormat"`
-	LastLanguage    string          `json:"lastLanguage"`
-	LastProject     string          `json:"lastProject"`
-	HelpCollapsed   bool            `json:"helpCollapsed"`
-	MenuCollapsed   bool            `json:"menuCollapsed"`
-	ChromeCollapsed bool            `json:"chromeCollapsed"`
-	DetailCollapsed bool            `json:"detailCollapsed"`
-	DebugCollapsed  bool            `json:"debugCollapsed"`
-	RecentProjects  []string        `json:"recentProjects"`
-	SilencedDialogs map[string]bool `json:"silencedDialogs"`
-	Bounds          Bounds          `json:"bounds,omitempty"`
+	Version         string            `json:"version"`
+	Name            string            `json:"name"`
+	LastTheme       string            `json:"lastTheme"`
+	LastSkin        string            `json:"lastSkin"`
+	LastFormat      string            `json:"lastFormat"`
+	LastLanguage    string            `json:"lastLanguage"`
+	LastProject     string            `json:"lastProject"`
+	HelpCollapsed   bool              `json:"helpCollapsed"`
+	MenuCollapsed   bool              `json:"menuCollapsed"`
+	ChromeCollapsed bool              `json:"chromeCollapsed"`
+	DetailCollapsed bool              `json:"detailCollapsed"`
+	DebugCollapsed  bool              `json:"debugCollapsed"`
+	RecentProjects  []string          `json:"recentProjects"`
+	SilencedDialogs map[string]bool   `json:"silencedDialogs"`
+	ChunksMetrics   map[string]string `json:"chunksMetrics,omitempty"`
+	Bounds          Bounds            `json:"bounds,omitempty"`
 }
 
 func (p *AppPreferences) String() string {
@@ -74,6 +75,7 @@ func NewAppPreferences() *AppPreferences {
 		DebugCollapsed:  true,
 		RecentProjects:  []string{},
 		SilencedDialogs: make(map[string]bool),
+		ChunksMetrics:   make(map[string]string),
 		Bounds:          NewBounds(),
 	}
 }

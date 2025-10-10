@@ -77,10 +77,10 @@ func getBloomsFields() []types.FieldConfig {
 		// EXISTING_CODE
 		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
 		{Section: "Identity", Key: "magic", NoTable: true},
-		{Section: "Identity", Key: "hash", Formatter: "hash", Sortable: true},
+		{Section: "Identity", Key: "hash", Formatter: "hash", NoTable: true, Sortable: true},
 		{Section: "Counts", Key: "nBlooms", Sortable: true},
-		{Section: "Counts", Key: "nInserted", Sortable: true},
-		{Section: "Sizes", Key: "size", Sortable: true},
+		// {Section: "Counts", Key: "nInserted", Sortable: true},
+		{Section: "Sizes", Key: "calcs.fileSize", Sortable: true},
 		{Section: "Sizes", Key: "byteWidth", Formatter: "number", Sortable: true},
 		// EXISTING_CODE
 	}
@@ -93,7 +93,7 @@ func getIndexFields() []types.FieldConfig {
 		// EXISTING_CODE
 		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
 		{Section: "Identity", Key: "magic", NoTable: true},
-		{Section: "Identity", Key: "hash", Formatter: "hash", Sortable: true},
+		{Section: "Identity", Key: "hash", Formatter: "hash", NoTable: true, Sortable: true},
 		{Section: "Counts", Key: "nAddresses", Sortable: true},
 		{Section: "Counts", Key: "nAppearances", Sortable: true},
 		{Section: "Sizes", Key: "size", Sortable: true},
@@ -119,17 +119,17 @@ func getStatsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Section: "Range", Key: "range", Formatter: "blkrange", Sortable: true},
-		{Section: "Counts", Key: "nAddrs", Sortable: true},
-		{Section: "Counts", Key: "nApps", Sortable: true},
-		{Section: "Counts", Key: "nBlocks", Sortable: true},
-		{Section: "Counts", Key: "nBlooms", Sortable: true},
-		{Section: "Sizes", Key: "recWid", Formatter: "number", Sortable: true},
-		{Section: "Sizes", Key: "bloomSz", Sortable: true},
-		{Section: "Sizes", Key: "chunkSz", Sortable: true},
 		{Section: "Efficiency", Key: "ratio", Formatter: "float64", Sortable: true},
 		{Section: "Efficiency", Key: "addrsPerBlock", Sortable: true},
 		{Section: "Efficiency", Key: "appsPerBlock", Sortable: true},
 		{Section: "Efficiency", Key: "appsPerAddr", Sortable: true},
+		{Section: "Sizes", Key: "bloomSz", NoTable: true, Sortable: true},
+		{Section: "Sizes", Key: "chunkSz", NoTable: true, Sortable: true},
+		{Section: "Counts", Key: "nAddrs", NoTable: true, Sortable: true},
+		{Section: "Counts", Key: "nApps", NoTable: true, Sortable: true},
+		{Section: "Counts", Key: "nBlocks", NoTable: true, Sortable: true},
+		{Section: "Counts", Key: "nBlooms", NoTable: true, Sortable: true},
+		{Section: "Sizes", Key: "recWid", Formatter: "number", NoTable: true, Sortable: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

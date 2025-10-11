@@ -1,9 +1,16 @@
+import { useCallback } from 'react';
+
+import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
+import { HeatmapPanel } from '@components';
+import { usePayload } from '@hooks';
 import { chunks, types } from '@models';
 import { formatNumericValue } from '@utils';
 
-import { Aggregation, HeatmapPanel } from './HeatmapPanel';
+import { Aggregation } from './';
 
 export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
+  const createPayload = usePayload();
+
   const indexConfig: Aggregation = {
     facetName: 'INDEX',
     dataFacet: types.DataFacet.INDEX,
@@ -37,5 +44,36 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
     ],
   };
 
-  return <HeatmapPanel agData={indexConfig} row={row} />;
+  const fetchBuckets = useCallback(async () => {
+    const payload = createPayload(indexConfig.dataFacet);
+    const result = await GetChunksBuckets(payload);
+    if (!result) {
+      throw new Error('No data returned from API');
+    }
+    return result;
+  }, [createPayload, indexConfig.dataFacet]);
+
+  const getMetric = useCallback(
+    async (facetName: string) => {
+      const saved = await GetChunksMetric(facetName);
+      const validMetric = indexConfig.metrics.find((m) => m.key === saved);
+      return validMetric ? validMetric.key : indexConfig.defaultMetric;
+    },
+    [indexConfig.metrics, indexConfig.defaultMetric],
+  );
+
+  const setMetric = useCallback(async (facetName: string, metric: string) => {
+    await SetChunksMetric(facetName, metric);
+  }, []);
+
+  return (
+    <HeatmapPanel
+      agData={indexConfig}
+      row={row}
+      fetchBuckets={fetchBuckets}
+      getMetric={getMetric}
+      setMetric={setMetric}
+      eventCollection="chunks"
+    />
+  );
 };

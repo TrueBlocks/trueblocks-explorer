@@ -1,32 +1,40 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { HeatmapPanel } from '@components';
+import { BarchartPanel } from '@components';
 import { usePayload } from '@hooks';
 import { chunks, types } from '@models';
 import { formatNumericValue } from '@utils';
 
 import { Aggregation } from './';
 
-export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
+export const StatsPanelRenderer = (_row: Record<string, unknown> | null) => {
   const createPayload = usePayload();
 
-  const bloomsConfig: Aggregation = {
-    facetName: 'blooms',
-    dataFacet: types.DataFacet.BLOOMS,
-    defaultMetric: 'nBlooms',
+  const statsConfig: Aggregation = {
+    facetName: 'stats',
+    dataFacet: types.DataFacet.STATS,
+    defaultMetric: 'nAddrs',
     metrics: [
       {
-        key: 'nBlooms',
-        label: 'Number of Blooms',
-        bucketsField: 'nBloomsBuckets' as keyof chunks.ChunksBuckets,
-        statsField: 'nBloomsStats' as keyof chunks.ChunksBuckets,
+        key: 'nAddrs',
+        label: 'Number of Addresses',
+        bucketsField: 'nAddressesBuckets' as keyof chunks.ChunksBuckets,
+        statsField: 'nAddressesStats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
-        key: 'fileSize',
-        label: 'File Size',
+        key: 'nApps',
+        label: 'Number of Appearances',
+        bucketsField: 'nAppearancesBuckets' as keyof chunks.ChunksBuckets,
+        statsField: 'nAppearancesStats' as keyof chunks.ChunksBuckets,
+        formatValue: (value: number) => formatNumericValue(Math.round(value)),
+        bytes: false,
+      },
+      {
+        key: 'chunkSz',
+        label: 'Chunk Size',
         bucketsField: 'fileSizeBuckets' as keyof chunks.ChunksBuckets,
         statsField: 'fileSizeStats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) =>
@@ -37,21 +45,21 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
   };
 
   const fetchBuckets = useCallback(async () => {
-    const payload = createPayload(bloomsConfig.dataFacet);
+    const payload = createPayload(statsConfig.dataFacet);
     const result = await GetChunksBuckets(payload);
     if (!result) {
       throw new Error('No data returned from API');
     }
     return result;
-  }, [createPayload, bloomsConfig.dataFacet]);
+  }, [createPayload, statsConfig.dataFacet]);
 
   const getMetric = useCallback(
     async (facetName: string) => {
       const saved = await GetChunksMetric(facetName);
-      const validMetric = bloomsConfig.metrics.find((m) => m.key === saved);
-      return validMetric ? validMetric.key : bloomsConfig.defaultMetric;
+      const validMetric = statsConfig.metrics.find((m) => m.key === saved);
+      return validMetric ? validMetric.key : statsConfig.defaultMetric;
     },
-    [bloomsConfig.metrics, bloomsConfig.defaultMetric],
+    [statsConfig.metrics, statsConfig.defaultMetric],
   );
 
   const setMetric = useCallback(async (facetName: string, metric: string) => {
@@ -59,9 +67,9 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
   }, []);
 
   return (
-    <HeatmapPanel
-      agData={bloomsConfig}
-      row={row}
+    <BarchartPanel
+      agData={statsConfig}
+      row={null}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}
       setMetric={setMetric}

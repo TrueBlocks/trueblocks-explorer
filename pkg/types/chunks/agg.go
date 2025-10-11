@@ -26,6 +26,59 @@ func parseRangeString(rangeStr string) (first, last uint64, err error) {
 	return first, last, nil
 }
 
+// ensureBucketsExist ensures that the bucket slice has at least targetIndex+1 buckets
+func ensureBucketsExist(buckets *[]Bucket, targetIndex int, size uint64) {
+	for len(*buckets) <= targetIndex {
+		newBucketIndex := len(*buckets)
+		startBlock := uint64(newBucketIndex) * size
+		endBlock := uint64(newBucketIndex+1)*size - 1
+
+		newBucket := Bucket{
+			BucketIndex: newBucketIndex,
+			StartBlock:  startBlock,
+			EndBlock:    endBlock,
+			Total:       0,
+			ColorValue:  0,
+		}
+		*buckets = append(*buckets, newBucket)
+	}
+}
+
+// distributeToBuckets distributes a value across buckets using linear interpolation
+func distributeToBuckets(buckets *[]Bucket, firstBlock, lastBlock uint64, value float64, size uint64) {
+	rangeSize := lastBlock - firstBlock + 1
+	firstBucketIndex := int(firstBlock / size)
+	lastBucketIndex := int(lastBlock / size)
+
+	// Distribute data across all affected buckets using linear interpolation
+	for bucketIndex := firstBucketIndex; bucketIndex <= lastBucketIndex; bucketIndex++ {
+		bucketStartBlock := uint64(bucketIndex) * size
+		bucketEndBlock := uint64(bucketIndex+1)*size - 1
+
+		// Calculate the overlap between the data range and this bucket
+		overlapStart := max(firstBlock, bucketStartBlock)
+		overlapEnd := min(lastBlock, bucketEndBlock)
+		overlapSize := overlapEnd - overlapStart + 1
+
+		// Calculate the proportion of the data that belongs to this bucket
+		proportion := float64(overlapSize) / float64(rangeSize)
+
+		// Add the proportional contribution to the bucket
+		(*buckets)[bucketIndex].Total += value * proportion
+	}
+}
+
+// updateGridInfo updates grid information based on current bucket state
+func updateGridInfo(gridInfo *GridInfo, maxBuckets int, lastBlock uint64) {
+	if maxBuckets > gridInfo.BucketCount {
+		gridInfo.BucketCount = maxBuckets
+	}
+	if lastBlock > gridInfo.MaxBlock {
+		gridInfo.MaxBlock = lastBlock
+	}
+	gridInfo.Rows = (gridInfo.BucketCount + gridInfo.Columns - 1) / gridInfo.Columns
+}
+
 // calculateBucketStatsAndColors computes statistics and assigns color values for a slice of buckets.
 // This function modifies the ColorValue field of each bucket in-place and returns the calculated statistics.
 // Color values are calculated as the deviation from average: (value - average) / average
@@ -67,20 +120,4 @@ func calculateBucketStatsAndColors(buckets []Bucket) BucketStats {
 		Max:     max,
 		Count:   len(buckets),
 	}
-}
-
-// ClearBloomsBucket clears the blooms facet bucket cache data
-func (c *ChunksCollection) ClearBloomsBucket() {
-	c.bloomsMutex.Lock()
-	defer c.bloomsMutex.Unlock()
-
-	c.bloomsBucket = nil
-}
-
-// ClearIndexBucket clears the index facet bucket cache data
-func (c *ChunksCollection) ClearIndexBucket() {
-	c.indexMutex.Lock()
-	defer c.indexMutex.Unlock()
-
-	c.indexBucket = nil
 }

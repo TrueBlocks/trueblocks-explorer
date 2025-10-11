@@ -44,81 +44,19 @@ func (c *ChunksCollection) updateIndexBucket(index *Index) {
 	}
 
 	size := c.indexBucket.GridInfo.Size
-	rangeSize := lastBlock - firstBlock + 1
 
 	// Calculate which buckets this index spans
-	firstBucketIndex := int(firstBlock / size)
 	lastBucketIndex := int(lastBlock / size)
 
-	// Helper function to ensure we have enough buckets for all types
-	ensureBucketsExist := func(targetIndex int) {
-		for len(c.indexBucket.FileSizeBuckets) <= targetIndex {
-			newBucketIndex := len(c.indexBucket.FileSizeBuckets)
-			startBlock := uint64(newBucketIndex) * size
-			endBlock := uint64(newBucketIndex+1)*size - 1
+	// Ensure we have enough buckets for all three types
+	ensureBucketsExist(&c.indexBucket.FileSizeBuckets, lastBucketIndex, size)
+	ensureBucketsExist(&c.indexBucket.NAddressesBuckets, lastBucketIndex, size)
+	ensureBucketsExist(&c.indexBucket.NAppearancesBuckets, lastBucketIndex, size)
 
-			newBucket := Bucket{
-				BucketIndex: newBucketIndex,
-				StartBlock:  startBlock,
-				EndBlock:    endBlock,
-				Total:       0,
-				ColorValue:  0,
-			}
-			c.indexBucket.FileSizeBuckets = append(c.indexBucket.FileSizeBuckets, newBucket)
-		}
-
-		for len(c.indexBucket.NAddressesBuckets) <= targetIndex {
-			newBucketIndex := len(c.indexBucket.NAddressesBuckets)
-			startBlock := uint64(newBucketIndex) * size
-			endBlock := uint64(newBucketIndex+1)*size - 1
-
-			newBucket := Bucket{
-				BucketIndex: newBucketIndex,
-				StartBlock:  startBlock,
-				EndBlock:    endBlock,
-				Total:       0,
-				ColorValue:  0,
-			}
-			c.indexBucket.NAddressesBuckets = append(c.indexBucket.NAddressesBuckets, newBucket)
-		}
-
-		for len(c.indexBucket.NAppearancesBuckets) <= targetIndex {
-			newBucketIndex := len(c.indexBucket.NAppearancesBuckets)
-			startBlock := uint64(newBucketIndex) * size
-			endBlock := uint64(newBucketIndex+1)*size - 1
-
-			newBucket := Bucket{
-				BucketIndex: newBucketIndex,
-				StartBlock:  startBlock,
-				EndBlock:    endBlock,
-				Total:       0,
-				ColorValue:  0,
-			}
-			c.indexBucket.NAppearancesBuckets = append(c.indexBucket.NAppearancesBuckets, newBucket)
-		}
-	}
-
-	// Ensure we have enough buckets for all types
-	ensureBucketsExist(lastBucketIndex)
-
-	// Distribute index data across all affected buckets using linear interpolation
-	for bucketIndex := firstBucketIndex; bucketIndex <= lastBucketIndex; bucketIndex++ {
-		bucketStartBlock := uint64(bucketIndex) * size
-		bucketEndBlock := uint64(bucketIndex+1)*size - 1
-
-		// Calculate the overlap between the index range and this bucket
-		overlapStart := max(firstBlock, bucketStartBlock)
-		overlapEnd := min(lastBlock, bucketEndBlock)
-		overlapSize := overlapEnd - overlapStart + 1
-
-		// Calculate the proportion of the index that belongs to this bucket
-		proportion := float64(overlapSize) / float64(rangeSize)
-
-		// Add the proportional contributions to the buckets
-		c.indexBucket.FileSizeBuckets[bucketIndex].Total += float64(index.FileSize) * proportion
-		c.indexBucket.NAddressesBuckets[bucketIndex].Total += float64(index.NAddresses) * proportion
-		c.indexBucket.NAppearancesBuckets[bucketIndex].Total += float64(index.NAppearances) * proportion
-	}
+	// Distribute index data across all affected buckets
+	distributeToBuckets(&c.indexBucket.FileSizeBuckets, firstBlock, lastBlock, float64(index.FileSize), size)
+	distributeToBuckets(&c.indexBucket.NAddressesBuckets, firstBlock, lastBlock, float64(index.NAddresses), size)
+	distributeToBuckets(&c.indexBucket.NAppearancesBuckets, firstBlock, lastBlock, float64(index.NAppearances), size)
 
 	// Update grid info
 	maxBuckets := len(c.indexBucket.FileSizeBuckets)
@@ -128,14 +66,7 @@ func (c *ChunksCollection) updateIndexBucket(index *Index) {
 	if len(c.indexBucket.NAppearancesBuckets) > maxBuckets {
 		maxBuckets = len(c.indexBucket.NAppearancesBuckets)
 	}
-
-	if maxBuckets > c.indexBucket.GridInfo.BucketCount {
-		c.indexBucket.GridInfo.BucketCount = maxBuckets
-	}
-	if lastBlock > c.indexBucket.GridInfo.MaxBlock {
-		c.indexBucket.GridInfo.MaxBlock = lastBlock
-	}
-	c.indexBucket.GridInfo.Rows = (c.indexBucket.GridInfo.BucketCount + c.indexBucket.GridInfo.Columns - 1) / c.indexBucket.GridInfo.Columns
+	updateGridInfo(&c.indexBucket.GridInfo, maxBuckets, lastBlock)
 }
 
 func (c *ChunksCollection) finalizeIndexBucketsStats() {
@@ -160,4 +91,12 @@ func (c *ChunksCollection) finalizeIndexBucketsStats() {
 	if len(c.indexBucket.FileSizeBuckets) > 0 {
 		c.indexBucket.FileSizeStats = calculateBucketStatsAndColors(c.indexBucket.FileSizeBuckets)
 	}
+}
+
+// ClearIndexBucket clears the index facet bucket cache data
+func (c *ChunksCollection) ClearIndexBucket() {
+	c.indexMutex.Lock()
+	defer c.indexMutex.Unlock()
+
+	c.indexBucket = nil
 }

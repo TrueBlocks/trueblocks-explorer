@@ -60,6 +60,19 @@ type IndexBucket struct {
 	GridInfo            GridInfo    `json:"gridInfo"`
 }
 
+// StatsBucket stores bucket data specifically for the STATS facet
+type StatsBucket struct {
+	NAddrsBuckets  []Bucket    `json:"nAddrsBuckets"`
+	NAppsBuckets   []Bucket    `json:"nAppsBuckets"`
+	NBlocksBuckets []Bucket    `json:"nBlocksBuckets"`
+	ChunkSzBuckets []Bucket    `json:"chunkSzBuckets"`
+	NAddrsStats    BucketStats `json:"nAddrsStats"`
+	NAppsStats     BucketStats `json:"nAppsStats"`
+	NBlocksStats   BucketStats `json:"nBlocksStats"`
+	ChunkSzStats   BucketStats `json:"chunkSzStats"`
+	GridInfo       GridInfo    `json:"gridInfo"`
+}
+
 func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuckets, error) {
 	switch payload.DataFacet {
 	case ChunksBlooms:
@@ -116,6 +129,35 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 		copy(result.NAddressesBuckets, c.indexBucket.NAddressesBuckets)
 		copy(result.NAppearancesBuckets, c.indexBucket.NAppearancesBuckets)
 		c.indexMutex.Unlock()
+
+		return result, nil
+
+	case ChunksStats:
+		// Ensure stats bucket data exists
+		if c.statsBucket == nil {
+			c.initializeStatsBucket()
+		}
+
+		// Finalize stats for stats data
+		c.finalizeStatsBucketsStats()
+
+		// Read with mutex protection
+		c.statsMutex.Lock()
+		result := &ChunksBuckets{
+			NBloomsBuckets:      []Bucket{},
+			FileSizeBuckets:     make([]Bucket, len(c.statsBucket.ChunkSzBuckets)),
+			NAddressesBuckets:   make([]Bucket, len(c.statsBucket.NAddrsBuckets)),
+			NAppearancesBuckets: make([]Bucket, len(c.statsBucket.NAppsBuckets)),
+			NBloomsStats:        BucketStats{},
+			FileSizeStats:       c.statsBucket.ChunkSzStats,
+			NAddressesStats:     c.statsBucket.NAddrsStats,
+			NAppearancesStats:   c.statsBucket.NAppsStats,
+			GridInfo:            c.statsBucket.GridInfo,
+		}
+		copy(result.FileSizeBuckets, c.statsBucket.ChunkSzBuckets)
+		copy(result.NAddressesBuckets, c.statsBucket.NAddrsBuckets)
+		copy(result.NAppearancesBuckets, c.statsBucket.NAppsBuckets)
+		c.statsMutex.Unlock()
 
 		return result, nil
 

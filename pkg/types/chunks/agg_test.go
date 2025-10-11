@@ -77,3 +77,63 @@ func TestCalculateBucketStatsAndColorsSingleBucket(t *testing.T) {
 		t.Errorf("Expected all stats to be 42.0 for single bucket, got %+v", stats)
 	}
 }
+
+func TestEnsureBucketsExist(t *testing.T) {
+	var buckets []Bucket
+	size := uint64(100000)
+
+	// Test creating buckets from empty slice
+	ensureBucketsExist(&buckets, 2, size)
+
+	if len(buckets) != 3 {
+		t.Errorf("Expected 3 buckets, got %d", len(buckets))
+	}
+
+	// Verify bucket properties
+	for i, bucket := range buckets {
+		expectedStart := uint64(i) * size
+		expectedEnd := uint64(i+1)*size - 1
+
+		if bucket.BucketIndex != i {
+			t.Errorf("Expected bucket index %d, got %d", i, bucket.BucketIndex)
+		}
+		if bucket.StartBlock != expectedStart {
+			t.Errorf("Expected start block %d, got %d", expectedStart, bucket.StartBlock)
+		}
+		if bucket.EndBlock != expectedEnd {
+			t.Errorf("Expected end block %d, got %d", expectedEnd, bucket.EndBlock)
+		}
+		if bucket.Total != 0 {
+			t.Errorf("Expected total 0, got %f", bucket.Total)
+		}
+	}
+}
+
+func TestDistributeToBuckets(t *testing.T) {
+	// Create 3 buckets for testing
+	buckets := []Bucket{
+		{BucketIndex: 0, StartBlock: 0, EndBlock: 99999, Total: 0},
+		{BucketIndex: 1, StartBlock: 100000, EndBlock: 199999, Total: 0},
+		{BucketIndex: 2, StartBlock: 200000, EndBlock: 299999, Total: 0},
+	}
+	size := uint64(100000)
+
+	// Test distribution across multiple buckets
+	// Range 50000-150000 spans bucket 0 (50%) and bucket 1 (50%)
+	distributeToBuckets(&buckets, 50000, 150000, 100.0, size)
+
+	// Bucket 0 should get 50000 blocks out of 100001 total = ~49.999%
+	// Bucket 1 should get 50001 blocks out of 100001 total = ~50.001%
+	expectedBucket0 := 100.0 * 50000.0 / 100001.0 // ~49.999
+	expectedBucket1 := 100.0 * 50001.0 / 100001.0 // ~50.001
+
+	if buckets[0].Total < expectedBucket0-0.1 || buckets[0].Total > expectedBucket0+0.1 {
+		t.Errorf("Expected bucket 0 total ~%f, got %f", expectedBucket0, buckets[0].Total)
+	}
+	if buckets[1].Total < expectedBucket1-0.1 || buckets[1].Total > expectedBucket1+0.1 {
+		t.Errorf("Expected bucket 1 total ~%f, got %f", expectedBucket1, buckets[1].Total)
+	}
+	if buckets[2].Total != 0 {
+		t.Errorf("Expected bucket 2 total 0, got %f", buckets[2].Total)
+	}
+}

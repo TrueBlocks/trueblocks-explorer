@@ -1,37 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { useEvent, usePayload } from '@hooks';
+import {
+  GenericAggregation,
+  IntensityLegend,
+  MetricSelector,
+  StatsBox,
+} from '@components';
+import { useEvent } from '@hooks';
 import {
   Alert,
   Box,
-  Select,
+  Stack,
   Text,
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { chunks, msgs, types } from '@models';
+import { chunks, msgs } from '@models';
 
-export interface Aggregation {
-  facetName: string;
-  dataFacet: types.DataFacet;
-  defaultMetric: string;
-  metrics: {
-    key: string;
-    label: string;
-    bucketsField: keyof chunks.ChunksBuckets;
-    statsField: keyof chunks.ChunksBuckets;
-    formatValue: (value: number) => string;
-    bytes: boolean;
-  }[];
-}
-
-interface HeatmapPanelProps {
-  agData: Aggregation;
+interface GenericHeatmapPanelProps {
+  agData: GenericAggregation;
   row: Record<string, unknown> | null;
+  fetchBuckets: () => Promise<chunks.ChunksBuckets>;
+  getMetric: (facetName: string) => Promise<string>;
+  setMetric: (facetName: string, metric: string) => Promise<void>;
+  eventCollection: string;
 }
 
-export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
+export const HeatmapPanel = ({
+  agData,
+  row: _row,
+  fetchBuckets,
+  getMetric,
+  setMetric,
+  eventCollection,
+}: GenericHeatmapPanelProps) => {
   const theme = useMantineTheme();
   const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,12 +41,10 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
     agData.defaultMetric,
   );
 
-  const createPayload = usePayload();
-
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
-        const saved = await GetChunksMetric(agData.facetName);
+        const saved = await getMetric(agData.facetName);
         const validMetric = agData.metrics.find((m) => m.key === saved);
         if (validMetric) {
           setSelectedMetric(validMetric.key);
@@ -54,26 +54,25 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
       }
     };
     loadSelectedMetric();
-  }, [agData.facetName, agData.metrics]);
+  }, [agData.facetName, agData.metrics, getMetric]);
 
   const handleMetricChange = useCallback(
     async (metric: string) => {
       setSelectedMetric(metric);
       try {
-        await SetChunksMetric(agData.facetName, metric);
+        await setMetric(agData.facetName, metric);
       } catch (error) {
         console.error('Failed to save metric preference:', error);
       }
     },
-    [agData.facetName],
+    [agData.facetName, setMetric],
   );
 
-  const fetchBuckets = useCallback(async () => {
+  const handleFetchBuckets = useCallback(async () => {
     setError(null);
 
     try {
-      const payload = createPayload(agData.dataFacet);
-      const result = await GetChunksBuckets(payload);
+      const result = await fetchBuckets();
       if (result) {
         setBuckets(result);
       } else {
@@ -84,38 +83,38 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
         err instanceof Error ? err.message : 'Failed to fetch buckets data';
       setError(errorMsg);
     }
-  }, [createPayload, agData.dataFacet]);
+  }, [fetchBuckets]);
 
   useEvent(
     msgs.EventType.DATA_LOADED,
     (_message: string, payload?: Record<string, unknown>) => {
-      if (payload?.collection === 'chunks') {
-        fetchBuckets();
+      if (payload?.collection === eventCollection) {
+        handleFetchBuckets();
       }
     },
   );
 
-  useEvent(msgs.EventType.ADDRESS_CHANGED, () => fetchBuckets());
-  useEvent(msgs.EventType.CHAIN_CHANGED, () => fetchBuckets());
-  useEvent(msgs.EventType.PERIOD_CHANGED, () => fetchBuckets());
+  useEvent(msgs.EventType.ADDRESS_CHANGED, () => handleFetchBuckets());
+  useEvent(msgs.EventType.CHAIN_CHANGED, () => handleFetchBuckets());
+  useEvent(msgs.EventType.PERIOD_CHANGED, () => handleFetchBuckets());
 
   useEffect(() => {
-    fetchBuckets();
-  }, [fetchBuckets]);
+    handleFetchBuckets();
+  }, [handleFetchBuckets]);
 
   const getMetricConfig = (metric: string) => {
     return agData.metrics.find((m) => m.key === metric);
   };
 
   const getMetricData = () => {
-    if (!buckets) return { curBuckets: [], curStats: null };
+    if (!buckets) return { bucketsData: [], statsData: null };
 
     const config = getMetricConfig(selectedMetric);
-    if (!config) return { curBuckets: [], curStats: null };
+    if (!config) return { bucketsData: [], statsData: null };
 
     return {
-      curBuckets: (buckets[config.bucketsField] as chunks.Bucket[]) || [],
-      curStats: buckets[config.statsField] as chunks.BucketStats,
+      bucketsData: (buckets[config.bucketsField] as chunks.Bucket[]) || [],
+      statsData: buckets[config.statsField] as chunks.BucketStats,
     };
   };
 
@@ -154,40 +153,40 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
     return <Text>Loading heat map...</Text>;
   }
 
-  const { curBuckets, curStats } = getMetricData();
+  const { bucketsData, statsData } = getMetricData();
 
-  if (!curStats || !curBuckets?.length) {
+  if (!statsData || !bucketsData?.length) {
     return <Text>No data available for heat map</Text>;
+  }
+
+  const metricConfig = getMetricConfig(selectedMetric);
+  if (!metricConfig) {
+    return (
+      <Box p="md">
+        <Alert color="orange" title="Configuration Error">
+          Invalid metric selected: {selectedMetric}
+        </Alert>
+      </Box>
+    );
   }
 
   const { columns } = buckets.gridInfo;
 
   return (
-    <Box p="md">
-      <Box mb="md">
-        <Select
-          label="Metric"
-          data={agData.metrics.map((metric) => ({
-            value: metric.key,
-            label: metric.label,
-          }))}
-          value={selectedMetric}
-          onChange={(value) => handleMetricChange(value as string)}
-          w={200}
-        />
-      </Box>
+    <Stack gap="md" p="md">
+      <MetricSelector
+        metricConfig={metricConfig}
+        metrics={agData.metrics}
+        onMetricChange={handleMetricChange}
+      />
 
-      <Box mb="md">
-        <Text size="sm" fw={500}>
-          {getMetricConfig(selectedMetric)?.label} Stats
-        </Text>
-        <Text size="xs" c="dimmed">
-          Total: {getMetricConfig(selectedMetric)?.formatValue(curStats.total)},
-          Average: {formatAverage(curStats.average)}, Min:{' '}
-          {getMetricConfig(selectedMetric)?.formatValue(curStats.min)}, Max:{' '}
-          {getMetricConfig(selectedMetric)?.formatValue(curStats.max)}
-        </Text>
-      </Box>
+      {statsData && (
+        <StatsBox
+          statsData={statsData}
+          formatNumber={formatNumber}
+          formatAverage={formatAverage}
+        />
+      )}
 
       <Box>
         <Text size="sm" fw={500} mb="sm">
@@ -211,11 +210,15 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
               ${theme.colors.gray[1]} 10px
             )`,
             width: '100%',
-            aspectRatio: `${columns} / ${Math.ceil(curBuckets.length / columns)}`,
+            aspectRatio: `${columns} / ${Math.ceil(bucketsData.length / columns)}`,
           }}
         >
-          {curBuckets.map((dataPoint) => {
-            const color = getColor(dataPoint.total, curStats.min, curStats.max);
+          {bucketsData.map((dataPoint) => {
+            const color = getColor(
+              dataPoint.total,
+              statsData.min,
+              statsData.max,
+            );
 
             return (
               <Tooltip
@@ -250,44 +253,19 @@ export const HeatmapPanel = ({ agData, row: _row }: HeatmapPanelProps) => {
 
         <Box mt="md">
           <Text size="xs" c="dimmed">
-            {formatNumber(curStats.count)} buckets,{' '}
-            {getMetricConfig(selectedMetric)?.formatValue(curStats.total)}{' '}
-            total, {formatAverage(curStats.average)} avg per{' '}
+            {formatNumber(statsData.count)} buckets,{' '}
+            {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
+            total, {formatAverage(statsData.average)} avg per{' '}
             {formatNumber(buckets.gridInfo.size)}-block range
           </Text>
         </Box>
 
-        <Box mt="md">
-          <Text size="sm" fw={500} mb="xs">
-            Intensity Legend
-          </Text>
-          <Box
-            style={{
-              width: '100%',
-              height: '20px',
-              background: `linear-gradient(to right, ${theme.colors.blue[0]}, ${theme.colors.blue[9]})`,
-              border: '1px solid #ddd',
-              borderRadius: '2px',
-              marginBottom: '4px',
-            }}
-          />
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '10px',
-              color: theme.colors.gray[6],
-            }}
-          >
-            <Text size="xs">
-              {getMetricConfig(selectedMetric)?.formatValue(curStats.min)}
-            </Text>
-            <Text size="xs">
-              {getMetricConfig(selectedMetric)?.formatValue(curStats.max)}
-            </Text>
-          </Box>
-        </Box>
+        <IntensityLegend
+          metricConfig={metricConfig}
+          minValue={statsData.min}
+          maxValue={statsData.max}
+        />
       </Box>
-    </Box>
+    </Stack>
   );
 };

@@ -11,6 +11,8 @@ export function ClearBloomsBucket():Promise<void>;
 
 export function ClearIndexBucket():Promise<void>;
 
+export function ClearStatsBucket():Promise<void>;
+
 export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;

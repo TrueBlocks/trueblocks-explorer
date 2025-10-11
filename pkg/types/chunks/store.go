@@ -249,6 +249,7 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 
 		processFunc := func(item interface{}) *Stats {
 			if it, ok := item.(*Stats); ok {
+				c.updateStatsBucket(it)
 				return it
 			}
 			return nil

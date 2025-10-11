@@ -5,7 +5,6 @@ import { StatsPanelRenderer } from './StatsPanelRenderer';
 export { BloomsPanelRenderer } from './BloomsPanelRenderer';
 export { IndexPanelRenderer } from './IndexPanelRenderer';
 export { StatsPanelRenderer } from './StatsPanelRenderer';
-export type { Aggregation } from './Aggregation';
 
 export const renderers = {
   'chunks.blooms': BloomsPanelRenderer,

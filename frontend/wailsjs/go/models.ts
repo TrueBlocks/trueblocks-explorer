@@ -158,7 +158,7 @@ export namespace chunks {
 	export class ChunksBuckets {
 	    nBloomsBuckets: Bucket[];
 	    fileSizeBuckets: Bucket[];
-	    nAddressesBuckets: Bucket[];
+	    series0: Bucket[];
 	    nAppearancesBuckets: Bucket[];
 	    nBloomsStats: BucketStats;
 	    fileSizeStats: BucketStats;
@@ -174,7 +174,7 @@ export namespace chunks {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.nBloomsBuckets = this.convertValues(source["nBloomsBuckets"], Bucket);
 	        this.fileSizeBuckets = this.convertValues(source["fileSizeBuckets"], Bucket);
-	        this.nAddressesBuckets = this.convertValues(source["nAddressesBuckets"], Bucket);
+	        this.series0 = this.convertValues(source["series0"], Bucket);
 	        this.nAppearancesBuckets = this.convertValues(source["nAppearancesBuckets"], Bucket);
 	        this.nBloomsStats = this.convertValues(source["nBloomsStats"], BucketStats);
 	        this.fileSizeStats = this.convertValues(source["fileSizeStats"], BucketStats);

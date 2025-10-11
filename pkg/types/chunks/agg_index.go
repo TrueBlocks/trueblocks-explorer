@@ -8,7 +8,7 @@ import (
 
 func (c *ChunksCollection) initializeIndexBucket() {
 	c.indexBucket = &IndexBucket{
-		NAddressesBuckets:   make([]Bucket, 0),
+		Series0:             make([]Bucket, 0),
 		NAppearancesBuckets: make([]Bucket, 0),
 		FileSizeBuckets:     make([]Bucket, 0),
 		NAddressesStats:     BucketStats{},
@@ -50,18 +50,18 @@ func (c *ChunksCollection) updateIndexBucket(index *Index) {
 
 	// Ensure we have enough buckets for all three types
 	ensureBucketsExist(&c.indexBucket.FileSizeBuckets, lastBucketIndex, size)
-	ensureBucketsExist(&c.indexBucket.NAddressesBuckets, lastBucketIndex, size)
+	ensureBucketsExist(&c.indexBucket.Series0, lastBucketIndex, size)
 	ensureBucketsExist(&c.indexBucket.NAppearancesBuckets, lastBucketIndex, size)
 
 	// Distribute index data across all affected buckets
 	distributeToBuckets(&c.indexBucket.FileSizeBuckets, firstBlock, lastBlock, float64(index.FileSize), size)
-	distributeToBuckets(&c.indexBucket.NAddressesBuckets, firstBlock, lastBlock, float64(index.NAddresses), size)
+	distributeToBuckets(&c.indexBucket.Series0, firstBlock, lastBlock, float64(index.NAddresses), size)
 	distributeToBuckets(&c.indexBucket.NAppearancesBuckets, firstBlock, lastBlock, float64(index.NAppearances), size)
 
 	// Update grid info
 	maxBuckets := len(c.indexBucket.FileSizeBuckets)
-	if len(c.indexBucket.NAddressesBuckets) > maxBuckets {
-		maxBuckets = len(c.indexBucket.NAddressesBuckets)
+	if len(c.indexBucket.Series0) > maxBuckets {
+		maxBuckets = len(c.indexBucket.Series0)
 	}
 	if len(c.indexBucket.NAppearancesBuckets) > maxBuckets {
 		maxBuckets = len(c.indexBucket.NAppearancesBuckets)
@@ -78,8 +78,8 @@ func (c *ChunksCollection) finalizeIndexBucketsStats() {
 	}
 
 	// Calculate stats and color values for nAddresses
-	if len(c.indexBucket.NAddressesBuckets) > 0 {
-		c.indexBucket.NAddressesStats = calculateBucketStatsAndColors(c.indexBucket.NAddressesBuckets)
+	if len(c.indexBucket.Series0) > 0 {
+		c.indexBucket.NAddressesStats = calculateBucketStatsAndColors(c.indexBucket.Series0)
 	}
 
 	// Calculate stats and color values for nAppearances

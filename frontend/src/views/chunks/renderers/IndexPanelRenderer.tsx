@@ -1,25 +1,20 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { HeatmapPanel } from '@components';
+import { Aggregation, HeatmapPanel } from '@components';
 import { usePayload } from '@hooks';
 import { chunks, types } from '@models';
 import { formatNumericValue } from '@utils';
 
-import { Aggregation } from './';
-
 export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
-  const createPayload = usePayload();
-
   const indexConfig: Aggregation = {
-    facetName: 'INDEX',
     dataFacet: types.DataFacet.INDEX,
     defaultMetric: 'nAddresses',
     metrics: [
       {
         key: 'nAddresses',
         label: 'Number of Addresses',
-        bucketsField: 'nAddressesBuckets' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series0' as keyof chunks.ChunksBuckets,
         statsField: 'nAddressesStats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
@@ -44,6 +39,7 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
     ],
   };
 
+  const createPayload = usePayload();
   const fetchBuckets = useCallback(async () => {
     const payload = createPayload(indexConfig.dataFacet);
     const result = await GetChunksBuckets(payload);
@@ -68,7 +64,7 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
 
   return (
     <HeatmapPanel
-      agData={indexConfig}
+      aggConfig={indexConfig}
       row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}

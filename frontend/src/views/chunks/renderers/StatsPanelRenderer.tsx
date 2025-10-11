@@ -1,25 +1,20 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { BarchartPanel } from '@components';
+import { Aggregation, BarchartPanel } from '@components';
 import { usePayload } from '@hooks';
 import { chunks, types } from '@models';
 import { formatNumericValue } from '@utils';
 
-import { Aggregation } from './';
-
-export const StatsPanelRenderer = (_row: Record<string, unknown> | null) => {
-  const createPayload = usePayload();
-
+export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
   const statsConfig: Aggregation = {
-    facetName: 'stats',
     dataFacet: types.DataFacet.STATS,
     defaultMetric: 'nAddrs',
     metrics: [
       {
         key: 'nAddrs',
         label: 'Number of Addresses',
-        bucketsField: 'nAddressesBuckets' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series0' as keyof chunks.ChunksBuckets,
         statsField: 'nAddressesStats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
@@ -44,6 +39,7 @@ export const StatsPanelRenderer = (_row: Record<string, unknown> | null) => {
     ],
   };
 
+  const createPayload = usePayload();
   const fetchBuckets = useCallback(async () => {
     const payload = createPayload(statsConfig.dataFacet);
     const result = await GetChunksBuckets(payload);
@@ -68,8 +64,8 @@ export const StatsPanelRenderer = (_row: Record<string, unknown> | null) => {
 
   return (
     <BarchartPanel
-      agData={statsConfig}
-      row={null}
+      aggConfig={statsConfig}
+      row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}
       setMetric={setMetric}

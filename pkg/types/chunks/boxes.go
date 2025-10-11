@@ -7,7 +7,7 @@ import (
 type ChunksBuckets struct {
 	NBloomsBuckets      []Bucket    `json:"nBloomsBuckets"`
 	FileSizeBuckets     []Bucket    `json:"fileSizeBuckets"`
-	NAddressesBuckets   []Bucket    `json:"nAddressesBuckets"`
+	Series0             []Bucket    `json:"series0"`
 	NAppearancesBuckets []Bucket    `json:"nAppearancesBuckets"`
 	NBloomsStats        BucketStats `json:"nBloomsStats"`
 	FileSizeStats       BucketStats `json:"fileSizeStats"`
@@ -51,7 +51,7 @@ type BloomsBucket struct {
 
 // IndexBucket stores bucket data specifically for the INDEX facet
 type IndexBucket struct {
-	NAddressesBuckets   []Bucket    `json:"nAddressesBuckets"`
+	Series0             []Bucket    `json:"series0"`
 	NAppearancesBuckets []Bucket    `json:"nAppearancesBuckets"`
 	FileSizeBuckets     []Bucket    `json:"indexFileSizeBuckets"` // Index file sizes
 	NAddressesStats     BucketStats `json:"nAddressesStats"`
@@ -89,7 +89,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 		result := &ChunksBuckets{
 			NBloomsBuckets:      make([]Bucket, len(c.bloomsBucket.NBloomsBuckets)),
 			FileSizeBuckets:     make([]Bucket, len(c.bloomsBucket.FileSizeBuckets)),
-			NAddressesBuckets:   []Bucket{},
+			Series0:             []Bucket{},
 			NAppearancesBuckets: []Bucket{},
 			NBloomsStats:        c.bloomsBucket.NBloomsStats,
 			FileSizeStats:       c.bloomsBucket.FileSizeStats,
@@ -117,7 +117,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 		result := &ChunksBuckets{
 			NBloomsBuckets:      []Bucket{},
 			FileSizeBuckets:     make([]Bucket, len(c.indexBucket.FileSizeBuckets)),
-			NAddressesBuckets:   make([]Bucket, len(c.indexBucket.NAddressesBuckets)),
+			Series0:             make([]Bucket, len(c.indexBucket.Series0)),
 			NAppearancesBuckets: make([]Bucket, len(c.indexBucket.NAppearancesBuckets)),
 			NBloomsStats:        BucketStats{},
 			FileSizeStats:       c.indexBucket.FileSizeStats,
@@ -126,7 +126,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 			GridInfo:            c.indexBucket.GridInfo,
 		}
 		copy(result.FileSizeBuckets, c.indexBucket.FileSizeBuckets)
-		copy(result.NAddressesBuckets, c.indexBucket.NAddressesBuckets)
+		copy(result.Series0, c.indexBucket.Series0)
 		copy(result.NAppearancesBuckets, c.indexBucket.NAppearancesBuckets)
 		c.indexMutex.Unlock()
 
@@ -146,7 +146,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 		result := &ChunksBuckets{
 			NBloomsBuckets:      []Bucket{},
 			FileSizeBuckets:     make([]Bucket, len(c.statsBucket.ChunkSzBuckets)),
-			NAddressesBuckets:   make([]Bucket, len(c.statsBucket.NAddrsBuckets)),
+			Series0:             make([]Bucket, len(c.statsBucket.NAddrsBuckets)),
 			NAppearancesBuckets: make([]Bucket, len(c.statsBucket.NAppsBuckets)),
 			NBloomsStats:        BucketStats{},
 			FileSizeStats:       c.statsBucket.ChunkSzStats,
@@ -155,7 +155,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 			GridInfo:            c.statsBucket.GridInfo,
 		}
 		copy(result.FileSizeBuckets, c.statsBucket.ChunkSzBuckets)
-		copy(result.NAddressesBuckets, c.statsBucket.NAddrsBuckets)
+		copy(result.Series0, c.statsBucket.NAddrsBuckets)
 		copy(result.NAppearancesBuckets, c.statsBucket.NAppsBuckets)
 		c.statsMutex.Unlock()
 
@@ -166,7 +166,7 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 		return &ChunksBuckets{
 			NBloomsBuckets:      []Bucket{},
 			FileSizeBuckets:     []Bucket{},
-			NAddressesBuckets:   []Bucket{},
+			Series0:             []Bucket{},
 			NAppearancesBuckets: []Bucket{},
 			NBloomsStats:        BucketStats{},
 			FileSizeStats:       BucketStats{},

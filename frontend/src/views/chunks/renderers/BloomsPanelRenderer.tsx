@@ -1,18 +1,13 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { HeatmapPanel } from '@components';
+import { Aggregation, HeatmapPanel } from '@components';
 import { usePayload } from '@hooks';
 import { chunks, types } from '@models';
 import { formatNumericValue } from '@utils';
 
-import { Aggregation } from './';
-
 export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
-  const createPayload = usePayload();
-
   const bloomsConfig: Aggregation = {
-    facetName: 'blooms',
     dataFacet: types.DataFacet.BLOOMS,
     defaultMetric: 'nBlooms',
     metrics: [
@@ -36,6 +31,7 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
     ],
   };
 
+  const createPayload = usePayload();
   const fetchBuckets = useCallback(async () => {
     const payload = createPayload(bloomsConfig.dataFacet);
     const result = await GetChunksBuckets(payload);
@@ -60,7 +56,7 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
 
   return (
     <HeatmapPanel
-      agData={bloomsConfig}
+      aggConfig={bloomsConfig}
       row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}

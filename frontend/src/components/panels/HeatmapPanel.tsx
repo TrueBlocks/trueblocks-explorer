@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-  GenericAggregation,
+  Aggregation,
   IntensityLegend,
   MetricSelector,
   StatsBox,
+  StyledButton,
 } from '@components';
 import { useEvent } from '@hooks';
 import {
@@ -15,10 +16,11 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
 
-interface GenericHeatmapPanelProps {
-  agData: GenericAggregation;
+interface HeatmapPanelProps {
+  aggConfig: Aggregation;
   row: Record<string, unknown> | null;
   fetchBuckets: () => Promise<chunks.ChunksBuckets>;
   getMetric: (facetName: string) => Promise<string>;
@@ -27,25 +29,25 @@ interface GenericHeatmapPanelProps {
 }
 
 export const HeatmapPanel = ({
-  agData,
+  aggConfig,
   row: _row,
   fetchBuckets,
   getMetric,
   setMetric,
   eventCollection,
-}: GenericHeatmapPanelProps) => {
+}: HeatmapPanelProps) => {
   const theme = useMantineTheme();
   const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>(
-    agData.defaultMetric,
+    aggConfig.defaultMetric,
   );
 
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
-        const saved = await getMetric(agData.facetName);
-        const validMetric = agData.metrics.find((m) => m.key === saved);
+        const saved = await getMetric(aggConfig.dataFacet);
+        const validMetric = aggConfig.metrics.find((m) => m.key === saved);
         if (validMetric) {
           setSelectedMetric(validMetric.key);
         }
@@ -54,19 +56,34 @@ export const HeatmapPanel = ({
       }
     };
     loadSelectedMetric();
-  }, [agData.facetName, agData.metrics, getMetric]);
+  }, [aggConfig.dataFacet, aggConfig.metrics, getMetric]);
 
   const handleMetricChange = useCallback(
     async (metric: string) => {
       setSelectedMetric(metric);
       try {
-        await setMetric(agData.facetName, metric);
+        await setMetric(aggConfig.dataFacet, metric);
       } catch (error) {
         console.error('Failed to save metric preference:', error);
       }
     },
-    [agData.facetName, setMetric],
+    [aggConfig.dataFacet, setMetric],
   );
+
+  // Cycle through metrics with hotkey
+  const cycleToNextMetric = useCallback(() => {
+    const currentIndex = aggConfig.metrics.findIndex(
+      (m) => m.key === selectedMetric,
+    );
+    const nextIndex = (currentIndex + 1) % aggConfig.metrics.length;
+    const nextMetric = aggConfig.metrics[nextIndex]?.key;
+    if (nextMetric) {
+      handleMetricChange(nextMetric);
+    }
+  }, [selectedMetric, aggConfig.metrics, handleMetricChange]);
+
+  // Add hotkey for cycling metrics
+  useHotkeys([['mod+shift+m', cycleToNextMetric]]);
 
   const handleFetchBuckets = useCallback(async () => {
     setError(null);
@@ -103,7 +120,7 @@ export const HeatmapPanel = ({
   }, [handleFetchBuckets]);
 
   const getMetricConfig = (metric: string) => {
-    return agData.metrics.find((m) => m.key === metric);
+    return aggConfig.metrics.find((m) => m.key === metric);
   };
 
   const getMetricData = () => {
@@ -156,7 +173,19 @@ export const HeatmapPanel = ({
   const { bucketsData, statsData } = getMetricData();
 
   if (!statsData || !bucketsData?.length) {
-    return <Text>No data available for heat map</Text>;
+    if (!buckets) {
+      return <Text>Loading chart data...</Text>;
+    }
+    return (
+      <Box p="md" ta="center">
+        <Text c="dimmed" mb="md">
+          No chart data available
+        </Text>
+        <StyledButton onClick={handleFetchBuckets} variant="light" size="sm">
+          Refresh Data
+        </StyledButton>
+      </Box>
+    );
   }
 
   const metricConfig = getMetricConfig(selectedMetric);
@@ -176,7 +205,7 @@ export const HeatmapPanel = ({
     <Stack gap="md" p="md">
       <MetricSelector
         metricConfig={metricConfig}
-        metrics={agData.metrics}
+        metrics={aggConfig.metrics}
         onMetricChange={handleMetricChange}
       />
 

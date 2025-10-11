@@ -1,3 +1,4 @@
+export type { Aggregation } from './Aggregation';
 export * from './HeatmapPanel';
 export * from './BarchartPanel';
 export * from './IntensityLegend';

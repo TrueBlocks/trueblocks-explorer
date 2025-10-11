@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-  MetricConfig,
+  Aggregation,
   MetricSelector,
   StatsBox,
   StyledButton,
@@ -9,17 +9,12 @@ import {
 import { useEvent } from '@hooks';
 import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
-import { chunks, msgs, types } from '@models';
+import { useHotkeys } from '@mantine/hooks';
+import { chunks, msgs } from '@models';
+import { Log } from '@utils';
 
-export interface GenericAggregation {
-  facetName: string;
-  dataFacet: types.DataFacet;
-  defaultMetric: string;
-  metrics: MetricConfig[];
-}
-
-interface GenericBarchartPanelProps {
-  agData: GenericAggregation;
+interface BarchartPanelProps {
+  aggConfig: Aggregation;
   row: Record<string, unknown> | null;
   fetchBuckets: () => Promise<chunks.ChunksBuckets | null>;
   getMetric: (facetName: string) => Promise<string>;
@@ -28,17 +23,17 @@ interface GenericBarchartPanelProps {
 }
 
 export const BarchartPanel = ({
-  agData,
+  aggConfig,
   row: _row,
   fetchBuckets,
   getMetric,
   setMetric,
   eventCollection = 'chunks',
-}: GenericBarchartPanelProps) => {
+}: BarchartPanelProps) => {
   const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>(
-    agData.defaultMetric,
+    aggConfig.defaultMetric,
   );
 
   // Utility functions
@@ -53,8 +48,8 @@ export const BarchartPanel = ({
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
-        const saved = await getMetric(agData.facetName);
-        const validMetric = agData.metrics.find((m) => m.key === saved);
+        const saved = await getMetric(aggConfig.dataFacet);
+        const validMetric = aggConfig.metrics.find((m) => m.key === saved);
         if (validMetric) {
           setSelectedMetric(validMetric.key);
         }
@@ -63,19 +58,35 @@ export const BarchartPanel = ({
       }
     };
     loadSelectedMetric();
-  }, [agData.facetName, agData.metrics, getMetric]);
+  }, [aggConfig.dataFacet, aggConfig.metrics, getMetric]);
 
   const handleMetricChange = useCallback(
     async (metric: string) => {
       setSelectedMetric(metric);
       try {
-        await setMetric(agData.facetName, metric);
+        await setMetric(aggConfig.dataFacet, metric);
       } catch (error) {
         console.error('Failed to save metric preference:', error);
       }
     },
-    [agData.facetName, setMetric],
+    [aggConfig.dataFacet, setMetric],
   );
+
+  // Cycle through metrics with hotkey
+  const cycleToNextMetric = useCallback(() => {
+    Log('Cycling to next metric');
+    const currentIndex = aggConfig.metrics.findIndex(
+      (m) => m.key === selectedMetric,
+    );
+    const nextIndex = (currentIndex + 1) % aggConfig.metrics.length;
+    const nextMetric = aggConfig.metrics[nextIndex]?.key;
+    if (nextMetric) {
+      handleMetricChange(nextMetric);
+    }
+  }, [selectedMetric, aggConfig.metrics, handleMetricChange]);
+
+  // Add hotkey for cycling metrics
+  useHotkeys([['mod+shift+m', cycleToNextMetric]]);
 
   const handleFetchBuckets = useCallback(async () => {
     setError(null);
@@ -112,7 +123,7 @@ export const BarchartPanel = ({
   }, [handleFetchBuckets]);
 
   // Get current metric config
-  const currentMetric = agData.metrics.find((m) => m.key === selectedMetric);
+  const currentMetric = aggConfig.metrics.find((m) => m.key === selectedMetric);
   if (!currentMetric) {
     return (
       <Box p="md">
@@ -141,7 +152,7 @@ export const BarchartPanel = ({
     );
   }
 
-  if (!bucketsData || bucketsData.length === 0) {
+  if (!statsData || !bucketsData?.length) {
     if (!buckets) {
       return <Text>Loading chart data...</Text>;
     }
@@ -168,7 +179,7 @@ export const BarchartPanel = ({
     <Stack gap="md" p="md">
       <MetricSelector
         metricConfig={currentMetric}
-        metrics={agData.metrics}
+        metrics={aggConfig.metrics}
         onMetricChange={handleMetricChange}
       />
 

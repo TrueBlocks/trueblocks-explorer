@@ -52,12 +52,12 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 	c.ensureBucketExists(facetName)
 	c.finalizeBucketStats(facetName)
 
+	c.collectionMutex.RLock()
 	mutex := c.mutexByFacet[facetName]
-	mutex.RLock()
-	defer mutex.RUnlock()
-
 	bucket := c.bucketsByFacet[facetName]
-	if bucket == nil {
+	c.collectionMutex.RUnlock()
+
+	if mutex == nil || bucket == nil {
 		return &ChunksBuckets{
 			Series0:      []Bucket{},
 			Series0Stats: BucketStats{},
@@ -76,6 +76,9 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 			},
 		}, nil
 	}
+
+	mutex.RLock()
+	defer mutex.RUnlock()
 
 	// Create deep copy
 	result := &ChunksBuckets{
@@ -101,14 +104,36 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 
 // ensureBucketExists initializes a bucket for the given facet if it doesn't exist
 func (c *ChunksCollection) ensureBucketExists(facet string) {
-	if c.bucketsByFacet == nil {
-		c.bucketsByFacet = make(map[string]*ChunksBuckets)
-	}
-	if c.mutexByFacet == nil {
-		c.mutexByFacet = make(map[string]*sync.RWMutex)
+	c.collectionMutex.RLock()
+	once := c.initOnceByFacet[facet]
+	c.collectionMutex.RUnlock()
+
+	if once == nil {
+		// Rare case: need to create the Once (only happens once per facet)
+		c.collectionMutex.Lock()
+		if c.initOnceByFacet == nil {
+			c.initOnceByFacet = make(map[string]*sync.Once)
+		}
+		if c.bucketsByFacet == nil {
+			c.bucketsByFacet = make(map[string]*ChunksBuckets)
+		}
+		if c.mutexByFacet == nil {
+			c.mutexByFacet = make(map[string]*sync.RWMutex)
+		}
+		once = c.initOnceByFacet[facet]
+		if once == nil {
+			once = &sync.Once{}
+			c.initOnceByFacet[facet] = once
+		}
+		c.collectionMutex.Unlock()
 	}
 
-	if _, exists := c.bucketsByFacet[facet]; !exists {
+	// Use sync.Once to ensure bucket initialization happens exactly once
+	// After first call, this is just an atomic check - extremely fast!
+	once.Do(func() {
+		c.collectionMutex.Lock()
+		defer c.collectionMutex.Unlock()
+
 		c.bucketsByFacet[facet] = &ChunksBuckets{
 			Series0:      make([]Bucket, 0),
 			Series0Stats: BucketStats{},
@@ -127,17 +152,19 @@ func (c *ChunksCollection) ensureBucketExists(facet string) {
 			},
 		}
 		c.mutexByFacet[facet] = &sync.RWMutex{}
-	}
+	})
 }
 
 // finalizeBucketStats calculates stats and colors for all series in a facet bucket
 func (c *ChunksCollection) finalizeBucketStats(facet string) {
-	if c.bucketsByFacet == nil || c.bucketsByFacet[facet] == nil {
-		return
-	}
-
+	c.collectionMutex.RLock()
 	bucket := c.bucketsByFacet[facet]
 	mutex := c.mutexByFacet[facet]
+	c.collectionMutex.RUnlock()
+
+	if bucket == nil || mutex == nil {
+		return
+	}
 
 	mutex.Lock()
 	defer mutex.Unlock()

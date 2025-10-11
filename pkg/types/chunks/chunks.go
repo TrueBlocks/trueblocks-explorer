@@ -42,8 +42,10 @@ type ChunksCollection struct {
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
 
-	bucketsByFacet map[string]*ChunksBuckets
-	mutexByFacet   map[string]*sync.RWMutex
+	bucketsByFacet  map[string]*ChunksBuckets
+	mutexByFacet    map[string]*sync.RWMutex
+	initOnceByFacet map[string]*sync.Once
+	collectionMutex sync.RWMutex
 }
 
 func NewChunksCollection(payload *types.Payload) *ChunksCollection {

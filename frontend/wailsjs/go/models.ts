@@ -156,14 +156,14 @@ export namespace chunks {
 	    }
 	}
 	export class ChunksBuckets {
-	    nBloomsBuckets: Bucket[];
-	    fileSizeBuckets: Bucket[];
 	    series0: Bucket[];
-	    nAppearancesBuckets: Bucket[];
-	    nBloomsStats: BucketStats;
-	    fileSizeStats: BucketStats;
-	    nAddressesStats: BucketStats;
-	    nAppearancesStats: BucketStats;
+	    series0Stats: BucketStats;
+	    series1: Bucket[];
+	    series1Stats: BucketStats;
+	    series2: Bucket[];
+	    series2Stats: BucketStats;
+	    series3: Bucket[];
+	    series3Stats: BucketStats;
 	    gridInfo: GridInfo;
 	
 	    static createFrom(source: any = {}) {
@@ -172,14 +172,14 @@ export namespace chunks {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.nBloomsBuckets = this.convertValues(source["nBloomsBuckets"], Bucket);
-	        this.fileSizeBuckets = this.convertValues(source["fileSizeBuckets"], Bucket);
 	        this.series0 = this.convertValues(source["series0"], Bucket);
-	        this.nAppearancesBuckets = this.convertValues(source["nAppearancesBuckets"], Bucket);
-	        this.nBloomsStats = this.convertValues(source["nBloomsStats"], BucketStats);
-	        this.fileSizeStats = this.convertValues(source["fileSizeStats"], BucketStats);
-	        this.nAddressesStats = this.convertValues(source["nAddressesStats"], BucketStats);
-	        this.nAppearancesStats = this.convertValues(source["nAppearancesStats"], BucketStats);
+	        this.series0Stats = this.convertValues(source["series0Stats"], BucketStats);
+	        this.series1 = this.convertValues(source["series1"], Bucket);
+	        this.series1Stats = this.convertValues(source["series1Stats"], BucketStats);
+	        this.series2 = this.convertValues(source["series2"], Bucket);
+	        this.series2Stats = this.convertValues(source["series2Stats"], BucketStats);
+	        this.series3 = this.convertValues(source["series3"], Bucket);
+	        this.series3Stats = this.convertValues(source["series3Stats"], BucketStats);
 	        this.gridInfo = this.convertValues(source["gridInfo"], GridInfo);
 	    }
 	

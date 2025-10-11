@@ -9,32 +9,41 @@ import { formatNumericValue } from '@utils';
 export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
   const statsConfig: Aggregation = {
     dataFacet: types.DataFacet.STATS,
-    defaultMetric: 'nAddrs',
+    defaultMetric: 'ratio',
     metrics: [
       {
-        key: 'nAddrs',
-        label: 'Number of Addresses',
+        key: 'ratio',
+        label: 'Compression',
         bucketsField: 'series0' as keyof chunks.ChunksBuckets,
-        statsField: 'nAddressesStats' as keyof chunks.ChunksBuckets,
+        statsField: 'series0Stats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
-        key: 'nApps',
-        label: 'Number of Appearances',
-        bucketsField: 'nAppearancesBuckets' as keyof chunks.ChunksBuckets,
-        statsField: 'nAppearancesStats' as keyof chunks.ChunksBuckets,
+        key: 'appsPerBlk',
+        label: 'Apps per Block',
+        bucketsField: 'series1' as keyof chunks.ChunksBuckets,
+        statsField: 'series1Stats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
-        key: 'chunkSz',
-        label: 'Chunk Size',
-        bucketsField: 'fileSizeBuckets' as keyof chunks.ChunksBuckets,
-        statsField: 'fileSizeStats' as keyof chunks.ChunksBuckets,
+        key: 'addrsPerBlk',
+        label: 'Addrs per Block',
+        bucketsField: 'series2' as keyof chunks.ChunksBuckets,
+        statsField: 'series2Stats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
-        bytes: true,
+        bytes: false,
+      },
+      {
+        key: 'appsPerAddr',
+        label: 'Apps per Addr',
+        bucketsField: 'series3' as keyof chunks.ChunksBuckets,
+        statsField: 'series3Stats' as keyof chunks.ChunksBuckets,
+        formatValue: (value: number) =>
+          formatNumericValue(Math.round(value), true),
+        bytes: false,
       },
     ],
   };

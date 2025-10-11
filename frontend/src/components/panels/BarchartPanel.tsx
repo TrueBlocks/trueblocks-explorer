@@ -11,7 +11,6 @@ import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
-import { Log } from '@utils';
 
 interface BarchartPanelProps {
   aggConfig: Aggregation;
@@ -74,7 +73,6 @@ export const BarchartPanel = ({
 
   // Cycle through metrics with hotkey
   const cycleToNextMetric = useCallback(() => {
-    Log('Cycling to next metric');
     const currentIndex = aggConfig.metrics.findIndex(
       (m) => m.key === selectedMetric,
     );
@@ -190,6 +188,10 @@ export const BarchartPanel = ({
           formatAverage={formatAverage}
         />
       )}
+
+      <Text size="sm" fw={500} mb="sm">
+        Bar Chart
+      </Text>
 
       <BarChart
         h={400}

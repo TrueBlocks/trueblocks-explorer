@@ -14,16 +14,16 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
       {
         key: 'nBlooms',
         label: 'Number of Blooms',
-        bucketsField: 'nBloomsBuckets' as keyof chunks.ChunksBuckets,
-        statsField: 'nBloomsStats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series3' as keyof chunks.ChunksBuckets,
+        statsField: 'series3Stats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'fileSize',
         label: 'File Size',
-        bucketsField: 'fileSizeBuckets' as keyof chunks.ChunksBuckets,
-        statsField: 'fileSizeStats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series2' as keyof chunks.ChunksBuckets,
+        statsField: 'series2Stats' as keyof chunks.ChunksBuckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
         bytes: true,

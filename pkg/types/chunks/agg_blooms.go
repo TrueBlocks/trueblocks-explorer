@@ -1,11 +1,24 @@
 package chunks
 
+// BloomsBucket stores bucket data specifically for the BLOOMS facet
+type BloomsBucket struct {
+	Series2      []Bucket    `json:"series2"`
+	Series2Stats BucketStats `json:"series2Stats"`
+
+	Series3      []Bucket    `json:"series3"`
+	Series3Stats BucketStats `json:"series3Stats"`
+
+	GridInfo GridInfo `json:"gridInfo"`
+}
+
 func (c *ChunksCollection) initializeBloomsBucket() {
 	c.bloomsBucket = &BloomsBucket{
-		NBloomsBuckets:  make([]Bucket, 0),
-		FileSizeBuckets: make([]Bucket, 0),
-		NBloomsStats:    BucketStats{},
-		FileSizeStats:   BucketStats{},
+		Series2:      make([]Bucket, 0),
+		Series2Stats: BucketStats{},
+
+		Series3:      make([]Bucket, 0),
+		Series3Stats: BucketStats{},
+
 		GridInfo: GridInfo{
 			Size:        100000, // 100k blocks per bucket
 			Rows:        0,
@@ -40,17 +53,17 @@ func (c *ChunksCollection) updateBloomsBucket(bloom *Bloom) {
 	lastBucketIndex := int(lastBlock / size)
 
 	// Ensure we have enough buckets for both types
-	ensureBucketsExist(&c.bloomsBucket.NBloomsBuckets, lastBucketIndex, size)
-	ensureBucketsExist(&c.bloomsBucket.FileSizeBuckets, lastBucketIndex, size)
+	ensureBucketsExist(&c.bloomsBucket.Series2, lastBucketIndex, size)
+	ensureBucketsExist(&c.bloomsBucket.Series3, lastBucketIndex, size)
 
 	// Distribute bloom data across all affected buckets
-	distributeToBuckets(&c.bloomsBucket.NBloomsBuckets, firstBlock, lastBlock, float64(bloom.NBlooms), size)
-	distributeToBuckets(&c.bloomsBucket.FileSizeBuckets, firstBlock, lastBlock, float64(bloom.FileSize), size)
+	distributeToBuckets(&c.bloomsBucket.Series2, firstBlock, lastBlock, float64(bloom.FileSize), size)
+	distributeToBuckets(&c.bloomsBucket.Series3, firstBlock, lastBlock, float64(bloom.NBlooms), size)
 
 	// Update grid info
-	maxBuckets := len(c.bloomsBucket.NBloomsBuckets)
-	if len(c.bloomsBucket.FileSizeBuckets) > maxBuckets {
-		maxBuckets = len(c.bloomsBucket.FileSizeBuckets)
+	maxBuckets := len(c.bloomsBucket.Series3)
+	if len(c.bloomsBucket.Series2) > maxBuckets {
+		maxBuckets = len(c.bloomsBucket.Series2)
 	}
 	updateGridInfo(&c.bloomsBucket.GridInfo, maxBuckets, lastBlock)
 }
@@ -63,14 +76,14 @@ func (c *ChunksCollection) finalizeBloomsBucketsStats() {
 		return
 	}
 
-	// Calculate stats and color values for nBlooms
-	if len(c.bloomsBucket.NBloomsBuckets) > 0 {
-		c.bloomsBucket.NBloomsStats = calculateBucketStatsAndColors(c.bloomsBucket.NBloomsBuckets)
+	// Calculate stats and color values for fileSize
+	if len(c.bloomsBucket.Series2) > 0 {
+		c.bloomsBucket.Series2Stats = calculateBucketStatsAndColors(c.bloomsBucket.Series2)
 	}
 
-	// Calculate stats and color values for fileSize
-	if len(c.bloomsBucket.FileSizeBuckets) > 0 {
-		c.bloomsBucket.FileSizeStats = calculateBucketStatsAndColors(c.bloomsBucket.FileSizeBuckets)
+	// Calculate stats and color values for nBlooms
+	if len(c.bloomsBucket.Series3) > 0 {
+		c.bloomsBucket.Series3Stats = calculateBucketStatsAndColors(c.bloomsBucket.Series3)
 	}
 }
 

@@ -11,11 +11,12 @@ import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
+import { Log } from '@utils';
 
 interface BarchartPanelProps {
   aggConfig: Aggregation;
   row: Record<string, unknown> | null;
-  fetchBuckets: () => Promise<chunks.ChunksBuckets | null>;
+  fetchBuckets: () => Promise<chunks.ChunksBuckets>;
   getMetric: (facetName: string) => Promise<string>;
   setMetric: (facetName: string, metric: string) => Promise<void>;
   eventCollection?: string; // e.g., 'chunks', 'exports', etc.
@@ -53,7 +54,7 @@ export const BarchartPanel = ({
           setSelectedMetric(validMetric.key);
         }
       } catch (error) {
-        console.error('Failed to load saved metric:', error);
+        Log(`Failed to load saved metric: ${error}`);
       }
     };
     loadSelectedMetric();
@@ -65,7 +66,7 @@ export const BarchartPanel = ({
       try {
         await setMetric(aggConfig.dataFacet, metric);
       } catch (error) {
-        console.error('Failed to save metric preference:', error);
+        Log(`Failed to save metric preference: ${error}`);
       }
     },
     [aggConfig.dataFacet, setMetric],

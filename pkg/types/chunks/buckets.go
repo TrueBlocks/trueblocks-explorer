@@ -144,9 +144,9 @@ func (c *ChunksCollection) ensureBucketExists(facet string) {
 			Series3:      make([]Bucket, 0),
 			Series3Stats: BucketStats{},
 			GridInfo: GridInfo{
-				Size:        100000, // 100k blocks per bucket
+				Size:        100000, // TODO: Make bucket size and grid dimensions configurable in future
 				Rows:        0,
-				Columns:     20,
+				Columns:     20, // TODO: Make bucket size and grid dimensions configurable in future
 				BucketCount: 0,
 				MaxBlock:    0,
 			},

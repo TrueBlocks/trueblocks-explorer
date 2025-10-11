@@ -18,6 +18,7 @@ import {
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
+import { Log } from '@utils';
 
 interface HeatmapPanelProps {
   aggConfig: Aggregation;
@@ -52,7 +53,7 @@ export const HeatmapPanel = ({
           setSelectedMetric(validMetric.key);
         }
       } catch (error) {
-        console.error('Failed to load saved metric:', error);
+        Log(`Failed to load saved metric: ${error}`);
       }
     };
     loadSelectedMetric();
@@ -64,7 +65,7 @@ export const HeatmapPanel = ({
       try {
         await setMetric(aggConfig.dataFacet, metric);
       } catch (error) {
-        console.error('Failed to save metric preference:', error);
+        Log(`Failed to save metric preference: ${error}`);
       }
     },
     [aggConfig.dataFacet, setMetric],

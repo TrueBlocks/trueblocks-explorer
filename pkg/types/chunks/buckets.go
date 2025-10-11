@@ -1,6 +1,8 @@
 package chunks
 
 import (
+	"sync"
+
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
@@ -45,120 +47,26 @@ type GridInfo struct {
 }
 
 func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuckets, error) {
-	switch payload.DataFacet {
-	case ChunksBlooms:
-		// Ensure blooms bucket data exists
-		if c.bloomsBucket == nil {
-			c.initializeBloomsBucket()
-		}
+	facetName := string(payload.DataFacet)
 
-		// Finalize stats for blooms data
-		c.finalizeBloomsBucketsStats()
+	c.ensureBucketExists(facetName)
+	c.finalizeBucketStats(facetName)
 
-		// Read with mutex protection
-		c.bloomsMutex.Lock()
-		result := &ChunksBuckets{
-			Series0:      []Bucket{},
-			Series0Stats: BucketStats{},
+	mutex := c.mutexByFacet[facetName]
+	mutex.RLock()
+	defer mutex.RUnlock()
 
-			Series1:      []Bucket{},
-			Series1Stats: BucketStats{},
-
-			Series2:      make([]Bucket, len(c.bloomsBucket.Series2)),
-			Series2Stats: c.bloomsBucket.Series2Stats,
-
-			Series3:      make([]Bucket, len(c.bloomsBucket.Series3)),
-			Series3Stats: c.bloomsBucket.Series3Stats,
-
-			GridInfo: c.bloomsBucket.GridInfo,
-		}
-		copy(result.Series3, c.bloomsBucket.Series3)
-		copy(result.Series2, c.bloomsBucket.Series2)
-		c.bloomsMutex.Unlock()
-
-		return result, nil
-
-	case ChunksIndex:
-		// Ensure index bucket data exists
-		if c.indexBucket == nil {
-			c.initializeIndexBucket()
-		}
-
-		// Finalize stats for index data
-		c.finalizeIndexBucketsStats()
-
-		// Read with mutex protection
-		c.indexMutex.Lock()
-		result := &ChunksBuckets{
-			Series0:      make([]Bucket, len(c.indexBucket.Series0)),
-			Series0Stats: c.indexBucket.Series0Stats,
-
-			Series1:      make([]Bucket, len(c.indexBucket.Series1)),
-			Series1Stats: c.indexBucket.Series1Stats,
-
-			Series2:      make([]Bucket, len(c.indexBucket.Series2)),
-			Series2Stats: c.indexBucket.Series2Stats,
-
-			Series3:      []Bucket{},
-			Series3Stats: BucketStats{},
-			GridInfo:     c.indexBucket.GridInfo,
-		}
-		copy(result.Series2, c.indexBucket.Series2)
-		copy(result.Series0, c.indexBucket.Series0)
-		copy(result.Series1, c.indexBucket.Series1)
-		c.indexMutex.Unlock()
-
-		return result, nil
-
-	case ChunksStats:
-		// Ensure stats bucket data exists
-		if c.statsBucket == nil {
-			c.initializeStatsBucket()
-		}
-
-		// Finalize stats for stats data
-		c.finalizeStatsBucketsStats()
-
-		// Read with mutex protection
-		c.statsMutex.Lock()
-		result := &ChunksBuckets{
-			Series0:      make([]Bucket, len(c.statsBucket.Series0)),
-			Series0Stats: c.statsBucket.Series0Stats,
-
-			Series1:      make([]Bucket, len(c.statsBucket.Series1)),
-			Series1Stats: c.statsBucket.Series1Stats,
-
-			Series2:      make([]Bucket, len(c.statsBucket.Series2)),
-			Series2Stats: c.statsBucket.Series2Stats,
-
-			Series3:      make([]Bucket, len(c.statsBucket.Series3)),
-			Series3Stats: c.statsBucket.Series3Stats,
-
-			GridInfo: c.statsBucket.GridInfo,
-		}
-		copy(result.Series0, c.statsBucket.Series0)
-		copy(result.Series1, c.statsBucket.Series1)
-		copy(result.Series2, c.statsBucket.Series2)
-		copy(result.Series3, c.statsBucket.Series3)
-		c.statsMutex.Unlock()
-
-		return result, nil
-
-	default:
-		// For unknown facets, return empty data with default grid info
+	bucket := c.bucketsByFacet[facetName]
+	if bucket == nil {
 		return &ChunksBuckets{
 			Series0:      []Bucket{},
 			Series0Stats: BucketStats{},
-
 			Series1:      []Bucket{},
 			Series1Stats: BucketStats{},
-
 			Series2:      []Bucket{},
 			Series2Stats: BucketStats{},
-
 			Series3:      []Bucket{},
 			Series3Stats: BucketStats{},
-
 			GridInfo: GridInfo{
 				Size:        100000,
 				Rows:        0,
@@ -168,4 +76,102 @@ func (c *ChunksCollection) GetChunksBuckets(payload *types.Payload) (*ChunksBuck
 			},
 		}, nil
 	}
+
+	// Create deep copy
+	result := &ChunksBuckets{
+		Series0:      make([]Bucket, len(bucket.Series0)),
+		Series0Stats: bucket.Series0Stats,
+		Series1:      make([]Bucket, len(bucket.Series1)),
+		Series1Stats: bucket.Series1Stats,
+		Series2:      make([]Bucket, len(bucket.Series2)),
+		Series2Stats: bucket.Series2Stats,
+		Series3:      make([]Bucket, len(bucket.Series3)),
+		Series3Stats: bucket.Series3Stats,
+		GridInfo:     bucket.GridInfo,
+	}
+
+	// Copy bucket data
+	copy(result.Series0, bucket.Series0)
+	copy(result.Series1, bucket.Series1)
+	copy(result.Series2, bucket.Series2)
+	copy(result.Series3, bucket.Series3)
+
+	return result, nil
+}
+
+// ensureBucketExists initializes a bucket for the given facet if it doesn't exist
+func (c *ChunksCollection) ensureBucketExists(facet string) {
+	if c.bucketsByFacet == nil {
+		c.bucketsByFacet = make(map[string]*ChunksBuckets)
+	}
+	if c.mutexByFacet == nil {
+		c.mutexByFacet = make(map[string]*sync.RWMutex)
+	}
+
+	if _, exists := c.bucketsByFacet[facet]; !exists {
+		c.bucketsByFacet[facet] = &ChunksBuckets{
+			Series0:      make([]Bucket, 0),
+			Series0Stats: BucketStats{},
+			Series1:      make([]Bucket, 0),
+			Series1Stats: BucketStats{},
+			Series2:      make([]Bucket, 0),
+			Series2Stats: BucketStats{},
+			Series3:      make([]Bucket, 0),
+			Series3Stats: BucketStats{},
+			GridInfo: GridInfo{
+				Size:        100000, // 100k blocks per bucket
+				Rows:        0,
+				Columns:     20,
+				BucketCount: 0,
+				MaxBlock:    0,
+			},
+		}
+		c.mutexByFacet[facet] = &sync.RWMutex{}
+	}
+}
+
+// finalizeBucketStats calculates stats and colors for all series in a facet bucket
+func (c *ChunksCollection) finalizeBucketStats(facet string) {
+	if c.bucketsByFacet == nil || c.bucketsByFacet[facet] == nil {
+		return
+	}
+
+	bucket := c.bucketsByFacet[facet]
+	mutex := c.mutexByFacet[facet]
+
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	// Calculate stats for each series that has data
+	if len(bucket.Series0) > 0 {
+		bucket.Series0Stats = calculateBucketStatsAndColors(bucket.Series0)
+	}
+	if len(bucket.Series1) > 0 {
+		bucket.Series1Stats = calculateBucketStatsAndColors(bucket.Series1)
+	}
+	if len(bucket.Series2) > 0 {
+		bucket.Series2Stats = calculateBucketStatsAndColors(bucket.Series2)
+	}
+	if len(bucket.Series3) > 0 {
+		bucket.Series3Stats = calculateBucketStatsAndColors(bucket.Series3)
+	}
+
+	// Update grid info
+	maxBuckets := len(bucket.Series0)
+	if len(bucket.Series1) > maxBuckets {
+		maxBuckets = len(bucket.Series1)
+	}
+	if len(bucket.Series2) > maxBuckets {
+		maxBuckets = len(bucket.Series2)
+	}
+	if len(bucket.Series3) > maxBuckets {
+		maxBuckets = len(bucket.Series3)
+	}
+
+	var lastBlock uint64
+	if maxBuckets > 0 {
+		lastBlock = uint64(maxBuckets-1)*bucket.GridInfo.Size + bucket.GridInfo.Size - 1
+	}
+
+	updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
 }

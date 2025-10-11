@@ -42,13 +42,8 @@ type ChunksCollection struct {
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
 
-	// Facet-specific bucket caches for heat map visualization
-	bloomsBucket *BloomsBucket
-	indexBucket  *IndexBucket
-	statsBucket  *StatsBucket
-	bloomsMutex  sync.RWMutex // Dedicated mutex for BLOOMS cache
-	indexMutex   sync.RWMutex // Dedicated mutex for INDEX cache
-	statsMutex   sync.RWMutex // Dedicated mutex for STATS cache
+	bucketsByFacet map[string]*ChunksBuckets
+	mutexByFacet   map[string]*sync.RWMutex
 }
 
 func NewChunksCollection(payload *types.Payload) *ChunksCollection {

@@ -10,6 +10,8 @@ export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
   const statsConfig: Aggregation = {
     dataFacet: types.DataFacet.STATS,
     defaultMetric: 'ratio',
+    skipUntil: '2017',
+    timeGroupBy: 'quarterly',
     metrics: [
       {
         key: 'ratio',

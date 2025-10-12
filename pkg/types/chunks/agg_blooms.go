@@ -8,6 +8,11 @@ func (c *ChunksCollection) updateBloomsBucket(bloom *Bloom) {
 	facet := "blooms"
 	c.ensureBucketExists(facet)
 	mutex := c.mutexByFacet[facet]
+	bucket := c.bucketsByFacet[facet]
+	if mutex == nil || bucket == nil {
+		return
+	}
+
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -17,7 +22,6 @@ func (c *ChunksCollection) updateBloomsBucket(bloom *Bloom) {
 		return
 	}
 
-	bucket := c.bucketsByFacet[facet]
 	size := bucket.GridInfo.Size
 	lastBucketIndex := int(lastBlock / size)
 

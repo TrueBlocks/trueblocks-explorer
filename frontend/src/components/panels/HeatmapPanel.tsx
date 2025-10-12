@@ -18,7 +18,7 @@ import {
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
-import { Log } from '@utils';
+import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
 
 interface HeatmapPanelProps {
   aggConfig: Aggregation;
@@ -130,8 +130,23 @@ export const HeatmapPanel = ({
     const config = getMetricConfig(selectedMetric);
     if (!config) return { bucketsData: [], statsData: null };
 
+    const allBuckets = (buckets[config.bucketsField] as chunks.Bucket[]) || [];
+
+    let filteredBuckets = aggConfig.skipUntil
+      ? allBuckets.filter(
+          (bucket) => bucket.bucketIndex >= aggConfig.skipUntil!,
+        )
+      : allBuckets;
+
+    if (aggConfig.timeGroupBy) {
+      filteredBuckets = aggregateTimeBasedBuckets(
+        filteredBuckets,
+        aggConfig.timeGroupBy,
+      );
+    }
+
     return {
-      bucketsData: (buckets[config.bucketsField] as chunks.Bucket[]) || [],
+      bucketsData: filteredBuckets,
       statsData: buckets[config.statsField] as chunks.BucketStats,
     };
   };
@@ -255,10 +270,16 @@ export const HeatmapPanel = ({
                 key={dataPoint.bucketIndex}
                 label={
                   <Box>
-                    <Text size="xs">
-                      Blocks: {formatNumber(dataPoint.startBlock)} -{' '}
-                      {formatNumber(dataPoint.endBlock)}
-                    </Text>
+                    {aggConfig.timeGroupBy ? (
+                      <Text size="xs">
+                        Period: {formatGroupKey(dataPoint.bucketIndex)}
+                      </Text>
+                    ) : (
+                      <Text size="xs">
+                        Blocks: {formatNumber(dataPoint.startBlock)} -{' '}
+                        {formatNumber(dataPoint.endBlock)}
+                      </Text>
+                    )}
                     <Text size="xs">
                       {getMetricConfig(selectedMetric)?.label}:{' '}
                       {getMetricConfig(selectedMetric)?.formatValue(

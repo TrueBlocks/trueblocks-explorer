@@ -16,6 +16,7 @@ export * from './sortSpec';
 export * from './hashes';
 
 export * from './solidityValidation';
+export * from './timeAggregation';
 export * from './transactionBuilder';
 export * from './walletConnection';
 export * from './contractErrors';

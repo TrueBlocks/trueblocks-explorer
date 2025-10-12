@@ -1,6 +1,7 @@
 package chunks
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -93,9 +94,10 @@ func TestEnsureBucketsExist(t *testing.T) {
 	for i, bucket := range buckets {
 		expectedStart := uint64(i) * size
 		expectedEnd := uint64(i+1)*size - 1
+		expectedIndex := strconv.Itoa(i)
 
-		if bucket.BucketIndex != i {
-			t.Errorf("Expected bucket index %d, got %d", i, bucket.BucketIndex)
+		if bucket.BucketIndex != expectedIndex {
+			t.Errorf("Expected bucket index %s, got %s", expectedIndex, bucket.BucketIndex)
 		}
 		if bucket.StartBlock != expectedStart {
 			t.Errorf("Expected start block %d, got %d", expectedStart, bucket.StartBlock)
@@ -112,9 +114,9 @@ func TestEnsureBucketsExist(t *testing.T) {
 func TestDistributeToBuckets(t *testing.T) {
 	// Create 3 buckets for testing
 	buckets := []Bucket{
-		{BucketIndex: 0, StartBlock: 0, EndBlock: 99999, Total: 0},
-		{BucketIndex: 1, StartBlock: 100000, EndBlock: 199999, Total: 0},
-		{BucketIndex: 2, StartBlock: 200000, EndBlock: 299999, Total: 0},
+		{BucketIndex: "0", StartBlock: 0, EndBlock: 99999, Total: 0},
+		{BucketIndex: "1", StartBlock: 100000, EndBlock: 199999, Total: 0},
+		{BucketIndex: "2", StartBlock: 200000, EndBlock: 299999, Total: 0},
 	}
 	size := uint64(100000)
 

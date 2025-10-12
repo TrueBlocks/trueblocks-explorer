@@ -10,6 +10,8 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
   const bloomsConfig: Aggregation = {
     dataFacet: types.DataFacet.BLOOMS,
     defaultMetric: 'nBlooms',
+    // skipUntil: '2017',
+    // timeGroupBy: 'quarterly',
     metrics: [
       {
         key: 'nBlooms',

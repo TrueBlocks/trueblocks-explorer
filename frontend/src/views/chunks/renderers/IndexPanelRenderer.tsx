@@ -10,6 +10,8 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
   const indexConfig: Aggregation = {
     dataFacet: types.DataFacet.INDEX,
     defaultMetric: 'nAddresses',
+    // skipUntil: '2017',
+    // timeGroupBy: 'quarterly',
     metrics: [
       {
         key: 'nAddresses',

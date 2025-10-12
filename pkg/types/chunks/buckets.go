@@ -23,7 +23,7 @@ type ChunksBuckets struct {
 }
 
 type Bucket struct {
-	BucketIndex int     `json:"bucketIndex"`
+	BucketIndex string  `json:"bucketIndex"`
 	StartBlock  uint64  `json:"startBlock"`
 	EndBlock    uint64  `json:"endBlock"`
 	Total       float64 `json:"total"`

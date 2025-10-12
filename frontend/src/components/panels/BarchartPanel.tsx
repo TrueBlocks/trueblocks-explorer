@@ -11,7 +11,7 @@ import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { chunks, msgs } from '@models';
-import { Log } from '@utils';
+import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
 
 interface BarchartPanelProps {
   aggConfig: Aggregation;
@@ -134,9 +134,20 @@ export const BarchartPanel = ({
   }
 
   // Get the buckets data and stats for the current metric
-  const bucketsData = buckets
+  const allBucketsData = buckets
     ? (buckets[currentMetric.bucketsField] as chunks.Bucket[])
     : [];
+
+  const filteredBuckets = aggConfig.skipUntil
+    ? allBucketsData.filter(
+        (bucket) => bucket.bucketIndex >= aggConfig.skipUntil!,
+      )
+    : allBucketsData;
+
+  const bucketsData = aggConfig.timeGroupBy
+    ? aggregateTimeBasedBuckets(filteredBuckets, aggConfig.timeGroupBy)
+    : filteredBuckets;
+
   const statsData = buckets
     ? (buckets[currentMetric.statsField] as chunks.BucketStats)
     : null;
@@ -168,11 +179,17 @@ export const BarchartPanel = ({
   }
 
   // Prepare chart data
-  const chartData = bucketsData.map((bucket) => ({
-    name: `${bucket.startBlock}-${bucket.endBlock}`,
-    value: bucket.total,
-    bucket: bucket.bucketIndex,
-  }));
+  const chartData = bucketsData.map((bucket) => {
+    const name = aggConfig.timeGroupBy
+      ? formatGroupKey(bucket.bucketIndex)
+      : `${bucket.startBlock}-${bucket.endBlock}`;
+
+    return {
+      name,
+      value: bucket.total,
+      bucket: bucket.bucketIndex,
+    };
+  });
 
   return (
     <Stack gap="md" p="md">
@@ -191,7 +208,9 @@ export const BarchartPanel = ({
       )}
 
       <Text size="sm" fw={500} mb="sm">
-        Bar Chart
+        {aggConfig.timeGroupBy
+          ? `${currentMetric.label} - ${aggConfig.timeGroupBy.charAt(0).toUpperCase() + aggConfig.timeGroupBy.slice(1)} View`
+          : 'Bar Chart'}
       </Text>
 
       <BarChart
@@ -209,6 +228,7 @@ export const BarchartPanel = ({
         gridAxis="xy"
         withTooltip
         tooltipProps={{
+          cursor: true,
           content: ({ payload }) => {
             if (!payload || payload.length === 0 || !payload[0]) return null;
             const data = payload[0].payload;
@@ -219,7 +239,8 @@ export const BarchartPanel = ({
                 style={{ border: '1px solid #ddd', borderRadius: 4 }}
               >
                 <Text size="sm" fw={600}>
-                  Block Range: {data.name}
+                  {aggConfig.timeGroupBy ? 'Time Period' : 'Block Range'}:{' '}
+                  {data.name}
                 </Text>
                 <Text size="sm">
                   {currentMetric.label}: {currentMetric.formatValue(data.value)}

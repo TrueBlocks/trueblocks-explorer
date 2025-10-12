@@ -96,7 +96,7 @@ export namespace base {
 export namespace chunks {
 	
 	export class Bucket {
-	    bucketIndex: number;
+	    bucketIndex: string;
 	    startBlock: number;
 	    endBlock: number;
 	    total: number;

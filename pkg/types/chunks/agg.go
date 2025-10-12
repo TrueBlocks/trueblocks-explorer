@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // ensureBucketsExist ensures that the bucket slice has at least targetIndex+1 buckets
@@ -14,7 +15,7 @@ func ensureBucketsExist(buckets *[]Bucket, targetIndex int, size uint64) {
 		endBlock := uint64(newBucketIndex+1)*size - 1
 
 		newBucket := Bucket{
-			BucketIndex: newBucketIndex,
+			BucketIndex: strconv.Itoa(newBucketIndex),
 			StartBlock:  startBlock,
 			EndBlock:    endBlock,
 			Total:       0,
@@ -120,4 +121,105 @@ func parseRangeString(rangeStr string) (first, last uint64, err error) {
 	}
 
 	return first, last, nil
+}
+
+// parseDateToDailyBucket parses a date string and returns a daily bucket key
+// Input: "2025-10-08 10:40:23 UTC"
+// Output: "20251008"
+func parseDateToDailyBucket(dateStr string) (string, error) {
+	// Parse the date string - format: "2025-10-08 10:40:23 UTC"
+	t, err := time.Parse("2006-01-02 15:04:05 MST", dateStr)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse date %s: %v", dateStr, err)
+	}
+
+	return fmt.Sprintf("%04d%02d%02d", t.Year(), t.Month(), t.Day()), nil
+}
+
+// ensureTimeBucketsExist ensures that time-based buckets exist for a date range
+func (c *ChunksCollection) ensureTimeBucketsExist(bucket *ChunksBuckets, startBucket, endBucket string) {
+	// For now, just ensure the start and end buckets exist
+	// In a full implementation, you'd generate all daily buckets between start and end
+	c.ensureDailyBucketExists(bucket, startBucket)
+	c.ensureDailyBucketExists(bucket, endBucket)
+}
+
+// ensureDailyBucketExists ensures a single daily bucket exists
+func (c *ChunksCollection) ensureDailyBucketExists(bucket *ChunksBuckets, bucketKey string) {
+	// Check if bucket exists in any series
+	found := false
+	for _, series := range []*[]Bucket{&bucket.Series0, &bucket.Series1, &bucket.Series2, &bucket.Series3} {
+		for i := range *series {
+			if (*series)[i].BucketIndex == bucketKey {
+				found = true
+				break
+			}
+		}
+		if found {
+			break
+		}
+	}
+
+	if !found {
+		// Add the bucket to all series
+		newBucket := Bucket{
+			BucketIndex: bucketKey,
+			StartBlock:  0, // For time-based buckets, block ranges are less relevant
+			EndBlock:    0,
+			Total:       0,
+			ColorValue:  0,
+		}
+
+		bucket.Series0 = append(bucket.Series0, newBucket)
+		bucket.Series1 = append(bucket.Series1, newBucket)
+		bucket.Series2 = append(bucket.Series2, newBucket)
+		bucket.Series3 = append(bucket.Series3, newBucket)
+	}
+}
+
+// distributeToTimeBuckets distributes stats values across time buckets
+func (c *ChunksCollection) distributeToTimeBuckets(bucket *ChunksBuckets, startBucket, endBucket string, stats *Stats) {
+	// For simplicity, add values to both start and end buckets
+	// In a more sophisticated implementation, you'd distribute proportionally across all days in the range
+
+	c.addStatsToTimeBucket(bucket, startBucket, stats)
+	if startBucket != endBucket {
+		c.addStatsToTimeBucket(bucket, endBucket, stats)
+	}
+}
+
+// addStatsToTimeBucket adds stats values to a specific time bucket
+func (c *ChunksCollection) addStatsToTimeBucket(bucket *ChunksBuckets, bucketKey string, stats *Stats) {
+	// Find the bucket and add values to it
+	for i := range bucket.Series0 {
+		if bucket.Series0[i].BucketIndex == bucketKey {
+			bucket.Series0[i].Total += float64(stats.Ratio)
+			bucket.Series0[i].ColorValue += float64(stats.Ratio)
+			break
+		}
+	}
+
+	for i := range bucket.Series1 {
+		if bucket.Series1[i].BucketIndex == bucketKey {
+			bucket.Series1[i].Total += float64(stats.AppsPerBlock)
+			bucket.Series1[i].ColorValue += float64(stats.AppsPerBlock)
+			break
+		}
+	}
+
+	for i := range bucket.Series2 {
+		if bucket.Series2[i].BucketIndex == bucketKey {
+			bucket.Series2[i].Total += float64(stats.AddrsPerBlock)
+			bucket.Series2[i].ColorValue += float64(stats.AddrsPerBlock)
+			break
+		}
+	}
+
+	for i := range bucket.Series3 {
+		if bucket.Series3[i].BucketIndex == bucketKey {
+			bucket.Series3[i].Total += float64(stats.AppsPerAddr)
+			bucket.Series3[i].ColorValue += float64(stats.AppsPerAddr)
+			break
+		}
+	}
 }

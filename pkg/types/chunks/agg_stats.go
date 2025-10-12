@@ -8,16 +8,49 @@ func (c *ChunksCollection) updateStatsBucket(stats *Stats) {
 	facet := "stats"
 	c.ensureBucketExists(facet)
 	mutex := c.mutexByFacet[facet]
+	bucket := c.bucketsByFacet[facet]
+	if mutex == nil || bucket == nil {
+		return
+	}
+
 	mutex.Lock()
 	defer mutex.Unlock()
 
+	// For stats, use time-based daily buckets if range dates are available
+	if stats.RangeDates != nil && stats.RangeDates.FirstDate != "" && stats.RangeDates.LastDate != "" {
+		c.updateStatsBucketTimeBase(stats, bucket)
+	} else {
+		c.updateStatsBucketBlockBase(stats, bucket)
+	}
+}
+
+// updateStatsBucketTimeBase handles time-based daily bucketing for stats
+func (c *ChunksCollection) updateStatsBucketTimeBase(stats *Stats, bucket *ChunksBuckets) {
+	startBucket, err := parseDateToDailyBucket(stats.RangeDates.FirstDate)
+	if err != nil {
+		return
+	}
+
+	endBucket, err := parseDateToDailyBucket(stats.RangeDates.LastDate)
+	if err != nil {
+		return
+	}
+
+	// Find or create buckets for the date range
+	c.ensureTimeBucketsExist(bucket, startBucket, endBucket)
+
+	// Distribute the values across the time buckets
+	c.distributeToTimeBuckets(bucket, startBucket, endBucket, stats)
+}
+
+// updateStatsBucketBlockBase handles traditional block-based bucketing (fallback)
+func (c *ChunksCollection) updateStatsBucketBlockBase(stats *Stats, bucket *ChunksBuckets) {
 	// Parse the range string to get block numbers
 	firstBlock, lastBlock, err := parseRangeString(stats.Range)
 	if err != nil {
 		return
 	}
 
-	bucket := c.bucketsByFacet[facet]
 	size := bucket.GridInfo.Size
 	lastBucketIndex := int(lastBlock / size)
 

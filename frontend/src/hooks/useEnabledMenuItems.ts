@@ -24,8 +24,6 @@ export function useEnabledMenuItems(): UseEnabledMenuItemsResult {
 
       // Wait for view configs to be ready
       if (!areViewConfigsReady()) {
-        console.warn('ViewConfigs not ready yet, delaying menu item sorting');
-        // Retry after a short delay
         retryTimeout = setTimeout(checkEnabled, 100);
         return;
       }

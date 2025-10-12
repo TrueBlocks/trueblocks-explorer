@@ -1,6 +1,5 @@
+import { TimeGroupBy } from '@components';
 import { chunks } from '@models';
-
-export type TimeGroupBy = 'daily' | 'quarterly' | 'annual';
 
 /**
  * Aggregates daily bucket data into larger time periods

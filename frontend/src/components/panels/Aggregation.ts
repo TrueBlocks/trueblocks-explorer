@@ -1,7 +1,5 @@
-import { MetricConfig } from '@components';
+import { MetricConfig, TimeGroupBy } from '@components';
 import { types } from '@models';
-
-export type TimeGroupBy = 'daily' | 'monthly' | 'quarterly' | 'annual';
 
 export interface Aggregation {
   dataFacet: types.DataFacet;

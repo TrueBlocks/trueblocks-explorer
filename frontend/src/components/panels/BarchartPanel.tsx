@@ -30,6 +30,7 @@ export const BarchartPanel = ({
   setMetric,
   eventCollection = 'chunks',
 }: BarchartPanelProps) => {
+  const [skipUntil, _] = useState<string | null>('2017');
   const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>(
@@ -138,10 +139,8 @@ export const BarchartPanel = ({
     ? (buckets[currentMetric.bucketsField] as chunks.Bucket[])
     : [];
 
-  const filteredBuckets = aggConfig.skipUntil
-    ? allBucketsData.filter(
-        (bucket) => bucket.bucketIndex >= aggConfig.skipUntil!,
-      )
+  const filteredBuckets = skipUntil
+    ? allBucketsData.filter((bucket) => bucket.bucketIndex >= skipUntil!)
     : allBucketsData;
 
   const bucketsData = aggConfig.timeGroupBy
@@ -193,6 +192,12 @@ export const BarchartPanel = ({
 
   return (
     <Stack gap="md" p="md">
+      {/* <DateInput
+        value={skipUntil}
+        onChange={setSkipUntil}
+        defaultLevel="decade"
+        hideOutsideDates={true}
+      /> */}
       <MetricSelector
         metricConfig={currentMetric}
         metrics={aggConfig.metrics}

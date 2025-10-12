@@ -18,7 +18,6 @@ import (
 )
 
 // EXISTING_CODE
-
 type NamesPage struct {
 	Facet         types.DataFacet `json:"facet"`
 	Names         []*Name         `json:"names"`

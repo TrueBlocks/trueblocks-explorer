@@ -13,6 +13,7 @@ import (
 	"fmt"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/abis"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/chunks"
@@ -28,29 +29,37 @@ import (
 // EXISTING_CODE
 
 // Reload dispatches reload requests to the appropriate view-specific reload function
-func (a *App) Reload(payload *types.Payload) error {
+func (a *App) Reload(payload *types.Payload) (err error) {
+	defer func() {
+		if err == nil {
+			msgs.EmitReloaded(*payload)
+		}
+	}()
+
 	switch a.GetLastView() {
 	case "exports":
-		return a.ReloadExports(payload)
+		err = a.ReloadExports(payload)
 	case "monitors":
-		return a.ReloadMonitors(payload)
+		err = a.ReloadMonitors(payload)
 	case "abis":
-		return a.ReloadAbis(payload)
+		err = a.ReloadAbis(payload)
 	case "names":
-		return a.ReloadNames(payload)
+		err = a.ReloadNames(payload)
 	case "chunks":
-		return a.ReloadChunks(payload)
+		err = a.ReloadChunks(payload)
 	case "contracts":
-		return a.ReloadContracts(payload)
+		err = a.ReloadContracts(payload)
 	case "status":
-		return a.ReloadStatus(payload)
+		err = a.ReloadStatus(payload)
 	case "dresses":
-		return a.ReloadDresses(payload)
+		err = a.ReloadDresses(payload)
 	case "comparitoor":
-		return a.ReloadComparitoor(payload)
+		err = a.ReloadComparitoor(payload)
 	default:
 		panic("unknown view in Reload" + a.GetLastView())
 	}
+
+	return err
 }
 
 // GetRegisteredViews returns all registered view names

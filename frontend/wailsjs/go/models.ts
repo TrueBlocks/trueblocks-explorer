@@ -95,112 +95,6 @@ export namespace base {
 
 export namespace chunks {
 	
-	export class Bucket {
-	    bucketIndex: string;
-	    startBlock: number;
-	    endBlock: number;
-	    total: number;
-	    colorValue: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new Bucket(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.bucketIndex = source["bucketIndex"];
-	        this.startBlock = source["startBlock"];
-	        this.endBlock = source["endBlock"];
-	        this.total = source["total"];
-	        this.colorValue = source["colorValue"];
-	    }
-	}
-	export class BucketStats {
-	    total: number;
-	    average: number;
-	    min: number;
-	    max: number;
-	    count: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new BucketStats(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.total = source["total"];
-	        this.average = source["average"];
-	        this.min = source["min"];
-	        this.max = source["max"];
-	        this.count = source["count"];
-	    }
-	}
-	export class GridInfo {
-	    rows: number;
-	    columns: number;
-	    maxBlock: number;
-	    size: number;
-	    bucketCount: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new GridInfo(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.rows = source["rows"];
-	        this.columns = source["columns"];
-	        this.maxBlock = source["maxBlock"];
-	        this.size = source["size"];
-	        this.bucketCount = source["bucketCount"];
-	    }
-	}
-	export class ChunksBuckets {
-	    series0: Bucket[];
-	    series0Stats: BucketStats;
-	    series1: Bucket[];
-	    series1Stats: BucketStats;
-	    series2: Bucket[];
-	    series2Stats: BucketStats;
-	    series3: Bucket[];
-	    series3Stats: BucketStats;
-	    gridInfo: GridInfo;
-	
-	    static createFrom(source: any = {}) {
-	        return new ChunksBuckets(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.series0 = this.convertValues(source["series0"], Bucket);
-	        this.series0Stats = this.convertValues(source["series0Stats"], BucketStats);
-	        this.series1 = this.convertValues(source["series1"], Bucket);
-	        this.series1Stats = this.convertValues(source["series1Stats"], BucketStats);
-	        this.series2 = this.convertValues(source["series2"], Bucket);
-	        this.series2Stats = this.convertValues(source["series2Stats"], BucketStats);
-	        this.series3 = this.convertValues(source["series3"], Bucket);
-	        this.series3Stats = this.convertValues(source["series3Stats"], BucketStats);
-	        this.gridInfo = this.convertValues(source["gridInfo"], GridInfo);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
 	export class ChunksPage {
 	    facet: types.DataFacet;
 	    blooms: types.ChunkBloom[];
@@ -899,6 +793,7 @@ export namespace msgs {
 	    CHAIN_CHANGED = "chain:changed",
 	    PERIOD_CHANGED = "period:changed",
 	    DATA_LOADED = "data:loaded",
+	    DATA_RELOADED = "data:reloaded",
 	    TAB_CYCLE = "hotkey:tab-cycle",
 	    IMAGES_CHANGED = "images:changed",
 	    PROJECT_OPENED = "project:opened",
@@ -1725,6 +1620,112 @@ export namespace types {
 		}
 	}
 	
+	export class Bucket {
+	    bucketIndex: string;
+	    startBlock: number;
+	    endBlock: number;
+	    total: number;
+	    colorValue: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Bucket(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.bucketIndex = source["bucketIndex"];
+	        this.startBlock = source["startBlock"];
+	        this.endBlock = source["endBlock"];
+	        this.total = source["total"];
+	        this.colorValue = source["colorValue"];
+	    }
+	}
+	export class BucketStats {
+	    total: number;
+	    average: number;
+	    min: number;
+	    max: number;
+	    count: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new BucketStats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.total = source["total"];
+	        this.average = source["average"];
+	        this.min = source["min"];
+	        this.max = source["max"];
+	        this.count = source["count"];
+	    }
+	}
+	export class GridInfo {
+	    rows: number;
+	    columns: number;
+	    maxBlock: number;
+	    size: number;
+	    bucketCount: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new GridInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.rows = source["rows"];
+	        this.columns = source["columns"];
+	        this.maxBlock = source["maxBlock"];
+	        this.size = source["size"];
+	        this.bucketCount = source["bucketCount"];
+	    }
+	}
+	export class Buckets {
+	    series0: Bucket[];
+	    series0Stats: BucketStats;
+	    series1: Bucket[];
+	    series1Stats: BucketStats;
+	    series2: Bucket[];
+	    series2Stats: BucketStats;
+	    series3: Bucket[];
+	    series3Stats: BucketStats;
+	    gridInfo: GridInfo;
+	
+	    static createFrom(source: any = {}) {
+	        return new Buckets(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.series0 = this.convertValues(source["series0"], Bucket);
+	        this.series0Stats = this.convertValues(source["series0Stats"], BucketStats);
+	        this.series1 = this.convertValues(source["series1"], Bucket);
+	        this.series1Stats = this.convertValues(source["series1Stats"], BucketStats);
+	        this.series2 = this.convertValues(source["series2"], Bucket);
+	        this.series2Stats = this.convertValues(source["series2Stats"], BucketStats);
+	        this.series3 = this.convertValues(source["series3"], Bucket);
+	        this.series3Stats = this.convertValues(source["series3Stats"], BucketStats);
+	        this.gridInfo = this.convertValues(source["gridInfo"], GridInfo);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class CacheItemCalcs {
 	
 	
@@ -2377,6 +2378,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	
 	
 	

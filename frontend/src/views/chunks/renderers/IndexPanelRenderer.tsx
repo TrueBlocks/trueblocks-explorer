@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { Aggregation, HeatmapPanel } from '@components';
+import { BucketsConfig, HeatmapPanel } from '@components';
 import { usePayload } from '@hooks';
-import { chunks, types } from '@models';
+import { types } from '@models';
 import { formatNumericValue } from '@utils';
 
+import { ROUTE } from '../constants';
+
 export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
-  const indexConfig: Aggregation = {
+  const indexConfig: BucketsConfig = {
     dataFacet: types.DataFacet.INDEX,
+    collection: ROUTE,
     defaultMetric: 'nAddresses',
     // skipUntil: '2017',
     // timeGroupBy: 'quarterly',
@@ -16,24 +19,24 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
       {
         key: 'nAddresses',
         label: 'Number of Addresses',
-        bucketsField: 'series0' as keyof chunks.ChunksBuckets,
-        statsField: 'series0Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series0' as keyof types.Buckets,
+        statsField: 'series0Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'nAppearances',
         label: 'Number of Appearances',
-        bucketsField: 'series1' as keyof chunks.ChunksBuckets,
-        statsField: 'series1Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series1' as keyof types.Buckets,
+        statsField: 'series1Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'fileSize',
         label: 'File Size',
-        bucketsField: 'series2' as keyof chunks.ChunksBuckets,
-        statsField: 'series2Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series2' as keyof types.Buckets,
+        statsField: 'series2Stats' as keyof types.Buckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
         bytes: true,
@@ -66,12 +69,11 @@ export const IndexPanelRenderer = (row: Record<string, unknown> | null) => {
 
   return (
     <HeatmapPanel
-      aggConfig={indexConfig}
+      config={indexConfig}
       row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}
       setMetric={setMetric}
-      eventCollection="chunks"
     />
   );
 };

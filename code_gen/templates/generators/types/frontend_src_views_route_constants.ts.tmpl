@@ -1,0 +1,6 @@
+{{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+import { ViewRoute } from '../routes';
+
+export const ROUTE: ViewRoute = '{{$lower}}';
+

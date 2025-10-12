@@ -13,14 +13,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
 	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
-
 type DressesPage struct {
 	Facet         types.DataFacet `json:"facet"`
 	DalleDress    []*DalleDress   `json:"dalledress"`

@@ -1,12 +1,12 @@
 import { StyledButton } from '@components';
 import { Group, Stack, Text } from '@mantine/core';
-import { chunks } from '@models';
+import { types } from '@models';
 
 export interface MetricConfig {
   key: string;
   label: string;
-  bucketsField: keyof chunks.ChunksBuckets;
-  statsField: keyof chunks.ChunksBuckets;
+  bucketsField: keyof types.Buckets;
+  statsField: keyof types.Buckets;
   formatValue: (value: number) => string;
   bytes: boolean;
 }

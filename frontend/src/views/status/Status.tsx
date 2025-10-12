@@ -31,9 +31,9 @@ import { status } from '@models';
 import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
+import { ROUTE } from './constants';
 
-const ROUTE: ViewRoute = 'status';
 export const Status = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

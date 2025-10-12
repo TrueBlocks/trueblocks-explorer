@@ -40,16 +40,3 @@ func (c *ChunksCollection) updateBloomsBucket(bloom *Bloom) {
 	}
 	updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
 }
-
-// ClearBloomsBucket clears the facet's bucket cache data
-func (c *ChunksCollection) ClearBloomsBucket() {
-	facet := "blooms"
-	if c.mutexByFacet != nil && c.mutexByFacet[facet] != nil {
-		mutex := c.mutexByFacet[facet]
-		mutex.Lock()
-		defer mutex.Unlock()
-		if c.bucketsByFacet != nil {
-			delete(c.bucketsByFacet, facet)
-		}
-	}
-}

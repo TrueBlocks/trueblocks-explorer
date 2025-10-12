@@ -6,7 +6,6 @@ be found in the LICENSE file.
 Parts of this file were auto generated. Edit only those parts of
 the code inside of 'EXISTING_CODE' tags.
 -->
-
 # Dresses View
 
 // EXISTING_CODE
@@ -69,7 +68,7 @@ the code inside of 'EXISTING_CODE' tags.
   - compressedLog: a truncated, more readable version of the articulation
   - isNFT: true if the log is an NFT transfer
 
-- **Series Store (12 members)**
+- **Series Store (14 members)**
 
   - suffix: Series identifier
   - last: Last used index
@@ -83,6 +82,7 @@ the code inside of 'EXISTING_CODE' tags.
   - gazes: List of gazes
   - backstyles: List of back styles
   - compositions: List of compositions
+  - createdAt: Creation timestamp
   - modifiedAt: Last modified timestamp
 
 // EXISTING_CODE

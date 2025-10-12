@@ -31,9 +31,9 @@ import { names } from '@models';
 import { msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
+import { ROUTE } from './constants';
 
-const ROUTE: ViewRoute = 'names';
 export const Names = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

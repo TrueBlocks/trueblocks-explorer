@@ -1,8 +1,8 @@
 import { Box, Group, Text } from '@mantine/core';
-import { chunks } from '@models';
+import { types } from '@models';
 
 export interface StatsBoxProps {
-  statsData: chunks.BucketStats;
+  statsData: types.BucketStats;
   formatNumber: (value: number) => string;
   formatAverage: (value: number) => string;
 }

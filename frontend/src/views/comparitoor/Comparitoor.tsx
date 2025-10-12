@@ -32,10 +32,10 @@ import { comparitoor } from '@models';
 import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
+import { ROUTE } from './constants';
 import { renderers } from './renderers';
 
-const ROUTE: ViewRoute = 'comparitoor';
 export const Comparitoor = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

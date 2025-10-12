@@ -31,10 +31,10 @@ import { contracts } from '@models';
 import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
+import { ROUTE } from './constants';
 import { renderers } from './renderers';
 
-const ROUTE: ViewRoute = 'contracts';
 export const Contracts = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

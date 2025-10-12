@@ -58,13 +58,13 @@ import { {{$lower}} } from '@models';
 import { {{if and (not $hasCrud) (not (or $isExports $isChunks) )}}crud, {{end}}msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
+import { ROUTE } from './constants';
 import { createDetailPanel } from '@components';
 {{- if ne .RendererTypes "" }}
 import { renderers } from './renderers';
 {{- end }}
 
-const ROUTE: ViewRoute = '{{$lower}}';
 export const {{$class}} = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

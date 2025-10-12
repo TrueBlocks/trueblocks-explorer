@@ -33,13 +33,13 @@ import { dalle, dresses, model } from '@models';
 import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
-import { ViewRoute, assertRouteConsistency } from '../routes';
+import { assertRouteConsistency } from '../routes';
 import { SeriesModal } from './components';
+import { ROUTE } from './constants';
 import { useSeriesModal } from './hooks/seriesModal';
 import { renderers } from './renderers';
 import { getItemKey, useGalleryStore } from './store/useGalleryStore';
 
-const ROUTE: ViewRoute = 'dresses';
 export const Dresses = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);

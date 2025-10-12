@@ -1,8 +1,9 @@
 import { MetricConfig, TimeGroupBy } from '@components';
 import { types } from '@models';
 
-export interface Aggregation {
+export interface BucketsConfig {
   dataFacet: types.DataFacet;
+  collection: string;
   defaultMetric: string;
   metrics: MetricConfig[];
   skipUntil?: string;

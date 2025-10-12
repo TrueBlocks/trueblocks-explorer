@@ -6,9 +6,31 @@ import {sdk} from '../models';
 
 export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
+export function ClearApprovalsBucket():Promise<void>;
+
+export function ClearAssetsBucket():Promise<void>;
+
+export function ClearBalancesBucket():Promise<void>;
+
+export function ClearLogsBucket():Promise<void>;
+
+export function ClearReceiptsBucket():Promise<void>;
+
+export function ClearStatementsBucket():Promise<void>;
+
+export function ClearTracesBucket():Promise<void>;
+
+export function ClearTransactionsBucket():Promise<void>;
+
+export function ClearTransfersBucket():Promise<void>;
+
+export function ClearWithdrawalsBucket():Promise<void>;
+
 export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;
+
+export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetConfig():Promise<types.ViewConfig>;
 

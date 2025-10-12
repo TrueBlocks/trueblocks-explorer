@@ -45,16 +45,3 @@ func (c *ChunksCollection) updateIndexBucket(index *Index) {
 	}
 	updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
 }
-
-// ClearIndexBucket clears the facet's bucket cache data
-func (c *ChunksCollection) ClearIndexBucket() {
-	facet := "index"
-	if c.mutexByFacet != nil && c.mutexByFacet[facet] != nil {
-		mutex := c.mutexByFacet[facet]
-		mutex.Lock()
-		defer mutex.Unlock()
-		if c.bucketsByFacet != nil {
-			delete(c.bucketsByFacet, facet)
-		}
-	}
-}

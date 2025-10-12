@@ -1,5 +1,5 @@
 import { TimeGroupBy } from '@components';
-import { chunks } from '@models';
+import { types } from '@models';
 
 /**
  * Aggregates daily bucket data into larger time periods
@@ -8,14 +8,14 @@ import { chunks } from '@models';
  * @returns Aggregated buckets with new keys and summed values
  */
 export function aggregateTimeBasedBuckets(
-  buckets: chunks.Bucket[],
+  buckets: types.Bucket[],
   groupBy: TimeGroupBy,
-): chunks.Bucket[] {
+): types.Bucket[] {
   if (groupBy === 'daily') {
     return buckets; // No aggregation needed
   }
 
-  const aggregatedMap = new Map<string, chunks.Bucket>();
+  const aggregatedMap = new Map<string, types.Bucket>();
 
   buckets.forEach((bucket) => {
     const groupKey = getGroupKey(bucket.bucketIndex, groupBy);

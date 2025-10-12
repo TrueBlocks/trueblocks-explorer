@@ -8,9 +8,13 @@ export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
 export function Clean(arg1:types.Payload,arg2:Array<string>):Promise<void>;
 
+export function ClearMonitorsBucket():Promise<void>;
+
 export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;
+
+export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetConfig():Promise<types.ViewConfig>;
 

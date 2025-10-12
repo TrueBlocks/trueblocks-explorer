@@ -90,6 +90,10 @@ export function FromTemplate(arg1, arg2) {
   return window['go']['app']['App']['FromTemplate'](arg1, arg2);
 }
 
+export function GetAbisBuckets(arg1) {
+  return window['go']['app']['App']['GetAbisBuckets'](arg1);
+}
+
 export function GetAbisConfig(arg1) {
   return window['go']['app']['App']['GetAbisConfig'](arg1);
 }
@@ -154,6 +158,10 @@ export function GetChunksSummary(arg1) {
   return window['go']['app']['App']['GetChunksSummary'](arg1);
 }
 
+export function GetComparitoorBuckets(arg1) {
+  return window['go']['app']['App']['GetComparitoorBuckets'](arg1);
+}
+
 export function GetComparitoorConfig(arg1) {
   return window['go']['app']['App']['GetComparitoorConfig'](arg1);
 }
@@ -168,6 +176,10 @@ export function GetComparitoorSummary(arg1) {
 
 export function GetContext() {
   return window['go']['app']['App']['GetContext']();
+}
+
+export function GetContractsBuckets(arg1) {
+  return window['go']['app']['App']['GetContractsBuckets'](arg1);
 }
 
 export function GetContractsConfig(arg1) {
@@ -194,6 +206,10 @@ export function GetDefaultAppPreferences() {
   return window['go']['app']['App']['GetDefaultAppPreferences']();
 }
 
+export function GetDressesBuckets(arg1) {
+  return window['go']['app']['App']['GetDressesBuckets'](arg1);
+}
+
 export function GetDressesConfig(arg1) {
   return window['go']['app']['App']['GetDressesConfig'](arg1);
 }
@@ -204,6 +220,10 @@ export function GetDressesPage(arg1, arg2, arg3, arg4, arg5) {
 
 export function GetDressesSummary(arg1) {
   return window['go']['app']['App']['GetDressesSummary'](arg1);
+}
+
+export function GetExportsBuckets(arg1) {
+  return window['go']['app']['App']['GetExportsBuckets'](arg1);
 }
 
 export function GetExportsConfig(arg1) {
@@ -254,6 +274,10 @@ export function GetMarkdown(arg1, arg2, arg3) {
   return window['go']['app']['App']['GetMarkdown'](arg1, arg2, arg3);
 }
 
+export function GetMonitorsBuckets(arg1) {
+  return window['go']['app']['App']['GetMonitorsBuckets'](arg1);
+}
+
 export function GetMonitorsConfig(arg1) {
   return window['go']['app']['App']['GetMonitorsConfig'](arg1);
 }
@@ -264,6 +288,10 @@ export function GetMonitorsPage(arg1, arg2, arg3, arg4, arg5) {
 
 export function GetMonitorsSummary(arg1) {
   return window['go']['app']['App']['GetMonitorsSummary'](arg1);
+}
+
+export function GetNamesBuckets(arg1) {
+  return window['go']['app']['App']['GetNamesBuckets'](arg1);
 }
 
 export function GetNamesConfig(arg1) {
@@ -308,6 +336,10 @@ export function GetSkin() {
 
 export function GetSkinByName(arg1) {
   return window['go']['app']['App']['GetSkinByName'](arg1);
+}
+
+export function GetStatusBuckets(arg1) {
+  return window['go']['app']['App']['GetStatusBuckets'](arg1);
 }
 
 export function GetStatusConfig(arg1) {

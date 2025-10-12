@@ -3,11 +3,13 @@ package chunks
 import (
 	"strconv"
 	"testing"
+
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 func TestCalculateBucketStatsAndColors(t *testing.T) {
 	// Test with sample bucket data
-	buckets := []Bucket{
+	buckets := []types.Bucket{
 		{Total: 10.0},
 		{Total: 20.0},
 		{Total: 30.0},
@@ -53,7 +55,7 @@ func TestCalculateBucketStatsAndColors(t *testing.T) {
 }
 
 func TestCalculateBucketStatsAndColorsEmptySlice(t *testing.T) {
-	var buckets []Bucket
+	var buckets []types.Bucket
 
 	stats := calculateBucketStatsAndColors(buckets)
 
@@ -64,7 +66,7 @@ func TestCalculateBucketStatsAndColorsEmptySlice(t *testing.T) {
 }
 
 func TestCalculateBucketStatsAndColorsSingleBucket(t *testing.T) {
-	buckets := []Bucket{
+	buckets := []types.Bucket{
 		{Total: 42.0},
 	}
 
@@ -80,7 +82,7 @@ func TestCalculateBucketStatsAndColorsSingleBucket(t *testing.T) {
 }
 
 func TestEnsureBucketsExist(t *testing.T) {
-	var buckets []Bucket
+	var buckets []types.Bucket
 	size := uint64(100000)
 
 	// Test creating buckets from empty slice
@@ -96,8 +98,8 @@ func TestEnsureBucketsExist(t *testing.T) {
 		expectedEnd := uint64(i+1)*size - 1
 		expectedIndex := strconv.Itoa(i)
 
-		if bucket.BucketIndex != expectedIndex {
-			t.Errorf("Expected bucket index %s, got %s", expectedIndex, bucket.BucketIndex)
+		if bucket.BucketKey != expectedIndex {
+			t.Errorf("Expected bucket index %s, got %s", expectedIndex, bucket.BucketKey)
 		}
 		if bucket.StartBlock != expectedStart {
 			t.Errorf("Expected start block %d, got %d", expectedStart, bucket.StartBlock)
@@ -113,10 +115,10 @@ func TestEnsureBucketsExist(t *testing.T) {
 
 func TestDistributeToBuckets(t *testing.T) {
 	// Create 3 buckets for testing
-	buckets := []Bucket{
-		{BucketIndex: "0", StartBlock: 0, EndBlock: 99999, Total: 0},
-		{BucketIndex: "1", StartBlock: 100000, EndBlock: 199999, Total: 0},
-		{BucketIndex: "2", StartBlock: 200000, EndBlock: 299999, Total: 0},
+	buckets := []types.Bucket{
+		{BucketKey: "0", StartBlock: 0, EndBlock: 99999, Total: 0},
+		{BucketKey: "1", StartBlock: 100000, EndBlock: 199999, Total: 0},
+		{BucketKey: "2", StartBlock: 200000, EndBlock: 299999, Total: 0},
 	}
 	size := uint64(100000)
 

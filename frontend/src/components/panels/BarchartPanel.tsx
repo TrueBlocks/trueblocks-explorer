@@ -1,40 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-  Aggregation,
-  MetricSelector,
-  StatsBox,
-  StyledButton,
-} from '@components';
+import { BucketsConfig, MetricSelector, StatsBox } from '@components';
 import { useEvent } from '@hooks';
 import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
-import { chunks, msgs } from '@models';
+import { msgs, types } from '@models';
 import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
 
 interface BarchartPanelProps {
-  aggConfig: Aggregation;
+  config: BucketsConfig;
   row: Record<string, unknown> | null;
-  fetchBuckets: () => Promise<chunks.ChunksBuckets>;
+  fetchBuckets: () => Promise<types.Buckets>;
   getMetric: (facetName: string) => Promise<string>;
   setMetric: (facetName: string, metric: string) => Promise<void>;
-  eventCollection?: string; // e.g., 'chunks', 'exports', etc.
 }
 
 export const BarchartPanel = ({
-  aggConfig,
+  config,
   row: _row,
   fetchBuckets,
   getMetric,
   setMetric,
-  eventCollection = 'chunks',
 }: BarchartPanelProps) => {
-  const [skipUntil, _] = useState<string | null>('2017');
-  const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
+  const [buckets, setBuckets] = useState<types.Buckets | null>(null);
+  const [hasEverLoaded, setHasEverLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>(
-    aggConfig.defaultMetric,
+    config.defaultMetric,
   );
 
   // Utility functions
@@ -49,8 +42,8 @@ export const BarchartPanel = ({
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
-        const saved = await getMetric(aggConfig.dataFacet);
-        const validMetric = aggConfig.metrics.find((m) => m.key === saved);
+        const saved = await getMetric(config.dataFacet);
+        const validMetric = config.metrics.find((m) => m.key === saved);
         if (validMetric) {
           setSelectedMetric(validMetric.key);
         }
@@ -59,31 +52,31 @@ export const BarchartPanel = ({
       }
     };
     loadSelectedMetric();
-  }, [aggConfig.dataFacet, aggConfig.metrics, getMetric]);
+  }, [config.dataFacet, config.metrics, getMetric]);
 
   const handleMetricChange = useCallback(
     async (metric: string) => {
       setSelectedMetric(metric);
       try {
-        await setMetric(aggConfig.dataFacet, metric);
+        await setMetric(config.dataFacet, metric);
       } catch (error) {
         Log(`Failed to save metric preference: ${error}`);
       }
     },
-    [aggConfig.dataFacet, setMetric],
+    [config.dataFacet, setMetric],
   );
 
   // Cycle through metrics with hotkey
   const cycleToNextMetric = useCallback(() => {
-    const currentIndex = aggConfig.metrics.findIndex(
+    const currentIndex = config.metrics.findIndex(
       (m) => m.key === selectedMetric,
     );
-    const nextIndex = (currentIndex + 1) % aggConfig.metrics.length;
-    const nextMetric = aggConfig.metrics[nextIndex]?.key;
+    const nextIndex = (currentIndex + 1) % config.metrics.length;
+    const nextMetric = config.metrics[nextIndex]?.key;
     if (nextMetric) {
       handleMetricChange(nextMetric);
     }
-  }, [selectedMetric, aggConfig.metrics, handleMetricChange]);
+  }, [selectedMetric, config.metrics, handleMetricChange]);
 
   // Add hotkey for cycling metrics
   useHotkeys([['mod+shift+m', cycleToNextMetric]]);
@@ -95,6 +88,7 @@ export const BarchartPanel = ({
       const result = await fetchBuckets();
       if (result) {
         setBuckets(result);
+        setHasEverLoaded(true);
       } else {
         setError('No data returned from API');
       }
@@ -108,7 +102,16 @@ export const BarchartPanel = ({
   useEvent(
     msgs.EventType.DATA_LOADED,
     (_message: string, payload?: Record<string, unknown>) => {
-      if (payload?.collection === eventCollection) {
+      if (payload?.collection === config.collection) {
+        handleFetchBuckets();
+      }
+    },
+  );
+
+  useEvent(
+    msgs.EventType.DATA_RELOADED,
+    (_message: string, payload?: Record<string, unknown>) => {
+      if (payload?.collection === config.collection) {
         handleFetchBuckets();
       }
     },
@@ -122,8 +125,7 @@ export const BarchartPanel = ({
     handleFetchBuckets();
   }, [handleFetchBuckets]);
 
-  // Get current metric config
-  const currentMetric = aggConfig.metrics.find((m) => m.key === selectedMetric);
+  const currentMetric = config.metrics.find((m) => m.key === selectedMetric);
   if (!currentMetric) {
     return (
       <Box p="md">
@@ -136,19 +138,23 @@ export const BarchartPanel = ({
 
   // Get the buckets data and stats for the current metric
   const allBucketsData = buckets
-    ? (buckets[currentMetric.bucketsField] as chunks.Bucket[])
+    ? (buckets[currentMetric.bucketsField] as types.Bucket[])
     : [];
 
-  const filteredBuckets = skipUntil
-    ? allBucketsData.filter((bucket) => bucket.bucketIndex >= skipUntil!)
+  const filteredBuckets = config.skipUntil
+    ? allBucketsData.filter((bucket) => {
+        const bucketNum = parseInt(bucket.bucketIndex, 10);
+        const skipUntilNum = parseInt(config.skipUntil!, 10);
+        return bucketNum >= skipUntilNum;
+      })
     : allBucketsData;
 
-  const bucketsData = aggConfig.timeGroupBy
-    ? aggregateTimeBasedBuckets(filteredBuckets, aggConfig.timeGroupBy)
+  const bucketsData = config.timeGroupBy
+    ? aggregateTimeBasedBuckets(filteredBuckets, config.timeGroupBy)
     : filteredBuckets;
 
   const statsData = buckets
-    ? (buckets[currentMetric.statsField] as chunks.BucketStats)
+    ? (buckets[currentMetric.statsField] as types.BucketStats)
     : null;
 
   if (error) {
@@ -161,25 +167,24 @@ export const BarchartPanel = ({
     );
   }
 
+  // Only show loading if we've never loaded any data before
+  if (!hasEverLoaded) {
+    return <Text>Loading chart data...</Text>;
+  }
+
   if (!statsData || !bucketsData?.length) {
-    if (!buckets) {
-      return <Text>Loading chart data...</Text>;
-    }
     return (
       <Box p="md" ta="center">
         <Text c="dimmed" mb="md">
-          No chart data available
+          Loading...
         </Text>
-        <StyledButton onClick={handleFetchBuckets} variant="light" size="sm">
-          Refresh Data
-        </StyledButton>
       </Box>
     );
   }
 
   // Prepare chart data
   const chartData = bucketsData.map((bucket) => {
-    const name = aggConfig.timeGroupBy
+    const name = config.timeGroupBy
       ? formatGroupKey(bucket.bucketIndex)
       : `${bucket.startBlock}-${bucket.endBlock}`;
 
@@ -200,7 +205,7 @@ export const BarchartPanel = ({
       /> */}
       <MetricSelector
         metricConfig={currentMetric}
-        metrics={aggConfig.metrics}
+        metrics={config.metrics}
         onMetricChange={handleMetricChange}
       />
 
@@ -213,8 +218,8 @@ export const BarchartPanel = ({
       )}
 
       <Text size="sm" fw={500} mb="sm">
-        {aggConfig.timeGroupBy
-          ? `${currentMetric.label} - ${aggConfig.timeGroupBy.charAt(0).toUpperCase() + aggConfig.timeGroupBy.slice(1)} View`
+        {config.timeGroupBy
+          ? `${currentMetric.label} - ${config.timeGroupBy.charAt(0).toUpperCase() + config.timeGroupBy.slice(1)} View`
           : 'Bar Chart'}
       </Text>
 
@@ -244,7 +249,7 @@ export const BarchartPanel = ({
                 style={{ border: '1px solid #ddd', borderRadius: 4 }}
               >
                 <Text size="sm" fw={600}>
-                  {aggConfig.timeGroupBy ? 'Time Period' : 'Block Range'}:{' '}
+                  {config.timeGroupBy ? 'Time Period' : 'Block Range'}:{' '}
                   {data.name}
                 </Text>
                 <Text size="sm">

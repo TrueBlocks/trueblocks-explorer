@@ -8,7 +8,7 @@ import (
 
 // TestUpdateGridInfo tests the grid info update functionality
 func TestUpdateGridInfo(t *testing.T) {
-	gridInfo := &GridInfo{
+	gridInfo := &types.GridInfo{
 		Size:        100000,
 		Rows:        0,
 		Columns:     20,
@@ -257,7 +257,7 @@ func TestStatsBucketUpdate(t *testing.T) {
 	}
 }
 
-// TestGetChunksBucketsBloomsFacet tests GetChunksBuckets for blooms facet
+// TestGetChunksBucketsBloomsFacet tests GetBuckets for blooms facet
 func TestGetChunksBucketsBloomsFacet(t *testing.T) {
 	collection := &ChunksCollection{}
 
@@ -265,12 +265,12 @@ func TestGetChunksBucketsBloomsFacet(t *testing.T) {
 		DataFacet: ChunksBlooms,
 	}
 
-	result, err := collection.GetChunksBuckets(payload)
+	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return ChunksBuckets with empty Series0 and Series1, initialized Series2 and Series3
+	// Should return Buckets with empty Series0 and Series1, initialized Series2 and Series3
 	if len(result.Series0) != 0 {
 		t.Errorf("Expected empty Series0 for blooms facet, got length %d", len(result.Series0))
 	}
@@ -282,20 +282,20 @@ func TestGetChunksBucketsBloomsFacet(t *testing.T) {
 	}
 }
 
-// TestGetChunksBucketsStatsFacet tests GetChunksBuckets for stats facet
+// TestGetChunksBucketsStatsFacet tests GetBuckets for stats facet
 func TestGetChunksBucketsStatsFacet(t *testing.T) {
 	collection := &ChunksCollection{}
 
 	payload := &types.Payload{
-		DataFacet: ChunksStats,
+		DataFacet: "stats",
 	}
 
-	result, err := collection.GetChunksBuckets(payload)
+	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return ChunksBuckets with all four series initialized (but empty)
+	// Should return Buckets with all four series initialized (but empty)
 	if result.Series0 == nil {
 		t.Error("Expected Series0 to be initialized")
 	}
@@ -313,7 +313,7 @@ func TestGetChunksBucketsStatsFacet(t *testing.T) {
 	}
 }
 
-// TestGetChunksBucketsIndexFacet tests GetChunksBuckets for index facet
+// TestGetChunksBucketsIndexFacet tests GetBuckets for index facet
 func TestGetChunksBucketsIndexFacet(t *testing.T) {
 	collection := &ChunksCollection{}
 
@@ -321,12 +321,12 @@ func TestGetChunksBucketsIndexFacet(t *testing.T) {
 		DataFacet: ChunksIndex,
 	}
 
-	result, err := collection.GetChunksBuckets(payload)
+	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return ChunksBuckets with Series0, Series1, Series2 initialized, Series3 empty
+	// Should return Buckets with Series0, Series1, Series2 initialized, Series3 empty
 	if result.Series0 == nil {
 		t.Error("Expected Series0 to be initialized")
 	}
@@ -341,7 +341,7 @@ func TestGetChunksBucketsIndexFacet(t *testing.T) {
 	}
 }
 
-// TestGetChunksBucketsUnknownFacet tests GetChunksBuckets for unknown facet
+// TestGetChunksBucketsUnknownFacet tests GetBuckets for unknown facet
 func TestGetChunksBucketsUnknownFacet(t *testing.T) {
 	collection := &ChunksCollection{}
 
@@ -349,12 +349,12 @@ func TestGetChunksBucketsUnknownFacet(t *testing.T) {
 		DataFacet: "unknown",
 	}
 
-	result, err := collection.GetChunksBuckets(payload)
+	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return empty ChunksBuckets with default grid info
+	// Should return empty Buckets with default grid info
 	if len(result.Series0) != 0 {
 		t.Errorf("Expected empty Series0, got length %d", len(result.Series0))
 	}
@@ -428,7 +428,7 @@ func TestSeries3RegressionBug(t *testing.T) {
 	collection.updateStatsBucket(stats)
 
 	payload := &types.Payload{DataFacet: ChunksStats}
-	result, err := collection.GetChunksBuckets(payload)
+	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}

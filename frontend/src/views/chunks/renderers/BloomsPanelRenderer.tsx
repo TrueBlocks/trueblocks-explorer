@@ -1,31 +1,32 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { Aggregation, HeatmapPanel } from '@components';
+import { BucketsConfig, HeatmapPanel } from '@components';
 import { usePayload } from '@hooks';
-import { chunks, types } from '@models';
+import { types } from '@models';
 import { formatNumericValue } from '@utils';
 
+import { ROUTE } from '../constants';
+
 export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
-  const bloomsConfig: Aggregation = {
+  const bloomsConfig: BucketsConfig = {
     dataFacet: types.DataFacet.BLOOMS,
+    collection: ROUTE,
     defaultMetric: 'nBlooms',
-    // skipUntil: '2017',
-    // timeGroupBy: 'quarterly',
     metrics: [
       {
         key: 'nBlooms',
         label: 'Number of Blooms',
-        bucketsField: 'series3' as keyof chunks.ChunksBuckets,
-        statsField: 'series3Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series3' as keyof types.Buckets,
+        statsField: 'series3Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'fileSize',
         label: 'File Size',
-        bucketsField: 'series2' as keyof chunks.ChunksBuckets,
-        statsField: 'series2Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series2' as keyof types.Buckets,
+        statsField: 'series2Stats' as keyof types.Buckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
         bytes: true,
@@ -58,12 +59,11 @@ export const BloomsPanelRenderer = (row: Record<string, unknown> | null) => {
 
   return (
     <HeatmapPanel
-      aggConfig={bloomsConfig}
+      config={bloomsConfig}
       row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}
       setMetric={setMetric}
-      eventCollection="chunks"
     />
   );
 };

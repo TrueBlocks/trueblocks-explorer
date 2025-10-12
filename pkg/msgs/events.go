@@ -133,6 +133,10 @@ func EmitLoaded(payload types.DataLoadedPayload) {
 	emitMessage(EventDataLoaded, payload.Collection, payload)
 }
 
+func EmitReloaded(payload types.Payload) {
+	emitMessage(EventDataReloaded, payload.Collection, payload)
+}
+
 // EmitStatus sends a general status update.
 func EmitStatus(msgText string, payload ...interface{}) {
 	emitMessage(EventStatus, msgText, payload...)

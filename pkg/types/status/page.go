@@ -18,7 +18,6 @@ import (
 )
 
 // EXISTING_CODE
-
 type StatusPage struct {
 	Facet         types.DataFacet `json:"facet"`
 	Caches        []*Cache        `json:"caches"`

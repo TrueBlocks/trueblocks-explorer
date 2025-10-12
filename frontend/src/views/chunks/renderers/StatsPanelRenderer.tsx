@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
 import { GetChunksBuckets, GetChunksMetric, SetChunksMetric } from '@app';
-import { Aggregation, BarchartPanel } from '@components';
+import { BarchartPanel, BucketsConfig } from '@components';
 import { usePayload } from '@hooks';
-import { chunks, types } from '@models';
+import { types } from '@models';
 import { formatNumericValue } from '@utils';
 
+import { ROUTE } from '../constants';
+
 export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
-  const statsConfig: Aggregation = {
+  const statsConfig: BucketsConfig = {
     dataFacet: types.DataFacet.STATS,
+    collection: ROUTE,
     defaultMetric: 'ratio',
     skipUntil: '2017',
     timeGroupBy: 'quarterly',
@@ -16,24 +19,24 @@ export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
       {
         key: 'ratio',
         label: 'Compression',
-        bucketsField: 'series0' as keyof chunks.ChunksBuckets,
-        statsField: 'series0Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series0' as keyof types.Buckets,
+        statsField: 'series0Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'appsPerBlk',
         label: 'Apps per Block',
-        bucketsField: 'series1' as keyof chunks.ChunksBuckets,
-        statsField: 'series1Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series1' as keyof types.Buckets,
+        statsField: 'series1Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),
         bytes: false,
       },
       {
         key: 'addrsPerBlk',
         label: 'Addrs per Block',
-        bucketsField: 'series2' as keyof chunks.ChunksBuckets,
-        statsField: 'series2Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series2' as keyof types.Buckets,
+        statsField: 'series2Stats' as keyof types.Buckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
         bytes: false,
@@ -41,8 +44,8 @@ export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
       {
         key: 'appsPerAddr',
         label: 'Apps per Addr',
-        bucketsField: 'series3' as keyof chunks.ChunksBuckets,
-        statsField: 'series3Stats' as keyof chunks.ChunksBuckets,
+        bucketsField: 'series3' as keyof types.Buckets,
+        statsField: 'series3Stats' as keyof types.Buckets,
         formatValue: (value: number) =>
           formatNumericValue(Math.round(value), true),
         bytes: false,
@@ -75,12 +78,11 @@ export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
 
   return (
     <BarchartPanel
-      aggConfig={statsConfig}
+      config={statsConfig}
       row={row}
       fetchBuckets={fetchBuckets}
       getMetric={getMetric}
       setMetric={setMetric}
-      eventCollection="chunks"
     />
   );
 };

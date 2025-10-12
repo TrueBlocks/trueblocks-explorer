@@ -1,5 +1,7 @@
 package chunks
 
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+
 func (c *ChunksCollection) updateStatsBucket(stats *Stats) {
 	if stats == nil {
 		return
@@ -25,7 +27,7 @@ func (c *ChunksCollection) updateStatsBucket(stats *Stats) {
 }
 
 // updateStatsBucketTimeBase handles time-based daily bucketing for stats
-func (c *ChunksCollection) updateStatsBucketTimeBase(stats *Stats, bucket *ChunksBuckets) {
+func (c *ChunksCollection) updateStatsBucketTimeBase(stats *Stats, bucket *types.Buckets) {
 	startBucket, err := parseDateToDailyBucket(stats.RangeDates.FirstDate)
 	if err != nil {
 		return
@@ -44,7 +46,7 @@ func (c *ChunksCollection) updateStatsBucketTimeBase(stats *Stats, bucket *Chunk
 }
 
 // updateStatsBucketBlockBase handles traditional block-based bucketing (fallback)
-func (c *ChunksCollection) updateStatsBucketBlockBase(stats *Stats, bucket *ChunksBuckets) {
+func (c *ChunksCollection) updateStatsBucketBlockBase(stats *Stats, bucket *types.Buckets) {
 	// Parse the range string to get block numbers
 	firstBlock, lastBlock, err := parseRangeString(stats.Range)
 	if err != nil {
@@ -78,17 +80,4 @@ func (c *ChunksCollection) updateStatsBucketBlockBase(stats *Stats, bucket *Chun
 		maxBuckets = len(bucket.Series3)
 	}
 	updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
-}
-
-// ClearStatsBucket clears the facet's bucket cache data
-func (c *ChunksCollection) ClearStatsBucket() {
-	facet := "stats"
-	if c.mutexByFacet != nil && c.mutexByFacet[facet] != nil {
-		mutex := c.mutexByFacet[facet]
-		mutex.Lock()
-		defer mutex.Unlock()
-		if c.bucketsByFacet != nil {
-			delete(c.bucketsByFacet, facet)
-		}
-	}
 }

@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-  Aggregation,
+  BucketsConfig,
   IntensityLegend,
   MetricSelector,
   StatsBox,
-  StyledButton,
 } from '@components';
 import { useEvent } from '@hooks';
 import {
@@ -17,38 +16,37 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
-import { chunks, msgs } from '@models';
+import { msgs, types } from '@models';
 import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
 
 interface HeatmapPanelProps {
-  aggConfig: Aggregation;
+  config: BucketsConfig;
   row: Record<string, unknown> | null;
-  fetchBuckets: () => Promise<chunks.ChunksBuckets>;
+  fetchBuckets: () => Promise<types.Buckets>;
   getMetric: (facetName: string) => Promise<string>;
   setMetric: (facetName: string, metric: string) => Promise<void>;
-  eventCollection: string;
 }
 
 export const HeatmapPanel = ({
-  aggConfig,
+  config,
   row: _row,
   fetchBuckets,
   getMetric,
   setMetric,
-  eventCollection,
 }: HeatmapPanelProps) => {
   const theme = useMantineTheme();
-  const [buckets, setBuckets] = useState<chunks.ChunksBuckets | null>(null);
+  const [buckets, setBuckets] = useState<types.Buckets | null>(null);
+  const [hasEverLoaded, setHasEverLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedMetric, setSelectedMetric] = useState<string>(
-    aggConfig.defaultMetric,
+    config.defaultMetric,
   );
 
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
-        const saved = await getMetric(aggConfig.dataFacet);
-        const validMetric = aggConfig.metrics.find((m) => m.key === saved);
+        const saved = await getMetric(config.dataFacet);
+        const validMetric = config.metrics.find((m) => m.key === saved);
         if (validMetric) {
           setSelectedMetric(validMetric.key);
         }
@@ -57,31 +55,31 @@ export const HeatmapPanel = ({
       }
     };
     loadSelectedMetric();
-  }, [aggConfig.dataFacet, aggConfig.metrics, getMetric]);
+  }, [config.dataFacet, config.metrics, getMetric]);
 
   const handleMetricChange = useCallback(
     async (metric: string) => {
       setSelectedMetric(metric);
       try {
-        await setMetric(aggConfig.dataFacet, metric);
+        await setMetric(config.dataFacet, metric);
       } catch (error) {
         Log(`Failed to save metric preference: ${error}`);
       }
     },
-    [aggConfig.dataFacet, setMetric],
+    [config.dataFacet, setMetric],
   );
 
   // Cycle through metrics with hotkey
   const cycleToNextMetric = useCallback(() => {
-    const currentIndex = aggConfig.metrics.findIndex(
+    const currentIndex = config.metrics.findIndex(
       (m) => m.key === selectedMetric,
     );
-    const nextIndex = (currentIndex + 1) % aggConfig.metrics.length;
-    const nextMetric = aggConfig.metrics[nextIndex]?.key;
+    const nextIndex = (currentIndex + 1) % config.metrics.length;
+    const nextMetric = config.metrics[nextIndex]?.key;
     if (nextMetric) {
       handleMetricChange(nextMetric);
     }
-  }, [selectedMetric, aggConfig.metrics, handleMetricChange]);
+  }, [selectedMetric, config.metrics, handleMetricChange]);
 
   // Add hotkey for cycling metrics
   useHotkeys([['mod+shift+m', cycleToNextMetric]]);
@@ -93,6 +91,7 @@ export const HeatmapPanel = ({
       const result = await fetchBuckets();
       if (result) {
         setBuckets(result);
+        setHasEverLoaded(true);
       } else {
         setError('No data returned from API');
       }
@@ -106,7 +105,16 @@ export const HeatmapPanel = ({
   useEvent(
     msgs.EventType.DATA_LOADED,
     (_message: string, payload?: Record<string, unknown>) => {
-      if (payload?.collection === eventCollection) {
+      if (payload?.collection === config.collection) {
+        handleFetchBuckets();
+      }
+    },
+  );
+
+  useEvent(
+    msgs.EventType.DATA_RELOADED,
+    (_message: string, payload?: Record<string, unknown>) => {
+      if (payload?.collection === config.collection) {
         handleFetchBuckets();
       }
     },
@@ -121,33 +129,36 @@ export const HeatmapPanel = ({
   }, [handleFetchBuckets]);
 
   const getMetricConfig = (metric: string) => {
-    return aggConfig.metrics.find((m) => m.key === metric);
+    return config.metrics.find((m) => m.key === metric);
   };
 
   const getMetricData = () => {
-    if (!buckets) return { bucketsData: [], statsData: null };
+    if (!buckets) {
+      return { bucketsData: [], statsData: null };
+    }
 
-    const config = getMetricConfig(selectedMetric);
-    if (!config) return { bucketsData: [], statsData: null };
+    const metConfig = getMetricConfig(selectedMetric);
+    if (!metConfig) {
+      return { bucketsData: [], statsData: null };
+    }
 
-    const allBuckets = (buckets[config.bucketsField] as chunks.Bucket[]) || [];
+    const allBuckets =
+      (buckets[metConfig.bucketsField] as types.Bucket[]) || [];
 
-    let filteredBuckets = aggConfig.skipUntil
-      ? allBuckets.filter(
-          (bucket) => bucket.bucketIndex >= aggConfig.skipUntil!,
-        )
+    let filteredBuckets = config.skipUntil
+      ? allBuckets.filter((bucket) => bucket.bucketIndex >= config.skipUntil!)
       : allBuckets;
 
-    if (aggConfig.timeGroupBy) {
+    if (config.timeGroupBy) {
       filteredBuckets = aggregateTimeBasedBuckets(
         filteredBuckets,
-        aggConfig.timeGroupBy,
+        config.timeGroupBy,
       );
     }
 
     return {
       bucketsData: filteredBuckets,
-      statsData: buckets[config.statsField] as chunks.BucketStats,
+      statsData: buckets[metConfig.statsField] as types.BucketStats,
     };
   };
 
@@ -182,24 +193,19 @@ export const HeatmapPanel = ({
     );
   }
 
-  if (!buckets) {
+  // Only show loading if we've never loaded any data before
+  if (!hasEverLoaded) {
     return <Text>Loading heat map...</Text>;
   }
 
   const { bucketsData, statsData } = getMetricData();
 
-  if (!statsData || !bucketsData?.length) {
-    if (!buckets) {
-      return <Text>Loading chart data...</Text>;
-    }
+  if (!bucketsData?.length || !statsData || !buckets) {
     return (
       <Box p="md" ta="center">
         <Text c="dimmed" mb="md">
-          No chart data available
+          Loading...
         </Text>
-        <StyledButton onClick={handleFetchBuckets} variant="light" size="sm">
-          Refresh Data
-        </StyledButton>
       </Box>
     );
   }
@@ -221,7 +227,7 @@ export const HeatmapPanel = ({
     <Stack gap="md" p="md">
       <MetricSelector
         metricConfig={metricConfig}
-        metrics={aggConfig.metrics}
+        metrics={config.metrics}
         onMetricChange={handleMetricChange}
       />
 
@@ -270,7 +276,7 @@ export const HeatmapPanel = ({
                 key={dataPoint.bucketIndex}
                 label={
                   <Box>
-                    {aggConfig.timeGroupBy ? (
+                    {config.timeGroupBy ? (
                       <Text size="xs">
                         Period: {formatGroupKey(dataPoint.bucketIndex)}
                       </Text>

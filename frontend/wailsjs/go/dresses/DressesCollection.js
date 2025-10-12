@@ -6,12 +6,36 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['dresses']['DressesCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ClearDatabasesBucket() {
+  return window['go']['dresses']['DressesCollection']['ClearDatabasesBucket']();
+}
+
+export function ClearEventsBucket() {
+  return window['go']['dresses']['DressesCollection']['ClearEventsBucket']();
+}
+
+export function ClearGalleryBucket() {
+  return window['go']['dresses']['DressesCollection']['ClearGalleryBucket']();
+}
+
+export function ClearGeneratorBucket() {
+  return window['go']['dresses']['DressesCollection']['ClearGeneratorBucket']();
+}
+
+export function ClearSeriesBucket() {
+  return window['go']['dresses']['DressesCollection']['ClearSeriesBucket']();
+}
+
 export function Crud(arg1, arg2, arg3) {
   return window['go']['dresses']['DressesCollection']['Crud'](arg1, arg2, arg3);
 }
 
 export function ExportData(arg1) {
   return window['go']['dresses']['DressesCollection']['ExportData'](arg1);
+}
+
+export function GetBuckets(arg1) {
+  return window['go']['dresses']['DressesCollection']['GetBuckets'](arg1);
 }
 
 export function GetConfig() {

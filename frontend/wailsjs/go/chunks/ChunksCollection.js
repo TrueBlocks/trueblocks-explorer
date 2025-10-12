@@ -14,6 +14,10 @@ export function ClearIndexBucket() {
   return window['go']['chunks']['ChunksCollection']['ClearIndexBucket']();
 }
 
+export function ClearManifestBucket() {
+  return window['go']['chunks']['ChunksCollection']['ClearManifestBucket']();
+}
+
 export function ClearStatsBucket() {
   return window['go']['chunks']['ChunksCollection']['ClearStatsBucket']();
 }
@@ -26,8 +30,8 @@ export function ExportData(arg1) {
   return window['go']['chunks']['ChunksCollection']['ExportData'](arg1);
 }
 
-export function GetChunksBuckets(arg1) {
-  return window['go']['chunks']['ChunksCollection']['GetChunksBuckets'](arg1);
+export function GetBuckets(arg1) {
+  return window['go']['chunks']['ChunksCollection']['GetBuckets'](arg1);
 }
 
 export function GetConfig() {

@@ -42,7 +42,7 @@ type ChunksCollection struct {
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
 
-	bucketsByFacet  map[string]*ChunksBuckets
+	bucketsByFacet  map[string]*types.Buckets
 	mutexByFacet    map[string]*sync.RWMutex
 	initOnceByFacet map[string]*sync.Once
 	collectionMutex sync.RWMutex
@@ -177,10 +177,8 @@ func (c *ChunksCollection) Reset(dataFacet types.DataFacet) {
 		c.statsFacet.GetStore().Reset()
 	case ChunksIndex:
 		c.indexFacet.GetStore().Reset()
-		c.ClearIndexBucket()
 	case ChunksBlooms:
 		c.bloomsFacet.GetStore().Reset()
-		c.ClearBloomsBucket()
 	case ChunksManifest:
 		c.manifestFacet.GetStore().Reset()
 	default:

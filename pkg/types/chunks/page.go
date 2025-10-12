@@ -18,7 +18,6 @@ import (
 )
 
 // EXISTING_CODE
-
 type ChunksPage struct {
 	Facet         types.DataFacet `json:"facet"`
 	Blooms        []*Bloom        `json:"blooms"`

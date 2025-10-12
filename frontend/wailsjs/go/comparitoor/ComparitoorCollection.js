@@ -6,8 +6,32 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['comparitoor']['ComparitoorCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ClearAlchemyBucket() {
+  return window['go']['comparitoor']['ComparitoorCollection']['ClearAlchemyBucket']();
+}
+
+export function ClearChifraBucket() {
+  return window['go']['comparitoor']['ComparitoorCollection']['ClearChifraBucket']();
+}
+
+export function ClearComparitoorBucket() {
+  return window['go']['comparitoor']['ComparitoorCollection']['ClearComparitoorBucket']();
+}
+
+export function ClearCovalentBucket() {
+  return window['go']['comparitoor']['ComparitoorCollection']['ClearCovalentBucket']();
+}
+
+export function ClearEtherScanBucket() {
+  return window['go']['comparitoor']['ComparitoorCollection']['ClearEtherScanBucket']();
+}
+
 export function ExportData(arg1) {
   return window['go']['comparitoor']['ComparitoorCollection']['ExportData'](arg1);
+}
+
+export function GetBuckets(arg1) {
+  return window['go']['comparitoor']['ComparitoorCollection']['GetBuckets'](arg1);
 }
 
 export function GetConfig() {

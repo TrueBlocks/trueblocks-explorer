@@ -5,34 +5,36 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // ensureBucketsExist ensures that the bucket slice has at least targetIndex+1 buckets
-func ensureBucketsExist(buckets *[]Bucket, targetIndex int, size uint64) {
+func ensureBucketsExist(buckets *[]types.Bucket, targetIndex int, size uint64) {
 	for len(*buckets) <= targetIndex {
-		newBucketIndex := len(*buckets)
-		startBlock := uint64(newBucketIndex) * size
-		endBlock := uint64(newBucketIndex+1)*size - 1
+		newBucketKey := len(*buckets)
+		startBlock := uint64(newBucketKey) * size
+		endBlock := uint64(newBucketKey+1)*size - 1
 
-		newBucket := Bucket{
-			BucketIndex: strconv.Itoa(newBucketIndex),
-			StartBlock:  startBlock,
-			EndBlock:    endBlock,
-			Total:       0,
-			ColorValue:  0,
+		newBucket := types.Bucket{
+			BucketKey:  strconv.Itoa(newBucketKey),
+			StartBlock: startBlock,
+			EndBlock:   endBlock,
+			Total:      0,
+			ColorValue: 0,
 		}
 		*buckets = append(*buckets, newBucket)
 	}
 }
 
 // distributeToBuckets distributes a value across buckets using linear interpolation
-func distributeToBuckets(buckets *[]Bucket, firstBlock, lastBlock uint64, value float64, size uint64) {
+func distributeToBuckets(buckets *[]types.Bucket, firstBlock, lastBlock uint64, value float64, size uint64) {
 	rangeSize := lastBlock - firstBlock + 1
-	firstBucketIndex := int(firstBlock / size)
-	lastBucketIndex := int(lastBlock / size)
+	firstBucketKey := int(firstBlock / size)
+	lastBucketKey := int(lastBlock / size)
 
 	// Distribute data across all affected buckets using linear interpolation
-	for bucketIndex := firstBucketIndex; bucketIndex <= lastBucketIndex; bucketIndex++ {
+	for bucketIndex := firstBucketKey; bucketIndex <= lastBucketKey; bucketIndex++ {
 		bucketStartBlock := uint64(bucketIndex) * size
 		bucketEndBlock := uint64(bucketIndex+1)*size - 1
 
@@ -50,7 +52,7 @@ func distributeToBuckets(buckets *[]Bucket, firstBlock, lastBlock uint64, value 
 }
 
 // updateGridInfo updates grid information based on current bucket state
-func updateGridInfo(gridInfo *GridInfo, maxBuckets int, lastBlock uint64) {
+func updateGridInfo(gridInfo *types.GridInfo, maxBuckets int, lastBlock uint64) {
 	if maxBuckets > gridInfo.BucketCount {
 		gridInfo.BucketCount = maxBuckets
 	}
@@ -63,9 +65,9 @@ func updateGridInfo(gridInfo *GridInfo, maxBuckets int, lastBlock uint64) {
 // calculateBucketStatsAndColors computes statistics and assigns color values for a slice of buckets.
 // This function modifies the ColorValue field of each bucket in-place and returns the calculated statistics.
 // Color values are calculated as the deviation from average: (value - average) / average
-func calculateBucketStatsAndColors(buckets []Bucket) BucketStats {
+func calculateBucketStatsAndColors(buckets []types.Bucket) types.BucketStats {
 	if len(buckets) == 0 {
-		return BucketStats{}
+		return types.BucketStats{}
 	}
 
 	var total, min, max float64
@@ -94,7 +96,7 @@ func calculateBucketStatsAndColors(buckets []Bucket) BucketStats {
 		}
 	}
 
-	return BucketStats{
+	return types.BucketStats{
 		Total:   total,
 		Average: avg,
 		Min:     min,
@@ -137,7 +139,7 @@ func parseDateToDailyBucket(dateStr string) (string, error) {
 }
 
 // ensureTimeBucketsExist ensures that time-based buckets exist for a date range
-func (c *ChunksCollection) ensureTimeBucketsExist(bucket *ChunksBuckets, startBucket, endBucket string) {
+func (c *ChunksCollection) ensureTimeBucketsExist(bucket *types.Buckets, startBucket, endBucket string) {
 	// For now, just ensure the start and end buckets exist
 	// In a full implementation, you'd generate all daily buckets between start and end
 	c.ensureDailyBucketExists(bucket, startBucket)
@@ -145,12 +147,12 @@ func (c *ChunksCollection) ensureTimeBucketsExist(bucket *ChunksBuckets, startBu
 }
 
 // ensureDailyBucketExists ensures a single daily bucket exists
-func (c *ChunksCollection) ensureDailyBucketExists(bucket *ChunksBuckets, bucketKey string) {
+func (c *ChunksCollection) ensureDailyBucketExists(bucket *types.Buckets, bucketKey string) {
 	// Check if bucket exists in any series
 	found := false
-	for _, series := range []*[]Bucket{&bucket.Series0, &bucket.Series1, &bucket.Series2, &bucket.Series3} {
+	for _, series := range []*[]types.Bucket{&bucket.Series0, &bucket.Series1, &bucket.Series2, &bucket.Series3} {
 		for i := range *series {
-			if (*series)[i].BucketIndex == bucketKey {
+			if (*series)[i].BucketKey == bucketKey {
 				found = true
 				break
 			}
@@ -162,12 +164,12 @@ func (c *ChunksCollection) ensureDailyBucketExists(bucket *ChunksBuckets, bucket
 
 	if !found {
 		// Add the bucket to all series
-		newBucket := Bucket{
-			BucketIndex: bucketKey,
-			StartBlock:  0, // For time-based buckets, block ranges are less relevant
-			EndBlock:    0,
-			Total:       0,
-			ColorValue:  0,
+		newBucket := types.Bucket{
+			BucketKey:  bucketKey,
+			StartBlock: 0, // For time-based buckets, block ranges are less relevant
+			EndBlock:   0,
+			Total:      0,
+			ColorValue: 0,
 		}
 
 		bucket.Series0 = append(bucket.Series0, newBucket)
@@ -178,7 +180,7 @@ func (c *ChunksCollection) ensureDailyBucketExists(bucket *ChunksBuckets, bucket
 }
 
 // distributeToTimeBuckets distributes stats values across time buckets
-func (c *ChunksCollection) distributeToTimeBuckets(bucket *ChunksBuckets, startBucket, endBucket string, stats *Stats) {
+func (c *ChunksCollection) distributeToTimeBuckets(bucket *types.Buckets, startBucket, endBucket string, stats *Stats) {
 	// For simplicity, add values to both start and end buckets
 	// In a more sophisticated implementation, you'd distribute proportionally across all days in the range
 
@@ -189,10 +191,10 @@ func (c *ChunksCollection) distributeToTimeBuckets(bucket *ChunksBuckets, startB
 }
 
 // addStatsToTimeBucket adds stats values to a specific time bucket
-func (c *ChunksCollection) addStatsToTimeBucket(bucket *ChunksBuckets, bucketKey string, stats *Stats) {
+func (c *ChunksCollection) addStatsToTimeBucket(bucket *types.Buckets, bucketKey string, stats *Stats) {
 	// Find the bucket and add values to it
 	for i := range bucket.Series0 {
-		if bucket.Series0[i].BucketIndex == bucketKey {
+		if bucket.Series0[i].BucketKey == bucketKey {
 			bucket.Series0[i].Total += float64(stats.Ratio)
 			bucket.Series0[i].ColorValue += float64(stats.Ratio)
 			break
@@ -200,7 +202,7 @@ func (c *ChunksCollection) addStatsToTimeBucket(bucket *ChunksBuckets, bucketKey
 	}
 
 	for i := range bucket.Series1 {
-		if bucket.Series1[i].BucketIndex == bucketKey {
+		if bucket.Series1[i].BucketKey == bucketKey {
 			bucket.Series1[i].Total += float64(stats.AppsPerBlock)
 			bucket.Series1[i].ColorValue += float64(stats.AppsPerBlock)
 			break
@@ -208,7 +210,7 @@ func (c *ChunksCollection) addStatsToTimeBucket(bucket *ChunksBuckets, bucketKey
 	}
 
 	for i := range bucket.Series2 {
-		if bucket.Series2[i].BucketIndex == bucketKey {
+		if bucket.Series2[i].BucketKey == bucketKey {
 			bucket.Series2[i].Total += float64(stats.AddrsPerBlock)
 			bucket.Series2[i].ColorValue += float64(stats.AddrsPerBlock)
 			break
@@ -216,7 +218,7 @@ func (c *ChunksCollection) addStatsToTimeBucket(bucket *ChunksBuckets, bucketKey
 	}
 
 	for i := range bucket.Series3 {
-		if bucket.Series3[i].BucketIndex == bucketKey {
+		if bucket.Series3[i].BucketKey == bucketKey {
 			bucket.Series3[i].Total += float64(stats.AppsPerAddr)
 			bucket.Series3[i].ColorValue += float64(stats.AppsPerAddr)
 			break

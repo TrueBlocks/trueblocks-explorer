@@ -6,8 +6,24 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['status']['StatusCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ClearCachesBucket() {
+  return window['go']['status']['StatusCollection']['ClearCachesBucket']();
+}
+
+export function ClearChainsBucket() {
+  return window['go']['status']['StatusCollection']['ClearChainsBucket']();
+}
+
+export function ClearStatusBucket() {
+  return window['go']['status']['StatusCollection']['ClearStatusBucket']();
+}
+
 export function ExportData(arg1) {
   return window['go']['status']['StatusCollection']['ExportData'](arg1);
+}
+
+export function GetBuckets(arg1) {
+  return window['go']['status']['StatusCollection']['GetBuckets'](arg1);
 }
 
 export function GetConfig() {

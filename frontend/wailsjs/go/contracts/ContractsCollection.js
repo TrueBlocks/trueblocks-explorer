@@ -6,8 +6,24 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['contracts']['ContractsCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ClearDashboardBucket() {
+  return window['go']['contracts']['ContractsCollection']['ClearDashboardBucket']();
+}
+
+export function ClearEventsBucket() {
+  return window['go']['contracts']['ContractsCollection']['ClearEventsBucket']();
+}
+
+export function ClearExecuteBucket() {
+  return window['go']['contracts']['ContractsCollection']['ClearExecuteBucket']();
+}
+
 export function ExportData(arg1) {
   return window['go']['contracts']['ContractsCollection']['ExportData'](arg1);
+}
+
+export function GetBuckets(arg1) {
+  return window['go']['contracts']['ContractsCollection']['GetBuckets'](arg1);
 }
 
 export function GetConfig() {

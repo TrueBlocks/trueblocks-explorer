@@ -3995,10 +3995,10 @@
                     "isArray": true
                 },
                 {
-                    "name": "orientations",
+                    "name": "viewpoints",
                     "type": "string",
                     "docOrder": 9,
-                    "description": "List of orientations",
+                    "description": "List of viewpoints",
                     "num": 9,
                     "isArray": true
                 },
@@ -4019,11 +4019,26 @@
                     "isArray": true
                 },
                 {
+                    "name": "compositions",
+                    "type": "string",
+                    "docOrder": 12,
+                    "description": "List of compositions",
+                    "num": 12,
+                    "isArray": true
+                },
+                {
+                    "name": "createdAt",
+                    "type": "datetime",
+                    "docOrder": 13,
+                    "description": "Creation timestamp",
+                    "num": 13
+                },
+                {
                     "name": "modifiedAt",
                     "type": "datetime",
-                    "docOrder": 12,
+                    "docOrder": 14,
                     "description": "Last modified timestamp",
-                    "num": 12
+                    "num": 14
                 }
             ]
         },

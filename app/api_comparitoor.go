@@ -46,5 +46,11 @@ func (a *App) GetComparitoorConfig(payload types.Payload) (*types.ViewConfig, er
 	return collection.GetConfig()
 }
 
+// GetComparitoorBuckets returns bucket visualization data for comparitoor
+func (a *App) GetComparitoorBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := comparitoor.GetComparitoorCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

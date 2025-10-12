@@ -46,5 +46,11 @@ func (a *App) GetContractsConfig(payload types.Payload) (*types.ViewConfig, erro
 	return collection.GetConfig()
 }
 
+// GetContractsBuckets returns bucket visualization data for contracts
+func (a *App) GetContractsBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := contracts.GetContractsCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

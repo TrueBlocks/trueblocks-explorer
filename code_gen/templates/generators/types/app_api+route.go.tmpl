@@ -61,5 +61,11 @@ func (a *App) Get{{$class}}Config(payload types.Payload) (*types.ViewConfig, err
 	return collection.GetConfig()
 }
 
+// Get{{$class}}Buckets returns bucket visualization data for {{$lower}}
+func (a *App) Get{{$class}}Buckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

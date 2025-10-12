@@ -56,5 +56,11 @@ func (a *App) GetNamesConfig(payload types.Payload) (*types.ViewConfig, error) {
 	return collection.GetConfig()
 }
 
+// GetNamesBuckets returns bucket visualization data for names
+func (a *App) GetNamesBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := names.GetNamesCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

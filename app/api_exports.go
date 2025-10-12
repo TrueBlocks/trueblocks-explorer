@@ -46,5 +46,11 @@ func (a *App) GetExportsConfig(payload types.Payload) (*types.ViewConfig, error)
 	return collection.GetConfig()
 }
 
+// GetExportsBuckets returns bucket visualization data for exports
+func (a *App) GetExportsBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := exports.GetExportsCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

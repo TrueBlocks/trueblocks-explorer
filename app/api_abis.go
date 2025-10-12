@@ -56,5 +56,11 @@ func (a *App) GetAbisConfig(payload types.Payload) (*types.ViewConfig, error) {
 	return collection.GetConfig()
 }
 
+// GetAbisBuckets returns bucket visualization data for abis
+func (a *App) GetAbisBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := abis.GetAbisCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

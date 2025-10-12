@@ -66,6 +66,12 @@ func (a *App) GetMonitorsConfig(payload types.Payload) (*types.ViewConfig, error
 	return collection.GetConfig()
 }
 
+// GetMonitorsBuckets returns bucket visualization data for monitors
+func (a *App) GetMonitorsBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := monitors.GetMonitorsCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 func (a *App) MonitorsClean(payload *types.Payload, addresses []string) error {
 	collection := monitors.GetMonitorsCollection(payload)

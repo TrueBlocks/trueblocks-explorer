@@ -59,6 +59,12 @@ func (a *App) GetDressesConfig(payload types.Payload) (*types.ViewConfig, error)
 	return collection.GetConfig()
 }
 
+// GetDressesBuckets returns bucket visualization data for dresses
+func (a *App) GetDressesBuckets(payload *types.Payload) (*types.Buckets, error) {
+	collection := dresses.GetDressesCollection(payload)
+	return collection.GetBuckets(payload)
+}
+
 // EXISTING_CODE
 func (a *App) Speak(payload *types.Payload, series string) (string, error) {
 	if payload == nil || payload.Address == "" {

@@ -16,13 +16,7 @@ func ensureBucketsExist(buckets *[]types.Bucket, targetIndex int, size uint64) {
 		startBlock := uint64(newBucketKey) * size
 		endBlock := uint64(newBucketKey+1)*size - 1
 
-		newBucket := types.Bucket{
-			BucketKey:  strconv.Itoa(newBucketKey),
-			StartBlock: startBlock,
-			EndBlock:   endBlock,
-			Total:      0,
-			ColorValue: 0,
-		}
+		newBucket := types.NewBucket(strconv.Itoa(newBucketKey), startBlock, endBlock)
 		*buckets = append(*buckets, newBucket)
 	}
 }
@@ -163,15 +157,7 @@ func (c *ChunksCollection) ensureDailyBucketExists(bucket *types.Buckets, bucket
 	}
 
 	if !found {
-		// Add the bucket to all series
-		newBucket := types.Bucket{
-			BucketKey:  bucketKey,
-			StartBlock: 0, // For time-based buckets, block ranges are less relevant
-			EndBlock:   0,
-			Total:      0,
-			ColorValue: 0,
-		}
-
+		newBucket := types.NewBucket(bucketKey, 0, 0)
 		bucket.Series0 = append(bucket.Series0, newBucket)
 		bucket.Series1 = append(bucket.Series1, newBucket)
 		bucket.Series2 = append(bucket.Series2, newBucket)

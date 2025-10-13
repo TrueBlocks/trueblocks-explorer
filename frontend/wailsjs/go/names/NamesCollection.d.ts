@@ -7,16 +7,6 @@ import {base} from '../models';
 
 export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
-export function ClearAllBucket():Promise<void>;
-
-export function ClearBaddressBucket():Promise<void>;
-
-export function ClearCustomBucket():Promise<void>;
-
-export function ClearPrefundBucket():Promise<void>;
-
-export function ClearRegularBucket():Promise<void>;
-
 export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;

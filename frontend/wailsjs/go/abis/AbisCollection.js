@@ -6,22 +6,6 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['abis']['AbisCollection']['AccumulateItem'](arg1, arg2);
 }
 
-export function ClearDownloadedBucket() {
-  return window['go']['abis']['AbisCollection']['ClearDownloadedBucket']();
-}
-
-export function ClearEventsBucket() {
-  return window['go']['abis']['AbisCollection']['ClearEventsBucket']();
-}
-
-export function ClearFunctionsBucket() {
-  return window['go']['abis']['AbisCollection']['ClearFunctionsBucket']();
-}
-
-export function ClearKnownBucket() {
-  return window['go']['abis']['AbisCollection']['ClearKnownBucket']();
-}
-
 export function Crud(arg1, arg2, arg3) {
   return window['go']['abis']['AbisCollection']['Crud'](arg1, arg2, arg3);
 }

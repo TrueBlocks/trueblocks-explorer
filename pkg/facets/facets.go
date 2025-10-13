@@ -37,6 +37,8 @@ type Facet[T any] struct {
 	progress        *progress.Progress
 	summaryProvider types.SummaryAccumulator
 	collectionName  string
+	buckets         *types.Buckets
+	bucketsMu       sync.RWMutex
 }
 
 func NewFacet[T any](
@@ -57,6 +59,8 @@ func NewFacet[T any](
 		summaryProvider: summaryProvider,
 		collectionName:  collectionName,
 		progress:        progress.NewProgressWithSummary(dataFacet, collectionName, summaryProvider, nil),
+		buckets:         types.NewBuckets(),
+		bucketsMu:       sync.RWMutex{},
 	}
 	facet.state.Store(types.StateStale)
 	store.RegisterObserver(facet)
@@ -110,6 +114,8 @@ func (r *Facet[T]) Reset() {
 	if storeToReset != nil {
 		storeToReset.Reset()
 	}
+
+	r.ClearBuckets()
 }
 
 func (r *Facet[T]) ExpectedCount() int {
@@ -120,6 +126,31 @@ func (r *Facet[T]) Count() int {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 	return len(r.view)
+}
+
+func (r *Facet[T]) GetBuckets() *types.Buckets {
+	r.bucketsMu.RLock()
+	defer r.bucketsMu.RUnlock()
+	return r.buckets
+}
+
+func (r *Facet[T]) ClearBuckets() {
+	r.bucketsMu.Lock()
+	defer r.bucketsMu.Unlock()
+	// We want to preserve the GridInfo when clearing
+	r.buckets = types.NewBucketsWithGridInfo(&r.buckets.GridInfo)
+}
+
+func (r *Facet[T]) SetBuckets(buckets *types.Buckets) {
+	r.bucketsMu.Lock()
+	defer r.bucketsMu.Unlock()
+	r.buckets = buckets
+}
+
+func (r *Facet[T]) UpdateBuckets(updateFunc func(*types.Buckets)) {
+	r.bucketsMu.Lock()
+	defer r.bucketsMu.Unlock()
+	updateFunc(r.buckets)
 }
 
 var ErrAlreadyLoading = errors.New("already loading")

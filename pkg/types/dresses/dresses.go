@@ -45,11 +45,6 @@ type DressesCollection struct {
 	galleryFacet   *facets.Facet[DalleDress]
 	summary        types.Summary
 	summaryMutex   sync.RWMutex
-
-	bucketsByFacet map[string]*types.Buckets
-	mutexByFacet   map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func NewDressesCollection(payload *types.Payload) *DressesCollection {

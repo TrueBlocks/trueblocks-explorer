@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
@@ -102,10 +101,7 @@ func normalizeFilename(rawFilename, fileExtension string) string {
 
 // writeDataToJSON writes typed data to a JSON file using Model() method
 func writeDataToJSON[T any](file *os.File, data []T, typeName string) error {
-	logging.LogBackend(fmt.Sprintf("[EXPORT JSON] ===== WriteDataToJSON called for %s =====", typeName))
-
 	if len(data) == 0 {
-		logging.LogBackend("[EXPORT JSON] No data to export, writing empty JSON array")
 		_, err := file.WriteString("[]")
 		return err
 	}
@@ -118,7 +114,8 @@ func writeDataToJSON[T any](file *os.File, data []T, typeName string) error {
 			// Extract just the Data part of the Model object
 			modelObjects = append(modelObjects, model.Data)
 		} else {
-			logging.LogBackend(fmt.Sprintf("[EXPORT JSON] Item %d of type %s does not implement sdk.Modeler interface", i+1, typeName))
+			// Skip items that don't implement sdk.Modeler interface
+			_ = i // Use i to avoid unused variable error
 		}
 	}
 
@@ -179,7 +176,8 @@ func writeDataToCSV[T any](file *os.File, data []T, typeName string, format stri
 			model := modeler.Model("csv", "", false, map[string]any{})
 			models = append(models, model)
 		} else {
-			logging.LogBackend(fmt.Sprintf("[EXPORT CSV] Item %d of type %s does not implement sdk.Modeler interface", i+1, typeName))
+			// Skip items that don't implement sdk.Modeler interface
+			_ = i // Use i to avoid unused variable error
 		}
 	}
 

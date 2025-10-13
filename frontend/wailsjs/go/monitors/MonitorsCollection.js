@@ -10,10 +10,6 @@ export function Clean(arg1, arg2) {
   return window['go']['monitors']['MonitorsCollection']['Clean'](arg1, arg2);
 }
 
-export function ClearMonitorsBucket() {
-  return window['go']['monitors']['MonitorsCollection']['ClearMonitorsBucket']();
-}
-
 export function Crud(arg1, arg2, arg3) {
   return window['go']['monitors']['MonitorsCollection']['Crud'](arg1, arg2, arg3);
 }

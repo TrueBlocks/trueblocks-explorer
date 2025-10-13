@@ -5,12 +5,6 @@ import {sdk} from '../models';
 
 export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
-export function ClearCachesBucket():Promise<void>;
-
-export function ClearChainsBucket():Promise<void>;
-
-export function ClearStatusBucket():Promise<void>;
-
 export function ExportData(arg1:types.Payload):Promise<string>;
 
 export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;

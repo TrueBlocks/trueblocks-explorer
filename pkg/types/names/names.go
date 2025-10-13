@@ -45,11 +45,6 @@ type NamesCollection struct {
 	baddressFacet *facets.Facet[Name]
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
-
-	bucketsByFacet map[string]*types.Buckets
-	mutexByFacet   map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func NewNamesCollection(payload *types.Payload) *NamesCollection {

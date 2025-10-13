@@ -6,26 +6,6 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['names']['NamesCollection']['AccumulateItem'](arg1, arg2);
 }
 
-export function ClearAllBucket() {
-  return window['go']['names']['NamesCollection']['ClearAllBucket']();
-}
-
-export function ClearBaddressBucket() {
-  return window['go']['names']['NamesCollection']['ClearBaddressBucket']();
-}
-
-export function ClearCustomBucket() {
-  return window['go']['names']['NamesCollection']['ClearCustomBucket']();
-}
-
-export function ClearPrefundBucket() {
-  return window['go']['names']['NamesCollection']['ClearPrefundBucket']();
-}
-
-export function ClearRegularBucket() {
-  return window['go']['names']['NamesCollection']['ClearRegularBucket']();
-}
-
 export function Crud(arg1, arg2, arg3) {
   return window['go']['names']['NamesCollection']['Crud'](arg1, arg2, arg3);
 }

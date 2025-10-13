@@ -38,11 +38,6 @@ type StatusCollection struct {
 	chainsFacet  *facets.Facet[Chain]
 	summary      types.Summary
 	summaryMutex sync.RWMutex
-
-	bucketsByFacet map[string]*types.Buckets
-	mutexByFacet   map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func NewStatusCollection(payload *types.Payload) *StatusCollection {

@@ -7,23 +7,14 @@ func (c *ChunksCollection) updateStatsBucket(stats *Stats) {
 		return
 	}
 
-	facet := "stats"
-	c.ensureBucketExists(facet)
-	mutex := c.mutexByFacet[facet]
-	bucket := c.bucketsByFacet[facet]
-	if mutex == nil || bucket == nil {
-		return
-	}
-
-	mutex.Lock()
-	defer mutex.Unlock()
-
-	// For stats, use time-based daily buckets if range dates are available
-	if stats.RangeDates != nil && stats.RangeDates.FirstDate != "" && stats.RangeDates.LastDate != "" {
-		c.updateStatsBucketTimeBase(stats, bucket)
-	} else {
-		c.updateStatsBucketBlockBase(stats, bucket)
-	}
+	c.statsFacet.UpdateBuckets(func(bucket *types.Buckets) {
+		// For stats, use time-based daily buckets if range dates are available
+		if stats.RangeDates != nil && stats.RangeDates.FirstDate != "" && stats.RangeDates.LastDate != "" {
+			c.updateStatsBucketTimeBase(stats, bucket)
+		} else {
+			c.updateStatsBucketBlockBase(stats, bucket)
+		}
+	})
 }
 
 // updateStatsBucketTimeBase handles time-based daily bucketing for stats

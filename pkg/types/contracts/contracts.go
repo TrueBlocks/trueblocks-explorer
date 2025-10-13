@@ -38,11 +38,6 @@ type ContractsCollection struct {
 	eventsFacet    *facets.Facet[Log]
 	summary        types.Summary
 	summaryMutex   sync.RWMutex
-
-	bucketsByFacet map[string]*types.Buckets
-	mutexByFacet   map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func NewContractsCollection(payload *types.Payload) *ContractsCollection {

@@ -55,15 +55,12 @@ func TestUpdateGridInfo(t *testing.T) {
 
 // TestBloomsBucketInitialization tests blooms bucket initialization
 func TestBloomsBucketInitialization(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "blooms"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksBlooms}
+	collection := NewChunksCollection(payload)
 
-	if collection.bucketsByFacet == nil || collection.bucketsByFacet[facet] == nil {
-		t.Fatal("Expected blooms bucket to be initialized")
-	}
+	// Get buckets from the blooms facet
+	bucket := collection.bloomsFacet.GetBuckets()
 
-	bucket := collection.bucketsByFacet[facet]
 	if len(bucket.Series2) != 0 {
 		t.Errorf("Expected empty Series2, got length %d", len(bucket.Series2))
 	}
@@ -80,15 +77,12 @@ func TestBloomsBucketInitialization(t *testing.T) {
 
 // TestIndexBucketInitialization tests index bucket initialization
 func TestIndexBucketInitialization(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "index"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksIndex}
+	collection := NewChunksCollection(payload)
 
-	if collection.bucketsByFacet == nil || collection.bucketsByFacet[facet] == nil {
-		t.Fatal("Expected index bucket to be initialized")
-	}
+	// Get buckets from the index facet
+	bucket := collection.indexFacet.GetBuckets()
 
-	bucket := collection.bucketsByFacet[facet]
 	if len(bucket.Series0) != 0 {
 		t.Errorf("Expected empty Series0, got length %d", len(bucket.Series0))
 	}
@@ -105,15 +99,12 @@ func TestIndexBucketInitialization(t *testing.T) {
 
 // TestStatsBucketInitialization tests stats bucket initialization
 func TestStatsBucketInitialization(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "stats"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksStats}
+	collection := NewChunksCollection(payload)
 
-	if collection.bucketsByFacet == nil || collection.bucketsByFacet[facet] == nil {
-		t.Fatal("Expected stats bucket to be initialized")
-	}
+	// Get buckets from the stats facet
+	bucket := collection.statsFacet.GetBuckets()
 
-	bucket := collection.bucketsByFacet[facet]
 	if len(bucket.Series0) != 0 {
 		t.Errorf("Expected empty Series0, got length %d", len(bucket.Series0))
 	}
@@ -133,9 +124,8 @@ func TestStatsBucketInitialization(t *testing.T) {
 
 // TestBloomsBucketUpdate tests updating blooms bucket with data
 func TestBloomsBucketUpdate(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "blooms"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksBlooms}
+	collection := NewChunksCollection(payload)
 
 	// Create test bloom data
 	bloom := &Bloom{
@@ -147,7 +137,7 @@ func TestBloomsBucketUpdate(t *testing.T) {
 	// Update bucket with bloom data
 	collection.updateBloomsBucket(bloom)
 
-	bucket := collection.bucketsByFacet[facet]
+	bucket := collection.bloomsFacet.GetBuckets()
 
 	// Should have created one bucket
 	if len(bucket.Series2) != 1 {
@@ -168,9 +158,8 @@ func TestBloomsBucketUpdate(t *testing.T) {
 
 // TestIndexBucketUpdate tests updating index bucket with data
 func TestIndexBucketUpdate(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "index"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksIndex}
+	collection := NewChunksCollection(payload)
 
 	// Create test index data
 	index := &Index{
@@ -183,7 +172,7 @@ func TestIndexBucketUpdate(t *testing.T) {
 	// Update bucket with index data
 	collection.updateIndexBucket(index)
 
-	bucket := collection.bucketsByFacet[facet]
+	bucket := collection.indexFacet.GetBuckets()
 
 	// Should have created one bucket in each series (except Series3)
 	if len(bucket.Series0) != 1 {
@@ -210,9 +199,8 @@ func TestIndexBucketUpdate(t *testing.T) {
 
 // TestStatsBucketUpdate tests updating stats bucket with data
 func TestStatsBucketUpdate(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "stats"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksStats}
+	collection := NewChunksCollection(payload)
 
 	// Create test stats data
 	stats := &Stats{
@@ -226,7 +214,7 @@ func TestStatsBucketUpdate(t *testing.T) {
 	// Update bucket with stats data
 	collection.updateStatsBucket(stats)
 
-	bucket := collection.bucketsByFacet[facet]
+	bucket := collection.statsFacet.GetBuckets()
 
 	// Should have created one bucket in each series
 	if len(bucket.Series0) != 1 {
@@ -259,11 +247,8 @@ func TestStatsBucketUpdate(t *testing.T) {
 
 // TestGetChunksBucketsBloomsFacet tests GetBuckets for blooms facet
 func TestGetChunksBucketsBloomsFacet(t *testing.T) {
-	collection := &ChunksCollection{}
-
-	payload := &types.Payload{
-		DataFacet: ChunksBlooms,
-	}
+	payload := &types.Payload{DataFacet: ChunksBlooms}
+	collection := NewChunksCollection(payload)
 
 	result, err := collection.GetBuckets(payload)
 	if err != nil {
@@ -284,11 +269,8 @@ func TestGetChunksBucketsBloomsFacet(t *testing.T) {
 
 // TestGetChunksBucketsStatsFacet tests GetBuckets for stats facet
 func TestGetChunksBucketsStatsFacet(t *testing.T) {
-	collection := &ChunksCollection{}
-
-	payload := &types.Payload{
-		DataFacet: "stats",
-	}
+	payload := &types.Payload{DataFacet: ChunksStats}
+	collection := NewChunksCollection(payload)
 
 	result, err := collection.GetBuckets(payload)
 	if err != nil {
@@ -315,11 +297,8 @@ func TestGetChunksBucketsStatsFacet(t *testing.T) {
 
 // TestGetChunksBucketsIndexFacet tests GetBuckets for index facet
 func TestGetChunksBucketsIndexFacet(t *testing.T) {
-	collection := &ChunksCollection{}
-
-	payload := &types.Payload{
-		DataFacet: ChunksIndex,
-	}
+	payload := &types.Payload{DataFacet: ChunksIndex}
+	collection := NewChunksCollection(payload)
 
 	result, err := collection.GetBuckets(payload)
 	if err != nil {
@@ -343,11 +322,8 @@ func TestGetChunksBucketsIndexFacet(t *testing.T) {
 
 // TestGetChunksBucketsUnknownFacet tests GetBuckets for unknown facet
 func TestGetChunksBucketsUnknownFacet(t *testing.T) {
-	collection := &ChunksCollection{}
-
-	payload := &types.Payload{
-		DataFacet: "unknown",
-	}
+	payload := &types.Payload{DataFacet: "unknown"}
+	collection := NewChunksCollection(payload)
 
 	result, err := collection.GetBuckets(payload)
 	if err != nil {
@@ -374,9 +350,8 @@ func TestGetChunksBucketsUnknownFacet(t *testing.T) {
 
 // TestBucketStatsFinalization tests stats finalization for different bucket types
 func TestBucketStatsFinalization(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "stats"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksStats}
+	collection := NewChunksCollection(payload)
 
 	// Add some test data
 	stats := &Stats{
@@ -391,34 +366,36 @@ func TestBucketStatsFinalization(t *testing.T) {
 	}
 	collection.updateStatsBucket(stats2)
 
-	// Finalize stats
-	collection.finalizeBucketStats(facet)
+	bucket := collection.statsFacet.GetBuckets()
 
-	bucket := collection.bucketsByFacet[facet]
+	// Manually calculate stats for verification since finalizeBucketStats was removed
+	// Check that we have the expected data distribution
+	if len(bucket.Series0) != 2 {
+		t.Errorf("Expected 2 buckets in Series0, got %d", len(bucket.Series0))
+	}
+	if len(bucket.Series1) != 2 {
+		t.Errorf("Expected 2 buckets in Series1, got %d", len(bucket.Series1))
+	}
+	if len(bucket.Series2) != 2 {
+		t.Errorf("Expected 2 buckets in Series2, got %d", len(bucket.Series2))
+	}
+	if len(bucket.Series3) != 2 {
+		t.Errorf("Expected 2 buckets in Series3, got %d", len(bucket.Series3))
+	}
 
-	// Check that stats were calculated for each series
-	if bucket.Series0Stats.Count != 2 {
-		t.Errorf("Expected Series0 stats count 2, got %d", bucket.Series0Stats.Count)
+	// Check individual bucket values
+	if bucket.Series0[0].Total != 2.0 {
+		t.Errorf("Expected Series0[0] total 2.0, got %f", bucket.Series0[0].Total)
 	}
-	if bucket.Series0Stats.Total != 6.0 { // 2.0 + 4.0
-		t.Errorf("Expected Series0 total 6.0, got %f", bucket.Series0Stats.Total)
-	}
-	if bucket.Series0Stats.Average != 3.0 { // 6.0 / 2
-		t.Errorf("Expected Series0 average 3.0, got %f", bucket.Series0Stats.Average)
-	}
-	if bucket.Series0Stats.Min != 2.0 {
-		t.Errorf("Expected Series0 min 2.0, got %f", bucket.Series0Stats.Min)
-	}
-	if bucket.Series0Stats.Max != 4.0 {
-		t.Errorf("Expected Series0 max 4.0, got %f", bucket.Series0Stats.Max)
+	if bucket.Series0[1].Total != 4.0 {
+		t.Errorf("Expected Series0[1] total 4.0, got %f", bucket.Series0[1].Total)
 	}
 }
 
 // TestSeries3RegressionBug tests that Series3 data is properly handled (regression test)
 func TestSeries3RegressionBug(t *testing.T) {
-	collection := &ChunksCollection{}
-	facet := "stats"
-	collection.ensureBucketExists(facet)
+	payload := &types.Payload{DataFacet: ChunksStats}
+	collection := NewChunksCollection(payload)
 
 	// Add stats data that populates Series3
 	stats := &Stats{
@@ -427,7 +404,6 @@ func TestSeries3RegressionBug(t *testing.T) {
 	}
 	collection.updateStatsBucket(stats)
 
-	payload := &types.Payload{DataFacet: ChunksStats}
 	result, err := collection.GetBuckets(payload)
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)

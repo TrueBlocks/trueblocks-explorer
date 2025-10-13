@@ -18,7 +18,7 @@ export const StatsPanelRenderer = (row: Record<string, unknown> | null) => {
     metrics: [
       {
         key: 'ratio',
-        label: 'Compression',
+        label: 'Compressed',
         bucketsField: 'series0' as keyof types.Buckets,
         statsField: 'series0Stats' as keyof types.Buckets,
         formatValue: (value: number) => formatNumericValue(Math.round(value)),

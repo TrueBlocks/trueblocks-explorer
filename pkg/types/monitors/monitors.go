@@ -32,11 +32,6 @@ type MonitorsCollection struct {
 	monitorsFacet *facets.Facet[Monitor]
 	summary       types.Summary
 	summaryMutex  sync.RWMutex
-
-	bucketsByFacet map[string]*types.Buckets
-	mutexByFacet   map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func NewMonitorsCollection(payload *types.Payload) *MonitorsCollection {

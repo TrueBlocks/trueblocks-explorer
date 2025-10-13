@@ -6,46 +6,6 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['exports']['ExportsCollection']['AccumulateItem'](arg1, arg2);
 }
 
-export function ClearApprovalsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearApprovalsBucket']();
-}
-
-export function ClearAssetsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearAssetsBucket']();
-}
-
-export function ClearBalancesBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearBalancesBucket']();
-}
-
-export function ClearLogsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearLogsBucket']();
-}
-
-export function ClearReceiptsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearReceiptsBucket']();
-}
-
-export function ClearStatementsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearStatementsBucket']();
-}
-
-export function ClearTracesBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearTracesBucket']();
-}
-
-export function ClearTransactionsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearTransactionsBucket']();
-}
-
-export function ClearTransfersBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearTransfersBucket']();
-}
-
-export function ClearWithdrawalsBucket() {
-  return window['go']['exports']['ExportsCollection']['ClearWithdrawalsBucket']();
-}
-
 export function Crud(arg1, arg2, arg3) {
   return window['go']['exports']['ExportsCollection']['Crud'](arg1, arg2, arg3);
 }

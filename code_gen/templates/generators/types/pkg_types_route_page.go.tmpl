@@ -6,6 +6,7 @@
 {{- $isMonitors := eq $class "Monitors" -}}
 {{- $shouldBePtr := or (or $isAbis $isMonitors) $isExports -}}
 {{- $isPtr := not $shouldBePtr -}}
+{{- if not $isExports -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -72,8 +73,8 @@ func (c *{{.Class}}Collection) GetPage(
 	}
 
 	switch dataFacet {
-	{{range .Facets -}}
-	{{- $sing := toSingular .Name -}}
+	{{range .Facets}}
+	{{$sing := toSingular .Name -}}
 	{{- $sing2 := toSingular .Store -}}
 	case {{$class}}{{.Name}}:
 		facet := c.{{toLower .Name}}Facet
@@ -97,7 +98,7 @@ func (c *{{.Class}}Collection) GetPage(
 		}
 		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-		{{end -}}
+{{- end}}
 	default:
 		return nil, types.NewValidationError("{{toLower .Class}}", dataFacet, "GetPage",
 			fmt.Errorf("[GetPage] unsupported dataFacet: %v", dataFacet))
@@ -163,3 +164,4 @@ func (c *{{.Class}}Collection) generateSummariesForPeriod(dataFacet types.DataFa
 
 // EXISTING_CODE
 // EXISTING_CODE
+{{end -}}

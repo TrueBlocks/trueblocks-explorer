@@ -67,6 +67,7 @@ func (c *NamesCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case NamesAll:
 		facet := c.allFacet
 		var filterFunc func(*Name) bool

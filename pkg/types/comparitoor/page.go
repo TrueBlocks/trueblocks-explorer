@@ -192,6 +192,7 @@ func (c *ComparitoorCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case ComparitoorComparitoor:
 		facet := c.comparitoorFacet
 		var filterFunc func(*Transaction) bool

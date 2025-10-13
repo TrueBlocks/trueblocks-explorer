@@ -25,7 +25,10 @@ func (a *App) GetStatusPage(
 	filter string,
 ) (*status.StatusPage, error) {
 	collection := status.GetStatusCollection(payload)
-	return getCollectionPage[*status.StatusPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*status.StatusPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) GetStatusSummary(payload *types.Payload) types.Summary {

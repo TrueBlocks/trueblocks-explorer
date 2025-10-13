@@ -26,7 +26,10 @@ func (a *App) GetNamesPage(
 	filter string,
 ) (*names.NamesPage, error) {
 	collection := names.GetNamesCollection(payload)
-	return getCollectionPage[*names.NamesPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*names.NamesPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) NamesCrud(

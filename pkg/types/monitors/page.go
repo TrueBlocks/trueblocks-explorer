@@ -69,6 +69,7 @@ func (c *MonitorsCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case MonitorsMonitors:
 		facet := c.monitorsFacet
 		var filterFunc func(*Monitor) bool

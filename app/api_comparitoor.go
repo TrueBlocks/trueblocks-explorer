@@ -25,7 +25,10 @@ func (a *App) GetComparitoorPage(
 	filter string,
 ) (*comparitoor.ComparitoorPage, error) {
 	collection := comparitoor.GetComparitoorCollection(payload)
-	return getCollectionPage[*comparitoor.ComparitoorPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*comparitoor.ComparitoorPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) GetComparitoorSummary(payload *types.Payload) types.Summary {

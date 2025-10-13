@@ -31,7 +31,10 @@ func (a *App) Get{{$class}}Page(
 	filter string,
 ) (*{{$lower}}.{{$class}}Page, error) {
 	collection := {{$lower}}.Get{{$class}}Collection(payload)
-	return getCollectionPage[*{{$lower}}.{{$class}}Page](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*{{$lower}}.{{$class}}Page](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 {{if .HasCrudActions}}func (a *App) {{$class}}Crud(

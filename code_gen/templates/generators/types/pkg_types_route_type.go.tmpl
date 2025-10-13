@@ -42,11 +42,6 @@ type {{$class}}Collection struct {
 	{{- end}}
 	summary         types.Summary
 	summaryMutex    sync.RWMutex
-
-	bucketsByFacet  map[string]*types.Buckets
-	mutexByFacet    map[string]*sync.RWMutex
-	// initOnceByFacet map[string]*sync.Once
-	// collectionMutex sync.RWMutex
 }
 
 func New{{$class}}Collection(payload *types.Payload) *{{$class}}Collection {
@@ -106,7 +101,7 @@ func (c *{{$class}}Collection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	{{- range .Facets}}
 	case {{$class}}{{.Name}}:
-		c.{{toLower .Name}}Facet.GetStore().Reset()
+		c.{{toLower .Name}}Facet.Reset()
 	{{- end}}
 	default:
 		return

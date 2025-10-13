@@ -25,7 +25,10 @@ func (a *App) GetContractsPage(
 	filter string,
 ) (*contracts.ContractsPage, error) {
 	collection := contracts.GetContractsCollection(payload)
-	return getCollectionPage[*contracts.ContractsPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*contracts.ContractsPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) GetContractsSummary(payload *types.Payload) types.Summary {

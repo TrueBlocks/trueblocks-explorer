@@ -12,17 +12,25 @@ package app
 // EXISTING_CODE
 
 // Reload dispatches reload requests to the appropriate view-specific reload function
-func (a *App) Reload(payload *types.Payload) error {
+func (a *App) Reload(payload *types.Payload) (err error) {
+	defer func() {
+		if err == nil {
+			msgs.EmitReloaded(*payload)
+		}
+	}()
+
 	switch a.GetLastView() {
 	{{- range .Structures }}
 	{{- if and (not (eq .Class "")) (not .DisableGo) }}
 	case "{{ toLower .Class }}":
-		return a.Reload{{ .Class }}(payload)
+		err = a.Reload{{ .Class }}(payload)
 	{{- end }}
 	{{- end }}
 	default:
 		panic("unknown view in Reload" + a.GetLastView())
 	}
+
+	return err
 }
 
 // GetRegisteredViews returns all registered view names

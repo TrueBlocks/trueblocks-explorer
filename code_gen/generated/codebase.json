@@ -687,7 +687,7 @@
                                 "export"
                             ],
                             "viewType": "",
-                            "renderer": "",
+                            "renderer": "panel",
                             "attributes": "",
                             "disabled": false
                         },
@@ -698,7 +698,7 @@
                                 "export"
                             ],
                             "viewType": "",
-                            "renderer": "",
+                            "renderer": "panel",
                             "attributes": "",
                             "disabled": false
                         },
@@ -709,7 +709,7 @@
                                 "export"
                             ],
                             "viewType": "",
-                            "renderer": "",
+                            "renderer": "panel",
                             "attributes": "",
                             "disabled": false
                         },
@@ -5119,7 +5119,7 @@
                         "export"
                     ],
                     "viewType": "",
-                    "renderer": "",
+                    "renderer": "panel",
                     "attributes": "",
                     "disabled": false
                 },
@@ -5130,7 +5130,7 @@
                         "export"
                     ],
                     "viewType": "",
-                    "renderer": "",
+                    "renderer": "panel",
                     "attributes": "",
                     "disabled": false
                 },
@@ -5141,7 +5141,7 @@
                         "export"
                     ],
                     "viewType": "",
-                    "renderer": "",
+                    "renderer": "panel",
                     "attributes": "",
                     "disabled": false
                 },

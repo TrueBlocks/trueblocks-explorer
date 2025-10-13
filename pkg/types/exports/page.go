@@ -81,6 +81,7 @@ func (c *ExportsCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case ExportsStatements:
 		facet := c.statementsFacet
 		var filterFunc func(*Statement) bool

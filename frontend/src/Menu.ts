@@ -45,7 +45,6 @@ export const MenuItems: MenuItem[] = [
     position: 'top',
     component: Exports,
     type: 'navigation',
-    separator: true,
   },
   {
     label: 'Monitors',

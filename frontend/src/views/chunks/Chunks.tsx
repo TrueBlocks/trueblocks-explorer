@@ -79,8 +79,8 @@ export const Chunks = () => {
         sort,
         filter,
       );
-      setPageData(result as chunks.ChunksPage);
-      setTotalItems(result?.totalItems || 0);
+      setPageData(result);
+      setTotalItems(result.totalItems || 0);
     } catch (err: unknown) {
       handleError(err, `Failed to fetch ${getCurrentDataFacet()}`);
     }

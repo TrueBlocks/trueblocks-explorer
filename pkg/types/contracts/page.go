@@ -68,6 +68,7 @@ func (c *ContractsCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case ContractsDashboard:
 		facet := c.dashboardFacet
 		var filterFunc func(*Contract) bool

@@ -25,7 +25,10 @@ func (a *App) GetChunksPage(
 	filter string,
 ) (*chunks.ChunksPage, error) {
 	collection := chunks.GetChunksCollection(payload)
-	return getCollectionPage[*chunks.ChunksPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*chunks.ChunksPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) GetChunksSummary(payload *types.Payload) types.Summary {

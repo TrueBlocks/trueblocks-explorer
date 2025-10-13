@@ -5,6 +5,7 @@
 {{- $isComparitoor := eq .Class "Comparitoor" -}}
 {{- $isContracts := eq .Class "Contracts" -}}
 {{- $isNames := eq .Class "Names" -}}
+{{- $isChunks := eq .Class "Chunks" -}}
 {{- $isMultiStore := or $isExports $isComparitoor }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
@@ -49,7 +50,8 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 
 		processFunc := func(item interface{}) *{{toSingular .Name}} {
 			if it, ok := item.(*{{toSingular .Name}}); ok {
-				return it
+{{if $isChunks}}				c.update{{.Name}}Bucket(it)
+{{end}}				return it
 			}
 			return nil
 		}

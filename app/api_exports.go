@@ -25,7 +25,10 @@ func (a *App) GetExportsPage(
 	filter string,
 ) (*exports.ExportsPage, error) {
 	collection := exports.GetExportsCollection(payload)
-	return getCollectionPage[*exports.ExportsPage](collection, payload, first, pageSize, sort, filter)
+	ret, err := getCollectionPage[*exports.ExportsPage](collection, payload, first, pageSize, sort, filter)
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return ret, err
 }
 
 func (a *App) GetExportsSummary(payload *types.Payload) types.Summary {

@@ -23,7 +23,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Fields:        getStatsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
+			RendererTypes: "panel",
 		},
 		"index": {
 			Name:          "Index",
@@ -33,7 +33,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Fields:        getIndexFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
+			RendererTypes: "panel",
 		},
 		"blooms": {
 			Name:          "Blooms",
@@ -43,7 +43,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Fields:        getBloomsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
+			RendererTypes: "panel",
 		},
 		"manifest": {
 			Name:          "Manifest",

@@ -193,6 +193,7 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 
 		processFunc := func(item interface{}) *Manifest {
 			if it, ok := item.(*Manifest); ok {
+				c.updateManifestBucket(it)
 				return it
 			}
 			return nil

@@ -80,6 +80,7 @@ func (c *DressesCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case DressesGenerator:
 		facet := c.generatorFacet
 		var filterFunc func(*DalleDress) bool

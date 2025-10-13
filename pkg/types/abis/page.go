@@ -70,6 +70,7 @@ func (c *AbisCollection) GetPage(
 	}
 
 	switch dataFacet {
+
 	case AbisDownloaded:
 		facet := c.downloadedFacet
 		var filterFunc func(*Abi) bool

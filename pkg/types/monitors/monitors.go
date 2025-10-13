@@ -85,7 +85,7 @@ func (c *MonitorsCollection) LoadData(dataFacet types.DataFacet) {
 func (c *MonitorsCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case MonitorsMonitors:
-		c.monitorsFacet.GetStore().Reset()
+		c.monitorsFacet.Reset()
 	default:
 		return
 	}

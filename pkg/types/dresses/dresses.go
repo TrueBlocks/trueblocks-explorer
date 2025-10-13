@@ -213,15 +213,15 @@ func (c *DressesCollection) LoadData(dataFacet types.DataFacet) {
 func (c *DressesCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case DressesGenerator:
-		c.generatorFacet.GetStore().Reset()
+		c.generatorFacet.Reset()
 	case DressesSeries:
-		c.seriesFacet.GetStore().Reset()
+		c.seriesFacet.Reset()
 	case DressesDatabases:
-		c.databasesFacet.GetStore().Reset()
+		c.databasesFacet.Reset()
 	case DressesEvents:
-		c.eventsFacet.GetStore().Reset()
+		c.eventsFacet.Reset()
 	case DressesGallery:
-		c.galleryFacet.GetStore().Reset()
+		c.galleryFacet.Reset()
 	default:
 		return
 	}

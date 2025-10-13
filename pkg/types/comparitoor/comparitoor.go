@@ -186,15 +186,15 @@ func (c *ComparitoorCollection) LoadData(dataFacet types.DataFacet) {
 func (c *ComparitoorCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case ComparitoorComparitoor:
-		c.comparitoorFacet.GetStore().Reset()
+		c.comparitoorFacet.Reset()
 	case ComparitoorChifra:
-		c.chifraFacet.GetStore().Reset()
+		c.chifraFacet.Reset()
 	case ComparitoorEtherScan:
-		c.etherscanFacet.GetStore().Reset()
+		c.etherscanFacet.Reset()
 	case ComparitoorCovalent:
-		c.covalentFacet.GetStore().Reset()
+		c.covalentFacet.Reset()
 	case ComparitoorAlchemy:
-		c.alchemyFacet.GetStore().Reset()
+		c.alchemyFacet.Reset()
 	default:
 		return
 	}

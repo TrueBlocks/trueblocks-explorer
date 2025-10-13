@@ -175,13 +175,13 @@ func (c *AbisCollection) LoadData(dataFacet types.DataFacet) {
 func (c *AbisCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case AbisDownloaded:
-		c.downloadedFacet.GetStore().Reset()
+		c.downloadedFacet.Reset()
 	case AbisKnown:
-		c.knownFacet.GetStore().Reset()
+		c.knownFacet.Reset()
 	case AbisFunctions:
-		c.functionsFacet.GetStore().Reset()
+		c.functionsFacet.Reset()
 	case AbisEvents:
-		c.eventsFacet.GetStore().Reset()
+		c.eventsFacet.Reset()
 	default:
 		return
 	}

@@ -174,15 +174,15 @@ func (c *NamesCollection) LoadData(dataFacet types.DataFacet) {
 func (c *NamesCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case NamesAll:
-		c.allFacet.GetStore().Reset()
+		c.allFacet.Reset()
 	case NamesCustom:
-		c.customFacet.GetStore().Reset()
+		c.customFacet.Reset()
 	case NamesPrefund:
-		c.prefundFacet.GetStore().Reset()
+		c.prefundFacet.Reset()
 	case NamesRegular:
-		c.regularFacet.GetStore().Reset()
+		c.regularFacet.Reset()
 	case NamesBaddress:
-		c.baddressFacet.GetStore().Reset()
+		c.baddressFacet.Reset()
 	default:
 		return
 	}

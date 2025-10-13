@@ -169,13 +169,13 @@ func (c *ChunksCollection) LoadData(dataFacet types.DataFacet) {
 func (c *ChunksCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case ChunksStats:
-		c.statsFacet.GetStore().Reset()
+		c.statsFacet.Reset()
 	case ChunksIndex:
-		c.indexFacet.GetStore().Reset()
+		c.indexFacet.Reset()
 	case ChunksBlooms:
-		c.bloomsFacet.GetStore().Reset()
+		c.bloomsFacet.Reset()
 	case ChunksManifest:
-		c.manifestFacet.GetStore().Reset()
+		c.manifestFacet.Reset()
 	default:
 		return
 	}

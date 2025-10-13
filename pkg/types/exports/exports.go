@@ -337,25 +337,25 @@ func (c *ExportsCollection) LoadData(dataFacet types.DataFacet) {
 func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case ExportsStatements:
-		c.statementsFacet.GetStore().Reset()
+		c.statementsFacet.Reset()
 	case ExportsBalances:
-		c.balancesFacet.GetStore().Reset()
+		c.balancesFacet.Reset()
 	case ExportsTransfers:
-		c.transfersFacet.GetStore().Reset()
+		c.transfersFacet.Reset()
 	case ExportsTransactions:
-		c.transactionsFacet.GetStore().Reset()
+		c.transactionsFacet.Reset()
 	case ExportsApprovals:
-		c.approvalsFacet.GetStore().Reset()
+		c.approvalsFacet.Reset()
 	case ExportsWithdrawals:
-		c.withdrawalsFacet.GetStore().Reset()
+		c.withdrawalsFacet.Reset()
 	case ExportsAssets:
-		c.assetsFacet.GetStore().Reset()
+		c.assetsFacet.Reset()
 	case ExportsLogs:
-		c.logsFacet.GetStore().Reset()
+		c.logsFacet.Reset()
 	case ExportsTraces:
-		c.tracesFacet.GetStore().Reset()
+		c.tracesFacet.Reset()
 	case ExportsReceipts:
-		c.receiptsFacet.GetStore().Reset()
+		c.receiptsFacet.Reset()
 	default:
 		return
 	}

@@ -135,11 +135,11 @@ func (c *ContractsCollection) LoadData(dataFacet types.DataFacet) {
 func (c *ContractsCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case ContractsDashboard:
-		c.dashboardFacet.GetStore().Reset()
+		c.dashboardFacet.Reset()
 	case ContractsExecute:
-		c.executeFacet.GetStore().Reset()
+		c.executeFacet.Reset()
 	case ContractsEvents:
-		c.eventsFacet.GetStore().Reset()
+		c.eventsFacet.Reset()
 	default:
 		return
 	}

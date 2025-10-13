@@ -147,11 +147,11 @@ func (c *StatusCollection) LoadData(dataFacet types.DataFacet) {
 func (c *StatusCollection) Reset(dataFacet types.DataFacet) {
 	switch dataFacet {
 	case StatusStatus:
-		c.statusFacet.GetStore().Reset()
+		c.statusFacet.Reset()
 	case StatusCaches:
-		c.cachesFacet.GetStore().Reset()
+		c.cachesFacet.Reset()
 	case StatusChains:
-		c.chainsFacet.GetStore().Reset()
+		c.chainsFacet.Reset()
 	default:
 		return
 	}

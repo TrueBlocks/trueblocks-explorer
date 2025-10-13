@@ -101,6 +101,7 @@ func normalizeFilename(rawFilename, fileExtension string) string {
 
 // writeDataToJSON writes typed data to a JSON file using Model() method
 func writeDataToJSON[T any](file *os.File, data []T, typeName string) error {
+	_ = typeName // delint
 	if len(data) == 0 {
 		_, err := file.WriteString("[]")
 		return err

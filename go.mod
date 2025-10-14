@@ -6,7 +6,7 @@ go 1.25.1
 replace (
 	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../../trueblocks-core/src/apps/chifra/
 	github.com/TrueBlocks/trueblocks-dalle/v2 => ../libs/trueblocks-dalle
-	github.com/TrueBlocks/trueblocks-sdk/v5 => ../../trueblocks-core/sdk
+	github.com/TrueBlocks/trueblocks-sdk/v5 => ../libs/trueblocks-sdk
 )
 
 require (

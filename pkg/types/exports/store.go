@@ -22,6 +22,7 @@ import (
 )
 
 type Approval = sdk.Approval
+type Approve = sdk.Log
 type Asset = sdk.Asset
 type Balance = sdk.Balance
 type Log = sdk.Log
@@ -37,6 +38,9 @@ type Withdrawal = sdk.Withdrawal
 var (
 	approvalsStore   = make(map[string]*store.Store[Approval])
 	approvalsStoreMu sync.Mutex
+
+	approvesStore   = make(map[string]*store.Store[Approve])
+	approvesStoreMu sync.Mutex
 
 	assetsStore   = make(map[string]*store.Store[Asset])
 	assetsStoreMu sync.Mutex
@@ -115,6 +119,59 @@ func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet type
 		// EXISTING_CODE
 
 		approvalsStore[storeKey] = theStore
+	}
+
+	return theStore
+}
+
+func (c *ExportsCollection) getApprovesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Approve] {
+	approvesStoreMu.Lock()
+	defer approvesStoreMu.Unlock()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	chain := payload.Chain
+	address := payload.Address
+	storeKey := getStoreKey(chain, address)
+	theStore := approvesStore[storeKey]
+	if theStore == nil {
+		queryFunc := func(ctx *output.RenderCtx) error {
+			// EXISTING_CODE
+			exportOpts := sdk.ExportOptions{
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				RenderCtx:  ctx,
+				Addrs:      []string{address},
+				Articulate: true,
+			}
+			if _, _, err := exportOpts.ExportApprovals(); err != nil {
+				wrappedErr := types.NewSDKError("exports", ExportsApproves, "fetch", err)
+				return wrappedErr
+			}
+			// EXISTING_CODE
+			return nil
+		}
+
+		processFunc := func(item interface{}) *Approve {
+			if it, ok := item.(*Approve); ok {
+				return it
+			}
+			return nil
+		}
+
+		mappingFunc := func(item *Approve) (key interface{}, includeInMap bool) {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil, false
+		}
+
+		storeName := c.GetStoreName(facet, chain, address)
+		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+
+		approvesStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -613,6 +670,8 @@ func (c *ExportsCollection) GetStoreName(dataFacet types.DataFacet, chain, addre
 		name = "exports-transactions"
 	case ExportsApprovals:
 		name = "exports-approvals"
+	case ExportsApproves:
+		name = "exports-approves"
 	case ExportsWithdrawals:
 		name = "exports-withdrawals"
 	case ExportsAssets:

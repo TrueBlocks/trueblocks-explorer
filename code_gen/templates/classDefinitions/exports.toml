@@ -37,6 +37,13 @@ name = "Approvals"
 store = "Approvals"
 actions = ["export"]
 viewType = ""
+renderer = "panel"
+
+[[facets]]
+name = "Approves"
+store = "Approves"
+actions = ["export"]
+viewType = ""
 
 [[facets]]
 name = "Withdrawals"

@@ -6,7 +6,6 @@
 {{- $isMonitors := eq $class "Monitors" -}}
 {{- $shouldBePtr := or (or $isAbis $isMonitors) $isExports -}}
 {{- $isPtr := not $shouldBePtr -}}
-{{- if not $isExports -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -164,4 +163,3 @@ func (c *{{.Class}}Collection) generateSummariesForPeriod(dataFacet types.DataFa
 
 // EXISTING_CODE
 // EXISTING_CODE
-{{end -}}

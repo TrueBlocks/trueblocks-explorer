@@ -434,7 +434,3 @@ export const renderStatementDetailPanel = (
     </Stack>
   );
 };
-
-export const renderers = {
-  'exports.statements': renderStatementDetailPanel,
-};

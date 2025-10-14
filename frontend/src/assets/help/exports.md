@@ -19,6 +19,7 @@ This is the help file for the Exports view.
 - Transfers Facet uses the Transfers store.
 - Transactions Facet uses the Transactions store.
 - Approvals Facet uses the Approvals store.
+- Approves Facet uses the Approves store.
 - Withdrawals Facet uses the Withdrawals store.
 - Assets Facet uses the Assets store.
 - Logs Facet uses the Logs store.
@@ -40,6 +41,23 @@ This is the help file for the Exports view.
   - lastAppTs: the timestamp of the last approval event
   - lastAppTxID: the transaction index of the last approval event
   - lastAppLogID: the log index of the last approval event
+
+- **Approves Store (14 members)**
+
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction in the block
+  - logIndex: the zero-indexed position of this log relative to the block
+  - timestamp: the timestamp of the block this log appears in
+  - date: the timestamp as a date
+  - address: the smart contract that emitted this log
+  - name: the name of the smart contract if any
+  - topics: the first topic hashes event signature of the log, up to 3 additional index parameters may appear
+  - data: any remaining un-indexed parameters to the event
+  - transactionHash: the hash of the transction
+  - blockHash: the hash of the block
+  - articulatedLog: a human-readable version of the topic and data fields
+  - compressedLog: a truncated, more readable version of the articulation
+  - isNFT: true if the log is an NFT transfer
 
 - **Assets Store (6 members)**
 

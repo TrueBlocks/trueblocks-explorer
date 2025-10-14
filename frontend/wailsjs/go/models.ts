@@ -459,6 +459,7 @@ export namespace exports {
 	export class ExportsPage {
 	    facet: types.DataFacet;
 	    approvals: types.Approval[];
+	    approves: types.Log[];
 	    assets: types.Name[];
 	    balances: types.Token[];
 	    logs: types.Log[];
@@ -481,6 +482,7 @@ export namespace exports {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.facet = source["facet"];
 	        this.approvals = this.convertValues(source["approvals"], types.Approval);
+	        this.approves = this.convertValues(source["approves"], types.Log);
 	        this.assets = this.convertValues(source["assets"], types.Name);
 	        this.balances = this.convertValues(source["balances"], types.Token);
 	        this.logs = this.convertValues(source["logs"], types.Log);
@@ -1324,6 +1326,7 @@ export namespace types {
 	    TRANSFERS = "transfers",
 	    TRANSACTIONS = "transactions",
 	    APPROVALS = "approvals",
+	    APPROVES = "approves",
 	    WITHDRAWALS = "withdrawals",
 	    ASSETS = "assets",
 	    LOGS = "logs",

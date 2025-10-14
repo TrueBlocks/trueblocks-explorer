@@ -110,6 +110,8 @@ export const Exports = () => {
         return pageData.transactions || [];
       case types.DataFacet.APPROVALS:
         return pageData.approvals || [];
+      case types.DataFacet.APPROVES:
+        return pageData.approves || [];
       case types.DataFacet.WITHDRAWALS:
         return pageData.withdrawals || [];
       case types.DataFacet.ASSETS:

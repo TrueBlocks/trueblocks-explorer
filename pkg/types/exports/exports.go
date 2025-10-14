@@ -26,6 +26,7 @@ const (
 	ExportsTransfers    types.DataFacet = "transfers"
 	ExportsTransactions types.DataFacet = "transactions"
 	ExportsApprovals    types.DataFacet = "approvals"
+	ExportsApproves     types.DataFacet = "approves"
 	ExportsWithdrawals  types.DataFacet = "withdrawals"
 	ExportsAssets       types.DataFacet = "assets"
 	ExportsLogs         types.DataFacet = "logs"
@@ -39,6 +40,7 @@ func init() {
 	types.RegisterDataFacet(ExportsTransfers)
 	types.RegisterDataFacet(ExportsTransactions)
 	types.RegisterDataFacet(ExportsApprovals)
+	types.RegisterDataFacet(ExportsApproves)
 	types.RegisterDataFacet(ExportsWithdrawals)
 	types.RegisterDataFacet(ExportsAssets)
 	types.RegisterDataFacet(ExportsLogs)
@@ -52,6 +54,7 @@ type ExportsCollection struct {
 	transfersFacet    *facets.Facet[Transfer]
 	transactionsFacet *facets.Facet[Transaction]
 	approvalsFacet    *facets.Facet[Approval]
+	approvesFacet     *facets.Facet[Approve]
 	withdrawalsFacet  *facets.Facet[Withdrawal]
 	assetsFacet       *facets.Facet[Asset]
 	logsFacet         *facets.Facet[Log]
@@ -110,6 +113,15 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		isApproval,
 		isDupApproval(),
 		c.getApprovalsStore(payload, ExportsApprovals),
+		"exports",
+		c,
+	)
+
+	c.approvesFacet = facets.NewFacet(
+		ExportsApproves,
+		isApprove,
+		isDupApprove(),
+		c.getApprovesStore(payload, ExportsApproves),
 		"exports",
 		c,
 	)
@@ -190,6 +202,12 @@ func isApproval(item *Approval) bool {
 	// EXISTING_CODE
 }
 
+func isApprove(item *Approve) bool {
+	// EXISTING_CODE
+	return true
+	// EXISTING_CODE
+}
+
 func isWithdrawal(item *Withdrawal) bool {
 	// EXISTING_CODE
 	return true
@@ -221,6 +239,12 @@ func isReceipt(item *Receipt) bool {
 }
 
 func isDupApproval() func(existing []*Approval, newItem *Approval) bool {
+	// EXISTING_CODE
+	return nil
+	// EXISTING_CODE
+}
+
+func isDupApprove() func(existing []*Approve, newItem *Approve) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
@@ -307,6 +331,10 @@ func (c *ExportsCollection) LoadData(dataFacet types.DataFacet) {
 			if err := c.approvalsFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
+		case ExportsApproves:
+			if err := c.approvesFacet.Load(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
 		case ExportsWithdrawals:
 			if err := c.withdrawalsFacet.Load(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
@@ -346,6 +374,8 @@ func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
 		c.transactionsFacet.Reset()
 	case ExportsApprovals:
 		c.approvalsFacet.Reset()
+	case ExportsApproves:
+		c.approvesFacet.Reset()
 	case ExportsWithdrawals:
 		c.withdrawalsFacet.Reset()
 	case ExportsAssets:
@@ -373,6 +403,8 @@ func (c *ExportsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 		return c.transactionsFacet.NeedsUpdate()
 	case ExportsApprovals:
 		return c.approvalsFacet.NeedsUpdate()
+	case ExportsApproves:
+		return c.approvesFacet.NeedsUpdate()
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.NeedsUpdate()
 	case ExportsAssets:
@@ -395,6 +427,7 @@ func (c *ExportsCollection) GetSupportedFacets() []types.DataFacet {
 		ExportsTransfers,
 		ExportsTransactions,
 		ExportsApprovals,
+		ExportsApproves,
 		ExportsWithdrawals,
 		ExportsAssets,
 		ExportsLogs,
@@ -541,6 +574,8 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 		return c.transactionsFacet.ExportData(payload, string(ExportsTransactions))
 	case ExportsApprovals:
 		return c.approvalsFacet.ExportData(payload, string(ExportsApprovals))
+	case ExportsApproves:
+		return c.approvesFacet.ExportData(payload, string(ExportsApproves))
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.ExportData(payload, string(ExportsWithdrawals))
 	case ExportsAssets:

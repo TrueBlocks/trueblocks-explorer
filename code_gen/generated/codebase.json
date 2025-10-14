@@ -1276,6 +1276,17 @@
                                 "export"
                             ],
                             "viewType": "",
+                            "renderer": "panel",
+                            "attributes": "",
+                            "disabled": false
+                        },
+                        {
+                            "name": "Approves",
+                            "store": "Approves",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "",
                             "renderer": "",
                             "attributes": "",
                             "disabled": false
@@ -2061,6 +2072,17 @@
                 {
                     "name": "Approvals",
                     "store": "Approvals",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "",
+                    "renderer": "panel",
+                    "attributes": "",
+                    "disabled": false
+                },
+                {
+                    "name": "Approves",
+                    "store": "Approves",
                     "actions": [
                         "export"
                     ],
@@ -4038,6 +4060,133 @@
                     "type": "datetime",
                     "docOrder": 14,
                     "description": "Last modified timestamp",
+                    "num": 14
+                }
+            ]
+        },
+        {
+            "class": "Approves",
+            "doc_group": "02-Chain Data",
+            "doc_route": "216-approves",
+            "doc_descr": "approval transaction data filtered from regular transactions",
+            "produced_by": "transactions,export",
+            "contained_by": "block",
+            "cache_by": "tx",
+            "cache_type": "cacheable",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "attributes": "noui",
+                    "docOrder": 1,
+                    "description": "the number of the block",
+                    "num": 1
+                },
+                {
+                    "name": "transactionIndex",
+                    "type": "txnum",
+                    "attributes": "noui",
+                    "docOrder": 2,
+                    "description": "the zero-indexed position of the transaction in the block",
+                    "num": 2
+                },
+                {
+                    "name": "logIndex",
+                    "type": "lognum",
+                    "attributes": "noui",
+                    "docOrder": 3,
+                    "description": "the zero-indexed position of this log relative to the block",
+                    "num": 3
+                },
+                {
+                    "name": "timestamp",
+                    "type": "timestamp",
+                    "attributes": "noui",
+                    "docOrder": 4,
+                    "description": "the timestamp of the block this log appears in",
+                    "num": 4
+                },
+                {
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "calc",
+                    "docOrder": 5,
+                    "description": "the timestamp as a date",
+                    "num": 5
+                },
+                {
+                    "name": "address",
+                    "type": "address",
+                    "docOrder": 6,
+                    "description": "the smart contract that emitted this log",
+                    "num": 6
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "attributes": "calc",
+                    "docOrder": 7,
+                    "description": "the name of the smart contract if any",
+                    "num": 7
+                },
+                {
+                    "name": "topics",
+                    "type": "topic",
+                    "attributes": "noui",
+                    "docOrder": 8,
+                    "description": "the first topic hashes event signature of the log, up to 3 additional index parameters may appear",
+                    "num": 8,
+                    "isArray": true
+                },
+                {
+                    "name": "data",
+                    "type": "bytes",
+                    "attributes": "noui",
+                    "docOrder": 9,
+                    "description": "any remaining un-indexed parameters to the event",
+                    "num": 9
+                },
+                {
+                    "name": "transactionHash",
+                    "type": "hash",
+                    "attributes": "noui",
+                    "docOrder": 10,
+                    "description": "the hash of the transction",
+                    "num": 10
+                },
+                {
+                    "name": "blockHash",
+                    "type": "hash",
+                    "attributes": "noui",
+                    "docOrder": 11,
+                    "description": "the hash of the block",
+                    "num": 11
+                },
+                {
+                    "name": "articulatedLog",
+                    "type": "Function",
+                    "attributes": "calc",
+                    "docOrder": 12,
+                    "description": "a human-readable version of the topic and data fields",
+                    "num": 12,
+                    "isPointer": true
+                },
+                {
+                    "name": "compressedLog",
+                    "type": "string",
+                    "attributes": "noui",
+                    "docOrder": 13,
+                    "upgrades": "2.5.10:string",
+                    "description": "a truncated, more readable version of the articulation",
+                    "num": 13
+                },
+                {
+                    "name": "isNFT",
+                    "type": "bool",
+                    "attributes": "noui",
+                    "docOrder": 14,
+                    "description": "true if the log is an NFT transfer",
                     "num": 14
                 }
             ]

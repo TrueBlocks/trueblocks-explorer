@@ -63,6 +63,16 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			Fields:        getApprovalsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
+			RendererTypes: "panel",
+		},
+		"approves": {
+			Name:          "Approves",
+			Store:         "approves",
+			IsForm:        false,
+			DividerBefore: false,
+			Fields:        getApprovesFields(),
+			Actions:       []string{},
+			HeaderActions: []string{"export"},
 			RendererTypes: "",
 		},
 		"withdrawals": {
@@ -120,7 +130,7 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 	cfg := &types.ViewConfig{
 		ViewName:   "exports",
 		Facets:     facets,
-		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "approvals", "withdrawals", "assets", "logs", "traces", "receipts"},
+		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "approvals", "approves", "withdrawals", "assets", "logs", "traces", "receipts"},
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},
@@ -146,6 +156,30 @@ func getApprovalsFields() []types.FieldConfig {
 		{Section: "Data", Key: "lastAppTs", Formatter: "timestamp", NoTable: true},
 		{Section: "Data", Key: "lastAppTxID", Formatter: "number", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		// EXISTING_CODE
+	}
+	types.NormalizeFields(ret)
+	return ret
+}
+
+func getApprovesFields() []types.FieldConfig {
+	ret := []types.FieldConfig{
+		// EXISTING_CODE
+		{Section: "Context", Key: "blockNumber"},
+		{Section: "Context", Key: "transactionIndex"},
+		{Section: "Context", Key: "logIndex"},
+		{Section: "Context", Key: "address", Formatter: "address"},
+		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "transactionHash", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "topic0", Formatter: "hash"},
+		{Section: "Details", Key: "topic1", Formatter: "hash"},
+		{Section: "Details", Key: "topic2", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "topic3", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "data", NoTable: true},
+		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "", Key: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)

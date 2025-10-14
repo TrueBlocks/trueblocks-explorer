@@ -30,15 +30,6 @@ export const BarchartPanel = ({
     config.defaultMetric,
   );
 
-  // Utility functions
-  const formatNumber = (value: number): string => {
-    return value.toLocaleString();
-  };
-
-  const formatAverage = (value: number): string => {
-    return value.toFixed(2);
-  };
-
   useEffect(() => {
     const loadSelectedMetric = async () => {
       try {
@@ -212,8 +203,7 @@ export const BarchartPanel = ({
       {statsData && (
         <StatsBox
           statsData={statsData}
-          formatNumber={formatNumber}
-          formatAverage={formatAverage}
+          formatValue={currentMetric.formatValue}
         />
       )}
 
@@ -267,7 +257,7 @@ export const BarchartPanel = ({
       <Text size="sm" c="dimmed" ta="center">
         Showing {currentMetric.label.toLowerCase()} distribution across{' '}
         {statsData?.count || 0} buckets
-        {statsData && ` (avg: ${formatAverage(statsData.average)})`}
+        {statsData && ` (avg: ${currentMetric.formatValue(statsData.average)})`}
       </Text>
     </Stack>
   );

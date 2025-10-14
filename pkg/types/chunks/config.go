@@ -24,6 +24,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "panel",
+			PanelConfig:   getStatsPanelConfig(),
 		},
 		"index": {
 			Name:          "Index",
@@ -34,6 +35,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "panel",
+			PanelConfig:   getIndexPanelConfig(),
 		},
 		"blooms": {
 			Name:          "Blooms",
@@ -44,6 +46,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "panel",
+			PanelConfig:   getBloomsPanelConfig(),
 		},
 		"manifest": {
 			Name:          "Manifest",
@@ -54,6 +57,7 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{},
 			RendererTypes: "",
+			PanelConfig:   nil, // Form facet - no panel
 		},
 	}
 
@@ -138,3 +142,95 @@ func getStatsFields() []types.FieldConfig {
 
 // EXISTING_CODE
 // EXISTING_CODE
+
+func getStatsPanelConfig() *types.PanelConfig {
+	return &types.PanelConfig{
+		Type:          "barchart",
+		DefaultMetric: "ratio",
+		SkipUntil:     "2017",
+		TimeGroupBy:   "quarterly",
+		Metrics: []types.MetricConfig{
+			{
+				Key:          "ratio",
+				Label:        "Compressed",
+				BucketsField: "series0",
+				StatsField:   "series0Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "appsPerBlk",
+				Label:        "Apps per Block",
+				BucketsField: "series1",
+				StatsField:   "series1Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "addrsPerBlk",
+				Label:        "Addrs per Block",
+				BucketsField: "series2",
+				StatsField:   "series2Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "appsPerAddr",
+				Label:        "Apps per Addr",
+				BucketsField: "series3",
+				StatsField:   "series3Stats",
+				Bytes:        false,
+			},
+		},
+	}
+}
+
+func getIndexPanelConfig() *types.PanelConfig {
+	return &types.PanelConfig{
+		Type:          "heatmap",
+		DefaultMetric: "nAddresses",
+		Metrics: []types.MetricConfig{
+			{
+				Key:          "nAddresses",
+				Label:        "Number of Addresses",
+				BucketsField: "series0",
+				StatsField:   "series0Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "nAppearances",
+				Label:        "Number of Appearances",
+				BucketsField: "series1",
+				StatsField:   "series1Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "fileSize",
+				Label:        "File Size",
+				BucketsField: "series2",
+				StatsField:   "series2Stats",
+				Bytes:        true,
+			},
+		},
+	}
+}
+
+func getBloomsPanelConfig() *types.PanelConfig {
+	return &types.PanelConfig{
+		Type:          "heatmap",
+		DefaultMetric: "nBlooms",
+		Metrics: []types.MetricConfig{
+			{
+				Key:          "nBlooms",
+				Label:        "Number of Blooms",
+				BucketsField: "series3",
+				StatsField:   "series3Stats",
+				Bytes:        false,
+			},
+			{
+				Key:          "fileSize",
+				Label:        "File Size",
+				BucketsField: "series2",
+				StatsField:   "series2Stats",
+				Bytes:        true,
+			},
+		},
+	}
+}

@@ -2302,6 +2302,64 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class MetricConfig {
+	    key: string;
+	    label: string;
+	    bucketsField: string;
+	    statsField: string;
+	    bytes: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new MetricConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.key = source["key"];
+	        this.label = source["label"];
+	        this.bucketsField = source["bucketsField"];
+	        this.statsField = source["statsField"];
+	        this.bytes = source["bytes"];
+	    }
+	}
+	export class PanelConfig {
+	    type: string;
+	    defaultMetric: string;
+	    skipUntil?: string;
+	    timeGroupBy?: string;
+	    metrics: MetricConfig[];
+	
+	    static createFrom(source: any = {}) {
+	        return new PanelConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.defaultMetric = source["defaultMetric"];
+	        this.skipUntil = source["skipUntil"];
+	        this.timeGroupBy = source["timeGroupBy"];
+	        this.metrics = this.convertValues(source["metrics"], MetricConfig);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class FieldConfig {
 	    key: string;
 	    label: string;
@@ -2340,6 +2398,7 @@ export namespace types {
 	    actions: string[];
 	    headerActions: string[];
 	    rendererTypes: string;
+	    panelConfig?: PanelConfig;
 	
 	    static createFrom(source: any = {}) {
 	        return new FacetConfig(source);
@@ -2358,6 +2417,7 @@ export namespace types {
 	        this.actions = source["actions"];
 	        this.headerActions = source["headerActions"];
 	        this.rendererTypes = source["rendererTypes"];
+	        this.panelConfig = this.convertValues(source["panelConfig"], PanelConfig);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2579,6 +2639,7 @@ export namespace types {
 		}
 	}
 	
+	
 	export class MonitorCalcs {
 	    isEmpty?: boolean;
 	    isStaged?: boolean;
@@ -2712,6 +2773,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	
 	
 	export class Payload {

@@ -30,16 +30,20 @@ export function formatBytes(bytes: number | string): string {
 }
 
 /**
- * Formats a numeric value based on its type and formatting requirements
+ * Formats a numeric value with consistent, locale-aware formatting
  * @param value - The value to format
- * @param isBytes - Whether to format as bytes
+ * @param options - Formatting options
+ * @param options.bytes - Whether to format as file sizes (kb, mb, gb)
+ * @param options.decimals - Number of decimal places (0 = integer)
  * @returns Formatted string
  */
 export function formatNumericValue(
   value: number | string,
-  isBytes: boolean = false,
+  options: { bytes?: boolean; decimals?: number } = {},
 ): string {
-  if (isBytes) {
+  const { bytes = false, decimals = 0 } = options;
+
+  if (bytes) {
     return formatBytes(value);
   }
 
@@ -48,5 +52,18 @@ export function formatNumericValue(
     return String(value);
   }
 
-  return num.toLocaleString();
+  // Round to specified decimals, then use locale formatting
+  const rounded = decimals === 0 ? Math.round(num) : num;
+  return rounded.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+/**
+ * Legacy function for backward compatibility - prefer formatNumericValue
+ * @deprecated Use formatNumericValue with options instead
+ */
+export function formatNumber(value: number | string): string {
+  return formatNumericValue(value, { decimals: 0 });
 }

@@ -17,7 +17,12 @@ import {
 } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { msgs, types } from '@models';
-import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
+import {
+  Log,
+  aggregateTimeBasedBuckets,
+  formatGroupKey,
+  formatNumber,
+} from '@utils';
 
 interface HeatmapPanelProps {
   config: BucketsConfig;
@@ -177,14 +182,6 @@ export const HeatmapPanel = ({
     return theme.colors.blue[intensityLevel];
   };
 
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat().format(Math.round(num));
-  };
-
-  const formatAverage = (num: number) => {
-    return num.toFixed(3);
-  };
-
   if (error) {
     return (
       <Alert color="red" title="Error">
@@ -234,8 +231,7 @@ export const HeatmapPanel = ({
       {statsData && (
         <StatsBox
           statsData={statsData}
-          formatNumber={formatNumber}
-          formatAverage={formatAverage}
+          formatValue={metricConfig.formatValue}
         />
       )}
 
@@ -312,8 +308,9 @@ export const HeatmapPanel = ({
           <Text size="xs" c="dimmed">
             {formatNumber(statsData.count)} buckets,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
-            total, {formatAverage(statsData.average)} avg per{' '}
-            {formatNumber(buckets.gridInfo.size)}-block range
+            total,{' '}
+            {getMetricConfig(selectedMetric)?.formatValue(statsData.average)}{' '}
+            avg per {formatNumber(buckets.gridInfo.size)}-block range
           </Text>
         </Box>
 

@@ -23,6 +23,7 @@ type FacetConfig struct {
 	Actions       []string            `json:"actions"`
 	HeaderActions []string            `json:"headerActions"`
 	RendererTypes string              `json:"rendererTypes"`
+	PanelConfig   *PanelConfig        `json:"panelConfig,omitempty"`
 }
 
 // FieldConfig is the single source-of-truth for facet fields
@@ -89,4 +90,22 @@ func (vc *ViewConfig) IsDisabled() bool {
 		}
 	}
 	return true
+}
+
+// PanelConfig represents visualization panel configuration
+type PanelConfig struct {
+	Type          string         `json:"type"`                  // "barchart" or "heatmap"
+	DefaultMetric string         `json:"defaultMetric"`         // key of default metric
+	SkipUntil     string         `json:"skipUntil,omitempty"`   // optional date filter
+	TimeGroupBy   string         `json:"timeGroupBy,omitempty"` // "daily", "monthly", "quarterly", "annual"
+	Metrics       []MetricConfig `json:"metrics"`               // available metrics
+}
+
+// MetricConfig represents a single metric configuration
+type MetricConfig struct {
+	Key          string `json:"key"`          // unique identifier
+	Label        string `json:"label"`        // display name
+	BucketsField string `json:"bucketsField"` // field name in Buckets struct
+	StatsField   string `json:"statsField"`   // stats field name in Buckets struct
+	Bytes        bool   `json:"bytes"`        // whether to format as bytes
 }

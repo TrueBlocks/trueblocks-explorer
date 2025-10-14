@@ -45,18 +45,23 @@ describe('formatNumericValue', () => {
     expect(formatNumericValue(1234567)).toBe('1,234,567');
   });
 
-  it('formats bytes when isBytes is true', () => {
-    expect(formatNumericValue(1024, true)).toBe('1 kb');
-    expect(formatNumericValue(1073741824, true)).toBe('1 gb');
+  it('formats bytes when bytes option is true', () => {
+    expect(formatNumericValue(1024, { bytes: true })).toBe('1 kb');
+    expect(formatNumericValue(1073741824, { bytes: true })).toBe('1 gb');
+  });
+
+  it('formats decimals with specified precision', () => {
+    expect(formatNumericValue(1234.5678, { decimals: 2 })).toBe('1,234.57');
+    expect(formatNumericValue(1000.123, { decimals: 0 })).toBe('1,000');
   });
 
   it('handles string numbers', () => {
     expect(formatNumericValue('1000')).toBe('1,000');
-    expect(formatNumericValue('1024', true)).toBe('1 kb');
+    expect(formatNumericValue('1024', { bytes: true })).toBe('1 kb');
   });
 
   it('handles invalid input gracefully', () => {
     expect(formatNumericValue('invalid')).toBe('invalid');
-    expect(formatNumericValue('invalid', true)).toBe('0 b');
+    expect(formatNumericValue('invalid', { bytes: true })).toBe('0 b');
   });
 });

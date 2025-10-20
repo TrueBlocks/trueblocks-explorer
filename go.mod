@@ -10,7 +10,7 @@ replace (
 )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251014024726-7d20fcf612d4
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251014131109-65e3e568f38e
 	github.com/TrueBlocks/trueblocks-dalle/v2 v2.0.0-20250918192706-fe9276cdab92
 	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.4-0.20251014024614-816041c93ff0
 	github.com/google/go-cmp v0.7.0

@@ -199,7 +199,7 @@ func (c *ExportsCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Approve, sort sdk.SortSpec) error {
-			return sdk.SortApproves(items, sort)
+			return nil // sdk.SortApproves(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)

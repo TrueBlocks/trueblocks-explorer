@@ -6,7 +6,11 @@ import {
   SplashScreen,
   getBarSize,
 } from '@components';
-import { ViewContextProvider, WalletConnectProvider } from '@contexts';
+import {
+  ViewContextProvider,
+  WalletConnectProvider,
+  useViewContext,
+} from '@contexts';
 import {
   initializeAllViewConfigs,
   useActiveProject,
@@ -18,10 +22,10 @@ import {
 } from '@hooks';
 import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
-import { msgs } from '@models';
+import { msgs, project, types } from '@models';
 import { LogError, initializePreferencesDefaults } from '@utils';
 import { WalletConnectModalSign } from '@walletconnect/modal-sign-react';
-import { Router } from 'wouter';
+import { Router, useLocation } from 'wouter';
 
 import './debug-layout.css';
 import { useGlobalEscape } from './hooks/useGlobalEscape';
@@ -52,6 +56,78 @@ function globalNavKeySquelcher(e: KeyboardEvent) {
     e.preventDefault();
   }
 }
+
+// NavigationHandler component that listens for navigation events
+// Must be inside ViewContextProvider to access setPendingNavigation
+const NavigationHandler = () => {
+  const { setPendingNavigation } = useViewContext();
+  const {
+    setViewAndFacet,
+    activeAddress,
+    activeChain,
+    activePeriod,
+    setActiveAddress,
+    setActiveChain,
+    setActivePeriod,
+  } = useActiveProject();
+  const [, navigate] = useLocation();
+
+  // Listen for navigation events from backend
+  useEvent(
+    msgs.EventType.NAVIGATE_TO_ROW,
+    async (message: string, payload?: unknown) => {
+      // Parse the payload as NavigationPayload
+      const navigationPayload = payload as types.NavigationPayload;
+
+      // Check if context needs to change (only update if different)
+      const contextChanges: Promise<void>[] = [];
+
+      if (
+        navigationPayload.address &&
+        navigationPayload.address !== activeAddress
+      ) {
+        contextChanges.push(setActiveAddress(navigationPayload.address));
+      }
+
+      if (navigationPayload.chain && navigationPayload.chain !== activeChain) {
+        contextChanges.push(setActiveChain(navigationPayload.chain));
+      }
+
+      if (
+        navigationPayload.period &&
+        navigationPayload.period !== activePeriod
+      ) {
+        contextChanges.push(setActivePeriod(navigationPayload.period));
+      }
+
+      // Wait for all context changes to complete before proceeding
+      if (contextChanges.length > 0) {
+        await Promise.all(contextChanges);
+      }
+
+      // Create ViewStateKey from the navigation payload
+      const targetViewStateKey: project.ViewStateKey = {
+        viewName: navigationPayload.collection,
+        facetName: navigationPayload.dataFacet,
+      };
+
+      // Store navigation intent in ViewState
+      setPendingNavigation(targetViewStateKey, navigationPayload);
+
+      // Set the target facet state BEFORE navigation (await completion)
+      await setViewAndFacet(
+        navigationPayload.collection,
+        navigationPayload.dataFacet,
+      );
+
+      // Then navigate to trigger the view change
+      const targetRoute = `/${navigationPayload.collection}`;
+      navigate(targetRoute);
+    },
+  );
+
+  return null; // This component only handles events, no UI
+};
 
 export const App = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -160,6 +236,7 @@ export const App = () => {
             <Header />
             <MenuBar disabled={isWizard} />
             <ViewContextProvider>
+              <NavigationHandler />
               <MainView />
             </ViewContextProvider>
             <HelpBar />

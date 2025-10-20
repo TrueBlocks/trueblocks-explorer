@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
 	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/storage"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // seriesCrud handles create, update, remove for series facet

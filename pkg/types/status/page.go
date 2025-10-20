@@ -19,14 +19,13 @@ import (
 
 // EXISTING_CODE
 type StatusPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Caches        []*Cache        `json:"caches"`
-	Chains        []*Chain        `json:"chains"`
-	Status        []*Status       `json:"status"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Caches        []*Cache         `json:"caches"`
+	Chains        []*Chain         `json:"chains"`
+	Status        []*Status        `json:"status"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -43,11 +42,7 @@ func (p *StatusPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *StatusPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *StatusPage) GetState() types.LoadState {
+func (p *StatusPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -90,7 +85,6 @@ func (c *StatusCollection) GetPage(
 			}
 			page.Status, page.TotalItems, page.State = status, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case StatusCaches:
 		facet := c.cachesFacet
@@ -112,7 +106,6 @@ func (c *StatusCollection) GetPage(
 			}
 			page.Caches, page.TotalItems, page.State = cache, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case StatusChains:
 		facet := c.chainsFacet
@@ -134,7 +127,6 @@ func (c *StatusCollection) GetPage(
 			}
 			page.Chains, page.TotalItems, page.State = chain, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("status", dataFacet, "GetPage",
@@ -169,7 +161,7 @@ func (c *StatusCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -195,7 +187,7 @@ func (c *StatusCollection) generateSummariesForPeriod(dataFacet types.DataFacet,
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

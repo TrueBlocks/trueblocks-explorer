@@ -4,10 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"sync/atomic"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/progress"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
@@ -22,11 +20,10 @@ type DupFunc[T any] func(existing []*T, newItem *T) bool
 type PageResult[T any] struct {
 	Items      []T
 	TotalItems int
-	State      types.LoadState
+	State      types.StoreState
 }
 
 type Facet[T any] struct {
-	state           atomic.Value
 	store           *store.Store[T]
 	view            []*T
 	expectedCnt     int
@@ -62,7 +59,6 @@ func NewFacet[T any](
 		buckets:         types.NewBuckets(),
 		bucketsMu:       sync.RWMutex{},
 	}
-	facet.state.Store(types.StateStale)
 	store.RegisterObserver(facet)
 
 	return facet
@@ -72,15 +68,8 @@ func (r *Facet[T]) IsLoaded() bool {
 	return r.GetState() == types.StateLoaded
 }
 
-func (r *Facet[T]) IsFetching() bool {
-	return r.GetState() == types.StateFetching
-}
-
-func (r *Facet[T]) GetState() types.LoadState {
-	if state := r.state.Load(); state != nil {
-		return state.(types.LoadState)
-	}
-	return types.StateStale
+func (r *Facet[T]) GetState() types.StoreState {
+	return r.store.GetState()
 }
 
 func (r *Facet[T]) NeedsUpdate() bool {
@@ -88,26 +77,10 @@ func (r *Facet[T]) NeedsUpdate() bool {
 	return state == types.StateStale
 }
 
-func (r *Facet[T]) StartFetching() bool {
-	currentState := r.GetState()
-	if currentState == types.StateFetching {
-		return false
-	}
-	r.state.Store(types.StateFetching)
-	return true
-}
-
-func (r *Facet[T]) SetPartial() {
-	if r.GetState() == types.StateFetching {
-		r.state.Store(types.StatePartial)
-	}
-}
-
 func (r *Facet[T]) Reset() {
 	r.mutex.Lock()
 	r.view = r.view[:0]
 	r.expectedCnt = 0
-	r.state.Store(types.StateStale)
 	storeToReset := r.store
 	r.mutex.Unlock()
 
@@ -155,19 +128,10 @@ func (r *Facet[T]) UpdateBuckets(updateFunc func(*types.Buckets)) {
 
 var ErrAlreadyLoading = errors.New("already loading")
 
-func (r *Facet[T]) Load() error {
+func (r *Facet[T]) FetchFacet() error {
 	currentState := r.GetState()
 
 	if currentState == types.StateFetching {
-		return ErrAlreadyLoading
-	}
-
-	if currentState != types.StateStale {
-		msgs.EmitStatus(fmt.Sprintf("cached: %d items", len(r.view)))
-		return nil
-	}
-
-	if !r.StartFetching() {
 		return ErrAlreadyLoading
 	}
 
@@ -185,8 +149,8 @@ func (r *Facet[T]) Load() error {
 		for {
 			select {
 			case err := <-done:
-				if err != nil && err != store.ErrStaleFetch && err.Error() != "context canceled" {
-					logging.LogBackend(fmt.Sprintf("Fetch error: %s", err.Error()))
+				if err != nil && err.Error() != "context canceled" {
+					msgs.EmitError("Fetch failed", err)
 				}
 				return
 
@@ -233,7 +197,7 @@ func (r *Facet[T]) GetPage(
 		} else if r.NeedsUpdate() {
 			// No data in store, trigger load
 			go func() {
-				_ = r.Load()
+				_ = r.FetchFacet()
 			}()
 		}
 	}
@@ -335,47 +299,37 @@ func (r *Facet[T]) OnNewItem(item *T, index int) {
 	r.mutex.Unlock()
 
 	r.progress.Tick(currentCount, expectedTotal)
-	if currentCount > 0 {
-		r.SetPartial()
-	}
 }
 
-func (r *Facet[T]) OnStateChanged(state store.StoreState, reason string) {
-	// Map store states to facet states
+// OnStateChanged handles store state changes by updating the facet view accordingly
+func (r *Facet[T]) OnStateChanged(state types.StoreState, reason string) {
 	switch state {
-	case store.StateStale:
-		r.state.Store(types.StateStale)
+	case types.StateStale:
 		r.expectedCnt = 0
 		r.mutex.Lock()
 		r.view = r.view[:0]
 		r.mutex.Unlock()
-
 		if r.summaryProvider != nil {
 			r.summaryProvider.ResetSummary()
 		}
-
 		msgs.EmitStatus(fmt.Sprintf("data outdated: %s", reason))
 
-	case store.StateFetching:
-		r.state.Store(types.StateFetching)
+	case types.StateFetching:
 		r.expectedCnt = 0
 		r.mutex.Lock()
 		r.view = r.view[:0]
 		r.mutex.Unlock()
-
 		if r.summaryProvider != nil {
 			r.summaryProvider.ResetSummary()
 		}
 
-	case store.StateLoaded:
+	case types.StateLoaded:
 		r.SyncWithStore()
-		r.state.Store(types.StateLoaded)
 		r.mutex.RLock()
 		currentCount := len(r.view)
 		r.expectedCnt = r.store.GetExpectedTotal()
 		r.mutex.RUnlock()
 		r.progress.Tick(currentCount, currentCount)
-
 		if r.summaryProvider != nil {
 			collectionPayload := types.DataLoadedPayload{
 				CurrentCount:  currentCount,
@@ -390,23 +344,6 @@ func (r *Facet[T]) OnStateChanged(state store.StoreState, reason string) {
 			collectionPayload.DataFacet = r.dataFacet
 			msgs.EmitLoaded(collectionPayload)
 		}
-
-	case store.StateError:
-		r.mutex.RLock()
-		hasData := len(r.view) > 0
-		currentCount := len(r.view)
-		r.mutex.RUnlock()
-		if hasData {
-			r.state.Store(types.StatePartial)
-			msgs.EmitStatus(fmt.Sprintf("partial load: %d items (error: %s)", currentCount, reason))
-		} else {
-			r.state.Store(types.StateError)
-			msgs.EmitError(fmt.Sprintf("load failed: %s", reason), errors.New(reason))
-		}
-
-	case store.StateCanceled:
-		r.state.Store(types.StateStale)
-		msgs.EmitStatus("loading canceled")
 	}
 }
 

@@ -8,7 +8,7 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GetMonitorsPage, MonitorsCrud, Reload } from '@app';
+import { GetMonitorsPage, MonitorsCrud, NavigateToRow, Reload } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -161,6 +161,25 @@ export const Monitors = () => {
   });
 
   const { handleRemove, handleToggle } = handlers;
+
+  // Custom handler for Enter key: navigate to exports/assets view at row 0
+  const handleNavigateToExports = useCallback(
+    async (rowData: Record<string, unknown>) => {
+      try {
+        let payload = createPayload(
+          types.DataFacet.ASSETCHARTS,
+        ) as types.NavigationPayload;
+        payload.collection = 'exports';
+        payload.recordId = String(rowData.address || '');
+        payload.rowIndex = 0;
+        payload.address = rowData.address as string;
+        await NavigateToRow(payload);
+      } catch (error) {
+        LogError(`Failed to navigate to exports: ${error}`);
+      }
+    },
+    [createPayload],
+  );
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
     return (
@@ -217,7 +236,7 @@ export const Monitors = () => {
     [viewConfig, getCurrentDataFacet],
   );
 
-  const { isForm, node: formNode } = useFacetForm<Record<string, unknown>>({
+  const { isCanvas, node: formNode } = useFacetForm<Record<string, unknown>>({
     viewConfig,
     getCurrentDataFacet,
     currentData: currentData as unknown as Record<string, unknown>[],
@@ -228,16 +247,17 @@ export const Monitors = () => {
   });
 
   const perTabContent = useMemo(() => {
-    if (isForm && formNode) return formNode;
+    if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
         data={currentData as unknown as Record<string, unknown>[]}
         columns={currentColumns}
-        loading={!!pageData?.isFetching}
+        state={pageData?.state || types.StoreState.STALE}
         error={error}
         viewStateKey={viewStateKey}
         headerActions={headerActions}
         detailPanel={detailPanel}
+        onSubmit={handleNavigateToExports}
         onDelete={(rowData) => handleToggle(String(rowData.address || ''))}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
       />
@@ -245,13 +265,14 @@ export const Monitors = () => {
   }, [
     currentData,
     currentColumns,
-    pageData?.isFetching,
+    pageData?.state,
     error,
     viewStateKey,
-    isForm,
+    isCanvas,
     formNode,
     headerActions,
     detailPanel,
+    handleNavigateToExports,
     handleToggle,
     handleRemove,
   ]);
@@ -279,9 +300,12 @@ export const Monitors = () => {
         </div>
       )}
       <Debugger
+        facetName={getCurrentDataFacet()}
         rowActions={config.rowActions}
         headerActions={config.headerActions}
         count={++renderCnt.current}
+        state={pageData?.state || types.StoreState.STALE}
+        totalItems={pageData?.totalItems}
       />
       <ConfirmModal
         opened={confirmModal.opened}

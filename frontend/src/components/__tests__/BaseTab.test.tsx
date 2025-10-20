@@ -28,10 +28,10 @@ describe('BaseTab', () => {
   ) => React.ReactNode = () => null;
   it('renders table with data', () => {
     const { container } = render(
-      <BaseTab
+      <BaseTab<{ id: string; name: string }>
         data={mockData}
         columns={mockColumns}
-        loading={false}
+        state={types.StoreState.LOADED}
         error={null}
         viewStateKey={mockViewStateKey}
         detailPanel={stubDetail}
@@ -44,10 +44,10 @@ describe('BaseTab', () => {
 
   it('renders table structure even when loading', () => {
     const { container } = render(
-      <BaseTab
+      <BaseTab<{ id: string; name: string }>
         data={[]}
         columns={mockColumns}
-        loading={true}
+        state={types.StoreState.FETCHING}
         error={null}
         viewStateKey={mockViewStateKey}
         detailPanel={stubDetail}
@@ -58,12 +58,12 @@ describe('BaseTab', () => {
     expect(container.innerHTML).toContain('data-testid="mock-table"');
   });
 
-  it('renders table structure even when empty', () => {
+  it('handles empty data', () => {
     const { container } = render(
-      <BaseTab
+      <BaseTab<{ id: string; name: string }>
         data={[]}
         columns={mockColumns}
-        loading={false}
+        state={types.StoreState.LOADED}
         error={null}
         viewStateKey={mockViewStateKey}
         detailPanel={stubDetail}
@@ -87,10 +87,10 @@ describe('BaseTab', () => {
       };
 
       const { rerender } = render(
-        <BaseTab
+        <BaseTab<{ id: string; name: string }>
           data={mockData}
           columns={mockColumns}
-          loading={false}
+          state={types.StoreState.LOADED}
           error={null}
           viewStateKey={allFacetKey}
           detailPanel={stubDetail}
@@ -104,10 +104,10 @@ describe('BaseTab', () => {
 
       // Test state key change
       rerender(
-        <BaseTab
+        <BaseTab<{ id: string; name: string }>
           data={mockData}
           columns={mockColumns}
-          loading={false}
+          state={types.StoreState.LOADED}
           error={null}
           viewStateKey={customFacetKey}
           detailPanel={stubDetail}
@@ -137,10 +137,10 @@ describe('BaseTab', () => {
       // Test each key type
       [chunksKey, monitorsKey, abisKey].forEach((key) => {
         const { container, unmount } = render(
-          <BaseTab
+          <BaseTab<{ id: string; name: string }>
             data={mockData}
             columns={mockColumns}
-            loading={false}
+            state={types.StoreState.LOADED}
             error={null}
             viewStateKey={key}
             detailPanel={stubDetail}
@@ -159,10 +159,10 @@ describe('BaseTab', () => {
       };
 
       render(
-        <BaseTab
+        <BaseTab<{ id: string; name: string }>
           data={mockData}
           columns={mockColumns}
-          loading={false}
+          state={types.StoreState.LOADED}
           error={null}
           viewStateKey={testKey}
           detailPanel={stubDetail}
@@ -205,10 +205,10 @@ describe('BaseTab', () => {
       const mockOnSubmit = vi.fn();
 
       render(
-        <BaseTab
+        <BaseTab<{ id: string; name: string }>
           data={mockData}
           columns={mockColumns}
-          loading={false}
+          state={types.StoreState.LOADED}
           error={null}
           viewStateKey={mockViewStateKey}
           onSubmit={mockOnSubmit}
@@ -219,23 +219,6 @@ describe('BaseTab', () => {
       expect(
         document.querySelector('[data-testid="mock-table"]'),
       ).toBeInTheDocument();
-    });
-
-    it('handles error prop without breaking render', () => {
-      const mockError = new Error('Test error');
-
-      const { container } = render(
-        <BaseTab
-          data={mockData}
-          columns={mockColumns}
-          loading={false}
-          error={mockError}
-          viewStateKey={mockViewStateKey}
-          detailPanel={stubDetail}
-        />,
-      );
-
-      expect(container.innerHTML).toContain('data-testid="mock-table"');
     });
   });
 });

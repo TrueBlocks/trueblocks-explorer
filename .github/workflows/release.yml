@@ -2,13 +2,13 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 permissions:
   contents: write
 env:
   # GoLang version
-  GO_VERSION: '1.23.8'
-  NODE_VERSION: '20'
+  GO_VERSION: "1.23.8"
+  NODE_VERSION: "20"
 jobs:
   create_release:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: "yarn"
           cache-dependency-path: frontend/yarn.lock
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          cache: "yarn"
           cache-dependency-path: frontend/yarn.lock
       - name: Install Linux dependencies
         run: |

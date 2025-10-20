@@ -220,7 +220,7 @@ export const Contracts = () => {
     [viewConfig, getCurrentDataFacet],
   );
 
-  const { isForm, node: formNode } = useFacetForm<Record<string, unknown>>({
+  const { isCanvas, node: formNode } = useFacetForm<Record<string, unknown>>({
     viewConfig,
     getCurrentDataFacet,
     currentData: currentData as unknown as Record<string, unknown>[],
@@ -228,16 +228,17 @@ export const Contracts = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
-    renderers: renderers(pageData, fetchData),
+    renderers: renderers.facets,
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
-    if (isForm && formNode) return formNode;
+    if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
         data={currentData as unknown as Record<string, unknown>[]}
         columns={currentColumns}
-        loading={!!pageData?.isFetching}
+        state={pageData?.state || types.StoreState.STALE}
         error={error}
         viewStateKey={viewStateKey}
         headerActions={headerActions}
@@ -247,10 +248,10 @@ export const Contracts = () => {
   }, [
     currentData,
     currentColumns,
-    pageData?.isFetching,
+    pageData?.state,
     error,
     viewStateKey,
-    isForm,
+    isCanvas,
     formNode,
     headerActions,
     detailPanel,
@@ -279,9 +280,12 @@ export const Contracts = () => {
         </div>
       )}
       <Debugger
+        facetName={getCurrentDataFacet()}
         rowActions={config.rowActions}
         headerActions={config.headerActions}
         count={++renderCnt.current}
+        state={pageData?.state || types.StoreState.STALE}
+        totalItems={pageData?.totalItems}
       />
       <ConfirmModal
         opened={confirmModal.opened}

@@ -53,6 +53,8 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 		}
 
 		processFunc := func(item interface{}) *Contract {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Contract); ok {
 				return it
 			}
@@ -75,7 +77,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 		for i, c := range mockContracts {
 			theStore.AddItem(c, i)
 		}
-		theStore.ChangeState(0, store.StateLoaded, "Mock data loaded")
+		theStore.ChangeState(types.StateLoaded, "Mock data loaded")
 		// EXISTING_CODE
 
 		contractsStore = theStore
@@ -109,7 +111,7 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ContractsEvents, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -117,6 +119,8 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Log {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Log); ok {
 				return it
 			}

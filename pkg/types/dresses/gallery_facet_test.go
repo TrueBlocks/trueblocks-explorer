@@ -10,7 +10,7 @@ import (
 func TestDressesGalleryPageUsesDresses(t *testing.T) {
 	payload := &types.Payload{Collection: "dresses", DataFacet: DressesGallery}
 	coll := GetDressesCollection(payload)
-	coll.LoadData(DressesGallery)
+	coll.FetchByFacet(DressesGallery)
 	pageAny, err := coll.GetPage(payload, 0, 25, sdk.SortSpec{}, "")
 	if err != nil {
 		t.Fatalf("GetPage gallery failed: %v", err)
@@ -30,7 +30,7 @@ func TestDressesGalleryPageUsesDresses(t *testing.T) {
 func TestDressesEventsPageStillUsesLogs(t *testing.T) {
 	payload := &types.Payload{Collection: "dresses", DataFacet: DressesEvents}
 	coll := GetDressesCollection(payload)
-	coll.LoadData(DressesEvents)
+	coll.FetchByFacet(DressesEvents)
 	pageAny, err := coll.GetPage(payload, 0, 25, sdk.SortSpec{}, "")
 	if err != nil {
 		t.Fatalf("GetPage events failed: %v", err)

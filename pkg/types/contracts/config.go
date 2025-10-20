@@ -18,7 +18,7 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 		"dashboard": {
 			Name:          "Dashboard",
 			Store:         "contracts",
-			IsForm:        true,
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getContractsFields(),
 			Actions:       []string{},
@@ -28,7 +28,7 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 		"execute": {
 			Name:          "Execute",
 			Store:         "contracts",
-			IsForm:        true,
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getContractsFields(),
 			Actions:       []string{},
@@ -38,7 +38,6 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 		"events": {
 			Name:          "Events",
 			Store:         "logs",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getLogsFields(),
 			Actions:       []string{},

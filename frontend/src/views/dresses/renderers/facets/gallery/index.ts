@@ -1,0 +1,1 @@
+export { GalleryFacet } from './GalleryFacet';

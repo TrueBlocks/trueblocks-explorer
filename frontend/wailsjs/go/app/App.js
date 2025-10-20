@@ -230,6 +230,10 @@ export function GetExportsConfig(arg1) {
   return window['go']['app']['App']['GetExportsConfig'](arg1);
 }
 
+export function GetExportsMetric(arg1) {
+  return window['go']['app']['App']['GetExportsMetric'](arg1);
+}
+
 export function GetExportsPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['app']['App']['GetExportsPage'](arg1, arg2, arg3, arg4, arg5);
 }
@@ -414,6 +418,10 @@ export function NamesCrud(arg1, arg2, arg3) {
   return window['go']['app']['App']['NamesCrud'](arg1, arg2, arg3);
 }
 
+export function NavigateToRow(arg1) {
+  return window['go']['app']['App']['NavigateToRow'](arg1);
+}
+
 export function NewProject(arg1, arg2) {
   return window['go']['app']['App']['NewProject'](arg1, arg2);
 }
@@ -532,6 +540,10 @@ export function SetChunksMetric(arg1, arg2) {
 
 export function SetDebugCollapsed(arg1) {
   return window['go']['app']['App']['SetDebugCollapsed'](arg1);
+}
+
+export function SetExportsMetric(arg1, arg2) {
+  return window['go']['app']['App']['SetExportsMetric'](arg1, arg2);
 }
 
 export function SetFilterState(arg1, arg2) {

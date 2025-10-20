@@ -257,3 +257,28 @@ func (a *App) SetChunksMetric(facet string, metric string) {
 		msgs.EmitError("failed to save chunks metric preference", err)
 	}
 }
+
+// GetExportsMetric returns the selected metric for a specific exports facet
+func (a *App) GetExportsMetric(facet string) string {
+	a.prefsMu.RLock()
+	defer a.prefsMu.RUnlock()
+
+	if a.Preferences.App.ExportsMetrics == nil {
+		return ""
+	}
+	return a.Preferences.App.ExportsMetrics[facet]
+}
+
+// SetExportsMetric updates the selected metric for a specific exports facet
+func (a *App) SetExportsMetric(facet string, metric string) {
+	a.prefsMu.Lock()
+	defer a.prefsMu.Unlock()
+
+	if a.Preferences.App.ExportsMetrics == nil {
+		a.Preferences.App.ExportsMetrics = make(map[string]string)
+	}
+	a.Preferences.App.ExportsMetrics[facet] = metric
+	if err := preferences.SetAppPreferences(&a.Preferences.App); err != nil {
+		msgs.EmitError("failed to save exports metric preference", err)
+	}
+}

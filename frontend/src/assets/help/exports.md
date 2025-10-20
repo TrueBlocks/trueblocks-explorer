@@ -18,31 +18,19 @@ This is the help file for the Exports view.
 - Balances Facet uses the Balances store.
 - Transfers Facet uses the Transfers store.
 - Transactions Facet uses the Transactions store.
-- Approvals Facet uses the Approvals store.
-- Approves Facet uses the Approves store.
+- OpenApprovals Facet uses the OpenApprovals store.
+- ApprovalLogs Facet uses the ApprovalLogs store.
+- ApprovalTxs Facet uses the ApprovalTxs store.
 - Withdrawals Facet uses the Withdrawals store.
 - Assets Facet uses the Assets store.
+- AssetCharts Facet uses the Statements store.
 - Logs Facet uses the Logs store.
 - Traces Facet uses the Traces store.
 - Receipts Facet uses the Receipts store.
 
 ## Stores
 
-- **Approvals Store (11 members)**
-
-  - allowance: the amount of tokens approved for spending
-  - blockNumber: the current block number when the report was generated
-  - timestamp: the current timestamp when the report was generated
-  - date: the timestamp as a date
-  - owner: the address of the owner of the token (the approver)
-  - spender: the address being granted approval to spend tokens
-  - token: the address of the ERC-20 token being approved
-  - lastAppBlock: the block number of the last approval event
-  - lastAppTs: the timestamp of the last approval event
-  - lastAppTxID: the transaction index of the last approval event
-  - lastAppLogID: the log index of the last approval event
-
-- **Approves Store (14 members)**
+- **ApprovalLogs Store (14 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
@@ -58,6 +46,36 @@ This is the help file for the Exports view.
   - articulatedLog: a human-readable version of the topic and data fields
   - compressedLog: a truncated, more readable version of the articulation
   - isNFT: true if the log is an NFT transfer
+
+- **ApprovalTxs Store (27 members)**
+
+  - gasUsed: 
+  - chainId: 
+  - maxPriorityFeePerGas: 
+  - type: 
+  - traces: 
+  - maxFeePerGas: 
+  - hash: the hash of the transaction
+  - blockHash: the hash of the block containing this transaction
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction in the block
+  - nonce: sequence number of the transactions sent by the sender
+  - timestamp: the Unix timestamp of the object
+  - date: the timestamp as a date
+  - from: address from which the transaction was sent
+  - to: address to which the transaction was sent
+  - value: the amount of wei sent with this transactions
+  - ether: if --ether is specified, the value in ether
+  - gas: the maximum number of gas allowed for this transaction
+  - gasPrice: the number of wei per unit of gas the sender is willing to spend
+  - gasCost: the number of wei per unit of gas the sender is willing to spend
+  - input: byte data either containing a message or funcational data for a smart contracts. See the --articulate
+  - receipt: 
+  - statements: array of reconciliation statements
+  - articulatedTx: 
+  - hasToken: `true` if the transaction is token related, `false` otherwise
+  - isError: `true` if the transaction ended in error, `false` otherwise
+  - compressedTx: truncated, more readable version of the articulation
 
 - **Assets Store (6 members)**
 
@@ -98,6 +116,20 @@ This is the help file for the Exports view.
   - articulatedLog: a human-readable version of the topic and data fields
   - compressedLog: a truncated, more readable version of the articulation
   - isNFT: true if the log is an NFT transfer
+
+- **OpenApprovals Store (11 members)**
+
+  - allowance: the amount of tokens approved for spending
+  - blockNumber: the current block number when the report was generated
+  - timestamp: the current timestamp when the report was generated
+  - date: the timestamp as a date
+  - owner: the address of the owner of the token (the approver)
+  - spender: the address being granted approval to spend tokens
+  - token: the address of the ERC-20 token being approved
+  - lastAppBlock: the block number of the last approval event
+  - lastAppTs: the timestamp of the last approval event
+  - lastAppTxID: the transaction index of the last approval event
+  - lastAppLogID: the log index of the last approval event
 
 - **Receipts Store (14 members)**
 

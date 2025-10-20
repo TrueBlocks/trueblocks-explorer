@@ -31,7 +31,7 @@ func (c *AbisCollection) Crud(
 		}
 		_, _, err = opts.Abis()
 	default:
-		logging.LogBackend(fmt.Sprintf("ABI operation %s not implemented for address: %s", op, abi.Address))
+		logging.LogBEError(fmt.Sprintf("ABI operation %s not implemented for address: %s", op, abi.Address))
 		return fmt.Errorf("operation %s not yet implemented for Abis", op)
 	}
 
@@ -54,7 +54,6 @@ func (c *AbisCollection) Crud(
 		} else {
 			msgs.EmitStatus(fmt.Sprintf("ABI for address %s was not found in cache", abi.Address))
 		}
-		logging.LogBackend(fmt.Sprintf("Deleted ABI for address: %s", abi.Address))
 	}
 
 	return nil

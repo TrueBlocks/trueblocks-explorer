@@ -106,7 +106,7 @@ func isDupLog() func(existing []*Log, newItem *Log) bool {
 	// EXISTING_CODE
 }
 
-func (c *ContractsCollection) LoadData(dataFacet types.DataFacet) {
+func (c *ContractsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -114,15 +114,15 @@ func (c *ContractsCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case ContractsDashboard:
-			if err := c.dashboardFacet.Load(); err != nil {
+			if err := c.dashboardFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ContractsExecute:
-			if err := c.executeFacet.Load(); err != nil {
+			if err := c.executeFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ContractsEvents:
-			if err := c.eventsFacet.Load(); err != nil {
+			if err := c.eventsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

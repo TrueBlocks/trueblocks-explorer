@@ -67,33 +67,12 @@ func TestNewBucketStats(t *testing.T) {
 func TestNewBuckets(t *testing.T) {
 	buckets := NewBuckets()
 
-	// Test that all series are initialized as empty slices (not nil)
-	if buckets.Series0 == nil {
-		t.Error("Expected Series0 to be initialized")
+	// Test that Series map is initialized as empty
+	if buckets.Series == nil {
+		t.Error("Expected Series map to be initialized")
 	}
-	if len(buckets.Series0) != 0 {
-		t.Errorf("Expected Series0 length 0, got %d", len(buckets.Series0))
-	}
-
-	if buckets.Series1 == nil {
-		t.Error("Expected Series1 to be initialized")
-	}
-	if len(buckets.Series1) != 0 {
-		t.Errorf("Expected Series1 length 0, got %d", len(buckets.Series1))
-	}
-
-	if buckets.Series2 == nil {
-		t.Error("Expected Series2 to be initialized")
-	}
-	if len(buckets.Series2) != 0 {
-		t.Errorf("Expected Series2 length 0, got %d", len(buckets.Series2))
-	}
-
-	if buckets.Series3 == nil {
-		t.Error("Expected Series3 to be initialized")
-	}
-	if len(buckets.Series3) != 0 {
-		t.Errorf("Expected Series3 length 0, got %d", len(buckets.Series3))
+	if len(buckets.Series) != 0 {
+		t.Errorf("Expected Series map length 0, got %d", len(buckets.Series))
 	}
 
 	// Test GridInfo is properly initialized
@@ -102,13 +81,5 @@ func TestNewBuckets(t *testing.T) {
 	}
 	if buckets.GridInfo.Columns != 20 {
 		t.Errorf("Expected GridInfo.Columns 20, got %d", buckets.GridInfo.Columns)
-	}
-
-	// Test BucketStats are initialized
-	if buckets.Series0Stats.Count != 0 {
-		t.Errorf("Expected Series0Stats.Count 0, got %d", buckets.Series0Stats.Count)
-	}
-	if buckets.Series1Stats.Total != 0 {
-		t.Errorf("Expected Series1Stats.Total 0, got %f", buckets.Series1Stats.Total)
 	}
 }

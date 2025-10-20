@@ -13,5 +13,3 @@ disable_go = false
 name = "Monitors"
 store = "Monitors"
 actions = ["delete", "undelete", "remove-confirm", "export"]
-viewType = ""
-

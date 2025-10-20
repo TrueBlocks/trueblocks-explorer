@@ -39,7 +39,7 @@ func (a *App) GetChunksSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadChunks(payload *types.Payload) error {
 	collection := chunks.GetChunksCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

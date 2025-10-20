@@ -18,7 +18,6 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		"downloaded": {
 			Name:          "Downloaded",
 			Store:         "abis",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getAbisFields(),
 			Actions:       []string{"remove"},
@@ -28,7 +27,6 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		"known": {
 			Name:          "Known",
 			Store:         "abis",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getAbisFields(),
 			Actions:       []string{},
@@ -38,7 +36,6 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		"functions": {
 			Name:          "Functions",
 			Store:         "functions",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getFunctionsFields(),
 			Actions:       []string{},
@@ -48,7 +45,6 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		"events": {
 			Name:          "Events",
 			Store:         "functions",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getFunctionsFields(),
 			Actions:       []string{},

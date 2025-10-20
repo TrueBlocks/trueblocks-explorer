@@ -8,13 +8,12 @@ type Page interface {
 	GetFacet() DataFacet
 	GetTotalItems() int
 	GetExpectedTotal() int
-	GetIsFetching() bool
-	GetState() LoadState
+	GetState() StoreState
 }
 
 type Collection interface {
 	GetPage(payload *Payload, first, pageSize int, sort sdk.SortSpec, filter string) (Page, error)
-	LoadData(facet DataFacet)
+	FetchByFacet(facet DataFacet)
 	Reset(facet DataFacet)
 	NeedsUpdate(facet DataFacet) bool
 	GetSupportedFacets() []DataFacet

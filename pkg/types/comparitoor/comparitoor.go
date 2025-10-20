@@ -23,7 +23,7 @@ import (
 const (
 	ComparitoorComparitoor types.DataFacet = "comparitoor"
 	ComparitoorChifra      types.DataFacet = "chifra"
-	ComparitoorEtherScan   types.DataFacet = "etherscan"
+	ComparitoorEtherscan   types.DataFacet = "etherscan"
 	ComparitoorCovalent    types.DataFacet = "covalent"
 	ComparitoorAlchemy     types.DataFacet = "alchemy"
 )
@@ -31,7 +31,7 @@ const (
 func init() {
 	types.RegisterDataFacet(ComparitoorComparitoor)
 	types.RegisterDataFacet(ComparitoorChifra)
-	types.RegisterDataFacet(ComparitoorEtherScan)
+	types.RegisterDataFacet(ComparitoorEtherscan)
 	types.RegisterDataFacet(ComparitoorCovalent)
 	types.RegisterDataFacet(ComparitoorAlchemy)
 }
@@ -73,10 +73,10 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 	)
 
 	c.etherscanFacet = facets.NewFacet(
-		ComparitoorEtherScan,
-		isEtherScan,
+		ComparitoorEtherscan,
+		isEtherscan,
 		isDupTransaction(),
-		c.getTransactionStore(payload, ComparitoorEtherScan),
+		c.getTransactionStore(payload, ComparitoorEtherscan),
 		"comparitoor",
 		c,
 	)
@@ -112,7 +112,7 @@ func isChifra(item *Transaction) bool {
 	// EXISTING_CODE
 }
 
-func isEtherScan(item *Transaction) bool {
+func isEtherscan(item *Transaction) bool {
 	// EXISTING_CODE
 	return true
 	// EXISTING_CODE
@@ -149,7 +149,7 @@ func isDupTransaction() func(existing []*Transaction, newItem *Transaction) bool
 	// EXISTING_CODE
 }
 
-func (c *ComparitoorCollection) LoadData(dataFacet types.DataFacet) {
+func (c *ComparitoorCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -157,23 +157,23 @@ func (c *ComparitoorCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case ComparitoorComparitoor:
-			if err := c.comparitoorFacet.Load(); err != nil {
+			if err := c.comparitoorFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ComparitoorChifra:
-			if err := c.chifraFacet.Load(); err != nil {
+			if err := c.chifraFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case ComparitoorEtherScan:
-			if err := c.etherscanFacet.Load(); err != nil {
+		case ComparitoorEtherscan:
+			if err := c.etherscanFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ComparitoorCovalent:
-			if err := c.covalentFacet.Load(); err != nil {
+			if err := c.covalentFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ComparitoorAlchemy:
-			if err := c.alchemyFacet.Load(); err != nil {
+			if err := c.alchemyFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:
@@ -189,7 +189,7 @@ func (c *ComparitoorCollection) Reset(dataFacet types.DataFacet) {
 		c.comparitoorFacet.Reset()
 	case ComparitoorChifra:
 		c.chifraFacet.Reset()
-	case ComparitoorEtherScan:
+	case ComparitoorEtherscan:
 		c.etherscanFacet.Reset()
 	case ComparitoorCovalent:
 		c.covalentFacet.Reset()
@@ -206,7 +206,7 @@ func (c *ComparitoorCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 		return c.comparitoorFacet.NeedsUpdate()
 	case ComparitoorChifra:
 		return c.chifraFacet.NeedsUpdate()
-	case ComparitoorEtherScan:
+	case ComparitoorEtherscan:
 		return c.etherscanFacet.NeedsUpdate()
 	case ComparitoorCovalent:
 		return c.covalentFacet.NeedsUpdate()
@@ -221,7 +221,7 @@ func (c *ComparitoorCollection) GetSupportedFacets() []types.DataFacet {
 	return []types.DataFacet{
 		ComparitoorComparitoor,
 		ComparitoorChifra,
-		ComparitoorEtherScan,
+		ComparitoorEtherscan,
 		ComparitoorCovalent,
 		ComparitoorAlchemy,
 	}
@@ -278,8 +278,8 @@ func (c *ComparitoorCollection) ExportData(payload *types.Payload) (string, erro
 		return c.comparitoorFacet.ExportData(payload, string(ComparitoorComparitoor))
 	case ComparitoorChifra:
 		return c.chifraFacet.ExportData(payload, string(ComparitoorChifra))
-	case ComparitoorEtherScan:
-		return c.etherscanFacet.ExportData(payload, string(ComparitoorEtherScan))
+	case ComparitoorEtherscan:
+		return c.etherscanFacet.ExportData(payload, string(ComparitoorEtherscan))
 	case ComparitoorCovalent:
 		return c.covalentFacet.ExportData(payload, string(ComparitoorCovalent))
 	case ComparitoorAlchemy:

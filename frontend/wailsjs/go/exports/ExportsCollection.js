@@ -14,6 +14,10 @@ export function ExportData(arg1) {
   return window['go']['exports']['ExportsCollection']['ExportData'](arg1);
 }
 
+export function FetchByFacet(arg1) {
+  return window['go']['exports']['ExportsCollection']['FetchByFacet'](arg1);
+}
+
 export function GetBuckets(arg1) {
   return window['go']['exports']['ExportsCollection']['GetBuckets'](arg1);
 }
@@ -26,6 +30,10 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['exports']['ExportsCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
+export function GetPageForRecord(arg1, arg2, arg3, arg4, arg5, arg6) {
+  return window['go']['exports']['ExportsCollection']['GetPageForRecord'](arg1, arg2, arg3, arg4, arg5, arg6);
+}
+
 export function GetStoreName(arg1, arg2, arg3) {
   return window['go']['exports']['ExportsCollection']['GetStoreName'](arg1, arg2, arg3);
 }
@@ -36,10 +44,6 @@ export function GetSummary() {
 
 export function GetSupportedFacets() {
   return window['go']['exports']['ExportsCollection']['GetSupportedFacets']();
-}
-
-export function LoadData(arg1) {
-  return window['go']['exports']['ExportsCollection']['LoadData'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

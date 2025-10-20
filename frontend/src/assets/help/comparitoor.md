@@ -15,7 +15,7 @@ the code inside of 'EXISTING_CODE' tags.
 
 - Comparitoor Facet uses the Transaction store.
 - Chifra Facet uses the Transaction store.
-- EtherScan Facet uses the Transaction store.
+- Etherscan Facet uses the Transaction store.
 - Covalent Facet uses the Transaction store.
 - Alchemy Facet uses the Transaction store.
 

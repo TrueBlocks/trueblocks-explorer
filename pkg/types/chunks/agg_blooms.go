@@ -19,17 +19,28 @@ func (c *ChunksCollection) updateBloomsBucket(bloom *Bloom) {
 		size := bucket.GridInfo.Size
 		lastBucketIndex := int(lastBlock / size)
 
-		ensureBucketsExist(&bucket.Series2, lastBucketIndex, size)
-		ensureBucketsExist(&bucket.Series3, lastBucketIndex, size)
+		// Ensure series exist and process both metrics efficiently
+		bucket.EnsureSeriesExists("fileSize")
+		bucket.EnsureSeriesExists("nBlooms")
 
-		// Distribute items across all affected buckets
-		distributeToBuckets(&bucket.Series2, firstBlock, lastBlock, float64(bloom.FileSize), size)
-		distributeToBuckets(&bucket.Series3, firstBlock, lastBlock, float64(bloom.NBlooms), size)
+		fileSizeSeries := bucket.GetSeries("fileSize")
+		nBloomsSeries := bucket.GetSeries("nBlooms")
+
+		ensureBucketsExist(&fileSizeSeries, lastBucketIndex, size)
+		ensureBucketsExist(&nBloomsSeries, lastBucketIndex, size)
+
+		// Distribute values to buckets
+		distributeToBuckets(&fileSizeSeries, firstBlock, lastBlock, float64(bloom.FileSize), size)
+		distributeToBuckets(&nBloomsSeries, firstBlock, lastBlock, float64(bloom.NBlooms), size)
+
+		// Update series back to bucket
+		bucket.SetSeries("fileSize", fileSizeSeries)
+		bucket.SetSeries("nBlooms", nBloomsSeries)
 
 		// Update grid info
-		maxBuckets := len(bucket.Series3)
-		if len(bucket.Series2) > maxBuckets {
-			maxBuckets = len(bucket.Series2)
+		maxBuckets := len(nBloomsSeries)
+		if len(fileSizeSeries) > maxBuckets {
+			maxBuckets = len(fileSizeSeries)
 		}
 		updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
 	})

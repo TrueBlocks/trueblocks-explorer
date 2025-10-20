@@ -7,6 +7,14 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
 )
 
+func LogBEError(msg string) {
+	log.Println(colors.BrightYellow+"BACKEND-WARN", msg, colors.Off)
+}
+
+func LogBEWarning(msg string) {
+	log.Println(colors.BrightYellow+"BACKEND-WARN", msg, colors.Off)
+}
+
 func LogBackend(msg string) {
 	log.Println(colors.BrightBlue+"BACKEND", msg, colors.Off)
 }

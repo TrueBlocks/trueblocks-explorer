@@ -50,7 +50,7 @@
 //	 doneCh := msgs.WaitForLoadedEvent(string(abis.AbisDownloaded))
 //
 //	 // Trigger data loading
-//	 abisCollection.LoadData(abis.AbisDownloaded)
+//	 abisCollection.FetchByFacet(abis.AbisDownloaded)
 //
 //	 // Wait for the data to be loaded, with a timeout
 //	 select {
@@ -163,6 +163,11 @@ func EmitProjectOpened(lastView string, payload ...interface{}) {
 // EmitProjectModal signals project modal related events.
 func EmitProjectModal(msgText string, payload ...interface{}) {
 	emitMessage(EventProjectModal, msgText, payload...)
+}
+
+// EmitNavigateToRow signals navigation to a specific row in a facet.
+func EmitNavigateToRow(payload *types.NavigationPayload) {
+	emitMessage(EventNavigateToRow, "row-navigation", *payload)
 }
 
 // On registers a callback function for a specific event type.

@@ -11,35 +11,27 @@
     name = "Generator"
     store = "dalle.DalleDress"
     actions = [""]
-    viewType = "dashboard"
+    viewType = "canvas"
     renderer = "facet"
-    isForm = true
 
 [[facets]]
     name = "Series"
     store = "dalle.Series"
     actions = ["update","create","delete","remove","export"]
-    viewType = ""
-    isForm = false
 
 [[facets]]
     name = "Databases"
     store = "dalle.Databases"
     actions = ["export"]
-    viewType = ""
-    isForm = false
 
 [[facets]]
     name = "Events"
     store = "Logs"
     actions = ["export"]
-    viewType = ""
-    isForm = false
 
 [[facets]]
     name = "Gallery"
     store = "dalle.DalleDress"
     actions = ["export"]
-    viewType = "dashboard"
+    viewType = "canvas"
     renderer = "facet"
-    isForm = false

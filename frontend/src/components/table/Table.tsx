@@ -7,9 +7,9 @@ import {
   useTableKeys,
 } from '@components';
 import { Form, FormField } from '@components';
-import { useFiltering } from '@contexts';
-import { usePreferences } from '@hooks';
-import { project } from '@models';
+import { useFiltering, useViewContext } from '@contexts';
+import { usePlaceholderRows, usePreferences } from '@hooks';
+import { project, types } from '@models';
 import { getDebugClass } from '@utils';
 
 import {
@@ -18,6 +18,7 @@ import {
   Header,
   Pagination,
   PerPage,
+  PlaceholderRow,
   Stats,
   processColumns,
   usePagination,
@@ -28,9 +29,9 @@ import './Table.css';
 export interface TableProps<T extends Record<string, unknown>> {
   columns: FormField<T>[];
   data: T[];
-  loading: boolean;
+  state: types.StoreState;
   viewStateKey: project.ViewStateKey;
-  onSubmit: (data: T) => void;
+  onSubmit?: (data: T) => void;
   onDelete?: (rowData: T) => void;
   onRemove?: (rowData: T) => void;
   onAutoname?: (rowData: T) => void;
@@ -46,7 +47,7 @@ export interface TableProps<T extends Record<string, unknown>> {
 export const Table = <T extends Record<string, unknown>>({
   columns,
   data,
-  loading,
+  state,
   viewStateKey,
   onSubmit,
   onDelete,
@@ -61,6 +62,10 @@ export const Table = <T extends Record<string, unknown>>({
   const [currentRowData, setCurrentRowData] = useState<T | null>(null);
 
   const { detailCollapsed, setDetailCollapsed } = usePreferences();
+  const { placeholderCount, cyclingRowIndex } = usePlaceholderRows({
+    data,
+    state,
+  });
 
   const processedColumns = processColumns(columns);
 
@@ -69,8 +74,9 @@ export const Table = <T extends Record<string, unknown>>({
     ? processedColumns
     : processedColumns.slice(0, 6);
 
-  const { pagination } = usePagination(viewStateKey);
+  const { pagination, goToPage } = usePagination(viewStateKey);
   const { filter, setFiltering } = useFiltering(viewStateKey);
+  const { getPendingNavigation, setPendingNavigation } = useViewContext();
   const { currentPage, pageSize, totalItems } = pagination;
   const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -95,7 +101,9 @@ export const Table = <T extends Record<string, unknown>>({
 
   const handleModalFormSubmit = (values: T) => {
     setIsModalOpen(false);
-    onSubmit(values);
+    if (onSubmit) {
+      onSubmit(values);
+    }
     focusTable();
   };
 
@@ -106,9 +114,15 @@ export const Table = <T extends Record<string, unknown>>({
     viewStateKey,
     onEnter: () => {
       if (selectedRowIndex >= 0 && selectedRowIndex < data.length) {
-        const rowData = data[selectedRowIndex] || null;
-        setCurrentRowData(rowData);
-        setIsModalOpen(true);
+        const rowData = data[selectedRowIndex];
+        if (rowData) {
+          if (!onSubmit) {
+            setCurrentRowData(rowData);
+            setIsModalOpen(true);
+          } else {
+            onSubmit(rowData);
+          }
+        }
       }
     },
     onEscape: () => {
@@ -183,7 +197,7 @@ export const Table = <T extends Record<string, unknown>>({
   };
 
   useEffect(() => {
-    if (data.length > 0 && !loading) {
+    if (data.length > 0) {
       const safeFocusTable = () => {
         // Check if table's own modal is open
         if (isModalOpenRef.current) {
@@ -216,7 +230,7 @@ export const Table = <T extends Record<string, unknown>>({
 
       return () => clearTimeout(timer);
     }
-  }, [data, loading, focusTable]);
+  }, [data, state, focusTable]);
 
   const handleFormKeyDown = (e: React.KeyboardEvent) => {
     const navigationKeys = [
@@ -239,10 +253,46 @@ export const Table = <T extends Record<string, unknown>>({
   }, [currentPage, focusTable]);
 
   useEffect(() => {
-    if (selectedRowIndex === -1 || selectedRowIndex >= data.length) {
-      setSelectedRowIndex(Math.max(0, data.length - 1));
+    // Check for pending navigation first
+    const pendingNavigation = getPendingNavigation(viewStateKey);
+
+    if (pendingNavigation) {
+      // Handle pending navigation
+      const targetPage = Math.floor(pendingNavigation.rowIndex / pageSize);
+      const targetRowInPage = pendingNavigation.rowIndex % pageSize;
+
+      if (currentPage !== targetPage) {
+        // Navigate to the target page first
+        goToPage(targetPage);
+        // Row selection will happen when new page data loads
+      } else {
+        // We're on the right page, select the row if it's valid
+        if (targetRowInPage >= 0 && targetRowInPage < data.length) {
+          setSelectedRowIndex(targetRowInPage);
+          // Clear pending navigation after successful selection
+          setPendingNavigation(viewStateKey, null);
+        } else {
+          // Invalid row index, clear pending navigation
+          setPendingNavigation(viewStateKey, null);
+        }
+      }
+    } else {
+      // Normal reset behavior when no pending navigation
+      if (selectedRowIndex === -1 || selectedRowIndex >= data.length) {
+        setSelectedRowIndex(Math.max(0, data.length - 1));
+      }
     }
-  }, [data, selectedRowIndex, setSelectedRowIndex]);
+  }, [
+    data,
+    selectedRowIndex,
+    setSelectedRowIndex,
+    viewStateKey,
+    currentPage,
+    pageSize,
+    goToPage,
+    getPendingNavigation,
+    setPendingNavigation,
+  ]);
 
   const handleRowClick = (index: number) => {
     setSelectedRowIndex(index);
@@ -306,27 +356,55 @@ export const Table = <T extends Record<string, unknown>>({
           <Header columns={displayColumns} viewStateKey={viewStateKey} />
           <tbody className={getDebugClass(5)}>
             {data.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={displayColumns.length}
-                  style={{
-                    textAlign: 'left',
-                    padding: '20px',
-                    color: loading
-                      ? 'var(--mantine-color-primary-6)'
-                      : 'var(--mantine-color-dimmed)',
-                  }}
-                >
-                  {loading ? 'Loading...' : 'No data found.'}
-                </td>
-              </tr>
+              state === types.StoreState.FETCHING ? (
+                <tr>
+                  <td
+                    colSpan={displayColumns.length}
+                    style={{
+                      textAlign: 'left',
+                      padding: '20px',
+                      color: 'var(--mantine-color-dimmed)',
+                    }}
+                  >
+                    Loading...
+                  </td>
+                </tr>
+              ) : (placeholderCount ?? 0) > 0 ? (
+                <>
+                  {Array.from({ length: placeholderCount ?? 0 }, (_, index) => (
+                    <PlaceholderRow
+                      key={`skeleton-${index}`}
+                      index={index + 1}
+                      columns={displayColumns}
+                      isActive={index === cyclingRowIndex}
+                    />
+                  ))}
+                </>
+              ) : (
+                <tr>
+                  <td
+                    colSpan={displayColumns.length}
+                    style={{
+                      textAlign: 'left',
+                      padding: '20px',
+                      color: 'var(--mantine-color-dimmed)',
+                    }}
+                  >
+                    No data found.
+                  </td>
+                </tr>
+              )
             ) : (
               <Body
                 columns={displayColumns}
                 data={data}
                 selectedRowIndex={selectedRowIndex}
                 handleRowClick={handleRowClick}
-                noDataMessage={loading ? 'Loading...' : 'No data found.'}
+                noDataMessage={
+                  state === types.StoreState.FETCHING
+                    ? 'Loading...'
+                    : 'No data found.'
+                }
               />
             )}
           </tbody>

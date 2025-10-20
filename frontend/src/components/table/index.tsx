@@ -1,5 +1,6 @@
 export * from './Pagination';
 export * from './PerPage';
+export * from './PlaceholderRow';
 export * from './Table';
 export * from './Body';
 export * from './TableContext';

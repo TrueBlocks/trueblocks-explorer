@@ -1,0 +1,9 @@
+[settings]
+class = "Asset Charts"
+contained_by = ""
+doc_group = "04-Admin"
+doc_descr = "A reconciliation statement"
+doc_route = "118-assetCharts"
+attributes = ""
+produced_by = "exports"
+disable_go = true

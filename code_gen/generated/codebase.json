@@ -19,6 +19,7 @@
             "productions": [
                 {
                     "class": "Abi",
+                    "display_name": "Abi",
                     "doc_group": "05-Other",
                     "doc_route": "503-abi",
                     "doc_descr": "a human-readable representation of a Solidity smart contract",
@@ -27,6 +28,7 @@
                 },
                 {
                     "class": "Abis",
+                    "display_name": "Abis",
                     "doc_group": "001-Route",
                     "doc_route": "300-abis",
                     "doc_descr": "a human-readable representation of a Solidity smart contract",
@@ -129,6 +131,7 @@
                     ],
                     "facets": [
                         {
+                            "display_name": "Downloaded",
                             "name": "Downloaded",
                             "store": "Abis",
                             "actions": [
@@ -138,9 +141,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Known",
                             "name": "Known",
                             "store": "Abis",
                             "actions": [
@@ -149,9 +154,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Functions",
                             "name": "Functions",
                             "store": "Functions",
                             "actions": [
@@ -160,9 +167,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Events",
                             "name": "Events",
                             "store": "Functions",
                             "actions": [
@@ -171,12 +180,14 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         }
                     ]
                 },
                 {
                     "class": "Function",
+                    "display_name": "Function",
                     "doc_group": "05-Other",
                     "doc_route": "506-function",
                     "doc_descr": "a human-readable representation of a Solidity function call or event",
@@ -263,6 +274,7 @@
                 },
                 {
                     "class": "Functions",
+                    "display_name": "Functions",
                     "doc_group": "05-Other",
                     "doc_route": "506-function",
                     "doc_descr": "a human-readable representation of a Solidity function call or event",
@@ -315,6 +327,7 @@
                 },
                 {
                     "class": "Parameter",
+                    "display_name": "Parameter",
                     "doc_group": "05-Other",
                     "doc_route": "509-parameter",
                     "doc_descr": "an input or output parameter to a Solidity function or event",
@@ -389,6 +402,7 @@
             "productions": [
                 {
                     "class": "Assets",
+                    "display_name": "Assets",
                     "doc_group": "04-Admin",
                     "doc_route": "409-chunkRecord",
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -443,6 +457,7 @@
                 },
                 {
                     "class": "Balances",
+                    "display_name": "Balances",
                     "doc_group": "04-Admin",
                     "doc_route": "409-chunkRecord",
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -538,6 +553,7 @@
                 },
                 {
                     "class": "Blooms",
+                    "display_name": "Blooms",
                     "doc_group": "04-Admin",
                     "doc_route": "412-chunkIndex-blooms",
                     "doc_descr": "Bloom filter information for a Chunks data facet.",
@@ -613,6 +629,7 @@
                 },
                 {
                     "class": "ChunkRecord",
+                    "display_name": "ChunkRecord",
                     "doc_group": "04-Admin",
                     "doc_route": "409-chunkRecord",
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -622,6 +639,7 @@
                 },
                 {
                     "class": "Chunks",
+                    "display_name": "Chunks",
                     "doc_group": "001-Route",
                     "doc_route": "500-chunks",
                     "doc_descr": "internal-use only data model detailing a single index chunk file",
@@ -681,6 +699,7 @@
                     ],
                     "facets": [
                         {
+                            "display_name": "Stats",
                             "name": "Stats",
                             "store": "Stats",
                             "actions": [
@@ -689,9 +708,11 @@
                             "viewType": "",
                             "renderer": "panel",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Index",
                             "name": "Index",
                             "store": "Index",
                             "actions": [
@@ -700,9 +721,11 @@
                             "viewType": "",
                             "renderer": "panel",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Blooms",
                             "name": "Blooms",
                             "store": "Blooms",
                             "actions": [
@@ -711,21 +734,25 @@
                             "viewType": "",
                             "renderer": "panel",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Manifest",
                             "name": "Manifest",
                             "store": "Manifest",
                             "actions": null,
-                            "viewType": "dashboard",
+                            "viewType": "canvas",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         }
                     ]
                 },
                 {
                     "class": "Index",
+                    "display_name": "Index",
                     "doc_group": "04-Admin",
                     "doc_route": "412-chunkIndex-index",
                     "doc_descr": "Index information for a Chunks data facet.",
@@ -793,6 +820,7 @@
                 },
                 {
                     "class": "Manifest",
+                    "display_name": "Manifest",
                     "doc_group": "04-Admin",
                     "doc_route": "412-chunkIndex-manifest",
                     "doc_descr": "Manifest information for a Chunks data facet.",
@@ -836,6 +864,7 @@
                 },
                 {
                     "class": "RangeDates",
+                    "display_name": "RangeDates",
                     "doc_group": "04-Admin",
                     "doc_route": "442-rangeDates",
                     "doc_descr": "shows first and last timestamps and dates for a given block range",
@@ -844,6 +873,7 @@
                 },
                 {
                     "class": "Stats",
+                    "display_name": "Stats",
                     "doc_group": "04-Admin",
                     "doc_route": "412-chunkIndex-stats",
                     "doc_descr": "Statistics for a Chunks data facet.",
@@ -959,6 +989,7 @@
                 },
                 {
                     "class": "Traces",
+                    "display_name": "Traces",
                     "doc_group": "04-Admin",
                     "doc_route": "409-chunkRecord",
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -1084,6 +1115,7 @@
                 },
                 {
                     "class": "Withdrawals",
+                    "display_name": "Withdrawals",
                     "doc_group": "04-Admin",
                     "doc_route": "409-chunkRecord",
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -1166,7 +1198,331 @@
             "summary": "Exports route",
             "productions": [
                 {
+                    "class": "AssetCharts",
+                    "display_name": "Asset Charts",
+                    "doc_group": "04-Admin",
+                    "doc_route": "118-assetCharts",
+                    "doc_descr": "A reconciliation statement",
+                    "produced_by": "exports",
+                    "disable_go": true,
+                    "members": [
+                        {
+                            "name": "blockNumber",
+                            "type": "blknum",
+                            "attributes": "noui",
+                            "docOrder": 1,
+                            "description": "the number of the block",
+                            "num": 1
+                        },
+                        {
+                            "name": "transactionIndex",
+                            "type": "txnum",
+                            "attributes": "noui",
+                            "docOrder": 2,
+                            "description": "the zero-indexed position of the transaction in the block",
+                            "num": 2
+                        },
+                        {
+                            "name": "logIndex",
+                            "type": "lognum",
+                            "attributes": "noui",
+                            "docOrder": 3,
+                            "description": "the zero-indexed position the log in the block, if applicable",
+                            "num": 3
+                        },
+                        {
+                            "name": "transactionHash",
+                            "type": "hash",
+                            "attributes": "noui",
+                            "docOrder": 4,
+                            "description": "the hash of the transaction that triggered this reconciliation",
+                            "num": 4
+                        },
+                        {
+                            "name": "timestamp",
+                            "type": "timestamp",
+                            "attributes": "noui",
+                            "docOrder": 5,
+                            "description": "the Unix timestamp of the object",
+                            "num": 5
+                        },
+                        {
+                            "name": "date",
+                            "type": "datetime",
+                            "attributes": "calc|width=120px",
+                            "docOrder": 6,
+                            "description": "the timestamp as a date",
+                            "num": 6
+                        },
+                        {
+                            "name": "asset",
+                            "type": "address",
+                            "attributes": "readOnly",
+                            "docOrder": 7,
+                            "description": "0xeeee...eeee for ETH reconciliations, the token address otherwise",
+                            "num": 7
+                        },
+                        {
+                            "name": "symbol",
+                            "type": "string",
+                            "docOrder": 8,
+                            "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
+                            "num": 8
+                        },
+                        {
+                            "name": "decimals",
+                            "type": "value",
+                            "docOrder": 9,
+                            "description": "the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18",
+                            "num": 9
+                        },
+                        {
+                            "name": "spotPrice",
+                            "type": "float",
+                            "docOrder": 10,
+                            "description": "the on-chain price in USD (or if a token in ETH, or zero) at the time of the transaction",
+                            "num": 10
+                        },
+                        {
+                            "name": "priceSource",
+                            "type": "string",
+                            "docOrder": 11,
+                            "description": "the on-chain source from which the spot price was taken",
+                            "num": 11
+                        },
+                        {
+                            "name": "accountedFor",
+                            "type": "address",
+                            "attributes": "readOnly",
+                            "docOrder": 12,
+                            "description": "the address being accounted for in this reconciliation",
+                            "num": 12
+                        },
+                        {
+                            "name": "sender",
+                            "type": "address",
+                            "attributes": "readOnly",
+                            "docOrder": 13,
+                            "description": "the initiator of the transfer (the sender)",
+                            "num": 13
+                        },
+                        {
+                            "name": "recipient",
+                            "type": "address",
+                            "attributes": "readOnly",
+                            "docOrder": 14,
+                            "description": "the receiver of the transfer (the recipient)",
+                            "num": 14
+                        },
+                        {
+                            "name": "begBal",
+                            "type": "int256",
+                            "docOrder": 15,
+                            "description": "the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)",
+                            "num": 15
+                        },
+                        {
+                            "name": "amountNet",
+                            "type": "int256",
+                            "attributes": "calc",
+                            "docOrder": 16,
+                            "description": "totalIn - totalOut",
+                            "num": 16
+                        },
+                        {
+                            "name": "endBal",
+                            "type": "int256",
+                            "docOrder": 17,
+                            "description": "the on-chain or running balance after the transaction (see notes about intra-block reconciliations)",
+                            "num": 17
+                        },
+                        {
+                            "name": "reconciled",
+                            "type": "bool",
+                            "docOrder": 18,
+                            "description": "true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.",
+                            "num": 18
+                        },
+                        {
+                            "name": "totalIn",
+                            "type": "int256",
+                            "docOrder": 19,
+                            "description": "the sum of the following `In` fields",
+                            "num": 19
+                        },
+                        {
+                            "name": "amountIn",
+                            "type": "int256",
+                            "docOrder": 20,
+                            "description": "the top-level value of the incoming transfer for the accountedFor address",
+                            "num": 20
+                        },
+                        {
+                            "name": "internalIn",
+                            "type": "int256",
+                            "docOrder": 21,
+                            "description": "the internal value of the incoming transfer for the accountedFor address",
+                            "num": 21
+                        },
+                        {
+                            "name": "selfDestructIn",
+                            "type": "int256",
+                            "docOrder": 22,
+                            "description": "the incoming value of a self-destruct if recipient is the accountedFor address",
+                            "num": 22
+                        },
+                        {
+                            "name": "minerBaseRewardIn",
+                            "type": "int256",
+                            "docOrder": 23,
+                            "description": "the base fee reward if the miner is the accountedFor address",
+                            "num": 23
+                        },
+                        {
+                            "name": "minerNephewRewardIn",
+                            "type": "int256",
+                            "docOrder": 24,
+                            "description": "the nephew reward if the miner is the accountedFor address",
+                            "num": 24
+                        },
+                        {
+                            "name": "minerTxFeeIn",
+                            "type": "int256",
+                            "docOrder": 25,
+                            "description": "the transaction fee reward if the miner is the accountedFor address",
+                            "num": 25
+                        },
+                        {
+                            "name": "minerUncleRewardIn",
+                            "type": "int256",
+                            "docOrder": 26,
+                            "description": "the uncle reward if the miner who won the uncle block is the accountedFor address",
+                            "num": 26
+                        },
+                        {
+                            "name": "correctBegBalIn",
+                            "type": "int256",
+                            "docOrder": 27,
+                            "description": "for unreconciled transfers, increase in beginning balance need to match previous balance",
+                            "num": 27
+                        },
+                        {
+                            "name": "correctAmountIn",
+                            "type": "int256",
+                            "docOrder": 28,
+                            "description": "for unreconciled transfers, increase in the amount of a transfer",
+                            "num": 28
+                        },
+                        {
+                            "name": "correctEndBalIn",
+                            "type": "int256",
+                            "docOrder": 29,
+                            "description": "for unreconciled transfers, increase in ending balance need to match running balance or block balance",
+                            "num": 29
+                        },
+                        {
+                            "name": "prefundIn",
+                            "type": "int256",
+                            "docOrder": 30,
+                            "description": "at block zero (0) only, the amount of genesis income for the accountedFor address",
+                            "num": 30
+                        },
+                        {
+                            "name": "totalOut",
+                            "type": "int256",
+                            "docOrder": 31,
+                            "description": "the sum of the following `Out` fields",
+                            "num": 31
+                        },
+                        {
+                            "name": "amountOut",
+                            "type": "int256",
+                            "docOrder": 32,
+                            "description": "the amount (in units of the asset) of regular outflow during this transaction",
+                            "num": 32
+                        },
+                        {
+                            "name": "internalOut",
+                            "type": "int256",
+                            "docOrder": 33,
+                            "description": "the value of any internal value transfers out of the accountedFor account",
+                            "num": 33
+                        },
+                        {
+                            "name": "correctBegBalOut",
+                            "type": "int256",
+                            "docOrder": 34,
+                            "description": "for unreconciled transfers, decrease in beginning balance need to match previous balance",
+                            "num": 34
+                        },
+                        {
+                            "name": "correctAmountOut",
+                            "type": "int256",
+                            "docOrder": 35,
+                            "description": "for unreconciled transfers, decrease in the amount of a transfer",
+                            "num": 35
+                        },
+                        {
+                            "name": "correctEndBalOut",
+                            "type": "int256",
+                            "docOrder": 36,
+                            "description": "for unreconciled transfers, decrease in ending balance need to match running balance or block balance",
+                            "num": 36
+                        },
+                        {
+                            "name": "selfDestructOut",
+                            "type": "int256",
+                            "docOrder": 37,
+                            "description": "the value of the self-destructed value out if the accountedFor address was self-destructed",
+                            "num": 37
+                        },
+                        {
+                            "name": "gasOut",
+                            "type": "int256",
+                            "docOrder": 38,
+                            "description": "if the transaction's original sender is the accountedFor address, the amount of gas expended",
+                            "num": 38
+                        },
+                        {
+                            "name": "prevBal",
+                            "type": "int256",
+                            "docOrder": 39,
+                            "description": "the account balance for the given asset for the previous reconciliation",
+                            "num": 39
+                        },
+                        {
+                            "name": "begBalDiff",
+                            "type": "int256",
+                            "docOrder": 40,
+                            "description": "difference between expected beginning balance and balance at last reconciliation, if non-zero, the reconciliation failed",
+                            "num": 40
+                        },
+                        {
+                            "name": "endBalDiff",
+                            "type": "int256",
+                            "docOrder": 41,
+                            "description": "endBal - endBalCalc, if non-zero, the reconciliation failed",
+                            "num": 41
+                        },
+                        {
+                            "name": "endBalCalc",
+                            "type": "int256",
+                            "docOrder": 42,
+                            "description": "begBal + amountNet",
+                            "num": 42
+                        },
+                        {
+                            "name": "correctingReasons",
+                            "type": "string",
+                            "docOrder": 43,
+                            "description": "for unreconciled transfers, the reasons for the correcting entries, if any",
+                            "num": 43
+                        }
+                    ]
+                },
+                {
                     "class": "Exports",
+                    "display_name": "Exports",
                     "doc_group": "001-Route",
                     "doc_route": "100-exports",
                     "doc_descr": "internal-use only data model detailing a single index chunk file",
@@ -1226,6 +1582,7 @@
                     ],
                     "facets": [
                         {
+                            "display_name": "Statements",
                             "name": "Statements",
                             "store": "Statements",
                             "actions": [
@@ -1234,9 +1591,11 @@
                             "viewType": "",
                             "renderer": "panel",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": true
                         },
                         {
+                            "display_name": "Balances",
                             "name": "Balances",
                             "store": "Balances",
                             "actions": [
@@ -1245,9 +1604,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Transfers",
                             "name": "Transfers",
                             "store": "Transfers",
                             "actions": [
@@ -1256,9 +1617,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Transactions",
                             "name": "Transactions",
                             "store": "Transactions",
                             "actions": [
@@ -1267,31 +1630,50 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
-                            "name": "Approvals",
-                            "store": "Approvals",
+                            "display_name": "OpenApprovals",
+                            "name": "OpenApprovals",
+                            "store": "OpenApprovals",
                             "actions": [
                                 "export"
                             ],
                             "viewType": "",
                             "renderer": "panel",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
-                            "name": "Approves",
-                            "store": "Approves",
+                            "display_name": "ApprovalLogs",
+                            "name": "ApprovalLogs",
+                            "store": "ApprovalLogs",
                             "actions": [
                                 "export"
                             ],
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "ApprovalTxs",
+                            "name": "ApprovalTxs",
+                            "store": "ApprovalTxs",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "",
+                            "renderer": "",
+                            "attributes": "",
+                            "disabled": false,
+                            "needsCalcs": false
+                        },
+                        {
+                            "display_name": "Withdrawals",
                             "name": "Withdrawals",
                             "store": "Withdrawals",
                             "actions": [
@@ -1300,9 +1682,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Assets",
                             "name": "Assets",
                             "store": "Assets",
                             "actions": [
@@ -1311,9 +1695,24 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "AssetCharts",
+                            "name": "AssetCharts",
+                            "store": "Statements",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "canvas",
+                            "renderer": "facet",
+                            "attributes": "",
+                            "disabled": false,
+                            "needsCalcs": true
+                        },
+                        {
+                            "display_name": "Logs",
                             "name": "Logs",
                             "store": "Logs",
                             "actions": [
@@ -1322,9 +1721,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Traces",
                             "name": "Traces",
                             "store": "Traces",
                             "actions": [
@@ -1333,9 +1734,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Receipts",
                             "name": "Receipts",
                             "store": "Receipts",
                             "actions": [
@@ -1344,12 +1747,14 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         }
                     ]
                 },
                 {
                     "class": "Statements",
+                    "display_name": "Statements",
                     "doc_group": "04-Admin",
                     "doc_route": "118-statement",
                     "doc_descr": "A reconciliation statement",
@@ -1685,6 +2090,7 @@
             "productions": [
                 {
                     "class": "Monitors",
+                    "display_name": "Monitors",
                     "doc_group": "001-Route",
                     "doc_route": "200-monitors",
                     "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
@@ -1754,6 +2160,7 @@
                     ],
                     "facets": [
                         {
+                            "display_name": "Monitors",
                             "name": "Monitors",
                             "store": "Monitors",
                             "actions": [
@@ -1765,7 +2172,8 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         }
                     ]
                 }
@@ -1784,6 +2192,7 @@
             "productions": [
                 {
                     "class": "Names",
+                    "display_name": "Names",
                     "doc_group": "001-Route",
                     "doc_route": "400-names",
                     "doc_descr": "an association between a human-readable name and an address",
@@ -1888,6 +2297,7 @@
                     ],
                     "facets": [
                         {
+                            "display_name": "All",
                             "name": "All",
                             "store": "Names",
                             "actions": [
@@ -1899,9 +2309,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Custom",
                             "name": "Custom",
                             "store": "Names",
                             "actions": [
@@ -1918,9 +2330,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Prefund",
                             "name": "Prefund",
                             "store": "Names",
                             "actions": [
@@ -1931,9 +2345,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "dividerBefore",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Regular",
                             "name": "Regular",
                             "store": "Names",
                             "actions": [
@@ -1945,9 +2361,11 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         },
                         {
+                            "display_name": "Baddress",
                             "name": "Baddress",
                             "store": "Names",
                             "actions": [
@@ -1957,7 +2375,8 @@
                             "viewType": "",
                             "renderer": "",
                             "attributes": "",
-                            "disabled": false
+                            "disabled": false,
+                            "needsCalcs": false
                         }
                     ]
                 }
@@ -1967,6 +2386,7 @@
     "structures": [
         {
             "class": "Exports",
+            "display_name": "Exports",
             "doc_group": "001-Route",
             "doc_route": "100-exports",
             "doc_descr": "internal-use only data model detailing a single index chunk file",
@@ -2026,6 +2446,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "Statements",
                     "name": "Statements",
                     "store": "Statements",
                     "actions": [
@@ -2034,9 +2455,11 @@
                     "viewType": "",
                     "renderer": "panel",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": true
                 },
                 {
+                    "display_name": "Balances",
                     "name": "Balances",
                     "store": "Balances",
                     "actions": [
@@ -2045,9 +2468,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Transfers",
                     "name": "Transfers",
                     "store": "Transfers",
                     "actions": [
@@ -2056,9 +2481,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Transactions",
                     "name": "Transactions",
                     "store": "Transactions",
                     "actions": [
@@ -2067,31 +2494,50 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
-                    "name": "Approvals",
-                    "store": "Approvals",
+                    "display_name": "OpenApprovals",
+                    "name": "OpenApprovals",
+                    "store": "OpenApprovals",
                     "actions": [
                         "export"
                     ],
                     "viewType": "",
                     "renderer": "panel",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
-                    "name": "Approves",
-                    "store": "Approves",
+                    "display_name": "ApprovalLogs",
+                    "name": "ApprovalLogs",
+                    "store": "ApprovalLogs",
                     "actions": [
                         "export"
                     ],
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "ApprovalTxs",
+                    "name": "ApprovalTxs",
+                    "store": "ApprovalTxs",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "",
+                    "renderer": "",
+                    "attributes": "",
+                    "disabled": false,
+                    "needsCalcs": false
+                },
+                {
+                    "display_name": "Withdrawals",
                     "name": "Withdrawals",
                     "store": "Withdrawals",
                     "actions": [
@@ -2100,9 +2546,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Assets",
                     "name": "Assets",
                     "store": "Assets",
                     "actions": [
@@ -2111,9 +2559,24 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "AssetCharts",
+                    "name": "AssetCharts",
+                    "store": "Statements",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "canvas",
+                    "renderer": "facet",
+                    "attributes": "",
+                    "disabled": false,
+                    "needsCalcs": true
+                },
+                {
+                    "display_name": "Logs",
                     "name": "Logs",
                     "store": "Logs",
                     "actions": [
@@ -2122,9 +2585,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Traces",
                     "name": "Traces",
                     "store": "Traces",
                     "actions": [
@@ -2133,9 +2598,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Receipts",
                     "name": "Receipts",
                     "store": "Receipts",
                     "actions": [
@@ -2144,12 +2611,337 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
+                }
+            ]
+        },
+        {
+            "class": "AssetCharts",
+            "display_name": "Asset Charts",
+            "doc_group": "04-Admin",
+            "doc_route": "118-assetCharts",
+            "doc_descr": "A reconciliation statement",
+            "produced_by": "exports",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "attributes": "noui",
+                    "docOrder": 1,
+                    "description": "the number of the block",
+                    "num": 1
+                },
+                {
+                    "name": "transactionIndex",
+                    "type": "txnum",
+                    "attributes": "noui",
+                    "docOrder": 2,
+                    "description": "the zero-indexed position of the transaction in the block",
+                    "num": 2
+                },
+                {
+                    "name": "logIndex",
+                    "type": "lognum",
+                    "attributes": "noui",
+                    "docOrder": 3,
+                    "description": "the zero-indexed position the log in the block, if applicable",
+                    "num": 3
+                },
+                {
+                    "name": "transactionHash",
+                    "type": "hash",
+                    "attributes": "noui",
+                    "docOrder": 4,
+                    "description": "the hash of the transaction that triggered this reconciliation",
+                    "num": 4
+                },
+                {
+                    "name": "timestamp",
+                    "type": "timestamp",
+                    "attributes": "noui",
+                    "docOrder": 5,
+                    "description": "the Unix timestamp of the object",
+                    "num": 5
+                },
+                {
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "calc|width=120px",
+                    "docOrder": 6,
+                    "description": "the timestamp as a date",
+                    "num": 6
+                },
+                {
+                    "name": "asset",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 7,
+                    "description": "0xeeee...eeee for ETH reconciliations, the token address otherwise",
+                    "num": 7
+                },
+                {
+                    "name": "symbol",
+                    "type": "string",
+                    "docOrder": 8,
+                    "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
+                    "num": 8
+                },
+                {
+                    "name": "decimals",
+                    "type": "value",
+                    "docOrder": 9,
+                    "description": "the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18",
+                    "num": 9
+                },
+                {
+                    "name": "spotPrice",
+                    "type": "float",
+                    "docOrder": 10,
+                    "description": "the on-chain price in USD (or if a token in ETH, or zero) at the time of the transaction",
+                    "num": 10
+                },
+                {
+                    "name": "priceSource",
+                    "type": "string",
+                    "docOrder": 11,
+                    "description": "the on-chain source from which the spot price was taken",
+                    "num": 11
+                },
+                {
+                    "name": "accountedFor",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 12,
+                    "description": "the address being accounted for in this reconciliation",
+                    "num": 12
+                },
+                {
+                    "name": "sender",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 13,
+                    "description": "the initiator of the transfer (the sender)",
+                    "num": 13
+                },
+                {
+                    "name": "recipient",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 14,
+                    "description": "the receiver of the transfer (the recipient)",
+                    "num": 14
+                },
+                {
+                    "name": "begBal",
+                    "type": "int256",
+                    "docOrder": 15,
+                    "description": "the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)",
+                    "num": 15
+                },
+                {
+                    "name": "amountNet",
+                    "type": "int256",
+                    "attributes": "calc",
+                    "docOrder": 16,
+                    "description": "totalIn - totalOut",
+                    "num": 16
+                },
+                {
+                    "name": "endBal",
+                    "type": "int256",
+                    "docOrder": 17,
+                    "description": "the on-chain or running balance after the transaction (see notes about intra-block reconciliations)",
+                    "num": 17
+                },
+                {
+                    "name": "reconciled",
+                    "type": "bool",
+                    "docOrder": 18,
+                    "description": "true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.",
+                    "num": 18
+                },
+                {
+                    "name": "totalIn",
+                    "type": "int256",
+                    "docOrder": 19,
+                    "description": "the sum of the following `In` fields",
+                    "num": 19
+                },
+                {
+                    "name": "amountIn",
+                    "type": "int256",
+                    "docOrder": 20,
+                    "description": "the top-level value of the incoming transfer for the accountedFor address",
+                    "num": 20
+                },
+                {
+                    "name": "internalIn",
+                    "type": "int256",
+                    "docOrder": 21,
+                    "description": "the internal value of the incoming transfer for the accountedFor address",
+                    "num": 21
+                },
+                {
+                    "name": "selfDestructIn",
+                    "type": "int256",
+                    "docOrder": 22,
+                    "description": "the incoming value of a self-destruct if recipient is the accountedFor address",
+                    "num": 22
+                },
+                {
+                    "name": "minerBaseRewardIn",
+                    "type": "int256",
+                    "docOrder": 23,
+                    "description": "the base fee reward if the miner is the accountedFor address",
+                    "num": 23
+                },
+                {
+                    "name": "minerNephewRewardIn",
+                    "type": "int256",
+                    "docOrder": 24,
+                    "description": "the nephew reward if the miner is the accountedFor address",
+                    "num": 24
+                },
+                {
+                    "name": "minerTxFeeIn",
+                    "type": "int256",
+                    "docOrder": 25,
+                    "description": "the transaction fee reward if the miner is the accountedFor address",
+                    "num": 25
+                },
+                {
+                    "name": "minerUncleRewardIn",
+                    "type": "int256",
+                    "docOrder": 26,
+                    "description": "the uncle reward if the miner who won the uncle block is the accountedFor address",
+                    "num": 26
+                },
+                {
+                    "name": "correctBegBalIn",
+                    "type": "int256",
+                    "docOrder": 27,
+                    "description": "for unreconciled transfers, increase in beginning balance need to match previous balance",
+                    "num": 27
+                },
+                {
+                    "name": "correctAmountIn",
+                    "type": "int256",
+                    "docOrder": 28,
+                    "description": "for unreconciled transfers, increase in the amount of a transfer",
+                    "num": 28
+                },
+                {
+                    "name": "correctEndBalIn",
+                    "type": "int256",
+                    "docOrder": 29,
+                    "description": "for unreconciled transfers, increase in ending balance need to match running balance or block balance",
+                    "num": 29
+                },
+                {
+                    "name": "prefundIn",
+                    "type": "int256",
+                    "docOrder": 30,
+                    "description": "at block zero (0) only, the amount of genesis income for the accountedFor address",
+                    "num": 30
+                },
+                {
+                    "name": "totalOut",
+                    "type": "int256",
+                    "docOrder": 31,
+                    "description": "the sum of the following `Out` fields",
+                    "num": 31
+                },
+                {
+                    "name": "amountOut",
+                    "type": "int256",
+                    "docOrder": 32,
+                    "description": "the amount (in units of the asset) of regular outflow during this transaction",
+                    "num": 32
+                },
+                {
+                    "name": "internalOut",
+                    "type": "int256",
+                    "docOrder": 33,
+                    "description": "the value of any internal value transfers out of the accountedFor account",
+                    "num": 33
+                },
+                {
+                    "name": "correctBegBalOut",
+                    "type": "int256",
+                    "docOrder": 34,
+                    "description": "for unreconciled transfers, decrease in beginning balance need to match previous balance",
+                    "num": 34
+                },
+                {
+                    "name": "correctAmountOut",
+                    "type": "int256",
+                    "docOrder": 35,
+                    "description": "for unreconciled transfers, decrease in the amount of a transfer",
+                    "num": 35
+                },
+                {
+                    "name": "correctEndBalOut",
+                    "type": "int256",
+                    "docOrder": 36,
+                    "description": "for unreconciled transfers, decrease in ending balance need to match running balance or block balance",
+                    "num": 36
+                },
+                {
+                    "name": "selfDestructOut",
+                    "type": "int256",
+                    "docOrder": 37,
+                    "description": "the value of the self-destructed value out if the accountedFor address was self-destructed",
+                    "num": 37
+                },
+                {
+                    "name": "gasOut",
+                    "type": "int256",
+                    "docOrder": 38,
+                    "description": "if the transaction's original sender is the accountedFor address, the amount of gas expended",
+                    "num": 38
+                },
+                {
+                    "name": "prevBal",
+                    "type": "int256",
+                    "docOrder": 39,
+                    "description": "the account balance for the given asset for the previous reconciliation",
+                    "num": 39
+                },
+                {
+                    "name": "begBalDiff",
+                    "type": "int256",
+                    "docOrder": 40,
+                    "description": "difference between expected beginning balance and balance at last reconciliation, if non-zero, the reconciliation failed",
+                    "num": 40
+                },
+                {
+                    "name": "endBalDiff",
+                    "type": "int256",
+                    "docOrder": 41,
+                    "description": "endBal - endBalCalc, if non-zero, the reconciliation failed",
+                    "num": 41
+                },
+                {
+                    "name": "endBalCalc",
+                    "type": "int256",
+                    "docOrder": 42,
+                    "description": "begBal + amountNet",
+                    "num": 42
+                },
+                {
+                    "name": "correctingReasons",
+                    "type": "string",
+                    "docOrder": 43,
+                    "description": "for unreconciled transfers, the reasons for the correcting entries, if any",
+                    "num": 43
                 }
             ]
         },
         {
             "class": "Statements",
+            "display_name": "Statements",
             "doc_group": "04-Admin",
             "doc_route": "118-statement",
             "doc_descr": "A reconciliation statement",
@@ -2472,6 +3264,7 @@
         },
         {
             "class": "Transfers",
+            "display_name": "Transfers",
             "doc_group": "01-Accounts",
             "doc_route": "121-transfer",
             "doc_descr": "a movement of an asset from one address to another (derived from a transaction or a log)",
@@ -2651,9 +3444,10 @@
             ]
         },
         {
-            "class": "Approvals",
+            "class": "OpenApprovals",
+            "display_name": "Open Approvals",
             "doc_group": "01-Accounts",
-            "doc_route": "122-approvals",
+            "doc_route": "122-openapprovals",
             "doc_descr": "an ERC-20 token approval granting spending permission from owner to spender",
             "produced_by": "tokens",
             "disable_go": true,
@@ -2740,6 +3534,7 @@
         },
         {
             "class": "Monitors",
+            "display_name": "Monitors",
             "doc_group": "001-Route",
             "doc_route": "200-monitors",
             "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
@@ -2809,6 +3604,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "Monitors",
                     "name": "Monitors",
                     "store": "Monitors",
                     "actions": [
@@ -2820,12 +3616,14 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Transaction",
+            "display_name": "Transaction",
             "doc_group": "02-Chain Data",
             "doc_route": "206-transaction",
             "doc_descr": "transaction data as returned from the RPC (with slight enhancements)",
@@ -3034,6 +3832,7 @@
         },
         {
             "class": "Transactions",
+            "display_name": "Transactions",
             "doc_group": "02-Chain Data",
             "doc_route": "206-transaction",
             "doc_descr": "transaction data as returned from the RPC (with slight enhancements)",
@@ -3242,6 +4041,7 @@
         },
         {
             "class": "Receipt",
+            "display_name": "Receipt",
             "doc_group": "02-Chain Data",
             "doc_route": "212-receipt",
             "doc_descr": "receipt data as returned from the RPC (with slight enhancements)",
@@ -3347,6 +4147,7 @@
         },
         {
             "class": "Receipts",
+            "display_name": "Receipts",
             "doc_group": "02-Chain Data",
             "doc_route": "212-receipt",
             "doc_descr": "receipt data as returned from the RPC (with slight enhancements)",
@@ -3452,6 +4253,7 @@
         },
         {
             "class": "Attribute",
+            "display_name": "Attribute",
             "doc_group": "09-Attribute",
             "doc_route": "215-attribute",
             "doc_descr": "Database used to generate dalle dress prompts",
@@ -3517,6 +4319,7 @@
         },
         {
             "class": "Database",
+            "display_name": "Database",
             "doc_group": "09-DalleDress",
             "doc_route": "215-database",
             "doc_descr": "Database used to generate dalle dress prompts",
@@ -3554,6 +4357,7 @@
         },
         {
             "class": "Databases",
+            "display_name": "Databases",
             "doc_group": "09-DalleDress",
             "doc_route": "215-database",
             "doc_descr": "Database used to generate dalle dress prompts",
@@ -3591,6 +4395,7 @@
         },
         {
             "class": "Gallery",
+            "display_name": "Gallery",
             "doc_group": "09-DalleDress",
             "doc_route": "215-gallery",
             "doc_descr": "Gallery used to generate dalle dress prompts",
@@ -3649,6 +4454,7 @@
         },
         {
             "class": "Generator",
+            "display_name": "Generator",
             "doc_group": "09-DalleDress",
             "doc_route": "215-generator",
             "doc_descr": "Generator used to create dalle dress prompts",
@@ -3686,13 +4492,14 @@
                     "name": "createdAt",
                     "type": "datetime",
                     "docOrder": 5,
-                    "description": "Generation timestamp",
+                    "description": "Creation timestamp",
                     "num": 5
                 }
             ]
         },
         {
             "class": "Log",
+            "display_name": "Log",
             "doc_group": "02-Chain Data",
             "doc_route": "215-log",
             "doc_descr": "log data as returned from the RPC (with slight enhancements)",
@@ -3821,6 +4628,7 @@
         },
         {
             "class": "Logs",
+            "display_name": "Logs",
             "doc_group": "02-Chain Data",
             "doc_route": "215-log",
             "doc_descr": "log data as returned from the RPC (with slight enhancements)",
@@ -3949,6 +4757,7 @@
         },
         {
             "class": "Series",
+            "display_name": "Series",
             "doc_group": "09-DalleDress",
             "doc_route": "215-series",
             "doc_descr": "Series filter used to generate dalle dress prompts",
@@ -4065,9 +4874,10 @@
             ]
         },
         {
-            "class": "Approves",
+            "class": "ApprovalLogs",
+            "display_name": "Approval Logs",
             "doc_group": "02-Chain Data",
-            "doc_route": "216-approves",
+            "doc_route": "216-approvalLogs",
             "doc_descr": "approval transaction data filtered from regular transactions",
             "produced_by": "transactions,export",
             "contained_by": "block",
@@ -4192,7 +5002,217 @@
             ]
         },
         {
+            "class": "ApprovalTxs",
+            "display_name": "Approval Txs",
+            "doc_group": "02-Chain Data",
+            "doc_route": "216-approvaltxs",
+            "doc_descr": "approval transaction data filtered from regular transactions",
+            "produced_by": "transactions,export",
+            "contained_by": "block",
+            "cache_by": "tx",
+            "cache_type": "cacheable",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "chainId",
+                    "type": "string",
+                    "attributes": "noui|removed",
+                    "num": 1
+                },
+                {
+                    "name": "hash",
+                    "type": "hash",
+                    "attributes": "noui",
+                    "docOrder": 1,
+                    "description": "the hash of the transaction",
+                    "num": 6
+                },
+                {
+                    "name": "blockHash",
+                    "type": "hash",
+                    "attributes": "noui",
+                    "docOrder": 2,
+                    "description": "the hash of the block containing this transaction",
+                    "num": 7
+                },
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "attributes": "noui",
+                    "docOrder": 3,
+                    "description": "the number of the block",
+                    "num": 2
+                },
+                {
+                    "name": "transactionIndex",
+                    "type": "txnum",
+                    "attributes": "noui",
+                    "docOrder": 4,
+                    "description": "the zero-indexed position of the transaction in the block",
+                    "num": 3
+                },
+                {
+                    "name": "nonce",
+                    "type": "value",
+                    "docOrder": 5,
+                    "description": "sequence number of the transactions sent by the sender",
+                    "num": 10
+                },
+                {
+                    "name": "timestamp",
+                    "type": "timestamp",
+                    "attributes": "noui",
+                    "docOrder": 6,
+                    "description": "the Unix timestamp of the object",
+                    "num": 4
+                },
+                {
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "calc|width=120px",
+                    "docOrder": 7,
+                    "description": "the timestamp as a date",
+                    "num": 5
+                },
+                {
+                    "name": "from",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 8,
+                    "description": "address from which the transaction was sent",
+                    "num": 8
+                },
+                {
+                    "name": "to",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "docOrder": 9,
+                    "description": "address to which the transaction was sent",
+                    "num": 9
+                },
+                {
+                    "name": "value",
+                    "type": "wei",
+                    "docOrder": 10,
+                    "description": "the amount of wei sent with this transactions",
+                    "num": 11
+                },
+                {
+                    "name": "ether",
+                    "type": "ether",
+                    "attributes": "calc",
+                    "docOrder": 11,
+                    "description": "if --ether is specified, the value in ether",
+                    "num": 12
+                },
+                {
+                    "name": "gas",
+                    "type": "gas",
+                    "docOrder": 12,
+                    "description": "the maximum number of gas allowed for this transaction",
+                    "num": 13
+                },
+                {
+                    "name": "traces",
+                    "type": "Traces",
+                    "attributes": "noui",
+                    "num": 22,
+                    "isArray": true
+                },
+                {
+                    "name": "gasCost",
+                    "type": "gas",
+                    "attributes": "calc",
+                    "docOrder": 13,
+                    "description": "the number of wei per unit of gas the sender is willing to spend",
+                    "num": 15
+                },
+                {
+                    "name": "maxFeePerGas",
+                    "type": "gas",
+                    "num": 16
+                },
+                {
+                    "name": "maxPriorityFeePerGas",
+                    "type": "gas",
+                    "num": 17
+                },
+                {
+                    "name": "gasPrice",
+                    "type": "gas",
+                    "docOrder": 13,
+                    "description": "the number of wei per unit of gas the sender is willing to spend",
+                    "num": 14
+                },
+                {
+                    "name": "input",
+                    "type": "bytes",
+                    "docOrder": 14,
+                    "description": "byte data either containing a message or funcational data for a smart contracts. See the --articulate",
+                    "num": 18
+                },
+                {
+                    "name": "receipt",
+                    "type": "Receipt",
+                    "attributes": "noui",
+                    "docOrder": 15,
+                    "num": 21,
+                    "isPointer": true
+                },
+                {
+                    "name": "statements",
+                    "type": "Statements",
+                    "attributes": "noui|calc",
+                    "docOrder": 16,
+                    "description": "array of reconciliation statements",
+                    "num": 25,
+                    "isArray": true
+                },
+                {
+                    "name": "articulatedTx",
+                    "type": "Function",
+                    "attributes": "noui",
+                    "docOrder": 17,
+                    "num": 23,
+                    "isPointer": true
+                },
+                {
+                    "name": "hasToken",
+                    "type": "bool",
+                    "docOrder": 18,
+                    "description": "`true` if the transaction is token related, `false` otherwise",
+                    "num": 20
+                },
+                {
+                    "name": "isError",
+                    "type": "bool",
+                    "docOrder": 19,
+                    "description": "`true` if the transaction ended in error, `false` otherwise",
+                    "num": 19
+                },
+                {
+                    "name": "compressedTx",
+                    "type": "string",
+                    "attributes": "calc",
+                    "docOrder": 20,
+                    "description": "truncated, more readable version of the articulation",
+                    "num": 24
+                },
+                {
+                    "name": "gasUsed",
+                    "type": "gas",
+                    "num": 26
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "num": 27
+                }
+            ]
+        },
+        {
             "class": "TraceAction",
+            "display_name": "TraceAction",
             "doc_group": "02-Chain Data",
             "doc_route": "224-traceAction",
             "doc_descr": "trace action data as returned from the RPC (with slight enhancements)",
@@ -4203,6 +5223,7 @@
         },
         {
             "class": "TraceResult",
+            "display_name": "TraceResult",
             "doc_group": "02-Chain Data",
             "doc_route": "224-traceAction",
             "doc_descr": "trace action data as returned from the RPC (with slight enhancements)",
@@ -4213,6 +5234,7 @@
         },
         {
             "class": "Abis",
+            "display_name": "Abis",
             "doc_group": "001-Route",
             "doc_route": "300-abis",
             "doc_descr": "a human-readable representation of a Solidity smart contract",
@@ -4315,6 +5337,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "Downloaded",
                     "name": "Downloaded",
                     "store": "Abis",
                     "actions": [
@@ -4324,9 +5347,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Known",
                     "name": "Known",
                     "store": "Abis",
                     "actions": [
@@ -4335,9 +5360,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Functions",
                     "name": "Functions",
                     "store": "Functions",
                     "actions": [
@@ -4346,9 +5373,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Events",
                     "name": "Events",
                     "store": "Functions",
                     "actions": [
@@ -4357,12 +5386,14 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Names",
+            "display_name": "Names",
             "doc_group": "001-Route",
             "doc_route": "400-names",
             "doc_descr": "an association between a human-readable name and an address",
@@ -4467,6 +5498,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "All",
                     "name": "All",
                     "store": "Names",
                     "actions": [
@@ -4478,9 +5510,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Custom",
                     "name": "Custom",
                     "store": "Names",
                     "actions": [
@@ -4497,9 +5531,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Prefund",
                     "name": "Prefund",
                     "store": "Names",
                     "actions": [
@@ -4510,9 +5546,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "dividerBefore",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Regular",
                     "name": "Regular",
                     "store": "Names",
                     "actions": [
@@ -4524,9 +5562,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Baddress",
                     "name": "Baddress",
                     "store": "Names",
                     "actions": [
@@ -4536,12 +5576,14 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Assets",
+            "display_name": "Assets",
             "doc_group": "04-Admin",
             "doc_route": "409-chunkRecord",
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -4596,6 +5638,7 @@
         },
         {
             "class": "Balances",
+            "display_name": "Balances",
             "doc_group": "04-Admin",
             "doc_route": "409-chunkRecord",
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -4691,6 +5734,7 @@
         },
         {
             "class": "ChunkRecord",
+            "display_name": "ChunkRecord",
             "doc_group": "04-Admin",
             "doc_route": "409-chunkRecord",
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -4700,6 +5744,7 @@
         },
         {
             "class": "Traces",
+            "display_name": "Traces",
             "doc_group": "04-Admin",
             "doc_route": "409-chunkRecord",
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -4825,6 +5870,7 @@
         },
         {
             "class": "Withdrawals",
+            "display_name": "Withdrawals",
             "doc_group": "04-Admin",
             "doc_route": "409-chunkRecord",
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
@@ -4895,6 +5941,7 @@
         },
         {
             "class": "Blooms",
+            "display_name": "Blooms",
             "doc_group": "04-Admin",
             "doc_route": "412-chunkIndex-blooms",
             "doc_descr": "Bloom filter information for a Chunks data facet.",
@@ -4970,6 +6017,7 @@
         },
         {
             "class": "Index",
+            "display_name": "Index",
             "doc_group": "04-Admin",
             "doc_route": "412-chunkIndex-index",
             "doc_descr": "Index information for a Chunks data facet.",
@@ -5037,6 +6085,7 @@
         },
         {
             "class": "Manifest",
+            "display_name": "Manifest",
             "doc_group": "04-Admin",
             "doc_route": "412-chunkIndex-manifest",
             "doc_descr": "Manifest information for a Chunks data facet.",
@@ -5080,6 +6129,7 @@
         },
         {
             "class": "Stats",
+            "display_name": "Stats",
             "doc_group": "04-Admin",
             "doc_route": "412-chunkIndex-stats",
             "doc_descr": "Statistics for a Chunks data facet.",
@@ -5195,6 +6245,7 @@
         },
         {
             "class": "RangeDates",
+            "display_name": "RangeDates",
             "doc_group": "04-Admin",
             "doc_route": "442-rangeDates",
             "doc_descr": "shows first and last timestamps and dates for a given block range",
@@ -5203,6 +6254,7 @@
         },
         {
             "class": "Chunks",
+            "display_name": "Chunks",
             "doc_group": "001-Route",
             "doc_route": "500-chunks",
             "doc_descr": "internal-use only data model detailing a single index chunk file",
@@ -5262,6 +6314,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "Stats",
                     "name": "Stats",
                     "store": "Stats",
                     "actions": [
@@ -5270,9 +6323,11 @@
                     "viewType": "",
                     "renderer": "panel",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Index",
                     "name": "Index",
                     "store": "Index",
                     "actions": [
@@ -5281,9 +6336,11 @@
                     "viewType": "",
                     "renderer": "panel",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Blooms",
                     "name": "Blooms",
                     "store": "Blooms",
                     "actions": [
@@ -5292,21 +6349,25 @@
                     "viewType": "",
                     "renderer": "panel",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Manifest",
                     "name": "Manifest",
                     "store": "Manifest",
                     "actions": null,
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Contracts",
+            "display_name": "Contracts",
             "doc_group": "001-Route",
             "doc_route": "500-contracts",
             "doc_descr": "smart contract state and interaction data including read function results, write function forms, and event history",
@@ -5370,24 +6431,29 @@
             ],
             "facets": [
                 {
+                    "display_name": "Dashboard",
                     "name": "Dashboard",
                     "store": "Contracts",
                     "actions": null,
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "facet",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Execute",
                     "name": "Execute",
                     "store": "Contracts",
                     "actions": null,
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "facet",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Events",
                     "name": "Events",
                     "store": "Logs",
                     "actions": [
@@ -5396,12 +6462,14 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Abi",
+            "display_name": "Abi",
             "doc_group": "05-Other",
             "doc_route": "503-abi",
             "doc_descr": "a human-readable representation of a Solidity smart contract",
@@ -5410,6 +6478,7 @@
         },
         {
             "class": "Function",
+            "display_name": "Function",
             "doc_group": "05-Other",
             "doc_route": "506-function",
             "doc_descr": "a human-readable representation of a Solidity function call or event",
@@ -5496,6 +6565,7 @@
         },
         {
             "class": "Functions",
+            "display_name": "Functions",
             "doc_group": "05-Other",
             "doc_route": "506-function",
             "doc_descr": "a human-readable representation of a Solidity function call or event",
@@ -5548,6 +6618,7 @@
         },
         {
             "class": "Parameter",
+            "display_name": "Parameter",
             "doc_group": "05-Other",
             "doc_route": "509-parameter",
             "doc_descr": "an input or output parameter to a Solidity function or event",
@@ -5609,6 +6680,7 @@
         },
         {
             "class": "Caches",
+            "display_name": "Caches",
             "doc_group": "002-Support",
             "doc_route": "600-status",
             "doc_descr": "data model for caches",
@@ -5661,6 +6733,7 @@
         },
         {
             "class": "Chain",
+            "display_name": "Chain",
             "doc_group": "002-Support",
             "doc_route": "600-status",
             "doc_descr": "data model for chains",
@@ -5720,6 +6793,7 @@
         },
         {
             "class": "Chains",
+            "display_name": "Chains",
             "doc_group": "002-Support",
             "doc_route": "600-status",
             "doc_descr": "data model for chains",
@@ -5779,6 +6853,7 @@
         },
         {
             "class": "Status",
+            "display_name": "Status",
             "doc_group": "001-Route",
             "doc_route": "600-status",
             "doc_descr": "data model for various status facets",
@@ -5913,15 +6988,18 @@
             ],
             "facets": [
                 {
+                    "display_name": "Status",
                     "name": "Status",
                     "store": "Status",
                     "actions": null,
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Caches",
                     "name": "Caches",
                     "store": "Caches",
                     "actions": [
@@ -5930,9 +7008,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Chains",
                     "name": "Chains",
                     "store": "Chains",
                     "actions": [
@@ -5941,12 +7021,14 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "DalleDress",
+            "display_name": "DalleDress",
             "doc_group": "001-Route",
             "doc_route": "700-dresses",
             "doc_descr": "multi-facet generative art collection for DalleDress",
@@ -6101,6 +7183,7 @@
         },
         {
             "class": "Dresses",
+            "display_name": "Dresses",
             "doc_group": "001-Route",
             "doc_route": "700-dresses",
             "doc_descr": "multi-facet generative art collection for DalleDress",
@@ -6253,15 +7336,18 @@
             ],
             "facets": [
                 {
+                    "display_name": "Generator",
                     "name": "Generator",
                     "store": "DalleDress",
                     "actions": [],
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "facet",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Series",
                     "name": "Series",
                     "store": "Series",
                     "actions": [
@@ -6274,9 +7360,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Databases",
                     "name": "Databases",
                     "store": "Databases",
                     "actions": [
@@ -6285,9 +7373,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Events",
                     "name": "Events",
                     "store": "Logs",
                     "actions": [
@@ -6296,23 +7386,27 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Gallery",
                     "name": "Gallery",
                     "store": "DalleDress",
                     "actions": [
                         "export"
                     ],
-                    "viewType": "dashboard",
+                    "viewType": "canvas",
                     "renderer": "facet",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         },
         {
             "class": "Comparitoor",
+            "display_name": "Comparitoor",
             "doc_group": "001-Comparisons",
             "doc_route": "comparitoor",
             "doc_descr": "Compare transactions across multiple sources for a given address",
@@ -6349,6 +7443,7 @@
             ],
             "facets": [
                 {
+                    "display_name": "Comparitoor",
                     "name": "Comparitoor",
                     "store": "Transaction",
                     "actions": [
@@ -6357,9 +7452,11 @@
                     "viewType": "",
                     "renderer": "facet",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Chifra",
                     "name": "Chifra",
                     "store": "Transaction",
                     "actions": [
@@ -6368,10 +7465,12 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
-                    "name": "EtherScan",
+                    "display_name": "Etherscan",
+                    "name": "Etherscan",
                     "store": "Transaction",
                     "actions": [
                         "export"
@@ -6379,9 +7478,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Covalent",
                     "name": "Covalent",
                     "store": "Transaction",
                     "actions": [
@@ -6390,9 +7491,11 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 },
                 {
+                    "display_name": "Alchemy",
                     "name": "Alchemy",
                     "store": "Transaction",
                     "actions": [
@@ -6401,7 +7504,8 @@
                     "viewType": "",
                     "renderer": "",
                     "attributes": "",
-                    "disabled": false
+                    "disabled": false,
+                    "needsCalcs": false
                 }
             ]
         }

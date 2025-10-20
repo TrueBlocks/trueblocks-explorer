@@ -1,8 +1,8 @@
+import { BucketStats } from '@hooks';
 import { Box, Text } from '@mantine/core';
-import { types } from '@models';
 
 export interface StatsBoxProps {
-  statsData: types.BucketStats;
+  statsData: BucketStats;
   formatValue: (value: number) => string;
 }
 

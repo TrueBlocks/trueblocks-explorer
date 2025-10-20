@@ -59,7 +59,7 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 				switch facet {
 				case ComparitoorChifra:
 					src = mockChifra
-				case ComparitoorEtherScan:
+				case ComparitoorEtherscan:
 					src = mockEtherscan
 				case ComparitoorCovalent:
 					src = mockCovalent
@@ -80,6 +80,8 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 		}
 
 		processFunc := func(item interface{}) *Transaction {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Transaction); ok {
 				return it
 			}
@@ -111,7 +113,7 @@ func (c *ComparitoorCollection) GetStoreName(dataFacet types.DataFacet, chain, a
 		name = "comparitoor-transaction"
 	case ComparitoorChifra:
 		name = "comparitoor-transaction"
-	case ComparitoorEtherScan:
+	case ComparitoorEtherscan:
 		name = "comparitoor-transaction"
 	case ComparitoorCovalent:
 		name = "comparitoor-transaction"

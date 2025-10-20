@@ -1,9 +1,9 @@
 import { useViewConfig } from '@hooks';
 import { types } from '@models';
 
-import { ChunksPanelRenderer } from './ChunksPanelRenderer';
+import { ChunksPanel } from './panels';
 
-export { ChunksPanelRenderer } from './ChunksPanelRenderer';
+export * from './panels';
 
 // Generic renderer factory that reads backend config
 const createPanelRenderer = (dataFacet: types.DataFacet) => {
@@ -11,10 +11,10 @@ const createPanelRenderer = (dataFacet: types.DataFacet) => {
     const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
     const facetConfig = viewConfig?.facets?.[dataFacet];
 
-    if (!facetConfig?.panelConfig) return null;
+    if (!facetConfig?.panelChartConfig) return null;
 
-    return ChunksPanelRenderer({
-      panelConfig: facetConfig.panelConfig,
+    return ChunksPanel({
+      panelConfig: facetConfig.panelChartConfig,
       dataFacet,
       collection: 'chunks',
       row,
@@ -24,7 +24,10 @@ const createPanelRenderer = (dataFacet: types.DataFacet) => {
 
 // Same exact structure as before - Chunks.tsx sees no difference!
 export const renderers = {
-  'chunks.blooms': createPanelRenderer(types.DataFacet.BLOOMS),
-  'chunks.index': createPanelRenderer(types.DataFacet.INDEX),
-  'chunks.stats': createPanelRenderer(types.DataFacet.STATS),
+  panels: {
+    [types.DataFacet.BLOOMS]: createPanelRenderer(types.DataFacet.BLOOMS),
+    [types.DataFacet.INDEX]: createPanelRenderer(types.DataFacet.INDEX),
+    [types.DataFacet.STATS]: createPanelRenderer(types.DataFacet.STATS),
+  },
+  facets: {},
 };

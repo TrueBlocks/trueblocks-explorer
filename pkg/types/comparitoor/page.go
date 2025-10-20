@@ -14,20 +14,19 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
 type ComparitoorPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Transaction   []*Transaction  `json:"transaction"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Transaction   []*Transaction   `json:"transaction"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// Per-source arrays and counts
 	Chifra         []*Transaction `json:"chifra"`
@@ -59,11 +58,7 @@ func (p *ComparitoorPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *ComparitoorPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *ComparitoorPage) GetState() types.LoadState {
+func (p *ComparitoorPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -210,14 +205,13 @@ func (c *ComparitoorCollection) GetPage(
 			page.Transaction = buildAnnotated(result.Items)
 			page.TotalItems, page.State = len(result.Items), result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorChifra:
 		facet := c.chifraFacet
 		var filterFunc func(*Transaction) bool
 		if filter != "" {
 			filterFunc = func(item *Transaction) bool {
-				return c.matchesTrueBlockFilter(item, filter)
+				return c.matchesChifraFilter(item, filter)
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
@@ -229,14 +223,13 @@ func (c *ComparitoorCollection) GetPage(
 			page.Transaction = buildAnnotated(result.Items)
 			page.TotalItems, page.State = len(result.Items), result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
-	case ComparitoorEtherScan:
+	case ComparitoorEtherscan:
 		facet := c.etherscanFacet
 		var filterFunc func(*Transaction) bool
 		if filter != "" {
 			filterFunc = func(item *Transaction) bool {
-				return c.matchesEtherScanFilter(item, filter)
+				return c.matchesEtherscanFilter(item, filter)
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
@@ -248,7 +241,6 @@ func (c *ComparitoorCollection) GetPage(
 			page.Transaction = buildAnnotated(result.Items)
 			page.TotalItems, page.State = len(result.Items), result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorCovalent:
 		facet := c.covalentFacet
@@ -267,7 +259,6 @@ func (c *ComparitoorCollection) GetPage(
 			page.Transaction = buildAnnotated(result.Items)
 			page.TotalItems, page.State = len(result.Items), result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorAlchemy:
 		facet := c.alchemyFacet
@@ -286,7 +277,6 @@ func (c *ComparitoorCollection) GetPage(
 			page.Transaction = buildAnnotated(result.Items)
 			page.TotalItems, page.State = len(result.Items), result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("comparitoor", dataFacet, "GetPage",
@@ -321,7 +311,7 @@ func (c *ComparitoorCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -347,7 +337,7 @@ func (c *ComparitoorCollection) generateSummariesForPeriod(dataFacet types.DataF
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 
@@ -393,11 +383,11 @@ func (c *ComparitoorCollection) matchesComparitoorFilter(item *Transaction, filt
 	return strings.Contains(strings.ToLower(s), strings.ToLower(filter))
 }
 
-func (c *ComparitoorCollection) matchesTrueBlockFilter(item *Transaction, filter string) bool {
+func (c *ComparitoorCollection) matchesChifraFilter(item *Transaction, filter string) bool {
 	return c.matchesComparitoorFilter(item, filter)
 }
 
-func (c *ComparitoorCollection) matchesEtherScanFilter(item *Transaction, filter string) bool {
+func (c *ComparitoorCollection) matchesEtherscanFilter(item *Transaction, filter string) bool {
 	return c.matchesComparitoorFilter(item, filter)
 }
 

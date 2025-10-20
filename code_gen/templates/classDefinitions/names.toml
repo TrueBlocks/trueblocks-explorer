@@ -11,30 +11,24 @@ disable_go = false
 name = "All"
 store = "Names"
 actions = ["autoname", "create", "export", "update"]
-viewType = ""
 
 [[facets]]
 name = "Custom"
 store = "Names"
 actions = ["autoname", "create", "delete", "export", "pin", "publish", "remove", "undelete", "update"]
-viewType = ""
 
 [[facets]]
 name = "Prefund"
 store = "Names"
 actions = ["create", "export", "update"]
-viewType = ""
 attributes = "dividerBefore"
 
 [[facets]]
 name = "Regular"
 store = "Names"
 actions = ["autoname", "create", "export", "update"]
-viewType = ""
 
 [[facets]]
 name = "Baddress"
 store = "Names"
 actions = ["create", "export"]
-viewType = ""
-

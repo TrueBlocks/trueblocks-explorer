@@ -49,7 +49,7 @@ func (a *App) GetAbisSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadAbis(payload *types.Payload) error {
 	collection := abis.GetAbisCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

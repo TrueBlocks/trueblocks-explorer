@@ -1,0 +1,12 @@
+[settings]
+class = "Approval Logs"
+contained_by = "block"
+doc_group = "02-Chain Data"
+doc_descr = "approval transaction data filtered from regular transactions"
+doc_route = "216-approvalLogs"
+attributes = ""
+produced_by = "transactions, export"
+contains = "receipt, statement, trace, function"
+cache_type = "cacheable"
+cache_by = "tx"
+disable_go = true

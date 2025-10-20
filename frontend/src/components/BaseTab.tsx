@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FormField, Table, TableProvider } from '@components';
-import { project } from '@models';
+import { project, types } from '@models';
 
 import './BaseTab.css';
 
@@ -9,7 +9,7 @@ interface BaseTabProps<T extends Record<string, unknown>> {
   data: T[];
   columns: FormField<T>[];
   viewStateKey: project.ViewStateKey;
-  loading: boolean;
+  state: types.StoreState;
   error: Error | null;
   onSubmit?: (formData: T) => void;
   onDelete?: (rowData: T) => void;
@@ -22,7 +22,7 @@ interface BaseTabProps<T extends Record<string, unknown>> {
 export function BaseTab<T extends Record<string, unknown>>({
   data,
   columns,
-  loading,
+  state,
   error: _error,
   onSubmit,
   onDelete,
@@ -35,12 +35,12 @@ export function BaseTab<T extends Record<string, unknown>>({
   return (
     <TableProvider>
       <div className="tableContainer">
-        <Table
+        <Table<T>
           data={data}
           columns={columns}
           viewStateKey={viewStateKey}
-          loading={loading}
-          onSubmit={onSubmit || (() => {})}
+          state={state}
+          onSubmit={onSubmit}
           onDelete={onDelete}
           onRemove={onRemove}
           onAutoname={onAutoname}

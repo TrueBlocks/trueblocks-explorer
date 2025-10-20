@@ -21,17 +21,19 @@ import (
 )
 
 const (
-	ExportsStatements   types.DataFacet = "statements"
-	ExportsBalances     types.DataFacet = "balances"
-	ExportsTransfers    types.DataFacet = "transfers"
-	ExportsTransactions types.DataFacet = "transactions"
-	ExportsApprovals    types.DataFacet = "approvals"
-	ExportsApproves     types.DataFacet = "approves"
-	ExportsWithdrawals  types.DataFacet = "withdrawals"
-	ExportsAssets       types.DataFacet = "assets"
-	ExportsLogs         types.DataFacet = "logs"
-	ExportsTraces       types.DataFacet = "traces"
-	ExportsReceipts     types.DataFacet = "receipts"
+	ExportsStatements    types.DataFacet = "statements"
+	ExportsBalances      types.DataFacet = "balances"
+	ExportsTransfers     types.DataFacet = "transfers"
+	ExportsTransactions  types.DataFacet = "transactions"
+	ExportsOpenApprovals types.DataFacet = "openapprovals"
+	ExportsApprovalLogs  types.DataFacet = "approvallogs"
+	ExportsApprovalTxs   types.DataFacet = "approvaltxs"
+	ExportsWithdrawals   types.DataFacet = "withdrawals"
+	ExportsAssets        types.DataFacet = "assets"
+	ExportsAssetCharts   types.DataFacet = "assetcharts"
+	ExportsLogs          types.DataFacet = "logs"
+	ExportsTraces        types.DataFacet = "traces"
+	ExportsReceipts      types.DataFacet = "receipts"
 )
 
 func init() {
@@ -39,29 +41,34 @@ func init() {
 	types.RegisterDataFacet(ExportsBalances)
 	types.RegisterDataFacet(ExportsTransfers)
 	types.RegisterDataFacet(ExportsTransactions)
-	types.RegisterDataFacet(ExportsApprovals)
-	types.RegisterDataFacet(ExportsApproves)
+	types.RegisterDataFacet(ExportsOpenApprovals)
+	types.RegisterDataFacet(ExportsApprovalLogs)
+	types.RegisterDataFacet(ExportsApprovalTxs)
 	types.RegisterDataFacet(ExportsWithdrawals)
 	types.RegisterDataFacet(ExportsAssets)
+	types.RegisterDataFacet(ExportsAssetCharts)
 	types.RegisterDataFacet(ExportsLogs)
 	types.RegisterDataFacet(ExportsTraces)
 	types.RegisterDataFacet(ExportsReceipts)
 }
 
 type ExportsCollection struct {
-	statementsFacet   *facets.Facet[Statement]
-	balancesFacet     *facets.Facet[Balance]
-	transfersFacet    *facets.Facet[Transfer]
-	transactionsFacet *facets.Facet[Transaction]
-	approvalsFacet    *facets.Facet[Approval]
-	approvesFacet     *facets.Facet[Approve]
-	withdrawalsFacet  *facets.Facet[Withdrawal]
-	assetsFacet       *facets.Facet[Asset]
-	logsFacet         *facets.Facet[Log]
-	tracesFacet       *facets.Facet[Trace]
-	receiptsFacet     *facets.Facet[Receipt]
-	summary           types.Summary
-	summaryMutex      sync.RWMutex
+	statementsFacet    *facets.Facet[Statement]
+	balancesFacet      *facets.Facet[Balance]
+	transfersFacet     *facets.Facet[Transfer]
+	transactionsFacet  *facets.Facet[Transaction]
+	openapprovalsFacet *facets.Facet[OpenApproval]
+	approvallogsFacet  *facets.Facet[ApprovalLog]
+	approvaltxsFacet   *facets.Facet[ApprovalTx]
+	withdrawalsFacet   *facets.Facet[Withdrawal]
+	assetsFacet        *facets.Facet[Asset]
+	assetchartsFacet   *facets.Facet[Statement]
+	logsFacet          *facets.Facet[Log]
+	tracesFacet        *facets.Facet[Trace]
+	receiptsFacet      *facets.Facet[Receipt]
+	summary            types.Summary
+	summaryMutex       sync.RWMutex
+	collectionMutex    sync.RWMutex
 }
 
 func NewExportsCollection(payload *types.Payload) *ExportsCollection {
@@ -108,20 +115,29 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c,
 	)
 
-	c.approvalsFacet = facets.NewFacet(
-		ExportsApprovals,
-		isApproval,
-		isDupApproval(),
-		c.getApprovalsStore(payload, ExportsApprovals),
+	c.openapprovalsFacet = facets.NewFacet(
+		ExportsOpenApprovals,
+		isOpenApproval,
+		isDupOpenApproval(),
+		c.getOpenApprovalsStore(payload, ExportsOpenApprovals),
 		"exports",
 		c,
 	)
 
-	c.approvesFacet = facets.NewFacet(
-		ExportsApproves,
-		isApprove,
-		isDupApprove(),
-		c.getApprovesStore(payload, ExportsApproves),
+	c.approvallogsFacet = facets.NewFacet(
+		ExportsApprovalLogs,
+		isApprovalLog,
+		isDupApprovalLog(),
+		c.getApprovalLogsStore(payload, ExportsApprovalLogs),
+		"exports",
+		c,
+	)
+
+	c.approvaltxsFacet = facets.NewFacet(
+		ExportsApprovalTxs,
+		isApprovalTx,
+		isDupApprovalTx(),
+		c.getApprovalTxsStore(payload, ExportsApprovalTxs),
 		"exports",
 		c,
 	)
@@ -140,6 +156,15 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		isAsset,
 		isDupAsset(),
 		c.getAssetsStore(payload, ExportsAssets),
+		"exports",
+		c,
+	)
+
+	c.assetchartsFacet = facets.NewFacet(
+		ExportsAssetCharts,
+		isAssetChart,
+		isDupStatement(),
+		c.getStatementsStore(payload, ExportsAssetCharts),
 		"exports",
 		c,
 	)
@@ -196,13 +221,19 @@ func isTransaction(item *Transaction) bool {
 	// EXISTING_CODE
 }
 
-func isApproval(item *Approval) bool {
+func isOpenApproval(item *OpenApproval) bool {
 	// EXISTING_CODE
 	return true
 	// EXISTING_CODE
 }
 
-func isApprove(item *Approve) bool {
+func isApprovalLog(item *ApprovalLog) bool {
+	// EXISTING_CODE
+	return true
+	// EXISTING_CODE
+}
+
+func isApprovalTx(item *ApprovalTx) bool {
 	// EXISTING_CODE
 	return true
 	// EXISTING_CODE
@@ -215,6 +246,12 @@ func isWithdrawal(item *Withdrawal) bool {
 }
 
 func isAsset(item *Asset) bool {
+	// EXISTING_CODE
+	return true
+	// EXISTING_CODE
+}
+
+func isAssetChart(item *Statement) bool {
 	// EXISTING_CODE
 	return true
 	// EXISTING_CODE
@@ -238,13 +275,13 @@ func isReceipt(item *Receipt) bool {
 	// EXISTING_CODE
 }
 
-func isDupApproval() func(existing []*Approval, newItem *Approval) bool {
+func isDupApprovalLog() func(existing []*ApprovalLog, newItem *ApprovalLog) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
 }
 
-func isDupApprove() func(existing []*Approve, newItem *Approve) bool {
+func isDupApprovalTx() func(existing []*ApprovalTx, newItem *ApprovalTx) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
@@ -263,6 +300,12 @@ func isDupBalance() func(existing []*Balance, newItem *Balance) bool {
 }
 
 func isDupLog() func(existing []*Log, newItem *Log) bool {
+	// EXISTING_CODE
+	return nil
+	// EXISTING_CODE
+}
+
+func isDupOpenApproval() func(existing []*OpenApproval, newItem *OpenApproval) bool {
 	// EXISTING_CODE
 	return nil
 	// EXISTING_CODE
@@ -304,7 +347,7 @@ func isDupWithdrawal() func(existing []*Withdrawal, newItem *Withdrawal) bool {
 	// EXISTING_CODE
 }
 
-func (c *ExportsCollection) LoadData(dataFacet types.DataFacet) {
+func (c *ExportsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -312,47 +355,55 @@ func (c *ExportsCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case ExportsStatements:
-			if err := c.statementsFacet.Load(); err != nil {
+			if err := c.statementsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsBalances:
-			if err := c.balancesFacet.Load(); err != nil {
+			if err := c.balancesFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsTransfers:
-			if err := c.transfersFacet.Load(); err != nil {
+			if err := c.transfersFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsTransactions:
-			if err := c.transactionsFacet.Load(); err != nil {
+			if err := c.transactionsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case ExportsApprovals:
-			if err := c.approvalsFacet.Load(); err != nil {
+		case ExportsOpenApprovals:
+			if err := c.openapprovalsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
-		case ExportsApproves:
-			if err := c.approvesFacet.Load(); err != nil {
+		case ExportsApprovalLogs:
+			if err := c.approvallogsFacet.FetchFacet(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
+		case ExportsApprovalTxs:
+			if err := c.approvaltxsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsWithdrawals:
-			if err := c.withdrawalsFacet.Load(); err != nil {
+			if err := c.withdrawalsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsAssets:
-			if err := c.assetsFacet.Load(); err != nil {
+			if err := c.assetsFacet.FetchFacet(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
+		case ExportsAssetCharts:
+			if err := c.assetchartsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsLogs:
-			if err := c.logsFacet.Load(); err != nil {
+			if err := c.logsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsTraces:
-			if err := c.tracesFacet.Load(); err != nil {
+			if err := c.tracesFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ExportsReceipts:
-			if err := c.receiptsFacet.Load(); err != nil {
+			if err := c.receiptsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:
@@ -372,14 +423,18 @@ func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
 		c.transfersFacet.Reset()
 	case ExportsTransactions:
 		c.transactionsFacet.Reset()
-	case ExportsApprovals:
-		c.approvalsFacet.Reset()
-	case ExportsApproves:
-		c.approvesFacet.Reset()
+	case ExportsOpenApprovals:
+		c.openapprovalsFacet.Reset()
+	case ExportsApprovalLogs:
+		c.approvallogsFacet.Reset()
+	case ExportsApprovalTxs:
+		c.approvaltxsFacet.Reset()
 	case ExportsWithdrawals:
 		c.withdrawalsFacet.Reset()
 	case ExportsAssets:
 		c.assetsFacet.Reset()
+	case ExportsAssetCharts:
+		c.assetchartsFacet.Reset()
 	case ExportsLogs:
 		c.logsFacet.Reset()
 	case ExportsTraces:
@@ -401,14 +456,18 @@ func (c *ExportsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 		return c.transfersFacet.NeedsUpdate()
 	case ExportsTransactions:
 		return c.transactionsFacet.NeedsUpdate()
-	case ExportsApprovals:
-		return c.approvalsFacet.NeedsUpdate()
-	case ExportsApproves:
-		return c.approvesFacet.NeedsUpdate()
+	case ExportsOpenApprovals:
+		return c.openapprovalsFacet.NeedsUpdate()
+	case ExportsApprovalLogs:
+		return c.approvallogsFacet.NeedsUpdate()
+	case ExportsApprovalTxs:
+		return c.approvaltxsFacet.NeedsUpdate()
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.NeedsUpdate()
 	case ExportsAssets:
 		return c.assetsFacet.NeedsUpdate()
+	case ExportsAssetCharts:
+		return c.assetchartsFacet.NeedsUpdate()
 	case ExportsLogs:
 		return c.logsFacet.NeedsUpdate()
 	case ExportsTraces:
@@ -426,10 +485,12 @@ func (c *ExportsCollection) GetSupportedFacets() []types.DataFacet {
 		ExportsBalances,
 		ExportsTransfers,
 		ExportsTransactions,
-		ExportsApprovals,
-		ExportsApproves,
+		ExportsOpenApprovals,
+		ExportsApprovalLogs,
+		ExportsApprovalTxs,
 		ExportsWithdrawals,
 		ExportsAssets,
+		ExportsAssetCharts,
 		ExportsLogs,
 		ExportsTraces,
 		ExportsReceipts,
@@ -461,6 +522,9 @@ func (c *ExportsCollection) AccumulateItem(item interface{}, summary *types.Summ
 		stmtCount, _ := summary.CustomData["statementsCount"].(int)
 		stmtCount++
 		summary.CustomData["statementsCount"] = stmtCount
+
+		// Update AssetCharts buckets when Statement data changes
+		c.updateAssetChartsBucket(v)
 
 	case *Transfer:
 		summary.TotalCount++
@@ -572,14 +636,18 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 		return c.transfersFacet.ExportData(payload, string(ExportsTransfers))
 	case ExportsTransactions:
 		return c.transactionsFacet.ExportData(payload, string(ExportsTransactions))
-	case ExportsApprovals:
-		return c.approvalsFacet.ExportData(payload, string(ExportsApprovals))
-	case ExportsApproves:
-		return c.approvesFacet.ExportData(payload, string(ExportsApproves))
+	case ExportsOpenApprovals:
+		return c.openapprovalsFacet.ExportData(payload, string(ExportsOpenApprovals))
+	case ExportsApprovalLogs:
+		return c.approvallogsFacet.ExportData(payload, string(ExportsApprovalLogs))
+	case ExportsApprovalTxs:
+		return c.approvaltxsFacet.ExportData(payload, string(ExportsApprovalTxs))
 	case ExportsWithdrawals:
 		return c.withdrawalsFacet.ExportData(payload, string(ExportsWithdrawals))
 	case ExportsAssets:
 		return c.assetsFacet.ExportData(payload, string(ExportsAssets))
+	case ExportsAssetCharts:
+		return c.assetchartsFacet.ExportData(payload, string(ExportsAssetCharts))
 	case ExportsLogs:
 		return c.logsFacet.ExportData(payload, string(ExportsLogs))
 	case ExportsTraces:

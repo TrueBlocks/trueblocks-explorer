@@ -51,7 +51,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 			if _, _, err := listOpts.Names(); err != nil {
 				// Create structured error with proper context
 				wrappedErr := types.NewSDKError("names", types.DataFacet("NamesAll"), "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Names SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Names SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -59,6 +59,8 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 		}
 
 		processFunc := func(item interface{}) *Name {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Name); ok {
 				return it
 			}

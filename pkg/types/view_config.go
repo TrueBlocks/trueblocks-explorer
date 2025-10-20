@@ -12,18 +12,19 @@ type ViewConfig struct {
 
 // FacetConfig represents configuration for a single facet within a view
 type FacetConfig struct {
-	Name          string              `json:"name"`
-	Store         string              `json:"store"`
-	IsForm        bool                `json:"isForm"`
-	DividerBefore bool                `json:"dividerBefore"`
-	Disabled      bool                `json:"disabled"`
-	Fields        []FieldConfig       `json:"fields"`
-	Columns       []ColumnConfig      `json:"columns"`
-	DetailPanels  []DetailPanelConfig `json:"detailPanels"`
-	Actions       []string            `json:"actions"`
-	HeaderActions []string            `json:"headerActions"`
-	RendererTypes string              `json:"rendererTypes"`
-	PanelConfig   *PanelConfig        `json:"panelConfig,omitempty"`
+	Name             string              `json:"name"`
+	Store            string              `json:"store"`
+	ViewType         string              `json:"viewType,omitempty"`
+	DividerBefore    bool                `json:"dividerBefore"`
+	Disabled         bool                `json:"disabled"`
+	Fields           []FieldConfig       `json:"fields"`
+	Columns          []ColumnConfig      `json:"columns"`
+	DetailPanels     []DetailPanelConfig `json:"detailPanels"`
+	Actions          []string            `json:"actions"`
+	HeaderActions    []string            `json:"headerActions"`
+	RendererTypes    string              `json:"rendererTypes"`
+	PanelChartConfig *PanelChartConfig   `json:"panelChartConfig,omitempty"`
+	FacetChartConfig *FacetChartConfig   `json:"facetChartConfig,omitempty"`
 }
 
 // FieldConfig is the single source-of-truth for facet fields
@@ -92,8 +93,14 @@ func (vc *ViewConfig) IsDisabled() bool {
 	return true
 }
 
-// PanelConfig represents visualization panel configuration
-type PanelConfig struct {
+// FacetChartConfig represents facet-level chart configuration
+type FacetChartConfig struct {
+	SeriesStrategy  string `json:"seriesStrategy,omitempty"`  // how to group data into series ("address", "symbol", "address+symbol")
+	SeriesPrefixLen int    `json:"seriesPrefixLen,omitempty"` // prefix length for collision avoidance (8-15)
+}
+
+// PanelChartConfig represents visualization panel configuration
+type PanelChartConfig struct {
 	Type          string         `json:"type"`                  // "barchart" or "heatmap"
 	DefaultMetric string         `json:"defaultMetric"`         // key of default metric
 	SkipUntil     string         `json:"skipUntil,omitempty"`   // optional date filter
@@ -106,6 +113,5 @@ type MetricConfig struct {
 	Key          string `json:"key"`          // unique identifier
 	Label        string `json:"label"`        // display name
 	BucketsField string `json:"bucketsField"` // field name in Buckets struct
-	StatsField   string `json:"statsField"`   // stats field name in Buckets struct
 	Bytes        bool   `json:"bytes"`        // whether to format as bytes
 }

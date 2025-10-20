@@ -54,7 +54,7 @@ func (a *App) Get{{$class}}Summary(payload *types.Payload) types.Summary {
 func (a *App) Reload{{$class}}(payload *types.Payload) error {
 	collection := {{$lower}}.Get{{$class}}Collection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

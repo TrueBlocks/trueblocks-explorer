@@ -142,7 +142,7 @@ func isDupFunction() func(existing []*Function, newItem *Function) bool {
 	// EXISTING_CODE
 }
 
-func (c *AbisCollection) LoadData(dataFacet types.DataFacet) {
+func (c *AbisCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -150,19 +150,19 @@ func (c *AbisCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case AbisDownloaded:
-			if err := c.downloadedFacet.Load(); err != nil {
+			if err := c.downloadedFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case AbisKnown:
-			if err := c.knownFacet.Load(); err != nil {
+			if err := c.knownFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case AbisFunctions:
-			if err := c.functionsFacet.Load(); err != nil {
+			if err := c.functionsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case AbisEvents:
-			if err := c.eventsFacet.Load(); err != nil {
+			if err := c.eventsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

@@ -39,7 +39,7 @@ func (a *App) GetComparitoorSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadComparitoor(payload *types.Payload) error {
 	collection := comparitoor.GetComparitoorCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

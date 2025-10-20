@@ -18,7 +18,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"statements": {
 			Name:          "Statements",
 			Store:         "statements",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getStatementsFields(),
 			Actions:       []string{},
@@ -28,7 +27,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"balances": {
 			Name:          "Balances",
 			Store:         "balances",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getBalancesFields(),
 			Actions:       []string{},
@@ -38,7 +36,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"transfers": {
 			Name:          "Transfers",
 			Store:         "transfers",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransfersFields(),
 			Actions:       []string{},
@@ -48,29 +45,35 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"transactions": {
 			Name:          "Transactions",
 			Store:         "transactions",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
 		},
-		"approvals": {
-			Name:          "Approvals",
-			Store:         "approvals",
-			IsForm:        false,
+		"openapprovals": {
+			Name:          "Open Approvals",
+			Store:         "openapprovals",
 			DividerBefore: false,
-			Fields:        getApprovalsFields(),
-			Actions:       []string{},
+			Fields:        getOpenapprovalsFields(),
+			Actions:       []string{"revoke"},
 			HeaderActions: []string{"export"},
 			RendererTypes: "panel",
 		},
-		"approves": {
-			Name:          "Approves",
-			Store:         "approves",
-			IsForm:        false,
+		"approvallogs": {
+			Name:          "Approval Logs",
+			Store:         "approvallogs",
 			DividerBefore: false,
-			Fields:        getApprovesFields(),
+			Fields:        getApprovallogsFields(),
+			Actions:       []string{},
+			HeaderActions: []string{"export"},
+			RendererTypes: "",
+		},
+		"approvaltxs": {
+			Name:          "Approval Txs",
+			Store:         "approvaltxs",
+			DividerBefore: false,
+			Fields:        getApprovaltxsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
@@ -78,7 +81,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"withdrawals": {
 			Name:          "Withdrawals",
 			Store:         "withdrawals",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getWithdrawalsFields(),
 			Actions:       []string{},
@@ -88,17 +90,26 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"assets": {
 			Name:          "Assets",
 			Store:         "assets",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getAssetsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
 		},
+		"assetcharts": {
+			Name:             "Asset Charts",
+			Store:            "statements",
+			ViewType:         "canvas",
+			DividerBefore:    false,
+			Fields:           getStatementsFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{"export"},
+			RendererTypes:    "facet",
+			FacetChartConfig: getAssetChartsFacetConfig(),
+		},
 		"logs": {
 			Name:          "Logs",
 			Store:         "logs",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getLogsFields(),
 			Actions:       []string{},
@@ -108,7 +119,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"traces": {
 			Name:          "Traces",
 			Store:         "traces",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTracesFields(),
 			Actions:       []string{},
@@ -118,7 +128,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		"receipts": {
 			Name:          "Receipts",
 			Store:         "receipts",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getReceiptsFields(),
 			Actions:       []string{},
@@ -130,9 +139,10 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 	cfg := &types.ViewConfig{
 		ViewName:   "exports",
 		Facets:     facets,
-		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "approvals", "approves", "withdrawals", "assets", "logs", "traces", "receipts"},
+		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "openapprovals", "approvallogs", "approvaltxs", "withdrawals", "assets", "assetcharts", "logs", "traces", "receipts"},
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
+			"revoke": {Name: "revoke", Label: "Revoke", Icon: "Revoke"},
 		},
 	}
 
@@ -142,27 +152,7 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 	return cfg, nil
 }
 
-func getApprovalsFields() []types.FieldConfig {
-	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "timestamp"},
-		{Section: "Context", Key: "blockNumber", Formatter: "number"},
-		{Section: "Details", Key: "owner", Formatter: "address"},
-		{Section: "Details", Key: "spender", Formatter: "address"},
-		{Section: "Details", Key: "token", Formatter: "address"},
-		{Section: "Details", Key: "allowance", Formatter: "wei"},
-		{Section: "Data", Key: "lastAppBlock", Formatter: "number", NoTable: true},
-		{Section: "Data", Key: "lastAppLogID", Formatter: "number", NoTable: true},
-		{Section: "Data", Key: "lastAppTs", Formatter: "timestamp", NoTable: true},
-		{Section: "Data", Key: "lastAppTxID", Formatter: "number", NoTable: true},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
-	}
-	types.NormalizeFields(ret)
-	return ret
-}
-
-func getApprovesFields() []types.FieldConfig {
+func getApprovallogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		// EXISTING_CODE
 		{Section: "Context", Key: "blockNumber"},
@@ -179,6 +169,35 @@ func getApprovesFields() []types.FieldConfig {
 		{Section: "Details", Key: "data", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "", Key: "actions", NoDetail: true},
+		// EXISTING_CODE
+	}
+	types.NormalizeFields(ret)
+	return ret
+}
+
+func getApprovaltxsFields() []types.FieldConfig {
+	ret := []types.FieldConfig{
+		// EXISTING_CODE
+		{Section: "Context", Key: "blockNumber"},
+		{Section: "Context", Key: "transactionIndex"},
+		{Section: "Overview", Key: "hash"},
+		{Section: "Overview", Key: "from"},
+		{Section: "Overview", Key: "to"},
+		{Section: "Overview", Key: "value"},
+		{Section: "Gas", Key: "gasUsed"},
+		{Section: "Overview", Key: "timestamp", NoTable: true},
+		{Section: "Overview", Key: "input", NoTable: true},
+		{Section: "Overview", Key: "articulatedTx", NoTable: true},
+		{Section: "Overview", Key: "isError", NoTable: true},
+		{Section: "Overview", Key: "hasToken", NoTable: true},
+		{Section: "Gas", Key: "gas", NoTable: true},
+		{Section: "Gas", Key: "gasPrice", NoTable: true},
+		{Section: "Gas", Key: "maxFeePerGas", NoTable: true},
+		{Section: "Gas", Key: "maxPriorityFeePerGas", NoTable: true},
+		{Section: "Context", Key: "blockHash", NoTable: true},
+		{Section: "Details", Key: "nonce", NoTable: true},
+		{Section: "Details", Key: "type", NoTable: true},
 		{Section: "", Key: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
@@ -253,6 +272,26 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", NoDetail: true},
+		// EXISTING_CODE
+	}
+	types.NormalizeFields(ret)
+	return ret
+}
+
+func getOpenapprovalsFields() []types.FieldConfig {
+	ret := []types.FieldConfig{
+		// EXISTING_CODE
+		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
+		{Section: "Context", Key: "blockNumber", Formatter: "number", NoTable: true},
+		{Section: "Details", Key: "owner", Formatter: "address"},
+		{Section: "Details", Key: "token", Formatter: "address"},
+		{Section: "Details", Key: "spender", Formatter: "address"},
+		{Section: "Details", Key: "allowance", Formatter: "weish"},
+		{Section: "Data", Key: "lastAppBlock", Formatter: "number", NoTable: true},
+		{Section: "Data", Key: "lastAppLogID", Formatter: "number", NoTable: true},
+		{Section: "Data", Key: "lastAppTs"},
+		{Section: "Data", Key: "lastAppTxID", Formatter: "number", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
@@ -455,4 +494,11 @@ func getWithdrawalsFields() []types.FieldConfig {
 }
 
 // EXISTING_CODE
+func getAssetChartsFacetConfig() *types.FacetChartConfig {
+	return &types.FacetChartConfig{
+		SeriesStrategy:  "address+symbol",
+		SeriesPrefixLen: 12,
+	}
+}
+
 // EXISTING_CODE

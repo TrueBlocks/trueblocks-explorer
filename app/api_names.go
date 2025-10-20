@@ -49,7 +49,7 @@ func (a *App) GetNamesSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadNames(payload *types.Payload) error {
 	collection := names.GetNamesCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

@@ -18,7 +18,6 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"comparitoor": {
 			Name:          "Comparitoor",
 			Store:         "transaction",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},
@@ -28,7 +27,6 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"chifra": {
 			Name:          "Chifra",
 			Store:         "transaction",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},
@@ -38,7 +36,6 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"etherscan": {
 			Name:          "Etherscan",
 			Store:         "transaction",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},
@@ -48,7 +45,6 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"covalent": {
 			Name:          "Covalent",
 			Store:         "transaction",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},
@@ -58,7 +54,6 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"alchemy": {
 			Name:          "Alchemy",
 			Store:         "transaction",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},

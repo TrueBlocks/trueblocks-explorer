@@ -29,6 +29,7 @@ export * from './WalletConnectButton';
 
 export * from './form';
 export * from './table';
+export * from './types';
 export * from './utils';
 export * from './detail';
 export * from './panels';

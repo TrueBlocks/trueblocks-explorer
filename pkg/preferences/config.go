@@ -143,6 +143,7 @@ type ViewConfigEntry struct {
 	MenuOrder      int             `json:"menuOrder,omitempty"`
 	Disabled       bool            `json:"disabled,omitempty"`
 	DisabledFacets map[string]bool `json:"disabledFacets,omitempty"`
+	FacetOrder     []string        `json:"facetOrder,omitempty"`
 }
 
 // LoadAppConfig reads and parses the configuration from .create-local-app.json file,

@@ -39,7 +39,7 @@ func (a *App) GetExportsSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadExports(payload *types.Payload) error {
 	collection := exports.GetExportsCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

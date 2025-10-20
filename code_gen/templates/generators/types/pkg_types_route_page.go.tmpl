@@ -28,8 +28,7 @@ type {{.Class}}Page struct {
 {{end -}}
 	TotalItems    int                  `json:"totalItems"`
 	ExpectedTotal int                  `json:"expectedTotal"`
-	IsFetching    bool                 `json:"isFetching"`
-	State         types.LoadState      `json:"state"`
+	State         types.StoreState      `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -46,11 +45,7 @@ func (p *{{.Class}}Page) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *{{.Class}}Page) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *{{.Class}}Page) GetState() types.LoadState {
+func (p *{{.Class}}Page) GetState() types.StoreState {
 	return p.State
 }
 
@@ -89,13 +84,29 @@ func (c *{{.Class}}Collection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("{{toLower $class}}", dataFacet, "GetPage", err)
 		} else {
-			{{if $isPtr -}}{{toLower $sing}} := make([]*{{toSingular .Store}}, 0, len(result.Items))
+			{{- if .NeedsCalcs}}
+			props := &sdk.ModelProps{
+				Chain:   payload.Chain,
+				Format:  "json",
+				Verbose: true,
+				ExtraOpts: map[string]any{
+					"ether": true,
+				},
+			}
+			for i := range result.Items {
+				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
+				}
+			}
+			{{- end}}
+			{{- if $isPtr }}
+			{{toLower $sing}} := make([]*{{toSingular .Store}}, 0, len(result.Items))
 			for i := range result.Items {
 				{{toLower $sing}} = append({{toLower $sing}}, &result.Items[i])
-			}{{end}}
+			}
+			{{- end}}
 			page.{{.Store}}, page.TotalItems, page.State = {{if $isPtr}}{{toLower $sing}}{{else}}result.Items{{end}}, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 {{- end}}
 	default:
@@ -131,7 +142,7 @@ func (c *{{.Class}}Collection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -157,7 +168,7 @@ func (c *{{.Class}}Collection) generateSummariesForPeriod(dataFacet types.DataFa
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

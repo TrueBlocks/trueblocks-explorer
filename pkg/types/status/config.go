@@ -18,7 +18,7 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 		"status": {
 			Name:          "Status",
 			Store:         "status",
-			IsForm:        true,
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getStatusFields(),
 			Actions:       []string{},
@@ -28,7 +28,6 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 		"caches": {
 			Name:          "Caches",
 			Store:         "caches",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getCachesFields(),
 			Actions:       []string{},
@@ -38,7 +37,6 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 		"chains": {
 			Name:          "Chains",
 			Store:         "chains",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getChainsFields(),
 			Actions:       []string{},

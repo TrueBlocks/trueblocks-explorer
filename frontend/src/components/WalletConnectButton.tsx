@@ -22,12 +22,7 @@ export const WalletConnectButton = () => {
   }
 
   return (
-    <StyledButton
-      onClick={handleConnect}
-      loading={isConnecting}
-      size="xs"
-      variant="primary"
-    >
+    <StyledButton onClick={handleConnect} loading={isConnecting} size="xs">
       Connect Wallet
     </StyledButton>
   );

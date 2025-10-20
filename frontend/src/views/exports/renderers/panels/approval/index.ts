@@ -1,0 +1,1 @@
+export { renderApprovalDetailPanel } from './ApprovalPanel';

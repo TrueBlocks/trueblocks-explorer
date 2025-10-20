@@ -1,33 +1,20 @@
 package types
 
+import coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+
 type Buckets struct {
-	Series0      []Bucket    `json:"series0"`
-	Series0Stats BucketStats `json:"series0Stats"`
-
-	Series1      []Bucket    `json:"series1"`
-	Series1Stats BucketStats `json:"series1Stats"`
-
-	Series2      []Bucket    `json:"series2"`
-	Series2Stats BucketStats `json:"series2Stats"`
-
-	Series3      []Bucket    `json:"series3"`
-	Series3Stats BucketStats `json:"series3Stats"`
-
-	GridInfo GridInfo `json:"gridInfo"`
+	// Flexible series structure using named metrics
+	Series     map[string][]Bucket        `json:"series"`
+	AssetNames map[string]*coreTypes.Name `json:"assetNames,omitempty"` // Maps series prefix to asset name
+	GridInfo   GridInfo                   `json:"gridInfo"`
 }
 
 // NewBuckets creates a new Buckets struct with proper initialization
 func NewBuckets() *Buckets {
 	return &Buckets{
-		Series0:      []Bucket{},
-		Series0Stats: NewBucketStats(),
-		Series1:      []Bucket{},
-		Series1Stats: NewBucketStats(),
-		Series2:      []Bucket{},
-		Series2Stats: NewBucketStats(),
-		Series3:      []Bucket{},
-		Series3Stats: NewBucketStats(),
-		GridInfo:     NewGridInfo(),
+		Series:     make(map[string][]Bucket),
+		AssetNames: make(map[string]*coreTypes.Name),
+		GridInfo:   NewGridInfo(),
 	}
 }
 
@@ -38,6 +25,60 @@ func NewBucketsWithGridInfo(gi *GridInfo) *Buckets {
 		ret.GridInfo = *gi
 	}
 	return ret
+}
+
+// GetSeries returns a series by name, creating it if it doesn't exist
+func (b *Buckets) GetSeries(name string) []Bucket {
+	if b.Series == nil {
+		b.Series = make(map[string][]Bucket)
+	}
+	if series, exists := b.Series[name]; exists {
+		return series
+	}
+	b.Series[name] = []Bucket{}
+	return b.Series[name]
+}
+
+// SetSeries sets a series by name
+func (b *Buckets) SetSeries(name string, buckets []Bucket) {
+	if b.Series == nil {
+		b.Series = make(map[string][]Bucket)
+	}
+	b.Series[name] = buckets
+}
+
+// EnsureSeriesExists ensures a series exists, creating it if necessary
+func (b *Buckets) EnsureSeriesExists(name string) {
+	if b.Series == nil {
+		b.Series = make(map[string][]Bucket)
+	}
+	if _, exists := b.Series[name]; !exists {
+		b.Series[name] = []Bucket{}
+	}
+}
+
+// UpdateSeries safely updates a series by applying a function to it
+func (b *Buckets) UpdateSeries(name string, updateFunc func([]Bucket) []Bucket) {
+	if b.Series == nil {
+		b.Series = make(map[string][]Bucket)
+	}
+
+	series, exists := b.Series[name]
+	if !exists {
+		series = []Bucket{}
+	}
+
+	b.Series[name] = updateFunc(series)
+}
+
+// SetAssetName stores the asset name for a series prefix (e.g., "0x1234567890ab_ETH")
+func (b *Buckets) SetAssetName(assetIdentifier string, assetName *coreTypes.Name) {
+	if b.AssetNames == nil {
+		b.AssetNames = make(map[string]*coreTypes.Name)
+	}
+	if assetName != nil {
+		b.AssetNames[assetIdentifier] = assetName
+	}
 }
 
 // BucketInterface defines bucket operations that facets must implement

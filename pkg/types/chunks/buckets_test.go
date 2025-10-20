@@ -61,11 +61,11 @@ func TestBloomsBucketInitialization(t *testing.T) {
 	// Get buckets from the blooms facet
 	bucket := collection.bloomsFacet.GetBuckets()
 
-	if len(bucket.Series2) != 0 {
-		t.Errorf("Expected empty Series2, got length %d", len(bucket.Series2))
+	if len(bucket.GetSeries("fileSize")) != 0 {
+		t.Errorf("Expected empty fileSize series, got length %d", len(bucket.GetSeries("fileSize")))
 	}
-	if len(bucket.Series3) != 0 {
-		t.Errorf("Expected empty Series3, got length %d", len(bucket.Series3))
+	if len(bucket.GetSeries("nBlooms")) != 0 {
+		t.Errorf("Expected empty nBlooms series, got length %d", len(bucket.GetSeries("nBlooms")))
 	}
 	if bucket.GridInfo.Size != 100000 {
 		t.Errorf("Expected grid size 100000, got %d", bucket.GridInfo.Size)
@@ -83,14 +83,14 @@ func TestIndexBucketInitialization(t *testing.T) {
 	// Get buckets from the index facet
 	bucket := collection.indexFacet.GetBuckets()
 
-	if len(bucket.Series0) != 0 {
-		t.Errorf("Expected empty Series0, got length %d", len(bucket.Series0))
+	if len(bucket.GetSeries("nAddresses")) != 0 {
+		t.Errorf("Expected empty nAddresses series, got length %d", len(bucket.GetSeries("nAddresses")))
 	}
-	if len(bucket.Series1) != 0 {
-		t.Errorf("Expected empty Series1, got length %d", len(bucket.Series1))
+	if len(bucket.GetSeries("nAppearances")) != 0 {
+		t.Errorf("Expected empty nAppearances series, got length %d", len(bucket.GetSeries("nAppearances")))
 	}
-	if len(bucket.Series2) != 0 {
-		t.Errorf("Expected empty Series2, got length %d", len(bucket.Series2))
+	if len(bucket.GetSeries("fileSize")) != 0 {
+		t.Errorf("Expected empty fileSize series, got length %d", len(bucket.GetSeries("fileSize")))
 	}
 	if bucket.GridInfo.Size != 100000 {
 		t.Errorf("Expected grid size 100000, got %d", bucket.GridInfo.Size)
@@ -105,17 +105,17 @@ func TestStatsBucketInitialization(t *testing.T) {
 	// Get buckets from the stats facet
 	bucket := collection.statsFacet.GetBuckets()
 
-	if len(bucket.Series0) != 0 {
-		t.Errorf("Expected empty Series0, got length %d", len(bucket.Series0))
+	if len(bucket.GetSeries("ratio")) != 0 {
+		t.Errorf("Expected empty ratio series, got length %d", len(bucket.GetSeries("ratio")))
 	}
-	if len(bucket.Series1) != 0 {
-		t.Errorf("Expected empty Series1, got length %d", len(bucket.Series1))
+	if len(bucket.GetSeries("appsPerBlock")) != 0 {
+		t.Errorf("Expected empty appsPerBlock series, got length %d", len(bucket.GetSeries("appsPerBlock")))
 	}
-	if len(bucket.Series2) != 0 {
-		t.Errorf("Expected empty Series2, got length %d", len(bucket.Series2))
+	if len(bucket.GetSeries("addrsPerBlock")) != 0 {
+		t.Errorf("Expected empty addrsPerBlock series, got length %d", len(bucket.GetSeries("addrsPerBlock")))
 	}
-	if len(bucket.Series3) != 0 {
-		t.Errorf("Expected empty Series3, got length %d", len(bucket.Series3))
+	if len(bucket.GetSeries("appsPerAddr")) != 0 {
+		t.Errorf("Expected empty appsPerAddr series, got length %d", len(bucket.GetSeries("appsPerAddr")))
 	}
 	if bucket.GridInfo.Size != 100000 {
 		t.Errorf("Expected grid size 100000, got %d", bucket.GridInfo.Size)
@@ -140,19 +140,19 @@ func TestBloomsBucketUpdate(t *testing.T) {
 	bucket := collection.bloomsFacet.GetBuckets()
 
 	// Should have created one bucket
-	if len(bucket.Series2) != 1 {
-		t.Errorf("Expected 1 bucket in Series2, got %d", len(bucket.Series2))
+	if len(bucket.GetSeries("fileSize")) != 1 {
+		t.Errorf("Expected 1 bucket in fileSize series, got %d", len(bucket.GetSeries("fileSize")))
 	}
-	if len(bucket.Series3) != 1 {
-		t.Errorf("Expected 1 bucket in Series3, got %d", len(bucket.Series3))
+	if len(bucket.GetSeries("nBlooms")) != 1 {
+		t.Errorf("Expected 1 bucket in nBlooms series, got %d", len(bucket.GetSeries("nBlooms")))
 	}
 
 	// Check bucket data
-	if bucket.Series2[0].Total != 1024 {
-		t.Errorf("Expected Series2 total 1024, got %f", bucket.Series2[0].Total)
+	if bucket.GetSeries("fileSize")[0].Total != 1024 {
+		t.Errorf("Expected fileSize total 1024, got %f", bucket.GetSeries("fileSize")[0].Total)
 	}
-	if bucket.Series3[0].Total != 50 {
-		t.Errorf("Expected Series3 total 50, got %f", bucket.Series3[0].Total)
+	if bucket.GetSeries("nBlooms")[0].Total != 50 {
+		t.Errorf("Expected nBlooms total 50, got %f", bucket.GetSeries("nBlooms")[0].Total)
 	}
 }
 
@@ -174,26 +174,26 @@ func TestIndexBucketUpdate(t *testing.T) {
 
 	bucket := collection.indexFacet.GetBuckets()
 
-	// Should have created one bucket in each series (except Series3)
-	if len(bucket.Series0) != 1 {
-		t.Errorf("Expected 1 bucket in Series0, got %d", len(bucket.Series0))
+	// Should have created one bucket in each series
+	if len(bucket.GetSeries("nAddresses")) != 1 {
+		t.Errorf("Expected 1 bucket in nAddresses series, got %d", len(bucket.GetSeries("nAddresses")))
 	}
-	if len(bucket.Series1) != 1 {
-		t.Errorf("Expected 1 bucket in Series1, got %d", len(bucket.Series1))
+	if len(bucket.GetSeries("nAppearances")) != 1 {
+		t.Errorf("Expected 1 bucket in nAppearances series, got %d", len(bucket.GetSeries("nAppearances")))
 	}
-	if len(bucket.Series2) != 1 {
-		t.Errorf("Expected 1 bucket in Series2, got %d", len(bucket.Series2))
+	if len(bucket.GetSeries("fileSize")) != 1 {
+		t.Errorf("Expected 1 bucket in fileSize series, got %d", len(bucket.GetSeries("fileSize")))
 	}
 
-	// Check bucket data - Series0=NAddresses, Series1=NAppearances, Series2=FileSize
-	if bucket.Series0[0].Total != 150.0 {
-		t.Errorf("Expected Series0 total 150.0 (NAddresses), got %f", bucket.Series0[0].Total)
+	// Check bucket data
+	if bucket.GetSeries("nAddresses")[0].Total != 150.0 {
+		t.Errorf("Expected nAddresses total 150.0, got %f", bucket.GetSeries("nAddresses")[0].Total)
 	}
-	if bucket.Series1[0].Total != 500.0 {
-		t.Errorf("Expected Series1 total 500.0 (NAppearances), got %f", bucket.Series1[0].Total)
+	if bucket.GetSeries("nAppearances")[0].Total != 500.0 {
+		t.Errorf("Expected nAppearances total 500.0, got %f", bucket.GetSeries("nAppearances")[0].Total)
 	}
-	if bucket.Series2[0].Total != 2048.0 {
-		t.Errorf("Expected Series2 total 2048.0 (FileSize), got %f", bucket.Series2[0].Total)
+	if bucket.GetSeries("fileSize")[0].Total != 2048.0 {
+		t.Errorf("Expected fileSize total 2048.0, got %f", bucket.GetSeries("fileSize")[0].Total)
 	}
 }
 
@@ -217,31 +217,31 @@ func TestStatsBucketUpdate(t *testing.T) {
 	bucket := collection.statsFacet.GetBuckets()
 
 	// Should have created one bucket in each series
-	if len(bucket.Series0) != 1 {
-		t.Errorf("Expected 1 bucket in Series0, got %d", len(bucket.Series0))
+	if len(bucket.GetSeries("ratio")) != 1 {
+		t.Errorf("Expected 1 bucket in ratio series, got %d", len(bucket.GetSeries("ratio")))
 	}
-	if len(bucket.Series1) != 1 {
-		t.Errorf("Expected 1 bucket in Series1, got %d", len(bucket.Series1))
+	if len(bucket.GetSeries("appsPerBlock")) != 1 {
+		t.Errorf("Expected 1 bucket in appsPerBlock series, got %d", len(bucket.GetSeries("appsPerBlock")))
 	}
-	if len(bucket.Series2) != 1 {
-		t.Errorf("Expected 1 bucket in Series2, got %d", len(bucket.Series2))
+	if len(bucket.GetSeries("addrsPerBlock")) != 1 {
+		t.Errorf("Expected 1 bucket in addrsPerBlock series, got %d", len(bucket.GetSeries("addrsPerBlock")))
 	}
-	if len(bucket.Series3) != 1 {
-		t.Errorf("Expected 1 bucket in Series3, got %d", len(bucket.Series3))
+	if len(bucket.GetSeries("appsPerAddr")) != 1 {
+		t.Errorf("Expected 1 bucket in appsPerAddr series, got %d", len(bucket.GetSeries("appsPerAddr")))
 	}
 
 	// Check bucket data
-	if bucket.Series0[0].Total != 2.5 {
-		t.Errorf("Expected Series0 total 2.5, got %f", bucket.Series0[0].Total)
+	if bucket.GetSeries("ratio")[0].Total != 2.5 {
+		t.Errorf("Expected ratio total 2.5, got %f", bucket.GetSeries("ratio")[0].Total)
 	}
-	if bucket.Series1[0].Total != 1.2 {
-		t.Errorf("Expected Series1 total 1.2, got %f", bucket.Series1[0].Total)
+	if bucket.GetSeries("appsPerBlock")[0].Total != 1.2 {
+		t.Errorf("Expected appsPerBlock total 1.2, got %f", bucket.GetSeries("appsPerBlock")[0].Total)
 	}
-	if bucket.Series2[0].Total != 0.8 {
-		t.Errorf("Expected Series2 total 0.8, got %f", bucket.Series2[0].Total)
+	if bucket.GetSeries("addrsPerBlock")[0].Total != 0.8 {
+		t.Errorf("Expected addrsPerBlock total 0.8, got %f", bucket.GetSeries("addrsPerBlock")[0].Total)
 	}
-	if bucket.Series3[0].Total != 1.5 {
-		t.Errorf("Expected Series3 total 1.5, got %f", bucket.Series3[0].Total)
+	if bucket.GetSeries("appsPerAddr")[0].Total != 1.5 {
+		t.Errorf("Expected appsPerAddr total 1.5, got %f", bucket.GetSeries("appsPerAddr")[0].Total)
 	}
 }
 
@@ -255,12 +255,12 @@ func TestGetChunksBucketsBloomsFacet(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return Buckets with empty Series0 and Series1, initialized Series2 and Series3
-	if len(result.Series0) != 0 {
-		t.Errorf("Expected empty Series0 for blooms facet, got length %d", len(result.Series0))
+	// Should return Buckets with empty series for fileSize and nBlooms
+	if len(result.GetSeries("fileSize")) != 0 {
+		t.Errorf("Expected empty fileSize series for blooms facet, got length %d", len(result.GetSeries("fileSize")))
 	}
-	if len(result.Series1) != 0 {
-		t.Errorf("Expected empty Series1 for blooms facet, got length %d", len(result.Series1))
+	if len(result.GetSeries("nBlooms")) != 0 {
+		t.Errorf("Expected empty nBlooms series for blooms facet, got length %d", len(result.GetSeries("nBlooms")))
 	}
 	if result.GridInfo.Size != 100000 {
 		t.Errorf("Expected grid size 100000, got %d", result.GridInfo.Size)
@@ -277,18 +277,18 @@ func TestGetChunksBucketsStatsFacet(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return Buckets with all four series initialized (but empty)
-	if result.Series0 == nil {
-		t.Error("Expected Series0 to be initialized")
+	// Should return Buckets with all four metric series initialized (but empty)
+	if result.GetSeries("ratio") == nil {
+		t.Error("Expected ratio series to be initialized")
 	}
-	if result.Series1 == nil {
-		t.Error("Expected Series1 to be initialized")
+	if result.GetSeries("appsPerBlock") == nil {
+		t.Error("Expected appsPerBlock series to be initialized")
 	}
-	if result.Series2 == nil {
-		t.Error("Expected Series2 to be initialized")
+	if result.GetSeries("addrsPerBlock") == nil {
+		t.Error("Expected addrsPerBlock series to be initialized")
 	}
-	if result.Series3 == nil {
-		t.Error("Expected Series3 to be initialized")
+	if result.GetSeries("appsPerAddr") == nil {
+		t.Error("Expected appsPerAddr series to be initialized")
 	}
 	if result.GridInfo.Size != 100000 {
 		t.Errorf("Expected grid size 100000, got %d", result.GridInfo.Size)
@@ -305,18 +305,15 @@ func TestGetChunksBucketsIndexFacet(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Should return Buckets with Series0, Series1, Series2 initialized, Series3 empty
-	if result.Series0 == nil {
-		t.Error("Expected Series0 to be initialized")
+	// Should return Buckets with three metric series initialized
+	if result.GetSeries("nAddresses") == nil {
+		t.Error("Expected nAddresses series to be initialized")
 	}
-	if result.Series1 == nil {
-		t.Error("Expected Series1 to be initialized")
+	if result.GetSeries("nAppearances") == nil {
+		t.Error("Expected nAppearances series to be initialized")
 	}
-	if result.Series2 == nil {
-		t.Error("Expected Series2 to be initialized")
-	}
-	if len(result.Series3) != 0 {
-		t.Errorf("Expected empty Series3 for index facet, got length %d", len(result.Series3))
+	if result.GetSeries("fileSize") == nil {
+		t.Error("Expected fileSize series to be initialized")
 	}
 }
 
@@ -331,17 +328,8 @@ func TestGetChunksBucketsUnknownFacet(t *testing.T) {
 	}
 
 	// Should return empty Buckets with default grid info
-	if len(result.Series0) != 0 {
-		t.Errorf("Expected empty Series0, got length %d", len(result.Series0))
-	}
-	if len(result.Series1) != 0 {
-		t.Errorf("Expected empty Series1, got length %d", len(result.Series1))
-	}
-	if len(result.Series2) != 0 {
-		t.Errorf("Expected empty Series2, got length %d", len(result.Series2))
-	}
-	if len(result.Series3) != 0 {
-		t.Errorf("Expected empty Series3, got length %d", len(result.Series3))
+	if len(result.Series) != 0 {
+		t.Errorf("Expected empty Series map, got length %d", len(result.Series))
 	}
 	if result.GridInfo.Size != 100000 {
 		t.Errorf("Expected default grid size 100000, got %d", result.GridInfo.Size)
@@ -370,34 +358,34 @@ func TestBucketStatsFinalization(t *testing.T) {
 
 	// Manually calculate stats for verification since finalizeBucketStats was removed
 	// Check that we have the expected data distribution
-	if len(bucket.Series0) != 2 {
-		t.Errorf("Expected 2 buckets in Series0, got %d", len(bucket.Series0))
+	if len(bucket.GetSeries("ratio")) != 2 {
+		t.Errorf("Expected 2 buckets in ratio series, got %d", len(bucket.GetSeries("ratio")))
 	}
-	if len(bucket.Series1) != 2 {
-		t.Errorf("Expected 2 buckets in Series1, got %d", len(bucket.Series1))
+	if len(bucket.GetSeries("appsPerBlock")) != 2 {
+		t.Errorf("Expected 2 buckets in appsPerBlock series, got %d", len(bucket.GetSeries("appsPerBlock")))
 	}
-	if len(bucket.Series2) != 2 {
-		t.Errorf("Expected 2 buckets in Series2, got %d", len(bucket.Series2))
+	if len(bucket.GetSeries("addrsPerBlock")) != 2 {
+		t.Errorf("Expected 2 buckets in addrsPerBlock series, got %d", len(bucket.GetSeries("addrsPerBlock")))
 	}
-	if len(bucket.Series3) != 2 {
-		t.Errorf("Expected 2 buckets in Series3, got %d", len(bucket.Series3))
+	if len(bucket.GetSeries("appsPerAddr")) != 2 {
+		t.Errorf("Expected 2 buckets in appsPerAddr series, got %d", len(bucket.GetSeries("appsPerAddr")))
 	}
 
 	// Check individual bucket values
-	if bucket.Series0[0].Total != 2.0 {
-		t.Errorf("Expected Series0[0] total 2.0, got %f", bucket.Series0[0].Total)
+	if bucket.GetSeries("ratio")[0].Total != 2.0 {
+		t.Errorf("Expected ratio[0] total 2.0, got %f", bucket.GetSeries("ratio")[0].Total)
 	}
-	if bucket.Series0[1].Total != 4.0 {
-		t.Errorf("Expected Series0[1] total 4.0, got %f", bucket.Series0[1].Total)
+	if bucket.GetSeries("ratio")[1].Total != 4.0 {
+		t.Errorf("Expected ratio[1] total 4.0, got %f", bucket.GetSeries("ratio")[1].Total)
 	}
 }
 
-// TestSeries3RegressionBug tests that Series3 data is properly handled (regression test)
-func TestSeries3RegressionBug(t *testing.T) {
+// TestAppsPerAddrRegressionBug tests that appsPerAddr data is properly handled (regression test)
+func TestAppsPerAddrRegressionBug(t *testing.T) {
 	payload := &types.Payload{DataFacet: ChunksStats}
 	collection := NewChunksCollection(payload)
 
-	// Add stats data that populates Series3
+	// Add stats data that populates appsPerAddr series
 	stats := &Stats{
 		Range: "000000000-000099999", // blocks 0-99999
 		Ratio: 1.0, AppsPerBlock: 1.0, AddrsPerBlock: 1.0, AppsPerAddr: 5.0,
@@ -409,19 +397,19 @@ func TestSeries3RegressionBug(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	// Verify Series3 has the correct data (not empty, not copied to Series2)
-	if len(result.Series3) != 1 {
-		t.Errorf("Expected 1 bucket in Series3, got %d", len(result.Series3))
+	// Verify appsPerAddr has the correct data (not empty, not copied to addrsPerBlock)
+	if len(result.GetSeries("appsPerAddr")) != 1 {
+		t.Errorf("Expected 1 bucket in appsPerAddr series, got %d", len(result.GetSeries("appsPerAddr")))
 	}
-	if result.Series3[0].Total != 5.0 {
-		t.Errorf("Expected Series3 total 5.0, got %f", result.Series3[0].Total)
+	if result.GetSeries("appsPerAddr")[0].Total != 5.0 {
+		t.Errorf("Expected appsPerAddr total 5.0, got %f", result.GetSeries("appsPerAddr")[0].Total)
 	}
 
-	// Verify Series2 has its own correct data (not Series3 data)
-	if len(result.Series2) != 1 {
-		t.Errorf("Expected 1 bucket in Series2, got %d", len(result.Series2))
+	// Verify addrsPerBlock has its own correct data (not appsPerAddr data)
+	if len(result.GetSeries("addrsPerBlock")) != 1 {
+		t.Errorf("Expected 1 bucket in addrsPerBlock series, got %d", len(result.GetSeries("addrsPerBlock")))
 	}
-	if result.Series2[0].Total != 1.0 { // Should be AddrsPerBlock, not AppsPerAddr
-		t.Errorf("Expected Series2 total 1.0, got %f", result.Series2[0].Total)
+	if result.GetSeries("addrsPerBlock")[0].Total != 1.0 { // Should be AddrsPerBlock, not AppsPerAddr
+		t.Errorf("Expected addrsPerBlock total 1.0, got %f", result.GetSeries("addrsPerBlock")[0].Total)
 	}
 }

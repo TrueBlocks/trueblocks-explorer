@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
 )
 
 // SortFields sorts columns and detail fields by their explicit order values.
@@ -72,6 +72,32 @@ func SetMenuOrder(vc *ViewConfig) {
 					facetConfig.Disabled = disabledState
 					vc.Facets[facetName] = facetConfig
 				}
+			}
+		}
+
+		// Apply custom facet ordering if provided
+		if len(viewConfig.FacetOrder) > 0 && vc.Facets != nil {
+			// Validate that all facets in the custom order exist and build valid order
+			validOrder := []string{}
+			customOrderSet := make(map[string]bool)
+
+			for _, facetId := range viewConfig.FacetOrder {
+				if _, exists := vc.Facets[facetId]; exists {
+					validOrder = append(validOrder, facetId)
+					customOrderSet[facetId] = true
+				}
+			}
+
+			// Add any missing facets from the original order at the end
+			for _, id := range vc.FacetOrder {
+				if !customOrderSet[id] {
+					validOrder = append(validOrder, id)
+				}
+			}
+
+			// Only update if we have a valid non-empty order
+			if len(validOrder) > 0 {
+				vc.FacetOrder = validOrder
 			}
 		}
 	} else {

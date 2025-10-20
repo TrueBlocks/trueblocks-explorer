@@ -75,11 +75,14 @@ export const StyledButton = ({
       case 'menu-selected':
         return 'gray.9'; // TabView active color
       case 'success':
-        return 'green';
+        // For filled success buttons, use white text for contrast
+        return getMantineVariant() === 'filled' ? 'white' : 'success';
       case 'warning':
-        return 'yellow';
+        // For filled warning buttons, use dark text for contrast (yellow is light)
+        return getMantineVariant() === 'filled' ? 'dark' : 'warning';
       case 'primary':
-        return 'primary';
+        // For filled primary buttons, use white text for contrast
+        return getMantineVariant() === 'filled' ? 'white' : 'primary';
       default:
         return undefined; // Let Mantine handle default colors
     }

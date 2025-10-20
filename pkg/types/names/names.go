@@ -137,7 +137,7 @@ func isDupName() func(existing []*Name, newItem *Name) bool {
 	// EXISTING_CODE
 }
 
-func (c *NamesCollection) LoadData(dataFacet types.DataFacet) {
+func (c *NamesCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -145,23 +145,23 @@ func (c *NamesCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case NamesAll:
-			if err := c.allFacet.Load(); err != nil {
+			if err := c.allFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case NamesCustom:
-			if err := c.customFacet.Load(); err != nil {
+			if err := c.customFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case NamesPrefund:
-			if err := c.prefundFacet.Load(); err != nil {
+			if err := c.prefundFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case NamesRegular:
-			if err := c.regularFacet.Load(); err != nil {
+			if err := c.regularFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case NamesBaddress:
-			if err := c.baddressFacet.Load(); err != nil {
+			if err := c.baddressFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

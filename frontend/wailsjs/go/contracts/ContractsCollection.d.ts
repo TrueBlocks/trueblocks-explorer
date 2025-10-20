@@ -7,6 +7,8 @@ export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;
 
+export function FetchByFacet(arg1:types.DataFacet):Promise<void>;
+
 export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetConfig():Promise<types.ViewConfig>;
@@ -18,8 +20,6 @@ export function GetStoreName(arg1:types.DataFacet,arg2:string,arg3:string):Promi
 export function GetSummary():Promise<types.Summary>;
 
 export function GetSupportedFacets():Promise<Array<types.DataFacet>>;
-
-export function LoadData(arg1:types.DataFacet):Promise<void>;
 
 export function NeedsUpdate(arg1:types.DataFacet):Promise<boolean>;
 

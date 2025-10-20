@@ -11,7 +11,7 @@ import (
 )
 
 // loadCurrentDressFromSidecars attempts to reconstruct a model.DalleDress from existing sidecar files
-// without triggering any generation. Returns nil if no relevant sidecars exist.
+// without triggering any creation. Returns nil if no relevant sidecars exist.
 func loadCurrentDressFromSidecars(series, address string) *model.DalleDress {
 	if address == "" || series == "" {
 		return nil

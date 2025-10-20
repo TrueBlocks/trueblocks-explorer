@@ -57,7 +57,7 @@ func (a *App) GetMonitorsSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadMonitors(payload *types.Payload) error {
 	collection := monitors.GetMonitorsCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

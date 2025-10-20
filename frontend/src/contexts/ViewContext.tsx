@@ -66,6 +66,10 @@ export interface ViewPaginationState {
   [key: string]: PaginationState;
 }
 
+export interface ViewNavigationState {
+  [key: string]: types.NavigationPayload | null;
+}
+
 // Create stable reference for initial state to prevent new object creation
 export const initialPaginationState: PaginationState = Object.freeze({
   currentPage: 0,
@@ -88,6 +92,13 @@ interface ViewContextType {
   ) => void;
   getFiltering: (viewStateKey: project.ViewStateKey) => string;
   updateFiltering: (viewStateKey: project.ViewStateKey, filter: string) => void;
+  getPendingNavigation: (
+    viewStateKey: project.ViewStateKey,
+  ) => types.NavigationPayload | null;
+  setPendingNavigation: (
+    viewStateKey: project.ViewStateKey,
+    navigation: types.NavigationPayload | null,
+  ) => void;
   restoreProjectFilterStates: () => Promise<void>;
 }
 
@@ -100,6 +111,8 @@ export const ViewContext = createContext<ViewContextType>({
   updateSorting: () => {},
   getFiltering: () => '',
   updateFiltering: () => {},
+  getPendingNavigation: () => null,
+  setPendingNavigation: () => {},
   restoreProjectFilterStates: async () => {},
 });
 
@@ -108,6 +121,7 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
   const [viewPagination, setViewPagination] = useState<ViewPaginationState>({});
   const [viewSorting, setViewSorting] = useState<ViewSortState>({});
   const [viewFiltering, setViewFiltering] = useState<ViewFilterState>({});
+  const [viewNavigation, setViewNavigation] = useState<ViewNavigationState>({});
 
   const getPagination = useCallback(
     (viewStateKey: project.ViewStateKey) => {
@@ -236,6 +250,28 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
+  const getPendingNavigation = useCallback(
+    (viewStateKey: project.ViewStateKey) => {
+      const key = viewStateKeyToString(viewStateKey);
+      return viewNavigation[key] || null;
+    },
+    [viewNavigation],
+  );
+
+  const setPendingNavigation = useCallback(
+    (
+      viewStateKey: project.ViewStateKey,
+      navigation: types.NavigationPayload | null,
+    ) => {
+      const key = viewStateKeyToString(viewStateKey);
+      setViewNavigation((prev) => ({
+        ...prev,
+        [key]: navigation,
+      }));
+    },
+    [],
+  );
+
   const restoreProjectFilterStates = useCallback(async () => {
     try {
       const viewNames = await GetRegisteredViews();
@@ -292,6 +328,8 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
       updateSorting,
       getFiltering,
       updateFiltering,
+      getPendingNavigation,
+      setPendingNavigation,
       restoreProjectFilterStates,
     }),
     [
@@ -303,6 +341,8 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
       updateSorting,
       getFiltering,
       updateFiltering,
+      getPendingNavigation,
+      setPendingNavigation,
       restoreProjectFilterStates,
     ],
   );

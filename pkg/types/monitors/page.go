@@ -21,12 +21,11 @@ import (
 
 // TODO: The slices should be slices to pointers
 type MonitorsPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Monitors      []Monitor       `json:"monitors"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Monitors      []Monitor        `json:"monitors"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -43,11 +42,7 @@ func (p *MonitorsPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *MonitorsPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *MonitorsPage) GetState() types.LoadState {
+func (p *MonitorsPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -84,10 +79,8 @@ func (c *MonitorsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("monitors", dataFacet, "GetPage", err)
 		} else {
-
 			page.Monitors, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("monitors", dataFacet, "GetPage",
@@ -122,7 +115,7 @@ func (c *MonitorsCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -148,7 +141,7 @@ func (c *MonitorsCollection) generateSummariesForPeriod(dataFacet types.DataFace
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

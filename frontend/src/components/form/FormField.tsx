@@ -43,6 +43,7 @@ export interface FormField<T = Record<string, unknown>> {
     | 'gas'
     | 'button'
     | 'wei'
+    | 'weish'
     | 'int256'
     | 'lognum'
     | 'txnum'

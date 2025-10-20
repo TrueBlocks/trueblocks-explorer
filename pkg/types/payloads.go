@@ -27,14 +27,14 @@ func (p *Payload) ShouldSummarize() bool {
 
 type DataLoadedPayload struct {
 	Payload
-	CurrentCount  int       `json:"currentCount"`
-	ExpectedTotal int       `json:"expectedTotal"`
-	State         LoadState `json:"state"`
-	Summary       Summary   `json:"summary"`
-	Error         string    `json:"error,omitempty"`
-	Timestamp     int64     `json:"timestamp"`
-	EventPhase    string    `json:"eventPhase"`
-	Operation     string    `json:"operation,omitempty"`
+	CurrentCount  int        `json:"currentCount"`
+	ExpectedTotal int        `json:"expectedTotal"`
+	State         StoreState `json:"state"`
+	Summary       Summary    `json:"summary"`
+	Error         string     `json:"error,omitempty"`
+	Timestamp     int64      `json:"timestamp"`
+	EventPhase    string     `json:"eventPhase"`
+	Operation     string     `json:"operation,omitempty"`
 }
 
 type ProjectPayload struct {
@@ -45,4 +45,10 @@ type ProjectPayload struct {
 	ActiveContract string               `json:"activeContract"`
 	LastView       string               `json:"lastView"`
 	LastFacetMap   map[string]DataFacet `json:"lastFacetMap"`
+}
+
+type NavigationPayload struct {
+	Payload
+	RecordId string `json:"recordId"` // Unique identifier for database lookup
+	RowIndex int    `json:"rowIndex"` // Calculated position in current table
 }

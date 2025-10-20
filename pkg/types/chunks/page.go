@@ -19,15 +19,14 @@ import (
 
 // EXISTING_CODE
 type ChunksPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Blooms        []*Bloom        `json:"blooms"`
-	Index         []*Index        `json:"index"`
-	Manifest      []*Manifest     `json:"manifest"`
-	Stats         []*Stats        `json:"stats"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Blooms        []*Bloom         `json:"blooms"`
+	Index         []*Index         `json:"index"`
+	Manifest      []*Manifest      `json:"manifest"`
+	Stats         []*Stats         `json:"stats"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -44,11 +43,7 @@ func (p *ChunksPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *ChunksPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *ChunksPage) GetState() types.LoadState {
+func (p *ChunksPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -91,7 +86,6 @@ func (c *ChunksCollection) GetPage(
 			}
 			page.Stats, page.TotalItems, page.State = stats, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksIndex:
 		facet := c.indexFacet
@@ -113,7 +107,6 @@ func (c *ChunksCollection) GetPage(
 			}
 			page.Index, page.TotalItems, page.State = index, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksBlooms:
 		facet := c.bloomsFacet
@@ -135,7 +128,6 @@ func (c *ChunksCollection) GetPage(
 			}
 			page.Blooms, page.TotalItems, page.State = bloom, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksManifest:
 		facet := c.manifestFacet
@@ -157,7 +149,6 @@ func (c *ChunksCollection) GetPage(
 			}
 			page.Manifest, page.TotalItems, page.State = manifest, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("chunks", dataFacet, "GetPage",
@@ -192,7 +183,7 @@ func (c *ChunksCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -218,7 +209,7 @@ func (c *ChunksCollection) generateSummariesForPeriod(dataFacet types.DataFacet,
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

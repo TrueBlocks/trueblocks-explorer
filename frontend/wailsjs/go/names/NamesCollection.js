@@ -14,6 +14,10 @@ export function ExportData(arg1) {
   return window['go']['names']['NamesCollection']['ExportData'](arg1);
 }
 
+export function FetchByFacet(arg1) {
+  return window['go']['names']['NamesCollection']['FetchByFacet'](arg1);
+}
+
 export function GetBuckets(arg1) {
   return window['go']['names']['NamesCollection']['GetBuckets'](arg1);
 }
@@ -36,14 +40,6 @@ export function GetSummary() {
 
 export function GetSupportedFacets() {
   return window['go']['names']['NamesCollection']['GetSupportedFacets']();
-}
-
-export function LoadData(arg1) {
-  return window['go']['names']['NamesCollection']['LoadData'](arg1);
-}
-
-export function NameFromAddress(arg1) {
-  return window['go']['names']['NamesCollection']['NameFromAddress'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

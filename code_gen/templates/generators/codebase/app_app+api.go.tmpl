@@ -54,7 +54,7 @@ func getCollection(payload *types.Payload, missingOk bool) types.Collection {
 	{{- end }}
 	default:
 		if !missingOk {
-			logging.LogBackend(fmt.Sprintf("Warning: Unknown collection type: %s", payload.Collection))
+			logging.LogBEWarning(fmt.Sprintf("Unknown collection type: %s", payload.Collection))
 		}
 		return nil
 	}

@@ -48,7 +48,7 @@ func (c *MonitorsCollection) Crud(
 		}
 		_, _, err = opts.Monitors()
 	default:
-		logging.LogBackend(fmt.Sprintf("Monitor operation %s not implemented for address: %s", op, monitor.Address))
+		logging.LogBEWarning(fmt.Sprintf("Monitor operation %s not implemented for address: %s", op, monitor.Address))
 		return fmt.Errorf("operation %s not yet implemented for Monitors", op)
 	}
 
@@ -65,13 +65,13 @@ func (c *MonitorsCollection) Crud(
 	switch op {
 	case crud.Remove:
 		msgs.EmitStatus(fmt.Sprintf("removed monitor for address: %s", monitor.Address))
-		logging.LogBackend(fmt.Sprintf("Removed monitor for address: %s", monitor.Address))
+		logging.LogBEWarning(fmt.Sprintf("Removed monitor for address: %s", monitor.Address))
 	case crud.Delete:
 		msgs.EmitStatus(fmt.Sprintf("deleted monitor for address: %s", monitor.Address))
-		logging.LogBackend(fmt.Sprintf("Deleted monitor for address: %s", monitor.Address))
+		logging.LogBEWarning(fmt.Sprintf("Deleted monitor for address: %s", monitor.Address))
 	case crud.Undelete:
 		msgs.EmitStatus(fmt.Sprintf("undeleted monitor for address: %s", monitor.Address))
-		logging.LogBackend(fmt.Sprintf("Undeleted monitor for address: %s", monitor.Address))
+		logging.LogBEWarning(fmt.Sprintf("Undeleted monitor for address: %s", monitor.Address))
 	}
 
 	return nil
@@ -104,7 +104,7 @@ func (c *MonitorsCollection) updateMonitorInData(data []*Monitor, monitor *Monit
 		}
 		return data
 	default:
-		logging.LogBackend(fmt.Sprintf("Monitor operation %s not implemented for address: %s", op, monitor.Address))
+		logging.LogBEWarning(fmt.Sprintf("Monitor operation %s not implemented for address: %s", op, monitor.Address))
 		return data
 	}
 }
@@ -126,12 +126,12 @@ func (c *MonitorsCollection) Clean(payload *types.Payload, addresses []string) e
 
 	if len(addresses) > 0 {
 		msgs.EmitStatus(fmt.Sprintf("cleaned %d monitor(s)", len(addresses)))
-		logging.LogBackend(fmt.Sprintf("Cleaned monitors for addresses: %v", addresses))
+		logging.LogBEWarning(fmt.Sprintf("Cleaned monitors for addresses: %v", addresses))
 	} else {
 		msgs.EmitStatus(fmt.Sprintf("cleaned all monitors, processed %d items", len(cleanResult)))
-		logging.LogBackend("Cleaned all monitors")
+		logging.LogBEWarning("Cleaned all monitors")
 	}
 
-	c.LoadData(MonitorsMonitors)
+	c.FetchByFacet(MonitorsMonitors)
 	return nil
 }

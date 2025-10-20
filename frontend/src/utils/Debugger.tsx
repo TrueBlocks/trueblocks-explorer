@@ -1,16 +1,39 @@
 import { ActionDefinition, useActiveProject } from '@hooks';
 import { usePreferences } from '@hooks';
+import { Badge, Group } from '@mantine/core';
+import { types } from '@models';
+
+import { StateDisplay } from './';
+
+const debuggerStyle = {
+  backgroundColor: 'var(--skin-surface-elevated)',
+  color: '#2e2e2e',
+  padding: '10px',
+  margin: '5px 0',
+  fontSize: '12px',
+  fontFamily: 'monospace',
+  border: '1px solid var(--skin-border-secondary)',
+  borderRadius: '4px',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+  fontWeight: 'bold',
+} as const;
 
 interface DebuggerProps {
+  facetName: string;
   rowActions: ActionDefinition[];
   headerActions: ActionDefinition[];
   count: number;
+  state: types.StoreState;
+  totalItems?: number;
 }
 
 export const Debugger: React.FC<DebuggerProps> = ({
   rowActions,
   headerActions,
   count,
+  facetName,
+  state,
+  totalItems,
 }) => {
   const { activeChain, activeAddress, activeContract } = useActiveProject();
   const { debugCollapsed, lastSkin, isDarkMode } = usePreferences();
@@ -20,22 +43,23 @@ export const Debugger: React.FC<DebuggerProps> = ({
 
   return (
     <>
-      <ActionDebugger rowActions={rowActions} headerActions={headerActions} />
-      <div
-        style={{
-          backgroundColor: 'var(--skin-surface-elevated)',
-          color: '#2e2e2e',
-          padding: '8px 12px',
-          margin: '5px 0',
-          fontSize: '12px',
-          fontFamily: 'monospace',
-          border: '1px solid var(--skin-primary)',
-          borderRadius: '4px',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-          display: 'inline-block',
-          fontWeight: 'bold',
-        }}
-      >
+      <Group style={{ display: 'flex', alignItems: 'flex-start' }}>
+        <div style={{ flexShrink: 0 }}>
+          <ActionDebugger
+            rowActions={rowActions}
+            headerActions={headerActions}
+          />
+        </div>
+        <div style={{ flex: 1, marginLeft: '10px' }}>
+          <StateDisplay
+            style={debuggerStyle}
+            facetName={facetName}
+            state={state}
+            totalItems={totalItems}
+          />
+        </div>
+      </Group>
+      <div style={debuggerStyle}>
         {`Renders: ${count} [${activeChain || 'N/A'}] [${activeAddress || 'N/A'}] [${activeContract || 'N/A'}] [${lastSkin || 'N/A'}] [${isDarkMode ? 'dark' : 'light'}]`}
       </div>
     </>
@@ -57,26 +81,9 @@ export const ActionDebugger: React.FC<ActionDebuggerProps> = ({
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--skin-surface-elevated)',
-        color: '#2e2e2e',
-        padding: '10px',
-        marginBottom: '10px',
-        fontSize: '13px',
-        fontFamily: 'monospace',
-        border: '1px solid var(--skin-border-secondary)',
-        borderRadius: '4px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <div>
-        <ActionsList prompt="Row Actions:" actions={rowActions} />{' '}
-        <ActionsList prompt="Header Actions:" actions={headerActions} />
-      </div>
+    <div style={debuggerStyle}>
+      <ActionsList prompt="Row Actions" actions={rowActions} />{' '}
+      <ActionsList prompt="Header Actions" actions={headerActions} />
     </div>
   );
 };
@@ -92,40 +99,28 @@ const ActionsList: React.FC<{
         <span style={{ color: '#2e2e2e', fontStyle: 'italic' }}>None</span>
       ) : (
         actions.map((action) => {
-          const actionTypeStyles: Record<
-            string,
-            { bgColor: string; textColor: string }
-          > = {
-            delete: { bgColor: '#e74c3c', textColor: 'white' },
-            remove: { bgColor: '#e74c3c', textColor: 'white' },
-            create: { bgColor: '#2ecc71', textColor: 'white' },
-            update: { bgColor: '#2ecc71', textColor: 'white' },
-            autoname: { bgColor: '#f39c12', textColor: 'white' },
-            publish: { bgColor: '#9b59b6', textColor: 'white' },
-            pin: { bgColor: '#9b59b6', textColor: 'white' },
+          const actionTypeColors: Record<string, string> = {
+            delete: 'red',
+            remove: 'red',
+            create: 'green',
+            update: 'green',
+            autoname: 'orange',
+            publish: 'grape',
+            pin: 'grape',
           };
 
-          const { bgColor, textColor } = actionTypeStyles[action.type] || {
-            bgColor: '#3498db',
-            textColor: '#2e2e2e',
-          };
+          const color = actionTypeColors[action.type] || 'blue';
 
           return (
-            <span
+            <Badge
               key={action.type}
-              style={{
-                display: 'inline-block',
-                backgroundColor: bgColor,
-                color: textColor,
-                padding: '3px 8px',
-                margin: '0 5px',
-                borderRadius: '3px',
-                fontWeight: 'bold',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-              }}
+              color={color}
+              variant="filled"
+              size="sm"
+              style={{ margin: '0 5px' }}
             >
               {action.type}
-            </span>
+            </Badge>
           );
         })
       )}

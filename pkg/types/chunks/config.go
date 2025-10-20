@@ -16,48 +16,45 @@ import (
 func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 	facets := map[string]types.FacetConfig{
 		"stats": {
-			Name:          "Stats",
-			Store:         "stats",
-			IsForm:        false,
-			DividerBefore: false,
-			Fields:        getStatsFields(),
-			Actions:       []string{},
-			HeaderActions: []string{"export"},
-			RendererTypes: "panel",
-			PanelConfig:   getStatsPanelConfig(),
+			Name:             "Stats",
+			Store:            "stats",
+			DividerBefore:    false,
+			Fields:           getStatsFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{"export"},
+			RendererTypes:    "panel",
+			PanelChartConfig: getStatsPanelConfig(),
 		},
 		"index": {
-			Name:          "Index",
-			Store:         "index",
-			IsForm:        false,
-			DividerBefore: false,
-			Fields:        getIndexFields(),
-			Actions:       []string{},
-			HeaderActions: []string{"export"},
-			RendererTypes: "panel",
-			PanelConfig:   getIndexPanelConfig(),
+			Name:             "Index",
+			Store:            "index",
+			DividerBefore:    false,
+			Fields:           getIndexFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{"export"},
+			RendererTypes:    "panel",
+			PanelChartConfig: getIndexPanelConfig(),
 		},
 		"blooms": {
-			Name:          "Blooms",
-			Store:         "blooms",
-			IsForm:        false,
-			DividerBefore: false,
-			Fields:        getBloomsFields(),
-			Actions:       []string{},
-			HeaderActions: []string{"export"},
-			RendererTypes: "panel",
-			PanelConfig:   getBloomsPanelConfig(),
+			Name:             "Blooms",
+			Store:            "blooms",
+			DividerBefore:    false,
+			Fields:           getBloomsFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{"export"},
+			RendererTypes:    "panel",
+			PanelChartConfig: getBloomsPanelConfig(),
 		},
 		"manifest": {
-			Name:          "Manifest",
-			Store:         "manifest",
-			IsForm:        true,
-			DividerBefore: false,
-			Fields:        getManifestFields(),
-			Actions:       []string{},
-			HeaderActions: []string{},
-			RendererTypes: "",
-			PanelConfig:   nil, // Form facet - no panel
+			Name:             "Manifest",
+			Store:            "manifest",
+			ViewType:         "canvas",
+			DividerBefore:    false,
+			Fields:           getManifestFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{},
+			RendererTypes:    "",
+			PanelChartConfig: getManifestPanelConfig(),
 		},
 	}
 
@@ -141,10 +138,8 @@ func getStatsFields() []types.FieldConfig {
 }
 
 // EXISTING_CODE
-// EXISTING_CODE
-
-func getStatsPanelConfig() *types.PanelConfig {
-	return &types.PanelConfig{
+func getStatsPanelConfig() *types.PanelChartConfig {
+	return &types.PanelChartConfig{
 		Type:          "barchart",
 		DefaultMetric: "ratio",
 		SkipUntil:     "2017",
@@ -153,84 +148,81 @@ func getStatsPanelConfig() *types.PanelConfig {
 			{
 				Key:          "ratio",
 				Label:        "Compressed",
-				BucketsField: "series0",
-				StatsField:   "series0Stats",
+				BucketsField: "ratio",
 				Bytes:        false,
 			},
 			{
 				Key:          "appsPerBlk",
 				Label:        "Apps per Block",
-				BucketsField: "series1",
-				StatsField:   "series1Stats",
+				BucketsField: "appsPerBlock",
 				Bytes:        false,
 			},
 			{
 				Key:          "addrsPerBlk",
 				Label:        "Addrs per Block",
-				BucketsField: "series2",
-				StatsField:   "series2Stats",
+				BucketsField: "addrsPerBlock",
 				Bytes:        false,
 			},
 			{
 				Key:          "appsPerAddr",
 				Label:        "Apps per Addr",
-				BucketsField: "series3",
-				StatsField:   "series3Stats",
+				BucketsField: "appsPerAddr",
 				Bytes:        false,
 			},
 		},
 	}
 }
 
-func getIndexPanelConfig() *types.PanelConfig {
-	return &types.PanelConfig{
+func getIndexPanelConfig() *types.PanelChartConfig {
+	return &types.PanelChartConfig{
 		Type:          "heatmap",
 		DefaultMetric: "nAddresses",
 		Metrics: []types.MetricConfig{
 			{
 				Key:          "nAddresses",
 				Label:        "Number of Addresses",
-				BucketsField: "series0",
-				StatsField:   "series0Stats",
+				BucketsField: "nAddresses",
 				Bytes:        false,
 			},
 			{
 				Key:          "nAppearances",
 				Label:        "Number of Appearances",
-				BucketsField: "series1",
-				StatsField:   "series1Stats",
+				BucketsField: "nAppearances",
 				Bytes:        false,
 			},
 			{
 				Key:          "fileSize",
 				Label:        "File Size",
-				BucketsField: "series2",
-				StatsField:   "series2Stats",
+				BucketsField: "fileSize",
 				Bytes:        true,
 			},
 		},
 	}
 }
 
-func getBloomsPanelConfig() *types.PanelConfig {
-	return &types.PanelConfig{
+func getBloomsPanelConfig() *types.PanelChartConfig {
+	return &types.PanelChartConfig{
 		Type:          "heatmap",
 		DefaultMetric: "nBlooms",
 		Metrics: []types.MetricConfig{
 			{
 				Key:          "nBlooms",
 				Label:        "Number of Blooms",
-				BucketsField: "series3",
-				StatsField:   "series3Stats",
+				BucketsField: "nBlooms",
 				Bytes:        false,
 			},
 			{
 				Key:          "fileSize",
 				Label:        "File Size",
-				BucketsField: "series2",
-				StatsField:   "series2Stats",
+				BucketsField: "fileSize",
 				Bytes:        true,
 			},
 		},
 	}
 }
+
+func getManifestPanelConfig() *types.PanelChartConfig {
+	return nil
+}
+
+// EXISTING_CODE

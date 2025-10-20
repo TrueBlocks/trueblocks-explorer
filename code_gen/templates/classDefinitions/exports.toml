@@ -11,67 +11,70 @@ disable_go = false
 name = "Statements"
 store = "Statements"
 actions = ["export"]
-viewType = ""
 renderer = "panel"
+needsCalcs = true
 
 [[facets]]
 name = "Balances"
 store = "Balances"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Transfers"
 store = "Transfers"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Transactions"
 store = "Transactions"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
-name = "Approvals"
-store = "Approvals"
+name = "OpenApprovals"
+store = "OpenApprovals"
 actions = ["export"]
-viewType = ""
 renderer = "panel"
 
 [[facets]]
-name = "Approves"
-store = "Approves"
+name = "ApprovalLogs"
+store = "ApprovalLogs"
 actions = ["export"]
-viewType = ""
+
+[[facets]]
+name = "ApprovalTxs"
+store = "ApprovalTxs"
+actions = ["export"]
 
 [[facets]]
 name = "Withdrawals"
 store = "Withdrawals"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Assets"
 store = "Assets"
 actions = ["export"]
-viewType = ""
+
+[[facets]]
+name = "AssetCharts"
+store = "Statements"
+actions = ["export"]
+renderer = "facet"
+viewType = "canvas"
+needsCalcs = true
 
 [[facets]]
 name = "Logs"
 store = "Logs"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Traces"
 store = "Traces"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Receipts"
 store = "Receipts"
 actions = ["export"]
-viewType = ""
 

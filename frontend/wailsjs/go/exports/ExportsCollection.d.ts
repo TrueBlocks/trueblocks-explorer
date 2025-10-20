@@ -3,6 +3,7 @@
 import {types} from '../models';
 import {crud} from '../models';
 import {sdk} from '../models';
+import {exports} from '../models';
 
 export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
@@ -10,19 +11,21 @@ export function Crud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<vo
 
 export function ExportData(arg1:types.Payload):Promise<string>;
 
+export function FetchByFacet(arg1:types.DataFacet):Promise<void>;
+
 export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetConfig():Promise<types.ViewConfig>;
 
 export function GetPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<types.Page>;
 
+export function GetPageForRecord(arg1:types.Payload,arg2:string,arg3:string,arg4:number,arg5:sdk.SortSpec,arg6:string):Promise<exports.ExportsPage>;
+
 export function GetStoreName(arg1:types.DataFacet,arg2:string,arg3:string):Promise<string>;
 
 export function GetSummary():Promise<types.Summary>;
 
 export function GetSupportedFacets():Promise<Array<types.DataFacet>>;
-
-export function LoadData(arg1:types.DataFacet):Promise<void>;
 
 export function NeedsUpdate(arg1:types.DataFacet):Promise<boolean>;
 

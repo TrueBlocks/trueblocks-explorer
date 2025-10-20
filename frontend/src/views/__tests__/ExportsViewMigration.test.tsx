@@ -185,7 +185,7 @@ describe('Exports View Migration Tests (useActiveFacet integration)', () => {
       ]);
     });
 
-    it('should handle ViewStateKey generation', () => {
+    it('should handle ViewStateKey creation', () => {
       mockLastFacetMap['exports'] = types.DataFacet.BALANCES;
 
       const { result } = renderHook(() =>

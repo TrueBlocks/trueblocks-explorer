@@ -21,13 +21,12 @@ import (
 
 // TODO: The slices should be slices to pointers
 type AbisPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Abis          []Abi           `json:"abis"`
-	Functions     []Function      `json:"functions"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Abis          []Abi            `json:"abis"`
+	Functions     []Function       `json:"functions"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -44,11 +43,7 @@ func (p *AbisPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *AbisPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *AbisPage) GetState() types.LoadState {
+func (p *AbisPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -85,10 +80,8 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-
 			page.Abis, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisKnown:
 		facet := c.knownFacet
@@ -104,10 +97,8 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-
 			page.Abis, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisFunctions:
 		facet := c.functionsFacet
@@ -123,10 +114,8 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-
 			page.Functions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisEvents:
 		facet := c.eventsFacet
@@ -142,10 +131,8 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-
 			page.Functions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("abis", dataFacet, "GetPage",
@@ -180,7 +167,7 @@ func (c *AbisCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -206,7 +193,7 @@ func (c *AbisCollection) generateSummariesForPeriod(dataFacet types.DataFacet, p
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

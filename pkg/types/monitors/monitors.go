@@ -64,7 +64,7 @@ func isDupMonitor() func(existing []*Monitor, newItem *Monitor) bool {
 	// EXISTING_CODE
 }
 
-func (c *MonitorsCollection) LoadData(dataFacet types.DataFacet) {
+func (c *MonitorsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -72,7 +72,7 @@ func (c *MonitorsCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case MonitorsMonitors:
-			if err := c.monitorsFacet.Load(); err != nil {
+			if err := c.monitorsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

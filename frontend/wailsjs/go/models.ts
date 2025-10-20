@@ -6,8 +6,7 @@ export namespace abis {
 	    functions: types.Function[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new AbisPage(source);
@@ -20,7 +19,6 @@ export namespace abis {
 	        this.functions = this.convertValues(source["functions"], types.Function);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -103,8 +101,7 @@ export namespace chunks {
 	    stats: types.ChunkStats[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new ChunksPage(source);
@@ -119,7 +116,6 @@ export namespace chunks {
 	        this.stats = this.convertValues(source["stats"], types.ChunkStats);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -230,8 +226,7 @@ export namespace comparitoor {
 	    transaction: AnnotatedTransaction[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	    chifra: AnnotatedTransaction[];
 	    chifraCount: number;
 	    etherscan: AnnotatedTransaction[];
@@ -255,7 +250,6 @@ export namespace comparitoor {
 	        this.transaction = this.convertValues(source["transaction"], AnnotatedTransaction);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	        this.chifra = this.convertValues(source["chifra"], AnnotatedTransaction);
 	        this.chifraCount = source["chifraCount"];
@@ -300,8 +294,7 @@ export namespace contracts {
 	    logs: types.Log[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new ContractsPage(source);
@@ -314,7 +307,6 @@ export namespace contracts {
 	        this.logs = this.convertValues(source["logs"], types.Log);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -413,8 +405,7 @@ export namespace dresses {
 	    series: dalle.Series[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new DressesPage(source);
@@ -429,7 +420,6 @@ export namespace dresses {
 	        this.series = this.convertValues(source["series"], dalle.Series);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -458,11 +448,12 @@ export namespace exports {
 	
 	export class ExportsPage {
 	    facet: types.DataFacet;
-	    approvals: types.Approval[];
-	    approves: types.Log[];
+	    approvallogs: types.Log[];
+	    approvaltxs: types.Transaction[];
 	    assets: types.Name[];
 	    balances: types.Token[];
 	    logs: types.Log[];
+	    openapprovals: types.Approval[];
 	    receipts: types.Receipt[];
 	    statements: types.Statement[];
 	    traces: types.Trace[];
@@ -471,8 +462,7 @@ export namespace exports {
 	    withdrawals: types.Withdrawal[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new ExportsPage(source);
@@ -481,11 +471,12 @@ export namespace exports {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.facet = source["facet"];
-	        this.approvals = this.convertValues(source["approvals"], types.Approval);
-	        this.approves = this.convertValues(source["approves"], types.Log);
+	        this.approvallogs = this.convertValues(source["approvallogs"], types.Log);
+	        this.approvaltxs = this.convertValues(source["approvaltxs"], types.Transaction);
 	        this.assets = this.convertValues(source["assets"], types.Name);
 	        this.balances = this.convertValues(source["balances"], types.Token);
 	        this.logs = this.convertValues(source["logs"], types.Log);
+	        this.openapprovals = this.convertValues(source["openapprovals"], types.Approval);
 	        this.receipts = this.convertValues(source["receipts"], types.Receipt);
 	        this.statements = this.convertValues(source["statements"], types.Statement);
 	        this.traces = this.convertValues(source["traces"], types.Trace);
@@ -494,7 +485,6 @@ export namespace exports {
 	        this.withdrawals = this.convertValues(source["withdrawals"], types.Withdrawal);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -746,8 +736,7 @@ export namespace monitors {
 	    monitors: types.Monitor[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new MonitorsPage(source);
@@ -759,7 +748,6 @@ export namespace monitors {
 	        this.monitors = this.convertValues(source["monitors"], types.Monitor);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -799,6 +787,7 @@ export namespace msgs {
 	    TAB_CYCLE = "hotkey:tab-cycle",
 	    IMAGES_CHANGED = "images:changed",
 	    PROJECT_OPENED = "project:opened",
+	    NAVIGATE_TO_ROW = "navigation:row",
 	}
 
 }
@@ -810,8 +799,7 @@ export namespace names {
 	    names: types.Name[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new NamesPage(source);
@@ -823,7 +811,6 @@ export namespace names {
 	        this.names = this.convertValues(source["names"], types.Name);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -884,6 +871,7 @@ export namespace preferences {
 	    recentProjects: string[];
 	    silencedDialogs: Record<string, boolean>;
 	    chunksMetrics?: Record<string, string>;
+	    exportsMetrics?: Record<string, string>;
 	    bounds?: Bounds;
 	
 	    static createFrom(source: any = {}) {
@@ -907,6 +895,7 @@ export namespace preferences {
 	        this.recentProjects = source["recentProjects"];
 	        this.silencedDialogs = source["silencedDialogs"];
 	        this.chunksMetrics = source["chunksMetrics"];
+	        this.exportsMetrics = source["exportsMetrics"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
 	    }
 	
@@ -1259,8 +1248,7 @@ export namespace status {
 	    status: types.Status[];
 	    totalItems: number;
 	    expectedTotal: number;
-	    isFetching: boolean;
-	    state: types.LoadState;
+	    state: types.StoreState;
 	
 	    static createFrom(source: any = {}) {
 	        return new StatusPage(source);
@@ -1274,7 +1262,6 @@ export namespace status {
 	        this.status = this.convertValues(source["status"], types.Status);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
-	        this.isFetching = source["isFetching"];
 	        this.state = source["state"];
 	    }
 	
@@ -1321,34 +1308,33 @@ export namespace types {
 	    SERIES = "series",
 	    DATABASES = "databases",
 	    GALLERY = "gallery",
-	    STATEMENTS = "statements",
-	    BALANCES = "balances",
-	    TRANSFERS = "transfers",
-	    TRANSACTIONS = "transactions",
-	    APPROVALS = "approvals",
-	    APPROVES = "approves",
-	    WITHDRAWALS = "withdrawals",
-	    ASSETS = "assets",
-	    LOGS = "logs",
-	    TRACES = "traces",
-	    RECEIPTS = "receipts",
 	    MONITORS = "monitors",
 	    ALL = "all",
 	    CUSTOM = "custom",
 	    PREFUND = "prefund",
 	    REGULAR = "regular",
 	    BADDRESS = "baddress",
+	    STATEMENTS = "statements",
+	    BALANCES = "balances",
+	    TRANSFERS = "transfers",
+	    TRANSACTIONS = "transactions",
+	    OPENAPPROVALS = "openapprovals",
+	    APPROVALLOGS = "approvallogs",
+	    APPROVALTXS = "approvaltxs",
+	    WITHDRAWALS = "withdrawals",
+	    ASSETS = "assets",
+	    ASSETCHARTS = "assetcharts",
+	    LOGS = "logs",
+	    TRACES = "traces",
+	    RECEIPTS = "receipts",
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
 	}
-	export enum LoadState {
+	export enum StoreState {
 	    STALE = "stale",
 	    FETCHING = "fetching",
-	    PARTIAL = "partial",
 	    LOADED = "loaded",
-	    PENDING = "pending",
-	    ERROR = "error",
 	}
 	export class AbiCalcs {
 	    name?: string;
@@ -1643,26 +1629,6 @@ export namespace types {
 	        this.colorValue = source["colorValue"];
 	    }
 	}
-	export class BucketStats {
-	    total: number;
-	    average: number;
-	    min: number;
-	    max: number;
-	    count: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new BucketStats(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.total = source["total"];
-	        this.average = source["average"];
-	        this.min = source["min"];
-	        this.max = source["max"];
-	        this.count = source["count"];
-	    }
-	}
 	export class GridInfo {
 	    rows: number;
 	    columns: number;
@@ -1683,15 +1649,81 @@ export namespace types {
 	        this.bucketCount = source["bucketCount"];
 	    }
 	}
+	export class NameCalcs {
+	
+	
+	    static createFrom(source: any = {}) {
+	        return new NameCalcs(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	
+	    }
+	}
+	export class Name {
+	    address: base.Address;
+	    decimals: number;
+	    deleted?: boolean;
+	    isContract?: boolean;
+	    isCustom?: boolean;
+	    isErc20?: boolean;
+	    isErc721?: boolean;
+	    isPrefund?: boolean;
+	    name: string;
+	    source: string;
+	    symbol: string;
+	    tags: string;
+	    // Go type: NameCalcs
+	    calcs?: any;
+	    // Go type: base
+	    prefund?: any;
+	    parts?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Name(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = this.convertValues(source["address"], base.Address);
+	        this.decimals = source["decimals"];
+	        this.deleted = source["deleted"];
+	        this.isContract = source["isContract"];
+	        this.isCustom = source["isCustom"];
+	        this.isErc20 = source["isErc20"];
+	        this.isErc721 = source["isErc721"];
+	        this.isPrefund = source["isPrefund"];
+	        this.name = source["name"];
+	        this.source = source["source"];
+	        this.symbol = source["symbol"];
+	        this.tags = source["tags"];
+	        this.calcs = this.convertValues(source["calcs"], null);
+	        this.prefund = this.convertValues(source["prefund"], null);
+	        this.parts = source["parts"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Buckets {
-	    series0: Bucket[];
-	    series0Stats: BucketStats;
-	    series1: Bucket[];
-	    series1Stats: BucketStats;
-	    series2: Bucket[];
-	    series2Stats: BucketStats;
-	    series3: Bucket[];
-	    series3Stats: BucketStats;
+	    series: Record<string, Array<Bucket>>;
+	    assetNames?: Record<string, Name>;
 	    gridInfo: GridInfo;
 	
 	    static createFrom(source: any = {}) {
@@ -1700,14 +1732,8 @@ export namespace types {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.series0 = this.convertValues(source["series0"], Bucket);
-	        this.series0Stats = this.convertValues(source["series0Stats"], BucketStats);
-	        this.series1 = this.convertValues(source["series1"], Bucket);
-	        this.series1Stats = this.convertValues(source["series1Stats"], BucketStats);
-	        this.series2 = this.convertValues(source["series2"], Bucket);
-	        this.series2Stats = this.convertValues(source["series2Stats"], BucketStats);
-	        this.series3 = this.convertValues(source["series3"], Bucket);
-	        this.series3Stats = this.convertValues(source["series3Stats"], BucketStats);
+	        this.series = this.convertValues(source["series"], Array<Bucket>, true);
+	        this.assetNames = this.convertValues(source["assetNames"], Name, true);
 	        this.gridInfo = this.convertValues(source["gridInfo"], GridInfo);
 	    }
 	
@@ -2305,11 +2331,24 @@ export namespace types {
 		    return a;
 		}
 	}
+	export class FacetChartConfig {
+	    seriesStrategy?: string;
+	    seriesPrefixLen?: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new FacetChartConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.seriesStrategy = source["seriesStrategy"];
+	        this.seriesPrefixLen = source["seriesPrefixLen"];
+	    }
+	}
 	export class MetricConfig {
 	    key: string;
 	    label: string;
 	    bucketsField: string;
-	    statsField: string;
 	    bytes: boolean;
 	
 	    static createFrom(source: any = {}) {
@@ -2321,11 +2360,10 @@ export namespace types {
 	        this.key = source["key"];
 	        this.label = source["label"];
 	        this.bucketsField = source["bucketsField"];
-	        this.statsField = source["statsField"];
 	        this.bytes = source["bytes"];
 	    }
 	}
-	export class PanelConfig {
+	export class PanelChartConfig {
 	    type: string;
 	    defaultMetric: string;
 	    skipUntil?: string;
@@ -2333,7 +2371,7 @@ export namespace types {
 	    metrics: MetricConfig[];
 	
 	    static createFrom(source: any = {}) {
-	        return new PanelConfig(source);
+	        return new PanelChartConfig(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -2392,7 +2430,7 @@ export namespace types {
 	export class FacetConfig {
 	    name: string;
 	    store: string;
-	    isForm: boolean;
+	    viewType?: string;
 	    dividerBefore: boolean;
 	    disabled: boolean;
 	    fields: FieldConfig[];
@@ -2401,7 +2439,8 @@ export namespace types {
 	    actions: string[];
 	    headerActions: string[];
 	    rendererTypes: string;
-	    panelConfig?: PanelConfig;
+	    panelChartConfig?: PanelChartConfig;
+	    facetChartConfig?: FacetChartConfig;
 	
 	    static createFrom(source: any = {}) {
 	        return new FacetConfig(source);
@@ -2411,7 +2450,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.name = source["name"];
 	        this.store = source["store"];
-	        this.isForm = source["isForm"];
+	        this.viewType = source["viewType"];
 	        this.dividerBefore = source["dividerBefore"];
 	        this.disabled = source["disabled"];
 	        this.fields = this.convertValues(source["fields"], FieldConfig);
@@ -2420,7 +2459,8 @@ export namespace types {
 	        this.actions = source["actions"];
 	        this.headerActions = source["headerActions"];
 	        this.rendererTypes = source["rendererTypes"];
-	        this.panelConfig = this.convertValues(source["panelConfig"], PanelConfig);
+	        this.panelChartConfig = this.convertValues(source["panelChartConfig"], PanelChartConfig);
+	        this.facetChartConfig = this.convertValues(source["facetChartConfig"], FacetChartConfig);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2704,77 +2744,34 @@ export namespace types {
 		}
 	}
 	
-	export class NameCalcs {
 	
+	export class NavigationPayload {
+	    collection: string;
+	    dataFacet: DataFacet;
+	    chain?: string;
+	    address?: string;
+	    period?: string;
+	    format?: string;
+	    projectPath?: string;
+	    recordId: string;
+	    rowIndex: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new NameCalcs(source);
+	        return new NavigationPayload(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	
+	        this.collection = source["collection"];
+	        this.dataFacet = source["dataFacet"];
+	        this.chain = source["chain"];
+	        this.address = source["address"];
+	        this.period = source["period"];
+	        this.format = source["format"];
+	        this.projectPath = source["projectPath"];
+	        this.recordId = source["recordId"];
+	        this.rowIndex = source["rowIndex"];
 	    }
-	}
-	export class Name {
-	    address: base.Address;
-	    decimals: number;
-	    deleted?: boolean;
-	    isContract?: boolean;
-	    isCustom?: boolean;
-	    isErc20?: boolean;
-	    isErc721?: boolean;
-	    isPrefund?: boolean;
-	    name: string;
-	    source: string;
-	    symbol: string;
-	    tags: string;
-	    // Go type: NameCalcs
-	    calcs?: any;
-	    // Go type: base
-	    prefund?: any;
-	    parts?: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new Name(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.address = this.convertValues(source["address"], base.Address);
-	        this.decimals = source["decimals"];
-	        this.deleted = source["deleted"];
-	        this.isContract = source["isContract"];
-	        this.isCustom = source["isCustom"];
-	        this.isErc20 = source["isErc20"];
-	        this.isErc721 = source["isErc721"];
-	        this.isPrefund = source["isPrefund"];
-	        this.name = source["name"];
-	        this.source = source["source"];
-	        this.symbol = source["symbol"];
-	        this.tags = source["tags"];
-	        this.calcs = this.convertValues(source["calcs"], null);
-	        this.prefund = this.convertValues(source["prefund"], null);
-	        this.parts = source["parts"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 	
 	

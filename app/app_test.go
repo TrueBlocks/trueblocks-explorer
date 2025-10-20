@@ -339,7 +339,7 @@ func (m MockCollection) GetPage(payload *types.Payload, first, pageSize int, sor
 	return nil, nil
 }
 
-func (m MockCollection) LoadData(facet types.DataFacet) {}
+func (m MockCollection) FetchByFacet(facet types.DataFacet) {}
 
 func (m MockCollection) Reset(facet types.DataFacet) {}
 

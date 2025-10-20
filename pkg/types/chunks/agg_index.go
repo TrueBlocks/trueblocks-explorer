@@ -19,24 +19,28 @@ func (c *ChunksCollection) updateIndexBucket(index *Index) {
 		size := bucket.GridInfo.Size
 		lastBucketIndex := int(lastBlock / size)
 
-		// Ensure we have enough buckets
-		ensureBucketsExist(&bucket.Series0, lastBucketIndex, size)
-		ensureBucketsExist(&bucket.Series1, lastBucketIndex, size)
-		ensureBucketsExist(&bucket.Series2, lastBucketIndex, size)
+		// Define index metrics and their values
+		metrics := map[string]float64{
+			"nAddresses":   float64(index.NAddresses),
+			"nAppearances": float64(index.NAppearances),
+			"fileSize":     float64(index.FileSize),
+		}
 
-		// Distribute items across all affected buckets
-		distributeToBuckets(&bucket.Series0, firstBlock, lastBlock, float64(index.NAddresses), size)
-		distributeToBuckets(&bucket.Series1, firstBlock, lastBlock, float64(index.NAppearances), size)
-		distributeToBuckets(&bucket.Series2, firstBlock, lastBlock, float64(index.FileSize), size)
+		// Process each metric using the flexible series structure
+		maxBuckets := 0
+		for seriesName, value := range metrics {
+			bucket.EnsureSeriesExists(seriesName)
+			series := bucket.GetSeries(seriesName)
+			ensureBucketsExist(&series, lastBucketIndex, size)
+			distributeToBuckets(&series, firstBlock, lastBlock, value, size)
+			bucket.SetSeries(seriesName, series)
+
+			if len(series) > maxBuckets {
+				maxBuckets = len(series)
+			}
+		}
 
 		// Update grid info
-		maxBuckets := len(bucket.Series0)
-		if len(bucket.Series1) > maxBuckets {
-			maxBuckets = len(bucket.Series1)
-		}
-		if len(bucket.Series2) > maxBuckets {
-			maxBuckets = len(bucket.Series2)
-		}
 		updateGridInfo(&bucket.GridInfo, maxBuckets, lastBlock)
 	})
 }

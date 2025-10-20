@@ -19,13 +19,12 @@ import (
 
 // EXISTING_CODE
 type ContractsPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Contracts     []*Contract     `json:"contracts"`
-	Logs          []*Log          `json:"logs"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Contracts     []*Contract      `json:"contracts"`
+	Logs          []*Log           `json:"logs"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -42,11 +41,7 @@ func (p *ContractsPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *ContractsPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *ContractsPage) GetState() types.LoadState {
+func (p *ContractsPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -89,7 +84,6 @@ func (c *ContractsCollection) GetPage(
 			}
 			page.Contracts, page.TotalItems, page.State = dashboard, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ContractsExecute:
 		facet := c.executeFacet
@@ -111,7 +105,6 @@ func (c *ContractsCollection) GetPage(
 			}
 			page.Contracts, page.TotalItems, page.State = execute, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ContractsEvents:
 		facet := c.eventsFacet
@@ -133,7 +126,6 @@ func (c *ContractsCollection) GetPage(
 			}
 			page.Logs, page.TotalItems, page.State = event, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("contracts", dataFacet, "GetPage",
@@ -168,7 +160,7 @@ func (c *ContractsCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -194,7 +186,7 @@ func (c *ContractsCollection) generateSummariesForPeriod(dataFacet types.DataFac
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

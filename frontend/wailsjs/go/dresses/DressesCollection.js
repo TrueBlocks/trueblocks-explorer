@@ -14,6 +14,10 @@ export function ExportData(arg1) {
   return window['go']['dresses']['DressesCollection']['ExportData'](arg1);
 }
 
+export function FetchByFacet(arg1) {
+  return window['go']['dresses']['DressesCollection']['FetchByFacet'](arg1);
+}
+
 export function GetBuckets(arg1) {
   return window['go']['dresses']['DressesCollection']['GetBuckets'](arg1);
 }
@@ -36,10 +40,6 @@ export function GetSummary() {
 
 export function GetSupportedFacets() {
   return window['go']['dresses']['DressesCollection']['GetSupportedFacets']();
-}
-
-export function LoadData(arg1) {
-  return window['go']['dresses']['DressesCollection']['LoadData'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

@@ -77,7 +77,7 @@ func TestStoreWithSummary(t *testing.T) {
 	}
 
 	// Note: Summary data is only populated when the backend explicitly calls Add() or AddBalance()
-	// with specific periods during summary generation. AddItem() only stores the raw data.
+	// with specific periods during summary creation. AddItem() only stores the raw data.
 	// To test summaries, we need to manually add them to the summary manager
 	sm := store.GetSummaryManager()
 	sm.Add([]*TestItem{item1, item2}, types.PeriodDaily)

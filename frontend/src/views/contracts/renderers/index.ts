@@ -1,1 +1,0 @@
-export { renderers } from './Renderers';

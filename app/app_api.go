@@ -11,6 +11,7 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
@@ -99,7 +100,7 @@ func getCollection(payload *types.Payload, missingOk bool) types.Collection {
 		return comparitoor.GetComparitoorCollection(payload)
 	default:
 		if !missingOk {
-			logging.LogBackend(fmt.Sprintf("Warning: Unknown collection type: %s", payload.Collection))
+			logging.LogBEWarning(fmt.Sprintf("Unknown collection type: %s", payload.Collection))
 		}
 		return nil
 	}
@@ -122,4 +123,11 @@ func (a *App) IsDisabled(viewName string) bool {
 }
 
 // EXISTING_CODE
+// NavigateToRow triggers navigation to a specific row in a facet by record ID
+func (a *App) NavigateToRow(payload *types.NavigationPayload) {
+	// For now, convert recordId directly to rowIndex (will be replaced with database search later)
+	payload.RowIndex, _ = strconv.Atoi(payload.RecordId)
+	msgs.EmitNavigateToRow(payload)
+}
+
 // EXISTING_CODE

@@ -13,23 +13,22 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
 	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
 type DressesPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	DalleDress    []*DalleDress   `json:"dalledress"`
-	Databases     []*Database     `json:"databases"`
-	Logs          []*Log          `json:"logs"`
-	Series        []*Series       `json:"series"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	DalleDress    []*DalleDress    `json:"dalledress"`
+	Databases     []*Database      `json:"databases"`
+	Logs          []*Log           `json:"logs"`
+	Series        []*Series        `json:"series"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -46,11 +45,7 @@ func (p *DressesPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *DressesPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *DressesPage) GetState() types.LoadState {
+func (p *DressesPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -112,7 +107,6 @@ func (c *DressesCollection) GetPage(
 			}
 			page.DalleDress, page.TotalItems, page.State = generator, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesSeries:
 		facet := c.seriesFacet
@@ -134,7 +128,6 @@ func (c *DressesCollection) GetPage(
 			}
 			page.Series, page.TotalItems, page.State = series, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesDatabases:
 		facet := c.databasesFacet
@@ -156,7 +149,6 @@ func (c *DressesCollection) GetPage(
 			}
 			page.Databases, page.TotalItems, page.State = database, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesEvents:
 		facet := c.eventsFacet
@@ -178,7 +170,6 @@ func (c *DressesCollection) GetPage(
 			}
 			page.Logs, page.TotalItems, page.State = event, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesGallery:
 		facet := c.galleryFacet
@@ -211,7 +202,6 @@ func (c *DressesCollection) GetPage(
 			}
 			page.DalleDress, page.TotalItems, page.State = gallery, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("dresses", dataFacet, "GetPage",
@@ -246,7 +236,7 @@ func (c *DressesCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -272,7 +262,7 @@ func (c *DressesCollection) generateSummariesForPeriod(dataFacet types.DataFacet
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

@@ -21,9 +21,11 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
-type Approval = sdk.Approval
-type Approve = sdk.Log
+type OpenApproval = sdk.Approval
+type ApprovalLog = sdk.Log
+type ApprovalTx = sdk.Transaction
 type Asset = sdk.Asset
+type Assetchart = sdk.Statement
 type Balance = sdk.Balance
 type Log = sdk.Log
 type Receipt = sdk.Receipt
@@ -36,11 +38,11 @@ type Withdrawal = sdk.Withdrawal
 // EXISTING_CODE
 
 var (
-	approvalsStore   = make(map[string]*store.Store[Approval])
-	approvalsStoreMu sync.Mutex
+	approvallogsStore   = make(map[string]*store.Store[ApprovalLog])
+	approvallogsStoreMu sync.Mutex
 
-	approvesStore   = make(map[string]*store.Store[Approve])
-	approvesStoreMu sync.Mutex
+	approvaltxsStore   = make(map[string]*store.Store[ApprovalTx])
+	approvaltxsStoreMu sync.Mutex
 
 	assetsStore   = make(map[string]*store.Store[Asset])
 	assetsStoreMu sync.Mutex
@@ -50,6 +52,9 @@ var (
 
 	logsStore   = make(map[string]*store.Store[Log])
 	logsStoreMu sync.Mutex
+
+	openapprovalsStore   = make(map[string]*store.Store[OpenApproval])
+	openapprovalsStoreMu sync.Mutex
 
 	receiptsStore   = make(map[string]*store.Store[Receipt])
 	receiptsStoreMu sync.Mutex
@@ -70,9 +75,9 @@ var (
 	withdrawalsStoreMu sync.Mutex
 )
 
-func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Approval] {
-	approvalsStoreMu.Lock()
-	defer approvalsStoreMu.Unlock()
+func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet types.DataFacet) *store.Store[ApprovalLog] {
+	approvallogsStoreMu.Lock()
+	defer approvallogsStoreMu.Unlock()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -80,33 +85,41 @@ func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet type
 	chain := payload.Chain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
-	theStore := approvalsStore[storeKey]
+	theStore := approvallogsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			tokensOpts := sdk.TokensOptions{
+			exportOpts := sdk.ExportOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
 				RenderCtx: ctx,
 				Addrs:     []string{address},
-				NoZero:    true,
+				// Articulate: true,
 			}
-			if _, _, err := tokensOpts.TokensApprovals(); err != nil {
-				wrappedErr := types.NewSDKError("exports", ExportsApprovals, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports approvals SDK query error: %v", wrappedErr))
+			if _, _, err := exportOpts.ExportApprovals(); err != nil {
+				wrappedErr := types.NewSDKError("exports", ExportsApprovalLogs, "fetch", err)
 				return wrappedErr
 			}
 			// EXISTING_CODE
 			return nil
 		}
 
-		processFunc := func(item interface{}) *Approval {
-			if it, ok := item.(*Approval); ok {
+		processFunc := func(item interface{}) *ApprovalLog {
+			// EXISTING_CODE
+			if tx, ok := item.(*sdk.Transaction); ok {
+				for _, log := range tx.Receipt.Logs {
+					if len(log.Topics) > 0 {
+						return (*ApprovalLog)(&log)
+					}
+				}
+			}
+			// EXISTING_CODE
+			if it, ok := item.(*ApprovalLog); ok {
 				return it
 			}
 			return nil
 		}
 
-		mappingFunc := func(item *Approval) (key interface{}, includeInMap bool) {
+		mappingFunc := func(item *ApprovalLog) (key interface{}, includeInMap bool) {
 			// EXISTING_CODE
 			// EXISTING_CODE
 			return nil, false
@@ -118,15 +131,15 @@ func (c *ExportsCollection) getApprovalsStore(payload *types.Payload, facet type
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		approvalsStore[storeKey] = theStore
+		approvallogsStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
-func (c *ExportsCollection) getApprovesStore(payload *types.Payload, facet types.DataFacet) *store.Store[Approve] {
-	approvesStoreMu.Lock()
-	defer approvesStoreMu.Unlock()
+func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet types.DataFacet) *store.Store[ApprovalTx] {
+	approvaltxsStoreMu.Lock()
+	defer approvaltxsStoreMu.Unlock()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -134,32 +147,34 @@ func (c *ExportsCollection) getApprovesStore(payload *types.Payload, facet types
 	chain := payload.Chain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
-	theStore := approvesStore[storeKey]
+	theStore := approvaltxsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
-				RenderCtx:  ctx,
-				Addrs:      []string{address},
-				Articulate: true,
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				RenderCtx: ctx,
+				Addrs:     []string{address},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportApprovals(); err != nil {
-				wrappedErr := types.NewSDKError("exports", ExportsApproves, "fetch", err)
+				wrappedErr := types.NewSDKError("exports", ExportsApprovalTxs, "fetch", err)
 				return wrappedErr
 			}
 			// EXISTING_CODE
 			return nil
 		}
 
-		processFunc := func(item interface{}) *Approve {
-			if it, ok := item.(*Approve); ok {
+		processFunc := func(item interface{}) *ApprovalTx {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			if it, ok := item.(*ApprovalTx); ok {
 				return it
 			}
 			return nil
 		}
 
-		mappingFunc := func(item *Approve) (key interface{}, includeInMap bool) {
+		mappingFunc := func(item *ApprovalTx) (key interface{}, includeInMap bool) {
 			// EXISTING_CODE
 			// EXISTING_CODE
 			return nil, false
@@ -171,7 +186,7 @@ func (c *ExportsCollection) getApprovesStore(payload *types.Payload, facet types
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		approvesStore[storeKey] = theStore
+		approvaltxsStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -198,7 +213,7 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 			}
 			if _, _, err := exportOpts.ExportAssets(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsAssets, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports assets SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports assets SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -206,6 +221,8 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Asset {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Asset); ok {
 				return it
 			}
@@ -251,7 +268,7 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 			}
 			if _, _, err := exportOpts.ExportBalances(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsBalances, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports balances SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports balances SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -259,6 +276,8 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 		}
 
 		processFunc := func(item interface{}) *Balance {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Balance); ok {
 				return it
 			}
@@ -305,7 +324,7 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsLogs, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -313,6 +332,8 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 		}
 
 		processFunc := func(item interface{}) *Log {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Log); ok {
 				return it
 			}
@@ -337,6 +358,62 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	return theStore
 }
 
+func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet types.DataFacet) *store.Store[OpenApproval] {
+	openapprovalsStoreMu.Lock()
+	defer openapprovalsStoreMu.Unlock()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	chain := payload.Chain
+	address := payload.Address
+	storeKey := getStoreKey(chain, address)
+	theStore := openapprovalsStore[storeKey]
+	if theStore == nil {
+		queryFunc := func(ctx *output.RenderCtx) error {
+			// EXISTING_CODE
+			tokensOpts := sdk.TokensOptions{
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				RenderCtx: ctx,
+				Addrs:     []string{address},
+				NoZero:    true,
+			}
+			if _, _, err := tokensOpts.TokensApprovals(); err != nil {
+				wrappedErr := types.NewSDKError("exports", ExportsOpenApprovals, "fetch", err)
+				logging.LogBEWarning(fmt.Sprintf("Exports openapprovals SDK query error: %v", wrappedErr))
+				return wrappedErr
+			}
+			// EXISTING_CODE
+			return nil
+		}
+
+		processFunc := func(item interface{}) *OpenApproval {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			if it, ok := item.(*OpenApproval); ok {
+				return it
+			}
+			return nil
+		}
+
+		mappingFunc := func(item *OpenApproval) (key interface{}, includeInMap bool) {
+			// EXISTING_CODE
+			// EXISTING_CODE
+			return nil, false
+		}
+
+		storeName := c.GetStoreName(facet, chain, address)
+		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+
+		openapprovalsStore[storeKey] = theStore
+	}
+
+	return theStore
+}
+
 func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Receipt] {
 	receiptsStoreMu.Lock()
 	defer receiptsStoreMu.Unlock()
@@ -355,10 +432,11 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
 				RenderCtx: ctx,
 				Addrs:     []string{address},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportReceipts(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsReceipts, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports receipts SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports receipts SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -366,6 +444,8 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 		}
 
 		processFunc := func(item interface{}) *Receipt {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Receipt); ok {
 				return it
 			}
@@ -412,7 +492,7 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 			}
 			if _, _, err := exportOpts.ExportStatements(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsStatements, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports statements SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports statements SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -420,7 +500,10 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 		}
 
 		processFunc := func(item interface{}) *Statement {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Statement); ok {
+				c.updateAssetChartsBucket(it)
 				return it
 			}
 			return nil
@@ -462,10 +545,11 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
 				RenderCtx: ctx,
 				Addrs:     []string{address},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportTraces(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTraces, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports traces SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports traces SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -473,6 +557,8 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Trace {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Trace); ok {
 				return it
 			}
@@ -518,7 +604,7 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 			}
 			if _, _, err := exportOpts.Export(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransactions, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports transactions SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports transactions SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -526,6 +612,8 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 		}
 
 		processFunc := func(item interface{}) *Transaction {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Transaction); ok {
 				return it
 			}
@@ -572,7 +660,7 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 			}
 			if _, _, err := exportOpts.ExportTransfers(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransfers, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -580,6 +668,8 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 		}
 
 		processFunc := func(item interface{}) *Transfer {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Transfer); ok {
 				return it
 			}
@@ -625,7 +715,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 			}
 			if _, _, err := exportOpts.ExportWithdrawals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransfers, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -633,6 +723,8 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 		}
 
 		processFunc := func(item interface{}) *Withdrawal {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Withdrawal); ok {
 				return it
 			}
@@ -668,14 +760,18 @@ func (c *ExportsCollection) GetStoreName(dataFacet types.DataFacet, chain, addre
 		name = "exports-transfers"
 	case ExportsTransactions:
 		name = "exports-transactions"
-	case ExportsApprovals:
-		name = "exports-approvals"
-	case ExportsApproves:
-		name = "exports-approves"
+	case ExportsOpenApprovals:
+		name = "exports-openapprovals"
+	case ExportsApprovalLogs:
+		name = "exports-approvallogs"
+	case ExportsApprovalTxs:
+		name = "exports-approvaltxs"
 	case ExportsWithdrawals:
 		name = "exports-withdrawals"
 	case ExportsAssets:
 		name = "exports-assets"
+	case ExportsAssetCharts:
+		name = "exports-statements"
 	case ExportsLogs:
 		name = "exports-logs"
 	case ExportsTraces:

@@ -18,7 +18,6 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 		"monitors": {
 			Name:          "Monitors",
 			Store:         "monitors",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getMonitorsFields(),
 			Actions:       []string{"delete", "remove"},

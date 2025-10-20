@@ -101,7 +101,7 @@ func TestMonitorsCollectionDomainSpecific(t *testing.T) {
 // - "LoadDataMemoryManagement": Verifies that repeated LoadData calls do not cause memory issues and collection remains functional.
 //
 // TestMonitorsCollectionAdvancedAsync
-// - "StateTransitionVerification": Checks that state transitions (including IsFetching and State field) occur correctly during async loading.
+// - "StateTransitionVerification": Checks that state transitions (including Is Fetching and State field) occur correctly during async loading.
 // - "ConcurrentLoadDataSafety": Ensures multiple goroutines calling LoadData concurrently do not panic and collection remains functional.
 // - "LoadDataErrorScenarios": Validates that LoadData with invalid facet names does not panic and returns quickly.
 // - "LoadDataMemoryAndResourceManagement": Confirms that rapid repeated LoadData calls do not cause resource issues and collection remains responsive.

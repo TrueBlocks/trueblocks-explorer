@@ -55,7 +55,7 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 			if _, _, err := listOpts.AbisList(); err != nil {
 				// Create structured error with proper context
 				wrappedErr := types.NewSDKError("abis", AbisDownloaded, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Abis SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Abis SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -63,6 +63,8 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 		}
 
 		processFunc := func(item interface{}) *Abi {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Abi); ok {
 				return it
 			}
@@ -107,7 +109,7 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 			if _, _, err := detailOpts.AbisDetails(); err != nil {
 				// Create structured error with proper context
 				wrappedErr := types.NewSDKError("abis", AbisFunctions, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Abis detail SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Abis detail SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -115,6 +117,8 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Function {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Function); ok {
 				return it
 			}

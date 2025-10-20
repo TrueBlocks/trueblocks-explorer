@@ -1,4 +1,5 @@
 export * from './Debugger';
+export * from './StateDisplay';
 export * from './addresses';
 export * from './clipboard';
 export * from './debugLayout';

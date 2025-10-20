@@ -1,29 +1,20 @@
 package store
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 )
 
-type StoreState int
-
-const (
-	StateStale    StoreState = iota // Needs refresh
-	StateFetching                   // Currently loading
-	StateLoaded                     // Complete data
-	StateError                      // Error occurred
-	StateCanceled                   // User canceled
-)
-
 type FacetObserver[T any] interface {
 	OnNewItem(item *T, index int)
-	OnStateChanged(state StoreState, reason string)
+	OnStateChanged(state types.StoreState, reason string)
 }
 
 type MappingFunc[T any] func(item *T) (key interface{}, includeInMap bool)
@@ -37,15 +28,12 @@ type Store[T any] struct {
 	mappingFunc        MappingFunc[T]
 	dataMap            *map[interface{}]*T
 	contextKey         string // Key for ContextManager
-	state              StoreState
+	state              types.StoreState
 	stateReason        string
 	expectedTotalItems atomic.Int64
-	dataGeneration     atomic.Uint64
 	summaryManager     *SummaryManager[T] // Manages aggregated summary data
 	mutex              sync.RWMutex
 }
-
-var ErrStaleFetch = errors.New("stale fetch: store was reset")
 
 // NewStore creates a new SDK-based store
 func NewStore[T any](
@@ -61,7 +49,7 @@ func NewStore[T any](
 		processFunc:    processFunc,
 		mappingFunc:    mappingFunc,
 		contextKey:     contextKey,
-		state:          StateStale,
+		state:          types.StateStale,
 		summaryManager: NewSummaryManager[T](),
 	}
 	if mappingFunc != nil {
@@ -69,7 +57,6 @@ func NewStore[T any](
 		s.dataMap = &tempMap
 	}
 	s.expectedTotalItems.Store(0)
-	s.dataGeneration.Store(0)
 	return s
 }
 
@@ -104,14 +91,8 @@ func (s *Store[T]) UnregisterObserver(observer FacetObserver[T]) {
 	}
 }
 
-func (s *Store[T]) ChangeState(expectedGeneration uint64, newState StoreState, reason string) {
+func (s *Store[T]) ChangeState(newState types.StoreState, reason string) {
 	s.mutex.Lock()
-	if expectedGeneration != 0 && (newState == StateLoaded || newState == StateError) {
-		if s.dataGeneration.Load() != expectedGeneration {
-			s.mutex.Unlock()
-			return
-		}
-	}
 
 	s.state = newState
 	s.stateReason = reason
@@ -127,14 +108,14 @@ func (s *Store[T]) ChangeState(expectedGeneration uint64, newState StoreState, r
 	}
 }
 
-func (s *Store[T]) GetState() StoreState {
+func (s *Store[T]) GetState() types.StoreState {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	return s.state
 }
 
 func (s *Store[T]) MarkStale(reason string) {
-	s.ChangeState(0, StateStale, reason)
+	s.ChangeState(types.StateStale, reason)
 }
 
 func (s *Store[T]) GetItem(index int) *T {
@@ -181,25 +162,37 @@ func (s *Store[T]) Count() int {
 }
 
 func (s *Store[T]) Fetch() error {
-	fetchGeneration := s.dataGeneration.Load()
-	s.ChangeState(fetchGeneration, StateFetching, "Starting data fetch")
+	// Stop any currently running fetches. If we're here, we want to reload (or process for the first time)
+	UnregisterContext(s.contextKey)
+
+	// Clear data and change state to prepare for the new fetch
+	s.mutex.Lock()
+	s.data = s.data[:0]
+	s.expectedTotalItems.Store(0)
+	s.state = types.StateFetching
+	s.stateReason = "User reload - fetching data"
+
+	// Notify observers while holding the lock
+	currentObservers := make([]FacetObserver[T], len(s.observers))
+	copy(currentObservers, s.observers)
+	s.mutex.Unlock()
+	for _, observer := range currentObservers {
+		observer.OnStateChanged(types.StateFetching, "User reload - fetching data")
+	}
 
 	renderCtx := RegisterContext(s.contextKey)
-	done := make(chan struct{})
 	errChan := make(chan error, 1)
-	var processingError error
 
-	go func() {
-		defer logging.Silence()()
-		defer close(done)
-		if s.queryFunc != nil {
+	// Execute the query function which will fill the channels with streamed data
+	if s.queryFunc != nil {
+		go func() {
+			defer logging.Silence()()
 			err := s.queryFunc(renderCtx)
 			if err != nil {
 				errChan <- err
-				return
 			}
-		}
-	}()
+		}()
+	}
 
 	modelChanClosed := false
 	errorChanClosed := false
@@ -209,8 +202,8 @@ func (s *Store[T]) Fetch() error {
 		case item, ok := <-renderCtx.ModelChan:
 			if !ok {
 				modelChanClosed = true
-				if errorChanClosed && processingError == nil {
-					s.ChangeState(fetchGeneration, StateLoaded, "Data loaded successfully")
+				if errorChanClosed {
+					s.ChangeState(types.StateLoaded, "Data loaded successfully")
 				}
 				continue
 			}
@@ -221,10 +214,6 @@ func (s *Store[T]) Fetch() error {
 			}
 
 			s.mutex.Lock()
-			if s.dataGeneration.Load() != fetchGeneration {
-				s.mutex.Unlock()
-				return ErrStaleFetch
-			}
 
 			if s.mappingFunc != nil {
 				key, includeInMap := s.mappingFunc(itemPtr)
@@ -234,7 +223,7 @@ func (s *Store[T]) Fetch() error {
 						s.dataMap = &tempMap
 					}
 					if existingItem, ok := (*s.dataMap)[key]; ok {
-						logging.LogBackend(fmt.Sprintf("Store.Fetch: Overwriting item in dataMap for key key %s existing_item %v new_item %v", key, existingItem, itemPtr))
+						logging.LogBEWarning(fmt.Sprintf("Store.Fetch: Overwriting item in dataMap for key key %s existing_item %v new_item %v", key, existingItem, itemPtr))
 					}
 					(*s.dataMap)[key] = itemPtr
 				}
@@ -246,7 +235,7 @@ func (s *Store[T]) Fetch() error {
 
 			// TODO: BOGUS
 			// Note: Summary aggregation is now handled by the GetSummaryPage method in the backend
-			// which calls AddItem/AddBalance during summary generation per period
+			// which calls AddItem/AddBalance during summary creation per period
 			// Items during fetch are stored but not immediately summarized
 
 			currentObservers := make([]FacetObserver[T], len(s.observers))
@@ -267,30 +256,37 @@ func (s *Store[T]) Fetch() error {
 		case streamErr, ok := <-renderCtx.ErrorChan:
 			if !ok {
 				errorChanClosed = true
-				if modelChanClosed && processingError == nil {
-					s.ChangeState(fetchGeneration, StateLoaded, "Data loaded successfully")
+				if modelChanClosed {
+					s.ChangeState(types.StateLoaded, "Data loaded successfully")
 				}
 				continue
 			}
-			processingError = streamErr
-			s.ChangeState(fetchGeneration, StateError, streamErr.Error())
-
-		case err := <-errChan:
-			processingError = err
-			s.ChangeState(fetchGeneration, StateError, err.Error())
-			return processingError
-
-		case <-done:
-			// Don't change state here - let the channel processing handle final state
-			// This ensures we've fully processed both ModelChan and ErrorChan
-			continue
+			msgs.EmitError("Stream error during fetch", streamErr)
+			if s.Count() > 0 {
+				s.ChangeState(types.StateLoaded, "Partial data loaded despite stream error")
+			} else {
+				s.ChangeState(types.StateStale, "No data due to stream error, ready to retry")
+			}
+			return streamErr
 
 		case <-renderCtx.Ctx.Done():
-			s.ChangeState(0, StateCanceled, "User cancelled operation")
+			msgs.EmitStatus("loading canceled")
+			s.ChangeState(types.StateLoaded, "User cancelled operation")
 			return renderCtx.Ctx.Err()
+
+		case queryErr := <-errChan:
+			msgs.EmitError("Query function failed", queryErr)
+			if s.Count() > 0 {
+				s.ChangeState(types.StateLoaded, "Partial data loaded despite query error")
+			} else {
+				s.ChangeState(types.StateStale, "No data due to query error, ready to retry")
+			}
+			return queryErr
 		}
 	}
-	return processingError
+
+	s.ChangeState(types.StateLoaded, "Data loaded successfully")
+	return nil
 }
 
 func (s *Store[T]) AddItem(item *T, index int) {
@@ -311,7 +307,7 @@ func (s *Store[T]) AddItem(item *T, index int) {
 
 	// TODO: BOGUS
 	// Note: Summary aggregation is now handled by the GetSummaryPage method in the backend
-	// which calls summary manager methods during summary generation per period
+	// which calls summary manager methods during summary creation per period
 	// Items added individually are stored but not immediately summarized
 
 	observers := make([]FacetObserver[T], len(s.observers))
@@ -338,12 +334,18 @@ func (s *Store[T]) Reset() {
 	}
 	s.summaryManager.Reset()
 	s.expectedTotalItems.Store(0)
-	s.dataGeneration.Add(1)
-	newState := StateStale
-	reason := "Store reset"
+
+	s.state = types.StateStale
+	s.stateReason = "Store reset"
+
+	currentObservers := make([]FacetObserver[T], len(s.observers))
+	copy(currentObservers, s.observers)
 	s.mutex.Unlock()
 
-	s.ChangeState(0, newState, reason)
+	// Notify observers of state change
+	for _, observer := range currentObservers {
+		observer.OnStateChanged(types.StateStale, "Store reset")
+	}
 }
 
 func (s *Store[T]) UpdateData(updateFunc func(data []*T) []*T) {
@@ -394,7 +396,7 @@ func (s *Store[T]) AddBalance(item *T, index int) {
 	}
 
 	// Note: Balance summarization is handled by the GetSummaryPage method in the backend
-	// which calls AddBalance during summary generation per period with proper period strings
+	// which calls AddBalance during summary creation per period with proper period strings
 	// Balances added individually are stored but not immediately summarized
 
 	observers := make([]FacetObserver[T], len(s.observers))

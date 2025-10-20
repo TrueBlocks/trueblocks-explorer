@@ -34,11 +34,11 @@ import { crud, msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { assertRouteConsistency } from '../routes';
-import { SeriesModal } from './components';
 import { ROUTE } from './constants';
-import { useSeriesModal } from './hooks/seriesModal';
 import { renderers } from './renderers';
-import { getItemKey, useGalleryStore } from './store/useGalleryStore';
+import { SeriesModal } from './renderers/components';
+import { useSeriesModal } from './renderers/hooks/seriesModal';
+import { getItemKey, useGalleryStore } from './renderers/store/useGalleryStore';
 
 export const Dresses = () => {
   // === SECTION 2: Hook Initialization ===
@@ -57,8 +57,7 @@ export const Dresses = () => {
     facets: facetsFromConfig,
     viewRoute: ROUTE,
   });
-  const { availableFacets, getCurrentDataFacet, setActiveFacet } =
-    activeFacetHook;
+  const { availableFacets, getCurrentDataFacet } = activeFacetHook;
 
   const [pageData, setPageData] = useState<dresses.DressesPage | null>(null);
   const viewStateKey = useMemo(
@@ -133,7 +132,7 @@ export const Dresses = () => {
     msgs.EventType.DATA_LOADED,
     (_message: string, payload?: Record<string, unknown>) => {
       if (payload?.collection === ROUTE) {
-        const eventDataFacet = payload.dataFacet;
+        const eventDataFacet = payload?.dataFacet;
         if (eventDataFacet === getCurrentDataFacet()) {
           fetchData();
         }
@@ -470,15 +469,10 @@ export const Dresses = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers.panels),
     [viewConfig, getCurrentDataFacet],
   );
-
-  const rendererMap = useMemo(
-    () => renderers(pageData, viewStateKey, setActiveFacet),
-    [pageData, viewStateKey, setActiveFacet],
-  );
-  const { isForm, node: formNode } = useFacetForm<Record<string, unknown>>({
+  const { isCanvas, node: formNode } = useFacetForm<Record<string, unknown>>({
     viewConfig,
     getCurrentDataFacet,
     currentData: currentData as unknown as Record<string, unknown>[],
@@ -486,28 +480,31 @@ export const Dresses = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
-    renderers: rendererMap,
+    renderers: renderers.facets,
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
     const facet = getCurrentDataFacet();
     if (
-      rendererMap[facet] &&
+      renderers.facets[facet as keyof typeof renderers.facets] &&
       (facet === types.DataFacet.GENERATOR || facet === types.DataFacet.GALLERY)
     ) {
       return (
         <Stack gap="xs">
           {headerActions}
-          {rendererMap[facet]()}
+          {renderers.facets[facet as keyof typeof renderers.facets]?.({
+            data: (pageData as unknown as Record<string, unknown>) || {},
+          })}
         </Stack>
       );
     }
-    if (isForm && formNode) return formNode;
+    if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
         data={currentData as unknown as Record<string, unknown>[]}
         columns={currentColumns}
-        loading={!!pageData?.isFetching}
+        state={pageData?.state || types.StoreState.STALE}
         error={error}
         viewStateKey={viewStateKey}
         headerActions={headerActions}
@@ -517,12 +514,11 @@ export const Dresses = () => {
     );
   }, [
     getCurrentDataFacet,
-    rendererMap,
     currentColumns,
-    isForm,
+    isCanvas,
     formNode,
     currentData,
-    pageData?.isFetching,
+    pageData,
     error,
     viewStateKey,
     headerActions,
@@ -552,9 +548,12 @@ export const Dresses = () => {
         </div>
       )}
       <Debugger
+        facetName={getCurrentDataFacet()}
         rowActions={config.rowActions}
         headerActions={config.headerActions}
         count={++renderCnt.current}
+        state={pageData?.state || types.StoreState.STALE}
+        totalItems={pageData?.totalItems}
       />
       <ConfirmModal
         opened={confirmModal.opened}

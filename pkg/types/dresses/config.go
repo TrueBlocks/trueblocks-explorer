@@ -18,7 +18,7 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"generator": {
 			Name:          "Generator",
 			Store:         "dalledress",
-			IsForm:        true,
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getDalledressFields(),
 			Actions:       []string{},
@@ -28,7 +28,6 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"series": {
 			Name:          "Series",
 			Store:         "series",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getSeriesFields(),
 			Actions:       []string{"update", "delete", "remove"},
@@ -38,7 +37,6 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"databases": {
 			Name:          "Databases",
 			Store:         "databases",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getDatabasesFields(),
 			Actions:       []string{},
@@ -48,7 +46,6 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"events": {
 			Name:          "Events",
 			Store:         "logs",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getLogsFields(),
 			Actions:       []string{},
@@ -58,7 +55,7 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"gallery": {
 			Name:          "Gallery",
 			Store:         "dalledress",
-			IsForm:        true,
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getDalledressFields(),
 			Actions:       []string{},

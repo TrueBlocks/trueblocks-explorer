@@ -10,10 +10,7 @@ import (
 
 // NameFromAddress resolves an Ethereum address to a named entity if one exists
 func (a *App) NameFromAddress(address string) (*names.Name, bool) {
-	collection := names.GetNamesCollection(&types.Payload{
-		Chain: "mainnet",
-	})
-	return collection.NameFromAddress(base.HexToAddress(address))
+	return names.NameFromAddress(base.HexToAddress(address))
 }
 
 // CancelFetch cancels an active data fetch operation for a specific data facet

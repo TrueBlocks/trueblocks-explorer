@@ -6,7 +6,6 @@
  * the code inside of 'EXISTING_CODE' tags.
  */
 // === SECTION 1: Imports & Dependencies ===
-import type { ReactElement } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GetComparitoorPage, Reload } from '@app';
@@ -221,11 +220,11 @@ export const Comparitoor = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers.panels),
     [viewConfig, getCurrentDataFacet],
   );
 
-  const { isForm, node: formNode } = useFacetForm<Record<string, unknown>>({
+  const { isCanvas, node: formNode } = useFacetForm<Record<string, unknown>>({
     viewConfig,
     getCurrentDataFacet,
     currentData: currentData as unknown as Record<string, unknown>[],
@@ -233,24 +232,26 @@ export const Comparitoor = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
-    renderers: renderers(pageData, fetchData),
+    renderers: renderers.facets,
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
     const facet = getCurrentDataFacet();
-    const rendererMap = renderers(pageData, fetchData) as Partial<
-      Record<types.DataFacet, () => ReactElement>
-    >;
-    const customRenderer = rendererMap[facet];
-    if (customRenderer && facet === types.DataFacet.COMPARITOOR) {
-      return customRenderer();
+    if (
+      renderers.facets[facet as keyof typeof renderers.facets] &&
+      facet === types.DataFacet.COMPARITOOR
+    ) {
+      return renderers.facets[facet as keyof typeof renderers.facets]?.({
+        data: (pageData as unknown as Record<string, unknown>) || {},
+      });
     }
-    if (isForm && formNode) return formNode;
+    if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
         data={currentData as unknown as Record<string, unknown>[]}
         columns={currentColumns}
-        loading={!!pageData?.isFetching}
+        state={pageData?.state || types.StoreState.STALE}
         error={error}
         viewStateKey={viewStateKey}
         headerActions={headerActions}
@@ -261,10 +262,9 @@ export const Comparitoor = () => {
     currentData,
     currentColumns,
     pageData,
-    fetchData,
     error,
     viewStateKey,
-    isForm,
+    isCanvas,
     formNode,
     headerActions,
     detailPanel,
@@ -294,9 +294,12 @@ export const Comparitoor = () => {
         </div>
       )}
       <Debugger
+        facetName={getCurrentDataFacet()}
         rowActions={config.rowActions}
         headerActions={config.headerActions}
         count={++renderCnt.current}
+        state={pageData?.state || types.StoreState.STALE}
+        totalItems={pageData?.totalItems}
       />
       <ConfirmModal
         opened={confirmModal.opened}

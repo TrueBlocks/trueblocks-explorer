@@ -108,14 +108,18 @@ export const Exports = () => {
         return pageData.transfers || [];
       case types.DataFacet.TRANSACTIONS:
         return pageData.transactions || [];
-      case types.DataFacet.APPROVALS:
-        return pageData.approvals || [];
-      case types.DataFacet.APPROVES:
-        return pageData.approves || [];
+      case types.DataFacet.OPENAPPROVALS:
+        return pageData.openapprovals || [];
+      case types.DataFacet.APPROVALLOGS:
+        return pageData.approvallogs || [];
+      case types.DataFacet.APPROVALTXS:
+        return pageData.approvaltxs || [];
       case types.DataFacet.WITHDRAWALS:
         return pageData.withdrawals || [];
       case types.DataFacet.ASSETS:
         return pageData.assets || [];
+      case types.DataFacet.ASSETCHARTS:
+        return pageData.statements || [];
       case types.DataFacet.LOGS:
         return pageData.logs || [];
       case types.DataFacet.TRACES:
@@ -226,11 +230,11 @@ export const Exports = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers.panels),
     [viewConfig, getCurrentDataFacet],
   );
 
-  const { isForm, node: formNode } = useFacetForm<Record<string, unknown>>({
+  const { isCanvas, node: formNode } = useFacetForm<Record<string, unknown>>({
     viewConfig,
     getCurrentDataFacet,
     currentData: currentData as unknown as Record<string, unknown>[],
@@ -238,15 +242,17 @@ export const Exports = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
+    viewName: ROUTE,
+    renderers: renderers.facets,
   });
 
   const perTabContent = useMemo(() => {
-    if (isForm && formNode) return formNode;
+    if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
         data={currentData as unknown as Record<string, unknown>[]}
         columns={currentColumns}
-        loading={!!pageData?.isFetching}
+        state={pageData?.state || types.StoreState.STALE}
         error={error}
         viewStateKey={viewStateKey}
         headerActions={headerActions}
@@ -256,10 +262,10 @@ export const Exports = () => {
   }, [
     currentData,
     currentColumns,
-    pageData?.isFetching,
+    pageData?.state,
     error,
     viewStateKey,
-    isForm,
+    isCanvas,
     formNode,
     headerActions,
     detailPanel,
@@ -288,9 +294,12 @@ export const Exports = () => {
         </div>
       )}
       <Debugger
+        facetName={getCurrentDataFacet()}
         rowActions={config.rowActions}
         headerActions={config.headerActions}
         count={++renderCnt.current}
+        state={pageData?.state || types.StoreState.STALE}
+        totalItems={pageData?.totalItems}
       />
       <ConfirmModal
         opened={confirmModal.opened}

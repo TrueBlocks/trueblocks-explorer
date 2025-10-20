@@ -118,7 +118,7 @@ func isDupStatus() func(existing []*Status, newItem *Status) bool {
 	// EXISTING_CODE
 }
 
-func (c *StatusCollection) LoadData(dataFacet types.DataFacet) {
+func (c *StatusCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -126,15 +126,15 @@ func (c *StatusCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case StatusStatus:
-			if err := c.statusFacet.Load(); err != nil {
+			if err := c.statusFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case StatusCaches:
-			if err := c.cachesFacet.Load(); err != nil {
+			if err := c.cachesFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case StatusChains:
-			if err := c.chainsFacet.Load(); err != nil {
+			if err := c.chainsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

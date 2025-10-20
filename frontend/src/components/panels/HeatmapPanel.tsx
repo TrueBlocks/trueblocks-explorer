@@ -6,7 +6,7 @@ import {
   MetricSelector,
   StatsBox,
 } from '@components';
-import { useEvent } from '@hooks';
+import { useBucketStats, useEvent } from '@hooks';
 import {
   Alert,
   Box,
@@ -23,6 +23,14 @@ import {
   formatGroupKey,
   formatNumber,
 } from '@utils';
+
+// Helper function to get bucket data from the series map
+const getBucketData = (
+  buckets: types.Buckets,
+  field: string,
+): types.Bucket[] => {
+  return buckets.series?.[field] || [];
+};
 
 interface HeatmapPanelProps {
   config: BucketsConfig;
@@ -139,16 +147,15 @@ export const HeatmapPanel = ({
 
   const getMetricData = () => {
     if (!buckets) {
-      return { bucketsData: [], statsData: null };
+      return { bucketsData: [] };
     }
 
     const metConfig = getMetricConfig(selectedMetric);
     if (!metConfig) {
-      return { bucketsData: [], statsData: null };
+      return { bucketsData: [] };
     }
 
-    const allBuckets =
-      (buckets[metConfig.bucketsField] as types.Bucket[]) || [];
+    const allBuckets = getBucketData(buckets, metConfig.bucketsField);
 
     let filteredBuckets = config.skipUntil
       ? allBuckets.filter((bucket) => bucket.bucketIndex >= config.skipUntil!)
@@ -163,9 +170,11 @@ export const HeatmapPanel = ({
 
     return {
       bucketsData: filteredBuckets,
-      statsData: buckets[metConfig.statsField] as types.BucketStats,
     };
   };
+
+  const { bucketsData } = getMetricData();
+  const statsData = useBucketStats(bucketsData);
 
   const getColor = (value: number, min: number, max: number) => {
     // Handle edge case where all values are the same
@@ -194,8 +203,6 @@ export const HeatmapPanel = ({
   if (!hasEverLoaded) {
     return <Text>Loading heat map...</Text>;
   }
-
-  const { bucketsData, statsData } = getMetricData();
 
   if (!bucketsData?.length || !statsData || !buckets) {
     return (

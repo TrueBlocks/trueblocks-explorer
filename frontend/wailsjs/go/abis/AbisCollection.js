@@ -14,6 +14,10 @@ export function ExportData(arg1) {
   return window['go']['abis']['AbisCollection']['ExportData'](arg1);
 }
 
+export function FetchByFacet(arg1) {
+  return window['go']['abis']['AbisCollection']['FetchByFacet'](arg1);
+}
+
 export function GetBuckets(arg1) {
   return window['go']['abis']['AbisCollection']['GetBuckets'](arg1);
 }
@@ -36,10 +40,6 @@ export function GetSummary() {
 
 export function GetSupportedFacets() {
   return window['go']['abis']['AbisCollection']['GetSupportedFacets']();
-}
-
-export function LoadData(arg1) {
-  return window['go']['abis']['AbisCollection']['LoadData'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

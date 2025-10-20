@@ -1,6 +1,7 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
 {{- $isNames := and (eq $class "Names") }}
+{{- $isChunks := and (eq $class "Chunks") }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -20,14 +21,19 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 	facets := map[string]types.FacetConfig{
 		{{- range .Facets}}
 		"{{toLower .Name}}": {
-			Name:          "{{toProper .Name}}",
+			Name:          "{{toHeader .DisplayName}}",
 			Store:         "{{toLower .StoreName}}",
-			IsForm:        {{.IsForm}},
+			{{- if .ViewType }}
+						ViewType:      "{{.ViewType}}",
+			{{- end }}
 			DividerBefore: {{and (eq .Name "Prefund") $isNames}},
 			Fields:        get{{toProper .StoreName}}Fields(),
 			Actions:       []string{ {{if ne (.RowActionsBe .Name) "\"\""}}{{.RowActionsBe .Name}}{{else}}{{end}} },
 			HeaderActions: []string{ {{if ne (.HeaderActionsBe .Name) "\"\""}}{{.HeaderActionsBe .Name}}{{else}}{{end}} },
 			RendererTypes: "{{.Renderer}}",
+			{{- if $isChunks}}
+						PanelChartConfig:   get{{.Name}}PanelChartConfig(),
+			{{- end}}
 		},
 		{{- end}}
 	}

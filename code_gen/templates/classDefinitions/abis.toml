@@ -12,23 +12,18 @@ disable_go = false
 name = "Downloaded"
 store = "Abis"
 actions = ["remove","export"]
-viewType = ""
 
 [[facets]]
 name = "Known"
 store = "Abis"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Functions"
 store = "Functions"
 actions = ["export"]
-viewType = ""
 
 [[facets]]
 name = "Events"
 store = "Functions"
 actions = ["export"]
-viewType = ""
-

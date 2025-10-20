@@ -13,7 +13,7 @@ func GetCurrentDressFor(series, address string) *model.DalleDress {
 	if series == "" {
 		series = "empty"
 	}
-	// Always attempt generation (cached path is fast if image exists)
+	// Always attempt creation (cached path is fast if image exists)
 	_, _ = dalle.GenerateAnnotatedImage(series, address, false, 0)
 	if pr := progress.GetProgress(series, address); pr != nil && pr.DalleDress != nil {
 		dd := *pr.DalleDress

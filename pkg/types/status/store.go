@@ -57,7 +57,7 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 			}
 			if _, _, err := opts.StatusCaches(); err != nil {
 				wrappedErr := types.NewSDKError("status", StatusCaches, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Status Caches SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Status Caches SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -65,6 +65,8 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Cache {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Cache); ok {
 				return it
 			}
@@ -108,7 +110,7 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 			}
 			if _, _, err := opts.StatusChains(); err != nil {
 				wrappedErr := types.NewSDKError("status", StatusChains, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Status Chains SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Status Chains SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -116,6 +118,8 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Chain {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Chain); ok {
 				return it
 			}
@@ -159,7 +163,7 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 			}
 			if _, _, err := opts.StatusHealthcheck(); err != nil {
 				wrappedErr := types.NewSDKError("status", StatusStatus, "fetch", err)
-				logging.LogBackend(fmt.Sprintf("Status Healthcheck SDK query error: %v", wrappedErr))
+				logging.LogBEWarning(fmt.Sprintf("Status Healthcheck SDK query error: %v", wrappedErr))
 				return wrappedErr
 			}
 			// EXISTING_CODE
@@ -167,6 +171,8 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Status {
+			// EXISTING_CODE
+			// EXISTING_CODE
 			if it, ok := item.(*Status); ok {
 				return it
 			}

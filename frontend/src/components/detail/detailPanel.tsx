@@ -35,9 +35,14 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
   // Get the current facet configuration
   const currentFacetConfig = viewConfig?.facets?.[getCurrentDataFacet()];
 
-  // Check for a custom panel override first (viewName.facetKey or viewName)
+  // Check for a custom panel override first
+  const facet = getCurrentDataFacet();
+
+  // Check direct facet match first (e.g., "statements", "openapprovals")
+  if (customPanels[facet]) return customPanels[facet] as DetailPanelFn<T>;
+
+  // Check for compound keys (viewName.facetKey or viewName)
   if (viewConfig?.viewName) {
-    const facet = getCurrentDataFacet();
     const key = `${viewConfig.viewName}.${facet}`;
     if (customPanels[key]) return customPanels[key] as DetailPanelFn<T>;
     if (customPanels[viewConfig.viewName])

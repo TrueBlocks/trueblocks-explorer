@@ -77,7 +77,7 @@ func isDup{{toSingular .Name}}() func(existing []*{{toSingular .Name}}, newItem 
 }
 {{end}}
 
-func (c *{{$class}}Collection) LoadData(dataFacet types.DataFacet) {
+func (c *{{$class}}Collection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -86,7 +86,7 @@ func (c *{{$class}}Collection) LoadData(dataFacet types.DataFacet) {
 		switch dataFacet {
 		{{- range .Facets}}
 		case {{$class}}{{.Name}}:
-			if err := c.{{toLower .Name}}Facet.Load(); err != nil {
+			if err := c.{{toLower .Name}}Facet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		{{- end}}

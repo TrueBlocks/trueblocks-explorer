@@ -39,7 +39,7 @@ func (a *App) GetContractsSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadContracts(payload *types.Payload) error {
 	collection := contracts.GetContractsCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

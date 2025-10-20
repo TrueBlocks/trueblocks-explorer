@@ -5,8 +5,7 @@ import { types } from '@models';
 export interface MetricConfig {
   key: string;
   label: string;
-  bucketsField: keyof types.Buckets;
-  statsField: keyof types.Buckets;
+  bucketsField: keyof types.Buckets | string;
   formatValue: (value: number) => string;
   bytes: boolean;
 }

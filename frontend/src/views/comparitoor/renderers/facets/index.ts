@@ -1,0 +1,1 @@
+export { ComparitoorFacet } from './comparitoor';

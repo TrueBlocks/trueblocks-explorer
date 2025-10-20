@@ -39,7 +39,7 @@ func (a *App) GetStatusSummary(payload *types.Payload) types.Summary {
 func (a *App) ReloadStatus(payload *types.Payload) error {
 	collection := status.GetStatusCollection(payload)
 	collection.Reset(payload.DataFacet)
-	collection.LoadData(payload.DataFacet)
+	collection.FetchByFacet(payload.DataFacet)
 	return nil
 }
 

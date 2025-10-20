@@ -48,7 +48,14 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
 
     if (mode === 'display') {
       let displayValue;
-      if (field.type === 'wei' && field.value) {
+      if (field.type === 'weish') {
+        displayValue = field.value as string;
+        if (
+          displayValue.startsWith('1157920892373161954235709850086879078532')
+        ) {
+          displayValue = <div style={{ fontStyle: 'italic' }}>infinite</div>;
+        }
+      } else if (field.type === 'wei' && field.value) {
         // Try to format as Wei, but if it fails (e.g., already in Ether format), format as ether
         try {
           displayValue = formatWeiToEther(field.value as string);
@@ -61,6 +68,11 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           } else {
             displayValue = numericValue.toFixed(6);
           }
+        }
+        if (
+          displayValue.startsWith('1157920892373161954235709850086879078532')
+        ) {
+          displayValue = <div style={{ fontStyle: 'italic' }}>infinite</div>;
         }
       } else if (field.type === 'ether') {
         // Fields with type 'ether' are already in Ether format - format to exactly 6 decimal places

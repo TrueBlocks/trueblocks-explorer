@@ -136,7 +136,7 @@ func isDupStats() func(existing []*Stats, newItem *Stats) bool {
 	// EXISTING_CODE
 }
 
-func (c *ChunksCollection) LoadData(dataFacet types.DataFacet) {
+func (c *ChunksCollection) FetchByFacet(dataFacet types.DataFacet) {
 	if !c.NeedsUpdate(dataFacet) {
 		return
 	}
@@ -144,19 +144,19 @@ func (c *ChunksCollection) LoadData(dataFacet types.DataFacet) {
 	go func() {
 		switch dataFacet {
 		case ChunksStats:
-			if err := c.statsFacet.Load(); err != nil {
+			if err := c.statsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ChunksIndex:
-			if err := c.indexFacet.Load(); err != nil {
+			if err := c.indexFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ChunksBlooms:
-			if err := c.bloomsFacet.Load(); err != nil {
+			if err := c.bloomsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		case ChunksManifest:
-			if err := c.manifestFacet.Load(); err != nil {
+			if err := c.manifestFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:

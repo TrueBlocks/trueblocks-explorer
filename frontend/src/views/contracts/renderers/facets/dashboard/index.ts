@@ -1,0 +1,1 @@
+export { DashboardFacet } from './DashboardFacet';

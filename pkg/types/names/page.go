@@ -19,12 +19,11 @@ import (
 
 // EXISTING_CODE
 type NamesPage struct {
-	Facet         types.DataFacet `json:"facet"`
-	Names         []*Name         `json:"names"`
-	TotalItems    int             `json:"totalItems"`
-	ExpectedTotal int             `json:"expectedTotal"`
-	IsFetching    bool            `json:"isFetching"`
-	State         types.LoadState `json:"state"`
+	Facet         types.DataFacet  `json:"facet"`
+	Names         []*Name          `json:"names"`
+	TotalItems    int              `json:"totalItems"`
+	ExpectedTotal int              `json:"expectedTotal"`
+	State         types.StoreState `json:"state"`
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -41,11 +40,7 @@ func (p *NamesPage) GetExpectedTotal() int {
 	return p.ExpectedTotal
 }
 
-func (p *NamesPage) GetIsFetching() bool {
-	return p.IsFetching
-}
-
-func (p *NamesPage) GetState() types.LoadState {
+func (p *NamesPage) GetState() types.StoreState {
 	return p.State
 }
 
@@ -88,7 +83,6 @@ func (c *NamesCollection) GetPage(
 			}
 			page.Names, page.TotalItems, page.State = all, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case NamesCustom:
 		facet := c.customFacet
@@ -110,7 +104,6 @@ func (c *NamesCollection) GetPage(
 			}
 			page.Names, page.TotalItems, page.State = custom, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case NamesPrefund:
 		facet := c.prefundFacet
@@ -132,7 +125,6 @@ func (c *NamesCollection) GetPage(
 			}
 			page.Names, page.TotalItems, page.State = prefund, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case NamesRegular:
 		facet := c.regularFacet
@@ -154,7 +146,6 @@ func (c *NamesCollection) GetPage(
 			}
 			page.Names, page.TotalItems, page.State = regular, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	case NamesBaddress:
 		facet := c.baddressFacet
@@ -176,7 +167,6 @@ func (c *NamesCollection) GetPage(
 			}
 			page.Names, page.TotalItems, page.State = baddress, result.TotalItems, result.State
 		}
-		page.IsFetching = facet.IsFetching()
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
 		return nil, types.NewValidationError("names", dataFacet, "GetPage",
@@ -211,7 +201,7 @@ func (c *NamesCollection) getSummaryPage(
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.LoadData(dataFacet)
+	c.FetchByFacet(dataFacet)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}
@@ -237,7 +227,7 @@ func (c *NamesCollection) generateSummariesForPeriod(dataFacet types.DataFacet, 
 	// EXISTING_CODE
 	// EXISTING_CODE
 	default:
-		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary generation: %v", dataFacet)
+		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
 }
 

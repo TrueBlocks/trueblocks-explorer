@@ -18,7 +18,6 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		"all": {
 			Name:          "All",
 			Store:         "names",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getNamesFields(),
 			Actions:       []string{"autoname", "update"},
@@ -28,7 +27,6 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		"custom": {
 			Name:          "Custom",
 			Store:         "names",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getNamesFields(),
 			Actions:       []string{"autoname", "delete", "remove", "update"},
@@ -38,7 +36,6 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		"prefund": {
 			Name:          "Prefund",
 			Store:         "names",
-			IsForm:        false,
 			DividerBefore: true,
 			Fields:        getNamesFields(),
 			Actions:       []string{"update"},
@@ -48,7 +45,6 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		"regular": {
 			Name:          "Regular",
 			Store:         "names",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getNamesFields(),
 			Actions:       []string{"autoname", "update"},
@@ -58,7 +54,6 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		"baddress": {
 			Name:          "Baddress",
 			Store:         "names",
-			IsForm:        false,
 			DividerBefore: false,
 			Fields:        getNamesFields(),
 			Actions:       []string{},

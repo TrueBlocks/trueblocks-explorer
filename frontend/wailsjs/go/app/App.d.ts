@@ -135,6 +135,8 @@ export function GetExportsBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetExportsConfig(arg1:types.Payload):Promise<types.ViewConfig>;
 
+export function GetExportsMetric(arg1:string):Promise<string>;
+
 export function GetExportsPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<exports.ExportsPage>;
 
 export function GetExportsSummary(arg1:types.Payload):Promise<types.Summary>;
@@ -227,6 +229,8 @@ export function NameFromAddress(arg1:string):Promise<types.Name|boolean>;
 
 export function NamesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
+export function NavigateToRow(arg1:types.NavigationPayload):Promise<void>;
+
 export function NewProject(arg1:string,arg2:string):Promise<void>;
 
 export function OpenProjectFile(arg1:string):Promise<void>;
@@ -286,6 +290,8 @@ export function SetChromeCollapsed(arg1:boolean):Promise<void>;
 export function SetChunksMetric(arg1:string,arg2:string):Promise<void>;
 
 export function SetDebugCollapsed(arg1:boolean):Promise<void>;
+
+export function SetExportsMetric(arg1:string,arg2:string):Promise<void>;
 
 export function SetFilterState(arg1:project.ViewStateKey,arg2:project.FilterState):Promise<void>;
 

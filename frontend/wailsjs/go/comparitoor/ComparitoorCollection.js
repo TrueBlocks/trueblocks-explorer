@@ -10,6 +10,10 @@ export function ExportData(arg1) {
   return window['go']['comparitoor']['ComparitoorCollection']['ExportData'](arg1);
 }
 
+export function FetchByFacet(arg1) {
+  return window['go']['comparitoor']['ComparitoorCollection']['FetchByFacet'](arg1);
+}
+
 export function GetBuckets(arg1) {
   return window['go']['comparitoor']['ComparitoorCollection']['GetBuckets'](arg1);
 }
@@ -32,10 +36,6 @@ export function GetSummary() {
 
 export function GetSupportedFacets() {
   return window['go']['comparitoor']['ComparitoorCollection']['GetSupportedFacets']();
-}
-
-export function LoadData(arg1) {
-  return window['go']['comparitoor']['ComparitoorCollection']['LoadData'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

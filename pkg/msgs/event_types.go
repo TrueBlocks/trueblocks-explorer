@@ -15,7 +15,7 @@ const (
 	EventTabCycle       EventType = "hotkey:tab-cycle"
 	EventImagesChanged  EventType = "images:changed"
 	EventProjectOpened  EventType = "project:opened"
-	EventNavigateToRow  EventType = "navigation:row"
+	EventRowAction      EventType = "action:row"
 )
 
 var AllMessages = []struct {
@@ -34,5 +34,5 @@ var AllMessages = []struct {
 	{EventTabCycle, "TAB_CYCLE"},
 	{EventImagesChanged, "IMAGES_CHANGED"},
 	{EventProjectOpened, "PROJECT_OPENED"},
-	{EventNavigateToRow, "NAVIGATE_TO_ROW"},
+	{EventRowAction, "ROW_ACTION"},
 }

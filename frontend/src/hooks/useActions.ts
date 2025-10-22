@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ExportData, IsDialogSilenced } from '@app';
+import { ExecuteRowAction, ExportData, IsDialogSilenced } from '@app';
 import { useWalletGatedAction } from '@hooks';
 import { crud, project, sdk, types } from '@models';
 import { Log, LogError, addressToHex, useErrorHandler } from '@utils';
@@ -996,6 +996,35 @@ export const useActions = <TPageData extends { totalItems: number }, TItem>(
   //   ],
   // );
 
+  // Handle row action (Enter key on table rows)
+  const handleRowAction = useCallback(
+    async (rowData: Record<string, unknown>) => {
+      try {
+        // Get the row action configuration for the current facet
+        const facetKey = currentDataFacet as unknown as string;
+        const facetConfig = viewConfig?.facets?.[facetKey];
+        const rowActionConfig = facetConfig?.rowAction;
+
+        if (!rowActionConfig) {
+          LogError(`No row action configured for facet: ${facetKey}`);
+          return;
+        }
+
+        const payload = types.RowActionPayload.createFrom({
+          collection: config.collection,
+          dataFacet: currentDataFacet,
+          rowData,
+          rowAction: rowActionConfig,
+        });
+
+        await ExecuteRowAction(payload);
+      } catch (error) {
+        LogError(`Error executing row action: ${String(error)}`);
+      }
+    },
+    [config.collection, currentDataFacet, viewConfig],
+  );
+
   // Map action types to handlers
   const handlers = useMemo(
     () => ({
@@ -1009,6 +1038,7 @@ export const useActions = <TPageData extends { totalItems: number }, TItem>(
       handleUpdate,
       handleClean,
       handleSpeak,
+      handleRowAction,
     }),
     [
       handleCreate,
@@ -1021,6 +1051,7 @@ export const useActions = <TPageData extends { totalItems: number }, TItem>(
       handleUpdate,
       handleClean,
       handleSpeak,
+      handleRowAction,
       // TODO: Add handleCleanOne when implemented
       // handleCleanOne,
     ],

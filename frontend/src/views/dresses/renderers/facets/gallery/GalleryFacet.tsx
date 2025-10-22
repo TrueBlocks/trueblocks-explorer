@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { NavigateToRow } from '@app';
-import { usePayload } from '@hooks';
+import { ExecuteRowAction } from '@app';
 import { Center, Container, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 
@@ -18,7 +17,6 @@ export const GalleryFacet = ({ pageData, viewStateKey }: GalleryFacetProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const keyScopeRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnMount = useRef(false);
-  const createPayload = usePayload();
 
   const {
     getSelectionKey,
@@ -116,18 +114,38 @@ export const GalleryFacet = ({ pageData, viewStateKey }: GalleryFacetProps) => {
     [setSelection, viewStateKey],
   );
 
-  const handleItemDoubleClick = useCallback(
-    (item: model.DalleDress) => {
-      const payload = createPayload(
-        types.DataFacet.GENERATOR,
-      ) as types.NavigationPayload;
-      payload.collection = 'dresses';
-      payload.recordId = getItemKey(item);
-      payload.rowIndex = 0;
-      NavigateToRow(payload);
-    },
-    [createPayload],
-  );
+  const handleItemDoubleClick = useCallback(async (item: model.DalleDress) => {
+    const rowActionPayload = types.RowActionPayload.createFrom({
+      collection: 'dresses',
+      dataFacet: types.DataFacet.GALLERY,
+      rowData: {
+        original: item.original,
+        fileName: item.fileName,
+        series: item.series,
+      },
+      rowAction: {
+        type: 'navigate',
+        target: {
+          view: 'dresses',
+          facet: 'generator',
+          rowIndex: 0,
+          identifiers: [
+            {
+              type: 'address',
+              fieldName: 'original',
+              contextKey: 'address',
+            },
+          ],
+        },
+      },
+    });
+
+    try {
+      await ExecuteRowAction(rowActionPayload);
+    } catch (error) {
+      console.error('Failed to execute row action:', error);
+    }
+  }, []);
 
   const handleKey = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {

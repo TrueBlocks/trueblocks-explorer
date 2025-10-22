@@ -52,3 +52,10 @@ type NavigationPayload struct {
 	RecordId string `json:"recordId"` // Unique identifier for database lookup
 	RowIndex int    `json:"rowIndex"` // Calculated position in current table
 }
+
+type RowActionPayload struct {
+	Payload
+	RowData       map[string]interface{} `json:"rowData"`
+	RowAction     *RowActionConfig       `json:"rowAction"`
+	ContextValues map[string]interface{} `json:"contextValues,omitempty"` // Processed context values
+}

@@ -58,6 +58,10 @@ export function Encode(arg1, arg2) {
   return window['go']['app']['App']['Encode'](arg1, arg2);
 }
 
+export function ExecuteRowAction(arg1) {
+  return window['go']['app']['App']['ExecuteRowAction'](arg1);
+}
+
 export function ExportData(arg1) {
   return window['go']['app']['App']['ExportData'](arg1);
 }
@@ -416,10 +420,6 @@ export function NameFromAddress(arg1) {
 
 export function NamesCrud(arg1, arg2, arg3) {
   return window['go']['app']['App']['NamesCrud'](arg1, arg2, arg3);
-}
-
-export function NavigateToRow(arg1) {
-  return window['go']['app']['App']['NavigateToRow'](arg1);
 }
 
 export function NewProject(arg1, arg2) {

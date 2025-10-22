@@ -165,9 +165,9 @@ func EmitProjectModal(msgText string, payload ...interface{}) {
 	emitMessage(EventProjectModal, msgText, payload...)
 }
 
-// EmitNavigateToRow signals navigation to a specific row in a facet.
-func EmitNavigateToRow(payload *types.NavigationPayload) {
-	emitMessage(EventNavigateToRow, "row-navigation", *payload)
+// EmitRowAction signals a row action with complete row data.
+func EmitRowAction(payload *types.RowActionPayload) {
+	emitMessage(EventRowAction, "row-action", *payload)
 }
 
 // On registers a callback function for a specific event type.

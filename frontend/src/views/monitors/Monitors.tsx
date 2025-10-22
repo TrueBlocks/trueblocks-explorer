@@ -8,7 +8,7 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GetMonitorsPage, MonitorsCrud, NavigateToRow, Reload } from '@app';
+import { GetMonitorsPage, MonitorsCrud, Reload } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -160,26 +160,7 @@ export const Monitors = () => {
     getCurrentDataFacet,
   });
 
-  const { handleRemove, handleToggle } = handlers;
-
-  // Custom handler for Enter key: navigate to exports/assets view at row 0
-  const handleNavigateToExports = useCallback(
-    async (rowData: Record<string, unknown>) => {
-      try {
-        let payload = createPayload(
-          types.DataFacet.ASSETCHARTS,
-        ) as types.NavigationPayload;
-        payload.collection = 'exports';
-        payload.recordId = String(rowData.address || '');
-        payload.rowIndex = 0;
-        payload.address = rowData.address as string;
-        await NavigateToRow(payload);
-      } catch (error) {
-        LogError(`Failed to navigate to exports: ${error}`);
-      }
-    },
-    [createPayload],
-  );
+  const { handleRemove, handleToggle, handleRowAction } = handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
     return (
@@ -257,7 +238,7 @@ export const Monitors = () => {
         viewStateKey={viewStateKey}
         headerActions={headerActions}
         detailPanel={detailPanel}
-        onSubmit={handleNavigateToExports}
+        onSubmit={handleRowAction}
         onDelete={(rowData) => handleToggle(String(rowData.address || ''))}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
       />
@@ -272,7 +253,7 @@ export const Monitors = () => {
     formNode,
     headerActions,
     detailPanel,
-    handleNavigateToExports,
+    handleRowAction,
     handleToggle,
     handleRemove,
   ]);

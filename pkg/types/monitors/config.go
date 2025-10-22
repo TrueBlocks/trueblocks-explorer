@@ -23,6 +23,7 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{"delete", "remove"},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
+			RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 		},
 	}
 

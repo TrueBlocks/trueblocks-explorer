@@ -11,7 +11,6 @@ package app
 // EXISTING_CODE
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
@@ -123,11 +122,4 @@ func (a *App) IsDisabled(viewName string) bool {
 }
 
 // EXISTING_CODE
-// NavigateToRow triggers navigation to a specific row in a facet by record ID
-func (a *App) NavigateToRow(payload *types.NavigationPayload) {
-	// For now, convert recordId directly to rowIndex (will be replaced with database search later)
-	payload.RowIndex, _ = strconv.Atoi(payload.RecordId)
-	msgs.EmitNavigateToRow(payload)
-}
-
 // EXISTING_CODE

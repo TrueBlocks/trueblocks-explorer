@@ -787,7 +787,7 @@ export namespace msgs {
 	    TAB_CYCLE = "hotkey:tab-cycle",
 	    IMAGES_CHANGED = "images:changed",
 	    PROJECT_OPENED = "project:opened",
-	    NAVIGATE_TO_ROW = "navigation:row",
+	    ROW_ACTION = "action:row",
 	}
 
 }
@@ -2345,6 +2345,94 @@ export namespace types {
 	        this.seriesPrefixLen = source["seriesPrefixLen"];
 	    }
 	}
+	export class RowIdentifier {
+	    type: string;
+	    fieldName: string;
+	    contextKey?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new RowIdentifier(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.fieldName = source["fieldName"];
+	        this.contextKey = source["contextKey"];
+	    }
+	}
+	export class NavigationTarget {
+	    view: string;
+	    facet: string;
+	    rowIndex: number;
+	    identifiers?: RowIdentifier[];
+	
+	    static createFrom(source: any = {}) {
+	        return new NavigationTarget(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.view = source["view"];
+	        this.facet = source["facet"];
+	        this.rowIndex = source["rowIndex"];
+	        this.identifiers = this.convertValues(source["identifiers"], RowIdentifier);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class RowActionConfig {
+	    type: string;
+	    target?: NavigationTarget;
+	    customHandler?: string;
+	    parameters?: Record<string, any>;
+	
+	    static createFrom(source: any = {}) {
+	        return new RowActionConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.target = this.convertValues(source["target"], NavigationTarget);
+	        this.customHandler = source["customHandler"];
+	        this.parameters = source["parameters"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class MetricConfig {
 	    key: string;
 	    label: string;
@@ -2441,6 +2529,7 @@ export namespace types {
 	    rendererTypes: string;
 	    panelChartConfig?: PanelChartConfig;
 	    facetChartConfig?: FacetChartConfig;
+	    rowAction?: RowActionConfig;
 	
 	    static createFrom(source: any = {}) {
 	        return new FacetConfig(source);
@@ -2461,6 +2550,7 @@ export namespace types {
 	        this.rendererTypes = source["rendererTypes"];
 	        this.panelChartConfig = this.convertValues(source["panelChartConfig"], PanelChartConfig);
 	        this.facetChartConfig = this.convertValues(source["facetChartConfig"], FacetChartConfig);
+	        this.rowAction = this.convertValues(source["rowAction"], RowActionConfig);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2745,34 +2835,7 @@ export namespace types {
 	}
 	
 	
-	export class NavigationPayload {
-	    collection: string;
-	    dataFacet: DataFacet;
-	    chain?: string;
-	    address?: string;
-	    period?: string;
-	    format?: string;
-	    projectPath?: string;
-	    recordId: string;
-	    rowIndex: number;
 	
-	    static createFrom(source: any = {}) {
-	        return new NavigationPayload(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.collection = source["collection"];
-	        this.dataFacet = source["dataFacet"];
-	        this.chain = source["chain"];
-	        this.address = source["address"];
-	        this.period = source["period"];
-	        this.format = source["format"];
-	        this.projectPath = source["projectPath"];
-	        this.recordId = source["recordId"];
-	        this.rowIndex = source["rowIndex"];
-	    }
-	}
 	
 	
 	
@@ -2954,6 +3017,56 @@ export namespace types {
 		    return a;
 		}
 	}
+	
+	export class RowActionPayload {
+	    collection: string;
+	    dataFacet: DataFacet;
+	    chain?: string;
+	    address?: string;
+	    period?: string;
+	    format?: string;
+	    projectPath?: string;
+	    rowData: Record<string, any>;
+	    rowAction?: RowActionConfig;
+	    contextValues?: Record<string, any>;
+	
+	    static createFrom(source: any = {}) {
+	        return new RowActionPayload(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.collection = source["collection"];
+	        this.dataFacet = source["dataFacet"];
+	        this.chain = source["chain"];
+	        this.address = source["address"];
+	        this.period = source["period"];
+	        this.format = source["format"];
+	        this.projectPath = source["projectPath"];
+	        this.rowData = source["rowData"];
+	        this.rowAction = this.convertValues(source["rowAction"], RowActionConfig);
+	        this.contextValues = source["contextValues"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class StatementCalcs {
 	    // Go type: base
 	    amountNet: any;

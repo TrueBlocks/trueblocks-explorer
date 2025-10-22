@@ -8,7 +8,7 @@
 - All commands run from repo root: `yarn start`, `yarn build`, `yarn test`, `yarn lint`
 
 ### Critical Workflow
-- **Do not assume that you should run `yarn lint && yarn test`** after changes - at the very start of a work session, ask me how often I want you to run these commands and then do not forget. I will answer with "never", "always", or a specific frequency like "after every file change" or "after every major change". THIS IS CRITICAL to my enjoyment of working with you.
+- **DO NOT RUN YARN COMMANDS** - Never run `yarn lint`, `yarn test`, `yarn start`, or any other yarn commands unless explicitly requested by the user
 - **Read file contents first** before editing - files change between requests
 - **After backend changes**: Run `wails generate module` to update TypeScript bindings
 - **File deletion**: Use `rm -f` for files, `rm -R` for folders, ask confirmation, then explicitly remove from context memory

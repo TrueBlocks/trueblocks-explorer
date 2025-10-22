@@ -49,6 +49,8 @@ export function DressesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Pro
 
 export function Encode(arg1:types.Function,arg2:Array<any>):Promise<string>;
 
+export function ExecuteRowAction(arg1:types.RowActionPayload):Promise<void>;
+
 export function ExportData(arg1:types.Payload):Promise<void>;
 
 export function ExportSkin(arg1:string):Promise<string>;
@@ -228,8 +230,6 @@ export function MonitorsCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Pr
 export function NameFromAddress(arg1:string):Promise<types.Name|boolean>;
 
 export function NamesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
-
-export function NavigateToRow(arg1:types.NavigationPayload):Promise<void>;
 
 export function NewProject(arg1:string,arg2:string):Promise<void>;
 

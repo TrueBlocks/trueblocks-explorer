@@ -13,8 +13,8 @@ const baseMockContext = {
   getFiltering: vi.fn(),
   updateFiltering: vi.fn(),
   restoreProjectFilterStates: vi.fn(),
-  getPendingNavigation: vi.fn().mockReturnValue(null),
-  setPendingNavigation: vi.fn(),
+  getPendingRowAction: vi.fn().mockReturnValue(null),
+  setPendingRowAction: vi.fn(),
 };
 
 describe('usePagination', () => {

@@ -76,7 +76,7 @@ export const Table = <T extends Record<string, unknown>>({
 
   const { pagination, goToPage } = usePagination(viewStateKey);
   const { filter, setFiltering } = useFiltering(viewStateKey);
-  const { getPendingNavigation, setPendingNavigation } = useViewContext();
+  const { getPendingRowAction, setPendingRowAction } = useViewContext();
   const { currentPage, pageSize, totalItems } = pagination;
   const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -254,12 +254,13 @@ export const Table = <T extends Record<string, unknown>>({
 
   useEffect(() => {
     // Check for pending navigation first
-    const pendingNavigation = getPendingNavigation(viewStateKey);
+    const pendingRowAction = getPendingRowAction(viewStateKey);
 
-    if (pendingNavigation) {
-      // Handle pending navigation
-      const targetPage = Math.floor(pendingNavigation.rowIndex / pageSize);
-      const targetRowInPage = pendingNavigation.rowIndex % pageSize;
+    if (pendingRowAction) {
+      // Handle pending navigation - get rowIndex from target configuration
+      const targetRowIndex = pendingRowAction.rowAction?.target?.rowIndex || 0;
+      const targetPage = Math.floor(targetRowIndex / pageSize);
+      const targetRowInPage = targetRowIndex % pageSize;
 
       if (currentPage !== targetPage) {
         // Navigate to the target page first
@@ -270,10 +271,10 @@ export const Table = <T extends Record<string, unknown>>({
         if (targetRowInPage >= 0 && targetRowInPage < data.length) {
           setSelectedRowIndex(targetRowInPage);
           // Clear pending navigation after successful selection
-          setPendingNavigation(viewStateKey, null);
+          setPendingRowAction(viewStateKey, null);
         } else {
           // Invalid row index, clear pending navigation
-          setPendingNavigation(viewStateKey, null);
+          setPendingRowAction(viewStateKey, null);
         }
       }
     } else {
@@ -290,8 +291,8 @@ export const Table = <T extends Record<string, unknown>>({
     currentPage,
     pageSize,
     goToPage,
-    getPendingNavigation,
-    setPendingNavigation,
+    getPendingRowAction,
+    setPendingRowAction,
   ]);
 
   const handleRowClick = (index: number) => {

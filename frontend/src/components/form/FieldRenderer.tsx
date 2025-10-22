@@ -44,8 +44,6 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       return <div key={keyProp}>{field.customRender}</div>;
     }
 
-    const isGasField = field.type === 'gas';
-
     if (mode === 'display') {
       let displayValue;
       if (field.type === 'weish') {
@@ -209,6 +207,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       );
     }
 
+    const isGasField = field.type === 'gas';
     let placeHolder;
     if (field.type === 'wei') {
       placeHolder =

@@ -66,8 +66,8 @@ export interface ViewPaginationState {
   [key: string]: PaginationState;
 }
 
-export interface ViewNavigationState {
-  [key: string]: types.NavigationPayload | null;
+export interface ViewRowActionState {
+  [key: string]: types.RowActionPayload | null;
 }
 
 // Create stable reference for initial state to prevent new object creation
@@ -92,12 +92,12 @@ interface ViewContextType {
   ) => void;
   getFiltering: (viewStateKey: project.ViewStateKey) => string;
   updateFiltering: (viewStateKey: project.ViewStateKey, filter: string) => void;
-  getPendingNavigation: (
+  getPendingRowAction: (
     viewStateKey: project.ViewStateKey,
-  ) => types.NavigationPayload | null;
-  setPendingNavigation: (
+  ) => types.RowActionPayload | null;
+  setPendingRowAction: (
     viewStateKey: project.ViewStateKey,
-    navigation: types.NavigationPayload | null,
+    navigation: types.RowActionPayload | null,
   ) => void;
   restoreProjectFilterStates: () => Promise<void>;
 }
@@ -111,8 +111,8 @@ export const ViewContext = createContext<ViewContextType>({
   updateSorting: () => {},
   getFiltering: () => '',
   updateFiltering: () => {},
-  getPendingNavigation: () => null,
-  setPendingNavigation: () => {},
+  getPendingRowAction: () => null,
+  setPendingRowAction: () => {},
   restoreProjectFilterStates: async () => {},
 });
 
@@ -121,7 +121,7 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
   const [viewPagination, setViewPagination] = useState<ViewPaginationState>({});
   const [viewSorting, setViewSorting] = useState<ViewSortState>({});
   const [viewFiltering, setViewFiltering] = useState<ViewFilterState>({});
-  const [viewNavigation, setViewNavigation] = useState<ViewNavigationState>({});
+  const [viewRowAction, setViewRowAction] = useState<ViewRowActionState>({});
 
   const getPagination = useCallback(
     (viewStateKey: project.ViewStateKey) => {
@@ -250,21 +250,21 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
-  const getPendingNavigation = useCallback(
+  const getPendingRowAction = useCallback(
     (viewStateKey: project.ViewStateKey) => {
       const key = viewStateKeyToString(viewStateKey);
-      return viewNavigation[key] || null;
+      return viewRowAction[key] || null;
     },
-    [viewNavigation],
+    [viewRowAction],
   );
 
-  const setPendingNavigation = useCallback(
+  const setPendingRowAction = useCallback(
     (
       viewStateKey: project.ViewStateKey,
-      navigation: types.NavigationPayload | null,
+      navigation: types.RowActionPayload | null,
     ) => {
       const key = viewStateKeyToString(viewStateKey);
-      setViewNavigation((prev) => ({
+      setViewRowAction((prev) => ({
         ...prev,
         [key]: navigation,
       }));
@@ -328,8 +328,8 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
       updateSorting,
       getFiltering,
       updateFiltering,
-      getPendingNavigation,
-      setPendingNavigation,
+      getPendingRowAction,
+      setPendingRowAction,
       restoreProjectFilterStates,
     }),
     [
@@ -341,8 +341,8 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
       updateSorting,
       getFiltering,
       updateFiltering,
-      getPendingNavigation,
-      setPendingNavigation,
+      getPendingRowAction,
+      setPendingRowAction,
       restoreProjectFilterStates,
     ],
   );

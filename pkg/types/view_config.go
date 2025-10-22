@@ -25,6 +25,7 @@ type FacetConfig struct {
 	RendererTypes    string              `json:"rendererTypes"`
 	PanelChartConfig *PanelChartConfig   `json:"panelChartConfig,omitempty"`
 	FacetChartConfig *FacetChartConfig   `json:"facetChartConfig,omitempty"`
+	RowAction        *RowActionConfig    `json:"rowAction,omitempty"`
 }
 
 // FieldConfig is the single source-of-truth for facet fields
@@ -114,4 +115,46 @@ type MetricConfig struct {
 	Label        string `json:"label"`        // display name
 	BucketsField string `json:"bucketsField"` // field name in Buckets struct
 	Bytes        bool   `json:"bytes"`        // whether to format as bytes
+}
+
+// RowIdentifier represents different ways to identify/extract context from a row
+type RowIdentifier struct {
+	Type       string `json:"type"`                 // "address", "hash", "blockRange"
+	FieldName  string `json:"fieldName"`            // Field name to extract from row data
+	ContextKey string `json:"contextKey,omitempty"` // Key to use in context (defaults to Type)
+}
+
+// RowActionConfig defines what happens when a user presses Enter on a table row
+type RowActionConfig struct {
+	Type          string                 `json:"type"`                    // "navigate", "modal", "custom", "none"
+	Target        *NavigationTarget      `json:"target,omitempty"`        // For navigation actions
+	CustomHandler string                 `json:"customHandler,omitempty"` // For custom actions
+	Parameters    map[string]interface{} `json:"parameters,omitempty"`    // Additional parameters
+}
+
+// NavigationTarget defines the destination for row navigation actions
+type NavigationTarget struct {
+	View        string          `json:"view"`                  // Target view name (e.g., "exports")
+	Facet       string          `json:"facet"`                 // Target facet (e.g., "assetcharts") or "<latest>" for last visited
+	RowIndex    int             `json:"rowIndex"`              // Row index in target view (default: 0)
+	Identifiers []RowIdentifier `json:"identifiers,omitempty"` // Context extraction rules
+}
+
+// NewRowActionNavigation creates a navigation row action with sensible defaults
+func NewRowActionNavigation(targetView, targetFacet, fieldType, fieldName string) *RowActionConfig {
+	return &RowActionConfig{
+		Type: "navigate",
+		Target: &NavigationTarget{
+			View:     targetView,
+			Facet:    targetFacet,
+			RowIndex: 0,
+			Identifiers: []RowIdentifier{
+				{
+					Type:       fieldType,
+					FieldName:  fieldName,
+					ContextKey: fieldType,
+				},
+			},
+		},
+	}
 }

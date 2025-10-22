@@ -24,6 +24,7 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{},
 			RendererTypes: "facet",
+			RowAction:     types.NewRowActionNavigation("dresses", "gallery", "address", "original"),
 		},
 		"series": {
 			Name:          "Series",
@@ -61,6 +62,7 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "facet",
+			RowAction:     types.NewRowActionNavigation("dresses", "generator", "address", "original"),
 		},
 	}
 

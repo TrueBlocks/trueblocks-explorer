@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
+import { ExecuteRowAction } from '@app';
 import { StyledButton, StyledSelect, StyledText } from '@components';
 import { useIconSets, usePreferences } from '@hooks';
 import {
@@ -11,10 +12,10 @@ import {
   Stack,
   Title,
 } from '@mantine/core';
-import { dresses, model, project } from '@models';
+import { dresses, model, project, types } from '@models';
 import { Log } from '@utils';
 
-import { DalleDressCard } from '../../components';
+import { Thumbnail } from '../../components/Thumbnail';
 import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView';
 import { useSpeakPrompt } from '../../hooks/useSpeakPrompt';
 import { getItemKey, useGalleryStore } from '../../store';
@@ -132,12 +133,38 @@ export const GeneratorFacet = ({
     [setSelection, orig, series, viewStateKey],
   );
 
-  const handleThumbDouble = useCallback(
-    (item: model.DalleDress) => {
-      handleThumbSelect(item);
-    },
-    [handleThumbSelect],
-  );
+  const handleThumbDouble = useCallback(async (item: model.DalleDress) => {
+    const rowActionPayload = types.RowActionPayload.createFrom({
+      collection: 'dresses',
+      dataFacet: types.DataFacet.GENERATOR,
+      rowData: {
+        original: item.original,
+        fileName: item.fileName,
+        series: item.series,
+      },
+      rowAction: {
+        type: 'navigate',
+        target: {
+          view: 'dresses',
+          facet: 'gallery',
+          rowIndex: 0,
+          identifiers: [
+            {
+              type: 'address',
+              fieldName: 'original',
+              contextKey: 'address',
+            },
+          ],
+        },
+      },
+    });
+
+    try {
+      await ExecuteRowAction(rowActionPayload);
+    } catch (error) {
+      console.error('Failed to execute row action:', error);
+    }
+  }, []);
 
   useEffect(() => {
     if (!orig && !series) return;
@@ -247,12 +274,12 @@ export const GeneratorFacet = ({
         thumbItems,
         viewStateKey,
         undefined,
-        undefined,
+        handleThumbDouble,
         undefined,
         undefined,
       );
     },
-    [sharedHandleKey, thumbItems, viewStateKey],
+    [sharedHandleKey, thumbItems, viewStateKey, handleThumbDouble],
   );
 
   // selectedItem already defined above; maintain comment for context (Task 2).
@@ -455,36 +482,14 @@ export const GeneratorFacet = ({
 
                 <div>
                   <Title order={6}>Thumbnails</Title>
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: 4,
-                      overflowX: 'auto',
-                      padding: '4px 2px',
-                      marginTop: 4,
-                    }}
-                    ref={thumbRowRef}
-                    tabIndex={0}
+                  <Thumbnail
+                    items={thumbItems}
+                    selectedKey={getSelectionKey()}
+                    onItemClick={handleThumbSelect}
+                    onItemDoubleClick={handleThumbDouble}
+                    containerRef={thumbRowRef}
                     onKeyDown={handleKey}
-                  >
-                    {thumbItems.map((g) => {
-                      const itemKey = getItemKey(g);
-                      return (
-                        <div
-                          key={itemKey}
-                          data-key={itemKey}
-                          style={{ width: 72, flex: '0 0 auto' }}
-                        >
-                          <DalleDressCard
-                            item={g}
-                            onClick={handleThumbSelect}
-                            onDoubleClick={handleThumbDouble}
-                            selected={itemKey === getSelectionKey()}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
+                  />
                 </div>
               </Stack>
             </Grid.Col>

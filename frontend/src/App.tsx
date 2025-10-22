@@ -23,7 +23,7 @@ import {
 import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
 import { msgs, project, types } from '@models';
-import { LogError, initializePreferencesDefaults } from '@utils';
+import { LogError, initializePreferencesDefaults, useEmitters } from '@utils';
 import { WalletConnectModalSign } from '@walletconnect/modal-sign-react';
 import { Router, useLocation } from 'wouter';
 
@@ -58,9 +58,9 @@ function globalNavKeySquelcher(e: KeyboardEvent) {
 }
 
 // NavigationHandler component that listens for navigation events
-// Must be inside ViewContextProvider to access setPendingNavigation
+// Must be inside ViewContextProvider to access setPendingRowAction
 const NavigationHandler = () => {
-  const { setPendingNavigation } = useViewContext();
+  const { setPendingRowAction } = useViewContext();
   const {
     setViewAndFacet,
     activeAddress,
@@ -70,34 +70,35 @@ const NavigationHandler = () => {
     setActiveChain,
     setActivePeriod,
   } = useActiveProject();
-  const [, navigate] = useLocation();
+  const [_, navigate] = useLocation();
 
-  // Listen for navigation events from backend
+  // Listen for row action events from backend
   useEvent(
-    msgs.EventType.NAVIGATE_TO_ROW,
+    msgs.EventType.ROW_ACTION,
     async (message: string, payload?: unknown) => {
-      // Parse the payload as NavigationPayload
-      const navigationPayload = payload as types.NavigationPayload;
+      // Parse the payload as RowActionPayload
+      const rowActionPayload = payload as types.RowActionPayload;
+      const target = rowActionPayload.rowAction?.target;
+      if (!target) {
+        LogError('RowAction missing target configuration');
+        return;
+      }
 
-      // Check if context needs to change (only update if different)
+      // Check if context needs to change (use processed contextValues)
       const contextChanges: Promise<void>[] = [];
 
-      if (
-        navigationPayload.address &&
-        navigationPayload.address !== activeAddress
-      ) {
-        contextChanges.push(setActiveAddress(navigationPayload.address));
+      // Generic context handling - no view-specific knowledge
+      const contextValues = rowActionPayload.contextValues;
+      if (contextValues?.address && contextValues.address !== activeAddress) {
+        contextChanges.push(setActiveAddress(contextValues.address as string));
       }
 
-      if (navigationPayload.chain && navigationPayload.chain !== activeChain) {
-        contextChanges.push(setActiveChain(navigationPayload.chain));
+      if (rowActionPayload.chain && rowActionPayload.chain !== activeChain) {
+        contextChanges.push(setActiveChain(rowActionPayload.chain));
       }
 
-      if (
-        navigationPayload.period &&
-        navigationPayload.period !== activePeriod
-      ) {
-        contextChanges.push(setActivePeriod(navigationPayload.period));
+      if (rowActionPayload.period && rowActionPayload.period !== activePeriod) {
+        contextChanges.push(setActivePeriod(rowActionPayload.period));
       }
 
       // Wait for all context changes to complete before proceeding
@@ -105,23 +106,20 @@ const NavigationHandler = () => {
         await Promise.all(contextChanges);
       }
 
-      // Create ViewStateKey from the navigation payload
+      // Create ViewStateKey from the target configuration
       const targetViewStateKey: project.ViewStateKey = {
-        viewName: navigationPayload.collection,
-        facetName: navigationPayload.dataFacet,
+        viewName: target.view,
+        facetName: rowActionPayload.dataFacet,
       };
 
-      // Store navigation intent in ViewState
-      setPendingNavigation(targetViewStateKey, navigationPayload);
+      // Store complete row action payload in ViewState
+      setPendingRowAction(targetViewStateKey, rowActionPayload);
 
       // Set the target facet state BEFORE navigation (await completion)
-      await setViewAndFacet(
-        navigationPayload.collection,
-        navigationPayload.dataFacet,
-      );
+      await setViewAndFacet(target.view, rowActionPayload.dataFacet);
 
-      // Then navigate to trigger the view change
-      const targetRoute = `/${navigationPayload.collection}`;
+      // Navigate to target view (handles both intra-view and inter-view navigation)
+      const targetRoute = `/${target.view}`;
       navigate(targetRoute);
     },
   );
@@ -134,6 +132,7 @@ export const App = () => {
   const [viewConfigsLoading, setViewConfigsLoading] = useState(true);
   const [splashDelayComplete, setSplashDelayComplete] = useState(false);
   const { hasActiveProject } = useActiveProject();
+  const { emitError } = useEmitters();
 
   useEffect(() => {
     // Initialize view configurations at app startup
@@ -256,7 +255,7 @@ export const App = () => {
             projectId={
               (import.meta.env.VITE_WALLETCONNECT_PROJECT_ID as string) ||
               (() => {
-                LogError(
+                emitError(
                   'VITE_WALLETCONNECT_PROJECT_ID not set in environment variables',
                 );
                 return 'MISSING_PROJECT_ID';

@@ -2,10 +2,11 @@ package types
 
 import (
 	"fmt"
+	"os"
 	"sort"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/logger"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 )
 
 // SortFields sorts columns and detail fields by their explicit order values.
@@ -39,7 +40,8 @@ func SortFields(vc *ViewConfig) {
 	}
 }
 
-// SetMenuOrder applies menu ordering and facet configurations from embedded or file-based config to ViewConfig
+// SetMenuOrder applies menu ordering and facet configurations from embedded or file-based config to ViewConfig.
+// When TB_ALLVIEWS environment variable is set, ordering and disabled state configurations are ignored.
 func SetMenuOrder(vc *ViewConfig) {
 	if vc == nil {
 		logger.ShouldNotHappen("SetMenuOrder called with nil ViewConfig")
@@ -54,29 +56,29 @@ func SetMenuOrder(vc *ViewConfig) {
 
 	// Check if this view has configuration
 	if viewConfig, exists := config.ViewConfig[vc.ViewName]; exists {
-		// Apply menu order
-		if viewConfig.MenuOrder > 0 {
-			vc.MenuOrder = viewConfig.MenuOrder
-		} else {
-			vc.MenuOrder = 999 // Default order for views without explicit order
-		}
-
-		// Apply view-level disabled state
-		vc.Disabled = viewConfig.Disabled
-
-		// Apply facet configurations if both exist
-		if len(viewConfig.DisabledFacets) > 0 && vc.Facets != nil {
-			for facetName, facetConfig := range vc.Facets {
-				if disabledState, facetExists := viewConfig.DisabledFacets[facetName]; facetExists {
-					// Apply the configured disabled state directly (true = disabled, false = enabled)
-					facetConfig.Disabled = disabledState
-					vc.Facets[facetName] = facetConfig
+		skipOrdering := os.Getenv("TB_ALLVIEWS") != ""
+		if !skipOrdering {
+			if viewConfig.MenuOrder > 0 {
+				vc.MenuOrder = viewConfig.MenuOrder
+			} else {
+				vc.MenuOrder = 999 // Default order for views without explicit order
+			}
+			vc.Disabled = viewConfig.Disabled
+			if len(viewConfig.DisabledFacets) > 0 && vc.Facets != nil {
+				for facetName, facetConfig := range vc.Facets {
+					if disabledState, facetExists := viewConfig.DisabledFacets[facetName]; facetExists {
+						// Apply the configured disabled state directly (true = disabled, false = enabled)
+						facetConfig.Disabled = disabledState
+						vc.Facets[facetName] = facetConfig
+					}
 				}
 			}
+		} else {
+			vc.MenuOrder = 999 // Default order when TB_ALLVIEWS is set
 		}
 
-		// Apply custom facet ordering if provided
-		if len(viewConfig.FacetOrder) > 0 && vc.Facets != nil {
+		// Apply custom facet ordering if provided (unless TB_ALLVIEWS is set)
+		if !skipOrdering && len(viewConfig.FacetOrder) > 0 && vc.Facets != nil {
 			// Validate that all facets in the custom order exist and build valid order
 			validOrder := []string{}
 			customOrderSet := make(map[string]bool)

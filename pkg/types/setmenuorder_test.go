@@ -269,3 +269,122 @@ func TestSetMenuOrderFacetOrdering(t *testing.T) {
 		})
 	}
 }
+
+func TestSetMenuOrderWithTBAllViews(t *testing.T) {
+	// Create a temporary test config file
+	tmpDir := t.TempDir()
+	configContent := `{
+	"viewConfig": {
+		"testview": {
+			"menuOrder": 5,
+			"disabled": true,
+			"disabledFacets": {
+				"testfacet": true,
+				"disabledfacet": false
+			},
+			"facetOrder": ["facet3", "facet1", "facet2"]
+		}
+	}
+}`
+
+	configPath := filepath.Join(tmpDir, ".create-local-app.json")
+	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+		t.Fatalf("Failed to create test config file: %v", err)
+	}
+
+	// Change to temp directory temporarily
+	originalDir, _ := os.Getwd()
+	defer func() {
+		_ = os.Chdir(originalDir)
+	}()
+	_ = os.Chdir(tmpDir)
+
+	// Set TB_ALLVIEWS environment variable
+	originalTBAllViews := os.Getenv("TB_ALLVIEWS")
+	_ = os.Setenv("TB_ALLVIEWS", "1")
+	defer func() {
+		if originalTBAllViews == "" {
+			_ = os.Unsetenv("TB_ALLVIEWS")
+		} else {
+			_ = os.Setenv("TB_ALLVIEWS", originalTBAllViews)
+		}
+	}()
+
+	tests := []struct {
+		name               string
+		vc                 *ViewConfig
+		expectedOrder      int
+		expectedDisabled   bool
+		expectedFacets     map[string]bool // true = disabled, false = enabled
+		expectedFacetOrder []string
+	}{
+		{
+			name: "TB_ALLVIEWS ignores all config",
+			vc: &ViewConfig{
+				ViewName:   "testview",
+				MenuOrder:  999,
+				Disabled:   false, // Initially enabled
+				FacetOrder: []string{"facet1", "facet2", "facet3"},
+				Facets: map[string]FacetConfig{
+					"facet1": {
+						Name:     "facet1",
+						Disabled: false, // Initially enabled
+					},
+					"facet2": {
+						Name:     "facet2",
+						Disabled: false, // Initially enabled
+					},
+					"facet3": {
+						Name:     "facet3",
+						Disabled: false, // Initially enabled
+					},
+				},
+			},
+			expectedOrder:    999,   // Should use default, not config value 5
+			expectedDisabled: false, // Should remain unchanged, not config value true
+			expectedFacets: map[string]bool{
+				"facet1": false, // Should remain unchanged
+				"facet2": false, // Should remain unchanged
+				"facet3": false, // Should remain unchanged
+			},
+			expectedFacetOrder: []string{"facet1", "facet2", "facet3"}, // Should remain unchanged
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			SetMenuOrder(tt.vc)
+
+			if tt.vc.MenuOrder != tt.expectedOrder {
+				t.Errorf("Expected MenuOrder %d, got %d", tt.expectedOrder, tt.vc.MenuOrder)
+			}
+
+			if tt.vc.Disabled != tt.expectedDisabled {
+				t.Errorf("Expected Disabled %v, got %v", tt.expectedDisabled, tt.vc.Disabled)
+			}
+
+			if tt.expectedFacets != nil && tt.vc.Facets != nil {
+				for facetName, expectedDisabled := range tt.expectedFacets {
+					if facet, exists := tt.vc.Facets[facetName]; exists {
+						if facet.Disabled != expectedDisabled {
+							t.Errorf("Facet %s: expected Disabled=%v, got Disabled=%v", facetName, expectedDisabled, facet.Disabled)
+						}
+					} else {
+						t.Errorf("Expected facet %s not found", facetName)
+					}
+				}
+			}
+
+			if len(tt.vc.FacetOrder) != len(tt.expectedFacetOrder) {
+				t.Errorf("Expected FacetOrder length %d, got %d", len(tt.expectedFacetOrder), len(tt.vc.FacetOrder))
+				return
+			}
+
+			for i, expected := range tt.expectedFacetOrder {
+				if i >= len(tt.vc.FacetOrder) || tt.vc.FacetOrder[i] != expected {
+					t.Errorf("Expected FacetOrder[%d] = %s, got %s", i, expected, tt.vc.FacetOrder[i])
+				}
+			}
+		})
+	}
+}

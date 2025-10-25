@@ -61,10 +61,9 @@ func (c *DressesCollection) GetPage(
 		Facet: dataFacet,
 	}
 	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
-	const UnpaginatedPageSize = 1_000_000_000
 	if page.Facet == DressesGenerator || page.Facet == DressesGallery {
 		first = 0
-		pageSize = UnpaginatedPageSize
+		pageSize = 1_000_000_000
 	}
 
 	if c.shouldSummarize(payload) {

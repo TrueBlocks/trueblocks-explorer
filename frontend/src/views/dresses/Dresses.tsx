@@ -168,7 +168,6 @@ export const Dresses = () => {
     createPayload,
     getCurrentDataFacet,
   });
-
   const { handleRowAction } = handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;

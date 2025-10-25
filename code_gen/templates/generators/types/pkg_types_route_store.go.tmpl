@@ -106,7 +106,13 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 }
 
 func getStoreKey(chain, address string) string {
+	{{- if $isNames}}
+	_ = chain
+	_ = address
+	return fmt.Sprintf("%s_%s", "mainnet", "")
+	{{- else}}
 	return fmt.Sprintf("%s_%s", chain, address)
+	{{- end}}
 }
 
 // EXISTING_CODE

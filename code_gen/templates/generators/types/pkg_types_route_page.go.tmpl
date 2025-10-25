@@ -1,5 +1,6 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
+{{- $isDresses := eq $class "Dresses" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -52,6 +53,12 @@ func (c *{{.Class}}Collection) GetPage(
 		Facet: dataFacet,
 	}
 	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
+	{{- if $isDresses }}
+	if page.Facet == DressesGenerator || page.Facet == DressesGallery {
+		first = 0
+		pageSize = 1_000_000_000
+	}
+	{{- end}}
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)

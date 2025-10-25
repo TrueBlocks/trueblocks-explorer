@@ -39,7 +39,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 
 	chain := payload.Chain
 	address := payload.Address
-	storeKey := getStoreKey("mainnet", "")
+	storeKey := getStoreKey(chain, address)
 	theStore := namesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {

@@ -8,7 +8,8 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { AbisCrud, GetAbisPage, Reload } from '@app';
+import { GetAbisPage, Reload } from '@app';
+import { AbisCrud } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -165,7 +166,6 @@ export const Abis = () => {
     createPayload,
     getCurrentDataFacet,
   });
-
   const { handleRemove } = handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
@@ -230,6 +230,7 @@ export const Abis = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {

@@ -18,12 +18,13 @@ import (
 )
 
 // EXISTING_CODE
+
 type ChunksPage struct {
 	Facet         types.DataFacet  `json:"facet"`
-	Blooms        []*Bloom         `json:"blooms"`
-	Index         []*Index         `json:"index"`
-	Manifest      []*Manifest      `json:"manifest"`
-	Stats         []*Stats         `json:"stats"`
+	Blooms        []Bloom          `json:"blooms"`
+	Index         []Index          `json:"index"`
+	Manifest      []Manifest       `json:"manifest"`
+	Stats         []Stats          `json:"stats"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
 	State         types.StoreState `json:"state"`
@@ -53,12 +54,12 @@ func (c *ChunksCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &ChunksPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -80,11 +81,9 @@ func (c *ChunksCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("chunks", dataFacet, "GetPage", err)
 		} else {
-			stats := make([]*Stats, 0, len(result.Items))
-			for i := range result.Items {
-				stats = append(stats, &result.Items[i])
-			}
-			page.Stats, page.TotalItems, page.State = stats, result.TotalItems, result.State
+			page.Stats = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksIndex:
@@ -101,11 +100,9 @@ func (c *ChunksCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("chunks", dataFacet, "GetPage", err)
 		} else {
-			index := make([]*Index, 0, len(result.Items))
-			for i := range result.Items {
-				index = append(index, &result.Items[i])
-			}
-			page.Index, page.TotalItems, page.State = index, result.TotalItems, result.State
+			page.Index = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksBlooms:
@@ -122,11 +119,9 @@ func (c *ChunksCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("chunks", dataFacet, "GetPage", err)
 		} else {
-			bloom := make([]*Bloom, 0, len(result.Items))
-			for i := range result.Items {
-				bloom = append(bloom, &result.Items[i])
-			}
-			page.Blooms, page.TotalItems, page.State = bloom, result.TotalItems, result.State
+			page.Blooms = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ChunksManifest:
@@ -143,11 +138,9 @@ func (c *ChunksCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("chunks", dataFacet, "GetPage", err)
 		} else {
-			manifest := make([]*Manifest, 0, len(result.Items))
-			for i := range result.Items {
-				manifest = append(manifest, &result.Items[i])
-			}
-			page.Manifest, page.TotalItems, page.State = manifest, result.TotalItems, result.State
+			page.Manifest = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -211,6 +204,24 @@ func (c *ChunksCollection) generateSummariesForPeriod(dataFacet types.DataFacet,
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *ChunksCollection,
+	page *ChunksPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

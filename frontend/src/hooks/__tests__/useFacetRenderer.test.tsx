@@ -73,8 +73,10 @@ describe('useFacetRenderer', () => {
 
   it('should use custom renderer when provided', () => {
     const mockRenderers = {
-      [types.DataFacet.MANIFEST]: ({ data }: { data: any }) => (
-        <div data-testid="custom-renderer">Custom: {data.name}</div>
+      [types.DataFacet.MANIFEST]: ({ data }: { data: any[] }) => (
+        <div data-testid="custom-renderer">
+          Custom: {data[0]?.name || 'No data'}
+        </div>
       ),
     };
 

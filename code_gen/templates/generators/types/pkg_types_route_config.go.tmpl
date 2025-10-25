@@ -1,7 +1,5 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
-{{- $isNames := and (eq $class "Names") }}
-{{- $isChunks := and (eq $class "Chunks") }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -20,19 +18,27 @@ import (
 func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 	facets := map[string]types.FacetConfig{
 		{{- range .Facets}}
+		{{- $rowActionsBe := .RowActionsBe .Name -}}
+		{{- $headerActionsBe := .HeaderActionsBe .Name}}
 		"{{toLower .Name}}": {
 			Name:          "{{toHeader .DisplayName}}",
 			Store:         "{{toLower .StoreName}}",
 			{{- if .ViewType }}
 						ViewType:      "{{.ViewType}}",
 			{{- end }}
-			DividerBefore: {{and (eq .Name "Prefund") $isNames}},
+			DividerBefore: {{contains .Attributes "dividerBefore"}},
 			Fields:        get{{toProper .StoreName}}Fields(),
-			Actions:       []string{ {{if ne (.RowActionsBe .Name) "\"\""}}{{.RowActionsBe .Name}}{{else}}{{end}} },
-			HeaderActions: []string{ {{if ne (.HeaderActionsBe .Name) "\"\""}}{{.HeaderActionsBe .Name}}{{else}}{{end}} },
+			Actions:       []string{ {{if $rowActionsBe}}{{$rowActionsBe}}{{end}} },
+			HeaderActions: []string{ {{if $headerActionsBe}}{{$headerActionsBe}}{{end}} },
 			RendererTypes: "{{.Renderer}}",
-			{{- if $isChunks}}
-						PanelChartConfig:   get{{.Name}}PanelChartConfig(),
+			{{- if .PanelChart }}
+				PanelChartConfig:   get{{.Name}}PanelConfig(),
+			{{- end}}
+			{{- if .FacetChart }}
+				FacetChartConfig:   get{{.Name}}FacetConfig(),
+			{{- end}}
+			{{- if .NavigateTo }}
+				RowAction:   {{.NavigateTo}},
 			{{- end}}
 		},
 		{{- end}}
@@ -58,8 +64,15 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 
 func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		// EXISTING_CODE
+		{{- range .Members }}
+			{{- if not (or (contains .Type "[]") (contains .Type "*")) }}
+				{{- $formatter := .GetFormatter }}
+				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $formatter}}, Formatter: "{{$formatter}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
+			{{- end }}
+		{{- end }}
+		{{- if .HasActions $.Facets}}
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{{- end }}
 	}
 	types.NormalizeFields(ret)
 	return ret

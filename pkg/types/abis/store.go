@@ -28,10 +28,10 @@ type Function = sdk.Function
 // EXISTING_CODE
 
 var (
-	abisStore   *store.Store[Abi]
+	abisStore   = make(map[string]*store.Store[Abi])
 	abisStoreMu sync.Mutex
 
-	functionsStore   *store.Store[Function]
+	functionsStore   = make(map[string]*store.Store[Function])
 	functionsStoreMu sync.Mutex
 )
 
@@ -44,7 +44,8 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := abisStore
+	storeKey := getStoreKey(chain, address)
+	theStore := abisStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -83,7 +84,7 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		abisStore = theStore
+		abisStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -98,7 +99,8 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := functionsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := functionsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -137,15 +139,13 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		functionsStore = theStore
+		functionsStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *AbisCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case AbisDownloaded:
@@ -159,6 +159,7 @@ func (c *AbisCollection) GetStoreName(dataFacet types.DataFacet, chain, address 
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -172,8 +173,6 @@ func GetAbisCollection(payload *types.Payload) *AbisCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
@@ -182,6 +181,10 @@ func GetAbisCollection(payload *types.Payload) *AbisCollection {
 	collection := NewAbisCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
 }
 
 // EXISTING_CODE

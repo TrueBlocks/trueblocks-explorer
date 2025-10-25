@@ -503,7 +503,7 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 			// EXISTING_CODE
 			// EXISTING_CODE
 			if it, ok := item.(*Statement); ok {
-				c.updateAssetChartsBucket(it)
+				c.updateStatementsBucket(it)
 				return it
 			}
 			return nil
@@ -795,7 +795,6 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection

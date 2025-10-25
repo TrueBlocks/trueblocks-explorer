@@ -10,16 +10,20 @@ export const renderers = {
     [types.DataFacet.DASHBOARD]: ({
       data,
     }: {
-      data: Record<string, unknown>;
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      return <DashboardFacet data={data} />;
+      return <DashboardFacet data={data[0] || {}} />;
     },
     [types.DataFacet.EXECUTE]: ({
       data,
     }: {
-      data: Record<string, unknown>;
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      return <ExecuteFacet data={data} />;
+      return <ExecuteFacet data={data[0] || {}} />;
     },
   },
 };

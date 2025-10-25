@@ -43,8 +43,7 @@ func parseCSVToTransactions(data []byte) []*Transaction {
 			BlockNumber:      base.Blknum(blk),
 			TransactionIndex: base.Txnum(idx),
 		}
-		ttx := Transaction{Transaction: tx, Missing: false, Unique: false}
-		out = append(out, &ttx)
+		out = append(out, &tx)
 	}
 	return out
 }

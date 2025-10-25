@@ -19,7 +19,6 @@ import (
 
 // EXISTING_CODE
 
-// TODO: The slices should be slices to pointers
 type AbisPage struct {
 	Facet         types.DataFacet  `json:"facet"`
 	Abis          []Abi            `json:"abis"`
@@ -53,12 +52,12 @@ func (c *AbisCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &AbisPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -80,7 +79,9 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-			page.Abis, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Abis = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisKnown:
@@ -97,7 +98,9 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-			page.Abis, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Abis = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisFunctions:
@@ -114,7 +117,9 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-			page.Functions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Functions = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case AbisEvents:
@@ -131,7 +136,9 @@ func (c *AbisCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("abis", dataFacet, "GetPage", err)
 		} else {
-			page.Functions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Functions = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -195,6 +202,24 @@ func (c *AbisCollection) generateSummariesForPeriod(dataFacet types.DataFacet, p
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *AbisCollection,
+	page *AbisPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

@@ -1,21 +1,21 @@
-name           , type       , required, docOrder, description
-original       , string     ,         ,        1, The original value
-fileName       , string     ,         ,        2, The fileName value
-seed           , string     ,         ,        3, The seed value
-prompt         , string     ,         ,        4, The prompt value
-dataPrompt     , string     ,         ,        5, The dataPrompt value
-titlePrompt    , string     ,         ,        6, The titlePrompt value
-tersePrompt    , string     ,         ,        7, The tersePrompt value
-enhancedPrompt , string     ,         ,        8, The enhancedPrompt value
-attributes     , []Attribute,         ,        9, The attributes value
-seedChunks     , []string   ,         ,       10, The seedChunks value
-selectedTokens , []string   ,         ,       11, The selectedTokens value
-selectedRecords, []string   ,         ,       12, The selectedRecords value
-imageUrl       , string     ,         ,       13, The imageUrl value
-generatedPath  , string     ,         ,       14, The generatedPath value
-annotatedPath  , string     ,         ,       15, The annotatedPath value
-downloadMode   , string     ,         ,       16, The downloadMode value
-ipfsHash       , string     ,         ,       17, The ipfsHash value
-cacheHit       , bool       ,         ,       18, The cacheHit value
-completed      , bool       ,         ,       19, The completed value
-series         , string     ,         ,       20, The series value
+name           , type       , required, section   , docOrder, description
+original       , string     ,         , Source    ,        1, The original value
+fileName       , string     ,         , Source    ,        2, The fileName value
+seed           , string     ,         , Source    ,        3, The seed value
+prompt         , string     ,         , Prompts   ,        4, The prompt value
+dataPrompt     , string     ,         , Prompts   ,        5, The dataPrompt value
+titlePrompt    , string     ,         , Prompts   ,        6, The titlePrompt value
+tersePrompt    , string     ,         , Prompts   ,        7, The tersePrompt value
+enhancedPrompt , string     ,         , Prompts   ,        8, The enhancedPrompt value
+attributes     , []Attribute,         , Data      ,        9, The attributes value
+seedChunks     , []string   ,         , Data      ,       10, The seedChunks value
+selectedTokens , []string   ,         , Data      ,       11, The selectedTokens value
+selectedRecords, []string   ,         , Data      ,       12, The selectedRecords value
+imageUrl       , string     ,         , Output    ,       13, The imageUrl value
+generatedPath  , string     ,         , Output    ,       14, The generatedPath value
+annotatedPath  , string     ,         , Output    ,       15, The annotatedPath value
+downloadMode   , string     ,         , Output    ,       16, The downloadMode value
+ipfsHash       , string     ,         , Storage   ,       17, The ipfsHash value
+cacheHit       , bool       ,         , Status    ,       18, The cacheHit value
+completed      , bool       ,         , Status    ,       19, The completed value
+series         , string     ,         , Source    ,       20, The series value

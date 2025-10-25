@@ -1,6 +1,4 @@
 {{- $class := .Class -}}
-{{- $lower := toLower $class -}}
-{{- $isChunks := and (eq $class "Chunks") }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -24,16 +22,15 @@ func (c *{{$class}}Collection) GetBuckets(payload *types.Payload) (*types.Bucket
 	default:
 		return &types.Buckets{
 			Series: make(map[string][]types.Bucket),
-			GridInfo: types.GridInfo{
-				Size:        100000,
-				Rows:        0,
-				Columns:     20,
-				BucketCount: 0,
-				MaxBlock:    0,
-			},
+			GridInfo: types.NewGridInfo(),
 		}, nil
 	}
 
 	buckets := facet.GetBuckets()
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return buckets, nil
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

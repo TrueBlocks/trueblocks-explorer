@@ -27,10 +27,10 @@ type Log = sdk.Log
 // EXISTING_CODE
 
 var (
-	contractsStore   *store.Store[Contract]
+	contractsStore   = make(map[string]*store.Store[Contract])
 	contractsStoreMu sync.Mutex
 
-	logsStore   *store.Store[Log]
+	logsStore   = make(map[string]*store.Store[Log])
 	logsStoreMu sync.Mutex
 )
 
@@ -43,7 +43,8 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := contractsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := contractsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -80,7 +81,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 		theStore.ChangeState(types.StateLoaded, "Mock data loaded")
 		// EXISTING_CODE
 
-		contractsStore = theStore
+		contractsStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -98,7 +99,8 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := logsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := logsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -139,15 +141,13 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		logsStore = theStore
+		logsStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *ContractsCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case ContractsDashboard:
@@ -159,6 +159,7 @@ func (c *ContractsCollection) GetStoreName(dataFacet types.DataFacet, chain, add
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -172,8 +173,6 @@ func GetContractsCollection(payload *types.Payload) *ContractsCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
@@ -182,6 +181,10 @@ func GetContractsCollection(payload *types.Payload) *ContractsCollection {
 	collection := NewContractsCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
 }
 
 // EXISTING_CODE

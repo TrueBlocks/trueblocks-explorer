@@ -5,7 +5,7 @@ import { Alert, Stack, Text } from '@mantine/core';
 import { types } from '@models';
 
 type RendererCtx<T extends Record<string, unknown>> = {
-  data: T;
+  data: T[];
   columns: FormField<T>[];
   facet: types.DataFacet;
 };
@@ -48,7 +48,7 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
   const node = useMemo(() => {
     if (!isCanvas) return null;
 
-    const data = currentData && currentData.length > 0 ? currentData[0] : null;
+    const data = currentData || [];
     const hasCustomRenderer = renderers && renderers[facet];
 
     // If renderer is expected but missing, show warning
@@ -104,7 +104,7 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
     }
 
     // Has custom renderer and data - use it
-    if (hasCustomRenderer && data) {
+    if (hasCustomRenderer && data.length > 0) {
       const renderer = renderers[facet];
       return renderer
         ? renderer({ data, columns: currentColumns, facet })

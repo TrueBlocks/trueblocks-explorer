@@ -8,7 +8,8 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GetMonitorsPage, MonitorsCrud, Reload } from '@app';
+import { GetMonitorsPage, Reload } from '@app';
+import { MonitorsCrud } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -159,7 +160,6 @@ export const Monitors = () => {
     createPayload,
     getCurrentDataFacet,
   });
-
   const { handleRemove, handleToggle, handleRowAction } = handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
@@ -225,6 +225,7 @@ export const Monitors = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
@@ -238,9 +239,9 @@ export const Monitors = () => {
         viewStateKey={viewStateKey}
         headerActions={headerActions}
         detailPanel={detailPanel}
-        onSubmit={handleRowAction}
         onDelete={(rowData) => handleToggle(String(rowData.address || ''))}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
+        onSubmit={handleRowAction}
       />
     );
   }, [
@@ -253,9 +254,9 @@ export const Monitors = () => {
     formNode,
     headerActions,
     detailPanel,
-    handleRowAction,
     handleToggle,
     handleRemove,
+    handleRowAction,
   ]);
 
   const tabs = useMemo(

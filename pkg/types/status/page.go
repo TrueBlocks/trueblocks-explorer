@@ -18,11 +18,12 @@ import (
 )
 
 // EXISTING_CODE
+
 type StatusPage struct {
 	Facet         types.DataFacet  `json:"facet"`
-	Caches        []*Cache         `json:"caches"`
-	Chains        []*Chain         `json:"chains"`
-	Status        []*Status        `json:"status"`
+	Caches        []Cache          `json:"caches"`
+	Chains        []Chain          `json:"chains"`
+	Status        []Status         `json:"status"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
 	State         types.StoreState `json:"state"`
@@ -52,12 +53,12 @@ func (c *StatusCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &StatusPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -79,11 +80,9 @@ func (c *StatusCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("status", dataFacet, "GetPage", err)
 		} else {
-			status := make([]*Status, 0, len(result.Items))
-			for i := range result.Items {
-				status = append(status, &result.Items[i])
-			}
-			page.Status, page.TotalItems, page.State = status, result.TotalItems, result.State
+			page.Status = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case StatusCaches:
@@ -100,11 +99,9 @@ func (c *StatusCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("status", dataFacet, "GetPage", err)
 		} else {
-			cache := make([]*Cache, 0, len(result.Items))
-			for i := range result.Items {
-				cache = append(cache, &result.Items[i])
-			}
-			page.Caches, page.TotalItems, page.State = cache, result.TotalItems, result.State
+			page.Caches = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case StatusChains:
@@ -121,11 +118,9 @@ func (c *StatusCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("status", dataFacet, "GetPage", err)
 		} else {
-			chain := make([]*Chain, 0, len(result.Items))
-			for i := range result.Items {
-				chain = append(chain, &result.Items[i])
-			}
-			page.Chains, page.TotalItems, page.State = chain, result.TotalItems, result.State
+			page.Chains = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -189,6 +184,24 @@ func (c *StatusCollection) generateSummariesForPeriod(dataFacet types.DataFacet,
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *StatusCollection,
+	page *StatusPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

@@ -13,16 +13,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	storePkg "github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
 
-// TODO: The slices should be slices to pointers
 type ExportsPage struct {
 	Facet         types.DataFacet  `json:"facet"`
 	ApprovalLogs  []ApprovalLog    `json:"approvallogs"`
@@ -66,12 +65,12 @@ func (c *ExportsCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &ExportsPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -106,7 +105,9 @@ func (c *ExportsCollection) GetPage(
 					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
 				}
 			}
-			page.Statements, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Statements = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsBalances:
@@ -123,7 +124,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Balances, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Balances = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsTransfers:
@@ -140,7 +143,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Transfers, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Transfers = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsTransactions:
@@ -157,7 +162,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Transactions, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Transactions = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsOpenApprovals:
@@ -174,7 +181,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.OpenApprovals, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.OpenApprovals = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsApprovalLogs:
@@ -191,7 +200,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.ApprovalLogs, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.ApprovalLogs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsApprovalTxs:
@@ -208,7 +219,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.ApprovalTxs, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.ApprovalTxs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsWithdrawals:
@@ -225,7 +238,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Withdrawals, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Withdrawals = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsAssets:
@@ -242,7 +257,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Assets, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Assets = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsAssetCharts:
@@ -272,7 +289,9 @@ func (c *ExportsCollection) GetPage(
 					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
 				}
 			}
-			page.Statements, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Statements = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsLogs:
@@ -289,7 +308,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Logs, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Logs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsTraces:
@@ -306,7 +327,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Traces, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Traces = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsReceipts:
@@ -323,7 +346,9 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			page.Receipts, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Receipts = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -547,6 +572,24 @@ func (c *ExportsCollection) generateSummariesForPeriod(dataFacet types.DataFacet
 	}
 }
 
+func preprocessPage(
+	c *ExportsCollection,
+	page *ExportsPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
+}
+
 // EXISTING_CODE
 func (c *ExportsCollection) matchesStatementFilter(item *Statement, filter string) bool {
 	return strings.Contains(strings.ToLower(item.AccountedFor.Hex()), filter) || strings.Contains(strings.ToLower(item.Asset.Hex()), filter)
@@ -574,7 +617,7 @@ func (c *ExportsCollection) matchesWithdrawalFilter(item *Withdrawal, filter str
 func (c *ExportsCollection) matchesAssetFilter(item *Asset, filter string) bool {
 	_ = item    // delint
 	_ = filter  // delint
-	return true //strings.Contains(strings.ToLower(item.Address.Hex()), filter) ||
+	return true // strings.Contains(strings.ToLower(item.Address.Hex()), filter) ||
 	// strings.Contains(strings.ToLower(item.Name), filter) ||
 	// strings.Contains(strings.ToLower(item.Symbol), filter)
 }
@@ -582,7 +625,7 @@ func (c *ExportsCollection) matchesAssetFilter(item *Asset, filter string) bool 
 func (c *ExportsCollection) matchesAssetChartFilter(item *Statement, filter string) bool {
 	_ = item    // delint
 	_ = filter  // delint
-	return true //strings.Contains(strings.ToLower(item.Address.Hex()), filter) ||
+	return true // strings.Contains(strings.ToLower(item.Address.Hex()), filter) ||
 	// strings.Contains(strings.ToLower(item.Name), filter) ||
 	// strings.Contains(strings.ToLower(item.Symbol), filter)
 }

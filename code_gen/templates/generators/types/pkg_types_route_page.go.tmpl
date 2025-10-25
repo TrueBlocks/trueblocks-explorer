@@ -1,11 +1,5 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
-{{- $single := toSingular $class -}}
-{{- $isAbis := eq $class "Abis" -}}
-{{- $isExports := eq $class "Exports" -}}
-{{- $isMonitors := eq $class "Monitors" -}}
-{{- $shouldBePtr := or (or $isAbis $isMonitors) $isExports -}}
-{{- $isPtr := not $shouldBePtr -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -19,12 +13,9 @@ package {{toLower .Class}}
 // EXISTING_CODE
 // EXISTING_CODE
 
-{{- if $shouldBePtr}}
-
-// TODO: The slices should be slices to pointers{{end}}
 type {{.Class}}Page struct {
 	Facet         types.DataFacet      `json:"facet"`
-	{{range .Stores}}{{.Name}} []{{if $shouldBePtr}}{{else}}*{{end}}{{toSingular .Name}} `json:"{{toLower .Name}}"`
+	{{range .Stores}}{{.Name}} []{{toSingular .Name}} `json:"{{toLower .Name}}"`
 {{end -}}
 	TotalItems    int                  `json:"totalItems"`
 	ExpectedTotal int                  `json:"expectedTotal"`
@@ -55,12 +46,12 @@ func (c *{{.Class}}Collection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &{{.Class}}Page{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -69,17 +60,16 @@ func (c *{{.Class}}Collection) GetPage(
 	switch dataFacet {
 	{{range .Facets}}
 	{{$sing := toSingular .Name -}}
-	{{- $sing2 := toSingular .Store -}}
 	case {{$class}}{{.Name}}:
 		facet := c.{{toLower .Name}}Facet
-		var filterFunc func(*{{$sing2}}) bool
+		var filterFunc func(*{{toSingular .StoreName}}) bool
 		if filter != "" {
-			filterFunc = func(item *{{$sing2}}) bool {
+			filterFunc = func(item *{{toSingular .StoreName}}) bool {
 				return c.matches{{$sing}}Filter(item, filter)
 			}
 		}
-		sortFunc := func(items []{{$sing2}}, sort sdk.SortSpec) error {
-			return sdk.Sort{{.Store}}(items, sort)
+		sortFunc := func(items []{{toSingular .StoreName}}, sort sdk.SortSpec) error {
+			return {{.StoreSource}}.Sort{{.StoreName}}(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("{{toLower $class}}", dataFacet, "GetPage", err)
@@ -99,13 +89,9 @@ func (c *{{.Class}}Collection) GetPage(
 				}
 			}
 			{{- end}}
-			{{- if $isPtr }}
-			{{toLower $sing}} := make([]*{{toSingular .Store}}, 0, len(result.Items))
-			for i := range result.Items {
-				{{toLower $sing}} = append({{toLower $sing}}, &result.Items[i])
-			}
-			{{- end}}
-			page.{{.Store}}, page.TotalItems, page.State = {{if $isPtr}}{{toLower $sing}}{{else}}result.Items{{end}}, result.TotalItems, result.State
+			page.{{.StoreName}} = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 {{- end}}
@@ -170,6 +156,24 @@ func (c *{{.Class}}Collection) generateSummariesForPeriod(dataFacet types.DataFa
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *{{.Class}}Collection,
+	page *{{.Class}}Page,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

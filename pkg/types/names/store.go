@@ -26,7 +26,7 @@ type Name = sdk.Name
 // EXISTING_CODE
 
 var (
-	namesStore   *store.Store[Name]
+	namesStore   = make(map[string]*store.Store[Name])
 	namesStoreMu sync.Mutex
 )
 
@@ -39,7 +39,8 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := namesStore
+	storeKey := getStoreKey("mainnet", "")
+	theStore := namesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -82,15 +83,13 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		namesStore = theStore
+		namesStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *NamesCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case NamesAll:
@@ -106,6 +105,7 @@ func (c *NamesCollection) GetStoreName(dataFacet types.DataFacet, chain, address
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -130,6 +130,12 @@ func GetNamesCollection(payload *types.Payload) *NamesCollection {
 	collection := NewNamesCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	_ = chain
+	_ = address
+	return fmt.Sprintf("%s_%s", "mainnet", "")
 }
 
 // EXISTING_CODE

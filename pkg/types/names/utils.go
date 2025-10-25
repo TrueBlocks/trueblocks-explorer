@@ -1,8 +1,8 @@
 package names
 
 import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
@@ -10,7 +10,12 @@ func NameFromAddress(address base.Address) (*Name, bool) {
 	if !ensureLoadedSync("mainnet") {
 		return nil, false
 	}
-	name, found := namesStore.GetItemFromMap(address)
+	storeKey := getStoreKey("mainnet", "")
+	store := namesStore[storeKey]
+	if store == nil {
+		return nil, false
+	}
+	name, found := store.GetItemFromMap(address)
 	return name, found
 }
 
@@ -21,8 +26,11 @@ func loadNamesSync(chain string) error {
 	namesStoreMu.Lock()
 	defer namesStoreMu.Unlock()
 
+	storeKey := getStoreKey("mainnet", "")
+	store := namesStore[storeKey]
+
 	// Double-check if store is already loaded after acquiring lock
-	if namesStore != nil && namesStore.GetState() == types.StateLoaded {
+	if store != nil && store.GetState() == types.StateLoaded {
 		return nil
 	}
 
@@ -38,18 +46,18 @@ func loadNamesSync(chain string) error {
 	}
 
 	// Now we need to populate the store directly with the loaded names
-	if namesStore != nil {
+	if store != nil {
 		// Reset the store to clear any existing state
-		namesStore.Reset()
+		store.Reset()
 
 		// Add each name to the store - this will populate both data slice and dataMap
 		for i, name := range names {
 			namePtr := &name
-			namesStore.AddItem(namePtr, i)
+			store.AddItem(namePtr, i)
 		}
 
 		// Mark the store as loaded
-		namesStore.ChangeState(types.StateLoaded, "Synchronously loaded names")
+		store.ChangeState(types.StateLoaded, "Synchronously loaded names")
 	}
 
 	return nil
@@ -58,12 +66,14 @@ func loadNamesSync(chain string) error {
 // ensureLoadedSync ensures the names store is loaded synchronously
 // This will block until names are loaded or an error occurs
 func ensureLoadedSync(chain string) bool {
-	if namesStore == nil {
+	storeKey := getStoreKey("mainnet", "")
+	store := namesStore[storeKey]
+	if store == nil {
 		return false
 	}
 
 	// Quick check without lock first (optimization)
-	if namesStore.GetState() == types.StateLoaded {
+	if store.GetState() == types.StateLoaded {
 		return true
 	}
 
@@ -73,5 +83,6 @@ func ensureLoadedSync(chain string) bool {
 	}
 
 	// Verify the store is now loaded
-	return namesStore.GetState() == types.StateLoaded
+	updatedStore := namesStore[storeKey]
+	return updatedStore != nil && updatedStore.GetState() == types.StateLoaded
 }

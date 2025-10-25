@@ -1,15 +1,15 @@
-name        , type    , required, docOrder, description
-suffix      , string  , true    ,        1, Series identifier
-last        , value   , false   ,        2, Last used index
-adverbs     , []string, false   ,        3, List of adverbs
-adjectives  , []string, false   ,        4, List of adjectives
-nouns       , []string, false   ,        5, List of nouns
-emotions    , []string, false   ,        6, List of emotions
-artstyles   , []string, false   ,        7, List of art styles
-colors      , []string, false   ,        8, List of colors
-viewpoints  , []string, false   ,        9, List of viewpoints
-gazes       , []string, false   ,       10, List of gazes
-backstyles  , []string, false   ,       11, List of back styles
-compositions, []string, false   ,       12, List of compositions
-createdAt   , datetime, false   ,       13, Creation timestamp
-modifiedAt  , datetime, false   ,       14, Last modified timestamp
+name        , type    , required, attributes, section  , docOrder, description
+suffix      , string  , false   ,           , General  ,        1, Series identifier
+last        , value   , false   ,           , General  ,        2, Last used index
+deleted     , bool    , false   ,           , General  ,        3, Deletion status
+modifiedAt  , string  , false   ,           , General  ,        4, Last modified timestamp
+adverbs     , []string, false   , noTable   , Content  ,        5, List of adverbs
+adjectives  , []string, false   , noTable   , Content  ,        6, List of adjectives
+nouns       , []string, false   , noTable   , Content  ,        7, List of nouns
+emotions    , []string, false   , noTable   , Content  ,        8, List of emotions
+artstyles   , []string, false   , noTable   , Style    ,        9, List of art styles
+colors      , []string, false   , noTable   , Style    ,       10, List of colors
+viewpoints  , []string, false   , noTable   , Style    ,       11, List of viewpoints
+gazes       , []string, false   , noTable   , Style    ,       12, List of gazes
+backstyles  , []string, false   , noTable   , Style    ,       13, List of back styles
+compositions, []string, false   , noTable   , Style    ,       14, List of compositions

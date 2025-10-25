@@ -18,6 +18,7 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		"comparitoor": {
 			Name:          "Comparitoor",
 			Store:         "transaction",
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getTransactionFields(),
 			Actions:       []string{},
@@ -79,21 +80,26 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getTransactionFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "General", Key: "hash", Formatter: "hash"},
-		{Section: "General", Key: "blockNumber", Formatter: "number"},
-		{Section: "General", Key: "timestamp", Formatter: "timestamp"},
-		{Section: "General", Key: "from", Formatter: "address"},
-		{Section: "General", Key: "to", Formatter: "address"},
-		{Section: "General", Key: "value", Formatter: "wei"},
-		{Section: "General", Key: "gasUsed", Formatter: "wei"},
-		{Section: "General", Key: "status"},
-		{Section: "Presence", Key: "presentInChifra", Formatter: "boolean"},
-		{Section: "Presence", Key: "presentInEtherscan", Formatter: "boolean"},
-		{Section: "Presence", Key: "presentInCovalent", Formatter: "boolean"},
-		{Section: "Presence", Key: "presentInAlchemy", Formatter: "boolean"},
-		{Section: "Diffs", Key: "diffType"},
-		// EXISTING_CODE
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Overview", Key: "hash", Formatter: "hash"},
+		{Section: "Overview", Key: "from", Formatter: "address"},
+		{Section: "Overview", Key: "to", Formatter: "address"},
+		{Section: "Overview", Key: "value", Formatter: "wei"},
+		{Section: "Gas", Key: "gasUsed"},
+		{Section: "Overview", Key: "timestamp", Formatter: "datetime", NoTable: true},
+		{Section: "Overview", Key: "input", NoTable: true},
+		{Section: "Overview", Key: "articulatedTx", NoTable: true},
+		{Section: "Overview", Key: "isError", NoTable: true},
+		{Section: "Overview", Key: "hasToken", NoTable: true},
+		{Section: "Gas", Key: "gas", NoTable: true},
+		{Section: "Gas", Key: "gasPrice", NoTable: true},
+		{Section: "Gas", Key: "maxFeePerGas", NoTable: true},
+		{Section: "Gas", Key: "maxPriorityFeePerGas", NoTable: true},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "nonce", NoTable: true},
+		{Section: "Details", Key: "type", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret

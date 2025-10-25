@@ -1,28 +1,20 @@
-name                , type        , strDefault, attributes      , upgrades, docOrder, description
-chainId             , string      ,           , noui|removed    ,         ,         , 
-blockNumber         , blknum      ,           , noui            ,         ,        3, the number of the block
-transactionIndex    , txnum       ,           , noui            ,         ,        4, the zero-indexed position of the transaction in the block
-timestamp           , timestamp   ,           , noui            ,         ,        6, the Unix timestamp of the object
-date                , datetime    ,           , calc|width=120px,         ,        7, the timestamp as a date
-hash                , hash        ,           , noui            ,         ,        1, the hash of the transaction
-blockHash           , hash        ,           , noui            ,         ,        2, the hash of the block containing this transaction
-from                , address     ,           , readOnly        ,         ,        8, address from which the transaction was sent
-to                  , address     ,           , readOnly        ,         ,        9, address to which the transaction was sent
-nonce               , value       ,           ,                 ,         ,        5, sequence number of the transactions sent by the sender
-value               , wei         ,           ,                 ,         ,       10, the amount of wei sent with this transactions
-ether               , ether       ,           , calc            ,         ,       11, if --ether is specified&#44; the value in ether
-gas                 , gas         ,           ,                 ,         ,       12, the maximum number of gas allowed for this transaction
-gasPrice            , gas         ,           ,                 ,         ,       13, the number of wei per unit of gas the sender is willing to spend
-gasCost             , gas         ,           , calc            ,         ,       13, the number of wei per unit of gas the sender is willing to spend
-maxFeePerGas        , gas         ,           ,                 ,         ,         , 
-maxPriorityFeePerGas, gas         ,           ,                 ,         ,         , 
-input               , bytes       ,           ,                 ,         ,       14, byte data either containing a message or funcational data for a smart contracts. See the --articulate
-isError             , bool        ,           ,                 ,         ,       19, `true` if the transaction ended in error&#44; `false` otherwise
-hasToken            , bool        ,           ,                 ,         ,       18, `true` if the transaction is token related&#44; `false` otherwise
-receipt             , *Receipt    ,           , noui            ,         ,       15, 
-traces              , []Traces    ,           , noui            ,         ,         , 
-articulatedTx       , *Function   ,           , noui            ,         ,       17, 
-compressedTx        , string      ,           , calc            ,         ,       20, truncated&#44; more readable version of the articulation
-statements          , []Statements,           , noui|calc       ,         ,       16, array of reconciliation statements
-gasUsed             , gas         ,           ,                 ,         ,         , 
-type                , string      ,           ,                 ,         ,         , 
+name                , type        , strDefault, attributes      , section     , upgrades, docOrder, description
+blockNumber         , blknum      ,           ,                 , Context     ,         ,        1, the number of the block
+transactionIndex    , txnum       ,           ,                 , Context     ,         ,        2, the zero-indexed position of the transaction in the block
+hash                , hash        ,           ,                 , Overview    ,         ,        3, the hash of the transaction
+from                , address     ,           ,                 , Overview    ,         ,        4, address from which the transaction was sent
+to                  , address     ,           ,                 , Overview    ,         ,        5, address to which the transaction was sent
+value               , wei         ,           ,                 , Overview    ,         ,        6, the amount of wei sent with this transactions
+gasUsed             , gas         ,           ,                 , Gas         ,         ,        7, the amount of gas used by this transaction
+timestamp           , timestamp   ,           , noTable         , Overview    ,         ,        8, the Unix timestamp of the object
+input               , bytes       ,           , noTable         , Overview    ,         ,        9, byte data either containing a message or funcational data for a smart contracts
+articulatedTx       , *Function   ,           , noTable         , Overview    ,         ,       10, articulated transaction data
+isError             , bool        ,           , noTable         , Overview    ,         ,       11, `true` if the transaction ended in error&#44; `false` otherwise
+hasToken            , bool        ,           , noTable         , Overview    ,         ,       12, `true` if the transaction is token related&#44; `false` otherwise
+gas                 , gas         ,           , noTable         , Gas         ,         ,       13, the maximum number of gas allowed for this transaction
+gasPrice            , gas         ,           , noTable         , Gas         ,         ,       14, the number of wei per unit of gas the sender is willing to spend
+maxFeePerGas        , gas         ,           , noTable         , Gas         ,         ,       15, maximum fee per gas
+maxPriorityFeePerGas, gas         ,           , noTable         , Gas         ,         ,       16, maximum priority fee per gas
+blockHash           , hash        ,           , noTable         , Context     ,         ,       17, the hash of the block containing this transaction
+nonce               , value       ,           , noTable         , Details     ,         ,       18, sequence number of the transactions sent by the sender
+type                , string      ,           , noTable         , Details     ,         ,       19, the transaction type 

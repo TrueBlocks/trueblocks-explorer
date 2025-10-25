@@ -242,8 +242,8 @@ export const Exports = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
-    viewName: ROUTE,
     renderers: renderers.facets,
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {

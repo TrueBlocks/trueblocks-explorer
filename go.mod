@@ -10,9 +10,9 @@ replace (
 )
 
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251017032715-84df451e8842
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251024133533-fadfa19f95c4
 	github.com/TrueBlocks/trueblocks-dalle/v2 v2.0.0-20250918192706-fe9276cdab92
-	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.4-0.20251014024614-816041c93ff0
+	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.4-0.20251024133442-4b12c4e54c55
 	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kbinani/screenshot v0.0.0-20250118074034-a3924b7bbc8c

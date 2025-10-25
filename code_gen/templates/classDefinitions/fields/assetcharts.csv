@@ -1,44 +1,44 @@
-name               , type     , strDefault, attributes      , upgrades, docOrder, description
-blockNumber        , blknum   ,           , noui            ,         ,        1, the number of the block
-transactionIndex   , txnum    ,           , noui            ,         ,        2, the zero-indexed position of the transaction in the block
-logIndex           , lognum   ,           , noui            ,         ,        3, the zero-indexed position the log in the block&#44; if applicable
-transactionHash    , hash     ,           , noui            ,         ,        4, the hash of the transaction that triggered this reconciliation
-timestamp          , timestamp,           , noui            ,         ,        5, the Unix timestamp of the object
-date               , datetime ,           , calc|width=120px,         ,        6, the timestamp as a date
-asset              , address  ,           , readOnly        ,         ,        7, 0xeeee...eeee for ETH reconciliations&#44; the token address otherwise
-symbol             , string   ,           ,                 ,         ,        8, either ETH&#44; WEI&#44; or the symbol of the asset being reconciled as extracted from the chain
-decimals           , value    ,           ,                 ,         ,        9, the value of `decimals` from an ERC20 contract or&#44; if ETH or WEI&#44; then 18
-spotPrice          , float    ,           ,                 ,         ,       10, the on-chain price in USD (or if a token in ETH&#44; or zero) at the time of the transaction
-priceSource        , string   ,           ,                 ,         ,       11, the on-chain source from which the spot price was taken
-accountedFor       , address  ,           , readOnly        ,         ,       12, the address being accounted for in this reconciliation
-sender             , address  ,           , readOnly        ,         ,       13, the initiator of the transfer (the sender)
-recipient          , address  ,           , readOnly        ,         ,       14, the receiver of the transfer (the recipient)
-begBal             , int256   ,           ,                 ,         ,       15, the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)
-amountNet          , int256   ,           , calc            ,         ,       16, totalIn - totalOut
-endBal             , int256   ,           ,                 ,         ,       17, the on-chain or running balance after the transaction (see notes about intra-block reconciliations)
-reconciled         , bool     ,           ,                 ,         ,       18, true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.
-totalIn            , int256   ,           ,                 ,         ,       19, the sum of the following `In` fields
-amountIn           , int256   ,           ,                 ,         ,       20, the top-level value of the incoming transfer for the accountedFor address
-internalIn         , int256   ,           ,                 ,         ,       21, the internal value of the incoming transfer for the accountedFor address
-selfDestructIn     , int256   ,           ,                 ,         ,       22, the incoming value of a self-destruct if recipient is the accountedFor address
-minerBaseRewardIn  , int256   ,           ,                 ,         ,       23, the base fee reward if the miner is the accountedFor address
-minerNephewRewardIn, int256   ,           ,                 ,         ,       24, the nephew reward if the miner is the accountedFor address
-minerTxFeeIn       , int256   ,           ,                 ,         ,       25, the transaction fee reward if the miner is the accountedFor address
-minerUncleRewardIn , int256   ,           ,                 ,         ,       26, the uncle reward if the miner who won the uncle block is the accountedFor address
-correctBegBalIn    , int256   ,           ,                 ,         ,       27, for unreconciled transfers&#44; increase in beginning balance need to match previous balance
-correctAmountIn    , int256   ,           ,                 ,         ,       28, for unreconciled transfers&#44; increase in the amount of a transfer
-correctEndBalIn    , int256   ,           ,                 ,         ,       29, for unreconciled transfers&#44; increase in ending balance need to match running balance or block balance
-prefundIn          , int256   ,           ,                 ,         ,       30, at block zero (0) only&#44; the amount of genesis income for the accountedFor address
-totalOut           , int256   ,           ,                 ,         ,       31, the sum of the following `Out` fields
-amountOut          , int256   ,           ,                 ,         ,       32, the amount (in units of the asset) of regular outflow during this transaction
-internalOut        , int256   ,           ,                 ,         ,       33, the value of any internal value transfers out of the accountedFor account
-correctBegBalOut   , int256   ,           ,                 ,         ,       34, for unreconciled transfers&#44; decrease in beginning balance need to match previous balance
-correctAmountOut   , int256   ,           ,                 ,         ,       35, for unreconciled transfers&#44; decrease in the amount of a transfer
-correctEndBalOut   , int256   ,           ,                 ,         ,       36, for unreconciled transfers&#44; decrease in ending balance need to match running balance or block balance
-selfDestructOut    , int256   ,           ,                 ,         ,       37, the value of the self-destructed value out if the accountedFor address was self-destructed
-gasOut             , int256   ,           ,                 ,         ,       38, if the transaction's original sender is the accountedFor address&#44; the amount of gas expended
-prevBal            , int256   ,           ,                 ,         ,       39, the account balance for the given asset for the previous reconciliation
-begBalDiff         , int256   ,           ,                 ,         ,       40, difference between expected beginning balance and balance at last reconciliation&#44; if non-zero&#44; the reconciliation failed
-endBalDiff         , int256   ,           ,                 ,         ,       41, endBal - endBalCalc&#44; if non-zero&#44; the reconciliation failed
-endBalCalc         , int256   ,           ,                 ,         ,       42, begBal + amountNet
-correctingReasons  , string   ,           ,                 ,         ,       43, for unreconciled transfers&#44; the reasons for the correcting entries&#44; if any
+name               , type     , strDefault, attributes      , section     , upgrades, docOrder, description
+blockNumber        , blknum   ,           , noui            , Transaction ,         ,        1, the number of the block
+transactionIndex   , txnum    ,           , noui            , Transaction ,         ,        2, the zero-indexed position of the transaction in the block
+logIndex           , lognum   ,           , noui            , Transaction ,         ,        3, the zero-indexed position the log in the block&#44; if applicable
+transactionHash    , hash     ,           , noui            , Transaction ,         ,        4, the hash of the transaction that triggered this reconciliation
+timestamp          , timestamp,           , noui            , Transaction ,         ,        5, the Unix timestamp of the object
+date               , datetime ,           , calc|width=120px, Transaction ,         ,        6, the timestamp as a date
+asset              , address  ,           , readOnly        , Asset       ,         ,        7, 0xeeee...eeee for ETH reconciliations&#44; the token address otherwise
+symbol             , string   ,           ,                 , Asset       ,         ,        8, either ETH&#44; WEI&#44; or the symbol of the asset being reconciled as extracted from the chain
+decimals           , value    ,           ,                 , Asset       ,         ,        9, the value of `decimals` from an ERC20 contract or&#44; if ETH or WEI&#44; then 18
+spotPrice          , float    ,           ,                 , Asset       ,         ,       10, the on-chain price in USD (or if a token in ETH&#44; or zero) at the time of the transaction
+priceSource        , string   ,           ,                 , Asset       ,         ,       11, the on-chain source from which the spot price was taken
+accountedFor       , address  ,           , readOnly        , Parties     ,         ,       12, the address being accounted for in this reconciliation
+sender             , address  ,           , readOnly        , Parties     ,         ,       13, the initiator of the transfer (the sender)
+recipient          , address  ,           , readOnly        , Parties     ,         ,       14, the receiver of the transfer (the recipient)
+begBal             , int256   ,           ,                 , Balances    ,         ,       15, the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)
+amountNet          , int256   ,           , calc            , Balances    ,         ,       16, totalIn - totalOut
+endBal             , int256   ,           ,                 , Balances    ,         ,       17, the on-chain or running balance after the transaction (see notes about intra-block reconciliations)
+reconciled         , bool     ,           ,                 , Status      ,         ,       18, true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.
+totalIn            , int256   ,           ,                 , Inflows     ,         ,       19, the sum of the following `In` fields
+amountIn           , int256   ,           ,                 , Inflows     ,         ,       20, the top-level value of the incoming transfer for the accountedFor address
+internalIn         , int256   ,           ,                 , Inflows     ,         ,       21, the internal value of the incoming transfer for the accountedFor address
+selfDestructIn     , int256   ,           ,                 , Inflows     ,         ,       22, the incoming value of a self-destruct if recipient is the accountedFor address
+minerBaseRewardIn  , int256   ,           ,                 , Inflows     ,         ,       23, the base fee reward if the miner is the accountedFor address
+minerNephewRewardIn, int256   ,           ,                 , Inflows     ,         ,       24, the nephew reward if the miner is the accountedFor address
+minerTxFeeIn       , int256   ,           ,                 , Inflows     ,         ,       25, the transaction fee reward if the miner is the accountedFor address
+minerUncleRewardIn , int256   ,           ,                 , Inflows     ,         ,       26, the uncle reward if the miner who won the uncle block is the accountedFor address
+correctBegBalIn    , int256   ,           ,                 , Corrections ,         ,       27, for unreconciled transfers&#44; increase in beginning balance need to match previous balance
+correctAmountIn    , int256   ,           ,                 , Corrections ,         ,       28, for unreconciled transfers&#44; increase in the amount of a transfer
+correctEndBalIn    , int256   ,           ,                 , Corrections ,         ,       29, for unreconciled transfers&#44; increase in ending balance need to match running balance or block balance
+prefundIn          , int256   ,           ,                 , Inflows     ,         ,       30, at block zero (0) only&#44; the amount of genesis income for the accountedFor address
+totalOut           , int256   ,           ,                 , Outflows    ,         ,       31, the sum of the following `Out` fields
+amountOut          , int256   ,           ,                 , Outflows    ,         ,       32, the amount (in units of the asset) of regular outflow during this transaction
+internalOut        , int256   ,           ,                 , Outflows    ,         ,       33, the value of any internal value transfers out of the accountedFor account
+correctBegBalOut   , int256   ,           ,                 , Corrections ,         ,       34, for unreconciled transfers&#44; decrease in beginning balance need to match previous balance
+correctAmountOut   , int256   ,           ,                 , Corrections ,         ,       35, for unreconciled transfers&#44; decrease in the amount of a transfer
+correctEndBalOut   , int256   ,           ,                 , Corrections ,         ,       36, for unreconciled transfers&#44; decrease in ending balance need to match running balance or block balance
+selfDestructOut    , int256   ,           ,                 , Outflows    ,         ,       37, the value of the self-destructed value out if the accountedFor address was self-destructed
+gasOut             , int256   ,           ,                 , Outflows    ,         ,       38, if the transaction's original sender is the accountedFor address&#44; the amount of gas expended
+prevBal            , int256   ,           ,                 , Balances    ,         ,       39, the account balance for the given asset for the previous reconciliation
+begBalDiff         , int256   ,           ,                 , Status      ,         ,       40, difference between expected beginning balance and balance at last reconciliation&#44; if non-zero&#44; the reconciliation failed
+endBalDiff         , int256   ,           ,                 , Status      ,         ,       41, endBal - endBalCalc&#44; if non-zero&#44; the reconciliation failed
+endBalCalc         , int256   ,           ,                 , Balances    ,         ,       42, begBal + amountNet
+correctingReasons  , string   ,           ,                 , Corrections ,         ,       43, for unreconciled transfers&#44; the reasons for the correcting entries&#44; if any

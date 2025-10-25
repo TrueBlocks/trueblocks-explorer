@@ -61,6 +61,7 @@ store = "Statements"
 actions = ["export"]
 renderer = "facet"
 viewType = "canvas"
+facetChart = true
 needsCalcs = true
 
 [[facets]]

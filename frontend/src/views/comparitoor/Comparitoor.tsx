@@ -28,7 +28,7 @@ import { TabView } from '@layout';
 import { Group } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { comparitoor } from '@models';
-import { crud, msgs, project, types } from '@models';
+import { msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { assertRouteConsistency } from '../routes';
@@ -163,11 +163,7 @@ export const Comparitoor = () => {
     pageData,
     setPageData,
     setTotalItems,
-    crudFunc: async (
-      _payload: types.Payload,
-      _op: crud.Operation,
-      _item: unknown,
-    ) => {},
+    crudFunc: () => Promise.resolve(),
     pageFunc: GetComparitoorPage,
     pageClass: comparitoor.ComparitoorPage,
     updateItem: undefined,
@@ -220,7 +216,7 @@ export const Comparitoor = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers.panels),
+    () => createDetailPanel(viewConfig, getCurrentDataFacet),
     [viewConfig, getCurrentDataFacet],
   );
 
@@ -237,15 +233,6 @@ export const Comparitoor = () => {
   });
 
   const perTabContent = useMemo(() => {
-    const facet = getCurrentDataFacet();
-    if (
-      renderers.facets[facet as keyof typeof renderers.facets] &&
-      facet === types.DataFacet.COMPARITOOR
-    ) {
-      return renderers.facets[facet as keyof typeof renderers.facets]?.({
-        data: (pageData as unknown as Record<string, unknown>) || {},
-      });
-    }
     if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
@@ -261,14 +248,13 @@ export const Comparitoor = () => {
   }, [
     currentData,
     currentColumns,
-    pageData,
+    pageData?.state,
     error,
     viewStateKey,
     isCanvas,
     formNode,
     headerActions,
     detailPanel,
-    getCurrentDataFacet,
   ]);
 
   const tabs = useMemo(

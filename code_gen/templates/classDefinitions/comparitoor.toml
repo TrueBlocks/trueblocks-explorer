@@ -11,6 +11,7 @@ disable_go = false
 name = "Comparitoor"
 store = "Transaction"
 actions = ["export"]
+viewType = "canvas"
 renderer = "facet"
 
 [[facets]]

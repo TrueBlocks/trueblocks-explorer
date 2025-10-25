@@ -1,14 +1,13 @@
-name         , type       , strDefault, attributes                                , upgrades, docOrder, description
-range        , blkrange   ,           , width=150px|readOnly                ,         ,        1, the block range (inclusive) covered by this chunk
-nAddrs       , uint64     ,           , width=120px|readOnly,         ,        2, the number of addresses in the chunk
-nApps        , uint64     ,           , width=100px|readOnly,         ,        3, the number of appearances in the chunk
-nBlocks      , uint64     ,           , width=120px|readOnly,         ,        4, the number of blocks in the chunk
-nBlooms      , uint64     ,           , width=120px|readOnly,         ,        5, the number of bloom filters in the chunk's bloom
-recWid       , uint64     ,           , width=120px|readOnly,         ,        6, the record width of a single bloom filter
-bloomSz      , uint64     ,           , width=120px|readOnly,         ,        7, the size of the bloom filters on disc in bytes
-chunkSz      , uint64     ,           , width=120px|readOnly,         ,        8, the size of the chunks on disc in bytes
-addrsPerBlock, float64    ,           , width=100px|readOnly,         ,        9, the average number of addresses per block
-appsPerBlock , float64    ,           , width=100px|readOnly,         ,       10, the average number of appearances per block
-appsPerAddr  , float64    ,           , width=100px|readOnly,         ,       11, the average number of appearances per address
-ratio        , float64    ,           , width=100px|readOnly,         ,       12, the ratio of appearances to addresses
-rangeDates   , *RangeDates,           , noui|omitempty                      ,         ,       13, if verbose&#44; the block and timestamp bounds of the chunk (may be null)
+name         , type       , strDefault, attributes                                , section    , upgrades, docOrder, description
+range        , blkrange   ,           , width=150px|readOnly                , Range      ,         ,        1, the block range (inclusive) covered by this chunk
+ratio        , float64    ,           , width=100px|readOnly                , Efficiency ,         ,        2, the ratio of appearances to addresses
+addrsPerBlock, float64    ,           , width=100px|readOnly                , Efficiency ,         ,        3, the average number of addresses per block
+appsPerBlock , float64    ,           , width=100px|readOnly                , Efficiency ,         ,        4, the average number of appearances per block
+appsPerAddr  , float64    ,           , width=100px|readOnly                , Efficiency ,         ,        5, the average number of appearances per address
+bloomSz      , uint64     ,           , width=120px|readOnly|noTable         , Sizes      ,         ,        6, the size of the bloom filters on disc in bytes
+chunkSz      , uint64     ,           , width=120px|readOnly|noTable         , Sizes      ,         ,        7, the size of the chunks on disc in bytes
+nAddrs       , uint64     ,           , width=120px|readOnly|noTable         , Counts     ,         ,        8, the number of addresses in the chunk
+nApps        , uint64     ,           , width=100px|readOnly|noTable         , Counts     ,         ,        9, the number of appearances in the chunk
+nBlocks      , uint64     ,           , width=120px|readOnly|noTable         , Counts     ,         ,       10, the number of blocks in the chunk
+nBlooms      , uint64     ,           , width=120px|readOnly|noTable         , Counts     ,         ,       11, the number of bloom filters in the chunk's bloom
+recWid       , uint64     ,           , width=120px|readOnly|noTable         , Sizes      ,         ,       12, the record width of a single bloom filter

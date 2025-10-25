@@ -1,12 +1,14 @@
-name            , type     , strDefault, attributes , upgrades, docOrder, description
-blockNumber     , blknum   ,           , noui       ,         ,        1, the number of the block
-transactionIndex, txnum    ,           , noui       ,         ,        2, the zero-indexed position of the transaction in the block
-timestamp       , timestamp,           , noui       ,         ,        3, the timestamp of the block this log appears in
-date            , datetime ,           , calc       ,         ,        4, the timestamp as a date
-holder          , address  ,           , readOnly   ,         ,        5, Holder
-address         , address  ,           , readOnly   ,         ,        6, Token Address
-symbol          , string   ,           ,            ,         ,        7, Symbol
-name            , string   ,           ,            ,         ,        8, Token Name
-balance         , ether    ,           ,            ,         ,        9, Balance
-priorBalance    , ether    ,           , calc       ,         ,       10, Prior Balance
-decimals        , int64    ,           ,            ,         ,       11, Decimals
+name            , type     , strDefault, attributes , section     , upgrades, docOrder, description
+date            , datetime ,           ,            , Balance Info,         ,        1, the timestamp as a date
+holder          , address  ,           ,            , Balance Info,         ,        2, Holder
+address         , address  ,           ,            , Balance Info,         ,        3, Token Address
+symbol          , string   ,           ,            , Balance Info,         ,        4, Symbol
+balance         , ether    ,           ,            , Balance Info,         ,        5, Balance
+decimals        , int64    ,           ,            , Details     ,         ,        6, Decimals
+priorBalance    , ether    ,           , noTable    , Details     ,         ,        7, Prior Balance
+totalSupply     , ether    ,           , noTable    , Details     ,         ,        8, Total Supply
+type            , string   ,           , noTable    , Details     ,         ,        9, Type
+name            , string   ,           , noTable    , Details     ,         ,       10, Token Name
+blockNumber     , blknum   ,           , noTable    , Context     ,         ,       11, the number of the block
+transactionIndex, txnum    ,           , noTable    , Context     ,         ,       12, the zero-indexed position of the transaction in the block
+timestamp       , timestamp,           , noTable    , Context     ,         ,       13, the timestamp of the block this log appears in

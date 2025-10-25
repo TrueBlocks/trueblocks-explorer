@@ -8,9 +8,22 @@ export const renderers = {
     [types.DataFacet.COMPARITOOR]: ({
       data,
     }: {
-      data: Record<string, unknown>;
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      const pageData = data as unknown as comparitoor.ComparitoorPage;
+      // Create a minimal ComparitoorPage from the available data
+      const pageData = {
+        transaction: data,
+        chifra: data,
+        etherscan: data,
+        covalent: data,
+        alchemy: data,
+        unionCount: data.length,
+        overlapCount: 0,
+        intersectionCount: 0,
+      } as unknown as comparitoor.ComparitoorPage;
+
       return <ComparitoorFacet _pageData={pageData} />;
     },
   },

@@ -18,17 +18,16 @@ func (c *MonitorsCollection) GetBuckets(payload *types.Payload) (*types.Buckets,
 		facet = c.monitorsFacet
 	default:
 		return &types.Buckets{
-			Series: make(map[string][]types.Bucket),
-			GridInfo: types.GridInfo{
-				Size:        100000,
-				Rows:        0,
-				Columns:     20,
-				BucketCount: 0,
-				MaxBlock:    0,
-			},
+			Series:   make(map[string][]types.Bucket),
+			GridInfo: types.NewGridInfo(),
 		}, nil
 	}
 
 	buckets := facet.GetBuckets()
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return buckets, nil
 }
+
+// EXISTING_CODE
+// EXISTING_CODE

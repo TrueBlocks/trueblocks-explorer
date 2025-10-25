@@ -68,7 +68,6 @@ type ExportsCollection struct {
 	receiptsFacet      *facets.Facet[Receipt]
 	summary            types.Summary
 	summaryMutex       sync.RWMutex
-	collectionMutex    sync.RWMutex
 }
 
 func NewExportsCollection(payload *types.Payload) *ExportsCollection {
@@ -524,7 +523,7 @@ func (c *ExportsCollection) AccumulateItem(item interface{}, summary *types.Summ
 		summary.CustomData["statementsCount"] = stmtCount
 
 		// Update AssetCharts buckets when Statement data changes
-		c.updateAssetChartsBucket(v)
+		c.updateStatementsBucket(v)
 
 	case *Transfer:
 		summary.TotalCount++
@@ -660,4 +659,6 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 // EXISTING_CODE
+var collectionMutex sync.RWMutex
+
 // EXISTING_CODE

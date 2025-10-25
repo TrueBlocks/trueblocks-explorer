@@ -183,7 +183,8 @@ export const AssetChart = ({
     >
       <Stack
         gap="xs"
-        bg="white"
+        bg="var(--skin-surface-base)"
+        c="var(--skin-text-primary)"
         style={{
           padding: '3px',
           border: '2px solid var(--mantine-color-gray-3)',
@@ -204,7 +205,7 @@ export const AssetChart = ({
           series={[
             {
               name: 'value',
-              color: 'blue.6',
+              color: 'var(--skin-text-primary)',
               label: `${formatAssetName(assetKey)} - ${selectedMetric}`,
             },
           ]}

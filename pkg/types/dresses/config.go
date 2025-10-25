@@ -29,11 +29,12 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		"series": {
 			Name:          "Series",
 			Store:         "series",
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getSeriesFields(),
 			Actions:       []string{"update", "delete", "remove"},
 			HeaderActions: []string{"create", "export"},
-			RendererTypes: "",
+			RendererTypes: "facet",
 		},
 		"databases": {
 			Name:          "Databases",
@@ -87,7 +88,6 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getDalledressFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "General", Key: "original", Formatter: "address"},
 		{Section: "General", Key: "fileName", Formatter: "path"},
 		{Section: "General", Key: "seed"},
@@ -100,7 +100,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "General", Key: "seedChunks", NoTable: true},
 		{Section: "General", Key: "selectedTokens", NoTable: true},
 		{Section: "General", Key: "selectedRecords", NoTable: true},
-		{Section: "Image", Key: "imageUrl", Formatter: "url"},
+		{Section: "Image", Key: "imageUrl", Formatter: "url", NoTable: true},
 		{Section: "Image", Key: "generatedPath", Formatter: "path"},
 		{Section: "Image", Key: "annotatedPath", Formatter: "path"},
 		{Section: "General", Key: "downloadMode"},
@@ -108,7 +108,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "General", Key: "cacheHit", Formatter: "boolean"},
 		{Section: "General", Key: "completed", Formatter: "boolean"},
 		{Section: "General", Key: "series"},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -116,12 +116,11 @@ func getDalledressFields() []types.FieldConfig {
 
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "General", Key: "databaseName"},
 		{Section: "General", Key: "count", Formatter: "number"},
 		{Section: "General", Key: "sample"},
 		{Section: "General", Key: "filtered"},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -129,23 +128,21 @@ func getDatabasesFields() []types.FieldConfig {
 
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Context", Key: "blockNumber", Formatter: "number"},
 		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
 		{Section: "Context", Key: "logIndex", Formatter: "number"},
 		{Section: "Context", Key: "address", Formatter: "address"},
+		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
 		{Section: "Context", Key: "transactionHash", Formatter: "hash", NoTable: true},
-		{Section: "Context", Key: "timestamp", Formatter: "timestamp", NoTable: true},
-		{Section: "Data", Key: "topic0", Formatter: "hash"},
-		{Section: "Data", Key: "topic1", Formatter: "hash"},
-		{Section: "Data", Key: "topic2", Formatter: "hash", NoTable: true},
-		{Section: "Data", Key: "topic3", Formatter: "hash", NoTable: true},
-		{Section: "Data", Key: "data", NoTable: true},
-		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
+		{Section: "Details", Key: "topic0", Formatter: "hash"},
+		{Section: "Details", Key: "topic1", Formatter: "hash"},
+		{Section: "Details", Key: "topic2", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "topic3", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "data", NoTable: true},
+		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -153,9 +150,8 @@ func getLogsFields() []types.FieldConfig {
 
 func getSeriesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "General", Key: "suffix"},
-		{Section: "General", Key: "last", Formatter: "timestamp"},
+		{Section: "General", Key: "last"},
 		{Section: "General", Key: "deleted", Formatter: "boolean"},
 		{Section: "General", Key: "modifiedAt"},
 		{Section: "Content", Key: "adverbs", NoTable: true},
@@ -169,7 +165,6 @@ func getSeriesFields() []types.FieldConfig {
 		{Section: "Style", Key: "backstyles", NoTable: true},
 		{Section: "Style", Key: "compositions", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
 	return ret

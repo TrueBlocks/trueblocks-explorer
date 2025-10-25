@@ -1,13 +1,15 @@
-name      , type   , strDefault, attributes        , upgrades, docOrder, description
-address   , address,           , width=340|readOnly,         ,        1, the address associated with this name
-name      , string ,           , required          ,         ,        2, the name associated with this address
-tags      , string ,           , width=150         ,         ,        3, colon separated list of tags
-source    , string ,           , width=120         ,         ,        4, user supplied source of where this name was found
-symbol    , string ,           , width=100         ,         ,        5, the symbol for this address
-decimals  , uint64 ,           , width=100         ,         ,        6, number of decimals retrieved from an ERC20 smart contract
-deleted   , bool   ,           , noui              ,         ,        7, if deleted
-isCustom  , bool   ,           , noui              ,         ,        8, if the address is a custom address
-isPrefund , bool   ,           , noui              ,         ,        9, if the address was one of the prefund addresses&#44; `false` otherwise
-isContract, bool   ,           , noui              ,         ,       10, if the address is a smart contract
-isErc20   , bool   ,           , noui              ,         ,       11, if the address is an ERC20
-isErc721  , bool   ,           , noui              ,         ,       12, if the address is an ERC720
+name      , type   , strDefault, attributes        , section        , upgrades, docOrder, description
+address   , address,           , width=340|readOnly, Identity       ,         ,        1, the address associated with this name
+name      , string ,           , required          , Identity       ,         ,        2, the name associated with this address
+symbol    , string ,           , width=100         , Identity       ,         ,        3, the symbol for this address
+decimals  , uint64 ,           , width=100         , Identity       ,         ,        4, number of decimals retrieved from an ERC20 smart contract
+source    , string ,           , width=120         , Classification ,         ,        5, user supplied source of where this name was found
+tags      , string ,           , width=150         , Classification ,         ,        6, colon separated list of tags
+deleted   , bool   ,           , noui|noTable      , Classification ,         ,        7, if deleted
+isContract, bool   ,           , noui|noTable      , Properties     ,         ,        8, if the address is a smart contract
+isCustom  , bool   ,           , noui|noTable      , Properties     ,         ,        9, if the address is a custom address
+isErc20   , bool   ,           , noui|noTable      , Properties     ,         ,       10, if the address is an ERC20
+isErc721  , bool   ,           , noui|noTable      , Properties     ,         ,       11, if the address is an ERC721
+isPrefund , bool   ,           , noui|noTable      , Properties     ,         ,       12, if the address was one of the prefund addresses&#44; `false` otherwise
+prefund   , wei    ,           , noui|noTable      , Data           ,         ,       13, the prefund amount for this address
+parts     , string ,           , noui|noTable      , Data           ,         ,       14, parts of the name

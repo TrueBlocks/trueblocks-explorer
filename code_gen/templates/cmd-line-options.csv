@@ -1,6 +1,5 @@
 num,folder,group,route,tool,longName,hotKey,def_val,attributes,handler,option_type,data_type,return_type,summary,usage,capabilities,description
 6000,,Types,,,,,,,,group,,,Chifra Types,,,Chifra Types
-#
 6100,pkg,Types,abis,jim,abis,a,,visible|docs,,command,string,string,Abis route,,code,The route for the abis folder
 6200,pkg,Types,chunks,jim,chunks,c,,visible|docs,,command,string,string,Chunks route,,code,The route for the chunks folder
 6300,pkg,Types,exports,jim,exports,e,,visible|docs,,command,string,string,Exports route,,code,The route for the exports folder

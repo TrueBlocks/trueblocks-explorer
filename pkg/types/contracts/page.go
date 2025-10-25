@@ -18,10 +18,11 @@ import (
 )
 
 // EXISTING_CODE
+
 type ContractsPage struct {
 	Facet         types.DataFacet  `json:"facet"`
-	Contracts     []*Contract      `json:"contracts"`
-	Logs          []*Log           `json:"logs"`
+	Contracts     []Contract       `json:"contracts"`
+	Logs          []Log            `json:"logs"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
 	State         types.StoreState `json:"state"`
@@ -51,12 +52,12 @@ func (c *ContractsCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &ContractsPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -78,11 +79,9 @@ func (c *ContractsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("contracts", dataFacet, "GetPage", err)
 		} else {
-			dashboard := make([]*Contract, 0, len(result.Items))
-			for i := range result.Items {
-				dashboard = append(dashboard, &result.Items[i])
-			}
-			page.Contracts, page.TotalItems, page.State = dashboard, result.TotalItems, result.State
+			page.Contracts = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ContractsExecute:
@@ -99,11 +98,9 @@ func (c *ContractsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("contracts", dataFacet, "GetPage", err)
 		} else {
-			execute := make([]*Contract, 0, len(result.Items))
-			for i := range result.Items {
-				execute = append(execute, &result.Items[i])
-			}
-			page.Contracts, page.TotalItems, page.State = execute, result.TotalItems, result.State
+			page.Contracts = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ContractsEvents:
@@ -120,11 +117,9 @@ func (c *ContractsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("contracts", dataFacet, "GetPage", err)
 		} else {
-			event := make([]*Log, 0, len(result.Items))
-			for i := range result.Items {
-				event = append(event, &result.Items[i])
-			}
-			page.Logs, page.TotalItems, page.State = event, result.TotalItems, result.State
+			page.Logs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -188,6 +183,24 @@ func (c *ContractsCollection) generateSummariesForPeriod(dataFacet types.DataFac
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *ContractsCollection,
+	page *ContractsPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

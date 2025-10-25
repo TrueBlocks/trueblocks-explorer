@@ -56,7 +56,7 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			Store:         "openapprovals",
 			DividerBefore: false,
 			Fields:        getOpenapprovalsFields(),
-			Actions:       []string{"revoke"},
+			Actions:       []string{},
 			HeaderActions: []string{"export"},
 			RendererTypes: "panel",
 		},
@@ -142,7 +142,6 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "openapprovals", "approvallogs", "approvaltxs", "withdrawals", "assets", "assetcharts", "logs", "traces", "receipts"},
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
-			"revoke": {Name: "revoke", Label: "Revoke", Icon: "Revoke"},
 		},
 	}
 
@@ -154,10 +153,9 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getApprovallogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Context", Key: "logIndex"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "logIndex", Formatter: "number"},
 		{Section: "Context", Key: "address", Formatter: "address"},
 		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
@@ -167,10 +165,9 @@ func getApprovallogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic2", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "topic3", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "data", NoTable: true},
-		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
+		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -178,15 +175,14 @@ func getApprovallogsFields() []types.FieldConfig {
 
 func getApprovaltxsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Overview", Key: "hash"},
-		{Section: "Overview", Key: "from"},
-		{Section: "Overview", Key: "to"},
-		{Section: "Overview", Key: "value"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Overview", Key: "hash", Formatter: "hash"},
+		{Section: "Overview", Key: "from", Formatter: "address"},
+		{Section: "Overview", Key: "to", Formatter: "address"},
+		{Section: "Overview", Key: "value", Formatter: "wei"},
 		{Section: "Gas", Key: "gasUsed"},
-		{Section: "Overview", Key: "timestamp", NoTable: true},
+		{Section: "Overview", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Overview", Key: "input", NoTable: true},
 		{Section: "Overview", Key: "articulatedTx", NoTable: true},
 		{Section: "Overview", Key: "isError", NoTable: true},
@@ -195,11 +191,10 @@ func getApprovaltxsFields() []types.FieldConfig {
 		{Section: "Gas", Key: "gasPrice", NoTable: true},
 		{Section: "Gas", Key: "maxFeePerGas", NoTable: true},
 		{Section: "Gas", Key: "maxPriorityFeePerGas", NoTable: true},
-		{Section: "Context", Key: "blockHash", NoTable: true},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", NoTable: true},
 		{Section: "Details", Key: "type", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -207,7 +202,6 @@ func getApprovaltxsFields() []types.FieldConfig {
 
 func getAssetsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Asset Info", Key: "address", Formatter: "address"},
 		{Section: "Asset Info", Key: "holder", Formatter: "address"},
 		{Section: "Asset Info", Key: "symbol"},
@@ -221,11 +215,9 @@ func getAssetsFields() []types.FieldConfig {
 		{Section: "Classification", Key: "isErc20", NoTable: true},
 		{Section: "Classification", Key: "isErc721", NoTable: true},
 		{Section: "Classification", Key: "isPrefund", NoTable: true},
-		{Section: "Classification", Key: "deleted", NoTable: true},
-		{Section: "Data", Key: "parts", NoTable: true},
+		{Section: "Classification", Key: "deleted", Formatter: "boolean", NoTable: true},
 		{Section: "Data", Key: "prefund", Formatter: "wei", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -233,22 +225,20 @@ func getAssetsFields() []types.FieldConfig {
 
 func getBalancesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Balance Info", Key: "date", Formatter: "datetime"},
+		{Section: "Balance Info", Key: "date"},
 		{Section: "Balance Info", Key: "holder", Formatter: "address"},
 		{Section: "Balance Info", Key: "address", Formatter: "address"},
 		{Section: "Balance Info", Key: "symbol"},
-		{Section: "Balance Info", Key: "balance", Formatter: "wei"},
+		{Section: "Balance Info", Key: "balance", Formatter: "ether"},
 		{Section: "Details", Key: "decimals"},
-		{Section: "Details", Key: "priorBalance", Formatter: "wei", NoTable: true},
-		{Section: "Details", Key: "totalSupply", Formatter: "wei", NoTable: true},
+		{Section: "Details", Key: "priorBalance", Formatter: "ether", NoTable: true},
+		{Section: "Details", Key: "totalSupply", Formatter: "ether", NoTable: true},
 		{Section: "Details", Key: "type", NoTable: true},
 		{Section: "Details", Key: "name", NoTable: true},
-		{Section: "Context", Key: "blockNumber", NoTable: true},
-		{Section: "Context", Key: "transactionIndex", NoTable: true},
+		{Section: "Context", Key: "blockNumber", Formatter: "number", NoTable: true},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number", NoTable: true},
 		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -256,10 +246,9 @@ func getBalancesFields() []types.FieldConfig {
 
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Context", Key: "logIndex"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "logIndex", Formatter: "number"},
 		{Section: "Context", Key: "address", Formatter: "address"},
 		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
@@ -269,10 +258,9 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic2", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "topic3", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "data", NoTable: true},
-		{Section: "Articulation", Key: "articulatedLog", Formatter: "json", NoTable: true},
+		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -280,19 +268,17 @@ func getLogsFields() []types.FieldConfig {
 
 func getOpenapprovalsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Context", Key: "blockNumber", Formatter: "number", NoTable: true},
 		{Section: "Details", Key: "owner", Formatter: "address"},
 		{Section: "Details", Key: "token", Formatter: "address"},
 		{Section: "Details", Key: "spender", Formatter: "address"},
-		{Section: "Details", Key: "allowance", Formatter: "weish"},
+		{Section: "Details", Key: "allowance", Formatter: "wei"},
 		{Section: "Data", Key: "lastAppBlock", Formatter: "number", NoTable: true},
 		{Section: "Data", Key: "lastAppLogID", Formatter: "number", NoTable: true},
-		{Section: "Data", Key: "lastAppTs"},
+		{Section: "Data", Key: "lastAppTs", Formatter: "datetime"},
 		{Section: "Data", Key: "lastAppTxID", Formatter: "number", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -300,23 +286,21 @@ func getOpenapprovalsFields() []types.FieldConfig {
 
 func getReceiptsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Context", Key: "transactionHash"},
-		{Section: "Context", Key: "from"},
-		{Section: "Context", Key: "to"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "transactionHash", Formatter: "hash"},
+		{Section: "Context", Key: "from", Formatter: "address"},
+		{Section: "Context", Key: "to", Formatter: "address"},
 		{Section: "Details", Key: "gasUsed"},
 		{Section: "Details", Key: "status"},
 		{Section: "Details", Key: "isError", NoTable: true},
-		{Section: "Details", Key: "contractAddress", NoTable: true},
+		{Section: "Details", Key: "contractAddress", Formatter: "address", NoTable: true},
 		{Section: "Details", Key: "cumulativeGasUsed", NoTable: true},
 		{Section: "Details", Key: "effectiveGasPrice", NoTable: true},
-		{Section: "Details", Key: "blockHash", NoTable: true},
+		{Section: "Details", Key: "blockHash", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "logsBloom", NoTable: true},
 		{Section: "Data", Key: "logs", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -324,60 +308,50 @@ func getReceiptsFields() []types.FieldConfig {
 
 func getStatementsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Asset", Key: "timestamp", Formatter: "timestamp"},
-		{Section: "Asset", Key: "asset"},
+		{Section: "Asset", Key: "timestamp", Formatter: "datetime"},
+		{Section: "Asset", Key: "asset", Formatter: "address"},
 		{Section: "Asset", Key: "symbol", NoTable: true},
 		{Section: "Asset", Key: "decimals", NoTable: true},
 		{Section: "Asset", Key: "priceSource", NoTable: true},
-
 		{Section: "Reconciliation", Key: "calcs.begBalEth", Formatter: "ether"},
 		{Section: "Reconciliation", Key: "calcs.totalInEth", Formatter: "ether", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.totalOutEth", Formatter: "ether", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.amountNetEth", Formatter: "ether"},
 		{Section: "Reconciliation", Key: "calcs.endBalEth", Formatter: "ether"},
-		{Section: "Asset", Key: "spotPrice", Formatter: "float64", NoTable: true},
+		{Section: "Asset", Key: "spotPrice", Formatter: "number", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Formatter: "ether", NoTable: true},
-
 		{Section: "Summary", Key: "date", NoTable: true},
 		{Section: "Summary", Key: "gasUsed", NoTable: true},
 		{Section: "Summary", Key: "calcs.reconciliationType", NoTable: true},
-		{Section: "Summary", Key: "accountedFor", NoTable: true},
+		{Section: "Summary", Key: "accountedFor", Formatter: "address", NoTable: true},
 		{Section: "Summary", Key: "calcs.reconciled", Formatter: "boolean"},
-
-		{Section: "Inflow", Key: "amountIn", NoTable: true},
-		{Section: "Inflow", Key: "internalIn", NoTable: true},
-		{Section: "Inflow", Key: "selfDestructIn", NoTable: true},
-		{Section: "Inflow", Key: "minerBaseRewardIn", NoTable: true},
-		{Section: "Inflow", Key: "minerTxFeeIn", NoTable: true},
-		{Section: "Inflow", Key: "prefundIn", NoTable: true},
-
-		{Section: "Outflow", Key: "amountOut", NoTable: true},
-		{Section: "Outflow", Key: "internalOut", NoTable: true},
-		{Section: "Outflow", Key: "selfDestructOut", NoTable: true},
-		{Section: "Outflow", Key: "gasOut", NoTable: true},
-
-		{Section: "Details", Key: "blockNumber", NoTable: true},
-		{Section: "Details", Key: "transactionIndex", NoTable: true},
-		{Section: "Details", Key: "logIndex", NoTable: true},
-		{Section: "Details", Key: "transactionHash", NoTable: true},
-		{Section: "Details", Key: "sender", NoTable: true},
-		{Section: "Details", Key: "recipient", NoTable: true},
-
-		{Section: "Analysis", Key: "prevBal", NoTable: true},
-		{Section: "Analysis", Key: "begBalDiff", NoTable: true},
-		{Section: "Analysis", Key: "endBalDiff", NoTable: true},
+		{Section: "Inflow", Key: "amountIn", Formatter: "wei", NoTable: true},
+		{Section: "Inflow", Key: "internalIn", Formatter: "wei", NoTable: true},
+		{Section: "Inflow", Key: "selfDestructIn", Formatter: "wei", NoTable: true},
+		{Section: "Inflow", Key: "minerBaseRewardIn", Formatter: "wei", NoTable: true},
+		{Section: "Inflow", Key: "minerTxFeeIn", Formatter: "wei", NoTable: true},
+		{Section: "Inflow", Key: "prefundIn", Formatter: "wei", NoTable: true},
+		{Section: "Outflow", Key: "amountOut", Formatter: "wei", NoTable: true},
+		{Section: "Outflow", Key: "internalOut", Formatter: "wei", NoTable: true},
+		{Section: "Outflow", Key: "selfDestructOut", Formatter: "wei", NoTable: true},
+		{Section: "Outflow", Key: "gasOut", Formatter: "wei", NoTable: true},
+		{Section: "Details", Key: "blockNumber", Formatter: "number", NoTable: true},
+		{Section: "Details", Key: "transactionIndex", Formatter: "number", NoTable: true},
+		{Section: "Details", Key: "logIndex", Formatter: "number", NoTable: true},
+		{Section: "Details", Key: "transactionHash", Formatter: "hash", NoTable: true},
+		{Section: "Details", Key: "sender", Formatter: "address", NoTable: true},
+		{Section: "Details", Key: "recipient", Formatter: "address", NoTable: true},
+		{Section: "Analysis", Key: "prevBal", Formatter: "wei", NoTable: true},
+		{Section: "Analysis", Key: "begBalDiff", Formatter: "wei", NoTable: true},
+		{Section: "Analysis", Key: "endBalDiff", Formatter: "wei", NoTable: true},
 		{Section: "Analysis", Key: "correctingReasons", NoTable: true},
-
-		{Section: "Corrections", Key: "correctBegBalIn", NoTable: true},
-		{Section: "Corrections", Key: "correctAmountIn", NoTable: true},
-		{Section: "Corrections", Key: "correctEndBalIn", NoTable: true},
-		{Section: "Corrections", Key: "correctBegBalOut", NoTable: true},
-		{Section: "Corrections", Key: "correctAmountOut", NoTable: true},
-		{Section: "Corrections", Key: "correctEndBalOut", NoTable: true},
-
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "Corrections", Key: "correctBegBalIn", Formatter: "wei", NoTable: true},
+		{Section: "Corrections", Key: "correctAmountIn", Formatter: "wei", NoTable: true},
+		{Section: "Corrections", Key: "correctEndBalIn", Formatter: "wei", NoTable: true},
+		{Section: "Corrections", Key: "correctBegBalOut", Formatter: "wei", NoTable: true},
+		{Section: "Corrections", Key: "correctAmountOut", Formatter: "wei", NoTable: true},
+		{Section: "Corrections", Key: "correctEndBalOut", Formatter: "wei", NoTable: true},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -385,31 +359,29 @@ func getStatementsFields() []types.FieldConfig {
 
 func getTracesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Context", Key: "traceIndex"},
-		{Section: "Action", Key: "from"},
-		{Section: "Action", Key: "to"},
-		{Section: "Action", Key: "value"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "traceIndex", Formatter: "number"},
+		{Section: "Action", Key: "from", Formatter: "address"},
+		{Section: "Action", Key: "to", Formatter: "address"},
+		{Section: "Action", Key: "value", Formatter: "wei"},
 		{Section: "Overview", Key: "type"},
 		{Section: "Overview", Key: "error", NoTable: true},
-		{Section: "Overview", Key: "subtraces", NoTable: true},
-		{Section: "Overview", Key: "traceAddress", NoTable: true},
+		{Section: "Overview", Key: "subtraces", Formatter: "number", NoTable: true},
+		{Section: "Overview", Key: "traceAddress", Formatter: "number", NoTable: true},
 		{Section: "Action", Key: "gas", NoTable: true},
 		{Section: "Action", Key: "callType", NoTable: true},
 		{Section: "Action", Key: "input", NoTable: true},
 		{Section: "Result", Key: "gasUsed", NoTable: true},
 		{Section: "Result", Key: "output", NoTable: true},
-		{Section: "Result", Key: "address", NoTable: true},
+		{Section: "Result", Key: "address", Formatter: "address", NoTable: true},
 		{Section: "Result", Key: "code", NoTable: true},
-		{Section: "Context", Key: "blockHash", NoTable: true},
-		{Section: "Context", Key: "transactionHash", NoTable: true},
-		{Section: "Context", Key: "timestamp", NoTable: true},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "transactionHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Articulation", Key: "articulatedTrace", NoTable: true},
 		{Section: "Articulation", Key: "compressedTrace", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -417,16 +389,14 @@ func getTracesFields() []types.FieldConfig {
 
 func getTransactionsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Overview", Key: "hash"},
-		{Section: "Overview", Key: "from"},
-		{Section: "Overview", Key: "to"},
-		{Section: "Overview", Key: "value"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Overview", Key: "hash", Formatter: "hash"},
+		{Section: "Overview", Key: "from", Formatter: "address"},
+		{Section: "Overview", Key: "to", Formatter: "address"},
+		{Section: "Overview", Key: "value", Formatter: "wei"},
 		{Section: "Gas", Key: "gasUsed"},
-		{Section: "", Key: "actions", NoDetail: true},
-		{Section: "Overview", Key: "timestamp", NoTable: true},
+		{Section: "Overview", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "Overview", Key: "input", NoTable: true},
 		{Section: "Overview", Key: "articulatedTx", NoTable: true},
 		{Section: "Overview", Key: "isError", NoTable: true},
@@ -435,10 +405,10 @@ func getTransactionsFields() []types.FieldConfig {
 		{Section: "Gas", Key: "gasPrice", NoTable: true},
 		{Section: "Gas", Key: "maxFeePerGas", NoTable: true},
 		{Section: "Gas", Key: "maxPriorityFeePerGas", NoTable: true},
-		{Section: "Context", Key: "blockHash", NoTable: true},
+		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", NoTable: true},
 		{Section: "Details", Key: "type", NoTable: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -446,10 +416,9 @@ func getTransactionsFields() []types.FieldConfig {
 
 func getTransfersFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "transactionIndex"},
-		{Section: "Context", Key: "logIndex"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
+		{Section: "Context", Key: "logIndex", Formatter: "number"},
 		{Section: "Details", Key: "from", Formatter: "address"},
 		{Section: "Details", Key: "to", Formatter: "address"},
 		{Section: "Details", Key: "asset", Formatter: "address"},
@@ -457,7 +426,7 @@ func getTransfersFields() []types.FieldConfig {
 		{Section: "Details", Key: "sender", Formatter: "address", NoTable: true},
 		{Section: "Details", Key: "recipient", Formatter: "address", NoTable: true},
 		{Section: "Details", Key: "holder", Formatter: "address", NoTable: true},
-		{Section: "Details", Key: "decimals", NoTable: true},
+		{Section: "Details", Key: "decimals", Formatter: "number", NoTable: true},
 		{Section: "Breakdown", Key: "amountIn", Formatter: "wei", NoTable: true},
 		{Section: "Breakdown", Key: "amountOut", Formatter: "wei", NoTable: true},
 		{Section: "Breakdown", Key: "internalIn", Formatter: "wei", NoTable: true},
@@ -470,8 +439,7 @@ func getTransfersFields() []types.FieldConfig {
 		{Section: "Special", Key: "selfDestructIn", Formatter: "wei", NoTable: true},
 		{Section: "Special", Key: "selfDestructOut", Formatter: "wei", NoTable: true},
 		{Section: "Special", Key: "prefundIn", Formatter: "wei", NoTable: true},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -479,15 +447,13 @@ func getTransfersFields() []types.FieldConfig {
 
 func getWithdrawalsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
-		{Section: "Context", Key: "blockNumber"},
-		{Section: "Context", Key: "timestamp"},
+		{Section: "Context", Key: "blockNumber", Formatter: "number"},
+		{Section: "Context", Key: "timestamp", Formatter: "datetime"},
 		{Section: "Details", Key: "index"},
 		{Section: "Details", Key: "validatorIndex"},
-		{Section: "Details", Key: "address"},
-		{Section: "Details", Key: "amount"},
-		{Section: "", Key: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "Details", Key: "address", Formatter: "address"},
+		{Section: "Details", Key: "amount", Formatter: "wei"},
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret

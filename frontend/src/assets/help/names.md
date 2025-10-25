@@ -8,8 +8,7 @@ the code inside of 'EXISTING_CODE' tags.
 -->
 # Names View
 
-// EXISTING_CODE
-// EXISTING_CODE
+Welcome to the **Names** view! This section provides information about managing names in your application.
 
 ## Facets
 
@@ -21,20 +20,22 @@ the code inside of 'EXISTING_CODE' tags.
 
 ## Stores
 
-- **Names Store (12 members)**
+- **Names Store (14 members)**
 
   - address: the address associated with this name
   - name: the name associated with this address
-  - tags: colon separated list of tags
-  - source: user supplied source of where this name was found
   - symbol: the symbol for this address
   - decimals: number of decimals retrieved from an ERC20 smart contract
+  - source: user supplied source of where this name was found
+  - tags: colon separated list of tags
   - deleted: if deleted
-  - isCustom: if the address is a custom address
-  - isPrefund: if the address was one of the prefund addresses, `false` otherwise
   - isContract: if the address is a smart contract
+  - isCustom: if the address is a custom address
   - isErc20: if the address is an ERC20
-  - isErc721: if the address is an ERC720
+  - isErc721: if the address is an ERC721
+  - isPrefund: if the address was one of the prefund addresses, `false` otherwise
+  - prefund: the prefund amount for this address
+  - parts: parts of the name
 
 // EXISTING_CODE
 # Names Management

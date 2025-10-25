@@ -7,7 +7,7 @@ import { types } from '@models';
 import { useFacetRenderer } from './useFacetRenderer';
 
 type RendererCtx<T extends Record<string, unknown>> = {
-  data: T;
+  data: T[];
   columns: FormField<T>[];
   facet: types.DataFacet;
 };

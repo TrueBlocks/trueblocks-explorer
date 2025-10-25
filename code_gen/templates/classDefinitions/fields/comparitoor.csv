@@ -1,5 +1,28 @@
-name       , type , required, docOrder, description
-nChifra    , value, true    ,        1, The values for Chifra
-nEtherScan , value, true    ,        2, The values for EtherScan
-nCovalent  , value, true    ,        2, The values for Covalent
-nAlchemy   , value, true    ,        2, The values for Alchemy
+name                , type        , required, section   , docOrder, noTable, description
+gasUsed             , gas         , false   , General   ,        1, false  , the maximum number of gas allowed for this transaction
+chainId             , string      , false   , General   ,        2, true   , the chain identifier
+maxPriorityFeePerGas, gas         , false   , General   ,        3, false  , maximum priority fee per gas
+type                , string      , false   , General   ,        4, false  , the transaction type
+traces              , []Traces    , false   , General   ,        5, true   , array of traces
+maxFeePerGas        , gas         , false   , General   ,        6, false  , maximum fee per gas
+hash                , hash        , false   , General   ,        7, false  , the hash of the transaction
+blockHash           , hash        , false   , General   ,        8, false  , the hash of the block containing this transaction
+blockNumber         , blknum      , false   , General   ,        9, false  , the number of the block
+transactionIndex    , txnum       , false   , General   ,       10, false  , the zero-indexed position of the transaction in the block
+nonce               , value       , false   , General   ,       11, false  , sequence number of the transactions sent by the sender
+timestamp           , timestamp   , false   , General   ,       12, false  , the Unix timestamp of the object
+date                , datetime    , false   , General   ,       13, false  , the timestamp as a date
+from                , address     , false   , General   ,       14, false  , address from which the transaction was sent
+to                  , address     , false   , General   ,       15, false  , address to which the transaction was sent
+value               , wei         , false   , General   ,       16, false  , the amount of wei sent with this transactions
+ether               , ether       , false   , General   ,       17, false  , if --ether is specified&#44; the value in ether
+gas                 , gas         , false   , General   ,       18, false  , the maximum number of gas allowed for this transaction
+gasPrice            , gas         , false   , General   ,       19, false  , the number of wei per unit of gas the sender is willing to spend
+gasCost             , gas         , false   , General   ,       20, false  , the number of wei per unit of gas the sender is willing to spend
+input               , bytes       , false   , General   ,       21, false  , byte data either containing a message or funcational data for a smart contracts
+receipt             , *Receipt    , false   , General   ,       22, false  , transaction receipt
+statements          , []Statements, false   , General   ,       23, false  , array of reconciliation statements
+articulatedTx       , *Function   , false   , General   ,       24, false  , articulated transaction
+hasToken            , bool        , false   , General   ,       25, false  , `true` if the transaction is token related&#44; `false` otherwise
+isError             , bool        , false   , General   ,       26, false  , `true` if the transaction ended in error&#44; `false` otherwise
+compressedTx        , string      , false   , General   ,       27, false  , truncated&#44; more readable version of the articulation

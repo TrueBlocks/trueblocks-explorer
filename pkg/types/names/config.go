@@ -87,11 +87,10 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getNamesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Identity", Key: "address", Formatter: "address"},
 		{Section: "Identity", Key: "name"},
 		{Section: "Identity", Key: "symbol"},
-		{Section: "Identity", Key: "decimals"},
+		{Section: "Identity", Key: "decimals", Formatter: "number"},
 		{Section: "Classification", Key: "source"},
 		{Section: "Classification", Key: "tags"},
 		{Section: "Classification", Key: "deleted", Formatter: "boolean", NoTable: true},
@@ -100,10 +99,9 @@ func getNamesFields() []types.FieldConfig {
 		{Section: "Properties", Key: "isErc20", NoTable: true},
 		{Section: "Properties", Key: "isErc721", NoTable: true},
 		{Section: "Properties", Key: "isPrefund", NoTable: true},
-		{Section: "Data", Key: "prefund", NoTable: true, Formatter: "wei"},
+		{Section: "Data", Key: "prefund", Formatter: "wei", NoTable: true},
 		{Section: "Data", Key: "parts", NoTable: true},
-		{Section: "Identity", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret

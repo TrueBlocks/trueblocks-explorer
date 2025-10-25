@@ -28,7 +28,7 @@ import { TabView } from '@layout';
 import { Group } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { contracts } from '@models';
-import { crud, msgs, project, types } from '@models';
+import { msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { assertRouteConsistency } from '../routes';
@@ -159,14 +159,10 @@ export const Contracts = () => {
     pageData,
     setPageData,
     setTotalItems,
-    crudFunc: async (
-      _payload: types.Payload,
-      _op: crud.Operation,
-      _item: unknown,
-    ) => {},
+    crudFunc: () => Promise.resolve(),
     pageFunc: GetContractsPage,
     pageClass: contracts.ContractsPage,
-    updateItem: types.Contract.createFrom({}),
+    updateItem: undefined,
     createPayload,
     getCurrentDataFacet,
   });

@@ -12,18 +12,21 @@ name = "Stats"
 store = "Stats"
 actions = ["export"]
 renderer = "panel"
+panelChart = true
 
 [[facets]]
 name = "Index"
 store = "Index"
 actions = ["export"]
 renderer = "panel"
+panelChart = true
 
 [[facets]]
 name = "Blooms"
 store = "Blooms"
 actions = ["export"]
 renderer = "panel"
+panelChart = true
 
 [[facets]]
 name = "Manifest"

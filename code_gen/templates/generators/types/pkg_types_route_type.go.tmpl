@@ -1,10 +1,5 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
-{{- $single := toSingular $class -}}
-{{- $isAbis := eq $class "Abis" -}}
-{{- $isMonitors := eq $class "Monitors" -}}
-{{- $isContracts := eq $class "Contracts" -}}
-{{- $isPtr := or $isAbis $isMonitors -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -38,7 +33,7 @@ func init() {
 
 type {{$class}}Collection struct {
 	{{- range .Facets}}
-	{{toLower .Name}}Facet *facets.Facet[{{toSingular .Store}}]
+	{{toLower .Name}}Facet *facets.Facet[{{toSingular .StoreName}}]
 	{{- end}}
 	summary         types.Summary
 	summaryMutex    sync.RWMutex
@@ -57,14 +52,14 @@ func (c *{{$class}}Collection) initializeFacets(payload *types.Payload) {
 		{{$class}}{{.Name}},
 		is{{toSingular .Name}},
 		isDup{{.SingleStore}}(),
-		c.get{{.Store}}Store(payload, {{$class}}{{.Name}}),
+		c.get{{.StoreName}}Store(payload, {{$class}}{{.Name}}),
 		"{{toLower $class}}",
 		c,
 	)
 	{{end}}}
 
 {{range .Facets}}
-func is{{toSingular .Name}}(item *{{toSingular .Store}}) bool {
+func is{{toSingular .Name}}(item *{{toSingular .StoreName}}) bool {
 	// EXISTING_CODE
 	// EXISTING_CODE
 }
@@ -167,7 +162,7 @@ func (c *{{$class}}Collection) ExportData(payload *types.Payload) (string, error
 	switch payload.DataFacet {
 	{{- range .Facets}}
 	case {{$class}}{{.Name}}:
-		return c.{{toLower .Name}}Facet.ExportData{{if $isContracts}}Pointers{{end}}(payload, string({{$class}}{{.Name}}))
+		return c.{{toLower .Name}}Facet.ExportData(payload, string({{$class}}{{.Name}}))
 	{{- end}}
 	default:
 		return "", fmt.Errorf("[ExportData] unsupported {{$lower}} facet: %s", payload.DataFacet)

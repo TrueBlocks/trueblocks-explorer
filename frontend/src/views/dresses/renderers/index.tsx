@@ -1,6 +1,6 @@
 import { dresses, project, types } from '@models';
 
-import { GalleryFacet, GeneratorFacet } from './facets';
+import { GalleryFacet, GeneratorFacet, SeriesFacet } from './facets';
 
 export * from './facets';
 
@@ -10,9 +10,14 @@ export const renderers = {
     [types.DataFacet.GALLERY]: ({
       data,
     }: {
-      data: Record<string, unknown>;
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      const pageData = data as unknown as dresses.DressesPage;
+      // Now data is the full array of items
+      const pageData = {
+        dalledress: data || [],
+      } as unknown as dresses.DressesPage;
       const viewStateKey: project.ViewStateKey = {
         viewName: 'dresses',
         facetName: types.DataFacet.GALLERY,
@@ -22,14 +27,34 @@ export const renderers = {
     [types.DataFacet.GENERATOR]: ({
       data,
     }: {
-      data: Record<string, unknown>;
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      const pageData = data as unknown as dresses.DressesPage;
+      const pageData = {
+        dalledress: data || [],
+      } as unknown as dresses.DressesPage;
       const viewStateKey: project.ViewStateKey = {
         viewName: 'dresses',
         facetName: types.DataFacet.GENERATOR,
       };
       return <GeneratorFacet pageData={pageData} viewStateKey={viewStateKey} />;
+    },
+    [types.DataFacet.SERIES]: ({
+      data,
+    }: {
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
+    }) => {
+      const pageData = {
+        series: data || [],
+      } as unknown as dresses.DressesPage;
+      const viewStateKey: project.ViewStateKey = {
+        viewName: 'dresses',
+        facetName: types.DataFacet.SERIES,
+      };
+      return <SeriesFacet pageData={pageData} viewStateKey={viewStateKey} />;
     },
   },
 };

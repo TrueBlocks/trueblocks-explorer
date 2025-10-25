@@ -1,13 +1,12 @@
-name          , type      , strDefault, attributes        , upgrades, docOrder, description
-address       , address   ,           , width=340|readOnly,         ,        1, the address for the ABI
-name          , string    ,           , width=200         ,         ,        2, the filename of the ABI (likely the smart contract address)
-fileSize      , int64     ,           ,                   ,         ,        3, the size of this file on disc
-nFunctions    , int64     ,           ,                   ,         ,        4, the number of functions in the ABI
-nEvents       , int64     ,           ,                   ,         ,        5, the number of events in the ABI
-path          , string    ,           , noui              ,         ,        6, the folder holding the abi file
-lastModDate   , string    ,           , noui              ,         ,        7, the last update date of the file
-isKnown       , bool      ,           , noui              ,         ,        8, true if this is the ABI for a known smart contract or protocol
-isEmpty       , bool      ,           , noui              ,         ,        9, true if the ABI could not be found (and won't be looked for again)
-hasConstructor, bool      ,           , noui              ,         ,       10, if verbose and the abi has a constructor&#44; then `true`&#44; else `false`
-hasFallback   , bool      ,           , noui              ,         ,       11, if verbose and the abi has a fallback&#44; then `true`&#44; else `false`
-functions     , []Function,           , noui              ,         ,       12, the functions for this address
+name          , type      , strDefault, attributes        , section    , upgrades, docOrder, description
+address       , address   ,           , width=340|readOnly, Identity   ,         ,        1, the address for the ABI
+name          , string    ,           , width=200         , Identity   ,         ,        2, the filename of the ABI (likely the smart contract address)
+path          , string    ,           , noui|noTable      , Identity   ,         ,        3, the folder holding the abi file
+nFunctions    , int64     ,           ,                   , Statistics ,         ,        4, the number of functions in the ABI
+nEvents       , int64     ,           ,                   , Statistics ,         ,        5, the number of events in the ABI
+fileSize      , int64     ,           ,                   , Statistics ,         ,        6, the size of this file on disc
+isEmpty       , bool      ,           , noui|noTable      , Properties ,         ,        7, true if the ABI could not be found (and won't be looked for again)
+isKnown       , bool      ,           , noui|noTable      , Properties ,         ,        8, true if this is the ABI for a known smart contract or protocol
+hasConstructor, bool      ,           , noui|noTable      , Properties ,         ,        9, if verbose and the abi has a constructor&#44; then `true`&#44; else `false`
+hasFallback   , bool      ,           , noui|noTable      , Properties ,         ,       10, if verbose and the abi has a fallback&#44; then `true`&#44; else `false`
+lastModDate   , string    ,           , noui              , Metadata   ,         ,       11, the last update date of the file

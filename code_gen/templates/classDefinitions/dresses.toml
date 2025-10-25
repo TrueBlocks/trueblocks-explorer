@@ -1,37 +1,41 @@
 [settings]
-    class = "Dresses"
-    doc_group = "001-Route"
-    doc_descr = "multi-facet generative art collection for DalleDress"
-    doc_route = "700-dresses"
-    attributes = ""
-    produced_by = "dresses"
-    disable_go = false
+class = "Dresses"
+doc_group = "001-Route"
+doc_descr = "multi-facet generative art collection for DalleDress"
+doc_route = "700-dresses"
+attributes = ""
+produced_by = "dresses"
+disable_go = false
 
 [[facets]]
-    name = "Generator"
-    store = "dalle.DalleDress"
-    actions = [""]
-    viewType = "canvas"
-    renderer = "facet"
+name = "Generator"
+store = "dalle.DalleDress"
+actions = [""]
+viewType = "canvas"
+renderer = "facet"
+navigate = "dresses|gallery|address|original"
 
 [[facets]]
-    name = "Series"
-    store = "dalle.Series"
-    actions = ["update","create","delete","remove","export"]
+name = "Series"
+store = "dalle.Series"
+renderer = "facet"
+viewType = "canvas"
+actions = ["update","create","delete","remove","export"]
 
 [[facets]]
-    name = "Databases"
-    store = "dalle.Databases"
-    actions = ["export"]
+name = "Databases"
+store = "dalle.Databases"
+actions = ["export"]
 
 [[facets]]
-    name = "Events"
-    store = "Logs"
-    actions = ["export"]
+name = "Events"
+store = "Logs"
+actions = ["export"]
 
 [[facets]]
-    name = "Gallery"
-    store = "dalle.DalleDress"
-    actions = ["export"]
-    viewType = "canvas"
-    renderer = "facet"
+name = "Gallery"
+store = "dalle.DalleDress"
+actions = ["export"]
+viewType = "canvas"
+renderer = "facet"
+navigate = "dresses|generator|address|original"

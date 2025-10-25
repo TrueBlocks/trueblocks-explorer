@@ -19,7 +19,6 @@ import (
 
 // EXISTING_CODE
 
-// TODO: The slices should be slices to pointers
 type MonitorsPage struct {
 	Facet         types.DataFacet  `json:"facet"`
 	Monitors      []Monitor        `json:"monitors"`
@@ -52,12 +51,12 @@ func (c *MonitorsCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &MonitorsPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -79,7 +78,9 @@ func (c *MonitorsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("monitors", dataFacet, "GetPage", err)
 		} else {
-			page.Monitors, page.TotalItems, page.State = result.Items, result.TotalItems, result.State
+			page.Monitors = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -143,6 +144,24 @@ func (c *MonitorsCollection) generateSummariesForPeriod(dataFacet types.DataFace
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *MonitorsCollection,
+	page *MonitorsPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

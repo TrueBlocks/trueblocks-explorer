@@ -163,7 +163,7 @@ func TestAssetChartsBucketing(t *testing.T) {
 		}
 	})
 
-	// TODO: Add integration tests that use the actual streaming updateAssetChartsBucket method
+	// TODO: Add integration tests that use the actual streaming updateStatementsBucket method
 	// This would require setting up a proper ExportsCollection instance with facets
 
 	// Test configuration integration

@@ -13,19 +13,19 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
+
 type DressesPage struct {
 	Facet         types.DataFacet  `json:"facet"`
-	DalleDress    []*DalleDress    `json:"dalledress"`
-	Databases     []*Database      `json:"databases"`
-	Logs          []*Log           `json:"logs"`
-	Series        []*Series        `json:"series"`
+	DalleDress    []DalleDress     `json:"dalledress"`
+	Databases     []Database       `json:"databases"`
+	Logs          []Log            `json:"logs"`
+	Series        []Series         `json:"series"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
 	State         types.StoreState `json:"state"`
@@ -55,20 +55,17 @@ func (c *DressesCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-	// BINGY_JOE
-	// TODO: BOGUS - CLEAN THIS UP?
-	const UnpaginatedPageSize = 1_000_000_000
-	if dataFacet == DressesGenerator || dataFacet == DressesGallery {
-		first = 0
-		pageSize = UnpaginatedPageSize
-	}
-	// BINGY_JOE
-
 	page := &DressesPage{
 		Facet: dataFacet,
 	}
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
+	const UnpaginatedPageSize = 1_000_000_000
+	if page.Facet == DressesGenerator || page.Facet == DressesGallery {
+		first = 0
+		pageSize = UnpaginatedPageSize
+	}
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -79,33 +76,20 @@ func (c *DressesCollection) GetPage(
 	case DressesGenerator:
 		facet := c.generatorFacet
 		var filterFunc func(*DalleDress) bool
-		filterFunc = func(item *DalleDress) bool {
-			// First check if the dresses belongs to a deleted series
-			if item.Series != "" {
-				seriesItems := c.seriesFacet.GetStore().GetItems()
-				for _, s := range seriesItems {
-					if s != nil && s.Suffix == item.Series && s.Deleted {
-						return false // Exclude dresses from deleted series
-					}
-				}
-			}
-			// Then apply text filter if provided
-			if filter != "" {
+		if filter != "" {
+			filterFunc = func(item *DalleDress) bool {
 				return c.matchesGeneratorFilter(item, filter)
 			}
-			return true
 		}
 		sortFunc := func(items []DalleDress, sort sdk.SortSpec) error {
-			return model.SortDalleDress(items, sort)
+			return dalle.SortDalleDress(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			generator := make([]*DalleDress, 0, len(result.Items))
-			for i := range result.Items {
-				generator = append(generator, &result.Items[i])
-			}
-			page.DalleDress, page.TotalItems, page.State = generator, result.TotalItems, result.State
+			page.DalleDress = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesSeries:
@@ -122,11 +106,9 @@ func (c *DressesCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			series := make([]*Series, 0, len(result.Items))
-			for i := range result.Items {
-				series = append(series, &result.Items[i])
-			}
-			page.Series, page.TotalItems, page.State = series, result.TotalItems, result.State
+			page.Series = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesDatabases:
@@ -143,11 +125,9 @@ func (c *DressesCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			database := make([]*Database, 0, len(result.Items))
-			for i := range result.Items {
-				database = append(database, &result.Items[i])
-			}
-			page.Databases, page.TotalItems, page.State = database, result.TotalItems, result.State
+			page.Databases = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesEvents:
@@ -164,43 +144,28 @@ func (c *DressesCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			event := make([]*Log, 0, len(result.Items))
-			for i := range result.Items {
-				event = append(event, &result.Items[i])
-			}
-			page.Logs, page.TotalItems, page.State = event, result.TotalItems, result.State
+			page.Logs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case DressesGallery:
 		facet := c.galleryFacet
 		var filterFunc func(*DalleDress) bool
-		filterFunc = func(item *DalleDress) bool {
-			// First check if the dresses belongs to a deleted series
-			if item.Series != "" {
-				seriesItems := c.seriesFacet.GetStore().GetItems()
-				for _, s := range seriesItems {
-					if s != nil && s.Suffix == item.Series && s.Deleted {
-						return false // Exclude dresseses from deleted series
-					}
-				}
-			}
-			// Then apply text filter if provided
-			if filter != "" {
+		if filter != "" {
+			filterFunc = func(item *DalleDress) bool {
 				return c.matchesGalleryFilter(item, filter)
 			}
-			return true
 		}
 		sortFunc := func(items []DalleDress, sort sdk.SortSpec) error {
-			return model.SortDalleDress(items, sort)
+			return dalle.SortDalleDress(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			gallery := make([]*DalleDress, 0, len(result.Items))
-			for i := range result.Items {
-				gallery = append(gallery, &result.Items[i])
-			}
-			page.DalleDress, page.TotalItems, page.State = gallery, result.TotalItems, result.State
+			page.DalleDress = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -264,6 +229,24 @@ func (c *DressesCollection) generateSummariesForPeriod(dataFacet types.DataFacet
 	default:
 		return fmt.Errorf("[generateSummariesForPeriod] unsupported dataFacet for summary: %v", dataFacet)
 	}
+}
+
+func preprocessPage(
+	c *DressesCollection,
+	page *DressesPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return nil
 }
 
 // EXISTING_CODE

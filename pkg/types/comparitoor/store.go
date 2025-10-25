@@ -21,13 +21,13 @@ import (
 )
 
 // AnnotatedTransaction wraps sdk.Transaction with missing/unique flags for frontend rendering
-type AnnotatedTransaction struct {
-	sdk.Transaction
-	Missing bool `json:"missing"`
-	Unique  bool `json:"unique"`
-}
+// type AnnotatedTransaction struct {
+// 	sdk.Transaction
+// 	Missing bool `json:"missing"`
+// 	Unique  bool `json:"unique"`
+// }
 
-type Transaction = AnnotatedTransaction
+type Transaction = sdk.Transaction // AnnotatedTransaction
 
 // EXISTING_CODE
 
@@ -136,7 +136,6 @@ func GetComparitoorCollection(payload *types.Payload) *ComparitoorCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection

@@ -8,9 +8,7 @@ the code inside of 'EXISTING_CODE' tags.
 -->
 # Exports View
 
-// EXISTING_CODE
-This is the help file for the Exports view.
-// EXISTING_CODE
+Welcome to the **Exports** view! This section provides information about managing exports in your application.
 
 ## Facets
 
@@ -35,248 +33,248 @@ This is the help file for the Exports view.
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position of this log relative to the block
-  - timestamp: the timestamp of the block this log appears in
-  - date: the timestamp as a date
   - address: the smart contract that emitted this log
-  - name: the name of the smart contract if any
-  - topics: the first topic hashes event signature of the log, up to 3 additional index parameters may appear
-  - data: any remaining un-indexed parameters to the event
-  - transactionHash: the hash of the transction
+  - timestamp: the timestamp of the block this log appears in
   - blockHash: the hash of the block
+  - transactionHash: the hash of the transction
+  - topic0: the first topic hash (event signature)
+  - topic1: the second topic hash (first indexed parameter)
+  - topic2: the third topic hash (second indexed parameter)
+  - topic3: the fourth topic hash (third indexed parameter)
+  - data: any remaining un-indexed parameters to the event
   - articulatedLog: a human-readable version of the topic and data fields
-  - compressedLog: a truncated, more readable version of the articulation
-  - isNFT: true if the log is an NFT transfer
+  - compressedLog: a truncated version of the articulation
 
-- **ApprovalTxs Store (27 members)**
+- **ApprovalTxs Store (19 members)**
 
-  - gasUsed: 
-  - chainId: 
-  - maxPriorityFeePerGas: 
-  - type: 
-  - traces: 
-  - maxFeePerGas: 
-  - hash: the hash of the transaction
-  - blockHash: the hash of the block containing this transaction
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
-  - nonce: sequence number of the transactions sent by the sender
-  - timestamp: the Unix timestamp of the object
-  - date: the timestamp as a date
+  - hash: the hash of the transaction
   - from: address from which the transaction was sent
   - to: address to which the transaction was sent
   - value: the amount of wei sent with this transactions
-  - ether: if --ether is specified, the value in ether
+  - gasUsed: the amount of gas used by this transaction
+  - timestamp: the Unix timestamp of the object
+  - input: byte data either containing a message or funcational data for a smart contracts
+  - articulatedTx: articulated transaction data
+  - isError: `true` if the transaction ended in error, `false` otherwise
+  - hasToken: `true` if the transaction is token related, `false` otherwise
   - gas: the maximum number of gas allowed for this transaction
   - gasPrice: the number of wei per unit of gas the sender is willing to spend
-  - gasCost: the number of wei per unit of gas the sender is willing to spend
-  - input: byte data either containing a message or funcational data for a smart contracts. See the --articulate
-  - receipt: 
-  - statements: array of reconciliation statements
-  - articulatedTx: 
-  - hasToken: `true` if the transaction is token related, `false` otherwise
-  - isError: `true` if the transaction ended in error, `false` otherwise
-  - compressedTx: truncated, more readable version of the articulation
+  - maxFeePerGas: maximum fee per gas
+  - maxPriorityFeePerGas: maximum priority fee per gas
+  - blockHash: the hash of the block containing this transaction
+  - nonce: sequence number of the transactions sent by the sender
+  - type: the transaction type
 
-- **Assets Store (6 members)**
+- **Assets Store (15 members)**
 
   - address: Address
-  - name: Name
+  - holder: Holder
   - symbol: Symbol
+  - name: Name
   - decimals: Decimals
+  - totalSupply: Total Supply
   - source: Source
   - tags: Tags
+  - isContract: Is Contract
+  - isCustom: Is Custom
+  - isErc20: Is ERC20
+  - isErc721: Is ERC721
+  - isPrefund: Is Prefund
+  - deleted: Deleted
+  - prefund: Prefund
 
-- **Balances Store (11 members)**
+- **Balances Store (13 members)**
 
-  - blockNumber: the number of the block
-  - transactionIndex: the zero-indexed position of the transaction in the block
-  - timestamp: the timestamp of the block this log appears in
   - date: the timestamp as a date
   - holder: Holder
   - address: Token Address
   - symbol: Symbol
-  - name: Token Name
   - balance: Balance
-  - priorBalance: Prior Balance
   - decimals: Decimals
+  - priorBalance: Prior Balance
+  - totalSupply: Total Supply
+  - type: Type
+  - name: Token Name
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction in the block
+  - timestamp: the timestamp of the block this log appears in
 
 - **Logs Store (14 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position of this log relative to the block
-  - timestamp: the timestamp of the block this log appears in
-  - date: the timestamp as a date
   - address: the smart contract that emitted this log
-  - name: the name of the smart contract if any
-  - topics: the first topic hashes event signature of the log, up to 3 additional index parameters may appear
-  - data: any remaining un-indexed parameters to the event
-  - transactionHash: the hash of the transction
+  - timestamp: the timestamp of the block this log appears in
   - blockHash: the hash of the block
+  - transactionHash: the hash of the transaction
+  - topic0: the first topic hash (event signature)
+  - topic1: the second topic hash (first indexed parameter)
+  - topic2: the third topic hash (second indexed parameter)
+  - topic3: the fourth topic hash (third indexed parameter)
+  - data: any remaining un-indexed parameters to the event
   - articulatedLog: a human-readable version of the topic and data fields
-  - compressedLog: a truncated, more readable version of the articulation
-  - isNFT: true if the log is an NFT transfer
+  - compressedLog: a truncated version of the articulation
 
-- **OpenApprovals Store (11 members)**
+- **OpenApprovals Store (10 members)**
 
-  - allowance: the amount of tokens approved for spending
-  - blockNumber: the current block number when the report was generated
   - timestamp: the current timestamp when the report was generated
-  - date: the timestamp as a date
+  - blockNumber: the current block number when the report was generated
   - owner: the address of the owner of the token (the approver)
-  - spender: the address being granted approval to spend tokens
   - token: the address of the ERC-20 token being approved
+  - spender: the address being granted approval to spend tokens
+  - allowance: the amount of tokens approved for spending
   - lastAppBlock: the block number of the last approval event
+  - lastAppLogID: the log index of the last approval event
   - lastAppTs: the timestamp of the last approval event
   - lastAppTxID: the transaction index of the last approval event
-  - lastAppLogID: the log index of the last approval event
 
 - **Receipts Store (14 members)**
 
-  - logsBloom: 
-  - to: 
-  - cumulativeGasUsed: 
-  - effectiveGasPrice: 
-  - from: 
-  - blockHash: 
-  - blockNumber: 
-  - contractAddress: the address of the newly created contract, if any
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction in the block
+  - transactionHash: the hash of the transaction
+  - from: the sender of the transaction
+  - to: the recipient of the transaction
   - gasUsed: the amount of gas actually used by the transaction
-  - isError: 
-  - logs: a possibly empty array of logs
   - status: `1` on transaction suceess, `null` if tx precedes Byzantium, `0` otherwise
-  - transactionHash: 
-  - transactionIndex: 
+  - isError: whether the transaction resulted in an error
+  - contractAddress: the address of the newly created contract, if any
+  - cumulativeGasUsed: cumulative gas used
+  - effectiveGasPrice: effective gas price
+  - blockHash: the hash of the block
+  - logsBloom: the logs bloom filter
+  - logs: a possibly empty array of logs
 
 - **Statements Store (43 members)**
 
-  - blockNumber: the number of the block
-  - transactionIndex: the zero-indexed position of the transaction in the block
-  - logIndex: the zero-indexed position the log in the block, if applicable
-  - transactionHash: the hash of the transaction that triggered this reconciliation
   - timestamp: the Unix timestamp of the object
-  - date: the timestamp as a date
   - asset: 0xeeee...eeee for ETH reconciliations, the token address otherwise
   - symbol: either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain
   - decimals: the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18
-  - spotPrice: the on-chain price in USD (or if a token in ETH, or zero) at the time of the transaction
   - priceSource: the on-chain source from which the spot price was taken
-  - accountedFor: the address being accounted for in this reconciliation
-  - sender: the initiator of the transfer (the sender)
-  - recipient: the receiver of the transfer (the recipient)
-  - begBal: the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)
-  - amountNet: totalIn - totalOut
-  - endBal: the on-chain or running balance after the transaction (see notes about intra-block reconciliations)
-  - reconciled: true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.
-  - totalIn: the sum of the following `In` fields
-  - amountIn: the top-level value of the incoming transfer for the accountedFor address
-  - internalIn: the internal value of the incoming transfer for the accountedFor address
-  - selfDestructIn: the incoming value of a self-destruct if recipient is the accountedFor address
-  - minerBaseRewardIn: the base fee reward if the miner is the accountedFor address
-  - minerNephewRewardIn: the nephew reward if the miner is the accountedFor address
-  - minerTxFeeIn: the transaction fee reward if the miner is the accountedFor address
-  - minerUncleRewardIn: the uncle reward if the miner who won the uncle block is the accountedFor address
-  - correctBegBalIn: for unreconciled transfers, increase in beginning balance need to match previous balance
-  - correctAmountIn: for unreconciled transfers, increase in the amount of a transfer
-  - correctEndBalIn: for unreconciled transfers, increase in ending balance need to match running balance or block balance
-  - prefundIn: at block zero (0) only, the amount of genesis income for the accountedFor address
-  - totalOut: the sum of the following `Out` fields
-  - amountOut: the amount (in units of the asset) of regular outflow during this transaction
-  - internalOut: the value of any internal value transfers out of the accountedFor account
-  - correctBegBalOut: for unreconciled transfers, decrease in beginning balance need to match previous balance
-  - correctAmountOut: for unreconciled transfers, decrease in the amount of a transfer
-  - correctEndBalOut: for unreconciled transfers, decrease in ending balance need to match running balance or block balance
-  - selfDestructOut: the value of the self-destructed value out if the accountedFor address was self-destructed
-  - gasOut: if the transaction's original sender is the accountedFor address, the amount of gas expended
-  - prevBal: the account balance for the given asset for the previous reconciliation
-  - begBalDiff: difference between expected beginning balance and balance at last reconciliation, if non-zero, the reconciliation failed
-  - endBalDiff: endBal - endBalCalc, if non-zero, the reconciliation failed
-  - endBalCalc: begBal + amountNet
-  - correctingReasons: for unreconciled transfers, the reasons for the correcting entries, if any
-
-- **Traces Store (14 members)**
-
-  - blockHash: the hash of the block containing this trace
-  - blockNumber: the number of the block
-  - timestamp: the timestamp of the block
+  - calcs.begBalEth: the beginning balance in ETH
+  - calcs.totalInEth: total inflow in ETH
+  - calcs.totalOutEth: total outflow in ETH
+  - calcs.amountNetEth: net amount in ETH
+  - calcs.endBalEth: ending balance in ETH
+  - spotPrice: the on-chain price in USD at the time of the transaction
+  - calcs.endBalCalcEth: calculated ending balance in ETH
   - date: the timestamp as a date
-  - transactionHash: the transaction's hash containing this trace
+  - gasUsed: gas used in the transaction
+  - calcs.reconciliationType: type of reconciliation
+  - accountedFor: the address being accounted for
+  - calcs.reconciled: true if reconciled
+  - amountIn: incoming amount
+  - internalIn: internal incoming amount
+  - selfDestructIn: self-destruct incoming amount
+  - minerBaseRewardIn: miner base reward
+  - minerTxFeeIn: miner transaction fee
+  - prefundIn: prefund amount
+  - amountOut: outgoing amount
+  - internalOut: internal outgoing amount
+  - selfDestructOut: self-destruct outgoing amount
+  - gasOut: gas out
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction
+  - logIndex: the zero-indexed position of the log
+  - transactionHash: the hash of the transaction
+  - sender: the transaction sender
+  - recipient: the transaction recipient
+  - prevBal: previous balance
+  - begBalDiff: beginning balance difference
+  - endBalDiff: ending balance difference
+  - correctingReasons: reasons for corrections
+  - correctBegBalIn: correct beginning balance in
+  - correctAmountIn: correct amount in
+  - correctEndBalIn: correct ending balance in
+  - correctBegBalOut: correct beginning balance out
+  - correctAmountOut: correct amount out
+  - correctEndBalOut: correct ending balance out
+
+- **Traces Store (22 members)**
+
+  - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
-  - subtraces: the number of children traces that the trace hash
+  - traceIndex: the zero-indexed position of the trace in the transaction
+  - from: the address that initiated the trace
+  - to: the address that received the trace
+  - value: the value transferred in wei
   - type: the type of the trace
-  - compressedTrace: a compressed string version of the articulated trace
-  - error: 
+  - error: error message if any
+  - subtraces: the number of children traces
   - traceAddress: a particular trace's address in the trace tree
-  - action: the trace action for this trace
-  - result: the trace result of this trace
+  - gas: the gas limit for this trace
+  - callType: the type of call
+  - input: the input data for the trace
+  - gasUsed: the amount of gas used
+  - output: the output data from the trace
+  - address: the contract address if created
+  - code: the contract code if created
+  - blockHash: the hash of the block containing this trace
+  - transactionHash: the transaction's hash containing this trace
+  - timestamp: the timestamp of the block
   - articulatedTrace: human readable version of the trace action input data
+  - compressedTrace: a compressed string version of the articulated trace
 
-- **Transactions Store (27 members)**
+- **Transactions Store (19 members)**
 
-  - gasUsed: 
-  - chainId: 
-  - maxPriorityFeePerGas: 
-  - type: 
-  - traces: 
-  - maxFeePerGas: 
-  - hash: the hash of the transaction
-  - blockHash: the hash of the block containing this transaction
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
-  - nonce: sequence number of the transactions sent by the sender
-  - timestamp: the Unix timestamp of the object
-  - date: the timestamp as a date
+  - hash: the hash of the transaction
   - from: address from which the transaction was sent
   - to: address to which the transaction was sent
   - value: the amount of wei sent with this transactions
-  - ether: if --ether is specified, the value in ether
+  - gasUsed: the amount of gas used by this transaction
+  - timestamp: the Unix timestamp of the object
+  - input: byte data either containing a message or funcational data for a smart contracts
+  - articulatedTx: articulated transaction data
+  - isError: `true` if the transaction ended in error, `false` otherwise
+  - hasToken: `true` if the transaction is token related, `false` otherwise
   - gas: the maximum number of gas allowed for this transaction
   - gasPrice: the number of wei per unit of gas the sender is willing to spend
-  - gasCost: the number of wei per unit of gas the sender is willing to spend
-  - input: byte data either containing a message or funcational data for a smart contracts. See the --articulate
-  - receipt: 
-  - statements: array of reconciliation statements
-  - articulatedTx: 
-  - hasToken: `true` if the transaction is token related, `false` otherwise
-  - isError: `true` if the transaction ended in error, `false` otherwise
-  - compressedTx: truncated, more readable version of the articulation
+  - maxFeePerGas: maximum fee per gas
+  - maxPriorityFeePerGas: maximum priority fee per gas
+  - blockHash: the hash of the block containing this transaction
+  - nonce: sequence number of the transactions sent by the sender
+  - type: the transaction type
 
 - **Transfers Store (23 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position the log in the block, if applicable
-  - date: the timestamp as a date
-  - holder: the address of the holder of the asset
+  - from: the initiator of the transfer (the sender)
+  - to: the receiver of the transfer (the recipient)
   - asset: 0xeeee...eeee for ETH transfers, the token address otherwise
-  - decimals: the number of decimal places in the asset units
+  - amount: the amount of the transfer
   - sender: the initiator of the transfer (the sender)
   - recipient: the receiver of the transfer (the recipient)
-  - amountIn: the top-level value of the incoming transfer for the holder address
-  - internalIn: the internal value of the incoming transfer for the holder address
+  - holder: the address of the holder of the asset
+  - decimals: the number of decimal places in the asset units
+  - amountIn: the top-level value of the incoming transfer
+  - amountOut: the amount of regular outflow during this transaction
+  - internalIn: the internal value of the incoming transfer
+  - internalOut: the value of any internal value transfers out
+  - gasOut: the amount of gas expended
   - minerBaseRewardIn: the base fee reward if the miner is the holder address
   - minerNephewRewardIn: the nephew reward if the miner is the holder address
   - minerTxFeeIn: the transaction fee reward if the miner is the holder address
   - minerUncleRewardIn: the uncle reward if the miner who won the uncle block is the holder address
-  - prefundIn: at block zero (0) only, the amount of genesis income for the holder address
   - selfDestructIn: the incoming value of a self-destruct if recipient is the holder address
-  - amountOut: the amount (in units of the asset) of regular outflow during this transaction
-  - internalOut: the value of any internal value transfers out of the holder account
-  - gasOut: if the transaction's original sender is the holder address, the amount of gas expended
   - selfDestructOut: the outgoing value of a self-destruct if sender is the holder address
-  - transaction: the transaction that triggered the transfer
-  - log: if a token transfer, the log that triggered the transfer
+  - prefundIn: at block zero (0) only, the amount of genesis income for the holder address
 
-- **Withdrawals Store (8 members)**
+- **Withdrawals Store (6 members)**
 
+  - blockNumber: the number of this block
+  - timestamp: the timestamp for this block
+  - index: a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal
+  - validatorIndex: the validator_index of the validator on the consensus layer the withdrawal corresponds to
   - address: the recipient for the withdrawn ether
   - amount: a nonzero amount of ether given in gwei (1e9 wei)
-  - ether: if --ether is specified, the amount in ether
-  - blockNumber: the number of this block
-  - index: a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal
-  - timestamp: the timestamp for this block
-  - date: the timestamp as a date
-  - validatorIndex: the validator_index of the validator on the consensus layer the withdrawal corresponds to
 
 // EXISTING_CODE
 // EXISTING_CODE

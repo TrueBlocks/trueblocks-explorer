@@ -238,11 +238,11 @@ func (c *ContractsCollection) ResetSummary() {
 func (c *ContractsCollection) ExportData(payload *types.Payload) (string, error) {
 	switch payload.DataFacet {
 	case ContractsDashboard:
-		return c.dashboardFacet.ExportDataPointers(payload, string(ContractsDashboard))
+		return c.dashboardFacet.ExportData(payload, string(ContractsDashboard))
 	case ContractsExecute:
-		return c.executeFacet.ExportDataPointers(payload, string(ContractsExecute))
+		return c.executeFacet.ExportData(payload, string(ContractsExecute))
 	case ContractsEvents:
-		return c.eventsFacet.ExportDataPointers(payload, string(ContractsEvents))
+		return c.eventsFacet.ExportData(payload, string(ContractsEvents))
 	default:
 		return "", fmt.Errorf("[ExportData] unsupported contracts facet: %s", payload.DataFacet)
 	}

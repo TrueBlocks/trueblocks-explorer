@@ -8,9 +8,7 @@
 
 package exports
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 func (c *ExportsCollection) GetBuckets(payload *types.Payload) (*types.Buckets, error) {
 	var facet types.BucketInterface
@@ -44,33 +42,29 @@ func (c *ExportsCollection) GetBuckets(payload *types.Payload) (*types.Buckets, 
 		facet = c.receiptsFacet
 	default:
 		return &types.Buckets{
-			Series: make(map[string][]types.Bucket),
-			GridInfo: types.GridInfo{
-				Size:        86400,
-				Rows:        0,
-				Columns:     4,
-				BucketCount: 0,
-				MaxBlock:    0,
-			},
+			Series:   make(map[string][]types.Bucket),
+			GridInfo: types.NewGridInfo(),
 		}, nil
 	}
 
 	buckets := facet.GetBuckets()
+	// EXISTING_CODE
 	if payload.DataFacet == ExportsAssetCharts && c.assetchartsFacet != nil {
 		buckets = c.padSeries(buckets)
 	}
-
+	// EXISTING_CODE
 	return buckets, nil
 }
 
+// EXISTING_CODE
 // padSeries applies edge padding to AssetCharts buckets
 func (c *ExportsCollection) padSeries(originalBuckets *types.Buckets) *types.Buckets {
 	if originalBuckets == nil || c.assetchartsFacet == nil {
 		return originalBuckets
 	}
 
-	c.collectionMutex.RLock()
-	defer c.collectionMutex.RUnlock()
+	collectionMutex.RLock()
+	defer collectionMutex.RUnlock()
 
 	paddedBuckets := &types.Buckets{
 		Series:   make(map[string][]types.Bucket),
@@ -87,3 +81,5 @@ func (c *ExportsCollection) padSeries(originalBuckets *types.Buckets) *types.Buc
 
 	return paddedBuckets
 }
+
+// EXISTING_CODE

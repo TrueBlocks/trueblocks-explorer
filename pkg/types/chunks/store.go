@@ -29,16 +29,16 @@ type Stats = sdk.Stats
 // EXISTING_CODE
 
 var (
-	bloomsStore   *store.Store[Bloom]
+	bloomsStore   = make(map[string]*store.Store[Bloom])
 	bloomsStoreMu sync.Mutex
 
-	indexStore   *store.Store[Index]
+	indexStore   = make(map[string]*store.Store[Index])
 	indexStoreMu sync.Mutex
 
-	manifestStore   *store.Store[Manifest]
+	manifestStore   = make(map[string]*store.Store[Manifest])
 	manifestStoreMu sync.Mutex
 
-	statsStore   *store.Store[Stats]
+	statsStore   = make(map[string]*store.Store[Stats])
 	statsStoreMu sync.Mutex
 )
 
@@ -51,7 +51,8 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := bloomsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := bloomsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -95,7 +96,7 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		bloomsStore = theStore
+		bloomsStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -110,7 +111,8 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := indexStore
+	storeKey := getStoreKey(chain, address)
+	theStore := indexStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -158,7 +160,7 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		indexStore = theStore
+		indexStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -173,7 +175,8 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := manifestStore
+	storeKey := getStoreKey(chain, address)
+	theStore := manifestStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -199,7 +202,6 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 			// EXISTING_CODE
 			// EXISTING_CODE
 			if it, ok := item.(*Manifest); ok {
-				c.updateManifestBucket(it)
 				return it
 			}
 			return nil
@@ -217,7 +219,7 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		manifestStore = theStore
+		manifestStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -232,7 +234,8 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := statsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := statsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -276,15 +279,13 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		statsStore = theStore
+		statsStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *ChunksCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case ChunksStats:
@@ -298,6 +299,7 @@ func (c *ChunksCollection) GetStoreName(dataFacet types.DataFacet, chain, addres
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -311,8 +313,6 @@ func GetChunksCollection(payload *types.Payload) *ChunksCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
@@ -321,6 +321,10 @@ func GetChunksCollection(payload *types.Payload) *ChunksCollection {
 	collection := NewChunksCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
 }
 
 // EXISTING_CODE

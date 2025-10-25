@@ -8,8 +8,7 @@ the code inside of 'EXISTING_CODE' tags.
 -->
 # Status View
 
-// EXISTING_CODE
-// EXISTING_CODE
+Welcome to the **Status** view! This section provides information about managing status in your application.
 
 ## Facets
 
@@ -21,43 +20,43 @@ the code inside of 'EXISTING_CODE' tags.
 
 - **Caches Store (6 members)**
 
-  - lastCached: the last time this cache was updated
+  - type: the type of cache
+  - path: the path to the cache
   - nFiles: the number of files in the cache
   - nFolders: the number of folders in the cache
-  - path: the path to the cache
   - sizeInBytes: the size of the cache in bytes
-  - type: the type of cache
+  - lastCached: the last time this cache was updated
 
 - **Chains Store (7 members)**
 
   - chain: the chain identifier
   - chainId: the chain ID
+  - symbol: the chain's native token symbol
+  - rpcProvider: the RPC provider URL
   - ipfsGateway: the IPFS gateway URL
   - localExplorer: the local block explorer URL
   - remoteExplorer: the remote block explorer URL
-  - rpcProvider: the RPC provider URL
-  - symbol: the chain's native token symbol
 
 - **Status Store (18 members)**
 
   - cachePath: path to the cache directory
+  - indexPath: path to the index directory
   - chain: the chain identifier
-  - chainConfig: path to chain configuration
   - chainId: the chain ID
+  - networkId: the network ID
+  - chainConfig: path to chain configuration
+  - rootConfig: path to root configuration
   - clientVersion: version of the client
+  - version: Application version
+  - progress: progress information
+  - rpcProvider: RPC provider URL
   - hasEsKey: whether Etherscan API key is available
   - hasPinKey: whether Pinata API key is available
-  - indexPath: path to the index directory
   - isApi: whether running in API mode
   - isArchive: whether node is archive node
   - isScraping: whether scraper is running
   - isTesting: whether in testing mode
   - isTracing: whether tracing is enabled
-  - networkId: the network ID
-  - progress: progress information
-  - rootConfig: path to root configuration
-  - rpcProvider: RPC provider URL
-  - version: Application version
 
 // EXISTING_CODE
 // EXISTING_CODE

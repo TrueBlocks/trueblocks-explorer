@@ -10,10 +10,10 @@ package app
 import (
 	"fmt"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
 )
 
 // ExportData handles export requests with full context logging and CSV creation

@@ -8,8 +8,7 @@ the code inside of 'EXISTING_CODE' tags.
 -->
 # Comparitoor View
 
-// EXISTING_CODE
-// EXISTING_CODE
+Welcome to the **Comparitoor** view! This section provides information about managing comparitoor in your application.
 
 ## Facets
 
@@ -21,35 +20,27 @@ the code inside of 'EXISTING_CODE' tags.
 
 ## Stores
 
-- **Transaction Store (27 members)**
+- **Transaction Store (19 members)**
 
-  - gasUsed: 
-  - chainId: 
-  - maxPriorityFeePerGas: 
-  - type: 
-  - traces: 
-  - maxFeePerGas: 
-  - hash: the hash of the transaction
-  - blockHash: the hash of the block containing this transaction
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
-  - nonce: sequence number of the transactions sent by the sender
-  - timestamp: the Unix timestamp of the object
-  - date: the timestamp as a date
+  - hash: the hash of the transaction
   - from: address from which the transaction was sent
   - to: address to which the transaction was sent
   - value: the amount of wei sent with this transactions
-  - ether: if --ether is specified, the value in ether
+  - gasUsed: the amount of gas used by this transaction
+  - timestamp: the Unix timestamp of the object
+  - input: byte data either containing a message or funcational data for a smart contracts
+  - articulatedTx: articulated transaction data
+  - isError: `true` if the transaction ended in error, `false` otherwise
+  - hasToken: `true` if the transaction is token related, `false` otherwise
   - gas: the maximum number of gas allowed for this transaction
   - gasPrice: the number of wei per unit of gas the sender is willing to spend
-  - gasCost: the number of wei per unit of gas the sender is willing to spend
-  - input: byte data either containing a message or funcational data for a smart contracts. See the --articulate
-  - receipt: 
-  - statements: array of reconciliation statements
-  - articulatedTx: 
-  - hasToken: `true` if the transaction is token related, `false` otherwise
-  - isError: `true` if the transaction ended in error, `false` otherwise
-  - compressedTx: truncated, more readable version of the articulation
+  - maxFeePerGas: maximum fee per gas
+  - maxPriorityFeePerGas: maximum priority fee per gas
+  - blockHash: the hash of the block containing this transaction
+  - nonce: sequence number of the transactions sent by the sender
+  - type: the transaction type
 
 // EXISTING_CODE
 // EXISTING_CODE

@@ -14,16 +14,15 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 )
 
 // EXISTING_CODE
+
 type ComparitoorPage struct {
 	Facet         types.DataFacet  `json:"facet"`
-	Transaction   []*Transaction   `json:"transaction"`
+	Transaction   []Transaction    `json:"transaction"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
 	State         types.StoreState `json:"state"`
@@ -68,119 +67,12 @@ func (c *ComparitoorCollection) GetPage(
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
+	filter = strings.ToLower(filter)
 	dataFacet := payload.DataFacet
-
 	page := &ComparitoorPage{
 		Facet: dataFacet,
 	}
-	// Always populate per-source arrays for frontend, with missing/unique flags
-	// First, gather all keys and counts
-	// Helper: convert []T to []*T
-	slicePtrs := func(items []Transaction) []*Transaction {
-		out := make([]*Transaction, len(items))
-		for i := range items {
-			out[i] = &items[i]
-		}
-		return out
-	}
-	// Key as string: "blockNum:txIdx"
-	key := func(tx *Transaction) string {
-		if tx == nil {
-			return ""
-		}
-		return fmt.Sprintf("%v:%v", tx.BlockNumber, tx.TransactionIndex)
-	}
-	// Get per-source results
-	var chifraResult, esResult, cvResult, alResult *facets.PageResult[Transaction]
-	if c.chifraFacet != nil {
-		chifraResult, _ = c.chifraFacet.GetPage(first, pageSize, nil, sortSpec, nil)
-	}
-	if c.etherscanFacet != nil {
-		esResult, _ = c.etherscanFacet.GetPage(first, pageSize, nil, sortSpec, nil)
-	}
-	if c.covalentFacet != nil {
-		cvResult, _ = c.covalentFacet.GetPage(first, pageSize, nil, sortSpec, nil)
-	}
-	if c.alchemyFacet != nil {
-		alResult, _ = c.alchemyFacet.GetPage(first, pageSize, nil, sortSpec, nil)
-	}
-	sets := [][]*Transaction{
-		slicePtrs(chifraResult.Items),
-		slicePtrs(esResult.Items),
-		slicePtrs(cvResult.Items),
-		slicePtrs(alResult.Items),
-	}
-	keyCount := make(map[string]int)
-	for _, arr := range sets {
-		for _, tx := range arr {
-			k := key(tx)
-			if k != "" {
-				keyCount[k]++
-			}
-		}
-	}
-	// Helper to build annotated array for a source
-	buildAnnotated := func(arr []Transaction) []*Transaction {
-		present := make(map[string]*Transaction)
-		for i := range arr {
-			tx := &arr[i]
-			present[key(tx)] = tx
-		}
-		out := make([]*Transaction, 0, len(keyCount))
-		for k := range keyCount {
-			found, ok := present[k]
-			missing := !ok
-			unique := false
-			if !missing && keyCount[k] == 1 {
-				unique = true
-			}
-			if found != nil {
-				found.Missing = false
-				found.Unique = unique
-				// Use existing entry, with missing=false and unique flag set
-				out = append(out, found)
-			} else {
-				// Synthesize a missing entry (types must match SDK)
-				// Parse block/tx from key
-				var blk, txidx uint64
-				_, _ = fmt.Sscanf(k, "%d:%d", &blk, &txidx)
-				tx := sdk.Transaction{
-					BlockNumber:      base.Blknum(blk),
-					TransactionIndex: base.Txnum(txidx),
-				}
-				ttx := Transaction{Transaction: tx, Missing: true, Unique: false}
-				out = append(out, &ttx)
-			}
-		}
-		return out
-	}
-	page.Chifra = buildAnnotated(chifraResult.Items)
-	page.Etherscan = buildAnnotated(esResult.Items)
-	page.Covalent = buildAnnotated(cvResult.Items)
-	page.Alchemy = buildAnnotated(alResult.Items)
-	page.ChifraCount = len(chifraResult.Items)
-	page.EtherscanCount = len(esResult.Items)
-	page.CovalentCount = len(cvResult.Items)
-	page.AlchemyCount = len(alResult.Items)
-
-	// Compute overlap/union/intersection statistics
-	union := 0
-	intersection := 0
-	overlap := 0
-	for _, count := range keyCount {
-		if count > 1 {
-			overlap++
-		}
-		if count == len(sets) {
-			intersection++
-		}
-		union++
-	}
-	page.OverlapCount = overlap
-	page.UnionCount = union
-	page.IntersectionCount = intersection
-	page.OverlapDetails = keyCount
-	filter = strings.ToLower(filter)
+	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
 		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
@@ -197,13 +89,14 @@ func (c *ComparitoorCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return nil // sdk.SortTransaction(items, sort)
+			return sdk.SortTransaction(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("comparitoor", dataFacet, "GetPage", err)
 		} else {
-			page.Transaction = buildAnnotated(result.Items)
-			page.TotalItems, page.State = len(result.Items), result.State
+			page.Transaction = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorChifra:
@@ -215,13 +108,14 @@ func (c *ComparitoorCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return nil // sdk.SortTransaction(items, sort)
+			return sdk.SortTransaction(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("comparitoor", dataFacet, "GetPage", err)
 		} else {
-			page.Transaction = buildAnnotated(result.Items)
-			page.TotalItems, page.State = len(result.Items), result.State
+			page.Transaction = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorEtherscan:
@@ -233,13 +127,14 @@ func (c *ComparitoorCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return nil // sdk.SortTransaction(items, sort)
+			return sdk.SortTransaction(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("comparitoor", dataFacet, "GetPage", err)
 		} else {
-			page.Transaction = buildAnnotated(result.Items)
-			page.TotalItems, page.State = len(result.Items), result.State
+			page.Transaction = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorCovalent:
@@ -251,13 +146,14 @@ func (c *ComparitoorCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return nil // sdk.SortTransaction(items, sort)
+			return sdk.SortTransaction(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("comparitoor", dataFacet, "GetPage", err)
 		} else {
-			page.Transaction = buildAnnotated(result.Items)
-			page.TotalItems, page.State = len(result.Items), result.State
+			page.Transaction = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	case ComparitoorAlchemy:
@@ -269,13 +165,14 @@ func (c *ComparitoorCollection) GetPage(
 			}
 		}
 		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return nil // sdk.SortTransaction(items, sort)
+			return sdk.SortTransaction(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("comparitoor", dataFacet, "GetPage", err)
 		} else {
-			page.Transaction = buildAnnotated(result.Items)
-			page.TotalItems, page.State = len(result.Items), result.State
+			page.Transaction = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
@@ -341,6 +238,129 @@ func (c *ComparitoorCollection) generateSummariesForPeriod(dataFacet types.DataF
 	}
 }
 
+func preprocessPage(
+	c *ComparitoorCollection,
+	page *ComparitoorPage,
+	payload *types.Payload,
+	first, pageSize int,
+	sortSpec sdk.SortSpec,
+) error {
+	_ = page
+	_ = c
+	_ = payload
+	_ = first
+	_ = pageSize
+	_ = sortSpec
+	// EXISTING_CODE
+	// Always populate per-source arrays for frontend, with missing/unique flags
+	// First, gather all keys and counts
+	// Helper: convert []T to []*T
+	// slicePtrs := func(items []Transaction) []*Transaction {
+	// 	out := make([]*Transaction, len(items))
+	// 	for i := range items {
+	// 		out[i] = &items[i]
+	// 	}
+	// 	return out
+	// }
+	// // Key as string: "blockNum:txIdx"
+	// key := func(tx *Transaction) string {
+	// 	if tx == nil {
+	// 		return ""
+	// 	}
+	// 	return fmt.Sprintf("%v:%v", tx.BlockNumber, tx.TransactionIndex)
+	// }
+	// // Get per-source results
+	// var chifraResult, esResult, cvResult, alResult *facets.PageResult[Transaction]
+	// if c.chifraFacet != nil {
+	// 	chifraResult, _ = c.chifraFacet.GetPage(first, pageSize, nil, sortSpec, nil)
+	// }
+	// if c.etherscanFacet != nil {
+	// 	esResult, _ = c.etherscanFacet.GetPage(first, pageSize, nil, sortSpec, nil)
+	// }
+	// if c.covalentFacet != nil {
+	// 	cvResult, _ = c.covalentFacet.GetPage(first, pageSize, nil, sortSpec, nil)
+	// }
+	// if c.alchemyFacet != nil {
+	// 	alResult, _ = c.alchemyFacet.GetPage(first, pageSize, nil, sortSpec, nil)
+	// }
+	// sets := [][]*Transaction{
+	// 	slicePtrs(chifraResult.Items),
+	// 	slicePtrs(esResult.Items),
+	// 	slicePtrs(cvResult.Items),
+	// 	slicePtrs(alResult.Items),
+	// }
+	// keyCount := make(map[string]int)
+	// for _, arr := range sets {
+	// 	for _, tx := range arr {
+	// 		k := key(tx)
+	// 		if k != "" {
+	// 			keyCount[k]++
+	// 		}
+	// 	}
+	// }
+	// // Helper to build annotated array for a source
+	// buildAnnotated := func(arr []Transaction) []*Transaction {
+	// 	present := make(map[string]*Transaction)
+	// 	for i := range arr {
+	// 		tx := &arr[i]
+	// 		present[key(tx)] = tx
+	// 	}
+	// 	out := make([]*Transaction, 0, len(keyCount))
+	// 	for k := range keyCount {
+	// 		found, ok := present[k]
+	// 		missing := !ok
+	// 		unique := false
+	// 		if !missing && keyCount[k] == 1 {
+	// 			unique = true
+	// 		}
+	// 		if found != nil {
+	// 			found.Missing = false
+	// 			found.Unique = unique
+	// 			// Use existing entry, with missing=false and unique flag set
+	// 			out = append(out, found)
+	// 		} else {
+	// 			// Synthesize a missing entry (types must match SDK)
+	// 			// Parse block/tx from key
+	// 			var blk, txidx uint64
+	// 			_, _ = fmt.Sscanf(k, "%d:%d", &blk, &txidx)
+	// 			tx := sdk.Transaction{
+	// 				BlockNumber:      base.Blknum(blk),
+	// 				TransactionIndex: base.Txnum(txidx),
+	// 			}
+	// 			out = append(out, &tx)
+	// 		}
+	// 	}
+	// 	return out
+	// }
+	// page.Chifra = buildAnnotated(chifraResult.Items)
+	// page.Etherscan = buildAnnotated(esResult.Items)
+	// page.Covalent = buildAnnotated(cvResult.Items)
+	// page.Alchemy = buildAnnotated(alResult.Items)
+	// page.ChifraCount = len(chifraResult.Items)
+	// page.EtherscanCount = len(esResult.Items)
+	// page.CovalentCount = len(cvResult.Items)
+	// page.AlchemyCount = len(alResult.Items)
+	// // Compute overlap/union/intersection statistics
+	// union := 0
+	// intersection := 0
+	// overlap := 0
+	// for _, count := range keyCount {
+	// 	if count > 1 {
+	// 		overlap++
+	// 	}
+	// 	if count == len(sets) {
+	// 		intersection++
+	// 	}
+	// 	union++
+	// }
+	// page.OverlapCount = overlap
+	// page.UnionCount = union
+	// page.IntersectionCount = intersection
+	// page.OverlapDetails = keyCount
+	// EXISTING_CODE
+	return nil
+}
+
 // EXISTING_CODE
 func (c *ComparitoorCollection) matchesComparitoorFilter(item *Transaction, filter string) bool {
 	if filter == "" || item == nil {
@@ -398,3 +418,5 @@ func (c *ComparitoorCollection) matchesCovalentFilter(item *Transaction, filter 
 func (c *ComparitoorCollection) matchesAlchemyFilter(item *Transaction, filter string) bool {
 	return c.matchesComparitoorFilter(item, filter)
 }
+
+// EXISTING_CODE

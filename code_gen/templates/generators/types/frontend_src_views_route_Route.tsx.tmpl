@@ -1,30 +1,5 @@
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
-{{- $single := toSingular $class -}}
-
-{{/* Determine View Type */}}
-{{- $isAbis := eq $class "Abis" -}}
-{{- $isChunks := eq $class "Chunks" -}}
-{{- $isContracts := eq $class "Contracts" -}}
-{{- $isExports := eq $class "Exports" -}}
-{{- $isMonitors := eq $class "Monitors" -}}
-{{- $isNames := eq $class "Names" -}}
-{{- $isStatus := eq $class "Status" -}}
-{{- $isComparitoor := eq $class "Comparitoor" -}}
-
-{{/* Determine Features */}}
-{{- $hasForms := .HasForms -}}
-
-{{/* Crud related */}}
-{{- $hasCrud := or $isNames (or $isAbis $isMonitors) -}}
-{{- $actionStrs := .RowActionsFe -}}
-
-{{/* Build API imports based on view type */}}
-{{- $apis := printf "Get%sPage, Reload" $class -}}
-{{- if $hasCrud -}}
-  {{- $apis = printf "Get%sPage, %sCrud, Reload" $class $class -}}
-{{- end -}}
-
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -36,7 +11,10 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { {{$apis}} } from '@app';
+import { Get{{$class}}Page, Reload } from '@app';
+{{- if .HasCrud }}
+import { {{$class}}Crud } from '@app';
+{{- end }}
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { useFiltering, useSorting } from '@contexts';
@@ -55,7 +33,7 @@ import { TabView } from '@layout';
 import { Group } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { {{$lower}} } from '@models';
-import { {{if and (not $hasCrud) (not (or $isExports $isChunks) )}}crud, {{end}}msgs, project, types } from '@models';
+import { msgs, project, types } from '@models';
 import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { assertRouteConsistency } from '../routes';
@@ -131,7 +109,7 @@ export const {{$class}} = () => {
     const facet = getCurrentDataFacet();
     switch (facet) {
       {{range .Facets}}case types.DataFacet.{{toUpper .Name}}:
-        return pageData.{{toLower .Store}} || [];
+        return pageData.{{toLower .StoreName}} || [];
       {{end -}}
       default:
         LogError('[{{$class}}] unexpected facet=' + String(facet));
@@ -184,29 +162,18 @@ export const {{$class}} = () => {
     pageData,
     setPageData,
     setTotalItems,
-    {{- if $hasCrud }}
+    {{- if .HasCrud }}
     crudFunc: {{$class}}Crud,
-    {{- else if (or $isExports $isChunks) }}
-    crudFunc: () => Promise.resolve(),
     {{- else }}
-    crudFunc: async (
-      _payload: types.Payload,
-      _op: crud.Operation,
-      _item: unknown,
-    ) => {},
+    crudFunc: () => Promise.resolve(),
     {{- end }}
     pageFunc: Get{{$class}}Page,
     pageClass: {{$lower}}.{{$class}}Page,
-    {{- if (or (or $isExports $isChunks) $isComparitoor) }}
-    updateItem: undefined,
-    {{- else }}
-    updateItem: types.{{$single}}.createFrom({}),
-    {{- end }}
+    updateItem: {{if .HasCrud}}types.{{toSingular $class}}.createFrom({}){{else}}undefined{{end}},
     createPayload,
     getCurrentDataFacet,
   });
   {{- if .Handlers }}
-
     const { {{.Handlers}} } = handlers;
   {{- end }}
   const headerActions = useMemo(() => {
@@ -245,24 +212,15 @@ export const {{$class}} = () => {
     viewConfig,
     getCurrentDataFacet,
     {
-      showActions: {{if $hasCrud}}true{{else}}false{{end}},
-      actions: [{{if $hasCrud}}{{$actionStrs}}{{end}}],
-      getCanRemove: useCallback(
-        {{- if or $isNames $isMonitors }}
-        (row: unknown) => Boolean((row as unknown as types.{{$single}})?.deleted),
-        {{- else if $isAbis }}
-        (_row: unknown) => getCurrentDataFacet() === types.DataFacet.DOWNLOADED,
-        {{- else}}
-        (_row: unknown) => false,
-        {{- end}}
-        [{{if $isAbis}}getCurrentDataFacet{{end}}],
-      ),
+      showActions: {{.HasCrud}},
+      actions: [{{if .HasCrud}}{{.RowActionsFe}}{{end}}],
+      getCanRemove: {{.RemoveCallback}},
     },
-    {{if $hasCrud}}{
+    {{if .HasCrud}}{
       {{.HandlerStrs}}
     }{{else}}{}{{end}},
     pageData,
-    {{if $hasCrud}}config{{else}}{ rowActions: [] }{{end}},
+    {{if .HasCrud}}config{{else}}{ rowActions: [] }{{end}},
   );
 
   const detailPanel = useMemo(
@@ -270,8 +228,8 @@ export const {{$class}} = () => {
       createDetailPanel(
         viewConfig,
         getCurrentDataFacet,
-{{- if eq .RendererTypes "panel" }}
-        renderers,
+{{- if .HasCustomPanel }}
+        renderers.panels,
 {{- end }}
       ),
     [viewConfig, getCurrentDataFacet],
@@ -285,9 +243,10 @@ export const {{$class}} = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
-{{- if eq .RendererTypes "facet" }}
-    renderers: renderers(pageData, fetchData),
+{{- if .HasCustomFacet }}
+    renderers: renderers.facets,
 {{- end }}
+    viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
@@ -301,15 +260,20 @@ export const {{$class}} = () => {
         viewStateKey={viewStateKey}
         headerActions={headerActions}
         detailPanel={detailPanel}
-        {{- if $hasCrud}}
         {{- if .HasDelete}}
         onDelete={(rowData) => handleToggle(String(rowData.address || ''))}
         {{- end}}
+        {{- if .HasCrud}}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
-        {{- if $isNames}}
+        {{- end}}
+        {{- if .HasAutoname}}
         onAutoname={(rowData) => handleAutoname(String(rowData.address || ''))}
+        {{- end}}
+        {{- if .HasUpdate}}
         onSubmit={handleUpdate}
         {{- end}}
+        {{- if .HasRowActions}}
+        onSubmit={handleRowAction}
         {{- end}}
       />
     );
@@ -323,7 +287,21 @@ export const {{$class}} = () => {
     formNode,
     headerActions,
     detailPanel,
-    {{- if $hasCrud}}{{- if .HasDelete}}handleToggle,{{- end}} handleRemove, {{- if $isNames}}handleAutoname, handleUpdate,{{- end}}{{- end}}
+    {{- if .HasDelete}}
+    handleToggle,
+    {{- end}}
+    {{- if .HasCrud}}
+    handleRemove,
+    {{- end}}
+    {{- if .HasAutoname}}
+    handleAutoname,
+    {{- end}}
+    {{- if .HasUpdate}}
+    handleUpdate,
+    {{- end}}
+    {{- if .HasRowActions}}
+    handleRowAction,
+    {{- end}}
   ]);
 
   const tabs = useMemo(

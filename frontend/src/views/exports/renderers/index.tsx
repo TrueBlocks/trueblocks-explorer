@@ -15,12 +15,13 @@ export const renderers = {
     [types.DataFacet.STATEMENTS]: renderStatementDetailPanel,
   },
   facets: {
-    [types.DataFacet.ASSETCHARTS]: ({
-      data,
-    }: {
-      data: Record<string, unknown>;
+    [types.DataFacet.ASSETCHARTS]: ({}: {
+      data: Record<string, unknown>[];
+      columns: unknown[];
+      facet: types.DataFacet;
     }) => {
-      const pageData = data as unknown as exports.ExportsPage;
+      // AssetCharts ignores the data parameter and fetches its own
+      const pageData = {} as unknown as exports.ExportsPage;
       return <AssetChartsFacet pageData={pageData} />;
     },
   },

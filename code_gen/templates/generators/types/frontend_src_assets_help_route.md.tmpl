@@ -8,28 +8,19 @@ the code inside of 'EXISTING_CODE' tags.
 -->
 # {{.Class}} View
 
-// EXISTING_CODE
-// EXISTING_CODE
+Welcome to the **{{.Class}}** view! This section provides information about managing {{toLower .Class}} in your application.
 
 ## Facets
-{{if .Facets}}
-{{- range .Facets}}
+{{range .Facets}}
 - {{.Name}} Facet uses the {{.StoreName}} store.
-{{- end}}
 {{- end}}
 
 ## Stores
-{{if .Stores}}
-{{- range .Stores}}
+{{range .Stores}}
 - **{{.Name}} Store ({{.NMembers}} members)**
-{{if not .Members -}}
-// No members -- create a {{toLower .Name}}.csv in the templates folder
-{{- else -}}
 {{range .Members}}
   - {{.Name}}: {{.Description}}
 {{- end}}
 {{end}}
-{{- end -}}
-{{- end}}
 // EXISTING_CODE
 // EXISTING_CODE

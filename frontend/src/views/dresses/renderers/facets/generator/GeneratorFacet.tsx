@@ -3,15 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { ExecuteRowAction } from '@app';
 import { StyledButton, StyledSelect, StyledText } from '@components';
 import { useIconSets, usePreferences } from '@hooks';
-import {
-  Center,
-  Grid,
-  Group,
-  Image,
-  ScrollArea,
-  Stack,
-  Title,
-} from '@mantine/core';
+import { Center, Grid, Image, ScrollArea, Stack, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 import { Log } from '@utils';
 
@@ -303,40 +295,6 @@ export const GeneratorFacet = ({
         {!chromeCollapsed && <Grid.Col span={1}></Grid.Col>}
         <Grid.Col span={chromeCollapsed ? 7 : 6}>
           <Stack gap="md">
-            <Group align="flex-end" gap="sm" wrap="nowrap">
-              <StyledSelect
-                label="Address"
-                placeholder="Select address"
-                searchable
-                value={orig || ''}
-                data={addressOptions.map((a) => ({ value: a, label: a }))}
-                onChange={handleAddressChange}
-                style={{ flex: 1 }}
-                size="xs"
-              />
-              <StyledSelect
-                label="Series"
-                placeholder="Series"
-                value={series || ''}
-                data={seriesOptions.map((s) => ({
-                  value: s,
-                  label: s,
-                }))}
-                onChange={handleSeriesChange}
-                style={{ flex: 1 }}
-                size="xs"
-                disabled={!seriesOptions.length}
-              />
-              <StyledButton
-                size="xs"
-                variant="primary"
-                onClick={() => handleButtonClick('generate')}
-                disabled={!selectedItem?.original || !selectedItem.series}
-              >
-                Generate
-              </StyledButton>
-            </Group>
-
             <div>
               <Title order={6}>Image</Title>
               <div
@@ -377,6 +335,29 @@ export const GeneratorFacet = ({
           <Grid gutter="sm">
             <Grid.Col span={10}>
               <Stack gap="sm">
+                <StyledSelect
+                  label="Address"
+                  placeholder="Select address"
+                  searchable
+                  value={orig || ''}
+                  data={addressOptions.map((a) => ({ value: a, label: a }))}
+                  onChange={handleAddressChange}
+                  style={{ flex: 1 }}
+                  size="xs"
+                />
+                <StyledSelect
+                  label="Series"
+                  placeholder="Series"
+                  value={series || ''}
+                  data={seriesOptions.map((s) => ({
+                    value: s,
+                    label: s,
+                  }))}
+                  onChange={handleSeriesChange}
+                  style={{ flex: 1 }}
+                  size="xs"
+                  disabled={!seriesOptions.length}
+                />
                 <div>
                   <Title order={6}>Attributes</Title>
                   <ScrollArea
@@ -496,6 +477,15 @@ export const GeneratorFacet = ({
             <Grid.Col span={2}>
               <Stack gap="xs">
                 <Title order={6}>Actions</Title>
+                <StyledButton
+                  size="xs"
+                  variant="primary"
+                  fullWidth
+                  onClick={() => handleButtonClick('generate')}
+                  disabled={!selectedItem?.original || !selectedItem.series}
+                >
+                  Generate
+                </StyledButton>
                 {['Claim', 'Mint', 'Burn', 'Trade', 'Eject', 'Merch'].map(
                   (label) => (
                     <StyledButton

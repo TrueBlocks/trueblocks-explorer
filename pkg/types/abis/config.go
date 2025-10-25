@@ -71,10 +71,9 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getAbisFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Identity", Key: "address", Formatter: "address"},
 		{Section: "Identity", Key: "name"},
-		{Section: "Identity", Key: "path", NoTable: true, Formatter: "path"},
+		{Section: "Identity", Key: "path", Formatter: "path", NoTable: true},
 		{Section: "Statistics", Key: "nFunctions"},
 		{Section: "Statistics", Key: "nEvents"},
 		{Section: "Statistics", Key: "fileSize"},
@@ -83,9 +82,7 @@ func getAbisFields() []types.FieldConfig {
 		{Section: "Properties", Key: "hasConstructor", NoTable: true},
 		{Section: "Properties", Key: "hasFallback", NoTable: true},
 		{Section: "Metadata", Key: "lastModDate", Formatter: "datetime"},
-		{Section: "Metadata", Key: "functions", Formatter: "json", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
-		// EXISTING_CODE
 	}
 	types.NormalizeFields(ret)
 	return ret
@@ -93,7 +90,6 @@ func getAbisFields() []types.FieldConfig {
 
 func getFunctionsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		// EXISTING_CODE
 		{Section: "Overview", Key: "name"},
 		{Section: "Overview", Key: "type", NoTable: true},
 		{Section: "Overview", Key: "encoding"},
@@ -104,7 +100,7 @@ func getFunctionsFields() []types.FieldConfig {
 		{Section: "Parameters", Key: "inputs", NoTable: true},
 		{Section: "Parameters", Key: "outputs", NoTable: true},
 		{Section: "Parameters", Key: "message", NoTable: true},
-		// EXISTING_CODE
+		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(ret)
 	return ret

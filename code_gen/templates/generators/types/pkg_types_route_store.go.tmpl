@@ -1,12 +1,5 @@
 {{- $class := .Class -}}
-{{- $lower := toLower $class -}}
-{{- $single := toSingular $class -}}
-{{- $isExports := eq .Class "Exports" -}}
-{{- $isComparitoor := eq .Class "Comparitoor" -}}
-{{- $isContracts := eq .Class "Contracts" -}}
 {{- $isNames := eq .Class "Names" -}}
-{{- $isChunks := eq .Class "Chunks" -}}
-{{- $isMultiStore := or $isExports $isComparitoor }}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -22,7 +15,7 @@ package {{toLower .Class}}
 
 var (
 	{{range .Stores}}
-	{{toLower .Name}}Store {{if $isMultiStore}}= make(map[string]{{end}}*store.Store[{{toSingular .Name}}]{{if $isMultiStore}}){{end}}
+	{{toLower .Name}}Store = make(map[string]*store.Store[{{toSingular .Name}}])
 	{{toLower .Name}}StoreMu   sync.Mutex
 	{{end}}
 )
@@ -37,10 +30,8 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 	
 	chain := payload.Chain
 	address := payload.Address
-{{if $isMultiStore}}	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(chain, address)
 	theStore := {{toLower .Name}}Store[storeKey]
-{{else}}	theStore := {{toLower .Name}}Store
-{{end -}}
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -52,7 +43,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 			// EXISTING_CODE
 			// EXISTING_CODE
 			if it, ok := item.(*{{toSingular .Name}}); ok {
-{{if $isChunks}}				c.update{{.Name}}Bucket(it)
+{{if .NeedsBuckets}}				c.update{{.Name}}Bucket(it)
 {{end}}				return it
 			}
 			return nil
@@ -70,7 +61,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 		// EXISTING_CODE
 		// EXISTING_CODE
 		
-		{{toLower .Name}}Store{{if $isMultiStore}}[storeKey]{{end}} = theStore
+		{{toLower .Name}}Store[storeKey] = theStore
 	}
 
 	return theStore
@@ -78,21 +69,15 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 {{end}}
 
 func (c *{{$class}}Collection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	{{- if not $isMultiStore}}
-	_ = chain
-	_ = address
-	{{- end}}
 	name := ""
 	switch dataFacet {
 	{{range .Facets}}case {{$class}}{{.Name}}:
-		name = "{{toLower $class}}-{{toLower .Store}}"
+		name = "{{toLower $class}}-{{toLower .StoreName}}"
 	{{end -}}
 	default:
 		return ""
 	}
-	{{- if $isMultiStore}}
 	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
-	{{- end}}
 	return name
 }
 
@@ -109,10 +94,6 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 	{{- if $isNames}}
 		pl.Address = ""
 		pl.Chain = ""
-	{{else}}
-		{{- if not $isMultiStore}}
-			pl.Address = ""
-		{{end}}
 	{{end}}
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
@@ -124,10 +105,9 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 	return collection
 }
 
-{{if $isMultiStore}}func getStoreKey(chain, address string) string {
+func getStoreKey(chain, address string) string {
 	return fmt.Sprintf("%s_%s", chain, address)
 }
-{{end}}
 
 // EXISTING_CODE
 // EXISTING_CODE

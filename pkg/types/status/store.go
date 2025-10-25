@@ -28,13 +28,13 @@ type Status = sdk.Status
 // EXISTING_CODE
 
 var (
-	cachesStore   *store.Store[Cache]
+	cachesStore   = make(map[string]*store.Store[Cache])
 	cachesStoreMu sync.Mutex
 
-	chainsStore   *store.Store[Chain]
+	chainsStore   = make(map[string]*store.Store[Chain])
 	chainsStoreMu sync.Mutex
 
-	statusStore   *store.Store[Status]
+	statusStore   = make(map[string]*store.Store[Status])
 	statusStoreMu sync.Mutex
 )
 
@@ -47,7 +47,8 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := cachesStore
+	storeKey := getStoreKey(chain, address)
+	theStore := cachesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -85,7 +86,7 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		cachesStore = theStore
+		cachesStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -100,7 +101,8 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := chainsStore
+	storeKey := getStoreKey(chain, address)
+	theStore := chainsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -138,7 +140,7 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		chainsStore = theStore
+		chainsStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -153,7 +155,8 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 
 	chain := payload.Chain
 	address := payload.Address
-	theStore := statusStore
+	storeKey := getStoreKey(chain, address)
+	theStore := statusStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
@@ -191,15 +194,13 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 		// EXISTING_CODE
 		// EXISTING_CODE
 
-		statusStore = theStore
+		statusStore[storeKey] = theStore
 	}
 
 	return theStore
 }
 
 func (c *StatusCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
-	_ = chain
-	_ = address
 	name := ""
 	switch dataFacet {
 	case StatusStatus:
@@ -211,6 +212,7 @@ func (c *StatusCollection) GetStoreName(dataFacet types.DataFacet, chain, addres
 	default:
 		return ""
 	}
+	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
 	return name
 }
 
@@ -224,8 +226,6 @@ func GetStatusCollection(payload *types.Payload) *StatusCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
-
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
@@ -234,6 +234,10 @@ func GetStatusCollection(payload *types.Payload) *StatusCollection {
 	collection := NewStatusCollection(payload)
 	collections[key] = collection
 	return collection
+}
+
+func getStoreKey(chain, address string) string {
+	return fmt.Sprintf("%s_%s", chain, address)
 }
 
 // EXISTING_CODE

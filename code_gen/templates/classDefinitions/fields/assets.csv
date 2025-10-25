@@ -1,7 +1,16 @@
-name    , type   , strDefault, attributes           , upgrades, docOrder, description
-address , address,           , readOnly       ,         ,        1, Address
-name    , string ,           ,                 ,         ,        2, Name
-symbol  , string ,           ,                 ,         ,        3, Symbol
-decimals, int64  ,           ,                 ,         ,        4, Decimals
-source  , string ,           ,                 ,         ,        5, Source
-tags    , string ,           ,                 ,         ,        6, Tags
+name        , type   , strDefault, attributes, section       , upgrades, docOrder, description
+address     , address,           ,           , Asset Info    ,         ,        1, Address
+holder      , address,           ,           , Asset Info    ,         ,        2, Holder
+symbol      , string ,           ,           , Asset Info    ,         ,        3, Symbol
+name        , string ,           ,           , Asset Info    ,         ,        4, Name
+decimals    , int64  ,           ,           , Asset Info    ,         ,        5, Decimals
+totalSupply , wei    ,           ,           , Asset Info    ,         ,        6, Total Supply
+source      , string ,           , noTable   , Classification,         ,        7, Source
+tags        , string ,           , noTable   , Classification,         ,        8, Tags
+isContract  , bool   ,           , noTable   , Classification,         ,        9, Is Contract
+isCustom    , bool   ,           , noTable   , Classification,         ,       10, Is Custom
+isErc20     , bool   ,           , noTable   , Classification,         ,       11, Is ERC20
+isErc721    , bool   ,           , noTable   , Classification,         ,       12, Is ERC721
+isPrefund   , bool   ,           , noTable   , Classification,         ,       13, Is Prefund
+deleted     , bool   ,           , noTable   , Classification,         ,       14, Deleted
+prefund     , wei    ,           , noTable   , Data          ,         ,       15, Prefund

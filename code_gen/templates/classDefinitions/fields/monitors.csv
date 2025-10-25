@@ -1,9 +1,9 @@
-name       , type   , strDefault, attributes        , upgrades, docOrder, description
-address    , address,           , width=340|readOnly,         ,        1, the address of this monitor
-name       , string ,           , width=200         ,         ,        2, the name of this monitor (if any)
-nRecords   , int64  ,           ,                   ,         ,        3, the number of appearances for this monitor
-fileSize   , int64  ,           ,                   ,         ,        4, the size of this monitor on disc
-isEmpty    , bool   ,           ,                   ,         ,        5, true if the monitor has no appearances
-lastScanned, uint32 ,           ,                   ,         ,        6, the last scanned block number
-deleted    , bool   ,           , noui              ,         ,        7, if this monitor has been deleted&#44; `false` otherwise
-isStaged   , bool   ,           , noui              ,         ,        8, if the monitor file in on the stage&#44; `false` otherwise
+name       , type   , strDefault, attributes        , section   , upgrades, docOrder, description
+address    , address,           , width=340|readOnly, Overview  ,         ,        1, the address of this monitor
+name       , string ,           , width=200         , Overview  ,         ,        2, the name of this monitor (if any)
+deleted    , bool   ,           , noui|noTable      , Overview  ,         ,        3, if this monitor has been deleted&#44; `false` otherwise
+isStaged   , bool   ,           , noui|noTable      , Overview  ,         ,        4, if the monitor file in on the stage&#44; `false` otherwise
+nRecords   , int64  ,           ,                   , Statistics,         ,        5, the number of appearances for this monitor
+fileSize   , int64  ,           ,                   , Statistics,         ,        6, the size of this monitor on disc
+isEmpty    , bool   ,           , noTable           , Statistics,         ,        7, true if the monitor has no appearances
+lastScanned, blknum ,           ,                   , Statistics,         ,        8, the last scanned block number

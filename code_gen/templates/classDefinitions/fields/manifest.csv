@@ -1,5 +1,4 @@
-name         , type         , strDefault, attributes                     , upgrades, docOrder, description
-version      , string       ,           , width=100px|readOnly     ,         ,        1, the version string hashed into the chunk data
-chain        , string       ,           , width=100px|readOnly     ,         ,        2, the chain to which this manifest belongs
-specification, ipfshash     ,           , width=100px|readOnly     ,         ,        3, IPFS cid of the specification
-chunks       , []ChunkRecord,           , noui|width=100px|readOnly,         ,        4, a list of the IPFS hashes of all of the chunks in the unchained index
+name         , type         , strDefault, attributes                     , section       , upgrades, docOrder, description
+version      , string       ,           , width=100px|readOnly     , Manifest      ,         ,        1, the version string hashed into the chunk data
+chain        , string       ,           , width=100px|readOnly     , Manifest      ,         ,        2, the chain to which this manifest belongs
+specification, ipfshash     ,           , width=100px|readOnly     , Manifest      ,         ,        3, IPFS cid of the specification

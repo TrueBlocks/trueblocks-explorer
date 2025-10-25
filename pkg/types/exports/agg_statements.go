@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 )
 
 // AssetCharts series strategy constants
@@ -84,8 +84,8 @@ func timestampToDailyBucket(timestamp int64) string {
 	return fmt.Sprintf("%04d%02d%02d", t.Year(), t.Month(), t.Day())
 }
 
-// updateAssetChartsBucket processes a single Statement and updates asset chart buckets incrementally
-func (c *ExportsCollection) updateAssetChartsBucket(statement *Statement) {
+// updateStatementsBucket processes a single Statement and updates asset chart buckets incrementally
+func (c *ExportsCollection) updateStatementsBucket(statement *Statement) {
 	if statement == nil {
 		return
 	}

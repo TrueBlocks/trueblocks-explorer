@@ -1,11 +1,11 @@
-name           , type       , strDefault, attributes, upgrades, docOrder, description
-encoding       , string     ,           ,      ,         ,        1, the signature encoded with keccak
-name           , string     ,           ,      ,         ,        2, the name of the interface
-type           , string     ,           ,      ,         ,        3, the type of the interface&#44; either 'event' or 'function'
-signature      , string     ,           ,      ,         ,        4, the canonical signature of the interface
-anonymous      , bool       ,           , noui      ,         ,        5, 
-constant       , bool       ,           , noui      ,         ,        6, 
-stateMutability, string     ,           , noui,         ,        7, 
-message        , string     ,           , noui      ,         ,        8, 
-inputs         , []Parameter,           , noui      ,         ,        9, the input parameters to the function&#44; if any
-outputs        , []Parameter,           , noui      ,         ,       10, the output parameters to the function&#44; if any
+name           , type       , strDefault, attributes, section   , upgrades, docOrder, description
+name           , string     ,           ,      , Overview  ,         ,        1, the name of the interface
+type           , string     ,           , noTable     , Overview  ,         ,        2, the type of the interface&#44; either 'event' or 'function'
+encoding       , string     ,           ,      , Overview  ,         ,        3, the signature encoded with keccak
+signature      , string     ,           ,      , Overview  ,         ,        4, the canonical signature of the interface
+stateMutability, string     ,           , noui, Properties,         ,        5, 
+constant       , bool       ,           , noui      , Properties,         ,        6, 
+anonymous      , bool       ,           , noui|noTable      , Properties,         ,        7, 
+inputs         , []Parameter,           , noui|noTable      , Parameters,         ,        8, the input parameters to the function&#44; if any
+outputs        , []Parameter,           , noui|noTable      , Parameters,         ,        9, the output parameters to the function&#44; if any
+message        , string     ,           , noui|noTable      , Parameters,         ,       10, 

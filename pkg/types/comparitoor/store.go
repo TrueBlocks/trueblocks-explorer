@@ -43,7 +43,7 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := transactionStore[storeKey]

@@ -71,6 +71,7 @@ func main() {
 			types.AllDataFacets,
 			types.AllCruds,
 			types.AllStates,
+			types.AllPeriods,
 		},
 	}
 

@@ -49,8 +49,8 @@ func (a *App) ExportData(payload *types.Payload) error {
 	if payload.Address != "" && payload.Address != "0x0" {
 		statusMsg += fmt.Sprintf(" for %s", payload.Address[:10]+"...")
 	}
-	if payload.Chain != "" {
-		statusMsg += fmt.Sprintf(" on %s", payload.Chain)
+	if payload.ActiveChain != "" {
+		statusMsg += fmt.Sprintf(" on %s", payload.ActiveChain)
 	}
 	msgs.EmitStatus(statusMsg)
 

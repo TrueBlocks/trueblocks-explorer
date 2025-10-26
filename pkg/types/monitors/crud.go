@@ -22,7 +22,7 @@ func (c *MonitorsCollection) Crud(
 		monitor = cast
 	}
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 
 	var err error
 	switch op {
@@ -110,7 +110,7 @@ func (c *MonitorsCollection) updateMonitorInData(data []*Monitor, monitor *Monit
 }
 
 func (c *MonitorsCollection) Clean(payload *types.Payload, addresses []string) error {
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	opts := sdk.MonitorsOptions{
 		Globals: sdk.Globals{Cache: true, Chain: chain},
 	}

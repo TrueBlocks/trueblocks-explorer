@@ -41,7 +41,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := contractsStore[storeKey]
@@ -97,7 +97,7 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	contract := "0x8fbea07446ddf4518b1a7ba2b4f11bd140a8df41"
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := logsStore[storeKey]

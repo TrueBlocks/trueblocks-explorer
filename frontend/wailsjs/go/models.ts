@@ -1209,6 +1209,20 @@ export namespace status {
 
 export namespace types {
 	
+	export enum StoreState {
+	    STALE = "stale",
+	    FETCHING = "fetching",
+	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
+	}
 	export enum DataFacet {
 	    DOWNLOADED = "downloaded",
 	    KNOWN = "known",
@@ -1251,11 +1265,6 @@ export namespace types {
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
-	}
-	export enum StoreState {
-	    STALE = "stale",
-	    FETCHING = "fetching",
-	    LOADED = "loaded",
 	}
 	export class AbiCalcs {
 	    name?: string;
@@ -2763,9 +2772,10 @@ export namespace types {
 	export class Payload {
 	    collection: string;
 	    dataFacet: DataFacet;
-	    chain?: string;
+	    activeChain?: string;
 	    address?: string;
-	    period?: string;
+	    crudAddress?: string;
+	    activePeriod?: Period;
 	    format?: string;
 	    projectPath?: string;
 	
@@ -2777,9 +2787,10 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.collection = source["collection"];
 	        this.dataFacet = source["dataFacet"];
-	        this.chain = source["chain"];
+	        this.activeChain = source["activeChain"];
 	        this.address = source["address"];
-	        this.period = source["period"];
+	        this.crudAddress = source["crudAddress"];
+	        this.activePeriod = source["activePeriod"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	    }
@@ -2942,9 +2953,10 @@ export namespace types {
 	export class RowActionPayload {
 	    collection: string;
 	    dataFacet: DataFacet;
-	    chain?: string;
+	    activeChain?: string;
 	    address?: string;
-	    period?: string;
+	    crudAddress?: string;
+	    activePeriod?: Period;
 	    format?: string;
 	    projectPath?: string;
 	    rowData: Record<string, any>;
@@ -2959,9 +2971,10 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.collection = source["collection"];
 	        this.dataFacet = source["dataFacet"];
-	        this.chain = source["chain"];
+	        this.activeChain = source["activeChain"];
 	        this.address = source["address"];
-	        this.period = source["period"];
+	        this.crudAddress = source["crudAddress"];
+	        this.activePeriod = source["activePeriod"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	        this.rowData = source["rowData"];

@@ -42,7 +42,7 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := abisStore[storeKey]
@@ -97,7 +97,7 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := functionsStore[storeKey]
@@ -184,7 +184,8 @@ func GetAbisCollection(payload *types.Payload) *AbisCollection {
 }
 
 func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+	_ = address
+	return chain
 }
 
 // EXISTING_CODE

@@ -373,7 +373,7 @@ func (s *Store[T]) GetSummaryManager() *SummaryManager[T] {
 }
 
 // GetSummaries returns summary data for the given period
-func (s *Store[T]) GetSummaries(period string) []*T {
+func (s *Store[T]) GetSummaries(period types.Period) []*T {
 	return s.summaryManager.GetSummaries(period)
 }
 

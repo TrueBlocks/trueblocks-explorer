@@ -62,7 +62,7 @@ func (c *ChunksCollection) GetPage(
 	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
-		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
+		return c.getSummaryPage(dataFacet, payload.ActivePeriod, first, pageSize, sortSpec, filter)
 	}
 
 	switch dataFacet {
@@ -164,7 +164,7 @@ func (c *ChunksCollection) shouldSummarize(payload *types.Payload) bool {
 // getSummaryPage returns paginated summary data for a given period
 func (c *ChunksCollection) getSummaryPage(
 	dataFacet types.DataFacet,
-	period string,
+	period types.Period,
 	first, pageSize int,
 	sortSpec sdk.SortSpec,
 	filter string,
@@ -195,7 +195,7 @@ func (c *ChunksCollection) getSummaryPage(
 }
 
 // generateSummariesForPeriod ensures summaries are generated for the given period
-func (c *ChunksCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period string) error {
+func (c *ChunksCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period types.Period) error {
 	// TODO: Use this
 	_ = period
 	switch dataFacet {

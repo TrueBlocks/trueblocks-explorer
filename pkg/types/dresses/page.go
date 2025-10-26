@@ -67,7 +67,7 @@ func (c *DressesCollection) GetPage(
 	}
 
 	if c.shouldSummarize(payload) {
-		return c.getSummaryPage(dataFacet, payload.Period, first, pageSize, sortSpec, filter)
+		return c.getSummaryPage(dataFacet, payload.ActivePeriod, first, pageSize, sortSpec, filter)
 	}
 
 	switch dataFacet {
@@ -188,7 +188,7 @@ func (c *DressesCollection) shouldSummarize(payload *types.Payload) bool {
 // getSummaryPage returns paginated summary data for a given period
 func (c *DressesCollection) getSummaryPage(
 	dataFacet types.DataFacet,
-	period string,
+	period types.Period,
 	first, pageSize int,
 	sortSpec sdk.SortSpec,
 	filter string,
@@ -219,7 +219,7 @@ func (c *DressesCollection) getSummaryPage(
 }
 
 // generateSummariesForPeriod ensures summaries are generated for the given period
-func (c *DressesCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period string) error {
+func (c *DressesCollection) generateSummariesForPeriod(dataFacet types.DataFacet, period types.Period) error {
 	// TODO: Use this
 	_ = period
 	switch dataFacet {

@@ -82,7 +82,7 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := approvallogsStore[storeKey]
@@ -144,7 +144,7 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := approvaltxsStore[storeKey]
@@ -199,7 +199,7 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := assetsStore[storeKey]
@@ -254,7 +254,7 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := balancesStore[storeKey]
@@ -309,7 +309,7 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := logsStore[storeKey]
@@ -365,7 +365,7 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := openapprovalsStore[storeKey]
@@ -421,7 +421,7 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := receiptsStore[storeKey]
@@ -477,7 +477,7 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := statementsStore[storeKey]
@@ -534,7 +534,7 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := tracesStore[storeKey]
@@ -590,7 +590,7 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := transactionsStore[storeKey]
@@ -645,7 +645,7 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := transfersStore[storeKey]
@@ -701,7 +701,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := withdrawalsStore[storeKey]

@@ -37,7 +37,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := namesStore[storeKey]
@@ -120,7 +120,7 @@ func GetNamesCollection(payload *types.Payload) *NamesCollection {
 
 	pl := *payload
 	pl.Address = ""
-	pl.Chain = ""
+	pl.ActiveChain = ""
 
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {
@@ -135,7 +135,7 @@ func GetNamesCollection(payload *types.Payload) *NamesCollection {
 func getStoreKey(chain, address string) string {
 	_ = chain
 	_ = address
-	return fmt.Sprintf("%s_%s", "mainnet", "")
+	return "mainnet"
 }
 
 // EXISTING_CODE

@@ -42,9 +42,9 @@ export const GalleryGrouping = ({
           '{{.Adverb true}} {{.Adjective true}} {{.Noun true}} felling {{.Emotion true}} who works as {{.Occupation true}} in the style of {{.ArtStyle true 1}}';
         const payload = types.Payload.createFrom({
           dataFacet: 'gallery' as types.DataFacet,
-          chain: 'mainnet',
+          activeChain: 'mainnet',
           address: address,
-          period: '',
+          activePeriod: '',
         });
         const result = await FromTemplate(payload, template);
         return result || 'Unable to generate description';

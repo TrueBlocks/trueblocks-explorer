@@ -11,7 +11,7 @@ import (
 // SummaryKey represents a unique key for summary data based on normalized timestamp and period
 type SummaryKey struct {
 	Timestamp int64
-	Period    string
+	Period    types.Period
 	AssetAddr string // Asset address for balance-specific summarization
 }
 
@@ -29,7 +29,7 @@ func NewSummaryManager[T any]() *SummaryManager[T] {
 }
 
 // Add items to the summary for a given period
-func (sm *SummaryManager[T]) Add(items []*T, period string) {
+func (sm *SummaryManager[T]) Add(items []*T, period types.Period) {
 	sm.mutex.Lock()
 	defer sm.mutex.Unlock()
 
@@ -43,7 +43,7 @@ func (sm *SummaryManager[T]) Add(items []*T, period string) {
 
 // AddBalance adds a balance item, replacing any existing balance for the same timestamp/period/asset
 // This ensures we keep only the most recent balance per period per asset
-func (sm *SummaryManager[T]) AddBalance(item *T, period string) {
+func (sm *SummaryManager[T]) AddBalance(item *T, period types.Period) {
 	sm.mutex.Lock()
 	defer sm.mutex.Unlock()
 
@@ -57,7 +57,7 @@ func (sm *SummaryManager[T]) AddBalance(item *T, period string) {
 }
 
 // GetSummaries returns all summary data for a given period
-func (sm *SummaryManager[T]) GetSummaries(period string) []*T {
+func (sm *SummaryManager[T]) GetSummaries(period types.Period) []*T {
 	sm.mutex.RLock()
 	defer sm.mutex.RUnlock()
 
@@ -80,7 +80,7 @@ func (sm *SummaryManager[T]) Reset() {
 }
 
 // NormalizeToPeriod normalizes a timestamp to the start of the given period
-func NormalizeToPeriod(timestamp int64, period string) int64 {
+func NormalizeToPeriod(timestamp int64, period types.Period) int64 {
 	t := time.Unix(timestamp, 0).UTC()
 
 	switch period {

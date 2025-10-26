@@ -13,6 +13,6 @@ type CollectionKey struct {
 
 func GetCollectionKey(payload *types.Payload) CollectionKey {
 	return CollectionKey{
-		Chain:   payload.Chain,
+		Chain:   payload.ActiveChain,
 		Address: base.HexToAddress(payload.Address)}
 }

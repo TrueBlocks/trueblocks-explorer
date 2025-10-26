@@ -31,7 +31,7 @@ type Project struct {
 	ActiveChain    string                       `json:"activeChain"`
 	Contracts      []string                     `json:"contracts"`
 	ActiveContract string                       `json:"activeContract"`
-	ActivePeriod   string                       `json:"activePeriod"`
+	ActivePeriod   types.Period                 `json:"activePeriod"`
 	FilterStates   map[ViewStateKey]FilterState `json:"filterStates"`
 	Path           string                       `json:"-"`
 }
@@ -311,7 +311,7 @@ func (p *Project) RemoveContract(contract string) error {
 
 // ------------------------------------------------------------------------------------
 // GetActivePeriod returns the currently selected period
-func (p *Project) GetActivePeriod() string {
+func (p *Project) GetActivePeriod() types.Period {
 	if p.ActivePeriod == "" {
 		return "blockly" // Default fallback for older projects
 	}
@@ -320,7 +320,7 @@ func (p *Project) GetActivePeriod() string {
 
 // ------------------------------------------------------------------------------------
 // SetActivePeriod sets the currently selected period
-func (p *Project) SetActivePeriod(period string) error {
+func (p *Project) SetActivePeriod(period types.Period) error {
 	if p.ActivePeriod != period {
 		p.ActivePeriod = period
 		return p.Save()

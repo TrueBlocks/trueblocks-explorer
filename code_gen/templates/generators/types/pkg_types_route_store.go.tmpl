@@ -28,7 +28,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 	
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := {{toLower .Name}}Store[storeKey]
@@ -93,7 +93,7 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 	pl := *payload
 	{{- if $isNames}}
 		pl.Address = ""
-		pl.Chain = ""
+		pl.ActiveChain = ""
 	{{end}}
 	key := store.GetCollectionKey(&pl)
 	if collection, exists := collections[key]; exists {

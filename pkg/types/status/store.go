@@ -45,7 +45,7 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := cachesStore[storeKey]
@@ -99,7 +99,7 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := chainsStore[storeKey]
@@ -153,7 +153,7 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := statusStore[storeKey]
@@ -237,7 +237,8 @@ func GetStatusCollection(payload *types.Payload) *StatusCollection {
 }
 
 func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+	_ = address
+	return chain
 }
 
 // EXISTING_CODE

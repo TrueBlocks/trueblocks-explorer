@@ -6,6 +6,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // GetLastView returns the last visited view/route in the active project.
@@ -115,7 +116,7 @@ func (a *App) SetActiveChain(chain string) error {
 
 // ------------------------------------------------------------------------------------
 // SetActivePeriod sets the active period in the active project
-func (a *App) SetActivePeriod(period string) error {
+func (a *App) SetActivePeriod(period types.Period) error {
 	if active := a.GetActiveProject(); active != nil {
 		err := active.SetActivePeriod(period)
 		if err == nil {

@@ -1,28 +1,18 @@
 package types
 
-// Period string constants for different time aggregation levels
-const (
-	PeriodBlockly   = "blockly" // Default - no aggregation, raw data
-	PeriodHourly    = "hourly"
-	PeriodDaily     = "daily"
-	PeriodWeekly    = "weekly"
-	PeriodMonthly   = "monthly"
-	PeriodQuarterly = "quarterly"
-	PeriodAnnual    = "annual"
-)
-
 type Payload struct {
-	Collection  string    `json:"collection"`
-	DataFacet   DataFacet `json:"dataFacet"`
-	Chain       string    `json:"chain,omitempty"`
-	Address     string    `json:"address,omitempty"`
-	Period      string    `json:"period,omitempty"`
-	Format      string    `json:"format,omitempty"`
-	ProjectPath string    `json:"projectPath,omitempty"`
+	Collection   string    `json:"collection"`
+	DataFacet    DataFacet `json:"dataFacet"`
+	ActiveChain  string    `json:"activeChain,omitempty"`
+	Address      string    `json:"address,omitempty"`
+	CrudAddress  string    `json:"crudAddress,omitempty"`
+	ActivePeriod Period    `json:"activePeriod,omitempty"`
+	Format       string    `json:"format,omitempty"`
+	ProjectPath  string    `json:"projectPath,omitempty"`
 }
 
 func (p *Payload) ShouldSummarize() bool {
-	return p.Period != PeriodBlockly
+	return p.ActivePeriod != PeriodBlockly
 }
 
 type DataLoadedPayload struct {
@@ -40,7 +30,7 @@ type DataLoadedPayload struct {
 type ProjectPayload struct {
 	HasProject     bool                 `json:"hasProject"`
 	ActiveChain    string               `json:"activeChain"`
-	ActivePeriod   string               `json:"activePeriod"`
+	ActivePeriod   Period               `json:"activePeriod"`
 	ActiveAddress  string               `json:"activeAddress"`
 	ActiveContract string               `json:"activeContract"`
 	LastView       string               `json:"lastView"`

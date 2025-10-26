@@ -93,12 +93,18 @@ const NavigationHandler = () => {
         contextChanges.push(setActiveAddress(contextValues.address as string));
       }
 
-      if (rowActionPayload.chain && rowActionPayload.chain !== activeChain) {
-        contextChanges.push(setActiveChain(rowActionPayload.chain));
+      if (
+        rowActionPayload.activeChain &&
+        rowActionPayload.activeChain !== activeChain
+      ) {
+        contextChanges.push(setActiveChain(rowActionPayload.activeChain));
       }
 
-      if (rowActionPayload.period && rowActionPayload.period !== activePeriod) {
-        contextChanges.push(setActivePeriod(rowActionPayload.period));
+      if (
+        rowActionPayload.activePeriod &&
+        rowActionPayload.activePeriod !== activePeriod
+      ) {
+        contextChanges.push(setActivePeriod(rowActionPayload.activePeriod));
       }
 
       // Wait for all context changes to complete before proceeding

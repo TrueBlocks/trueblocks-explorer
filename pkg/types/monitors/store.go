@@ -37,7 +37,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.Chain
+	chain := payload.ActiveChain
 	address := payload.Address
 	storeKey := getStoreKey(chain, address)
 	theStore := monitorsStore[storeKey]
@@ -118,7 +118,8 @@ func GetMonitorsCollection(payload *types.Payload) *MonitorsCollection {
 }
 
 func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+	_ = address
+	return chain
 }
 
 // EXISTING_CODE

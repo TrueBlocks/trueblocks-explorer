@@ -7,10 +7,10 @@ import (
 )
 
 func NameFromAddress(address base.Address) (*Name, bool) {
-	if !ensureLoadedSync("mainnet") {
+	if !ensureLoadedSync() {
 		return nil, false
 	}
-	storeKey := getStoreKey("mainnet", "")
+	storeKey := getStoreKey("", "") // singleton store anyway
 	store := namesStore[storeKey]
 	if store == nil {
 		return nil, false
@@ -21,12 +21,12 @@ func NameFromAddress(address base.Address) (*Name, bool) {
 
 // loadNamesSync synchronously loads names using a non-streaming context
 // This blocks until the names are fully loaded or an error occurs
-func loadNamesSync(chain string) error {
+func loadNamesSync() error {
 	// Lock to prevent race conditions during loading
 	namesStoreMu.Lock()
 	defer namesStoreMu.Unlock()
 
-	storeKey := getStoreKey("mainnet", "")
+	storeKey := getStoreKey("", "") // singleton store anyway
 	store := namesStore[storeKey]
 
 	// Double-check if store is already loaded after acquiring lock
@@ -36,7 +36,7 @@ func loadNamesSync(chain string) error {
 
 	// Use the same options as the store but without RenderCtx (SDK will use non-streaming)
 	namesOpts := sdk.NamesOptions{
-		Globals: sdk.Globals{Verbose: true, Chain: chain},
+		Globals: sdk.Globals{Verbose: true, Chain: "mainnet"},
 		All:     true,
 	}
 
@@ -65,8 +65,8 @@ func loadNamesSync(chain string) error {
 
 // ensureLoadedSync ensures the names store is loaded synchronously
 // This will block until names are loaded or an error occurs
-func ensureLoadedSync(chain string) bool {
-	storeKey := getStoreKey("mainnet", "")
+func ensureLoadedSync() bool {
+	storeKey := getStoreKey("", "") // singleton store anyway
 	store := namesStore[storeKey]
 	if store == nil {
 		return false
@@ -78,7 +78,7 @@ func ensureLoadedSync(chain string) bool {
 	}
 
 	// Load names synchronously (this will acquire lock internally)
-	if err := loadNamesSync(chain); err != nil {
+	if err := loadNamesSync(); err != nil {
 		return false
 	}
 

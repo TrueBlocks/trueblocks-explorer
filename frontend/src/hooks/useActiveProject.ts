@@ -92,7 +92,7 @@ const initialProjectState: ProjectState = {
   activeChain: '',
   activeAddress: '',
   activeContract: '',
-  activePeriod: 'blockly',
+  activePeriod: types.Period.BLOCKLY,
   lastView: '/',
   lastFacetMap: {},
   projects: [],

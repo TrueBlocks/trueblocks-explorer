@@ -5,6 +5,7 @@ doc_descr = "internal-use only data model detailing a single index chunk file"
 doc_route = "500-chunks"
 attributes = ""
 produced_by = "chunks"
+store_type = "chain-scoped"
 disable_go = false
 
 [[facets]]

@@ -5,6 +5,7 @@ doc_descr = "an association between a human-readable name and an address"
 doc_route = "400-names"
 attributes = ""
 produced_by = "names"
+store_type = "singleton"
 disable_go = false
 
 [[facets]]

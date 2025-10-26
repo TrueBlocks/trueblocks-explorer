@@ -33,6 +33,7 @@
                     "doc_route": "300-abis",
                     "doc_descr": "a human-readable representation of a Solidity smart contract",
                     "produced_by": "abis",
+                    "store_type": "chain-scoped",
                     "members": [
                         {
                             "name": "address",
@@ -795,6 +796,7 @@
                     "doc_route": "500-chunks",
                     "doc_descr": "internal-use only data model detailing a single index chunk file",
                     "produced_by": "chunks",
+                    "store_type": "chain-scoped",
                     "members": [
                         {
                             "name": "range",
@@ -2512,6 +2514,7 @@
                     "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
                     "produced_by": "monitors,list,export,slurp",
                     "cache_type": "marshal_only",
+                    "store_type": "chain-scoped",
                     "members": [
                         {
                             "name": "address",
@@ -2627,6 +2630,7 @@
                     "doc_route": "400-names",
                     "doc_descr": "an association between a human-readable name and an address",
                     "produced_by": "names",
+                    "store_type": "singleton",
                     "members": [
                         {
                             "name": "address",
@@ -4247,6 +4251,7 @@
             "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
             "produced_by": "monitors,list,export,slurp",
             "cache_type": "marshal_only",
+            "store_type": "chain-scoped",
             "members": [
                 {
                     "name": "address",
@@ -6000,6 +6005,7 @@
             "doc_route": "300-abis",
             "doc_descr": "a human-readable representation of a Solidity smart contract",
             "produced_by": "abis",
+            "store_type": "chain-scoped",
             "members": [
                 {
                     "name": "address",
@@ -6181,6 +6187,7 @@
             "doc_route": "400-names",
             "doc_descr": "an association between a human-readable name and an address",
             "produced_by": "names",
+            "store_type": "singleton",
             "members": [
                 {
                     "name": "address",
@@ -7271,6 +7278,7 @@
             "doc_route": "500-chunks",
             "doc_descr": "internal-use only data model detailing a single index chunk file",
             "produced_by": "chunks",
+            "store_type": "chain-scoped",
             "members": [
                 {
                     "name": "range",
@@ -7947,6 +7955,7 @@
             "doc_route": "600-status",
             "doc_descr": "data model for various status facets",
             "produced_by": "status",
+            "store_type": "chain-scoped",
             "members": [
                 {
                     "name": "cachePath",

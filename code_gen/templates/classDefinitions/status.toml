@@ -5,6 +5,7 @@ doc_descr = "data model for various status facets"
 doc_route = "600-status"
 attributes = ""
 produced_by = "status"
+store_type = "chain-scoped"
 disable_go = false
 
 [[facets]]

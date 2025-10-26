@@ -92,7 +92,7 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 
 	pl := *payload
 	{{- if $isNames}}
-		pl.Address = ""
+		pl.ActiveAddress = ""
 		pl.ActiveChain = ""
 	{{end}}
 	key := store.GetCollectionKey(&pl)
@@ -106,11 +106,14 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 }
 
 func getStoreKey(chain, address string) string {
-	{{- if $isNames}}
+	{{- if eq .StoreType "singleton"}}
 	_ = chain
 	_ = address
-	return fmt.Sprintf("%s_%s", "mainnet", "")
-	{{- else}}
+	return "mainnet"
+	{{- else if eq .StoreType "chain-scoped"}}
+	_ = address
+	return chain
+	{{- else }}
 	return fmt.Sprintf("%s_%s", chain, address)
 	{{- end}}
 }

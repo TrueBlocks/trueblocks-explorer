@@ -6,6 +6,7 @@ doc_route = "300-abis"
 attributes = ""
 produced_by = "abis"
 contains = "function"
+store_type = "chain-scoped"
 disable_go = false
 
 [[facets]]

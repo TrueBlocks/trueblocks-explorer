@@ -277,7 +277,7 @@ export function SetActiveChain(arg1:string):Promise<void>;
 
 export function SetActiveContract(arg1:string):Promise<void>;
 
-export function SetActivePeriod(arg1:string):Promise<void>;
+export function SetActivePeriod(arg1:types.Period):Promise<void>;
 
 export function SetActiveProjectPath(arg1:string):Promise<void>;
 

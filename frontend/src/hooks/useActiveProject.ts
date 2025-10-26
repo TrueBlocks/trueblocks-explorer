@@ -54,7 +54,7 @@ export interface UseActiveProjectReturn {
   setActiveAddress: (address: string) => Promise<void>;
   setActiveChain: (chain: string) => Promise<void>;
   setActiveContract: (contract: string) => Promise<void>;
-  setActivePeriod: (period: string) => Promise<void>;
+  setActivePeriod: (period: types.Period) => Promise<void>;
   setLastView: (view: string) => Promise<void>;
   setLastFacet: (view: string, facet: types.DataFacet) => Promise<void>;
   setViewAndFacet: (view: string, facet: types.DataFacet) => Promise<void>;
@@ -258,7 +258,7 @@ class ProjectStore {
     this.setState({ activeContract: contract });
   };
 
-  setActivePeriod = async (period: string): Promise<void> => {
+  setActivePeriod = async (period: types.Period): Promise<void> => {
     await SetActivePeriod(period);
     this.setState({ activePeriod: period });
   };

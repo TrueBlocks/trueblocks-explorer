@@ -29,7 +29,7 @@ export const useSpeakPrompt = ({
         {
           collection: 'dresses',
           dataFacet: types.DataFacet.GENERATOR,
-          address: activeAddress,
+          activeAddress: activeAddress,
         },
         selectedSeries,
       );

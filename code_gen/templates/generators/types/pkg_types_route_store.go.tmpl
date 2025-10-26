@@ -29,7 +29,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 	// EXISTING_CODE
 	
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := {{toLower .Name}}Store[storeKey]
 	if theStore == nil {

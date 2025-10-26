@@ -21,7 +21,7 @@ func (c *NamesCollection) Crud(
 ) error {
 	dataFacet := payload.DataFacet
 
-	var name = &Name{Address: base.HexToAddress(payload.Address)}
+	var name = &Name{Address: base.HexToAddress(payload.ActiveAddress)}
 	if item != nil {
 		if n, ok := item.(*Name); ok {
 			name = n

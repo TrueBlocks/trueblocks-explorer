@@ -1,14 +1,14 @@
 package types
 
 type Payload struct {
-	Collection   string    `json:"collection"`
-	DataFacet    DataFacet `json:"dataFacet"`
-	ActiveChain  string    `json:"activeChain,omitempty"`
-	Address      string    `json:"address,omitempty"`
-	CrudAddress  string    `json:"crudAddress,omitempty"`
-	ActivePeriod Period    `json:"activePeriod,omitempty"`
-	Format       string    `json:"format,omitempty"`
-	ProjectPath  string    `json:"projectPath,omitempty"`
+	Collection    string    `json:"collection"`
+	DataFacet     DataFacet `json:"dataFacet"`
+	ActiveChain   string    `json:"activeChain,omitempty"`
+	ActiveAddress string    `json:"activeAddress,omitempty"`
+	ActivePeriod  Period    `json:"activePeriod,omitempty"`
+	CrudAddress   string    `json:"crudAddress,omitempty"`
+	Format        string    `json:"format,omitempty"`
+	ProjectPath   string    `json:"projectPath,omitempty"`
 }
 
 func (p *Payload) ShouldSummarize() bool {

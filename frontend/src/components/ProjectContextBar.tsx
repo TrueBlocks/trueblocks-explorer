@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { AddAddressModal, StyledSelect, StyledText } from '@components';
 import { useActiveProject } from '@hooks';
 import { Group, Loader } from '@mantine/core';
+import { types } from '@models';
 import { PeriodOptions, getDisplayAddress } from '@utils';
 
 export const ProjectContextBar = ({}) => {
@@ -77,8 +78,9 @@ export const ProjectContextBar = ({}) => {
     }
   };
 
-  const handlePeriodChange = (period: string | null) => {
-    if (period !== null) {
+  const handlePeriodChange = (pp: string | null) => {
+    if (pp !== null) {
+      const period = pp as types.Period;
       setActivePeriod(period);
     }
   };

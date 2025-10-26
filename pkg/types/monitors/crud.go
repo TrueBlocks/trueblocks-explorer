@@ -17,7 +17,7 @@ func (c *MonitorsCollection) Crud(
 	op crud.Operation,
 	item interface{},
 ) error {
-	var monitor = &Monitor{Address: base.HexToAddress(payload.Address)}
+	var monitor = &Monitor{Address: base.HexToAddress(payload.ActiveAddress)}
 	if cast, ok := item.(*Monitor); ok && cast != nil {
 		monitor = cast
 	}

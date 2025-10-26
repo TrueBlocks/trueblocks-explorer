@@ -17,7 +17,7 @@ func (c *AbisCollection) Crud(
 	op crud.Operation,
 	item interface{},
 ) error {
-	var abi = &Abi{Address: base.HexToAddress(payload.Address)}
+	var abi = &Abi{Address: base.HexToAddress(payload.ActiveAddress)}
 	if cast, ok := item.(*Abi); ok && cast != nil {
 		abi = cast
 	}

@@ -40,7 +40,8 @@
       "@wizards": ["src/wizards"]
     }
   },
-  "include": ["src", "wailsjs", "tests"],
+  "include": ["src", "wailsjs"],
+  "exclude": ["node_modules/**", "dist/**", "build/**"],
   "references": [
     {
       "path": "./tsconfig.node.json"

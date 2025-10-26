@@ -990,7 +990,7 @@ export namespace project {
 	    activeChain: string;
 	    contracts: string[];
 	    activeContract: string;
-	    activePeriod: string;
+	    activePeriod: types.Period;
 	    filterStates: Record<string, FilterState>;
 	
 	    static createFrom(source: any = {}) {
@@ -1209,20 +1209,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum StoreState {
-	    STALE = "stale",
-	    FETCHING = "fetching",
-	    LOADED = "loaded",
-	}
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
-	}
 	export enum DataFacet {
 	    DOWNLOADED = "downloaded",
 	    KNOWN = "known",
@@ -1265,6 +1251,20 @@ export namespace types {
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
+	}
+	export enum StoreState {
+	    STALE = "stale",
+	    FETCHING = "fetching",
+	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;
@@ -2773,9 +2773,9 @@ export namespace types {
 	    collection: string;
 	    dataFacet: DataFacet;
 	    activeChain?: string;
-	    address?: string;
-	    crudAddress?: string;
+	    activeAddress?: string;
 	    activePeriod?: Period;
+	    crudAddress?: string;
 	    format?: string;
 	    projectPath?: string;
 	
@@ -2788,9 +2788,9 @@ export namespace types {
 	        this.collection = source["collection"];
 	        this.dataFacet = source["dataFacet"];
 	        this.activeChain = source["activeChain"];
-	        this.address = source["address"];
-	        this.crudAddress = source["crudAddress"];
+	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
+	        this.crudAddress = source["crudAddress"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	    }
@@ -2798,7 +2798,7 @@ export namespace types {
 	export class ProjectPayload {
 	    hasProject: boolean;
 	    activeChain: string;
-	    activePeriod: string;
+	    activePeriod: Period;
 	    activeAddress: string;
 	    activeContract: string;
 	    lastView: string;
@@ -2954,9 +2954,9 @@ export namespace types {
 	    collection: string;
 	    dataFacet: DataFacet;
 	    activeChain?: string;
-	    address?: string;
-	    crudAddress?: string;
+	    activeAddress?: string;
 	    activePeriod?: Period;
+	    crudAddress?: string;
 	    format?: string;
 	    projectPath?: string;
 	    rowData: Record<string, any>;
@@ -2972,9 +2972,9 @@ export namespace types {
 	        this.collection = source["collection"];
 	        this.dataFacet = source["dataFacet"];
 	        this.activeChain = source["activeChain"];
-	        this.address = source["address"];
-	        this.crudAddress = source["crudAddress"];
+	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
+	        this.crudAddress = source["crudAddress"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	        this.rowData = source["rowData"];

@@ -20,7 +20,7 @@ func ExportData[T any](data []T, payload *Payload, typeName string) (string, err
 
 	collection := payload.Collection
 	dataFacet := string(payload.DataFacet)
-	address := payload.Address
+	address := payload.ActiveAddress
 
 	if payload.ProjectPath == "" {
 		return "", fmt.Errorf("project path not provided in payload")

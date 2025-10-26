@@ -33,7 +33,7 @@ func (a *App) HandleExportsRowAction(payload *types.RowActionPayload) error {
         Collection:   payload.Collection,
         DataFacet:    payload.DataFacet,
         ActiveChain:  payload.ActiveChain,
-        Address:      payload.Address,  // Critical for data fetching
+        Address:      payload.ActiveAddress,  // Critical for data fetching
         ActivePeriod: payload.ActivePeriod,
     })
     return collection.HandleRowAction(payload)
@@ -67,12 +67,12 @@ Critical lesson learned: Address context must be preserved and passed correctly 
 
 ```go
 // When traces/transactions data not loaded, create fresh collection with correct address
-if payload.Address != "" {
+if payload.ActiveAddress != "" {
     freshPayload := &types.Payload{
         Collection:   payload.Collection,
         DataFacet:    ExportsTransactions, // or ExportsTraces
         ActiveChain:  payload.ActiveChain,
-        Address:      payload.Address,      // Essential for SDK operations
+        Address:      payload.ActiveAddress,      // Essential for SDK operations
         ActivePeriod: payload.ActivePeriod,
     }
     freshCollection := GetExportsCollection(freshPayload)
@@ -131,12 +131,12 @@ func (c *ExportsCollection) searchInTransactions(searchCriteria map[string]inter
     
     if len(transactions) == 0 {
         // Trigger async fetch with proper address context
-        if payload.Address != "" {
+        if payload.ActiveAddress != "" {
             freshPayload := &types.Payload{
                 Collection:   payload.Collection,
                 DataFacet:    ExportsTransactions,
                 ActiveChain:  payload.ActiveChain,
-                Address:      payload.Address,
+                Address:      payload.ActiveAddress,
                 ActivePeriod: payload.ActivePeriod,
             }
             freshCollection := GetExportsCollection(freshPayload)
@@ -144,7 +144,7 @@ func (c *ExportsCollection) searchInTransactions(searchCriteria map[string]inter
                 freshCollection.FetchByFacet(ExportsTransactions)
             }()
         }
-        return nil, fmt.Errorf("transactions data not yet loaded - navigating to transactions facet where data will be fetched with address: %s", payload.Address)
+        return nil, fmt.Errorf("transactions data not yet loaded - navigating to transactions facet where data will be fetched with address: %s", payload.ActiveAddress)
     }
 
     // Search for matching transaction
@@ -206,12 +206,12 @@ func (c *ExportsCollection) searchInTraces(searchCriteria map[string]interface{}
 
 **Solution**: Always create fresh collections with the complete payload including address:
 ```go
-if payload.Address != "" {
+if payload.ActiveAddress != "" {
     freshPayload := &types.Payload{
         Collection:   payload.Collection,
         DataFacet:    targetFacet,
         ActiveChain:  payload.ActiveChain,
-        Address:      payload.Address,  // Must be included
+        Address:      payload.ActiveAddress,  // Must be included
         ActivePeriod: payload.ActivePeriod,
     }
     freshCollection := GetExportsCollection(freshPayload)
@@ -558,7 +558,7 @@ func (a *App) CheckTargetRowAvailability(payload *types.TargetCheckPayload) (*ty
         Collection:   payload.Collection,
         DataFacet:    payload.TargetFacet,
         ActiveChain:  payload.ActiveChain,
-        Address:      payload.Address,
+        Address:      payload.ActiveAddress,
         ActivePeriod: payload.ActivePeriod,
     })
     

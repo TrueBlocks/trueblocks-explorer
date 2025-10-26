@@ -38,7 +38,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := monitorsStore[storeKey]
 	if theStore == nil {

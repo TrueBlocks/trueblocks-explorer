@@ -44,7 +44,7 @@ export async function initializeAllViewConfigs(): Promise<{
       const basePayload: Omit<types.Payload, 'collection'> = {
         dataFacet: types.DataFacet.ALL,
         activeChain: 'mainnet',
-        address: '0x0000000000000000000000000000000000000000',
+        activeAddress: '0x0000000000000000000000000000000000000000',
         activePeriod: types.Period.BLOCKLY,
       };
 

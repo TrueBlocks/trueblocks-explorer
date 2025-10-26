@@ -1,5 +1,6 @@
 {
   "typescript.tsdk": "./frontend/node_modules/typescript/lib",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

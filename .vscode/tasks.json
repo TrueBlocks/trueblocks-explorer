@@ -2,17 +2,21 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "typescript",
-      "tsconfig": "tsconfig.json",
-      "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
+      "type": "shell",
+      "command": "yarn",
+      "args": ["tsc", "--noEmit", "--watch"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
       },
+      "problemMatcher": ["$tsc-watch"],
       "runOptions": {
         "runOn": "folderOpen"
-      }
+      },
+      "label": "TypeScript Watch"
     }
   ]
 }

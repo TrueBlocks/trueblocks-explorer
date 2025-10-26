@@ -37,7 +37,7 @@ export const usePayload = () => {
       return types.Payload.createFrom({
         dataFacet,
         activeChain: activeChain,
-        address: activeAddress, // Always send current address
+        activeAddress: activeAddress, // Always send current address
         crudAddress: crudAddress || '', // Send specific CRUD address when provided
         activePeriod: activePeriod,
       });

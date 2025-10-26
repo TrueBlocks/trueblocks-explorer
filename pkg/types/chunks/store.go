@@ -50,7 +50,7 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := bloomsStore[storeKey]
 	if theStore == nil {
@@ -110,7 +110,7 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := indexStore[storeKey]
 	if theStore == nil {
@@ -174,7 +174,7 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := manifestStore[storeKey]
 	if theStore == nil {
@@ -233,7 +233,7 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := statsStore[storeKey]
 	if theStore == nil {

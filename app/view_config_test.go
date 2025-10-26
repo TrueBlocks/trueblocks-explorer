@@ -42,7 +42,11 @@ func TestViewConfigIntegrity(t *testing.T) {
 	}
 
 	// Shared baseline payload fields.
-	base := types.Payload{ActiveChain: "mainnet", Address: "0x0", ActivePeriod: types.PeriodBlockly}
+	base := types.Payload{
+		ActiveChain:   "mainnet",
+		ActiveAddress: "0x0",
+		ActivePeriod:  types.PeriodBlockly,
+	}
 
 	t.Run("FacetOrderIntegrity", func(t *testing.T) {
 		for _, tc := range tests {

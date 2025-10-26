@@ -57,7 +57,7 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := dalledressStore[storeKey]
 	if theStore == nil {
@@ -137,7 +137,7 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := databasesStore[storeKey]
 	if theStore == nil {
@@ -182,7 +182,7 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := logsStore[storeKey]
 	if theStore == nil {
@@ -227,7 +227,7 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := seriesStore[storeKey]
 	if theStore == nil {

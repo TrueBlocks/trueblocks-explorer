@@ -15,6 +15,7 @@ import (
 	//
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+
 	// EXISTING_CODE
 	"fmt"
 
@@ -70,27 +71,27 @@ func (a *App) GetDressesBuckets(payload *types.Payload) (*types.Buckets, error) 
 
 // EXISTING_CODE
 func (a *App) Speak(payload *types.Payload, series string) (string, error) {
-	if payload == nil || payload.Address == "" {
+	if payload == nil || payload.ActiveAddress == "" {
 		return "", nil
 	}
 	if series == "" {
 		series = "empty"
 	}
-	return dalle.Speak(series, payload.Address)
+	return dalle.Speak(series, payload.ActiveAddress)
 }
 
 func (a *App) ReadToMe(payload *types.Payload, series string) (string, error) {
-	if payload == nil || payload.Address == "" {
+	if payload == nil || payload.ActiveAddress == "" {
 		return "", nil
 	}
 	if series == "" {
 		series = "empty"
 	}
-	return dalle.ReadToMe(series, payload.Address)
+	return dalle.ReadToMe(series, payload.ActiveAddress)
 }
 
 func (a *App) GetDalleAudioURL(payload *types.Payload, series string) (string, error) {
-	if payload == nil || payload.Address == "" {
+	if payload == nil || payload.ActiveAddress == "" {
 		return "", nil
 	}
 	if series == "" {
@@ -100,18 +101,18 @@ func (a *App) GetDalleAudioURL(payload *types.Payload, series string) (string, e
 	if a.fileServer != nil {
 		base = a.fileServer.GetBaseURL()
 	}
-	return dalle.AudioURL(base, series, payload.Address)
+	return dalle.AudioURL(base, series, payload.ActiveAddress)
 }
 
 func (a *App) FromTemplate(payload *types.Payload, templateStr string) (string, error) {
-	if payload == nil || payload.Address == "" {
+	if payload == nil || payload.ActiveAddress == "" {
 		return "", fmt.Errorf("address is required")
 	}
 	if templateStr == "" {
 		return "", fmt.Errorf("template string is required")
 	}
 
-	dd, err := a.Dalle.MakeDalleDress(payload.Address)
+	dd, err := a.Dalle.MakeDalleDress(payload.ActiveAddress)
 	if err != nil {
 		return "", fmt.Errorf("failed to create DalleDress: %w", err)
 	}

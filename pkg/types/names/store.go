@@ -38,7 +38,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 	// EXISTING_CODE
 
 	chain := payload.ActiveChain
-	address := payload.Address
+	address := payload.ActiveAddress
 	storeKey := getStoreKey(chain, address)
 	theStore := namesStore[storeKey]
 	if theStore == nil {
@@ -119,7 +119,7 @@ func GetNamesCollection(payload *types.Payload) *NamesCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	pl.Address = ""
+	pl.ActiveAddress = ""
 	pl.ActiveChain = ""
 
 	key := store.GetCollectionKey(&pl)

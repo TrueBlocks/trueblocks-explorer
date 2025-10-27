@@ -28,9 +28,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 	
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := {{toLower .Name}}Store[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -55,7 +53,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -68,16 +66,16 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 }
 {{end}}
 
-func (c *{{$class}}Collection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *{{$class}}Collection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	{{range .Facets}}case {{$class}}{{.Name}}:
 		name = "{{toLower $class}}-{{toLower .StoreName}}"
 	{{end -}}
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -105,16 +103,16 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	{{- if eq .StoreType "singleton"}}
-	_ = chain
-	_ = address
-	return "mainnet"
+	_ = payload
+	return "singleton"
 	{{- else if eq .StoreType "chain-scoped"}}
-	_ = address
-	return chain
+	return payload.ActiveChain
 	{{- else }}
-	return fmt.Sprintf("%s_%s", chain, address)
+	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 	{{- end}}
 }
 

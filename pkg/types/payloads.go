@@ -6,7 +6,7 @@ type Payload struct {
 	ActiveChain   string    `json:"activeChain,omitempty"`
 	ActiveAddress string    `json:"activeAddress,omitempty"`
 	ActivePeriod  Period    `json:"activePeriod,omitempty"`
-	CrudAddress   string    `json:"crudAddress,omitempty"`
+	TargetAddress string    `json:"targetAddress,omitempty"`
 	Format        string    `json:"format,omitempty"`
 	ProjectPath   string    `json:"projectPath,omitempty"`
 }

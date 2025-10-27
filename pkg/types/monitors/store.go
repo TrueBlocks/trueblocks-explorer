@@ -37,15 +37,13 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := monitorsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			listOpts := sdk.MonitorsOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := listOpts.MonitorsList(); err != nil {
@@ -73,7 +71,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -85,15 +83,15 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 	return theStore
 }
 
-func (c *MonitorsCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *MonitorsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case MonitorsMonitors:
 		name = "monitors-monitors"
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -117,9 +115,10 @@ func GetMonitorsCollection(payload *types.Payload) *MonitorsCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	_ = address
-	return chain
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return payload.ActiveChain
 }
 
 // EXISTING_CODE

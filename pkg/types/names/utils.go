@@ -10,7 +10,8 @@ func NameFromAddress(address base.Address) (*Name, bool) {
 	if !ensureLoadedSync() {
 		return nil, false
 	}
-	storeKey := getStoreKey("", "") // singleton store anyway
+	pl := &types.Payload{}
+	storeKey := getStoreKey(pl) // singleton store anyway
 	store := namesStore[storeKey]
 	if store == nil {
 		return nil, false
@@ -26,7 +27,8 @@ func loadNamesSync() error {
 	namesStoreMu.Lock()
 	defer namesStoreMu.Unlock()
 
-	storeKey := getStoreKey("", "") // singleton store anyway
+	pl := &types.Payload{}
+	storeKey := getStoreKey(pl) // singleton store anyway
 	store := namesStore[storeKey]
 
 	// Double-check if store is already loaded after acquiring lock
@@ -66,7 +68,8 @@ func loadNamesSync() error {
 // ensureLoadedSync ensures the names store is loaded synchronously
 // This will block until names are loaded or an error occurs
 func ensureLoadedSync() bool {
-	storeKey := getStoreKey("", "") // singleton store anyway
+	pl := &types.Payload{}
+	storeKey := getStoreKey(pl) // singleton store anyway
 	store := namesStore[storeKey]
 	if store == nil {
 		return false

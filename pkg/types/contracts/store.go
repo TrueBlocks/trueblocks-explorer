@@ -41,9 +41,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := contractsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -68,7 +66,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -92,23 +90,18 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	defer logsStoreMu.Unlock()
 
 	// EXISTING_CODE
-	// TODO: BOGUS WE NEED THIS ON THE PAYLOAD
-	// contract := payload.Contract
-	contract := "0x8fbea07446ddf4518b1a7ba2b4f11bd140a8df41"
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := logsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
-				Addrs:      []string{address},
-				Emitter:    []string{contract},
+				Addrs:      []string{payload.ActiveAddress},
+				Emitter:    []string{payload.TargetAddress},
 				Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
@@ -135,7 +128,7 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -147,9 +140,9 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	return theStore
 }
 
-func (c *ContractsCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *ContractsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case ContractsDashboard:
 		name = "contracts-contracts"
 	case ContractsExecute:
@@ -159,7 +152,7 @@ func (c *ContractsCollection) GetStoreName(dataFacet types.DataFacet, chain, add
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -183,8 +176,10 @@ func GetContractsCollection(payload *types.Payload) *ContractsCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }
 
 // EXISTING_CODE

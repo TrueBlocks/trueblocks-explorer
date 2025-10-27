@@ -2,24 +2,24 @@ import { render as customRender } from '@mocks';
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-// Mock the Names component to avoid complex dependencies
-vi.mock('../names/Names', () => ({
-  Names: () => <div data-testid="names-view">Names View</div>,
+// Mock the Dresses component to avoid complex dependencies
+vi.mock('../../dresses', () => ({
+  Dresses: () => <div data-testid="dresses-view">Dresses View</div>,
 }));
 
 // Import after mocking
-const { Names } = await import('../names/Names');
+const { Dresses } = await import('../../dresses');
 
-describe('Names View Integration Tests (DataFacet refactor preparation)', () => {
+describe('Dresses View Integration Tests (DataFacet refactor preparation)', () => {
   describe('basic rendering', () => {
     it('renders without crashing', () => {
-      customRender(<Names />);
-      expect(screen.getByTestId('names-view')).toBeInTheDocument();
+      customRender(<Dresses />);
+      expect(screen.getByTestId('dresses-view')).toBeInTheDocument();
     });
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support entity-names facet selection', () => {
+    it('should support generator, series, databases, events, gallery facets', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

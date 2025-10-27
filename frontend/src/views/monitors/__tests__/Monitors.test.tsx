@@ -3,14 +3,14 @@ import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 // Mock the Monitors component to avoid complex dependencies
-vi.mock('../monitors/Monitors', () => ({
+vi.mock('../../monitors', () => ({
   Monitors: () => <div data-testid="monitors-view">Monitors View</div>,
 }));
 
 // Import after mocking
-const { Monitors } = await import('../monitors/Monitors');
+const { Monitors } = await import('../../monitors');
 
-describe('Monitors View Integration Tests (DataFacet architecture)', () => {
+describe('Monitors View Integration Tests (DataFacet refactor preparation)', () => {
   describe('basic rendering', () => {
     it('renders without crashing', () => {
       customRender(<Monitors />);
@@ -19,7 +19,7 @@ describe('Monitors View Integration Tests (DataFacet architecture)', () => {
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support txs facet selection', () => {
+    it('should support monitors facet', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

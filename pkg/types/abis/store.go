@@ -42,15 +42,13 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := abisStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			listOpts := sdk.AbisOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := listOpts.AbisList(); err != nil {
@@ -78,7 +76,7 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -97,15 +95,13 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := functionsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			detailOpts := sdk.AbisOptions{
-				Globals:   sdk.Globals{Cache: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := detailOpts.AbisDetails(); err != nil {
@@ -133,7 +129,7 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -145,9 +141,9 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 	return theStore
 }
 
-func (c *AbisCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *AbisCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case AbisDownloaded:
 		name = "abis-abis"
 	case AbisKnown:
@@ -159,7 +155,7 @@ func (c *AbisCollection) GetStoreName(dataFacet types.DataFacet, chain, address 
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -183,9 +179,13 @@ func GetAbisCollection(payload *types.Payload) *AbisCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	_ = address
-	return chain
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	if payload.DataFacet == AbisKnown {
+		return "singleton"
+	}
+	// EXISTING_CODE
+	return payload.ActiveChain
 }
 
 // EXISTING_CODE

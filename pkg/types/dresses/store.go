@@ -56,9 +56,7 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := dalledressStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -117,7 +115,7 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -136,9 +134,7 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := databasesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -162,7 +158,7 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -181,9 +177,7 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := logsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -207,7 +201,7 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -226,9 +220,7 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := seriesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
@@ -265,7 +257,7 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -277,9 +269,9 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 	return theStore
 }
 
-func (c *DressesCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *DressesCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case DressesGenerator:
 		name = "dresses-dalledress"
 	case DressesSeries:
@@ -293,7 +285,7 @@ func (c *DressesCollection) GetStoreName(dataFacet types.DataFacet, chain, addre
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -317,8 +309,10 @@ func GetDressesCollection(payload *types.Payload) *DressesCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }
 
 // EXISTING_CODE

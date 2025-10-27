@@ -20,26 +20,26 @@ function validatePayloadAddress(address: string, context: string) {
 export const usePayload = () => {
   const { activeAddress, activeChain, activePeriod } = useActiveProject();
   return useCallback(
-    (dataFacet: types.DataFacet, crudAddress?: string) => {
+    (dataFacet: types.DataFacet, targetAddress?: string) => {
       validatePayloadAddress(
         activeAddress,
         `usePayload - dataFacet: ${dataFacet}, activeAddress: ${activeAddress}`,
       );
 
-      // Validate crudAddress if provided
-      if (crudAddress) {
+      // Validate targetAddress if provided
+      if (targetAddress) {
         validatePayloadAddress(
-          crudAddress,
-          `usePayload - dataFacet: ${dataFacet}, crudAddress: ${crudAddress}`,
+          targetAddress,
+          `usePayload - dataFacet: ${dataFacet}, targetAddress: ${targetAddress}`,
         );
       }
 
       return types.Payload.createFrom({
         dataFacet,
         activeChain: activeChain,
-        activeAddress: activeAddress, // Always send current address
-        crudAddress: crudAddress || '', // Send specific CRUD address when provided
+        activeAddress: activeAddress,
         activePeriod: activePeriod,
+        targetAddress: targetAddress || '', // Send specific target address when provided
       });
     },
     [activeChain, activeAddress, activePeriod],

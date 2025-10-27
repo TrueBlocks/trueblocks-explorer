@@ -34,8 +34,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['monitors']['MonitorsCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetStoreName(arg1, arg2, arg3) {
-  return window['go']['monitors']['MonitorsCollection']['GetStoreName'](arg1, arg2, arg3);
+export function GetStoreName(arg1, arg2) {
+  return window['go']['monitors']['MonitorsCollection']['GetStoreName'](arg1, arg2);
 }
 
 export function GetSummary() {

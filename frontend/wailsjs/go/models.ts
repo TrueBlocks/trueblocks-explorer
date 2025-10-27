@@ -2775,7 +2775,7 @@ export namespace types {
 	    activeChain?: string;
 	    activeAddress?: string;
 	    activePeriod?: Period;
-	    crudAddress?: string;
+	    targetAddress?: string;
 	    format?: string;
 	    projectPath?: string;
 	
@@ -2790,7 +2790,7 @@ export namespace types {
 	        this.activeChain = source["activeChain"];
 	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
-	        this.crudAddress = source["crudAddress"];
+	        this.targetAddress = source["targetAddress"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	    }
@@ -2956,7 +2956,7 @@ export namespace types {
 	    activeChain?: string;
 	    activeAddress?: string;
 	    activePeriod?: Period;
-	    crudAddress?: string;
+	    targetAddress?: string;
 	    format?: string;
 	    projectPath?: string;
 	    rowData: Record<string, any>;
@@ -2974,7 +2974,7 @@ export namespace types {
 	        this.activeChain = source["activeChain"];
 	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
-	        this.crudAddress = source["crudAddress"];
+	        this.targetAddress = source["targetAddress"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	        this.rowData = source["rowData"];

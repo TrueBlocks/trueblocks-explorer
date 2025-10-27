@@ -271,7 +271,7 @@ exportOpts.ExportBalances()
 
 // With options
 exportOpts := sdk.ExportOptions{
-    Globals:    sdk.Globals{Cache: true, Chain: chain},
+    Globals:    sdk.Globals{Cache: true, Chain: payload.ActiveChain},
     Addrs:      []string{address},
     Articulate: true,    // For detailed log parsing
     Accounting: true,    // For financial calculations

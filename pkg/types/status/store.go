@@ -45,15 +45,13 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := cachesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			opts := sdk.StatusOptions{
-				Globals:   sdk.Globals{Chain: chain},
+				Globals:   sdk.Globals{Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := opts.StatusCaches(); err != nil {
@@ -80,7 +78,7 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -99,15 +97,13 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := chainsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			opts := sdk.StatusOptions{
-				Globals:   sdk.Globals{Chain: chain},
+				Globals:   sdk.Globals{Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := opts.StatusChains(); err != nil {
@@ -134,7 +130,7 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -153,15 +149,13 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := statusStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			opts := sdk.StatusOptions{
-				Globals:   sdk.Globals{Chain: chain},
+				Globals:   sdk.Globals{Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 			}
 			if _, _, err := opts.StatusHealthcheck(); err != nil {
@@ -188,7 +182,7 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -200,9 +194,9 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 	return theStore
 }
 
-func (c *StatusCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *StatusCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case StatusStatus:
 		name = "status-status"
 	case StatusCaches:
@@ -212,7 +206,7 @@ func (c *StatusCollection) GetStoreName(dataFacet types.DataFacet, chain, addres
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -236,9 +230,13 @@ func GetStatusCollection(payload *types.Payload) *StatusCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	_ = address
-	return chain
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	if payload.DataFacet == StatusChains {
+		return "singleton"
+	}
+	// EXISTING_CODE
+	return payload.ActiveChain
 }
 
 // EXISTING_CODE

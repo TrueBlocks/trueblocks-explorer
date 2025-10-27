@@ -2,24 +2,24 @@ import { render as customRender } from '@mocks';
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-// Mock the Abis component to avoid complex dependencies
-vi.mock('../abis/Abis', () => ({
-  Abis: () => <div data-testid="abis-view">Abis View</div>,
+// Mock the Comparitoor component to avoid complex dependencies
+vi.mock('../../comparitoor', () => ({
+  Comparitoor: () => <div data-testid="comparitoor-view">Comparitoor View</div>,
 }));
 
 // Import after mocking
-const { Abis } = await import('../abis/Abis');
+const { Comparitoor } = await import('../../comparitoor');
 
-describe('Abis View Integration Tests (DataFacet refactor preparation)', () => {
+describe('Comparitoor View Integration Tests (DataFacet refactor preparation)', () => {
   describe('basic rendering', () => {
     it('renders without crashing', () => {
-      customRender(<Abis />);
-      expect(screen.getByTestId('abis-view')).toBeInTheDocument();
+      customRender(<Comparitoor />);
+      expect(screen.getByTestId('comparitoor-view')).toBeInTheDocument();
     });
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support get-abis facet selection', () => {
+    it('should support comparitoor, chifra, etherscan, covalent, alchemy facets', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

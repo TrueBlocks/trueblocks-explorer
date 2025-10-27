@@ -19,8 +19,12 @@ func (a *App) CancelFetch(dataFacet types.DataFacet) {
 		supportedFacets := collection.GetSupportedFacets()
 		for _, facet := range supportedFacets {
 			if facet == dataFacet {
-				// TODO: BOGUS - this does not reset export which requires chain and address to find the collection
-				storeName := collection.GetStoreName(facet, "", "")
+				config, _ := collection.GetConfig()
+				payload := &types.Payload{
+					Collection: config.ViewName,
+					DataFacet:  facet,
+				}
+				storeName := collection.GetStoreName(payload, facet)
 				store.CancelFetch(storeName)
 				return
 			}
@@ -37,8 +41,12 @@ func (a *App) CancelAllFetches() int {
 func (a *App) ResetStore(storeName string) {
 	for _, collection := range a.collections {
 		for _, facet := range collection.GetSupportedFacets() {
-			// TODO: BOGUS - this does not reset export which requires chain and address to find the collection
-			if collection.GetStoreName(facet, "", "") == storeName {
+			config, _ := collection.GetConfig()
+			payload := &types.Payload{
+				Collection: config.ViewName,
+				DataFacet:  facet,
+			}
+			if strName := collection.GetStoreName(payload, facet); strName == storeName {
 				collection.Reset(facet)
 			}
 		}

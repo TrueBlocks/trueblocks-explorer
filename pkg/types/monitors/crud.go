@@ -22,29 +22,27 @@ func (c *MonitorsCollection) Crud(
 		monitor = cast
 	}
 
-	chain := payload.ActiveChain
-
 	var err error
 	switch op {
 	case crud.Remove:
 		opts := sdk.MonitorsOptions{
 			Addrs:   []string{monitor.Address.Hex()},
 			Remove:  true,
-			Globals: sdk.Globals{Chain: chain},
+			Globals: sdk.Globals{Chain: payload.ActiveChain},
 		}
 		_, _, err = opts.Monitors()
 	case crud.Delete:
 		opts := sdk.MonitorsOptions{
 			Addrs:   []string{monitor.Address.Hex()},
 			Delete:  true,
-			Globals: sdk.Globals{Cache: true, Chain: chain},
+			Globals: sdk.Globals{Cache: true, Chain: payload.ActiveChain},
 		}
 		_, _, err = opts.Monitors()
 	case crud.Undelete:
 		opts := sdk.MonitorsOptions{
 			Addrs:    []string{monitor.Address.Hex()},
 			Undelete: true,
-			Globals:  sdk.Globals{Cache: true, Chain: chain},
+			Globals:  sdk.Globals{Cache: true, Chain: payload.ActiveChain},
 		}
 		_, _, err = opts.Monitors()
 	default:
@@ -110,9 +108,8 @@ func (c *MonitorsCollection) updateMonitorInData(data []*Monitor, monitor *Monit
 }
 
 func (c *MonitorsCollection) Clean(payload *types.Payload, addresses []string) error {
-	chain := payload.ActiveChain
 	opts := sdk.MonitorsOptions{
-		Globals: sdk.Globals{Cache: true, Chain: chain},
+		Globals: sdk.Globals{Cache: true, Chain: payload.ActiveChain},
 	}
 
 	if len(addresses) > 0 {

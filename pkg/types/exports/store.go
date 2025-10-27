@@ -82,17 +82,15 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := approvallogsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportApprovals(); err != nil {
@@ -125,7 +123,7 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -144,17 +142,15 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := approvaltxsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportApprovals(); err != nil {
@@ -180,7 +176,7 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -199,17 +195,15 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := assetsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 			}
 			if _, _, err := exportOpts.ExportAssets(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsAssets, "fetch", err)
@@ -235,7 +229,7 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -254,17 +248,15 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := balancesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 			}
 			if _, _, err := exportOpts.ExportBalances(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsBalances, "fetch", err)
@@ -290,7 +282,7 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -309,17 +301,15 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := logsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
-				Addrs:      []string{address},
+				Addrs:      []string{payload.ActiveAddress},
 				Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
@@ -346,7 +336,7 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -365,17 +355,15 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := openapprovalsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			tokensOpts := sdk.TokensOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 				NoZero:    true,
 			}
 			if _, _, err := tokensOpts.TokensApprovals(); err != nil {
@@ -402,7 +390,7 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -421,17 +409,15 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := receiptsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportReceipts(); err != nil {
@@ -458,7 +444,7 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -477,17 +463,15 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := statementsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
-				Addrs:      []string{address},
+				Addrs:      []string{payload.ActiveAddress},
 				Accounting: true, // Enable accounting for statements
 			}
 			if _, _, err := exportOpts.ExportStatements(); err != nil {
@@ -515,7 +499,7 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -534,17 +518,15 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := tracesStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportTraces(); err != nil {
@@ -571,7 +553,7 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -590,17 +572,15 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := transactionsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 			}
 			if _, _, err := exportOpts.Export(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransactions, "fetch", err)
@@ -626,7 +606,7 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -645,17 +625,15 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := transfersStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
-				Addrs:      []string{address},
+				Addrs:      []string{payload.ActiveAddress},
 				Accounting: true, // Enable accounting for transfers
 			}
 			if _, _, err := exportOpts.ExportTransfers(); err != nil {
@@ -682,7 +660,7 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -701,17 +679,15 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	chain := payload.ActiveChain
-	address := payload.ActiveAddress
-	storeKey := getStoreKey(chain, address)
+	storeKey := getStoreKey(payload)
 	theStore := withdrawalsStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: chain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
-				Addrs:     []string{address},
+				Addrs:     []string{payload.ActiveAddress},
 			}
 			if _, _, err := exportOpts.ExportWithdrawals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransfers, "fetch", err)
@@ -737,7 +713,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(facet, chain, address)
+		storeName := c.GetStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -749,9 +725,9 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 	return theStore
 }
 
-func (c *ExportsCollection) GetStoreName(dataFacet types.DataFacet, chain, address string) string {
+func (c *ExportsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
-	switch dataFacet {
+	switch facet {
 	case ExportsStatements:
 		name = "exports-statements"
 	case ExportsBalances:
@@ -781,7 +757,7 @@ func (c *ExportsCollection) GetStoreName(dataFacet types.DataFacet, chain, addre
 	default:
 		return ""
 	}
-	name = fmt.Sprintf("%s-%s-%s", name, chain, address)
+	name = fmt.Sprintf("%s-%s-%s", name, payload.ActiveChain, payload.ActiveAddress)
 	return name
 }
 
@@ -805,8 +781,10 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 	return collection
 }
 
-func getStoreKey(chain, address string) string {
-	return fmt.Sprintf("%s_%s", chain, address)
+func getStoreKey(payload *types.Payload) string {
+	// EXISTING_CODE
+	// EXISTING_CODE
+	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }
 
 // EXISTING_CODE

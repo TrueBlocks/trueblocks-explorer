@@ -351,7 +351,7 @@ func (m MockCollection) GetSupportedFacets() []types.DataFacet {
 	return []types.DataFacet{}
 }
 
-func (m MockCollection) GetStoreName(facet types.DataFacet, chain, address string) string {
+func (m MockCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
 	return m.name
 }
 

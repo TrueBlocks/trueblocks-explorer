@@ -20,14 +20,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 )
 
-// AnnotatedTransaction wraps sdk.Transaction with missing/unique flags for frontend rendering
-// type AnnotatedTransaction struct {
-// 	sdk.Transaction
-// 	Missing bool `json:"missing"`
-// 	Unique  bool `json:"unique"`
-// }
-
-type Transaction = sdk.Transaction // AnnotatedTransaction
+type Transaction = sdk.Transaction
 
 // EXISTING_CODE
 

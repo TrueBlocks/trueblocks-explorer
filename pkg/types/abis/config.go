@@ -85,7 +85,7 @@ func getAbisFields() []types.FieldConfig {
 		{Section: "Metadata", Key: "lastModDate", Formatter: "datetime"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -103,7 +103,7 @@ func getFunctionsFields() []types.FieldConfig {
 		{Section: "Parameters", Key: "message", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

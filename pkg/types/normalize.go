@@ -6,10 +6,11 @@ import (
 )
 
 // NormalizeFields normalizes field configurations in place.
-func NormalizeFields(fields []FieldConfig) {
-	for i := range fields {
-		fields[i].normalizeField()
+func NormalizeFields(fields *[]FieldConfig) {
+	for i := range *fields {
+		(*fields)[i].normalizeField()
 	}
+	consolidateFields(fields)
 }
 
 func unCamelize(s string) string {
@@ -72,4 +73,52 @@ func (f *FieldConfig) normalizeField() {
 			f.Formatter = "text"
 		}
 	}
+}
+
+func consolidateFields(fields *[]FieldConfig) {
+	targetKeys := map[string]bool{
+		"blockNumber":      true,
+		"blockHash":        true,
+		"transactionIndex": true,
+		"transactionHash":  true,
+		"hash":             true,
+		"logIndex":         true,
+		"traceIndex":       true,
+		"timestamp":        true,
+	}
+
+	hasAnyTarget := false
+	for i := range *fields {
+		if targetKeys[(*fields)[i].Key] {
+			hasAnyTarget = true
+			break
+		}
+	}
+
+	if !hasAnyTarget {
+		return
+	}
+
+	identifierField := FieldConfig{
+		Key:         "identifier",
+		Label:       "Identifier",
+		ColumnLabel: "Identifier",
+		DetailLabel: "Identifier",
+		NoTable:     false,
+		NoDetail:    true,
+		Formatter:   "identifier",
+	}
+
+	// Hide original identifier fields but keep them for export
+	for i := range *fields {
+		if targetKeys[(*fields)[i].Key] {
+			(*fields)[i].NoTable = true // Hide from table view
+		}
+	}
+
+	// Insert identifier field at the beginning
+	result := make([]FieldConfig, 0, len(*fields)+1)
+	result = append(result, identifierField)
+	result = append(result, *fields...)
+	*fields = result
 }

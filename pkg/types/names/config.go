@@ -103,7 +103,7 @@ func getNamesFields() []types.FieldConfig {
 		{Section: "Data", Key: "parts", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

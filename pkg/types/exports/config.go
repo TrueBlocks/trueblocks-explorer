@@ -169,7 +169,7 @@ func getApprovallogsFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -196,7 +196,7 @@ func getApprovaltxsFields() []types.FieldConfig {
 		{Section: "Details", Key: "type", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -219,7 +219,7 @@ func getAssetsFields() []types.FieldConfig {
 		{Section: "Data", Key: "prefund", Formatter: "wei", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -240,7 +240,7 @@ func getBalancesFields() []types.FieldConfig {
 		{Section: "Context", Key: "timestamp", Formatter: "datetime", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -262,7 +262,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -280,7 +280,7 @@ func getOpenapprovalsFields() []types.FieldConfig {
 		{Section: "Data", Key: "lastAppTxID", Formatter: "number", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -302,7 +302,7 @@ func getReceiptsFields() []types.FieldConfig {
 		{Section: "Data", Key: "logs", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -314,9 +314,9 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Asset", Key: "decimals", NoTable: true},
 		{Section: "Asset", Key: "priceSource", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.begBalEth", Formatter: "ether"},
-		{Section: "Reconciliation", Key: "calcs.totalInEth", Formatter: "ether", NoTable: true},
-		{Section: "Reconciliation", Key: "calcs.totalOutEth", Formatter: "ether", NoTable: true},
-		{Section: "Reconciliation", Key: "calcs.amountNetEth", Formatter: "ether"},
+		{Section: "Reconciliation", Key: "calcs.totalInEth", Formatter: "ether"},
+		{Section: "Reconciliation", Key: "calcs.totalOutEth", Formatter: "ether"},
+		{Section: "Reconciliation", Key: "calcs.amountNetEth", Formatter: "ether", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.endBalEth", Formatter: "ether"},
 		{Section: "Asset", Key: "spotPrice", Formatter: "number", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Formatter: "ether", NoTable: true},
@@ -353,7 +353,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Corrections", Key: "correctEndBalOut", Formatter: "wei", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -383,7 +383,7 @@ func getTracesFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "compressedTrace", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -410,7 +410,7 @@ func getTransactionsFields() []types.FieldConfig {
 		{Section: "Details", Key: "type", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -441,7 +441,7 @@ func getTransfersFields() []types.FieldConfig {
 		{Section: "Special", Key: "prefundIn", Formatter: "wei", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -455,7 +455,7 @@ func getWithdrawalsFields() []types.FieldConfig {
 		{Section: "Details", Key: "amount", Formatter: "wei"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

@@ -83,7 +83,7 @@ func getBloomsFields() []types.FieldConfig {
 		{Section: "Sizes", Key: "byteWidth", Formatter: "number"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -97,7 +97,7 @@ func getIndexFields() []types.FieldConfig {
 		{Section: "Sizes", Key: "size", Formatter: "number"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -107,7 +107,7 @@ func getManifestFields() []types.FieldConfig {
 		{Section: "Manifest", Key: "chain"},
 		{Section: "Manifest", Key: "specification", Formatter: "hash"},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -127,7 +127,7 @@ func getStatsFields() []types.FieldConfig {
 		{Section: "Sizes", Key: "recWid", Formatter: "number", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

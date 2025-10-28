@@ -101,7 +101,7 @@ func getTransactionFields() []types.FieldConfig {
 		{Section: "Details", Key: "type", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

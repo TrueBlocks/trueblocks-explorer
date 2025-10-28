@@ -110,7 +110,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "General", Key: "series"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -122,7 +122,7 @@ func getDatabasesFields() []types.FieldConfig {
 		{Section: "General", Key: "filtered"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -144,7 +144,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -166,7 +166,7 @@ func getSeriesFields() []types.FieldConfig {
 		{Section: "Style", Key: "compositions", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

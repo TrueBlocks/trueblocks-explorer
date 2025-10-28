@@ -71,7 +71,7 @@ func getContractsFields() []types.FieldConfig {
 		{Section: "Status", Key: "errorCount"},
 		{Section: "Status", Key: "lastError"},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -93,7 +93,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

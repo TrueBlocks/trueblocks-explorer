@@ -1209,15 +1209,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
-	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1265,6 +1256,15 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;
@@ -2209,14 +2209,14 @@ export namespace types {
 		}
 	}
 	
-	export class DetailFieldConfig {
+	export class DetailRendererConfig {
 	    key: string;
 	    label: string;
 	    formatter: string;
 	    detailOrder: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new DetailFieldConfig(source);
+	        return new DetailRendererConfig(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -2230,7 +2230,7 @@ export namespace types {
 	export class DetailPanelConfig {
 	    title: string;
 	    collapsed: boolean;
-	    fields: DetailFieldConfig[];
+	    fields: DetailRendererConfig[];
 	
 	    static createFrom(source: any = {}) {
 	        return new DetailPanelConfig(source);
@@ -2240,7 +2240,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.title = source["title"];
 	        this.collapsed = source["collapsed"];
-	        this.fields = this.convertValues(source["fields"], DetailFieldConfig);
+	        this.fields = this.convertValues(source["fields"], DetailRendererConfig);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -2261,6 +2261,7 @@ export namespace types {
 		    return a;
 		}
 	}
+	
 	export class FacetChartConfig {
 	    seriesStrategy?: string;
 	    seriesPrefixLen?: number;

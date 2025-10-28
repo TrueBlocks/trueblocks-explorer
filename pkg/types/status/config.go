@@ -70,7 +70,7 @@ func getCachesFields() []types.FieldConfig {
 		{Section: "Timestamps", Key: "lastCached"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -85,7 +85,7 @@ func getChainsFields() []types.FieldConfig {
 		{Section: "Explorers", Key: "remoteExplorer"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 
@@ -110,7 +110,7 @@ func getStatusFields() []types.FieldConfig {
 		{Section: "Flags", Key: "isTesting"},
 		{Section: "Flags", Key: "isTracing"},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

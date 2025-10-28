@@ -58,7 +58,7 @@ func getMonitorsFields() []types.FieldConfig {
 		{Section: "Statistics", Key: "lastScanned", Formatter: "number"},
 		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 

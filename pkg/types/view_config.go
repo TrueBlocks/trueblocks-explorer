@@ -57,13 +57,13 @@ type ColumnConfig struct {
 
 // DetailPanelConfig represents a detail panel section
 type DetailPanelConfig struct {
-	Title     string              `json:"title"`
-	Collapsed bool                `json:"collapsed"`
-	Fields    []DetailFieldConfig `json:"fields"`
+	Title     string                 `json:"title"`
+	Collapsed bool                   `json:"collapsed"`
+	Fields    []DetailRendererConfig `json:"fields"`
 }
 
-// DetailFieldConfig represents a field in a detail panel
-type DetailFieldConfig struct {
+// DetailRendererConfig represents a field in a detail panel
+type DetailRendererConfig struct {
 	Key         string `json:"key"`
 	Label       string `json:"label"`
 	Formatter   string `json:"formatter"`

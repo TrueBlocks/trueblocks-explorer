@@ -7,7 +7,7 @@ export interface DetailRowProps {
 }
 
 /**
- * DetailRow groups multiple DetailRenderer components using Mantine Grid.
+ * DetailRow groups multiple field components using Mantine Grid.
  * For nColumns=1: 25%/75% layout (3/9 in 12-column grid)
  * For nColumns=2: 12.5%/37.5%/12.5%/37.5% layout (2/4/2/4 in 12-column grid)
  */

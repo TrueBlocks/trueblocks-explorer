@@ -80,14 +80,14 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getTransactionFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Context", Key: "blockNumber", Formatter: "number"},
-		{Section: "Context", Key: "transactionIndex", Formatter: "number"},
-		{Section: "Overview", Key: "hash", Formatter: "hash"},
-		{Section: "Overview", Key: "from", Formatter: "address"},
-		{Section: "Overview", Key: "to", Formatter: "address"},
-		{Section: "Overview", Key: "value", Formatter: "wei"},
+		{Section: "Context", Key: "blockNumber", Type: "number"},
+		{Section: "Context", Key: "transactionIndex", Type: "number"},
+		{Section: "Overview", Key: "hash", Type: "hash"},
+		{Section: "Overview", Key: "from", Type: "address"},
+		{Section: "Overview", Key: "to", Type: "address"},
+		{Section: "Overview", Key: "value", Type: "wei"},
 		{Section: "Gas", Key: "gasUsed"},
-		{Section: "Overview", Key: "timestamp", Formatter: "datetime", NoTable: true},
+		{Section: "Overview", Key: "timestamp", Type: "datetime", NoTable: true},
 		{Section: "Overview", Key: "input", NoTable: true},
 		{Section: "Overview", Key: "articulatedTx", NoTable: true},
 		{Section: "Overview", Key: "isError", NoTable: true},
@@ -96,10 +96,10 @@ func getTransactionFields() []types.FieldConfig {
 		{Section: "Gas", Key: "gasPrice", NoTable: true},
 		{Section: "Gas", Key: "maxFeePerGas", NoTable: true},
 		{Section: "Gas", Key: "maxPriorityFeePerGas", NoTable: true},
-		{Section: "Context", Key: "blockHash", Formatter: "hash", NoTable: true},
+		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", NoTable: true},
 		{Section: "Details", Key: "type", NoTable: true},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
 	return ret

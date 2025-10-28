@@ -59,11 +59,3 @@ export function formatNumericValue(
     maximumFractionDigits: decimals,
   });
 }
-
-/**
- * Legacy function for backward compatibility - prefer formatNumericValue
- * @deprecated Use formatNumericValue with options instead
- */
-export function formatNumber(value: number | string): string {
-  return formatNumericValue(value, { decimals: 0 });
-}

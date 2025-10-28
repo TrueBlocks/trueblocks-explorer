@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,monitors,1,Address,false,address,340,true,true,address
 columns,monitors,2,Name,false,name,200,true,true,
 columns,monitors,3,Records,false,nRecords,120,true,false,number
@@ -7,7 +7,7 @@ columns,monitors,5,Empty,false,isEmpty,80,true,false,boolean
 columns,monitors,6,Last Scanned,false,lastScanned,120,true,false,timestamp
 columns,monitors,7,Actions,false,actions,80,false,false,
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,monitors,Monitor Overview,1,Name,false,name,
 details,monitors,Monitor Overview,2,Address,false,address,address
 details,monitors,Monitor Overview,3,Deleted,false,deleted,boolean

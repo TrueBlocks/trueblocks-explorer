@@ -87,21 +87,21 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getNamesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Identity", Key: "address", Formatter: "address"},
+		{Section: "Identity", Key: "address", Type: "address"},
 		{Section: "Identity", Key: "name"},
 		{Section: "Identity", Key: "symbol"},
-		{Section: "Identity", Key: "decimals", Formatter: "number"},
+		{Section: "Identity", Key: "decimals", Type: "number"},
 		{Section: "Classification", Key: "source"},
 		{Section: "Classification", Key: "tags"},
-		{Section: "Classification", Key: "deleted", Formatter: "boolean", NoTable: true},
+		{Section: "Classification", Key: "deleted", Type: "boolean", NoTable: true},
 		{Section: "Properties", Key: "isContract", NoTable: true},
 		{Section: "Properties", Key: "isCustom", NoTable: true},
 		{Section: "Properties", Key: "isErc20", NoTable: true},
 		{Section: "Properties", Key: "isErc721", NoTable: true},
 		{Section: "Properties", Key: "isPrefund", NoTable: true},
-		{Section: "Data", Key: "prefund", Formatter: "wei", NoTable: true},
+		{Section: "Data", Key: "prefund", Type: "wei", NoTable: true},
 		{Section: "Data", Key: "parts", NoTable: true},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
 	return ret

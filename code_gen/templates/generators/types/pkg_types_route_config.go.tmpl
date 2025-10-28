@@ -66,15 +66,15 @@ func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{{- range .Members }}
 			{{- if not (or (contains .Type "[]") (contains .Type "*")) }}
-				{{- $formatter := .GetFormatter }}
-				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $formatter}}, Formatter: "{{$formatter}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
+				{{- $type := .GetFormatter }}
+				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $type}}, Type: "{{$type}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
 			{{- end }}
 		{{- end }}
 		{{- if .HasActions $.Facets}}
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 		{{- end }}
 	}
-	types.NormalizeFields(ret)
+	types.NormalizeFields(&ret)
 	return ret
 }
 {{- end }}

@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,statements,1,Date,false,date,120,false,false,datetime
 columns,statements,2,Asset,false,asset,340,false,false,address
 columns,statements,3,Symbol,false,symbol,200,false,false,
@@ -70,7 +70,7 @@ columns,receipts,6,Gas Used,false,gasUsed,120,false,false,gas
 columns,receipts,7,Status,false,status,80,false,false,
 columns,receipts,8,Actions,false,actions,80,false,false,
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,statements,Statement Summary,1,Date,false,date,datetime
 details,statements,Statement Summary,2,Account,false,accountedFor,address
 details,statements,Statement Summary,3,Reconciled,false,reconciled,

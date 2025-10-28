@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,stats,1,Range,false,range,150,true,true,blkrange
 columns,stats,2,Addrs,false,nAddrs,120,true,true,number
 columns,stats,3,Apps,false,nApps,100,true,true,number
@@ -28,7 +28,7 @@ columns,manifest,1,Version,true,version,100,false,false,
 columns,manifest,2,Chain,true,chain,120,false,false,
 columns,manifest,3,Specification,true,specification,200,false,false,hash
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,stats,Range,1,Range,false,range,blkrange
 details,stats,Counts,2,Addresses,false,nAddrs,number
 details,stats,Counts,3,Apps,false,nApps,number

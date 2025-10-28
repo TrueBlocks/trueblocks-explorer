@@ -27,9 +27,10 @@ export * from './StyledText';
 export * from './ThemeProvider';
 export * from './WalletConnectButton';
 
+export * from './detail';
 export * from './form';
+export * from './panels';
+export * from './renderers';
 export * from './table';
 export * from './types';
 export * from './utils';
-export * from './detail';
-export * from './panels';

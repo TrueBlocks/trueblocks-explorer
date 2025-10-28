@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,all,1,Address,false,address,340,false,false,address
 columns,all,2,Name,false,name,200,false,false,
 columns,all,3,Tags,false,tags,150,false,false,
@@ -35,7 +35,7 @@ columns,baddress,5,Symbol,false,symbol,100,false,false,
 columns,baddress,6,Decimals,false,decimals,100,false,false,
 columns,baddress,7,Actions,false,actions,80,false,false,
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,all,Name Identity,1,Address,false,address,address
 details,all,Name Identity,2,Name,false,name,
 details,all,Name Identity,3,Symbol,false,symbol,

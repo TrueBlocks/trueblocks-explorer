@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,dashboard,1,Address,true,address,240,false,false,
 columns,dashboard,2,Name,true,name,200,false,false,
 columns,dashboard,3,Symbol,true,symbol,100,false,false,
@@ -14,7 +14,7 @@ columns,events,2,Address,false,address,340,false,false,
 columns,events,3,Name,false,name,200,false,false,
 columns,events,4,Log Details,false,articulatedLog,120,false,false,
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,dashboard,General,1,Address,true,address,
 details,dashboard,General,2,Name,true,name,
 details,dashboard,General,3,Symbol,true,symbol,

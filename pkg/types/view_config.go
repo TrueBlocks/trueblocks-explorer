@@ -33,7 +33,7 @@ type FacetConfig struct {
 type FieldConfig struct {
 	Key         string `json:"key"`
 	Label       string `json:"label"`
-	Formatter   string `json:"formatter"`
+	Type        string `json:"type"`
 	Section     string `json:"section"`
 	Width       int    `json:"width"`
 	Sortable    bool   `json:"sortable"`
@@ -47,12 +47,12 @@ type FieldConfig struct {
 
 // ColumnConfig represents a table column configuration
 type ColumnConfig struct {
-	Key       string `json:"key"`
-	Header    string `json:"header"`
-	Width     int    `json:"width"`
-	Sortable  bool   `json:"sortable"`
-	Formatter string `json:"formatter"`
-	Order     int    `json:"order"`
+	Key      string `json:"key"`
+	Header   string `json:"header"`
+	Width    int    `json:"width"`
+	Sortable bool   `json:"sortable"`
+	Type     string `json:"type"`
+	Order    int    `json:"order"`
 }
 
 // DetailPanelConfig represents a detail panel section
@@ -66,7 +66,7 @@ type DetailPanelConfig struct {
 type DetailRendererConfig struct {
 	Key         string `json:"key"`
 	Label       string `json:"label"`
-	Formatter   string `json:"formatter"`
+	Type        string `json:"type"`
 	DetailOrder int    `json:"detailOrder"`
 }
 

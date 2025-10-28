@@ -17,7 +17,7 @@ const mockFacetConfig = new types.FacetConfig({
       header: 'ID',
       width: 80,
       sortable: true,
-      formatter: '',
+      type: '',
       order: 0,
     },
     {
@@ -25,7 +25,7 @@ const mockFacetConfig = new types.FacetConfig({
       header: 'Name',
       width: 150,
       sortable: true,
-      formatter: '',
+      type: '',
       order: 1,
     },
     {
@@ -33,7 +33,7 @@ const mockFacetConfig = new types.FacetConfig({
       header: 'Description',
       width: 200,
       sortable: false,
-      formatter: '',
+      type: '',
       order: 2,
     },
     {
@@ -41,7 +41,7 @@ const mockFacetConfig = new types.FacetConfig({
       header: 'Status',
       width: 100,
       sortable: false,
-      formatter: '',
+      type: '',
       order: 3,
     },
   ],

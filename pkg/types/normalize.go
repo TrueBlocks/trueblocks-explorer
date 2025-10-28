@@ -65,12 +65,12 @@ func (f *FieldConfig) normalizeField() {
 	if f.DetailLabel == "" {
 		f.DetailLabel, fmt = clean(true)
 	}
-	if f.Formatter == "" {
-		// only change the field's formatter if it's not explicitly set
+	if f.Type == "" {
+		// only change the field's type if it's not explicitly set
 		if fmt != "" {
-			f.Formatter = fmt
+			f.Type = fmt
 		} else {
-			f.Formatter = "text"
+			f.Type = "text"
 		}
 	}
 }
@@ -106,7 +106,7 @@ func consolidateFields(fields *[]FieldConfig) {
 		DetailLabel: "Identifier",
 		NoTable:     false,
 		NoDetail:    true,
-		Formatter:   "identifier",
+		Type:        "identifier",
 	}
 
 	// Hide original identifier fields but keep them for export

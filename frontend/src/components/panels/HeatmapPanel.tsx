@@ -21,7 +21,7 @@ import {
   Log,
   aggregateTimeBasedBuckets,
   formatGroupKey,
-  formatNumber,
+  formatNumericValue,
 } from '@utils';
 
 // Helper function to get bucket data from the series map
@@ -285,8 +285,8 @@ export const HeatmapPanel = ({
                       </Text>
                     ) : (
                       <Text size="xs">
-                        Blocks: {formatNumber(dataPoint.startBlock)} -{' '}
-                        {formatNumber(dataPoint.endBlock)}
+                        Blocks: {formatNumericValue(dataPoint.startBlock)} -{' '}
+                        {formatNumericValue(dataPoint.endBlock)}
                       </Text>
                     )}
                     <Text size="xs">
@@ -313,11 +313,11 @@ export const HeatmapPanel = ({
 
         <Box mt="md">
           <Text size="xs" c="dimmed">
-            {formatNumber(statsData.count)} buckets,{' '}
+            {formatNumericValue(statsData.count)} buckets,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
             total,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.average)}{' '}
-            avg per {formatNumber(buckets.gridInfo.size)}-block range
+            avg per {formatNumericValue(buckets.gridInfo.size)}-block range
           </Text>
         </Box>
 

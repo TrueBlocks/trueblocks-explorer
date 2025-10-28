@@ -31,10 +31,10 @@ export const NodeStatus = () => {
           typeof meta.unripe === 'number'
         ) {
           const dist = meta.client - meta.unripe;
-          const formatter = new Intl.NumberFormat(navigator.language);
-          const formattedClient = formatter.format(meta.client);
-          const formattedUnripe = formatter.format(meta.unripe);
-          const formattedDist = formatter.format(dist);
+          const type = new Intl.NumberFormat(navigator.language);
+          const formattedClient = type.format(meta.client);
+          const formattedUnripe = type.format(meta.unripe);
+          const formattedDist = type.format(dist);
           const frame = spinnerFrames[spinnerIndexRef.current];
           next = `${meta.chain}: ${frame} ${formattedClient} / ${formattedUnripe} / ${dist < 6 ? 'caught up' : formattedDist} `;
         }

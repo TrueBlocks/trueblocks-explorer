@@ -95,8 +95,8 @@ func TestSeriesViewConfig(t *testing.T) {
 	for _, field := range seriesFacet.Fields {
 		if field.Key == "deleted" {
 			deletedFieldFound = true
-			if field.Formatter != "boolean" {
-				t.Error("Deleted field should have boolean formatter")
+			if field.Type != "boolean" {
+				t.Error("Deleted field should have boolean type")
 			}
 			break
 		}

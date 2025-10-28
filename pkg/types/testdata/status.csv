@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,status,1,Cache Path,true,cachePath,200,false,false,
 columns,status,2,Index Path,true,indexPath,200,false,false,
 columns,status,3,Chain,true,chain,100,false,false,
@@ -31,7 +31,7 @@ columns,chains,5,IPFS Gateway,false,ipfsGateway,200,false,false,
 columns,chains,6,Local Explorer,false,localExplorer,200,false,false,
 columns,chains,7,Remote Explorer,false,remoteExplorer,200,false,false,
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,status,Paths,1,Cache Path,true,cachePath,
 details,status,Paths,2,Index Path,true,indexPath,
 details,status,Chain,3,Chain,true,chain,

@@ -74,14 +74,14 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 
 func getBloomsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Range", Key: "range", Formatter: "blkrange"},
+		{Section: "Range", Key: "range", Type: "blkrange"},
 		{Section: "Identity", Key: "magic", NoTable: true},
-		{Section: "Identity", Key: "hash", Formatter: "hash", NoTable: true},
+		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nBlooms"},
 		{Section: "Counts", Key: "nInserted"},
-		{Section: "Sizes", Key: "calc.fileSize", Formatter: "number"},
-		{Section: "Sizes", Key: "byteWidth", Formatter: "number"},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "Sizes", Key: "calc.fileSize", Type: "number"},
+		{Section: "Sizes", Key: "byteWidth", Type: "number"},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
 	return ret
@@ -89,13 +89,13 @@ func getBloomsFields() []types.FieldConfig {
 
 func getIndexFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Range", Key: "range", Formatter: "blkrange"},
+		{Section: "Range", Key: "range", Type: "blkrange"},
 		{Section: "Identity", Key: "magic", NoTable: true},
-		{Section: "Identity", Key: "hash", Formatter: "hash", NoTable: true},
+		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nAddresses"},
 		{Section: "Counts", Key: "nAppearances"},
-		{Section: "Sizes", Key: "size", Formatter: "number"},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "Sizes", Key: "size", Type: "number"},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
 	return ret
@@ -105,7 +105,7 @@ func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Manifest", Key: "version"},
 		{Section: "Manifest", Key: "chain"},
-		{Section: "Manifest", Key: "specification", Formatter: "hash"},
+		{Section: "Manifest", Key: "specification", Type: "hash"},
 	}
 	types.NormalizeFields(&ret)
 	return ret
@@ -113,19 +113,19 @@ func getManifestFields() []types.FieldConfig {
 
 func getStatsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Range", Key: "range", Formatter: "blkrange"},
-		{Section: "Efficiency", Key: "ratio", Formatter: "number"},
+		{Section: "Range", Key: "range", Type: "blkrange"},
+		{Section: "Efficiency", Key: "ratio", Type: "number"},
 		{Section: "Efficiency", Key: "addrsPerBlock"},
 		{Section: "Efficiency", Key: "appsPerBlock"},
 		{Section: "Efficiency", Key: "appsPerAddr"},
-		{Section: "Sizes", Key: "bloomSz", Formatter: "number", NoTable: true},
-		{Section: "Sizes", Key: "chunkSz", Formatter: "number", NoTable: true},
+		{Section: "Sizes", Key: "bloomSz", Type: "number", NoTable: true},
+		{Section: "Sizes", Key: "chunkSz", Type: "number", NoTable: true},
 		{Section: "Counts", Key: "nAddrs", NoTable: true},
 		{Section: "Counts", Key: "nApps", NoTable: true},
 		{Section: "Counts", Key: "nBlocks", NoTable: true},
 		{Section: "Counts", Key: "nBlooms", NoTable: true},
-		{Section: "Sizes", Key: "recWid", Formatter: "number", NoTable: true},
-		{Section: "", Key: "actions", Formatter: "actions", NoDetail: true},
+		{Section: "Sizes", Key: "recWid", Type: "number", NoTable: true},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
 	return ret

@@ -1,4 +1,4 @@
-section,facet,order,label,isForm,key,width,sortable,filterable,formatter
+section,facet,order,label,isForm,key,width,sortable,filterable,type
 columns,downloaded,1,Address,false,address,340,false,false,address
 columns,downloaded,2,Name,false,name,200,false,false,
 columns,downloaded,3,Functions,false,nFunctions,100,false,false,number
@@ -32,7 +32,7 @@ columns,events,5,State Mutability,false,stateMutability,150,false,false,
 columns,events,6,Constant,false,constant,100,false,false,boolean
 columns,events,7,Anonymous,false,anonymous,100,false,false,boolean
 
-section,facet,panel,detailOrder,label,isForm,key,formatter
+section,facet,panel,detailOrder,label,isForm,key,type
 details,downloaded,ABI Identity,1,Address,false,address,address
 details,downloaded,ABI Identity,2,Name,false,name,
 details,downloaded,ABI Identity,3,File Path,false,path,

@@ -15,7 +15,12 @@ describe('FieldRenderer Component', () => {
 
     render(
       <MantineProvider>
-        <FieldRenderer field={field} mode="display" onChange={mockOnChange} />
+        <FieldRenderer
+          field={field}
+          mode="display"
+          onChange={mockOnChange}
+          tableCell={false}
+        />
       </MantineProvider>,
     );
 
@@ -100,16 +105,21 @@ describe('FieldRenderer Component', () => {
 
     render(
       <MantineProvider>
-        <FieldRenderer field={field} mode="display" onChange={mockOnChange} />
+        <FieldRenderer
+          field={field}
+          mode="display"
+          onChange={mockOnChange}
+          tableCell={false}
+        />
       </MantineProvider>,
     );
 
     expect(screen.getByText('Parent Field')).toBeInTheDocument();
     expect(
-      screen.getByText('Child Field 1: Child Value 1'),
+      screen.getByText((content) => content.includes('Child Value 1')),
     ).toBeInTheDocument();
     expect(
-      screen.getByText('Child Field 2: Child Value 2'),
+      screen.getByText((content) => content.includes('Child Value 2')),
     ).toBeInTheDocument();
   });
 

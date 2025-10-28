@@ -2135,7 +2135,7 @@ export namespace types {
 	    header: string;
 	    width: number;
 	    sortable: boolean;
-	    formatter: string;
+	    type: string;
 	    order: number;
 	
 	    static createFrom(source: any = {}) {
@@ -2148,7 +2148,7 @@ export namespace types {
 	        this.header = source["header"];
 	        this.width = source["width"];
 	        this.sortable = source["sortable"];
-	        this.formatter = source["formatter"];
+	        this.type = source["type"];
 	        this.order = source["order"];
 	    }
 	}
@@ -2212,7 +2212,7 @@ export namespace types {
 	export class DetailRendererConfig {
 	    key: string;
 	    label: string;
-	    formatter: string;
+	    type: string;
 	    detailOrder: number;
 	
 	    static createFrom(source: any = {}) {
@@ -2223,7 +2223,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.key = source["key"];
 	        this.label = source["label"];
-	        this.formatter = source["formatter"];
+	        this.type = source["type"];
 	        this.detailOrder = source["detailOrder"];
 	    }
 	}
@@ -2423,7 +2423,7 @@ export namespace types {
 	export class FieldConfig {
 	    key: string;
 	    label: string;
-	    formatter: string;
+	    type: string;
 	    section: string;
 	    width: number;
 	    sortable: boolean;
@@ -2438,7 +2438,7 @@ export namespace types {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.key = source["key"];
 	        this.label = source["label"];
-	        this.formatter = source["formatter"];
+	        this.type = source["type"];
 	        this.section = source["section"];
 	        this.width = source["width"];
 	        this.sortable = source["sortable"];

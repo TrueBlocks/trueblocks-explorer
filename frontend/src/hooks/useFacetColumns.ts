@@ -15,7 +15,7 @@ function convertColumnConfigToFormField(
     header: columnConfig.header,
     name: columnConfig.key,
     label: columnConfig.header,
-    type: columnConfig.formatter as FormField['type'], // Map formatter to type for proper formatting
+    type: columnConfig.type as FormField['type'],
     width: columnConfig.width,
     sortable: columnConfig.sortable,
     value: '',

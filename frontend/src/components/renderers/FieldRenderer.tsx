@@ -7,6 +7,7 @@ import { formatWeiToEther, formatWeiToGigawei } from '@utils';
 export interface FieldRendererProps {
   field: FormField<Record<string, unknown>>;
   row?: Record<string, unknown>;
+  rowData?: Record<string, unknown>; // Alias for row - backwards compatibility
   mode?: 'display' | 'edit';
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -21,13 +22,14 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
     {
       field,
       row,
+      rowData,
       mode,
       onChange,
       onBlur,
       loading,
       keyProp,
       autoFocus,
-      tableCell,
+      tableCell = true,
     },
     ref,
   ) => {
@@ -44,6 +46,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
                 onChange={onChange}
                 onBlur={onBlur}
                 loading={loading}
+                tableCell={tableCell}
               />
             ))}
           </Stack>
@@ -56,21 +59,27 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
     }
 
     if (mode === 'display') {
-      let displayValue;
+      // Extract value from rowData if available, otherwise use field.value
+      const rowDataSource = rowData || row; // Support both prop names
+      const value =
+        rowDataSource && field.key ? rowDataSource[field.key] : field.value;
+
+      let displayValue: React.ReactNode;
       if (field.type === 'weish') {
-        displayValue = field.value as string;
+        displayValue = value as string;
         if (
+          typeof displayValue === 'string' &&
           displayValue.startsWith('1157920892373161954235709850086879078532')
         ) {
           displayValue = <div style={{ fontStyle: 'italic' }}>infinite</div>;
         }
-      } else if (field.type === 'wei' && field.value) {
+      } else if (field.type === 'wei' && value) {
         // Try to format as Wei, but if it fails (e.g., already in Ether format), format as ether
         try {
-          displayValue = formatWeiToEther(field.value as string);
+          displayValue = formatWeiToEther(value as string);
         } catch {
           // If Wei formatting fails, field might already be in Ether format - format consistently
-          const etherValue = String(field.value);
+          const etherValue = String(value);
           const numericValue = parseFloat(etherValue);
           if (isNaN(numericValue)) {
             displayValue = '0.000000';
@@ -79,16 +88,17 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           }
         }
         if (
+          typeof displayValue === 'string' &&
           displayValue.startsWith('1157920892373161954235709850086879078532')
         ) {
           displayValue = <div style={{ fontStyle: 'italic' }}>infinite</div>;
         }
       } else if (field.type === 'ether') {
         // Fields with type 'ether' are already in Ether format - format to exactly 6 decimal places
-        if (!field.value) {
+        if (!value) {
           displayValue = '-';
         } else {
-          const etherValue = String(field.value);
+          const etherValue = String(value);
           const numericValue = parseFloat(etherValue);
           if (isNaN(numericValue) || numericValue === 0) {
             displayValue = '-';
@@ -97,18 +107,18 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
             displayValue = numericValue.toFixed(4);
           }
         }
-      } else if (field.type === 'gas' && field.value) {
-        displayValue = formatWeiToGigawei(field.value as string);
-      } else if (field.type === 'timestamp' && field.value) {
+      } else if (field.type === 'gas' && value) {
+        displayValue = formatWeiToGigawei(value as string);
+      } else if (field.type === 'timestamp' && value) {
         // Convert numerical Unix timestamp to formatted date
-        displayValue = new Date(Number(field.value) * 1000).toLocaleString();
+        displayValue = new Date(Number(value) * 1000).toLocaleString();
       } else if (
         (field.type as string) === 'fileSize' &&
-        field.value !== undefined &&
-        field.value !== null
+        value !== undefined &&
+        value !== null
       ) {
         // Format file size in bytes to human readable format
-        const bytes = Number(field.value);
+        const bytes = Number(value);
         if (bytes === 0 || isNaN(bytes)) {
           displayValue = '0 b';
         } else {
@@ -131,18 +141,16 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         displayValue = '0 b';
       } else if (
         field.type === 'number' &&
-        (field.value === undefined ||
-          field.value === null ||
-          field.value === '')
+        (value === undefined || value === null || value === '')
       ) {
         // Handle empty/null number values
         displayValue = '0';
       } else if (field.type === 'number') {
         // Handle non-empty number values
-        displayValue = Number(field.value).toLocaleString();
+        displayValue = Number(value).toLocaleString();
       } else if ((field.type as string) === 'fileSize') {
         // Format file size in bytes to human readable format
-        const bytes = Number(field.value);
+        const bytes = Number(value);
         if (bytes === 0 || isNaN(bytes)) {
           displayValue = '0 b';
         } else {
@@ -150,56 +158,56 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           const sizes = ['b', 'kb', 'mb', 'gb'];
           const i = Math.floor(Math.log(bytes) / Math.log(k));
           const sizeUnit = sizes[i] || 'gb'; // Fallback to 'gb' for very large values
-          const value = bytes / Math.pow(k, i);
+          const valueCalc = bytes / Math.pow(k, i);
 
           // If kb > 100, show as mb with 3 decimal places
-          if (sizeUnit === 'kb' && value > 100) {
+          if (sizeUnit === 'kb' && valueCalc > 100) {
             const mbValue = bytes / Math.pow(k, 2);
             displayValue = mbValue.toFixed(2) + ' mb';
           } else {
-            displayValue = parseFloat(value.toFixed(2)) + ' ' + sizeUnit;
+            displayValue = parseFloat(valueCalc.toFixed(2)) + ' ' + sizeUnit;
           }
         }
       } else if ((field.type as string) === 'boolean') {
-        // Handle boolean values - context-aware formatting
-        const isTrue = field.value === true || field.value === 'true';
+        const isTrue = value === true || value === 'true';
         if (tableCell) {
-          // Tables: use badge for true, empty for false
           displayValue = isTrue ? (
             <StyledBadge variant="boolean">true</StyledBadge>
           ) : (
             ''
           );
         } else {
-          // Detail panels/forms: use "Yes"/"No" text
           displayValue = isTrue ? 'Yes' : 'No';
         }
-      } else if ((field.type as string) === 'identifier' && row) {
+      } else if ((field.type as string) === 'identifier' && rowDataSource) {
         // Format blockchain identifier in three-row format
-        // const formatHash = (hash: string) => {
-        //   if (hash.length <= 12) return hash;
-        //   return `${hash.slice(0, 6)}...${hash.slice(-6)}`;
-        // };
 
         const buildDottedNotation = () => {
           const parts: string[] = [];
 
           // Always start with block number
-          if (row.blockNumber) parts.push(String(row.blockNumber));
+          if (rowDataSource.blockNumber)
+            parts.push(String(rowDataSource.blockNumber));
 
           // Add transaction index if present
           if (
-            row.transactionIndex !== undefined &&
-            row.transactionIndex !== null
+            rowDataSource.transactionIndex !== undefined &&
+            rowDataSource.transactionIndex !== null
           ) {
-            parts.push(String(row.transactionIndex));
+            parts.push(String(rowDataSource.transactionIndex));
           }
 
           // Add log index or trace index (not both)
-          if (row.logIndex !== undefined && row.logIndex !== null) {
-            parts.push(String(row.logIndex));
-          } else if (row.traceIndex !== undefined && row.traceIndex !== null) {
-            parts.push(`[${row.traceIndex}]`);
+          if (
+            rowDataSource.logIndex !== undefined &&
+            rowDataSource.logIndex !== null
+          ) {
+            parts.push(String(rowDataSource.logIndex));
+          } else if (
+            rowDataSource.traceIndex !== undefined &&
+            rowDataSource.traceIndex !== null
+          ) {
+            parts.push(`[${rowDataSource.traceIndex}]`);
           }
 
           return parts.join('.');
@@ -207,14 +215,15 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
 
         // Three-row format implementation
         const hasTimestamp =
-          row.timestamp !== undefined && row.timestamp !== null;
+          rowDataSource.timestamp !== undefined &&
+          rowDataSource.timestamp !== null;
         // const hasTransactionIndex =
         //   row.transactionIndex !== undefined && row.transactionIndex !== null;
 
         if (hasTimestamp) {
           // Multi-row format with timestamp
           const dateStr = new Date(
-            Number(row.timestamp) * 1000,
+            Number(rowDataSource.timestamp) * 1000,
           ).toLocaleString();
           const dottedNotation = buildDottedNotation();
 
@@ -258,19 +267,15 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           );
         } else {
           // Single row fallback for entries without timestamp
-          // if (row.hash) {
-          //   displayValue = formatHash(row.hash as string);
-          // } else {
           displayValue = buildDottedNotation() || 'N/A';
-          // }
         }
       } else if (
         (field.type as string) === 'float64' &&
-        field.value !== undefined &&
-        field.value !== null
+        value !== undefined &&
+        value !== null
       ) {
         // Handle float64 values - always show two decimal places with at least one zero before decimal
-        const floatValue = Number(field.value);
+        const floatValue = Number(value);
         if (isNaN(floatValue)) {
           displayValue = '0.00';
         } else {
@@ -280,7 +285,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         // Handle empty/null float64 values
         displayValue = '0.00';
       } else {
-        displayValue = field.value || 'N/A';
+        displayValue = (value as React.ReactNode) || 'N/A';
       }
 
       if (typeof displayValue === 'object') {
@@ -367,7 +372,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           label={field.label}
           placeholder={placeHolder}
           withAsterisk={field.required}
-          value={field.value as string}
+          value={(row && field.key ? row[field.key] : field.value) as string}
           onChange={(e) => {
             if (!field.readOnly) {
               field.onChange?.(e);
@@ -384,7 +389,9 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           }}
           error={
             (!loading && field.error) ||
-            (field.required && !field.value && `${field.label} is required`)
+            (field.required &&
+              !(row && field.key ? row[field.key] : field.value) &&
+              `${field.label} is required`)
           }
           styles={{
             label: {

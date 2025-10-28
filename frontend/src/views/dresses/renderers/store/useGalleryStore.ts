@@ -289,14 +289,14 @@ export const useGalleryStore = () => {
       // Handle +/- keys for column adjustment
       if (e.key === '+' || e.key === '=' || e.key === 'Equal') {
         e.preventDefault();
-        const currentColumns = columns || 6;
+        const currentColumns = columns || 10;
         if (currentColumns < 12) {
           store.setColumns(currentColumns + 1, viewStateKey);
         }
         return;
       } else if (e.key === '-' || e.key === 'Minus') {
         e.preventDefault();
-        const currentColumns = columns || 6;
+        const currentColumns = columns || 10;
         if (currentColumns > 1) {
           store.setColumns(currentColumns - 1, viewStateKey);
         }

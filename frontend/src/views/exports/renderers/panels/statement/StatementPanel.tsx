@@ -1,9 +1,5 @@
 import { StyledText } from '@components';
-import {
-  DetailPanelContainer,
-  DetailRenderer,
-  DetailSection,
-} from '@components';
+import { DetailPanelContainer, DetailSection } from '@components';
 import { Grid, Group, Stack } from '@mantine/core';
 import { types } from '@models';
 import { addressToHex } from '@utils';
@@ -142,43 +138,51 @@ export const renderStatementDetailPanel = (
         <DetailSection title="Participants">
           <Grid gutter={4}>
             <Grid.Col span={6}>
-              <DetailRenderer
-                label="Accounted For"
-                value={displayAddress8(
-                  statement.accountedFor || statement.holder,
-                )}
-                labelSpan={12}
-                valueSpan={12}
-              />
-              <DetailRenderer
-                label="Asset"
-                value={`${displayAddress8(statement.asset)}${statement.symbol ? ` (${statement.symbol})` : ''}`}
-                labelSpan={12}
-                valueSpan={12}
-              />
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Accounted For</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
+                  {displayAddress8(statement.accountedFor || statement.holder)}
+                </div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Asset</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
+                  {`${displayAddress8(statement.asset)}${statement.symbol ? ` (${statement.symbol})` : ''}`}
+                </div>
+              </Grid.Col>
             </Grid.Col>
             <Grid.Col span={6}>
-              <DetailRenderer
-                label="Sender"
-                value={displayAddress8(statement.sender)}
-                labelSpan={12}
-                valueSpan={12}
-              />
-              <DetailRenderer
-                label="Recipient"
-                value={displayAddress8(statement.recipient)}
-                labelSpan={12}
-                valueSpan={12}
-              />
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Sender</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
+                  {displayAddress8(statement.sender)}
+                </div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Recipient</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
+                  {displayAddress8(statement.recipient)}
+                </div>
+              </Grid.Col>
             </Grid.Col>
           </Grid>
         </DetailSection>
         <DetailSection title="Balance Summary">
           <Grid gutter={4}>
             <Grid.Col span={3}>
-              <DetailRenderer
-                label="Beg Bal"
-                value={
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Beg Bal</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
                   <div
                     style={{
                       border: 'none',
@@ -190,15 +194,15 @@ export const renderStatementDetailPanel = (
                   >
                     {formatRaw(beginBalRaw)}
                   </div>
-                }
-                labelSpan={12}
-                valueSpan={12}
-              />
+                </div>
+              </Grid.Col>
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailRenderer
-                label="Income"
-                value={
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Income</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
                   <div
                     style={{
                       textAlign: 'right',
@@ -212,15 +216,15 @@ export const renderStatementDetailPanel = (
                   >
                     {formatRaw(totalInRaw)}
                   </div>
-                }
-                labelSpan={12}
-                valueSpan={12}
-              />
+                </div>
+              </Grid.Col>
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailRenderer
-                label="Outflow"
-                value={
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">Outflow</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
                   <div
                     style={{
                       textAlign: 'right',
@@ -234,15 +238,15 @@ export const renderStatementDetailPanel = (
                   >
                     {formatRaw(totalOutRaw)}
                   </div>
-                }
-                labelSpan={12}
-                valueSpan={12}
-              />
+                </div>
+              </Grid.Col>
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailRenderer
-                label="End Bal"
-                value={
+              <Grid.Col span={12}>
+                <div className="detail-row-prompt">End Bal</div>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <div className="detail-row-value">
                   <div
                     style={{
                       border: 'none',
@@ -254,10 +258,8 @@ export const renderStatementDetailPanel = (
                   >
                     {formatRaw(endBalRaw)}
                   </div>
-                }
-                labelSpan={12}
-                valueSpan={12}
-              />
+                </div>
+              </Grid.Col>
             </Grid.Col>
           </Grid>
         </DetailSection>
@@ -274,39 +276,42 @@ export const renderStatementDetailPanel = (
                 ].map(([label, val]) => {
                   const raw = toBig(val);
                   return (
-                    <DetailRenderer
-                      key={label}
-                      label={label}
-                      labelSpan={5}
-                      valueSpan={7}
-                      labelProps={{
-                        style: {
-                          padding: '1px 4px',
-                          fontSize: '0.85em',
-                          textOverflow: 'clip',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                        },
-                      }}
-                      valueProps={{
-                        style: {
-                          padding: '1px 4px',
-                        },
-                      }}
-                      value={
+                    <div key={label} style={{ display: 'contents' }}>
+                      <Grid.Col span={5}>
                         <div
+                          className="detail-row-prompt"
                           style={{
-                            border: 'none',
-                            padding: '0 8px 0 0',
-                            fontFamily: 'monospace',
-                            textAlign: 'right',
+                            padding: '1px 4px',
                             fontSize: '0.85em',
+                            textOverflow: 'clip',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
                           }}
                         >
-                          {formatRaw(raw)}
+                          {label}
                         </div>
-                      }
-                    />
+                      </Grid.Col>
+                      <Grid.Col span={7}>
+                        <div
+                          className="detail-row-value"
+                          style={{
+                            padding: '1px 4px',
+                          }}
+                        >
+                          <div
+                            style={{
+                              border: 'none',
+                              padding: '0 8px 0 0',
+                              fontFamily: 'monospace',
+                              textAlign: 'right',
+                              fontSize: '0.85em',
+                            }}
+                          >
+                            {formatRaw(raw)}
+                          </div>
+                        </div>
+                      </Grid.Col>
+                    </div>
                   );
                 })}
               </Grid>
@@ -323,39 +328,42 @@ export const renderStatementDetailPanel = (
                 ].map(([label, val]) => {
                   const raw = toBig(val);
                   return (
-                    <DetailRenderer
-                      key={label}
-                      label={label}
-                      labelSpan={5}
-                      valueSpan={7}
-                      labelProps={{
-                        style: {
-                          padding: '1px 4px',
-                          fontSize: '0.85em',
-                          textOverflow: 'clip',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                        },
-                      }}
-                      valueProps={{
-                        style: {
-                          padding: '1px 4px',
-                        },
-                      }}
-                      value={
+                    <div key={label} style={{ display: 'contents' }}>
+                      <Grid.Col span={5}>
                         <div
+                          className="detail-row-prompt"
                           style={{
-                            border: 'none',
-                            padding: '0 8px 0 0',
-                            fontFamily: 'monospace',
-                            textAlign: 'right',
+                            padding: '1px 4px',
                             fontSize: '0.85em',
+                            textOverflow: 'clip',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
                           }}
                         >
-                          {formatRaw(raw)}
+                          {label}
                         </div>
-                      }
-                    />
+                      </Grid.Col>
+                      <Grid.Col span={7}>
+                        <div
+                          className="detail-row-value"
+                          style={{
+                            padding: '1px 4px',
+                          }}
+                        >
+                          <div
+                            style={{
+                              border: 'none',
+                              padding: '0 8px 0 0',
+                              fontFamily: 'monospace',
+                              textAlign: 'right',
+                              fontSize: '0.85em',
+                            }}
+                          >
+                            {formatRaw(raw)}
+                          </div>
+                        </div>
+                      </Grid.Col>
+                    </div>
                   );
                 })}
               </Grid>

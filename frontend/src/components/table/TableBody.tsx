@@ -72,7 +72,6 @@ export const TableBody = <T extends Record<string, unknown>>({
                       }
                       row={row as Record<string, unknown>}
                       mode="display"
-                      tableCell
                     />
                   </td>
                 );

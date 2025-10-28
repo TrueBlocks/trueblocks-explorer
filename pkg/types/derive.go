@@ -17,12 +17,12 @@ func DeriveFacets(vc *ViewConfig) {
 			if !f.NoTable {
 				header := f.ColumnLabel
 				cols = append(cols, ColumnConfig{
-					Key:       f.Key,
-					Header:    header,
-					Width:     f.Width,
-					Sortable:  f.Sortable,
-					Formatter: f.Formatter,
-					Order:     f.Order,
+					Key:      f.Key,
+					Header:   header,
+					Width:    f.Width,
+					Sortable: f.Sortable,
+					Type:     f.Type,
+					Order:    f.Order,
 				})
 			}
 			if !f.NoDetail {
@@ -34,7 +34,7 @@ func DeriveFacets(vc *ViewConfig) {
 				panelsMap[sec] = append(panelsMap[sec], DetailRendererConfig{
 					Key:         f.Key,
 					Label:       label,
-					Formatter:   f.Formatter,
+					Type:        f.Type,
 					DetailOrder: f.DetailOrder,
 				})
 			}

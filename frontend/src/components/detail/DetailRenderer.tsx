@@ -6,7 +6,7 @@ import { Grid } from '@mantine/core';
 export interface DetailRendererProps {
   label: string;
   value: React.ReactNode;
-  type?: FormField['type'] | 'fileSize' | 'boolean' | 'custom'; // Use FormField types + our custom additions
+  type: FormField['type'];
   className?: string;
   labelProps?: React.HTMLProps<HTMLDivElement>;
   valueProps?: React.HTMLProps<HTMLDivElement>;

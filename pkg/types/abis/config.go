@@ -20,7 +20,7 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 			Store:         "abis",
 			DividerBefore: false,
 			Fields:        getAbisFields(),
-			Actions:       []string{"remove"},
+			Actions:       []string{"autoname", "remove"},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
 		},
@@ -58,8 +58,9 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		Facets:     facets,
 		FacetOrder: []string{"downloaded", "known", "functions", "events"},
 		Actions: map[string]types.ActionConfig{
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-			"remove": {Name: "remove", Label: "Remove", Icon: "Remove"},
+			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
+			"export":   {Name: "export", Label: "Export", Icon: "Export"},
+			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
 		},
 	}
 

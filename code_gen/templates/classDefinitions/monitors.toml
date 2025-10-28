@@ -13,5 +13,5 @@ disable_go = false
 [[facets]]
 name = "Monitors"
 store = "Monitors"
-actions = ["delete", "undelete", "remove-confirm", "export"]
+actions = ["autoname", "delete", "undelete", "remove", "export"]
 navigate = "exports|<latest>|address|address"

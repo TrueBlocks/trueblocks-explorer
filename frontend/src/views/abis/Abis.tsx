@@ -166,7 +166,7 @@ export const Abis = () => {
     createPayload,
     getCurrentDataFacet,
   });
-  const { handleRemove } = handlers;
+  const { handleAutoname, handleRemove } = handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
     return (
@@ -204,13 +204,14 @@ export const Abis = () => {
     getCurrentDataFacet,
     {
       showActions: true,
-      actions: ['remove'],
+      actions: ['autoname', 'remove'],
       getCanRemove: useCallback(
         (_row: unknown) => getCurrentDataFacet() === types.DataFacet.DOWNLOADED,
         [getCurrentDataFacet],
       ),
     },
     {
+      handleAutoname,
       handleRemove,
     },
     pageData,
@@ -245,6 +246,7 @@ export const Abis = () => {
         headerActions={headerActions}
         detailPanel={detailPanel}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
+        onAutoname={(rowData) => handleAutoname(String(rowData.address || ''))}
       />
     );
   }, [
@@ -258,6 +260,7 @@ export const Abis = () => {
     headerActions,
     detailPanel,
     handleRemove,
+    handleAutoname,
   ]);
 
   const tabs = useMemo(

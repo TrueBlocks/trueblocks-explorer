@@ -160,7 +160,8 @@ export const Monitors = () => {
     createPayload,
     getCurrentDataFacet,
   });
-  const { handleRemove, handleToggle, handleRowAction } = handlers;
+  const { handleAutoname, handleRemove, handleToggle, handleRowAction } =
+    handlers;
   const headerActions = useMemo(() => {
     if (!config.headerActions.length) return null;
     return (
@@ -198,13 +199,14 @@ export const Monitors = () => {
     getCurrentDataFacet,
     {
       showActions: true,
-      actions: ['delete', 'remove'],
+      actions: ['autoname', 'delete', 'remove'],
       getCanRemove: useCallback(
         (row: unknown) => Boolean((row as unknown as types.Monitor)?.deleted),
         [],
       ),
     },
     {
+      handleAutoname,
       handleRemove,
       handleToggle,
     },
@@ -241,6 +243,7 @@ export const Monitors = () => {
         detailPanel={detailPanel}
         onDelete={(rowData) => handleToggle(String(rowData.address || ''))}
         onRemove={(rowData) => handleRemove(String(rowData.address || ''))}
+        onAutoname={(rowData) => handleAutoname(String(rowData.address || ''))}
         onSubmit={handleRowAction}
       />
     );
@@ -256,6 +259,7 @@ export const Monitors = () => {
     detailPanel,
     handleToggle,
     handleRemove,
+    handleAutoname,
     handleRowAction,
   ]);
 

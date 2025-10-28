@@ -12,7 +12,7 @@ disable_go = false
 [[facets]]
 name = "Downloaded"
 store = "Abis"
-actions = ["remove","export"]
+actions = ["autoname", "remove","export"]
 
 [[facets]]
 name = "Known"

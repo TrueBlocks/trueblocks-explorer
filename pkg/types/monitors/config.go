@@ -20,7 +20,7 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 			Store:         "monitors",
 			DividerBefore: false,
 			Fields:        getMonitorsFields(),
-			Actions:       []string{"delete", "remove"},
+			Actions:       []string{"autoname", "delete", "remove"},
 			HeaderActions: []string{"export"},
 			RendererTypes: "",
 			RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
@@ -32,9 +32,10 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 		Facets:     facets,
 		FacetOrder: []string{"monitors"},
 		Actions: map[string]types.ActionConfig{
+			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
 			"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},
 			"export":   {Name: "export", Label: "Export", Icon: "Export"},
-			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove", Confirmation: true},
+			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
 			"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
 		},
 	}

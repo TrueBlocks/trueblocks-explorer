@@ -58,7 +58,11 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
 
       return (
         <Stack gap="md" p="xl">
-          <Alert variant="light" color="orange" title="Custom Renderer Missing">
+          <Alert
+            variant="light"
+            color="orange"
+            title="Rendering Component Missing"
+          >
             <Stack gap="sm">
               <Text>
                 The <strong>{facetName}</strong> facet is configured with{' '}

@@ -1,9 +1,9 @@
-import { Body, FormField } from '@components';
+import { FormField, TableBody } from '@components';
 import { MantineProvider } from '@mantine/core';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-describe('Body', () => {
+describe('TableBody', () => {
   type NameRow = {
     name: string;
     address: string;
@@ -58,7 +58,7 @@ describe('Body', () => {
       <MantineProvider>
         <table>
           <tbody>
-            <Body
+            <TableBody
               columns={columns}
               data={names}
               selectedRowIndex={1}
@@ -80,7 +80,7 @@ describe('Body', () => {
       <MantineProvider>
         <table>
           <tbody>
-            <Body
+            <TableBody
               columns={columns}
               data={names}
               selectedRowIndex={0}
@@ -99,7 +99,7 @@ describe('Body', () => {
       <MantineProvider>
         <table>
           <tbody>
-            <Body
+            <TableBody
               columns={columns}
               data={names}
               selectedRowIndex={0}

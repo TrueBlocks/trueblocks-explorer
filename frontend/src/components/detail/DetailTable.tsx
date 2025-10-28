@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import {
-  DetailField,
   DetailPanelContainer,
+  DetailRenderer,
   DetailRow,
   DetailSection,
 } from '@components';
@@ -54,7 +54,11 @@ export const DetailTable = ({
         >
           {section.rows.map((row, rowIndex) => (
             <DetailRow key={`${section.name}-${rowIndex}`}>
-              <DetailField label={row.label} value={row.value} type="custom" />
+              <DetailRenderer
+                label={row.label}
+                value={row.value}
+                type="custom"
+              />
             </DetailRow>
           ))}
         </DetailSection>

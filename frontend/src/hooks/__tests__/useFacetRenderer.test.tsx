@@ -65,7 +65,7 @@ describe('useFacetRenderer', () => {
     );
 
     // Should render a warning message
-    expect(screen.getByText('Custom Renderer Missing')).toBeInTheDocument();
+    expect(screen.getByText('Rendering Component Missing')).toBeInTheDocument();
     expect(screen.getByText('manifest')).toBeInTheDocument();
     expect(screen.getByText('renderer = "facet"')).toBeInTheDocument();
     expect(screen.getByText('renderer = ""')).toBeInTheDocument();
@@ -145,7 +145,7 @@ describe('useFacetRenderer', () => {
 
     // Should render nothing (will fall back to default FormView in the parent component)
     expect(
-      screen.queryByText('Custom Renderer Missing'),
+      screen.queryByText('Rendering Component Missing'),
     ).not.toBeInTheDocument();
   });
 });

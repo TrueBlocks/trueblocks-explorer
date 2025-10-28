@@ -3,9 +3,9 @@ import React, { Fragment } from 'react';
 import { FieldRenderer, FormField } from '@components';
 import { getNestedProperty, isNestedProperty } from '@utils';
 
-import './Body.css';
+import './TableBody.css';
 
-interface BodyProps<T extends Record<string, unknown>> {
+interface TableBodyProps<T extends Record<string, unknown>> {
   columns: FormField<T>[];
   data: T[];
   selectedRowIndex: number;
@@ -14,7 +14,7 @@ interface BodyProps<T extends Record<string, unknown>> {
   onSubmit?: (data: T) => void;
 }
 
-export const Body = <T extends Record<string, unknown>>({
+export const TableBody = <T extends Record<string, unknown>>({
   columns,
   data,
   selectedRowIndex,
@@ -22,7 +22,7 @@ export const Body = <T extends Record<string, unknown>>({
   noDataMessage = 'No data found.',
   // eslint-disable-next-line unused-imports/no-unused-vars
   onSubmit,
-}: BodyProps<T>) => {
+}: TableBodyProps<T>) => {
   if (data.length === 0) {
     return (
       <tr className="selected">
@@ -70,6 +70,7 @@ export const Body = <T extends Record<string, unknown>>({
                             : undefined,
                         } as FormField<Record<string, unknown>>
                       }
+                      row={row as Record<string, unknown>}
                       mode="display"
                       tableCell
                     />

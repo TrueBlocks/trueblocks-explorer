@@ -1,5 +1,9 @@
 import { StyledText } from '@components';
-import { DetailField, DetailPanelContainer, DetailSection } from '@components';
+import {
+  DetailPanelContainer,
+  DetailRenderer,
+  DetailSection,
+} from '@components';
 import { Grid, Group, Stack } from '@mantine/core';
 import { types } from '@models';
 import { addressToHex } from '@utils';
@@ -138,7 +142,7 @@ export const renderStatementDetailPanel = (
         <DetailSection title="Participants">
           <Grid gutter={4}>
             <Grid.Col span={6}>
-              <DetailField
+              <DetailRenderer
                 label="Accounted For"
                 value={displayAddress8(
                   statement.accountedFor || statement.holder,
@@ -146,7 +150,7 @@ export const renderStatementDetailPanel = (
                 labelSpan={12}
                 valueSpan={12}
               />
-              <DetailField
+              <DetailRenderer
                 label="Asset"
                 value={`${displayAddress8(statement.asset)}${statement.symbol ? ` (${statement.symbol})` : ''}`}
                 labelSpan={12}
@@ -154,13 +158,13 @@ export const renderStatementDetailPanel = (
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <DetailField
+              <DetailRenderer
                 label="Sender"
                 value={displayAddress8(statement.sender)}
                 labelSpan={12}
                 valueSpan={12}
               />
-              <DetailField
+              <DetailRenderer
                 label="Recipient"
                 value={displayAddress8(statement.recipient)}
                 labelSpan={12}
@@ -172,7 +176,7 @@ export const renderStatementDetailPanel = (
         <DetailSection title="Balance Summary">
           <Grid gutter={4}>
             <Grid.Col span={3}>
-              <DetailField
+              <DetailRenderer
                 label="Beg Bal"
                 value={
                   <div
@@ -192,7 +196,7 @@ export const renderStatementDetailPanel = (
               />
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailField
+              <DetailRenderer
                 label="Income"
                 value={
                   <div
@@ -214,7 +218,7 @@ export const renderStatementDetailPanel = (
               />
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailField
+              <DetailRenderer
                 label="Outflow"
                 value={
                   <div
@@ -236,7 +240,7 @@ export const renderStatementDetailPanel = (
               />
             </Grid.Col>
             <Grid.Col span={3}>
-              <DetailField
+              <DetailRenderer
                 label="End Bal"
                 value={
                   <div
@@ -270,7 +274,7 @@ export const renderStatementDetailPanel = (
                 ].map(([label, val]) => {
                   const raw = toBig(val);
                   return (
-                    <DetailField
+                    <DetailRenderer
                       key={label}
                       label={label}
                       labelSpan={5}
@@ -319,7 +323,7 @@ export const renderStatementDetailPanel = (
                 ].map(([label, val]) => {
                   const raw = toBig(val);
                   return (
-                    <DetailField
+                    <DetailRenderer
                       key={label}
                       label={label}
                       labelSpan={5}

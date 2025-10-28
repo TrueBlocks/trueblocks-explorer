@@ -58,7 +58,10 @@ export interface FormField<T = Record<string, unknown>> {
     | 'topic'
     | 'ipfsHash'
     | 'datetime'
-    | 'Function';
+    | 'Function'
+    | 'fileSize'
+    | 'boolean'
+    | 'custom';
   fields?: FormField<T>[];
   isButtonGroup?: boolean;
   buttonAlignment?: 'left' | 'center' | 'right';

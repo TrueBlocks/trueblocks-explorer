@@ -13,13 +13,13 @@ import { project, types } from '@models';
 import { getDebugClass } from '@utils';
 
 import {
-  Body,
   DetailPanel,
   Header,
   Pagination,
   PerPage,
   PlaceholderRow,
   Stats,
+  TableBody,
   processColumns,
   usePagination,
 } from '.';
@@ -400,7 +400,7 @@ export const Table = <T extends Record<string, unknown>>({
                 </tr>
               )
             ) : (
-              <Body
+              <TableBody
                 columns={displayColumns}
                 data={data}
                 selectedRowIndex={selectedRowIndex}

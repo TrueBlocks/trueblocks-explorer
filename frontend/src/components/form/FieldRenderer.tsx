@@ -6,6 +6,7 @@ import { formatWeiToEther, formatWeiToGigawei } from '@utils';
 
 export interface FieldRendererProps {
   field: FormField<Record<string, unknown>>;
+  row?: Record<string, unknown>;
   mode?: 'display' | 'edit';
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -17,7 +18,17 @@ export interface FieldRendererProps {
 
 export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
   (
-    { field, mode, onChange, onBlur, loading, keyProp, autoFocus, tableCell },
+    {
+      field,
+      row,
+      mode,
+      onChange,
+      onBlur,
+      loading,
+      keyProp,
+      autoFocus,
+      tableCell,
+    },
     ref,
   ) => {
     if (field.fields && field.fields.length > 0) {
@@ -75,15 +86,15 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       } else if (field.type === 'ether') {
         // Fields with type 'ether' are already in Ether format - format to exactly 6 decimal places
         if (!field.value) {
-          displayValue = '0.000000';
+          displayValue = '-';
         } else {
           const etherValue = String(field.value);
           const numericValue = parseFloat(etherValue);
-          if (isNaN(numericValue)) {
-            displayValue = '0.000000';
+          if (isNaN(numericValue) || numericValue === 0) {
+            displayValue = '-';
           } else {
             // Format to exactly 6 decimal places, ensuring at least one digit before decimal
-            displayValue = numericValue.toFixed(6);
+            displayValue = numericValue.toFixed(4);
           }
         }
       } else if (field.type === 'gas' && field.value) {
@@ -129,14 +140,130 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
       } else if (field.type === 'number') {
         // Handle non-empty number values
         displayValue = Number(field.value).toLocaleString();
+      } else if ((field.type as string) === 'fileSize') {
+        // Format file size in bytes to human readable format
+        const bytes = Number(field.value);
+        if (bytes === 0 || isNaN(bytes)) {
+          displayValue = '0 b';
+        } else {
+          const k = 1024;
+          const sizes = ['b', 'kb', 'mb', 'gb'];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          const sizeUnit = sizes[i] || 'gb'; // Fallback to 'gb' for very large values
+          const value = bytes / Math.pow(k, i);
+
+          // If kb > 100, show as mb with 3 decimal places
+          if (sizeUnit === 'kb' && value > 100) {
+            const mbValue = bytes / Math.pow(k, 2);
+            displayValue = mbValue.toFixed(2) + ' mb';
+          } else {
+            displayValue = parseFloat(value.toFixed(2)) + ' ' + sizeUnit;
+          }
+        }
       } else if ((field.type as string) === 'boolean') {
-        // Handle boolean values - show badge only for true, nothing for false
+        // Handle boolean values - context-aware formatting
         const isTrue = field.value === true || field.value === 'true';
-        displayValue = isTrue ? (
-          <StyledBadge variant="boolean">true</StyledBadge>
-        ) : (
-          ''
-        );
+        if (tableCell) {
+          // Tables: use badge for true, empty for false
+          displayValue = isTrue ? (
+            <StyledBadge variant="boolean">true</StyledBadge>
+          ) : (
+            ''
+          );
+        } else {
+          // Detail panels/forms: use "Yes"/"No" text
+          displayValue = isTrue ? 'Yes' : 'No';
+        }
+      } else if ((field.type as string) === 'identifier' && row) {
+        // Format blockchain identifier in three-row format
+        // const formatHash = (hash: string) => {
+        //   if (hash.length <= 12) return hash;
+        //   return `${hash.slice(0, 6)}...${hash.slice(-6)}`;
+        // };
+
+        const buildDottedNotation = () => {
+          const parts: string[] = [];
+
+          // Always start with block number
+          if (row.blockNumber) parts.push(String(row.blockNumber));
+
+          // Add transaction index if present
+          if (
+            row.transactionIndex !== undefined &&
+            row.transactionIndex !== null
+          ) {
+            parts.push(String(row.transactionIndex));
+          }
+
+          // Add log index or trace index (not both)
+          if (row.logIndex !== undefined && row.logIndex !== null) {
+            parts.push(String(row.logIndex));
+          } else if (row.traceIndex !== undefined && row.traceIndex !== null) {
+            parts.push(`[${row.traceIndex}]`);
+          }
+
+          return parts.join('.');
+        };
+
+        // Three-row format implementation
+        const hasTimestamp =
+          row.timestamp !== undefined && row.timestamp !== null;
+        // const hasTransactionIndex =
+        //   row.transactionIndex !== undefined && row.transactionIndex !== null;
+
+        if (hasTimestamp) {
+          // Multi-row format with timestamp
+          const dateStr = new Date(
+            Number(row.timestamp) * 1000,
+          ).toLocaleString();
+          const dottedNotation = buildDottedNotation();
+
+          let hashStr = '';
+          // if (hasTransactionIndex && row.transactionHash) {
+          //   hashStr = formatHash(row.transactionHash as string);
+          // } else if (!hasTransactionIndex && row.blockHash) {
+          //   hashStr = formatHash(row.blockHash as string);
+          // }
+
+          displayValue = (
+            <div style={{ lineHeight: '1.2' }}>
+              <div
+                style={{
+                  fontSize: '0.85em',
+                  fontWeight: '500',
+                }}
+              >
+                {dateStr}
+              </div>
+              {hashStr ? (
+                <div
+                  style={{
+                    fontSize: '0.8em',
+                    fontFamily: 'monospace',
+                    color: 'var(--skin-text-dimmed)',
+                  }}
+                >
+                  {hashStr}
+                </div>
+              ) : null}
+              <div
+                style={{
+                  fontSize: '0.9em',
+                  color: 'var(--skin-text-secondary)',
+                }}
+              >
+                {dottedNotation}
+              </div>
+            </div>
+          );
+        } else {
+          // Single row fallback for entries without timestamp
+          // if (row.hash) {
+          //   displayValue = formatHash(row.hash as string);
+          // } else {
+          displayValue = buildDottedNotation() || 'N/A';
+          // }
+        }
       } else if (
         (field.type as string) === 'float64' &&
         field.value !== undefined &&

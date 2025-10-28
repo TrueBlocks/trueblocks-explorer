@@ -6,6 +6,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
@@ -17,13 +18,21 @@ func (c *MonitorsCollection) Crud(
 	op crud.Operation,
 	item interface{},
 ) error {
-	var monitor = &Monitor{Address: base.HexToAddress(payload.ActiveAddress)}
+	var monitor = &Monitor{Address: base.HexToAddress(payload.TargetAddress)}
 	if cast, ok := item.(*Monitor); ok && cast != nil {
 		monitor = cast
 	}
 
 	var err error
 	switch op {
+	case crud.Autoname:
+		// Delegate autoname operation to Names collection
+		if err = names.AutonameAddress(monitor.Address.Hex()); err != nil {
+			msgs.EmitError("Monitors.Crud.Autoname", err)
+			return err
+		}
+		msgs.EmitStatus(fmt.Sprintf("completed autoname operation for address: %s", monitor.Address))
+		return nil
 	case crud.Remove:
 		opts := sdk.MonitorsOptions{
 			Addrs:   []string{monitor.Address.Hex()},

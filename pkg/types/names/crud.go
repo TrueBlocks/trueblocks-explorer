@@ -14,6 +14,55 @@ import (
 
 var namesLock atomic.Int32
 
+// AutonameAddress performs autoname operation for a given address using the SDK.
+// This function can be called from other collections for cross-collection autoname support.
+func AutonameAddress(address string) error {
+	// Acquire lock to prevent concurrent autoname operations
+	if !namesLock.CompareAndSwap(0, 1) {
+		return fmt.Errorf("autoname operation already in progress")
+	}
+	defer namesLock.Store(0)
+
+	// Create name object for the address
+	name := &Name{
+		Address:  base.HexToAddress(address),
+		IsCustom: true,
+	}
+
+	// Prepare SDK options and CRUD data
+	cd := crud.CrudFromName(*name)
+	opts := sdk.NamesOptions{
+		Globals: sdk.Globals{
+			Chain: "mainnet",
+		},
+	}
+
+	// Execute autoname operation via SDK
+	if _, _, err := opts.ModifyName(crud.Autoname, cd); err != nil {
+		msgs.EmitError("AutonameAddress", err)
+		return err
+	}
+
+	// Reset Names collection cache to ensure fresh data is loaded
+	// Create a minimal payload to get the Names collection instance
+	payload := &types.Payload{
+		Collection: "names",
+		DataFacet:  NamesCustom, // Use custom facet as it's most commonly used for autoname
+	}
+	collection := GetNamesCollection(payload)
+
+	// Reset all facets to ensure consistency across all Names views
+	collection.Reset(NamesAll)
+	collection.Reset(NamesCustom)
+	collection.Reset(NamesRegular)
+	// Note: Prefund and Baddress typically don't change with autoname, but reset for consistency
+	collection.Reset(NamesPrefund)
+	collection.Reset(NamesBaddress)
+
+	msgs.EmitStatus(fmt.Sprintf("completed autoname operation for address: %s", address))
+	return nil
+}
+
 func (c *NamesCollection) Crud(
 	payload *types.Payload,
 	op crud.Operation,
@@ -21,7 +70,7 @@ func (c *NamesCollection) Crud(
 ) error {
 	dataFacet := payload.DataFacet
 
-	var name = &Name{Address: base.HexToAddress(payload.ActiveAddress)}
+	var name = &Name{Address: base.HexToAddress(payload.TargetAddress)}
 	if item != nil {
 		if n, ok := item.(*Name); ok {
 			name = n
@@ -30,6 +79,16 @@ func (c *NamesCollection) Crud(
 		}
 	}
 
+	// Special handling for Autoname - delegate to public function
+	if op == crud.Autoname {
+		if err := AutonameAddress(name.Address.Hex()); err != nil {
+			return err
+		}
+		c.Reset(dataFacet)
+		return nil
+	}
+
+	// For all other operations, use the standard lock/SDK pattern
 	if !namesLock.CompareAndSwap(0, 1) {
 		return nil
 	}
@@ -47,13 +106,6 @@ func (c *NamesCollection) Crud(
 	if _, _, err := opts.ModifyName(op, cd); err != nil {
 		msgs.EmitError("Crud", err)
 		return err
-	}
-
-	// Special handling for Autoname - it can modify many names unpredictably, so we need to reload
-	if op == crud.Autoname {
-		c.Reset(dataFacet)
-		msgs.EmitStatus(fmt.Sprintf("completed %s operation for name: %s", op, name.Address))
-		return nil
 	}
 
 	// After successful SDK call, update the appropriate facet's store and sync

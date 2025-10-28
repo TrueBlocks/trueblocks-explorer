@@ -8,7 +8,7 @@ import {
 } from '@components';
 import { Form, FormField } from '@components';
 import { useFiltering, useViewContext } from '@contexts';
-import { usePlaceholderRows, usePreferences } from '@hooks';
+import { usePlaceholderRows, usePreferences, useViewConfig } from '@hooks';
 import { project, types } from '@models';
 import { getDebugClass } from '@utils';
 
@@ -67,13 +67,16 @@ export const Table = <T extends Record<string, unknown>>({
     state,
   });
 
-  const processedColumns = processColumns(columns);
-
-  // When detailCollapsed is false, the detail panel is showing, so show fewer columns
-  const displayColumns = detailCollapsed
-    ? processedColumns
-    : processedColumns.slice(0, 6);
-
+  // Get viewConfig to access rowActions count
+  const { config: viewConfig } = useViewConfig({
+    viewName: viewStateKey.viewName,
+  });
+  const currentDataFacet = viewStateKey.facetName;
+  const facetKey = currentDataFacet as unknown as string;
+  const facetCfg = viewConfig?.facets?.[facetKey];
+  const rowActionIds: string[] = facetCfg?.actions || [];
+  const actionCount = rowActionIds.length;
+  const displayColumns = processColumns(columns, detailCollapsed, actionCount);
   const { pagination, goToPage } = usePagination(viewStateKey);
   const { filter, setFiltering } = useFiltering(viewStateKey);
   const { getPendingRowAction, setPendingRowAction } = useViewContext();
@@ -133,7 +136,10 @@ export const Table = <T extends Record<string, unknown>>({
         const rowData = data[selectedRowIndex];
         if (rowData) {
           const isDeleted = Boolean(rowData.deleted);
-          if (!isDeleted && onDelete) {
+          const hasOnlyRemove = !onDelete && onRemove;
+          if (hasOnlyRemove) {
+            onRemove(rowData);
+          } else if (!isDeleted && onDelete) {
             onDelete(rowData);
           } else if (isDeleted && onRemove) {
             onRemove(rowData);
@@ -258,16 +264,13 @@ export const Table = <T extends Record<string, unknown>>({
 
     if (pendingRowAction) {
       // Handle pending navigation - get rowIndex from target configuration
-      const targetRowIndex = pendingRowAction.rowAction?.target?.rowIndex || 0;
-      const targetPage = Math.floor(targetRowIndex / pageSize);
-      const targetRowInPage = targetRowIndex % pageSize;
+      // NOTE: rowIndex is relative to the target page, not a global index
+      const targetRowInPage = pendingRowAction.rowAction?.target?.rowIndex || 0;
 
-      if (currentPage !== targetPage) {
-        // Navigate to the target page first
-        goToPage(targetPage);
-        // Row selection will happen when new page data loads
-      } else {
-        // We're on the right page, select the row if it's valid
+      // Only process if data has loaded (data.length > 0)
+      if (data.length > 0) {
+        // We should already be on the correct page (navigation happened first)
+        // Just select the row if it's valid
         if (targetRowInPage >= 0 && targetRowInPage < data.length) {
           setSelectedRowIndex(targetRowInPage);
           // Clear pending navigation after successful selection
@@ -277,6 +280,7 @@ export const Table = <T extends Record<string, unknown>>({
           setPendingRowAction(viewStateKey, null);
         }
       }
+      // If data not loaded yet, keep the pending action and try again next render
     } else {
       // Normal reset behavior when no pending navigation
       if (selectedRowIndex === -1 || selectedRowIndex >= data.length) {

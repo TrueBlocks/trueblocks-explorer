@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ExecuteRowAction, ExportData, IsDialogSilenced } from '@app';
+import { useViewContext } from '@contexts';
 import { useWalletGatedAction } from '@hooks';
 import { crud, project, sdk, types } from '@models';
-import { Log, LogError, addressToHex, useErrorHandler } from '@utils';
+import {
+  Log,
+  LogError,
+  addressToHex,
+  getDisplayAddress,
+  useErrorHandler,
+} from '@utils';
 // TODO: BOGUS add an @contracts alias for this import
 import { TransactionData, buildTransaction } from '@utils';
 
@@ -148,8 +155,10 @@ const ACTION_DEFINITIONS: Record<string, ActionDefinition> = {
 export const useActions = <TPageData extends { totalItems: number }, TItem>(
   config: CollectionActionsConfig<TPageData, TItem>,
 ) => {
+  const { setPendingRowAction } = useViewContext();
   const {
     collection,
+    viewStateKey,
     pagination,
     goToPage,
     sort,
@@ -639,18 +648,41 @@ export const useActions = <TPageData extends { totalItems: number }, TItem>(
               filter,
             );
 
+            // If we deleted the only row on the page, navigate to end of table
             if (isOnlyRowOnPage && result.totalItems > 0) {
               const totalPages = Math.ceil(
                 result.totalItems / pagination.pageSize,
               );
+
               if (pagination.currentPage >= totalPages) {
-                goToPage(Math.max(0, totalPages - 1));
-                // Continue to set data - don't return early!
+                const targetPage = Math.max(0, totalPages - 1);
+                const lastRowIndex =
+                  (result.totalItems - 1) % pagination.pageSize;
+
+                goToPage(targetPage);
+
+                // Set pending row action to select the last row after page navigation
+                // NOTE: rowIndex should be the row within the page, not global
+                const pendingAction = types.RowActionPayload.createFrom({
+                  collection,
+                  dataFacet: getCurrentDataFacet(),
+                  rowAction: types.RowActionConfig.createFrom({
+                    type: 'navigate',
+                    target: types.NavigationTarget.createFrom({
+                      view: viewStateKey.viewName,
+                      facet: viewStateKey.facetName,
+                      rowIndex: lastRowIndex, // This is row index within the target page
+                    }),
+                  }),
+                });
+
+                setPendingRowAction(viewStateKey, pendingAction);
               }
             }
 
             setPageData(result);
             setTotalItems(result.totalItems || 0);
+
             if (debug) {
               emitSuccess('remove', address);
             }
@@ -688,18 +720,27 @@ export const useActions = <TPageData extends { totalItems: number }, TItem>(
       clearError,
       handleError,
       emitSuccess,
+      getCurrentDataFacet,
+      setPendingRowAction,
+      viewStateKey,
     ],
   );
   const handleRemove = useCallback(
     (address: string) => {
+      let message = 'Permanently remove this item?';
+      if (collection === 'abis') {
+        const displayAddress = getDisplayAddress(address);
+        message = `Remove downloaded ABI for address ${displayAddress}?`;
+      }
+
       askConfirmOrExecute({
         title: 'Confirm Remove',
-        message: 'Permanently remove this item?',
+        message,
         dialogKey: 'confirm.remove',
         onConfirm: () => performRemove(address),
       });
     },
-    [askConfirmOrExecute, performRemove],
+    [askConfirmOrExecute, performRemove, collection],
   );
 
   const performAutoname = useCallback(

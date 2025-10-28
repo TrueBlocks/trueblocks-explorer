@@ -66,7 +66,7 @@ export const Action = ({
       onClick={handleClick}
       disabled={disabled}
       title={title}
-      c="text"
+      c="gray.8"
       variant="transparent"
       {...mantineProps}
     >

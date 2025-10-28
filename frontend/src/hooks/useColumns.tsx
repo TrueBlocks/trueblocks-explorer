@@ -158,10 +158,27 @@ export const useColumns = (
       },
     };
 
-    // Replace actions column with our override
-    return baseColumns.map((col) =>
-      col.key === 'actions' ? { ...col, ...actionsOverride } : col,
-    );
+    const result = baseColumns.map((col) => {
+      if (col.key === 'actions') {
+        return {
+          ...col,
+          ...actionsOverride,
+          header: '',
+          label: '',
+          width: `${actionConfig.rowActions.length * 30}px`,
+          style: {
+            ...col.style,
+            width: `${actionConfig.rowActions.length * 30}px`,
+            maxWidth: `${actionConfig.rowActions.length * 30}px`,
+            minWidth: `${actionConfig.rowActions.length * 30}px`,
+            flex: 'none',
+          },
+        };
+      }
+      return col;
+    });
+
+    return result;
   }, [baseColumns, config, handlers, pageData, actionConfig]);
 };
 

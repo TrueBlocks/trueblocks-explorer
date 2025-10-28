@@ -32,6 +32,49 @@ When I say "We want to go into step-by-step" mode, switch to these rules:
 - Wait for your approval before making any code changes
 - One step at a time with your review
 
+🔒 **PERSISTENCE RULE (CRITICAL):**
+- **ONCE IN STEP-BY-STEP MODE, STAY THERE INDEFINITELY**
+- Do NOT fall back to normal mode unless explicitly told "exit step-by-step mode"
+- If unsure about mode, ask "Should I continue in step-by-step mode?"
+- Step-by-step mode persists across multiple requests and conversations
+- Every action must be approved individually, no exceptions
+
+### Design Mode (Discussion + Analysis)
+When I say "Let's go into design mode" or similar, switch to these rules:
+
+📋 **Lightweight Discussion:**
+- NO full codebase scans or comprehensive exploration upfront
+- NO telling user about current code state unless specifically asked
+- Discussion-focused mode for architectural analysis and planning
+
+🔍 **Just-in-Time File Reading:**
+- Before discussing ANY specific file, component, or implementation detail, ALWAYS read that file first
+- Check file contents immediately before referencing to ensure accuracy
+- Never assume file contents based on previous knowledge - files change between requests
+- Only read files when discussion requires specific implementation details
+
+💭 **Discussion + Analysis:**
+- Architectural analysis and conceptual discussion
+- NO code modifications, builds, tests, or implementations
+- Focus on design decisions, trade-offs, and approaches
+- Reference actual code patterns only when files have been read
+
+🎯 **Focus Areas:**
+- Architecture decisions and trade-offs
+- Implementation approaches and design patterns
+- Problem analysis and technical feasibility
+- Requirements clarification and solution evaluation
+
+📋 **Output Format:**
+- Bullet points and structured analysis
+- Pros/cons of different approaches
+- Clear recommendations with reasoning
+- Questions to clarify requirements
+
+🔒 **NO MODIFICATION RULE:**
+- Must explicitly exit design mode before making any code changes
+- If asked to implement something in design mode, respond: "Still in design mode - should I exit design mode and implement this?"
+
 ### VS Code Problems Server Reset
 When VS Code shows stale errors for deleted files or incorrect TypeScript diagnostics:
 ```bash
@@ -89,6 +132,18 @@ Cmd+Shift+P → "Developer: Reset Workspace State" → "Developer: Reload Window
 - **Sequential over parallel**: Avoid Promise.all() with state-modifying operations
 - **Common scenarios**: Multiple API calls updating same backend state, parallel component store calls
 - **When in doubt**: Use await chains instead of parallel operations
+
+### React Timing Issues Protocol (CRITICAL - 50% of bugs are timing-related)
+- **ASSUMPTION**: Any unexpected UI behavior is likely a React timing/async issue
+- **IMMEDIATE RESPONSE**: Add comprehensive logging using `Log` from `@utils` throughout the entire data flow
+- **Required logging points**: Action start → State change → API call → Data received → Component re-render → Final result
+- **Timing scenarios to suspect**:
+  - Data appears/disappears unexpectedly (optimistic updates vs. real data)
+  - Navigation happens but selection is wrong (page change vs. data loading)
+  - Actions work sometimes but not others (race conditions)
+  - State seems "one step behind" (useEffect dependency issues)
+- **Debug pattern**: Log every async boundary with timestamps and data snapshots
+- **Never assume component state is synchronous** - always consider useEffect timing and data loading phases
 
 ## 4. Critical Technical Details
 

@@ -140,6 +140,7 @@
                             "storeName": "Abis",
                             "storeSource": "sdk",
                             "actions": [
+                                "autoname",
                                 "remove",
                                 "export"
                             ],
@@ -2594,6 +2595,7 @@
                             "storeName": "Monitors",
                             "storeSource": "sdk",
                             "actions": [
+                                "autoname",
                                 "delete",
                                 "undelete",
                                 "remove",
@@ -4331,6 +4333,7 @@
                     "storeName": "Monitors",
                     "storeSource": "sdk",
                     "actions": [
+                        "autoname",
                         "delete",
                         "undelete",
                         "remove",
@@ -6112,6 +6115,7 @@
                     "storeName": "Abis",
                     "storeSource": "sdk",
                     "actions": [
+                        "autoname",
                         "remove",
                         "export"
                     ],

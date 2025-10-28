@@ -4,10 +4,69 @@ import { project, types } from '@models';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// Mock ViewConfig for Table tests
+const mockFacetConfig = new types.FacetConfig({
+  name: 'All',
+  store: 'test-store',
+  dividerBefore: false,
+  disabled: false,
+  fields: [],
+  columns: [
+    {
+      key: 'id',
+      header: 'ID',
+      width: 80,
+      sortable: true,
+      formatter: '',
+      order: 0,
+    },
+    {
+      key: 'name',
+      header: 'Name',
+      width: 150,
+      sortable: true,
+      formatter: '',
+      order: 1,
+    },
+    {
+      key: 'description',
+      header: 'Description',
+      width: 200,
+      sortable: false,
+      formatter: '',
+      order: 2,
+    },
+    {
+      key: 'status',
+      header: 'Status',
+      width: 100,
+      sortable: false,
+      formatter: '',
+      order: 3,
+    },
+  ],
+  detailPanels: [],
+  actions: [],
+  headerActions: [],
+  rendererTypes: '',
+});
+
+const mockViewConfig = new types.ViewConfig({
+  viewName: 'test',
+  disabled: false,
+  facets: {
+    [types.DataFacet.ALL]: mockFacetConfig,
+  },
+  actions: {},
+  facetOrder: [types.DataFacet.ALL],
+});
+
 vi.mock('@hooks', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@hooks')>();
   return {
     ...actual,
+    useViewConfig: () => mockViewConfig,
+    getViewConfig: () => mockViewConfig,
     usePreferences: () => ({
       menuCollapsed: false,
       helpCollapsed: false,

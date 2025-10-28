@@ -19,6 +19,8 @@ test:
 generate:
 	@cd ../dev-tools/goMaker && yarn deploy && cd -
 	@goMaker
+#	@echo "Generating wails models..."
+#	@wails generate module 2>&1 >/dev/null
 
 clean:
 	@rm -fR node_modules

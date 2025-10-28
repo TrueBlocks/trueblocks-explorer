@@ -28,6 +28,14 @@ func (a *App) GetAbisPage(
 	collection := abis.GetAbisCollection(payload)
 	ret, err := getCollectionPage[*abis.AbisPage](collection, payload, first, pageSize, sort, filter)
 	// EXISTING_CODE
+	if err == nil {
+		for i := range ret.Abis {
+			address := ret.Abis[i].Address.Hex()
+			if namePtr, ok := a.NameFromAddress(address); ok && namePtr != nil {
+				ret.Abis[i].Name = namePtr.Name
+			}
+		}
+	}
 	// EXISTING_CODE
 	return ret, err
 }

@@ -1209,11 +1209,16 @@ export namespace status {
 
 export namespace types {
 	
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
+	}
 	export enum DataFacet {
-	    DOWNLOADED = "downloaded",
-	    KNOWN = "known",
-	    FUNCTIONS = "functions",
-	    EVENTS = "events",
 	    STATS = "stats",
 	    INDEX = "index",
 	    BLOOMS = "blooms",
@@ -1225,16 +1230,19 @@ export namespace types {
 	    ALCHEMY = "alchemy",
 	    DASHBOARD = "dashboard",
 	    EXECUTE = "execute",
+	    EVENTS = "events",
 	    GENERATOR = "generator",
 	    SERIES = "series",
 	    DATABASES = "databases",
 	    GALLERY = "gallery",
-	    MONITORS = "monitors",
 	    ALL = "all",
 	    CUSTOM = "custom",
 	    PREFUND = "prefund",
 	    REGULAR = "regular",
 	    BADDRESS = "baddress",
+	    DOWNLOADED = "downloaded",
+	    KNOWN = "known",
+	    FUNCTIONS = "functions",
 	    STATEMENTS = "statements",
 	    BALANCES = "balances",
 	    TRANSFERS = "transfers",
@@ -1248,6 +1256,7 @@ export namespace types {
 	    LOGS = "logs",
 	    TRACES = "traces",
 	    RECEIPTS = "receipts",
+	    MONITORS = "monitors",
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
@@ -1256,15 +1265,6 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
-	}
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;

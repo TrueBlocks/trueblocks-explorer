@@ -318,7 +318,7 @@ func GetChunksCollection(payload *types.Payload) *ChunksCollection {
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
 	// EXISTING_CODE
-	return payload.ActiveChain
+	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }
 
 // EXISTING_CODE

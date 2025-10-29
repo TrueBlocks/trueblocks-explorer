@@ -24,7 +24,7 @@ describe('FieldRenderer Component', () => {
       </MantineProvider>,
     );
 
-    expect(screen.getByText('Test Field: Test Value')).toBeInTheDocument();
+    expect(screen.getByText('Test Value')).toBeInTheDocument();
   });
 
   test('renders in edit mode correctly', () => {

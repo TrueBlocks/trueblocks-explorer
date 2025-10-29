@@ -3,7 +3,6 @@ export * from './StateDisplay';
 export * from './addresses';
 export * from './clipboard';
 export * from './debugLayout';
-export * from './ether';
 export * from './eventUtils';
 export * from './formatting';
 export * from './log';

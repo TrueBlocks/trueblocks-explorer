@@ -8,6 +8,8 @@ import { useHotkeys } from '@mantine/hooks';
 import { msgs, types } from '@models';
 import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
 
+import { PanelDataWarning } from './PanelDataWarning';
+
 // Helper function to get bucket data from the series map
 const getBucketData = (
   buckets: types.Buckets,
@@ -170,6 +172,11 @@ export const BarchartPanel = ({
   }
 
   if (!statsData || !bucketsData?.length) {
+    // If we've loaded data before but now have no buckets, this may indicate a configuration issue
+    if (hasEverLoaded && (!bucketsData?.length || !statsData)) {
+      return <PanelDataWarning facet={config.dataFacet} />;
+    }
+
     return (
       <Box p="md" ta="center">
         <Text c="dimmed" mb="md">

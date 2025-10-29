@@ -160,7 +160,7 @@ func (c *AbisCollection) getStoreName(payload *types.Payload, facet types.DataFa
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*AbisCollection)
+	collections   = make(map[string]*AbisCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -169,7 +169,7 @@ func GetAbisCollection(payload *types.Payload) *AbisCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

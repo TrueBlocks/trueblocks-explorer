@@ -80,7 +80,7 @@ func (c *{{$class}}Collection) getStoreName(payload *types.Payload, facet types.
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*{{.Class}}Collection)
+	collections   = make(map[string]*{{.Class}}Collection)
 	collectionsMu sync.Mutex
 )
 
@@ -93,7 +93,7 @@ func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
 		pl.ActiveAddress = ""
 		pl.ActiveChain = ""
 	{{end}}
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

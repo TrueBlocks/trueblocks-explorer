@@ -118,7 +118,7 @@ func (c *ComparitoorCollection) getStoreName(payload *types.Payload, facet types
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*ComparitoorCollection)
+	collections   = make(map[string]*ComparitoorCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -127,7 +127,7 @@ func GetComparitoorCollection(payload *types.Payload) *ComparitoorCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

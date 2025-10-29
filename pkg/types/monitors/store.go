@@ -96,7 +96,7 @@ func (c *MonitorsCollection) getStoreName(payload *types.Payload, facet types.Da
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*MonitorsCollection)
+	collections   = make(map[string]*MonitorsCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -105,7 +105,7 @@ func GetMonitorsCollection(payload *types.Payload) *MonitorsCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

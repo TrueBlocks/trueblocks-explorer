@@ -762,7 +762,7 @@ func (c *ExportsCollection) getStoreName(payload *types.Payload, facet types.Dat
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*ExportsCollection)
+	collections   = make(map[string]*ExportsCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -771,7 +771,7 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

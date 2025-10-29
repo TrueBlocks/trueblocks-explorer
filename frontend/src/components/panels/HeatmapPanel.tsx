@@ -24,6 +24,8 @@ import {
   formatNumericValue,
 } from '@utils';
 
+import { PanelDataWarning } from './PanelDataWarning';
+
 // Helper function to get bucket data from the series map
 const getBucketData = (
   buckets: types.Buckets,
@@ -205,6 +207,11 @@ export const HeatmapPanel = ({
   }
 
   if (!bucketsData?.length || !statsData || !buckets) {
+    // If we've loaded data before but now have no buckets, this may indicate a configuration issue
+    if (hasEverLoaded && (!bucketsData?.length || !statsData)) {
+      return <PanelDataWarning facet={config.dataFacet} />;
+    }
+
     return (
       <Box p="md" ta="center">
         <Text c="dimmed" mb="md">

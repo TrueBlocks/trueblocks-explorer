@@ -296,7 +296,7 @@ func (c *ChunksCollection) getStoreName(payload *types.Payload, facet types.Data
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*ChunksCollection)
+	collections   = make(map[string]*ChunksCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -305,7 +305,7 @@ func GetChunksCollection(payload *types.Payload) *ChunksCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}
@@ -318,7 +318,7 @@ func GetChunksCollection(payload *types.Payload) *ChunksCollection {
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
 	// EXISTING_CODE
-	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
+	return payload.ActiveChain
 }
 
 // EXISTING_CODE

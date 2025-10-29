@@ -108,7 +108,7 @@ func (c *NamesCollection) getStoreName(payload *types.Payload, facet types.DataF
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*NamesCollection)
+	collections   = make(map[string]*NamesCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -120,7 +120,7 @@ func GetNamesCollection(payload *types.Payload) *NamesCollection {
 	pl.ActiveAddress = ""
 	pl.ActiveChain = ""
 
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

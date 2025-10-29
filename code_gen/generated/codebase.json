@@ -2165,7 +2165,6 @@
                         {
                             "name": "calcs.totalInEth",
                             "type": "int256",
-                            "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 7,
                             "description": "total inflow in ETH",
@@ -2174,7 +2173,6 @@
                         {
                             "name": "calcs.totalOutEth",
                             "type": "int256",
-                            "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 8,
                             "description": "total outflow in ETH",
@@ -2183,6 +2181,7 @@
                         {
                             "name": "calcs.amountNetEth",
                             "type": "int256",
+                            "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 9,
                             "description": "net amount in ETH",
@@ -3609,7 +3608,6 @@
                 {
                     "name": "calcs.totalInEth",
                     "type": "int256",
-                    "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 7,
                     "description": "total inflow in ETH",
@@ -3618,7 +3616,6 @@
                 {
                     "name": "calcs.totalOutEth",
                     "type": "int256",
-                    "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 8,
                     "description": "total outflow in ETH",
@@ -3627,6 +3624,7 @@
                 {
                     "name": "calcs.amountNetEth",
                     "type": "int256",
+                    "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 9,
                     "description": "net amount in ETH",

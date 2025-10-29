@@ -290,7 +290,7 @@ func (c *DressesCollection) getStoreName(payload *types.Payload, facet types.Dat
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*DressesCollection)
+	collections   = make(map[string]*DressesCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -299,7 +299,7 @@ func GetDressesCollection(payload *types.Payload) *DressesCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

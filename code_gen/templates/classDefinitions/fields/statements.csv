@@ -5,9 +5,9 @@ symbol                   , string   ,           , noTable         , Asset       
 decimals                 , value    ,           , noTable         , Asset         ,         ,        4, the value of `decimals` from an ERC20 contract or&#44; if ETH or WEI&#44; then 18
 priceSource              , string   ,           , noTable         , Asset         ,         ,        5, the on-chain source from which the spot price was taken
 calcs.begBalEth          , int256   ,           ,                 , Reconciliation,         ,        6, the beginning balance in ETH
-calcs.totalInEth         , int256   ,           , noTable         , Reconciliation,         ,        7, total inflow in ETH
-calcs.totalOutEth        , int256   ,           , noTable         , Reconciliation,         ,        8, total outflow in ETH
-calcs.amountNetEth       , int256   ,           ,                 , Reconciliation,         ,        9, net amount in ETH
+calcs.totalInEth         , int256   ,           ,                 , Reconciliation,         ,        7, total inflow in ETH
+calcs.totalOutEth        , int256   ,           ,                 , Reconciliation,         ,        8, total outflow in ETH
+calcs.amountNetEth       , int256   ,           , noTable         , Reconciliation,         ,        9, net amount in ETH
 calcs.endBalEth          , int256   ,           ,                 , Reconciliation,         ,       10, ending balance in ETH
 spotPrice                , float    ,           , noTable         , Asset         ,         ,       11, the on-chain price in USD at the time of the transaction
 calcs.endBalCalcEth      , int256   ,           , noTable         , Reconciliation,         ,       12, calculated ending balance in ETH

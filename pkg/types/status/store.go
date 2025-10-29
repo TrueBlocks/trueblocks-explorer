@@ -211,7 +211,7 @@ func (c *StatusCollection) getStoreName(payload *types.Payload, facet types.Data
 }
 
 var (
-	collections   = make(map[store.CollectionKey]*StatusCollection)
+	collections   = make(map[string]*StatusCollection)
 	collectionsMu sync.Mutex
 )
 
@@ -220,7 +220,7 @@ func GetStatusCollection(payload *types.Payload) *StatusCollection {
 	defer collectionsMu.Unlock()
 
 	pl := *payload
-	key := store.GetCollectionKey(&pl)
+	key := getStoreKey(&pl)
 	if collection, exists := collections[key]; exists {
 		return collection
 	}

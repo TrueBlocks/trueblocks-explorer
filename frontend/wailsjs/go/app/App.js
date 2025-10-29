@@ -14,12 +14,8 @@ export function AddAddressesToProject(arg1) {
   return window['go']['app']['App']['AddAddressesToProject'](arg1);
 }
 
-export function CancelAllFetches() {
-  return window['go']['app']['App']['CancelAllFetches']();
-}
-
-export function CancelFetch(arg1) {
-  return window['go']['app']['App']['CancelFetch'](arg1);
+export function CancelFetches() {
+  return window['go']['app']['App']['CancelFetches']();
 }
 
 export function ChangeImageStorageLocation(arg1) {
@@ -484,10 +480,6 @@ export function ReloadStatus(arg1) {
 
 export function RemoveAddressFromProject(arg1) {
   return window['go']['app']['App']['RemoveAddressFromProject'](arg1);
-}
-
-export function ResetStore(arg1) {
-  return window['go']['app']['App']['ResetStore'](arg1);
 }
 
 export function RestoreProjectContext(arg1) {

@@ -170,14 +170,6 @@ func (c *StatusCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *StatusCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		StatusStatus,
-		StatusCaches,
-		StatusChains,
-	}
-}
-
 func (c *StatusCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	c.summaryMutex.Lock()

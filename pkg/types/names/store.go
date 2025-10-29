@@ -75,7 +75,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -87,7 +87,7 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 	return theStore
 }
 
-func (c *NamesCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *NamesCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case NamesAll:

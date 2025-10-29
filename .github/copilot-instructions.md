@@ -9,9 +9,11 @@
 
 ### Critical Workflow
 - **DO NOT RUN YARN COMMANDS** - Never run `yarn lint`, `yarn test`, `yarn start`, or any other yarn commands unless explicitly requested by the user
-- **Read file contents first** before editing - files change between requests
+- **EXCEPTION**: Validation commands (`yarn lint && yarn test`) are acceptable after major architectural changes for verification (at the end of the entire plan)
+- **Read file contents first** before editing - files change between requests, never assume previous knowledge is current
 - **After backend changes**: Run `wails generate module` to update TypeScript bindings
 - **File deletion**: Use `rm -f` for files, `rm -R` for folders, ask confirmation, then explicitly remove from context memory
+- **Context updates**: When user renames/refactors methods or structures, immediately update understanding and mental model
 
 ### Step-by-Step Mode (Alternative Rules of Engagement)
 When I say "We want to go into step-by-step" mode, switch to these rules:
@@ -35,7 +37,6 @@ When I say "We want to go into step-by-step" mode, switch to these rules:
 🔒 **PERSISTENCE RULE (CRITICAL):**
 - **ONCE IN STEP-BY-STEP MODE, STAY THERE INDEFINITELY**
 - Do NOT fall back to normal mode unless explicitly told "exit step-by-step mode"
-- If unsure about mode, ask "Should I continue in step-by-step mode?"
 - Step-by-step mode persists across multiple requests and conversations
 - Every action must be approved individually, no exceptions
 
@@ -72,8 +73,18 @@ When I say "Let's go into design mode" or similar, switch to these rules:
 - Questions to clarify requirements
 
 🔒 **NO MODIFICATION RULE:**
+- **ONCE IN DESIGN MODE, STAY THERE INDEFINITELY**
 - Must explicitly exit design mode before making any code changes
+- Do NOT fall back to normal mode unless explicitly told "exit design mode"
+- Design mode persists across multiple requests and conversations
 - If asked to implement something in design mode, respond: "Still in design mode - should I exit design mode and implement this?"
+
+### Mode Switching Rules (CRITICAL)
+- **MUTUALLY EXCLUSIVE**: You can NEVER be in both design mode and step-by-step mode simultaneously
+- **Only two ways to exit each mode:**
+  1. Explicit command: "exit [mode-name] mode"
+  2. Command to enter the other mode: "go into [other-mode] mode"
+- **Mode persistence**: Once in a mode, stay there across all requests and conversations until explicitly changed
 
 ### VS Code Problems Server Reset
 When VS Code shows stale errors for deleted files or incorrect TypeScript diagnostics:
@@ -122,16 +133,33 @@ Cmd+Shift+P → "Developer: Reset Workspace State" → "Developer: Reload Window
 - **No `any` in TypeScript** - always use specific types
 - **No comments in production code** - only for TODO items
 
+### Discovery-Driven Development
+- **Implementation may reveal better solutions**: Be open to pivoting when simpler approaches emerge
+- **Redundancy elimination**: When multiple approaches exist, prefer removing redundant functionality over maintaining both
+- **Document architectural decisions**: When discovering superior patterns, explain why the change improves the system
+- **Progressive understanding**: Build context incrementally through targeted investigation rather than broad scanning
+
 ### Collaboration Protocol
 - **Ask early, ask often**: When complexity starts creeping in, stop and discuss
 - **Own mistakes**: Don't blame "someone" - broken code is my responsibility
 - **Use existing utilities first** - check `@utils` before creating new ones
 - **Stop conditions**: Test failures, lint errors, unclear requirements - stop and report
 
-### Race Condition Prevention
-- **Sequential over parallel**: Avoid Promise.all() with state-modifying operations
-- **Common scenarios**: Multiple API calls updating same backend state, parallel component store calls
-- **When in doubt**: Use await chains instead of parallel operations
+### Systematic Removal Protocol
+When removing functionality from the codebase, follow dependency order to prevent broken references:
+1. **Interfaces first**: Remove method signatures from interfaces/contracts
+2. **Templates**: Update code generation templates to stop producing the functionality
+3. **Regenerate**: Run code generation to update all generated files
+4. **App layer**: Remove from main application API methods
+5. **Frontend**: Update React components and hooks
+6. **Bindings**: Regenerate Wails TypeScript bindings
+7. **Tests**: Remove or update test cases
+8. **Validation**: Run full test suite to confirm clean removal
+
+### Validation Protocol
+- **After major architectural changes**: Always run `yarn lint && yarn test` for comprehensive validation
+- **Green build requirement**: All changes must pass linting and full test suite before completion
+- **Test-driven confidence**: Use test results to confirm architectural changes work as intended
 
 ### React Timing Issues Protocol (CRITICAL - 50% of bugs are timing-related)
 - **ASSUMPTION**: Any unexpected UI behavior is likely a React timing/async issue
@@ -144,6 +172,11 @@ Cmd+Shift+P → "Developer: Reset Workspace State" → "Developer: Reload Window
   - State seems "one step behind" (useEffect dependency issues)
 - **Debug pattern**: Log every async boundary with timestamps and data snapshots
 - **Never assume component state is synchronous** - always consider useEffect timing and data loading phases
+
+### Race Condition Prevention
+- **Sequential over parallel**: Avoid Promise.all() with state-modifying operations
+- **Common scenarios**: Multiple API calls updating same backend state, parallel component store calls
+- **When in doubt**: Use await chains instead of parallel operations
 
 ## 4. Critical Technical Details
 

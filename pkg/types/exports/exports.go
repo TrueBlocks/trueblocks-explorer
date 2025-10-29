@@ -478,24 +478,6 @@ func (c *ExportsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *ExportsCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		ExportsStatements,
-		ExportsBalances,
-		ExportsTransfers,
-		ExportsTransactions,
-		ExportsOpenApprovals,
-		ExportsApprovalLogs,
-		ExportsApprovalTxs,
-		ExportsWithdrawals,
-		ExportsAssets,
-		ExportsAssetCharts,
-		ExportsLogs,
-		ExportsTraces,
-		ExportsReceipts,
-	}
-}
-
 func (c *ExportsCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	c.summaryMutex.Lock()

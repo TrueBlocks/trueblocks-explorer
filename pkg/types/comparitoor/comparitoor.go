@@ -217,16 +217,6 @@ func (c *ComparitoorCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *ComparitoorCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		ComparitoorComparitoor,
-		ComparitoorChifra,
-		ComparitoorEtherscan,
-		ComparitoorCovalent,
-		ComparitoorAlchemy,
-	}
-}
-
 func (c *ComparitoorCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	if summary == nil {

@@ -53,7 +53,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -66,7 +66,7 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 }
 {{end}}
 
-func (c *{{$class}}Collection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *{{$class}}Collection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	{{range .Facets}}case {{$class}}{{.Name}}:

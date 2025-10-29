@@ -88,7 +88,7 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -150,7 +150,7 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -207,7 +207,7 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -265,7 +265,7 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -277,7 +277,7 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 	return theStore
 }
 
-func (c *ChunksCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *ChunksCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case ChunksStats:

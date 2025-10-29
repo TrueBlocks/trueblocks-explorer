@@ -85,7 +85,7 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -97,7 +97,7 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 	return theStore
 }
 
-func (c *ComparitoorCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *ComparitoorCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case ComparitoorComparitoor:

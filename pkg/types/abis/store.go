@@ -76,7 +76,7 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -129,7 +129,7 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -141,7 +141,7 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 	return theStore
 }
 
-func (c *AbisCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *AbisCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case AbisDownloaded:

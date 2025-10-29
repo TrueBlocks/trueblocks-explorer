@@ -18,11 +18,7 @@ export function GetConfig():Promise<types.ViewConfig>;
 
 export function GetPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<types.Page>;
 
-export function GetStoreName(arg1:types.Payload,arg2:types.DataFacet):Promise<string>;
-
 export function GetSummary():Promise<types.Summary>;
-
-export function GetSupportedFacets():Promise<Array<types.DataFacet>>;
 
 export function NeedsUpdate(arg1:types.DataFacet):Promise<boolean>;
 

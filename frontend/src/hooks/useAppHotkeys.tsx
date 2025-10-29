@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { CancelFetch, GetAvailableSkins, Reload } from '@app';
+import { GetAvailableSkins, Reload } from '@app';
 import {
   useActiveProject,
   useEnabledMenuItems,
@@ -8,7 +8,7 @@ import {
   usePreferences,
 } from '@hooks';
 import { msgs, types } from '@models';
-import { LogError, emitEvent, useEmitters } from '@utils';
+import { LogError, emitEvent } from '@utils';
 import { useLocation } from 'wouter';
 
 type Hotkey = {
@@ -46,7 +46,6 @@ export const useAppHotkeys = (): void => {
   const currentFacet = getLastFacet(vR);
 
   const [, navigate] = useLocation();
-  const { emitStatus, emitError } = useEmitters();
 
   const handleHotkey = useCallback(
     async (hkType: Hotkey, _e: KeyboardEvent): Promise<void> => {
@@ -385,26 +384,6 @@ export const useAppHotkeys = (): void => {
     },
   ];
 
-  const globalHotkeys = [
-    {
-      key: 'escape',
-      handler: (_e: KeyboardEvent) => {
-        CancelFetch(currentFacet as types.DataFacet)
-          .then(() => {
-            emitStatus('Cancellation request processed.');
-          })
-          .catch((err: Error) => {
-            emitError(
-              `Failed to send cancellation request via Escape key: ${
-                err.message || 'Unknown error'
-              }`,
-            );
-          });
-      },
-      options: { enableOnFormTags: true, preventDefault: true },
-    },
-  ];
-
   function normalizeHotkey(e: KeyboardEvent): string {
     if (
       e.key === 'Alt' ||
@@ -425,7 +404,6 @@ export const useAppHotkeys = (): void => {
 
   const memoToggleHotkeys = toggleHotkeys;
   const memoEditHotkeys = editHotkeys;
-  const memoGlobalHotkeys = globalHotkeys;
 
   useEffect(() => {
     function onKeydown(e: KeyboardEvent) {
@@ -448,12 +426,6 @@ export const useAppHotkeys = (): void => {
           handled = true;
         }
       });
-      memoGlobalHotkeys.forEach((hk) => {
-        if (hk.key === key) {
-          hk.handler(e);
-          handled = true;
-        }
-      });
       if (handled) {
         e.preventDefault();
         e.stopPropagation();
@@ -461,5 +433,5 @@ export const useAppHotkeys = (): void => {
     }
     window.addEventListener('keydown', onKeydown);
     return () => window.removeEventListener('keydown', onKeydown);
-  }, [hotkeyRegistry, memoToggleHotkeys, memoEditHotkeys, memoGlobalHotkeys]);
+  }, [hotkeyRegistry, memoToggleHotkeys, memoEditHotkeys]);
 };

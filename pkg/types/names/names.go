@@ -205,16 +205,6 @@ func (c *NamesCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *NamesCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		NamesAll,
-		NamesCustom,
-		NamesPrefund,
-		NamesRegular,
-		NamesBaddress,
-	}
-}
-
 func (c *NamesCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	if name, ok := item.(*Name); ok {

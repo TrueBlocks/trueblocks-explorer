@@ -26,16 +26,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['status']['StatusCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetStoreName(arg1, arg2) {
-  return window['go']['status']['StatusCollection']['GetStoreName'](arg1, arg2);
-}
-
 export function GetSummary() {
   return window['go']['status']['StatusCollection']['GetSummary']();
-}
-
-export function GetSupportedFacets() {
-  return window['go']['status']['StatusCollection']['GetSupportedFacets']();
 }
 
 export function NeedsUpdate(arg1) {

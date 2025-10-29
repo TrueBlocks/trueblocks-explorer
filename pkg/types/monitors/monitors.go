@@ -100,12 +100,6 @@ func (c *MonitorsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *MonitorsCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		MonitorsMonitors,
-	}
-}
-
 func (c *MonitorsCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	monitor, ok := item.(*Monitor)

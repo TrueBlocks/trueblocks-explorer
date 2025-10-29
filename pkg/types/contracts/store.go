@@ -66,7 +66,7 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -128,7 +128,7 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -140,7 +140,7 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	return theStore
 }
 
-func (c *ContractsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *ContractsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case ContractsDashboard:

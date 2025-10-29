@@ -158,14 +158,6 @@ func (c *ContractsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *ContractsCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		ContractsDashboard,
-		ContractsExecute,
-		ContractsEvents,
-	}
-}
-
 func (c *ContractsCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	c.summaryMutex.Lock()

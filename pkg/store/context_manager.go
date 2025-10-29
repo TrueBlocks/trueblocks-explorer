@@ -72,7 +72,7 @@ func CancelFetch(contextKey string) {
 	}
 }
 
-func CancelAllFetches() int {
+func CancelFetches() int {
 	cm := GetContextManager()
 	cm.renderCtxsMutex.Lock()
 	defer cm.renderCtxsMutex.Unlock()

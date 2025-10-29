@@ -71,7 +71,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -83,7 +83,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 	return theStore
 }
 
-func (c *MonitorsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *MonitorsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case MonitorsMonitors:

@@ -338,47 +338,47 @@ func TestContextRegistration(t *testing.T) {
 	assert.Equal(t, 0, cancelled, "Expected 0 cancelled contexts for non-existent address")
 }
 
-func TestCancelAllFetches(t *testing.T) {
+func TestCancelFetches(t *testing.T) {
 	key1 := "testKey1_cancelall"
 	key2 := "testKey2_cancelall"
 	key3 := "testKey3_cancelall"
 
-	t.Run("CancelAllFetchesWithMultipleKeys", func(t *testing.T) {
+	t.Run("CancelFetchesWithMultipleKeys", func(t *testing.T) {
 		tearDown()
 
 		RegisterContext(key1)
 		RegisterContext(key2)
 		RegisterContext(key3)
 
-		assert.Equal(t, 3, ctxCountTotal(), "Should have 3 contexts before CancelAllFetches")
+		assert.Equal(t, 3, ctxCountTotal(), "Should have 3 contexts before CancelFetches")
 
-		cancelledCount := CancelAllFetches()
+		cancelledCount := CancelFetches()
 
-		assert.Equal(t, 3, cancelledCount, "CancelAllFetches should report 3 cancelled contexts")
-		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should be 0 after CancelAllFetches")
+		assert.Equal(t, 3, cancelledCount, "CancelFetches should report 3 cancelled contexts")
+		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should be 0 after CancelFetches")
 	})
 
-	t.Run("CancelAllFetchesOnEmptyManager", func(t *testing.T) {
+	t.Run("CancelFetchesOnEmptyManager", func(t *testing.T) {
 		tearDown()
 
-		cancelledCount := CancelAllFetches()
+		cancelledCount := CancelFetches()
 
-		assert.Equal(t, 0, cancelledCount, "CancelAllFetches on empty manager should report 0 cancelled")
+		assert.Equal(t, 0, cancelledCount, "CancelFetches on empty manager should report 0 cancelled")
 		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should remain 0")
 	})
 
-	t.Run("CancelAllFetchesIdempotent", func(t *testing.T) {
+	t.Run("CancelFetchesIdempotent", func(t *testing.T) {
 		tearDown()
 
 		RegisterContext(key1)
-		assert.Equal(t, 1, ctxCountTotal(), "Should have 1 context before first CancelAllFetches")
+		assert.Equal(t, 1, ctxCountTotal(), "Should have 1 context before first CancelFetches")
 
-		cancelledCount1 := CancelAllFetches()
-		assert.Equal(t, 1, cancelledCount1, "First CancelAllFetches should report 1 cancelled")
-		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should be 0 after first CancelAllFetches")
+		cancelledCount1 := CancelFetches()
+		assert.Equal(t, 1, cancelledCount1, "First CancelFetches should report 1 cancelled")
+		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should be 0 after first CancelFetches")
 
-		cancelledCount2 := CancelAllFetches()
-		assert.Equal(t, 0, cancelledCount2, "Second CancelAllFetches should report 0 cancelled")
+		cancelledCount2 := CancelFetches()
+		assert.Equal(t, 0, cancelledCount2, "Second CancelFetches should report 0 cancelled")
 		assert.Equal(t, 0, ctxCountTotal(), "Total contexts should remain 0")
 	})
 }

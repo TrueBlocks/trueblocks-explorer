@@ -248,16 +248,6 @@ func (c *DressesCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *DressesCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		DressesGenerator,
-		DressesSeries,
-		DressesDatabases,
-		DressesEvents,
-		DressesGallery,
-	}
-}
-
 func (c *DressesCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	// EXISTING_CODE

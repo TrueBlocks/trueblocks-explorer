@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { CancelAllFetches } from '@app';
+import { CancelFetches } from '@app';
 import { LogError, useEmitters } from '@utils';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -21,7 +21,7 @@ export const useGlobalEscape = ({
 
   const handleEscape = useCallback(async () => {
     try {
-      const cancelledCount = await CancelAllFetches();
+      const cancelledCount = await CancelFetches();
       if (cancelledCount > 0) {
         emitStatus(
           `Cancelled ${cancelledCount} active fetch${cancelledCount === 1 ? '' : 'es'}`,

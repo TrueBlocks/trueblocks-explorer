@@ -16,8 +16,6 @@ type Collection interface {
 	FetchByFacet(facet DataFacet)
 	Reset(facet DataFacet)
 	NeedsUpdate(facet DataFacet) bool
-	GetSupportedFacets() []DataFacet
-	GetStoreName(payload *Payload, facet DataFacet) string
 	GetSummary() Summary
 	ExportData(payload *Payload) (string, error)
 	GetConfig() (*ViewConfig, error)

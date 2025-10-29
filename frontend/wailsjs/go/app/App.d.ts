@@ -27,9 +27,7 @@ export function AddAddressToProject(arg1:string):Promise<void>;
 
 export function AddAddressesToProject(arg1:string):Promise<void>;
 
-export function CancelAllFetches():Promise<number>;
-
-export function CancelFetch(arg1:types.DataFacet):Promise<void>;
+export function CancelFetches():Promise<number>;
 
 export function ChangeImageStorageLocation(arg1:string):Promise<void>;
 
@@ -262,8 +260,6 @@ export function ReloadSkins():Promise<void>;
 export function ReloadStatus(arg1:types.Payload):Promise<void>;
 
 export function RemoveAddressFromProject(arg1:string):Promise<void>;
-
-export function ResetStore(arg1:string):Promise<void>;
 
 export function RestoreProjectContext(arg1:string):Promise<void>;
 

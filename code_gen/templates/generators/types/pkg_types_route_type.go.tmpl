@@ -114,14 +114,6 @@ func (c *{{$class}}Collection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *{{$class}}Collection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		{{- range .Facets}}
-		{{$class}}{{.Name}},
-		{{- end}}
-	}
-}
-
 func (c *{{$class}}Collection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	// EXISTING_CODE

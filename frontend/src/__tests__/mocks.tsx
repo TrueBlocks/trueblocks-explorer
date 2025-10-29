@@ -223,7 +223,7 @@ const createInitialMockAppBridge = (): AppBridgeFunctions => ({
   }),
   SetLastView: vi.fn().mockResolvedValue(undefined),
   SetFilterState: vi.fn().mockResolvedValue(undefined),
-  CancelAllFetches: vi.fn().mockResolvedValue(3),
+  CancelFetches: vi.fn().mockResolvedValue(3),
 });
 
 export let mockAppBridge = createInitialMockAppBridge();

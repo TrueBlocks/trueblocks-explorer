@@ -347,12 +347,8 @@ func (m MockCollection) NeedsUpdate(facet types.DataFacet) bool {
 	return false
 }
 
-func (m MockCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{}
-}
-
-func (m MockCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
-	return m.name
+func (m MockCollection) CancelFetch(payload *types.Payload) bool {
+	return false
 }
 
 func (m MockCollection) GetSummary() types.Summary {

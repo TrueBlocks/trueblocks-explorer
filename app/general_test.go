@@ -4,9 +4,6 @@ import (
 	"testing"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/abis"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/exports"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/monitors"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
 	"github.com/stretchr/testify/assert"
@@ -87,58 +84,7 @@ func TestNameFromAddress(t *testing.T) {
 	}
 }
 
-func TestCancelFetch(t *testing.T) {
-	tests := []struct {
-		name       string
-		dataFacet  types.DataFacet
-		setupApp   func(*App)
-		shouldFind bool
-	}{
-		{
-			name:      "valid data facet with collections",
-			dataFacet: monitors.MonitorsMonitors,
-			setupApp: func(app *App) {
-				// In a real test, we would set up collections
-				// For high-level testing, we test the function doesn't panic
-				app.collections = []types.Collection{}
-			},
-			shouldFind: false,
-		},
-		{
-			name:      "data facet with nil collections",
-			dataFacet: exports.ExportsStatements,
-			setupApp: func(app *App) {
-				app.collections = nil
-			},
-			shouldFind: false,
-		},
-		{
-			name:      "empty collections",
-			dataFacet: abis.AbisDownloaded,
-			setupApp: func(app *App) {
-				app.collections = []types.Collection{}
-			},
-			shouldFind: false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			app := &App{}
-			tt.setupApp(app)
-
-			// Test that CancelFetch doesn't panic and handles various scenarios
-			assert.NotPanics(t, func() {
-				app.CancelFetch(tt.dataFacet)
-			})
-
-			// The function should complete without error
-			// The actual cancellation depends on store state which we can't easily test
-		})
-	}
-}
-
-func TestCancelAllFetches(t *testing.T) {
+func TestCancelFetches(t *testing.T) {
 	tests := []struct {
 		name     string
 		setupApp func(*App)
@@ -156,7 +102,7 @@ func TestCancelAllFetches(t *testing.T) {
 			app := &App{}
 			tt.setupApp(app)
 
-			count := app.CancelAllFetches()
+			count := app.CancelFetches()
 
 			// Verify the function returns an integer count
 			assert.IsType(t, 0, count)
@@ -167,71 +113,16 @@ func TestCancelAllFetches(t *testing.T) {
 	}
 }
 
-func TestResetStore(t *testing.T) {
-	tests := []struct {
-		name      string
-		storeName string
-		setupApp  func(*App)
-	}{
-		{
-			name:      "reset store with valid name",
-			storeName: "testStore",
-			setupApp: func(app *App) {
-				app.collections = []types.Collection{}
-			},
-		},
-		{
-			name:      "reset store with empty name",
-			storeName: "",
-			setupApp: func(app *App) {
-				app.collections = []types.Collection{}
-			},
-		},
-		{
-			name:      "reset store with nil collections",
-			storeName: "testStore",
-			setupApp: func(app *App) {
-				app.collections = nil
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			app := &App{}
-			tt.setupApp(app)
-
-			// Test that ResetStore doesn't panic
-			assert.NotPanics(t, func() {
-				app.ResetStore(tt.storeName)
-			})
-
-			// The function should complete without error
-			// The actual reset behavior depends on collection implementations
-		})
-	}
-}
-
 // Integration test for general functionality
 func TestGeneralFunctions_Integration(t *testing.T) {
 	app := &App{}
 
 	// Test that all functions can be called without panicking
 	t.Run("all functions execute without panic", func(t *testing.T) {
-		// Test CancelAllFetches
+		// Test CancelFetches
 		assert.NotPanics(t, func() {
-			count := app.CancelAllFetches()
+			count := app.CancelFetches()
 			assert.GreaterOrEqual(t, count, 0)
-		})
-
-		// Test CancelFetch
-		assert.NotPanics(t, func() {
-			app.CancelFetch(monitors.MonitorsMonitors)
-		})
-
-		// Test ResetStore
-		assert.NotPanics(t, func() {
-			app.ResetStore("testStore")
 		})
 
 		// Test NameFromAddress

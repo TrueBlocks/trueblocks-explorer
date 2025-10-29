@@ -78,7 +78,7 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -130,7 +130,7 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -182,7 +182,7 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -194,7 +194,7 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 	return theStore
 }
 
-func (c *StatusCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *StatusCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case StatusStatus:

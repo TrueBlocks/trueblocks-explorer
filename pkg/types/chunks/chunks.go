@@ -196,15 +196,6 @@ func (c *ChunksCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *ChunksCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		ChunksStats,
-		ChunksIndex,
-		ChunksBlooms,
-		ChunksManifest,
-	}
-}
-
 func (c *ChunksCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	c.summaryMutex.Lock()

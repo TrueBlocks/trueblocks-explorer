@@ -30,16 +30,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['dresses']['DressesCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetStoreName(arg1, arg2) {
-  return window['go']['dresses']['DressesCollection']['GetStoreName'](arg1, arg2);
-}
-
 export function GetSummary() {
   return window['go']['dresses']['DressesCollection']['GetSummary']();
-}
-
-export function GetSupportedFacets() {
-  return window['go']['dresses']['DressesCollection']['GetSupportedFacets']();
 }
 
 export function NeedsUpdate(arg1) {

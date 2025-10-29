@@ -202,15 +202,6 @@ func (c *AbisCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
 	}
 }
 
-func (c *AbisCollection) GetSupportedFacets() []types.DataFacet {
-	return []types.DataFacet{
-		AbisDownloaded,
-		AbisKnown,
-		AbisFunctions,
-		AbisEvents,
-	}
-}
-
 func (c *AbisCollection) AccumulateItem(item interface{}, summary *types.Summary) {
 	// EXISTING_CODE
 	c.summaryMutex.Lock()

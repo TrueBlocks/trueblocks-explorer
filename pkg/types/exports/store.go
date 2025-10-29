@@ -123,7 +123,7 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -176,7 +176,7 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -229,7 +229,7 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -282,7 +282,7 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -336,7 +336,7 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -390,7 +390,7 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -444,7 +444,7 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -499,7 +499,7 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -553,7 +553,7 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -606,7 +606,7 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -660,7 +660,7 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -713,7 +713,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 			return nil, false
 		}
 
-		storeName := c.GetStoreName(payload, facet)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -725,7 +725,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 	return theStore
 }
 
-func (c *ExportsCollection) GetStoreName(payload *types.Payload, facet types.DataFacet) string {
+func (c *ExportsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
 	case ExportsStatements:

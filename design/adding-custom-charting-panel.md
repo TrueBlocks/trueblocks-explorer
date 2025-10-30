@@ -47,28 +47,68 @@ The chart panel system consists of three main layers that work together to provi
 - **Barchart**: Best for time-series data, trending analysis
 - **Heatmap**: Best for density visualization, pattern identification
 
+## Step 0: TOML Configuration (Required First)
+
+### TOML Chart Panel Schema
+
+Chart panels must be defined in the TOML configuration before any implementation work begins. In `./code_gen/templates/classDefinitions/[collection].toml`:
+
+```toml
+[[facets]]
+name = "YourFacet"
+store = "YourStore" 
+actions = ["export"]
+renderer = "panel"        # Enables panel rendering
+panelChart = true        # Enables chart panel functionality
+```
+
+### Generation Workflow
+
+The complete workflow follows this sequence:
+
+1. **Edit TOML** - Add/modify facet with `renderer = "panel"` + `panelChart = true`
+2. **Run `make generate`** - Generates backend scaffolding and wiring
+3. **Implement manual components** - Fill in business logic (Steps 1-9 below)
+
+### What Gets Auto-Generated
+
+When `panelChart = true` is set in TOML, `make generate` automatically creates:
+
+- ✅ **Config scaffolding** - `PanelChartConfig` references in facet configuration
+- ✅ **Store integration** - `c.updateXxxBucket(it)` calls in store processFunc  
+- ✅ **Basic wiring** - Facet structure, action configs, field mappings
+- ✅ **Function references** - Calls to `getYourFacetPanelConfig()` and creates skeleton functions in the `// EXISTING_CODE` section at the end of the file (functions must be implemented manually)
+
+### What Requires Manual Implementation
+
+The generation creates the scaffolding, but these components must be implemented manually:
+
+- ❌ **Panel configuration functions** - `getPanelConfig()` implementations with chart types and metrics
+- ❌ **Bucket aggregation logic** - `updateBucket()` functions with data processing
+- ❌ **Business logic** - Chart-specific decisions, metric mappings, time grouping
+
 ## Implementation Steps
 
-### Step 1: Backend Facet Configuration
+### Step 1: Verify Generated Backend Configuration
 
-**Required Changes in `pkg/types/[collection]/config.go`:**
+**After running `make generate`, verify in `pkg/types/[collection]/config.go`:**
+
+- ✅ Facet has `RendererTypes: "panel"`
+- ✅ Facet has `PanelChartConfig: getYourFacetPanelConfig()` reference  
+- ✅ Store calls include `c.updateYourFacetBucket(it)` in processFunc (in `store.go`)
+
+**Manual implementation required:**
+
+Now you need to implement the panel configuration function that was referenced in the generated config.
+
+### Step 2: Implement Panel Configuration Function
+
+**Create the panel configuration function in `pkg/types/[collection]/config.go` within the `// BINGO` blocks:**
 
 ```go
-// Add to facet config
-"your-facet": {
-    Name:             "Your Facet",
-    Store:            "yourstore",
-    DividerBefore:    false,
-    Fields:           getYourFacetFields(),
-    Actions:          []string{},
-    HeaderActions:    []string{"export"},
-    RendererTypes:    "panel",                    // KEY: Must be "panel"
-    PanelChartConfig: getYourFacetPanelConfig(),  // KEY: Add this
-},
-
-// Add panel configuration function
 func getYourFacetPanelConfig() *types.PanelChartConfig {
     return &types.PanelChartConfig{
+        // BINGO
         Type:          "barchart", // or "heatmap"
         DefaultMetric: "primaryMetric",
         SkipUntil:     "2017",     // optional date filter
@@ -87,11 +127,12 @@ func getYourFacetPanelConfig() *types.PanelChartConfig {
                 Bytes:        true,
             },
         },
+        // BINGO
     }
 }
 ```
 
-### Step 2: Bucket Aggregation Implementation
+### Step 3: Bucket Aggregation Implementation
 
 **Create `pkg/types/[collection]/agg_yourfacet.go`:**
 
@@ -141,7 +182,7 @@ func (c *YourCollection) updateYourFacetBucket(item *YourDataItem) {
 }
 ```
 
-### Step 3: Collection Integration
+### Step 4: Collection Integration
 
 **Update your collection's CRUD operations to call the bucket update:**
 
@@ -159,7 +200,7 @@ func (c *YourCollection) Add(item *YourDataItem) {
 - The facet must implement `GetBuckets()`, `ClearBuckets()`, `SetBuckets()`, `UpdateBuckets()`
 - This is typically auto-generated
 
-### Step 4: API Endpoint Implementation
+### Step 5: API Endpoint Implementation
 
 **Add to `app/api_[collection].go`:**
 
@@ -183,7 +224,7 @@ func (a *App) SetYourCollectionMetric(facetName string, metric string) error {
 }
 ```
 
-### Step 5: Frontend Panel Hook
+### Step 6: Frontend Panel Hook
 
 **Create `frontend/src/views/[collection]/renderers/hooks/useYourCollectionPanelRenderer.ts`:**
 
@@ -223,7 +264,7 @@ export const useYourCollectionPanelRenderer = (dataFacet: types.DataFacet) => {
 };
 ```
 
-### Step 6: Frontend Panel Component
+### Step 7: Frontend Panel Component
 
 **Create `frontend/src/views/[collection]/renderers/panels/YourCollectionPanel.tsx`:**
 
@@ -281,7 +322,7 @@ export const YourCollectionPanel = ({
 };
 ```
 
-### Step 7: Frontend Panel Factory
+### Step 8: Frontend Panel Factory
 
 **Update `frontend/src/views/[collection]/renderers/index.ts`:**
 
@@ -318,7 +359,7 @@ export const renderers = {
 };
 ```
 
-### Step 8: View Integration
+### Step 9: View Integration
 
 **Update your main view component to use the panels:**
 
@@ -342,6 +383,10 @@ const detailPanel = useMemo(
 
 ## Required Files Summary
 
+### Step 0: TOML Configuration (First)
+- **TOML file**: `./code_gen/templates/classDefinitions/[collection].toml` - Add `renderer = "panel"` and `panelChart = true`
+- **Generation**: Run `make generate` to create backend scaffolding
+
 ### New Files to Create (5-6 files minimum)
 
 **Backend (2-3 new files):**
@@ -354,11 +399,16 @@ const detailPanel = useMemo(
 2. `frontend/src/views/[collection]/renderers/panels/[Collection]Panel.tsx` - Panel component
 3. `frontend/src/views/[collection]/renderers/panels/index.ts` - Panel exports
 
-### Files to Modify (Not New)
+### Files Auto-Generated (After `make generate`)
 
-These existing files need updates but are **NOT** new files:
-- `pkg/types/[collection]/config.go` - Add PanelChartConfig
-- `pkg/types/[collection]/crud.go` - Add bucket update calls
+These files are **automatically updated** by the generation process:
+- ✅ `pkg/types/[collection]/config.go` - PanelChartConfig references added
+- ✅ `pkg/types/[collection]/store.go` - Bucket update calls added to processFunc
+
+### Files to Modify Manually (Not New)
+
+These existing files need manual updates and are **NOT** auto-generated:
+- `pkg/types/[collection]/config.go` - Implement PanelChartConfig functions in `// EXISTING_CODE` blocks
 - `app/api_[collection].go` - Add bucket/metric API endpoints  
 - `frontend/src/views/[collection]/renderers/index.ts` - Add panel factory
 - Main view component (e.g., `[Collection].tsx`) - Use renderers.panels
@@ -418,5 +468,44 @@ The bucket aggregation happens automatically as data flows through the store sys
 - Bucket updates are incremental, not full recalculations
 - Frontend components use React.memo for efficient re-rendering
 - API calls are cached based on current context (address/chain/period)
+
+## Future Scaffolding Enhancements
+
+### Planned Template Extensions
+
+These scaffolding improvements are planned for future automation to further reduce manual implementation work:
+
+**Backend Skeleton Generation:**
+1. **Panel config function skeletons** - Generate empty `getPanelConfigSkeleton()` functions with `// BINGO` comment pairs for manual completion
+2. **Bucket function skeletons** - Generate `updateBucketSkeleton()` function signatures with `// BINGO` comment pairs for manual implementation
+
+**Template Files to Extend:**
+- `pkg_types_route_config.go.tmpl` - Add skeleton panel config functions alongside existing ones
+- New: `pkg_types_route_agg_xxx.go.tmpl` - Generate bucket aggregation function skeletons
+
+**Implementation Strategy:**
+- Generate separate skeleton functions (don't modify existing working functions)
+- Use `// BINGO` comment pairs to mark areas requiring manual completion
+- Developer manually migrates from old functions to new skeletons when ready
+- Focus scaffolding on eliminating file creation, not business logic
+
+### Current Generation Capabilities vs. Vision
+
+**✅ Currently Auto-Generated (TOML → `make generate`):**
+- Basic facet configuration with panel enablement (`RendererTypes: "panel"`)
+- Store integration calls for bucket updates (`c.updateXxxBucket(it)`)
+- Field configurations and action mappings
+- Function reference calls (`getYourFacetPanelConfig()`)
+
+**👤 Currently Manual Implementation Required:**
+- Panel configuration functions (`getPanelConfig()`) with chart types and metrics
+- Bucket aggregation logic (`updateBucket()`) with data processing algorithms
+- All business logic and chart-specific design decisions
+
+**🎯 Future Vision (Scaffolding Extensions):**
+- Function skeletons with `// BINGO` comment placeholders for manual completion
+- Reduced manual file creation and boilerplate setup
+- Focus manual work on business logic and chart design decisions only
+- Gradual migration path from existing implementations to generated scaffolding
 
 This architecture provides a scalable, maintainable approach to adding rich data visualizations to any facet while maintaining consistency across the application.

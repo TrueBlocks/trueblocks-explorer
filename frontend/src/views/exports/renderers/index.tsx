@@ -3,6 +3,7 @@ import { exports, types } from '@models';
 import { AssetChartsFacet } from './facets';
 import {
   renderApprovalDetailPanel,
+  renderAssetDetailPanel,
   renderStatementDetailPanel,
 } from './panels';
 
@@ -13,6 +14,7 @@ export const renderers = {
   panels: {
     [types.DataFacet.OPENAPPROVALS]: renderApprovalDetailPanel,
     [types.DataFacet.STATEMENTS]: renderStatementDetailPanel,
+    [types.DataFacet.ASSETS]: renderAssetDetailPanel,
   },
   facets: {
     [types.DataFacet.ASSETCHARTS]: ({}: {

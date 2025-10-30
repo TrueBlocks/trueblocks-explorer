@@ -58,6 +58,8 @@ actions = ["export"]
 mapKey = "item.Asset.Hex()"
 useMapKey = true
 needsCalcs = true
+renderer = "panel"
+panelChart = true
 
 [[facets]]
 name = "AssetCharts"

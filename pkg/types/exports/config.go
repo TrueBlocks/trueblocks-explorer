@@ -88,13 +88,14 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 		"assets": {
-			Name:          "Assets",
-			Store:         "assets",
-			DividerBefore: false,
-			Fields:        getAssetsFields(),
-			Actions:       []string{},
-			HeaderActions: []string{"export"},
-			RendererTypes: "",
+			Name:             "Assets",
+			Store:            "assets",
+			DividerBefore:    false,
+			Fields:           getAssetsFields(),
+			Actions:          []string{},
+			HeaderActions:    []string{"export"},
+			RendererTypes:    "panel",
+			PanelChartConfig: getAssetsPanelConfig(),
 		},
 		"assetcharts": {
 			Name:             "Asset Charts",
@@ -214,6 +215,7 @@ func getAssetsFields() []types.FieldConfig {
 		{Section: "Reconciliation", Key: "calcs.amountNetEth", Type: "ether", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.endBalEth", Type: "ether"},
 		{Section: "Asset", Key: "spotPrice", Type: "number"},
+		{Section: "Asset", Key: "statementId", Label: "Count", Type: "number"},
 		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Type: "ether", NoTable: true},
 		{Section: "Summary", Key: "date", NoTable: true},
 		{Section: "Summary", Key: "gasUsed", NoTable: true},
@@ -347,7 +349,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Reconciliation", Key: "calcs.amountNetEth", Type: "ether", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.endBalEth", Type: "ether"},
 		{Section: "Asset", Key: "spotPrice", Type: "number", NoTable: true},
-		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Type: "ether", NoTable: true},
+		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Type: "ether"},
 		{Section: "Summary", Key: "date", NoTable: true},
 		{Section: "Summary", Key: "gasUsed", NoTable: true},
 		{Section: "Summary", Key: "calcs.reconciliationType", NoTable: true},
@@ -492,6 +494,39 @@ func getAssetChartsFacetConfig() *types.FacetChartConfig {
 	return &types.FacetChartConfig{
 		SeriesStrategy:  "address+symbol",
 		SeriesPrefixLen: 12,
+	}
+}
+
+func getAssetsPanelConfig() *types.PanelChartConfig {
+	return &types.PanelChartConfig{
+		Type:          "piechart",
+		DefaultMetric: "endBalEth",
+		Metrics: []types.MetricConfig{
+			{
+				Key:          "endBalEth",
+				Label:        "End Balance (ETH)",
+				BucketsField: "endBalEth",
+				Bytes:        false,
+			},
+			{
+				Key:          "totalInEth",
+				Label:        "Total Inflow (ETH)",
+				BucketsField: "totalInEth",
+				Bytes:        false,
+			},
+			{
+				Key:          "totalOutEth",
+				Label:        "Total Outflow (ETH)",
+				BucketsField: "totalOutEth",
+				Bytes:        false,
+			},
+			{
+				Key:          "spotPrice",
+				Label:        "Spot Price",
+				BucketsField: "spotPrice",
+				Bytes:        false,
+			},
+		},
 	}
 }
 

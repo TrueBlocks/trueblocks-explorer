@@ -1,0 +1,1 @@
+export { renderAssetDetailPanel } from './AssetPanel';

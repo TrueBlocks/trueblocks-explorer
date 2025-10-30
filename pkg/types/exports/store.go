@@ -214,7 +214,13 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 		processFunc := func(item interface{}) *Asset {
 			if it, ok := item.(*Asset); ok {
 				// EXISTING_CODE
+				if existing, ok := theStore.GetItemFromMap(it.Asset.Hex()); ok {
+					it.StatementId = existing.StatementId + 1
+				} else {
+					it.StatementId = 1
+				}
 				// EXISTING_CODE
+				c.updateAssetsBucket(it)
 				return it
 			}
 			return nil
@@ -229,6 +235,15 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
+		theStore.SetMapSortFunc(func(a, b *Asset) bool {
+			if a.StatementId == b.StatementId {
+				if a.SpotPrice.Equal(&b.SpotPrice) {
+					return a.Asset.Hex() < b.Asset.Hex()
+				}
+				return a.SpotPrice.GreaterThan(&b.SpotPrice)
+			}
+			return a.StatementId > b.StatementId
+		})
 		// EXISTING_CODE
 
 		assetsStore[storeKey] = theStore
@@ -762,6 +777,10 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
+	if payload.DataFacet == ExportsAssets {
+		key := payload.ActiveChain
+		return key
+	}
 	// EXISTING_CODE
 	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }

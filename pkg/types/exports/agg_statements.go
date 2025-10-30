@@ -116,12 +116,7 @@ func (c *ExportsCollection) updateStatementsBucket(statement *Statement) {
 
 		if _, ok := buckets.AssetNames[assetIdentifier]; !ok {
 			if name, _ := names.NameFromAddress(statement.Asset); name != nil {
-				// if statement.Asset.NotEqual(base.FAKE_ETH_ADDRESS) {
-				// 	logging.LogBackend(fmt.Sprintf("found name: %s ==> %s", statement.Asset.Hex(), name.Name))
-				// }
 				buckets.SetAssetName(assetIdentifier, name)
-				// } else {
-				// 	logging.LogBackend(fmt.Sprintf("no name found for: %s", statement.Asset.Hex()))
 			}
 		}
 
@@ -158,6 +153,83 @@ func (c *ExportsCollection) updateStatementsBucket(statement *Statement) {
 				// case "neighbors":
 				//	 // Count unique counterparties (simplified - could track actual unique count)
 				//	 series[bucketIndex].Total += 1.0
+			}
+
+			buckets.SetSeries(seriesName, series)
+		}
+	})
+}
+
+// updateAssetsBucket processes a single Asset and updates asset panel buckets for pie chart visualization
+func (c *ExportsCollection) updateAssetsBucket(asset *Asset) {
+	if asset == nil {
+		return
+	}
+
+	c.assetsFacet.UpdateBuckets(func(buckets *types.Buckets) {
+		// Get the actual facet configuration
+		var config types.FacetChartConfig
+		if viewConfig, err := c.GetConfig(); err == nil {
+			if facetConfig, exists := viewConfig.Facets["assets"]; exists && facetConfig.FacetChartConfig != nil {
+				config = *facetConfig.FacetChartConfig
+			} else {
+				// Fallback to defaults for panel display
+				config = types.FacetChartConfig{
+					SeriesStrategy:  AddressWithSymbol,
+					SeriesPrefixLen: 12,
+				}
+			}
+		} else {
+			// Fallback if config unavailable
+			config = types.FacetChartConfig{
+				SeriesStrategy:  AddressWithSymbol,
+				SeriesPrefixLen: 12,
+			}
+		}
+
+		// Generate asset identifier for this asset
+		assetIdentifier := generateAssetIdentifier(asset.Asset.Hex(), asset.Symbol, config)
+
+		if _, ok := buckets.AssetNames[assetIdentifier]; !ok {
+			if name, _ := names.NameFromAddress(asset.Asset); name != nil {
+				buckets.SetAssetName(assetIdentifier, name)
+			}
+		}
+
+		// For panel charts, we use the asset identifier as the bucket key (not time-based)
+		bucketKey := assetIdentifier
+
+		// Get decimals for value calculations
+		decimals := 18 // Default for ETH
+		if asset.Decimals > 0 {
+			decimals = int(asset.Decimals)
+		}
+
+		// Update each metric series for panel visualization
+		metricNames := []string{"endBalEth", "totalInEth", "totalOutEth", "spotPrice"}
+		for _, metricName := range metricNames {
+			seriesName := fmt.Sprintf("%s.%s", assetIdentifier, metricName)
+
+			buckets.EnsureSeriesExists(seriesName)
+
+			series := buckets.GetSeries(seriesName)
+			bucketIndex := findOrCreateBucket(&series, bucketKey)
+
+			// Update the specific metric based on the latest asset statement
+			var value float64
+			switch metricName {
+			case "endBalEth":
+				value = statementValueToFloat64(&asset.EndBal, decimals)
+				series[bucketIndex].Total = value // Current end balance
+			case "totalInEth":
+				value = statementValueToFloat64(&asset.AmountIn, decimals)
+				series[bucketIndex].Total = value // Total inflow
+			case "totalOutEth":
+				value = statementValueToFloat64(&asset.AmountOut, decimals)
+				series[bucketIndex].Total = value // Total outflow
+			case "spotPrice":
+				value = asset.SpotPrice.Float64()
+				series[bucketIndex].Total = value // Current spot price
 			}
 
 			buckets.SetSeries(seriesName, series)

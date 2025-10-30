@@ -1,6 +1,7 @@
 package store
 
 import (
+	"sort"
 	"sync"
 	"sync/atomic"
 
@@ -32,6 +33,7 @@ type Store[T any] struct {
 	expectedTotalItems atomic.Int64
 	summaryManager     *SummaryManager[T] // Manages aggregated summary data
 	mutex              sync.RWMutex
+	mapSortFunc        func(a, b *T) bool
 }
 
 // NewStore creates a new SDK-based store
@@ -113,6 +115,10 @@ func (s *Store[T]) GetState() types.StoreState {
 	return s.state
 }
 
+func (s *Store[T]) SetMapSortFunc(sortFunc func(a, b *T) bool) {
+	s.mapSortFunc = sortFunc
+}
+
 func (s *Store[T]) MarkStale(reason string) {
 	s.ChangeState(types.StateStale, reason)
 }
@@ -162,13 +168,20 @@ func (s *Store[T]) GetMapItems() []*T {
 	defer s.mutex.RUnlock()
 	result := make([]*T, len(s.data))
 	if s.dataMap != nil && len(*s.dataMap) > 0 {
-		result := make([]*T, 0, len(*s.dataMap))
+		result = make([]*T, 0, len(*s.dataMap))
 		for _, item := range *s.dataMap {
 			result = append(result, item)
 		}
-		return result
+	} else {
+		copy(result, s.data)
 	}
-	copy(result, s.data)
+
+	if s.mapSortFunc != nil {
+		sort.Slice(result, func(i, j int) bool {
+			return s.mapSortFunc(result[i], result[j])
+		})
+	}
+
 	return result
 }
 

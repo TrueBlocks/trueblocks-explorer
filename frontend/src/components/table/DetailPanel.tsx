@@ -16,7 +16,7 @@ export const DetailPanel = <T extends Record<string, unknown>>({
       bg="gray.2"
       c="text"
       style={{
-        flex: '0 0 40%',
+        flex: '0 0 35%',
         borderRadius: 'var(--mantine-radius-sm)',
         position: 'relative',
         display: 'flex',

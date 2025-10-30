@@ -71,9 +71,9 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 		}
 
 		processFunc := func(item interface{}) *Transaction {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Transaction); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

@@ -3,16 +3,10 @@ module github.com/TrueBlocks/trueblocks-explorer
 // GoLang Version
 go 1.25.1
 
-replace (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra => ../../trueblocks-core/src/apps/chifra/
-	github.com/TrueBlocks/trueblocks-dalle/v2 => ../libs/trueblocks-dalle
-	github.com/TrueBlocks/trueblocks-sdk/v5 => ../libs/trueblocks-sdk
-)
-
 require (
-	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251024133533-fadfa19f95c4
-	github.com/TrueBlocks/trueblocks-dalle/v2 v2.0.0-20250918192706-fe9276cdab92
-	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.4-0.20251024133442-4b12c4e54c55
+	github.com/TrueBlocks/trueblocks-core/src/apps/chifra v0.0.0-20251029224414-93b050ae6385
+	github.com/TrueBlocks/trueblocks-dalle/v2 v2.0.0-20251025043819-b9259f616586
+	github.com/TrueBlocks/trueblocks-sdk/v5 v5.9.4-0.20251030161943-886b4ab34a03
 	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kbinani/screenshot v0.0.0-20250118074034-a3924b7bbc8c

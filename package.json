@@ -2,7 +2,7 @@
   "scripts": {
     "build": "cd frontend && yarn build && cd .. && wails build",
     "clean": "make clean",
-    "dev": "wails dev -debounce 1000 2>&1 | grep -v -e 'AssetHandler|KnownStructures'",
+    "dev": "wails dev -debounce 1000 | grep -v 'AssetHandler'",
     "install": "cd frontend && yarn install && cd - && go mod tidy && yarn build",
     "lint": "cd frontend && yarn lint && cd .. && golangci-lint run",
     "type-check": "cd frontend && yarn type-check && cd ..",
@@ -14,8 +14,5 @@
     "test": "export $(grep -v '^#' ./.env | xargs) >/dev/null && yarn test-go && yarn test-tsx",
     "test-detail": "export $(grep -v '^#' ./.env | xargs) >/dev/null && yarn test-go-detail",
     "CONVENTIONS": "echo 'See copilot.md for development conventions'"
-  },
-  "devDependencies": {
-    "react-icons": "^5.5.0"
   }
 }

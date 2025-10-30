@@ -64,9 +64,9 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Cache {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Cache); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -114,9 +114,9 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Chain {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Chain); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -164,9 +164,9 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 		}
 
 		processFunc := func(item interface{}) *Status {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Status); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

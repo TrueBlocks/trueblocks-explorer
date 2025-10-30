@@ -136,6 +136,7 @@
                         {
                             "display_name": "Downloaded",
                             "name": "Downloaded",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Abis",
                             "storeSource": "sdk",
@@ -151,11 +152,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Known",
                             "name": "Known",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Abis",
                             "storeSource": "sdk",
@@ -169,11 +172,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Functions",
                             "name": "Functions",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Functions",
                             "storeSource": "sdk",
@@ -187,11 +192,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Events",
                             "name": "Events",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Functions",
                             "storeSource": "sdk",
@@ -205,7 +212,8 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         }
                     ]
                 },
@@ -453,133 +461,385 @@
                     "disable_go": true,
                     "members": [
                         {
-                            "name": "address",
-                            "type": "address",
-                            "section": "Asset Info",
+                            "name": "timestamp",
+                            "type": "timestamp",
+                            "section": "Asset",
                             "docOrder": 1,
-                            "description": "Address",
+                            "description": "the Unix timestamp of the object",
                             "num": 1
                         },
                         {
-                            "name": "holder",
+                            "name": "asset",
                             "type": "address",
-                            "section": "Asset Info",
+                            "attributes": "readOnly",
+                            "section": "Asset",
                             "docOrder": 2,
-                            "description": "Holder",
+                            "description": "0xeeee...eeee for ETH reconciliations, the token address otherwise",
                             "num": 2
                         },
                         {
                             "name": "symbol",
                             "type": "string",
-                            "section": "Asset Info",
+                            "attributes": "noTable",
+                            "section": "Asset",
                             "docOrder": 3,
-                            "description": "Symbol",
+                            "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
                             "num": 3
                         },
                         {
-                            "name": "name",
-                            "type": "string",
-                            "section": "Asset Info",
+                            "name": "decimals",
+                            "type": "value",
+                            "attributes": "noTable",
+                            "section": "Asset",
                             "docOrder": 4,
-                            "description": "Name",
+                            "description": "the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18",
                             "num": 4
                         },
                         {
-                            "name": "decimals",
-                            "type": "int64",
-                            "section": "Asset Info",
+                            "name": "priceSource",
+                            "type": "string",
+                            "attributes": "noTable",
+                            "section": "Asset",
                             "docOrder": 5,
-                            "description": "Decimals",
+                            "description": "the on-chain source from which the spot price was taken",
                             "num": 5
                         },
                         {
-                            "name": "totalSupply",
-                            "type": "wei",
-                            "section": "Asset Info",
+                            "name": "calcs.begBalEth",
+                            "type": "int256",
+                            "section": "Reconciliation",
                             "docOrder": 6,
-                            "description": "Total Supply",
+                            "description": "the beginning balance in ETH",
                             "num": 6
                         },
                         {
-                            "name": "source",
-                            "type": "string",
-                            "attributes": "noTable",
-                            "section": "Classification",
+                            "name": "calcs.totalInEth",
+                            "type": "int256",
+                            "section": "Reconciliation",
                             "docOrder": 7,
-                            "description": "Source",
+                            "description": "total inflow in ETH",
                             "num": 7
                         },
                         {
-                            "name": "tags",
-                            "type": "string",
-                            "attributes": "noTable",
-                            "section": "Classification",
+                            "name": "calcs.totalOutEth",
+                            "type": "int256",
+                            "section": "Reconciliation",
                             "docOrder": 8,
-                            "description": "Tags",
+                            "description": "total outflow in ETH",
                             "num": 8
                         },
                         {
-                            "name": "isContract",
-                            "type": "bool",
+                            "name": "calcs.amountNetEth",
+                            "type": "int256",
                             "attributes": "noTable",
-                            "section": "Classification",
+                            "section": "Reconciliation",
                             "docOrder": 9,
-                            "description": "Is Contract",
+                            "description": "net amount in ETH",
                             "num": 9
                         },
                         {
-                            "name": "isCustom",
-                            "type": "bool",
-                            "attributes": "noTable",
-                            "section": "Classification",
+                            "name": "calcs.endBalEth",
+                            "type": "int256",
+                            "section": "Reconciliation",
                             "docOrder": 10,
-                            "description": "Is Custom",
+                            "description": "ending balance in ETH",
                             "num": 10
                         },
                         {
-                            "name": "isErc20",
-                            "type": "bool",
+                            "name": "spotPrice",
+                            "type": "float",
                             "attributes": "noTable",
-                            "section": "Classification",
+                            "section": "Asset",
                             "docOrder": 11,
-                            "description": "Is ERC20",
+                            "description": "the on-chain price in USD at the time of the transaction",
                             "num": 11
                         },
                         {
-                            "name": "isErc721",
-                            "type": "bool",
+                            "name": "calcs.endBalCalcEth",
+                            "type": "int256",
                             "attributes": "noTable",
-                            "section": "Classification",
+                            "section": "Reconciliation",
                             "docOrder": 12,
-                            "description": "Is ERC721",
+                            "description": "calculated ending balance in ETH",
                             "num": 12
                         },
                         {
-                            "name": "isPrefund",
-                            "type": "bool",
+                            "name": "date",
+                            "type": "datetime",
                             "attributes": "noTable",
-                            "section": "Classification",
+                            "section": "Summary",
                             "docOrder": 13,
-                            "description": "Is Prefund",
+                            "description": "the timestamp as a date",
                             "num": 13
                         },
                         {
-                            "name": "deleted",
-                            "type": "bool",
+                            "name": "gasUsed",
+                            "type": "value",
                             "attributes": "noTable",
-                            "section": "Classification",
+                            "section": "Summary",
                             "docOrder": 14,
-                            "description": "Deleted",
+                            "description": "gas used in the transaction",
                             "num": 14
                         },
                         {
-                            "name": "prefund",
-                            "type": "wei",
+                            "name": "calcs.reconciliationType",
+                            "type": "string",
                             "attributes": "noTable",
-                            "section": "Data",
+                            "section": "Summary",
                             "docOrder": 15,
-                            "description": "Prefund",
+                            "description": "type of reconciliation",
                             "num": 15
+                        },
+                        {
+                            "name": "accountedFor",
+                            "type": "address",
+                            "attributes": "noTable",
+                            "section": "Summary",
+                            "docOrder": 16,
+                            "description": "the address being accounted for",
+                            "num": 16
+                        },
+                        {
+                            "name": "calcs.reconciled",
+                            "type": "bool",
+                            "section": "Summary",
+                            "docOrder": 17,
+                            "description": "true if reconciled",
+                            "num": 17
+                        },
+                        {
+                            "name": "amountIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 18,
+                            "description": "incoming amount",
+                            "num": 18
+                        },
+                        {
+                            "name": "internalIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 19,
+                            "description": "internal incoming amount",
+                            "num": 19
+                        },
+                        {
+                            "name": "selfDestructIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 20,
+                            "description": "self-destruct incoming amount",
+                            "num": 20
+                        },
+                        {
+                            "name": "minerBaseRewardIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 21,
+                            "description": "miner base reward",
+                            "num": 21
+                        },
+                        {
+                            "name": "minerTxFeeIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 22,
+                            "description": "miner transaction fee",
+                            "num": 22
+                        },
+                        {
+                            "name": "prefundIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Inflow",
+                            "docOrder": 23,
+                            "description": "prefund amount",
+                            "num": 23
+                        },
+                        {
+                            "name": "amountOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Outflow",
+                            "docOrder": 24,
+                            "description": "outgoing amount",
+                            "num": 24
+                        },
+                        {
+                            "name": "internalOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Outflow",
+                            "docOrder": 25,
+                            "description": "internal outgoing amount",
+                            "num": 25
+                        },
+                        {
+                            "name": "selfDestructOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Outflow",
+                            "docOrder": 26,
+                            "description": "self-destruct outgoing amount",
+                            "num": 26
+                        },
+                        {
+                            "name": "gasOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Outflow",
+                            "docOrder": 27,
+                            "description": "gas out",
+                            "num": 27
+                        },
+                        {
+                            "name": "blockNumber",
+                            "type": "blknum",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 28,
+                            "description": "the number of the block",
+                            "num": 28
+                        },
+                        {
+                            "name": "transactionIndex",
+                            "type": "txnum",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 29,
+                            "description": "the zero-indexed position of the transaction",
+                            "num": 29
+                        },
+                        {
+                            "name": "logIndex",
+                            "type": "lognum",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 30,
+                            "description": "the zero-indexed position of the log",
+                            "num": 30
+                        },
+                        {
+                            "name": "transactionHash",
+                            "type": "hash",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 31,
+                            "description": "the hash of the transaction",
+                            "num": 31
+                        },
+                        {
+                            "name": "sender",
+                            "type": "address",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 32,
+                            "description": "the transaction sender",
+                            "num": 32
+                        },
+                        {
+                            "name": "recipient",
+                            "type": "address",
+                            "attributes": "noTable",
+                            "section": "Details",
+                            "docOrder": 33,
+                            "description": "the transaction recipient",
+                            "num": 33
+                        },
+                        {
+                            "name": "prevBal",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Analysis",
+                            "docOrder": 34,
+                            "description": "previous balance",
+                            "num": 34
+                        },
+                        {
+                            "name": "begBalDiff",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Analysis",
+                            "docOrder": 35,
+                            "description": "beginning balance difference",
+                            "num": 35
+                        },
+                        {
+                            "name": "endBalDiff",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Analysis",
+                            "docOrder": 36,
+                            "description": "ending balance difference",
+                            "num": 36
+                        },
+                        {
+                            "name": "correctingReasons",
+                            "type": "string",
+                            "attributes": "noTable",
+                            "section": "Analysis",
+                            "docOrder": 37,
+                            "description": "reasons for corrections",
+                            "num": 37
+                        },
+                        {
+                            "name": "correctBegBalIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 38,
+                            "description": "correct beginning balance in",
+                            "num": 38
+                        },
+                        {
+                            "name": "correctAmountIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 39,
+                            "description": "correct amount in",
+                            "num": 39
+                        },
+                        {
+                            "name": "correctEndBalIn",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 40,
+                            "description": "correct ending balance in",
+                            "num": 40
+                        },
+                        {
+                            "name": "correctBegBalOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 41,
+                            "description": "correct beginning balance out",
+                            "num": 41
+                        },
+                        {
+                            "name": "correctAmountOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 42,
+                            "description": "correct amount out",
+                            "num": 42
+                        },
+                        {
+                            "name": "correctEndBalOut",
+                            "type": "int256",
+                            "attributes": "noTable",
+                            "section": "Corrections",
+                            "docOrder": 43,
+                            "description": "correct ending balance out",
+                            "num": 43
                         }
                     ]
                 },
@@ -852,6 +1112,7 @@
                         {
                             "display_name": "Stats",
                             "name": "Stats",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Stats",
                             "storeSource": "sdk",
@@ -865,11 +1126,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Index",
                             "name": "Index",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Index",
                             "storeSource": "sdk",
@@ -883,11 +1146,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Blooms",
                             "name": "Blooms",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Blooms",
                             "storeSource": "sdk",
@@ -901,11 +1166,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Manifest",
                             "name": "Manifest",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Manifest",
                             "storeSource": "sdk",
@@ -917,7 +1184,8 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         }
                     ]
                 },
@@ -1868,6 +2136,7 @@
                         {
                             "display_name": "Statements",
                             "name": "Statements",
+                            "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Statements",
                             "storeSource": "sdk",
@@ -1876,16 +2145,18 @@
                             ],
                             "viewType": "",
                             "renderer": "panel",
-                            "navigate": "",
+                            "navigate": "exports|\u003clatest\u003e||",
                             "attributes": "",
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Balances",
                             "name": "Balances",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Balances",
                             "storeSource": "sdk",
@@ -1899,11 +2170,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Transfers",
                             "name": "Transfers",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Transfers",
                             "storeSource": "sdk",
@@ -1917,11 +2190,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Transactions",
                             "name": "Transactions",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Transactions",
                             "storeSource": "sdk",
@@ -1935,11 +2210,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "OpenApprovals",
                             "name": "OpenApprovals",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "OpenApprovals",
                             "storeSource": "sdk",
@@ -1953,11 +2230,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "ApprovalLogs",
                             "name": "ApprovalLogs",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "ApprovalLogs",
                             "storeSource": "sdk",
@@ -1971,11 +2250,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "ApprovalTxs",
                             "name": "ApprovalTxs",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "ApprovalTxs",
                             "storeSource": "sdk",
@@ -1989,11 +2270,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Withdrawals",
                             "name": "Withdrawals",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Withdrawals",
                             "storeSource": "sdk",
@@ -2007,11 +2290,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Assets",
                             "name": "Assets",
+                            "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Assets",
                             "storeSource": "sdk",
@@ -2019,17 +2304,19 @@
                                 "export"
                             ],
                             "viewType": "",
-                            "renderer": "",
-                            "navigate": "",
+                            "renderer": "panel",
+                            "navigate": "exports|statements||",
                             "attributes": "",
                             "disabled": false,
-                            "needsCalcs": false,
-                            "panelChart": false,
-                            "facetChart": false
+                            "needsCalcs": true,
+                            "panelChart": true,
+                            "facetChart": false,
+                            "useMapKey": true
                         },
                         {
                             "display_name": "AssetCharts",
                             "name": "AssetCharts",
+                            "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Statements",
                             "storeSource": "sdk",
@@ -2043,11 +2330,13 @@
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": false,
-                            "facetChart": true
+                            "facetChart": true,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Logs",
                             "name": "Logs",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Logs",
                             "storeSource": "sdk",
@@ -2059,13 +2348,15 @@
                             "navigate": "",
                             "attributes": "",
                             "disabled": false,
-                            "needsCalcs": false,
+                            "needsCalcs": true,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Traces",
                             "name": "Traces",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Traces",
                             "storeSource": "sdk",
@@ -2079,11 +2370,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Receipts",
                             "name": "Receipts",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Receipts",
                             "storeSource": "sdk",
@@ -2097,7 +2390,8 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         }
                     ]
                 },
@@ -2590,6 +2884,7 @@
                         {
                             "display_name": "Monitors",
                             "name": "Monitors",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Monitors",
                             "storeSource": "sdk",
@@ -2607,7 +2902,8 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         }
                     ]
                 }
@@ -2764,6 +3060,7 @@
                         {
                             "display_name": "All",
                             "name": "All",
+                            "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
                             "storeSource": "sdk",
@@ -2780,11 +3077,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Custom",
                             "name": "Custom",
+                            "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
                             "storeSource": "sdk",
@@ -2806,11 +3105,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Prefund",
                             "name": "Prefund",
+                            "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
                             "storeSource": "sdk",
@@ -2826,11 +3127,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Regular",
                             "name": "Regular",
+                            "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
                             "storeSource": "sdk",
@@ -2847,11 +3150,13 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         },
                         {
                             "display_name": "Baddress",
                             "name": "Baddress",
+                            "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
                             "storeSource": "sdk",
@@ -2866,7 +3171,8 @@
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
-                            "facetChart": false
+                            "facetChart": false,
+                            "useMapKey": false
                         }
                     ]
                 }
@@ -2945,6 +3251,7 @@
                 {
                     "display_name": "Statements",
                     "name": "Statements",
+                    "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Statements",
                     "storeSource": "sdk",
@@ -2953,16 +3260,18 @@
                     ],
                     "viewType": "",
                     "renderer": "panel",
-                    "navigate": "",
+                    "navigate": "exports|\u003clatest\u003e||",
                     "attributes": "",
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Balances",
                     "name": "Balances",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Balances",
                     "storeSource": "sdk",
@@ -2976,11 +3285,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Transfers",
                     "name": "Transfers",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transfers",
                     "storeSource": "sdk",
@@ -2994,11 +3305,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Transactions",
                     "name": "Transactions",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transactions",
                     "storeSource": "sdk",
@@ -3012,11 +3325,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "OpenApprovals",
                     "name": "OpenApprovals",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "OpenApprovals",
                     "storeSource": "sdk",
@@ -3030,11 +3345,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "ApprovalLogs",
                     "name": "ApprovalLogs",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "ApprovalLogs",
                     "storeSource": "sdk",
@@ -3048,11 +3365,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "ApprovalTxs",
                     "name": "ApprovalTxs",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "ApprovalTxs",
                     "storeSource": "sdk",
@@ -3066,11 +3385,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Withdrawals",
                     "name": "Withdrawals",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Withdrawals",
                     "storeSource": "sdk",
@@ -3084,11 +3405,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Assets",
                     "name": "Assets",
+                    "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Assets",
                     "storeSource": "sdk",
@@ -3096,17 +3419,19 @@
                         "export"
                     ],
                     "viewType": "",
-                    "renderer": "",
-                    "navigate": "",
+                    "renderer": "panel",
+                    "navigate": "exports|statements||",
                     "attributes": "",
                     "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false
+                    "needsCalcs": true,
+                    "panelChart": true,
+                    "facetChart": false,
+                    "useMapKey": true
                 },
                 {
                     "display_name": "AssetCharts",
                     "name": "AssetCharts",
+                    "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Statements",
                     "storeSource": "sdk",
@@ -3120,11 +3445,13 @@
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": false,
-                    "facetChart": true
+                    "facetChart": true,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Logs",
                     "name": "Logs",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
                     "storeSource": "sdk",
@@ -3136,13 +3463,15 @@
                     "navigate": "",
                     "attributes": "",
                     "disabled": false,
-                    "needsCalcs": false,
+                    "needsCalcs": true,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Traces",
                     "name": "Traces",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Traces",
                     "storeSource": "sdk",
@@ -3156,11 +3485,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Receipts",
                     "name": "Receipts",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Receipts",
                     "storeSource": "sdk",
@@ -3174,7 +3505,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -4327,6 +4659,7 @@
                 {
                     "display_name": "Monitors",
                     "name": "Monitors",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Monitors",
                     "storeSource": "sdk",
@@ -4344,7 +4677,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -6109,6 +6443,7 @@
                 {
                     "display_name": "Downloaded",
                     "name": "Downloaded",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Abis",
                     "storeSource": "sdk",
@@ -6124,11 +6459,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Known",
                     "name": "Known",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Abis",
                     "storeSource": "sdk",
@@ -6142,11 +6479,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Functions",
                     "name": "Functions",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Functions",
                     "storeSource": "sdk",
@@ -6160,11 +6499,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Functions",
                     "storeSource": "sdk",
@@ -6178,7 +6519,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -6322,6 +6664,7 @@
                 {
                     "display_name": "All",
                     "name": "All",
+                    "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
                     "storeSource": "sdk",
@@ -6338,11 +6681,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Custom",
                     "name": "Custom",
+                    "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
                     "storeSource": "sdk",
@@ -6364,11 +6709,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Prefund",
                     "name": "Prefund",
+                    "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
                     "storeSource": "sdk",
@@ -6384,11 +6731,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Regular",
                     "name": "Regular",
+                    "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
                     "storeSource": "sdk",
@@ -6405,11 +6754,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Baddress",
                     "name": "Baddress",
+                    "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
                     "storeSource": "sdk",
@@ -6424,7 +6775,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -6439,133 +6791,385 @@
             "disable_go": true,
             "members": [
                 {
-                    "name": "address",
-                    "type": "address",
-                    "section": "Asset Info",
+                    "name": "timestamp",
+                    "type": "timestamp",
+                    "section": "Asset",
                     "docOrder": 1,
-                    "description": "Address",
+                    "description": "the Unix timestamp of the object",
                     "num": 1
                 },
                 {
-                    "name": "holder",
+                    "name": "asset",
                     "type": "address",
-                    "section": "Asset Info",
+                    "attributes": "readOnly",
+                    "section": "Asset",
                     "docOrder": 2,
-                    "description": "Holder",
+                    "description": "0xeeee...eeee for ETH reconciliations, the token address otherwise",
                     "num": 2
                 },
                 {
                     "name": "symbol",
                     "type": "string",
-                    "section": "Asset Info",
+                    "attributes": "noTable",
+                    "section": "Asset",
                     "docOrder": 3,
-                    "description": "Symbol",
+                    "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
                     "num": 3
                 },
                 {
-                    "name": "name",
-                    "type": "string",
-                    "section": "Asset Info",
+                    "name": "decimals",
+                    "type": "value",
+                    "attributes": "noTable",
+                    "section": "Asset",
                     "docOrder": 4,
-                    "description": "Name",
+                    "description": "the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18",
                     "num": 4
                 },
                 {
-                    "name": "decimals",
-                    "type": "int64",
-                    "section": "Asset Info",
+                    "name": "priceSource",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Asset",
                     "docOrder": 5,
-                    "description": "Decimals",
+                    "description": "the on-chain source from which the spot price was taken",
                     "num": 5
                 },
                 {
-                    "name": "totalSupply",
-                    "type": "wei",
-                    "section": "Asset Info",
+                    "name": "calcs.begBalEth",
+                    "type": "int256",
+                    "section": "Reconciliation",
                     "docOrder": 6,
-                    "description": "Total Supply",
+                    "description": "the beginning balance in ETH",
                     "num": 6
                 },
                 {
-                    "name": "source",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Classification",
+                    "name": "calcs.totalInEth",
+                    "type": "int256",
+                    "section": "Reconciliation",
                     "docOrder": 7,
-                    "description": "Source",
+                    "description": "total inflow in ETH",
                     "num": 7
                 },
                 {
-                    "name": "tags",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Classification",
+                    "name": "calcs.totalOutEth",
+                    "type": "int256",
+                    "section": "Reconciliation",
                     "docOrder": 8,
-                    "description": "Tags",
+                    "description": "total outflow in ETH",
                     "num": 8
                 },
                 {
-                    "name": "isContract",
-                    "type": "bool",
+                    "name": "calcs.amountNetEth",
+                    "type": "int256",
                     "attributes": "noTable",
-                    "section": "Classification",
+                    "section": "Reconciliation",
                     "docOrder": 9,
-                    "description": "Is Contract",
+                    "description": "net amount in ETH",
                     "num": 9
                 },
                 {
-                    "name": "isCustom",
-                    "type": "bool",
-                    "attributes": "noTable",
-                    "section": "Classification",
+                    "name": "calcs.endBalEth",
+                    "type": "int256",
+                    "section": "Reconciliation",
                     "docOrder": 10,
-                    "description": "Is Custom",
+                    "description": "ending balance in ETH",
                     "num": 10
                 },
                 {
-                    "name": "isErc20",
-                    "type": "bool",
+                    "name": "spotPrice",
+                    "type": "float",
                     "attributes": "noTable",
-                    "section": "Classification",
+                    "section": "Asset",
                     "docOrder": 11,
-                    "description": "Is ERC20",
+                    "description": "the on-chain price in USD at the time of the transaction",
                     "num": 11
                 },
                 {
-                    "name": "isErc721",
-                    "type": "bool",
+                    "name": "calcs.endBalCalcEth",
+                    "type": "int256",
                     "attributes": "noTable",
-                    "section": "Classification",
+                    "section": "Reconciliation",
                     "docOrder": 12,
-                    "description": "Is ERC721",
+                    "description": "calculated ending balance in ETH",
                     "num": 12
                 },
                 {
-                    "name": "isPrefund",
-                    "type": "bool",
+                    "name": "date",
+                    "type": "datetime",
                     "attributes": "noTable",
-                    "section": "Classification",
+                    "section": "Summary",
                     "docOrder": 13,
-                    "description": "Is Prefund",
+                    "description": "the timestamp as a date",
                     "num": 13
                 },
                 {
-                    "name": "deleted",
-                    "type": "bool",
+                    "name": "gasUsed",
+                    "type": "value",
                     "attributes": "noTable",
-                    "section": "Classification",
+                    "section": "Summary",
                     "docOrder": 14,
-                    "description": "Deleted",
+                    "description": "gas used in the transaction",
                     "num": 14
                 },
                 {
-                    "name": "prefund",
-                    "type": "wei",
+                    "name": "calcs.reconciliationType",
+                    "type": "string",
                     "attributes": "noTable",
-                    "section": "Data",
+                    "section": "Summary",
                     "docOrder": 15,
-                    "description": "Prefund",
+                    "description": "type of reconciliation",
                     "num": 15
+                },
+                {
+                    "name": "accountedFor",
+                    "type": "address",
+                    "attributes": "noTable",
+                    "section": "Summary",
+                    "docOrder": 16,
+                    "description": "the address being accounted for",
+                    "num": 16
+                },
+                {
+                    "name": "calcs.reconciled",
+                    "type": "bool",
+                    "section": "Summary",
+                    "docOrder": 17,
+                    "description": "true if reconciled",
+                    "num": 17
+                },
+                {
+                    "name": "amountIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 18,
+                    "description": "incoming amount",
+                    "num": 18
+                },
+                {
+                    "name": "internalIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 19,
+                    "description": "internal incoming amount",
+                    "num": 19
+                },
+                {
+                    "name": "selfDestructIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 20,
+                    "description": "self-destruct incoming amount",
+                    "num": 20
+                },
+                {
+                    "name": "minerBaseRewardIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 21,
+                    "description": "miner base reward",
+                    "num": 21
+                },
+                {
+                    "name": "minerTxFeeIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 22,
+                    "description": "miner transaction fee",
+                    "num": 22
+                },
+                {
+                    "name": "prefundIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Inflow",
+                    "docOrder": 23,
+                    "description": "prefund amount",
+                    "num": 23
+                },
+                {
+                    "name": "amountOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Outflow",
+                    "docOrder": 24,
+                    "description": "outgoing amount",
+                    "num": 24
+                },
+                {
+                    "name": "internalOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Outflow",
+                    "docOrder": 25,
+                    "description": "internal outgoing amount",
+                    "num": 25
+                },
+                {
+                    "name": "selfDestructOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Outflow",
+                    "docOrder": 26,
+                    "description": "self-destruct outgoing amount",
+                    "num": 26
+                },
+                {
+                    "name": "gasOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Outflow",
+                    "docOrder": 27,
+                    "description": "gas out",
+                    "num": 27
+                },
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 28,
+                    "description": "the number of the block",
+                    "num": 28
+                },
+                {
+                    "name": "transactionIndex",
+                    "type": "txnum",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 29,
+                    "description": "the zero-indexed position of the transaction",
+                    "num": 29
+                },
+                {
+                    "name": "logIndex",
+                    "type": "lognum",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 30,
+                    "description": "the zero-indexed position of the log",
+                    "num": 30
+                },
+                {
+                    "name": "transactionHash",
+                    "type": "hash",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 31,
+                    "description": "the hash of the transaction",
+                    "num": 31
+                },
+                {
+                    "name": "sender",
+                    "type": "address",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 32,
+                    "description": "the transaction sender",
+                    "num": 32
+                },
+                {
+                    "name": "recipient",
+                    "type": "address",
+                    "attributes": "noTable",
+                    "section": "Details",
+                    "docOrder": 33,
+                    "description": "the transaction recipient",
+                    "num": 33
+                },
+                {
+                    "name": "prevBal",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Analysis",
+                    "docOrder": 34,
+                    "description": "previous balance",
+                    "num": 34
+                },
+                {
+                    "name": "begBalDiff",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Analysis",
+                    "docOrder": 35,
+                    "description": "beginning balance difference",
+                    "num": 35
+                },
+                {
+                    "name": "endBalDiff",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Analysis",
+                    "docOrder": 36,
+                    "description": "ending balance difference",
+                    "num": 36
+                },
+                {
+                    "name": "correctingReasons",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Analysis",
+                    "docOrder": 37,
+                    "description": "reasons for corrections",
+                    "num": 37
+                },
+                {
+                    "name": "correctBegBalIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 38,
+                    "description": "correct beginning balance in",
+                    "num": 38
+                },
+                {
+                    "name": "correctAmountIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 39,
+                    "description": "correct amount in",
+                    "num": 39
+                },
+                {
+                    "name": "correctEndBalIn",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 40,
+                    "description": "correct ending balance in",
+                    "num": 40
+                },
+                {
+                    "name": "correctBegBalOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 41,
+                    "description": "correct beginning balance out",
+                    "num": 41
+                },
+                {
+                    "name": "correctAmountOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 42,
+                    "description": "correct amount out",
+                    "num": 42
+                },
+                {
+                    "name": "correctEndBalOut",
+                    "type": "int256",
+                    "attributes": "noTable",
+                    "section": "Corrections",
+                    "docOrder": 43,
+                    "description": "correct ending balance out",
+                    "num": 43
                 }
             ]
         },
@@ -7335,6 +7939,7 @@
                 {
                     "display_name": "Stats",
                     "name": "Stats",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Stats",
                     "storeSource": "sdk",
@@ -7348,11 +7953,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Index",
                     "name": "Index",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Index",
                     "storeSource": "sdk",
@@ -7366,11 +7973,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Blooms",
                     "name": "Blooms",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Blooms",
                     "storeSource": "sdk",
@@ -7384,11 +7993,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Manifest",
                     "name": "Manifest",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Manifest",
                     "storeSource": "sdk",
@@ -7400,7 +8011,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -7479,6 +8091,7 @@
                 {
                     "display_name": "Dashboard",
                     "name": "Dashboard",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Contracts",
                     "storeSource": "sdk",
@@ -7490,11 +8103,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Execute",
                     "name": "Execute",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Contracts",
                     "storeSource": "sdk",
@@ -7506,11 +8121,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
                     "storeSource": "sdk",
@@ -7524,7 +8141,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -8108,6 +8726,7 @@
                 {
                     "display_name": "Status",
                     "name": "Status",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Status",
                     "storeSource": "sdk",
@@ -8119,11 +8738,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Caches",
                     "name": "Caches",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Caches",
                     "storeSource": "sdk",
@@ -8137,11 +8758,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Chains",
                     "name": "Chains",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Chains",
                     "storeSource": "sdk",
@@ -8155,7 +8778,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -8516,6 +9140,7 @@
                 {
                     "display_name": "Generator",
                     "name": "Generator",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "DalleDress",
                     "storeSource": "dalle",
@@ -8527,11 +9152,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Series",
                     "name": "Series",
+                    "mapKey": "item.Suffix",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Series",
                     "storeSource": "dalle",
@@ -8549,11 +9176,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Databases",
                     "name": "Databases",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Databases",
                     "storeSource": "dalle",
@@ -8567,11 +9196,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
                     "storeSource": "sdk",
@@ -8585,11 +9216,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Gallery",
                     "name": "Gallery",
+                    "mapKey": "item.Original + \":\" + item.AnnotatedPath",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "DalleDress",
                     "storeSource": "dalle",
@@ -8603,7 +9236,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         },
@@ -8840,6 +9474,7 @@
                 {
                     "display_name": "Comparitoor",
                     "name": "Comparitoor",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
                     "storeSource": "sdk",
@@ -8853,11 +9488,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Chifra",
                     "name": "Chifra",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
                     "storeSource": "sdk",
@@ -8871,11 +9508,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Etherscan",
                     "name": "Etherscan",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
                     "storeSource": "sdk",
@@ -8889,11 +9528,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Covalent",
                     "name": "Covalent",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
                     "storeSource": "sdk",
@@ -8907,11 +9548,13 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 },
                 {
                     "display_name": "Alchemy",
                     "name": "Alchemy",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
                     "storeSource": "sdk",
@@ -8925,7 +9568,8 @@
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
-                    "facetChart": false
+                    "facetChart": false,
+                    "useMapKey": false
                 }
             ]
         }

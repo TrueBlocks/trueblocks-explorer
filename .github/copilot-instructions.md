@@ -229,4 +229,8 @@ yarn test              # All tests (Go + TypeScript)
 yarn lint              # Lint Go and TypeScript
 yarn test-go           # Go backend tests only
 yarn test-tsx          # Frontend tests only
+
+# Go build commands - redirect output to /tmp
+go build -o /tmp/app .              # Build main app to /tmp
+go build -o /tmp/pkg ./pkg/...      # Build packages to /tmp
 ```

@@ -62,9 +62,9 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 		}
 
 		processFunc := func(item interface{}) *Abi {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Abi); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -113,9 +113,9 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Function {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Function); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

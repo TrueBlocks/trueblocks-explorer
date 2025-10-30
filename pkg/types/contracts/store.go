@@ -52,9 +52,9 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 		}
 
 		processFunc := func(item interface{}) *Contract {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Contract); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -112,9 +112,9 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Log {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Log); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

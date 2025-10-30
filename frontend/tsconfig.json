@@ -14,7 +14,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "noEmitOnError": true,
     "jsx": "react-jsx",
     "noUncheckedIndexedAccess": true,
     "types": [
@@ -40,8 +39,7 @@
       "@wizards": ["src/wizards"]
     }
   },
-  "include": ["src", "wailsjs"],
-  "exclude": ["node_modules/**", "dist/**", "build/**"],
+  "include": ["src", "wailsjs", "tests"],
   "references": [
     {
       "path": "./tsconfig.node.json"

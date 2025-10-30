@@ -97,9 +97,9 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 		}
 
 		processFunc := func(item interface{}) *DalleDress {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*DalleDress); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -139,9 +139,9 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 		}
 
 		processFunc := func(item interface{}) *Database {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Database); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -180,9 +180,9 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 		}
 
 		processFunc := func(item interface{}) *Log {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Log); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -231,9 +231,9 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Series {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Series); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

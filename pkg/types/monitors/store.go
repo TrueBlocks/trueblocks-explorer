@@ -57,9 +57,9 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 		}
 
 		processFunc := func(item interface{}) *Monitor {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Monitor); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

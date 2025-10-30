@@ -102,16 +102,16 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 		}
 
 		processFunc := func(item interface{}) *ApprovalLog {
-			// EXISTING_CODE
-			if tx, ok := item.(*sdk.Transaction); ok {
-				for _, log := range tx.Receipt.Logs {
-					if len(log.Topics) > 0 {
-						return (*ApprovalLog)(&log)
+			if it, ok := item.(*ApprovalLog); ok {
+				// EXISTING_CODE
+				if tx, ok := item.(*sdk.Transaction); ok {
+					for _, log := range tx.Receipt.Logs {
+						if len(log.Topics) > 0 {
+							return (*ApprovalLog)(&log)
+						}
 					}
 				}
-			}
-			// EXISTING_CODE
-			if it, ok := item.(*ApprovalLog); ok {
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -160,9 +160,9 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 		}
 
 		processFunc := func(item interface{}) *ApprovalTx {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*ApprovalTx); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -212,9 +212,9 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Asset {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Asset); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -264,9 +264,9 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 		}
 
 		processFunc := func(item interface{}) *Balance {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Balance); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -316,9 +316,9 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 		}
 
 		processFunc := func(item interface{}) *Log {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Log); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -368,9 +368,9 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 		}
 
 		processFunc := func(item interface{}) *OpenApproval {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*OpenApproval); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -420,9 +420,9 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 		}
 
 		processFunc := func(item interface{}) *Receipt {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Receipt); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -472,9 +472,9 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 		}
 
 		processFunc := func(item interface{}) *Statement {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Statement); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				c.updateStatementsBucket(it)
 				return it
 			}
@@ -526,9 +526,9 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 		}
 
 		processFunc := func(item interface{}) *Trace {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Trace); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -577,9 +577,9 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 		}
 
 		processFunc := func(item interface{}) *Transaction {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Transaction); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -629,9 +629,9 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 		}
 
 		processFunc := func(item interface{}) *Transfer {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Transfer); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil
@@ -680,9 +680,9 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 		}
 
 		processFunc := func(item interface{}) *Withdrawal {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*Withdrawal); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 				return it
 			}
 			return nil

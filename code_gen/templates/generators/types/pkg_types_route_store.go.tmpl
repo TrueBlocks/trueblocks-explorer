@@ -38,9 +38,9 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 		}
 
 		processFunc := func(item interface{}) *{{toSingular .Name}} {
-			// EXISTING_CODE
-			// EXISTING_CODE
 			if it, ok := item.(*{{toSingular .Name}}); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
 {{if .NeedsBuckets}}				c.update{{.Name}}Bucket(it)
 {{end}}				return it
 			}

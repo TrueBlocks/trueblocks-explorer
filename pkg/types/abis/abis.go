@@ -58,6 +58,7 @@ func (c *AbisCollection) initializeFacets(payload *types.Payload) {
 		c.getAbisStore(payload, AbisDownloaded),
 		"abis",
 		c,
+		false,
 	)
 
 	c.knownFacet = facets.NewFacet(
@@ -67,6 +68,7 @@ func (c *AbisCollection) initializeFacets(payload *types.Payload) {
 		c.getAbisStore(payload, AbisKnown),
 		"abis",
 		c,
+		false,
 	)
 
 	c.functionsFacet = facets.NewFacet(
@@ -76,6 +78,7 @@ func (c *AbisCollection) initializeFacets(payload *types.Payload) {
 		c.getFunctionsStore(payload, AbisFunctions),
 		"abis",
 		c,
+		false,
 	)
 
 	c.eventsFacet = facets.NewFacet(
@@ -85,6 +88,7 @@ func (c *AbisCollection) initializeFacets(payload *types.Payload) {
 		c.getFunctionsStore(payload, AbisEvents),
 		"abis",
 		c,
+		false,
 	)
 }
 

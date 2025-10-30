@@ -55,6 +55,7 @@ func (c *StatusCollection) initializeFacets(payload *types.Payload) {
 		c.getStatusStore(payload, StatusStatus),
 		"status",
 		c,
+		false,
 	)
 
 	c.cachesFacet = facets.NewFacet(
@@ -64,6 +65,7 @@ func (c *StatusCollection) initializeFacets(payload *types.Payload) {
 		c.getCachesStore(payload, StatusCaches),
 		"status",
 		c,
+		false,
 	)
 
 	c.chainsFacet = facets.NewFacet(
@@ -73,6 +75,7 @@ func (c *StatusCollection) initializeFacets(payload *types.Payload) {
 		c.getChainsStore(payload, StatusChains),
 		"status",
 		c,
+		false,
 	)
 }
 

@@ -67,23 +67,51 @@ Welcome to the **Exports** view! This section provides information about managin
   - nonce: sequence number of the transactions sent by the sender
   - type: the transaction type
 
-- **Assets Store (15 members)**
+- **Assets Store (43 members)**
 
-  - address: Address
-  - holder: Holder
-  - symbol: Symbol
-  - name: Name
-  - decimals: Decimals
-  - totalSupply: Total Supply
-  - source: Source
-  - tags: Tags
-  - isContract: Is Contract
-  - isCustom: Is Custom
-  - isErc20: Is ERC20
-  - isErc721: Is ERC721
-  - isPrefund: Is Prefund
-  - deleted: Deleted
-  - prefund: Prefund
+  - timestamp: the Unix timestamp of the object
+  - asset: 0xeeee...eeee for ETH reconciliations, the token address otherwise
+  - symbol: either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain
+  - decimals: the value of `decimals` from an ERC20 contract or, if ETH or WEI, then 18
+  - priceSource: the on-chain source from which the spot price was taken
+  - calcs.begBalEth: the beginning balance in ETH
+  - calcs.totalInEth: total inflow in ETH
+  - calcs.totalOutEth: total outflow in ETH
+  - calcs.amountNetEth: net amount in ETH
+  - calcs.endBalEth: ending balance in ETH
+  - spotPrice: the on-chain price in USD at the time of the transaction
+  - calcs.endBalCalcEth: calculated ending balance in ETH
+  - date: the timestamp as a date
+  - gasUsed: gas used in the transaction
+  - calcs.reconciliationType: type of reconciliation
+  - accountedFor: the address being accounted for
+  - calcs.reconciled: true if reconciled
+  - amountIn: incoming amount
+  - internalIn: internal incoming amount
+  - selfDestructIn: self-destruct incoming amount
+  - minerBaseRewardIn: miner base reward
+  - minerTxFeeIn: miner transaction fee
+  - prefundIn: prefund amount
+  - amountOut: outgoing amount
+  - internalOut: internal outgoing amount
+  - selfDestructOut: self-destruct outgoing amount
+  - gasOut: gas out
+  - blockNumber: the number of the block
+  - transactionIndex: the zero-indexed position of the transaction
+  - logIndex: the zero-indexed position of the log
+  - transactionHash: the hash of the transaction
+  - sender: the transaction sender
+  - recipient: the transaction recipient
+  - prevBal: previous balance
+  - begBalDiff: beginning balance difference
+  - endBalDiff: ending balance difference
+  - correctingReasons: reasons for corrections
+  - correctBegBalIn: correct beginning balance in
+  - correctAmountIn: correct amount in
+  - correctEndBalIn: correct ending balance in
+  - correctBegBalOut: correct beginning balance out
+  - correctAmountOut: correct amount out
+  - correctEndBalOut: correct ending balance out
 
 - **Balances Store (13 members)**
 

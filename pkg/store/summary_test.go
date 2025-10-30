@@ -71,7 +71,7 @@ func TestStoreWithSummary(t *testing.T) {
 	store.AddItem(item2, 1)
 
 	// Verify regular data
-	data := store.GetItems()
+	data := store.GetItems(false)
 	if len(data) != 2 {
 		t.Errorf("Expected 2 items in store, got %d", len(data))
 	}

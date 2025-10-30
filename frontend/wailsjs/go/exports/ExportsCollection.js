@@ -30,10 +30,6 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['exports']['ExportsCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetPageForRecord(arg1, arg2, arg3, arg4, arg5, arg6) {
-  return window['go']['exports']['ExportsCollection']['GetPageForRecord'](arg1, arg2, arg3, arg4, arg5, arg6);
-}
-
 export function GetSummary() {
   return window['go']['exports']['ExportsCollection']['GetSummary']();
 }

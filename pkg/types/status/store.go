@@ -72,10 +72,8 @@ func (c *StatusCollection) getCachesStore(payload *types.Payload, facet types.Da
 			return nil
 		}
 
-		mappingFunc := func(item *Cache) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Cache) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -124,10 +122,8 @@ func (c *StatusCollection) getChainsStore(payload *types.Payload, facet types.Da
 			return nil
 		}
 
-		mappingFunc := func(item *Chain) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Chain) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -176,10 +172,8 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 			return nil
 		}
 
-		mappingFunc := func(item *Status) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Status) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

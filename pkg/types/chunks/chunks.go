@@ -58,6 +58,7 @@ func (c *ChunksCollection) initializeFacets(payload *types.Payload) {
 		c.getStatsStore(payload, ChunksStats),
 		"chunks",
 		c,
+		false,
 	)
 
 	c.indexFacet = facets.NewFacet(
@@ -67,6 +68,7 @@ func (c *ChunksCollection) initializeFacets(payload *types.Payload) {
 		c.getIndexStore(payload, ChunksIndex),
 		"chunks",
 		c,
+		false,
 	)
 
 	c.bloomsFacet = facets.NewFacet(
@@ -76,6 +78,7 @@ func (c *ChunksCollection) initializeFacets(payload *types.Payload) {
 		c.getBloomsStore(payload, ChunksBlooms),
 		"chunks",
 		c,
+		false,
 	)
 
 	c.manifestFacet = facets.NewFacet(
@@ -85,6 +88,7 @@ func (c *ChunksCollection) initializeFacets(payload *types.Payload) {
 		c.getManifestStore(payload, ChunksManifest),
 		"chunks",
 		c,
+		false,
 	)
 }
 

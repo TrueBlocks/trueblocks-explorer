@@ -79,10 +79,8 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 			return nil
 		}
 
-		mappingFunc := func(item *Transaction) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Transaction) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

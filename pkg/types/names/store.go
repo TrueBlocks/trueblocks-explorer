@@ -66,13 +66,9 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 			return nil
 		}
 
-		mappingFunc := func(item *Name) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			if item != nil && !item.Address.IsZero() {
-				return item.Address, true
-			}
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Name) (key string, includeInMap bool) {
+			testVal := item.Address.Hex()
+			return testVal, testVal != ""
 		}
 
 		storeName := c.getStoreName(payload, facet)

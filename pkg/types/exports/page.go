@@ -257,6 +257,19 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
+			props := &sdk.ModelProps{
+				Chain:   payload.ActiveChain,
+				Format:  "json",
+				Verbose: true,
+				ExtraOpts: map[string]any{
+					"ether": true,
+				},
+			}
+			for i := range result.Items {
+				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
+				}
+			}
 			page.Assets = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
@@ -308,6 +321,19 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
+			props := &sdk.ModelProps{
+				Chain:   payload.ActiveChain,
+				Format:  "json",
+				Verbose: true,
+				ExtraOpts: map[string]any{
+					"ether": true,
+				},
+			}
+			for i := range result.Items {
+				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
+				}
+			}
 			page.Logs = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
@@ -496,7 +522,7 @@ func (c *ExportsCollection) generateSummariesForPeriod(dataFacet types.DataFacet
 	// EXISTING_CODE
 	case ExportsStatements:
 		store := c.statementsFacet.GetStore()
-		data := store.GetItems()
+		data := store.GetItems(false)
 
 		// Clear existing summaries for this period
 		store.GetSummaryManager().Reset()
@@ -543,7 +569,7 @@ func (c *ExportsCollection) generateSummariesForPeriod(dataFacet types.DataFacet
 	case ExportsBalances:
 		statementsStore := c.statementsFacet.GetStore()
 		balancesStore := c.balancesFacet.GetStore()
-		statements := statementsStore.GetItems()
+		statements := statementsStore.GetItems(false)
 
 		// Clear existing balance summaries for this period
 		balancesStore.GetSummaryManager().Reset()
@@ -669,84 +695,6 @@ func (c *ExportsCollection) matchesApprovalTxFilter(item *ApprovalTx, filter str
 	_ = filter  // delint
 	return true // strings.Contains(strings.ToLower(item.TransactionHash.Hex()), filter) ||
 	// strings.Contains(strings.ToLower(item.ContractAddress.Hex()), filter)
-}
-
-// GetPageForRecord finds the page containing a specific record and returns it
-func (c *ExportsCollection) GetPageForRecord(
-	payload *types.Payload,
-	recordId string,
-	recordIdField string,
-	pageSize int,
-	sortSpec sdk.SortSpec,
-	filter string,
-) (*ExportsPage, error) {
-	dataFacet := payload.DataFacet
-
-	// For assets facet, search through all data to find the record
-	if dataFacet == ExportsAssets {
-		facet := c.assetsFacet
-
-		// Use the same filtering pattern as regular GetPage
-		filter = strings.ToLower(filter)
-		var filterFunc func(*Asset) bool
-		if filter != "" {
-			filterFunc = func(item *Asset) bool {
-				return c.matchesAssetFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Asset, sort sdk.SortSpec) error {
-			return sdk.SortAssets(items, sort)
-		}
-
-		// Get all data from the facet (not paginated) but with proper filtering and sorting
-		// Use a very large pageSize to get all items
-		var allData []Asset
-		if result, err := facet.GetPage(0, 1000000, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPageForRecord", err)
-		} else {
-			allData = result.Items
-		}
-
-		// Find the record index in the properly filtered and sorted data
-		recordIndex := -1
-		for i, asset := range allData {
-			var fieldValue string
-			switch recordIdField {
-			case "address":
-				fieldValue = asset.Address.Hex()
-			default:
-				return nil, fmt.Errorf("unsupported record ID field: %s", recordIdField)
-			}
-
-			// Log first few addresses and the exact comparison
-			if strings.EqualFold(fieldValue, recordId) {
-				recordIndex = i
-				break
-			}
-		}
-
-		if recordIndex == -1 {
-			return nil, fmt.Errorf("record with ID %s not found in field %s", recordId, recordIdField)
-		}
-
-		// Calculate which page contains this record
-		pageNumber := recordIndex / pageSize
-		first := pageNumber * pageSize
-
-		// Get the specific page using the regular GetPage method (ensures consistency)
-		if page, err := c.GetPage(payload, first, pageSize, sortSpec, filter); err != nil {
-			return nil, err
-		} else {
-			return page.(*ExportsPage), nil
-		}
-	}
-
-	// For other facets, fall back to regular GetPage (first page)
-	if page, err := c.GetPage(payload, 0, pageSize, sortSpec, filter); err != nil {
-		return nil, err
-	} else {
-		return page.(*ExportsPage), nil
-	}
 }
 
 // EXISTING_CODE

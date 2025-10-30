@@ -55,6 +55,7 @@ func (c *ContractsCollection) initializeFacets(payload *types.Payload) {
 		c.getContractsStore(payload, ContractsDashboard),
 		"contracts",
 		c,
+		false,
 	)
 
 	c.executeFacet = facets.NewFacet(
@@ -64,6 +65,7 @@ func (c *ContractsCollection) initializeFacets(payload *types.Payload) {
 		c.getContractsStore(payload, ContractsExecute),
 		"contracts",
 		c,
+		false,
 	)
 
 	c.eventsFacet = facets.NewFacet(
@@ -73,6 +75,7 @@ func (c *ContractsCollection) initializeFacets(payload *types.Payload) {
 		c.getLogsStore(payload, ContractsEvents),
 		"contracts",
 		c,
+		false,
 	)
 }
 

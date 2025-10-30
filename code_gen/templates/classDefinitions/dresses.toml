@@ -21,6 +21,7 @@ store = "dalle.Series"
 renderer = "facet"
 viewType = "canvas"
 actions = ["update","create","delete","remove","export"]
+mapKey = "item.Suffix"
 
 [[facets]]
 name = "Databases"
@@ -39,3 +40,4 @@ actions = ["export"]
 viewType = "canvas"
 renderer = "facet"
 navigate = "dresses|generator|address|original"
+mapKey = "item.Original + \":\" + item.AnnotatedPath"

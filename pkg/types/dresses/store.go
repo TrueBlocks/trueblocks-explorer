@@ -105,14 +105,9 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 			return nil
 		}
 
-		mappingFunc := func(item *DalleDress) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			if item != nil {
-				k := item.Original + ":" + item.AnnotatedPath
-				return k, true
-			}
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *DalleDress) (key string, includeInMap bool) {
+			testVal := item.Original + ":" + item.AnnotatedPath
+			return testVal, testVal != ""
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -152,10 +147,8 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 			return nil
 		}
 
-		mappingFunc := func(item *Database) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Database) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -195,10 +188,8 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			return nil
 		}
 
-		mappingFunc := func(item *Log) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Log) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -248,13 +239,9 @@ func (c *DressesCollection) getSeriesStore(payload *types.Payload, facet types.D
 			return nil
 		}
 
-		mappingFunc := func(item *Series) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			if item != nil && item.Suffix != "" {
-				return item.Suffix, true
-			}
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Series) (key string, includeInMap bool) {
+			testVal := item.Suffix
+			return testVal, testVal != ""
 		}
 
 		storeName := c.getStoreName(payload, facet)

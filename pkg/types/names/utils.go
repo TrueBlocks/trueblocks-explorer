@@ -16,7 +16,7 @@ func NameFromAddress(address base.Address) (*Name, bool) {
 	if store == nil {
 		return nil, false
 	}
-	name, found := store.GetItemFromMap(address)
+	name, found := store.GetItemFromMap(address.Hex())
 	return name, found
 }
 

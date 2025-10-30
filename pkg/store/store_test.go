@@ -6,15 +6,15 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewStore(t *testing.T) {
 	queryFunc := func(ctx *output.RenderCtx) error { return nil }
 	processFunc := func(item interface{}) *TestData { return nil }
-	mappingFunc := func(item *TestData) (interface{}, bool) { return item.ID, true }
+	mappingFunc := func(item *TestData) (string, bool) { return fmt.Sprintf("%d", item.ID), true }
 
 	store := NewStore("test-key", queryFunc, processFunc, mappingFunc)
 
@@ -59,7 +59,7 @@ func TestStoreBasicOperations(t *testing.T) {
 
 	assert.Equal(t, types.StateStale, store.GetState())
 	assert.Equal(t, 0, store.Count())
-	assert.Empty(t, store.GetItems())
+	assert.Empty(t, store.GetItems(false))
 
 	testItem := &TestData{ID: 1, Name: "Test", Value: 100}
 	store.AddItem(testItem, 0)
@@ -69,14 +69,14 @@ func TestStoreBasicOperations(t *testing.T) {
 	assert.Nil(t, store.GetItem(-1))
 	assert.Nil(t, store.GetItem(10))
 
-	items := store.GetItems()
+	items := store.GetItems(false)
 	assert.Len(t, items, 1)
 	assert.Equal(t, testItem, items[0])
 }
 
 func TestStoreDataMapping(t *testing.T) {
-	mappingFunc := func(item *TestData) (interface{}, bool) {
-		return item.ID, true
+	mappingFunc := func(item *TestData) (string, bool) {
+		return fmt.Sprintf("%d", item.ID), true
 	}
 
 	store := NewStore("test-mapping",
@@ -87,17 +87,17 @@ func TestStoreDataMapping(t *testing.T) {
 	testItem := &TestData{ID: 42, Name: "Test", Value: 100}
 	store.AddItem(testItem, 0)
 
-	retrieved, found := store.GetItemFromMap(42)
+	retrieved, found := store.GetItemFromMap("42")
 	assert.True(t, found)
 	assert.Equal(t, testItem, retrieved)
 
-	_, found = store.GetItemFromMap(999)
+	_, found = store.GetItemFromMap("999")
 	assert.False(t, found)
 }
 
 func TestStoreDataMappingWithExclusion(t *testing.T) {
-	mappingFunc := func(item *TestData) (interface{}, bool) {
-		return item.ID, item.ID%2 == 0
+	mappingFunc := func(item *TestData) (string, bool) {
+		return fmt.Sprintf("%d", item.ID), item.ID%2 == 0
 	}
 
 	store := NewStore("test-mapping-exclude",
@@ -111,11 +111,11 @@ func TestStoreDataMappingWithExclusion(t *testing.T) {
 	store.AddItem(evenItem, 0)
 	store.AddItem(oddItem, 1)
 
-	retrieved, found := store.GetItemFromMap(42)
+	retrieved, found := store.GetItemFromMap("42")
 	assert.True(t, found)
 	assert.Equal(t, evenItem, retrieved)
 
-	_, found = store.GetItemFromMap(43)
+	_, found = store.GetItemFromMap("43")
 	assert.False(t, found)
 
 	assert.Equal(t, 2, store.Count())
@@ -351,7 +351,7 @@ func TestStoreConcurrentAccess(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			store.GetItems()
+			store.GetItems(false)
 			store.Count()
 			store.GetState()
 		}()

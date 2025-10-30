@@ -1,12 +1,13 @@
 package store
 
 import (
+	"fmt"
 	"sync"
 	"testing"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // -------------------- Helper/Mock Functions and Types --------------------
@@ -120,8 +121,8 @@ func createStoreWithTestData(t *testing.T, items []*TestData, streamError error)
 			}
 			return nil
 		},
-		func(item *TestData) (interface{}, bool) {
-			return item.ID, true
+		func(item *TestData) (string, bool) {
+			return fmt.Sprintf("%d", item.ID), true
 		})
 }
 

@@ -65,10 +65,8 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 			return nil
 		}
 
-		mappingFunc := func(item *Monitor) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Monitor) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

@@ -61,6 +61,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionStore(payload, ComparitoorComparitoor),
 		"comparitoor",
 		c,
+		false,
 	)
 
 	c.chifraFacet = facets.NewFacet(
@@ -70,6 +71,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionStore(payload, ComparitoorChifra),
 		"comparitoor",
 		c,
+		false,
 	)
 
 	c.etherscanFacet = facets.NewFacet(
@@ -79,6 +81,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionStore(payload, ComparitoorEtherscan),
 		"comparitoor",
 		c,
+		false,
 	)
 
 	c.covalentFacet = facets.NewFacet(
@@ -88,6 +91,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionStore(payload, ComparitoorCovalent),
 		"comparitoor",
 		c,
+		false,
 	)
 
 	c.alchemyFacet = facets.NewFacet(
@@ -97,6 +101,7 @@ func (c *ComparitoorCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionStore(payload, ComparitoorAlchemy),
 		"comparitoor",
 		c,
+		false,
 	)
 }
 

@@ -62,6 +62,7 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		c.getDalleDressStore(payload, DressesGenerator),
 		"dresses",
 		c,
+		false,
 	)
 
 	c.seriesFacet = facets.NewFacet(
@@ -71,6 +72,7 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		c.getSeriesStore(payload, DressesSeries),
 		"dresses",
 		c,
+		false,
 	)
 
 	c.databasesFacet = facets.NewFacet(
@@ -80,6 +82,7 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		c.getDatabasesStore(payload, DressesDatabases),
 		"dresses",
 		c,
+		false,
 	)
 
 	c.eventsFacet = facets.NewFacet(
@@ -89,6 +92,7 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		c.getLogsStore(payload, DressesEvents),
 		"dresses",
 		c,
+		false,
 	)
 
 	c.galleryFacet = facets.NewFacet(
@@ -98,6 +102,7 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		c.getDalleDressStore(payload, DressesGallery),
 		"dresses",
 		c,
+		false,
 	)
 }
 

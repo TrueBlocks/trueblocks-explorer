@@ -70,10 +70,8 @@ func (c *AbisCollection) getAbisStore(payload *types.Payload, facet types.DataFa
 			return nil
 		}
 
-		mappingFunc := func(item *Abi) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Abi) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -123,10 +121,8 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 			return nil
 		}
 
-		mappingFunc := func(item *Function) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Function) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

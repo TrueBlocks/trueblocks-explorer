@@ -82,10 +82,8 @@ func (c *ChunksCollection) getBloomsStore(payload *types.Payload, facet types.Da
 			return nil
 		}
 
-		mappingFunc := func(item *Bloom) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Bloom) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -140,14 +138,8 @@ func (c *ChunksCollection) getIndexStore(payload *types.Payload, facet types.Dat
 			return nil
 		}
 
-		mappingFunc := func(item *Index) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// TODO: Do we need a mapping function for chunks. I think yes
-			// if item != nil {
-			// 	return item.Range, true
-			// }
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Index) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -201,10 +193,8 @@ func (c *ChunksCollection) getManifestStore(payload *types.Payload, facet types.
 			return nil
 		}
 
-		mappingFunc := func(item *Manifest) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Manifest) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -259,10 +249,8 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 			return nil
 		}
 
-		mappingFunc := func(item *Stats) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Stats) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

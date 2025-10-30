@@ -371,7 +371,7 @@ export namespace exports {
 	    facet: types.DataFacet;
 	    approvallogs: types.Log[];
 	    approvaltxs: types.Transaction[];
-	    assets: types.Name[];
+	    assets: types.Statement[];
 	    balances: types.Token[];
 	    logs: types.Log[];
 	    openapprovals: types.Approval[];
@@ -394,7 +394,7 @@ export namespace exports {
 	        this.facet = source["facet"];
 	        this.approvallogs = this.convertValues(source["approvallogs"], types.Log);
 	        this.approvaltxs = this.convertValues(source["approvaltxs"], types.Transaction);
-	        this.assets = this.convertValues(source["assets"], types.Name);
+	        this.assets = this.convertValues(source["assets"], types.Statement);
 	        this.balances = this.convertValues(source["balances"], types.Token);
 	        this.logs = this.convertValues(source["logs"], types.Log);
 	        this.openapprovals = this.convertValues(source["openapprovals"], types.Approval);

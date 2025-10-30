@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"sync"
 	"sync/atomic"
 
@@ -17,7 +16,7 @@ type FacetObserver[T any] interface {
 	OnStateChanged(state types.StoreState, reason string)
 }
 
-type MappingFunc[T any] func(item *T) (key interface{}, includeInMap bool)
+type MappingFunc[T any] func(item *T) (key string, includeInMap bool)
 
 // Store handle the low-level data fetching and streaming from external systems
 type Store[T any] struct {
@@ -135,7 +134,7 @@ func (s *Store[T]) GetContextKey() string {
 	return s.contextKey
 }
 
-func (s *Store[T]) GetItemFromMap(key interface{}) (*T, bool) {
+func (s *Store[T]) GetItemFromMap(key string) (*T, bool) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
@@ -147,10 +146,28 @@ func (s *Store[T]) GetItemFromMap(key interface{}) (*T, bool) {
 	return item, found
 }
 
-func (s *Store[T]) GetItems() []*T {
+func (s *Store[T]) GetItems(useMapKey bool) []*T {
+	if useMapKey {
+		return s.GetMapItems()
+	}
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	result := make([]*T, len(s.data))
+	copy(result, s.data)
+	return result
+}
+
+func (s *Store[T]) GetMapItems() []*T {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+	result := make([]*T, len(s.data))
+	if s.dataMap != nil && len(*s.dataMap) > 0 {
+		result := make([]*T, 0, len(*s.dataMap))
+		for _, item := range *s.dataMap {
+			result = append(result, item)
+		}
+		return result
+	}
 	copy(result, s.data)
 	return result
 }
@@ -221,9 +238,6 @@ func (s *Store[T]) Fetch() error {
 					if s.dataMap == nil {
 						tempMap := make(map[interface{}]*T)
 						s.dataMap = &tempMap
-					}
-					if existingItem, ok := (*s.dataMap)[key]; ok {
-						logging.LogBEWarning(fmt.Sprintf("Store.Fetch: Overwriting item in dataMap for key key %s existing_item %v new_item %v", key, existingItem, itemPtr))
 					}
 					(*s.dataMap)[key] = itemPtr
 				}

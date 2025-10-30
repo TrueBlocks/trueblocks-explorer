@@ -108,6 +108,7 @@ func TestFacetLoad(t *testing.T) {
 			singleItemStore,
 			"test",
 			nil,
+			false,
 		)
 
 		assert.Equal(t, types.StateStale, facet.GetState(), "Initial state for single item store facet should be Stale")

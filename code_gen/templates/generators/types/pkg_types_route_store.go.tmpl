@@ -47,10 +47,13 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 			return nil
 		}
 
-		mappingFunc := func(item *{{toSingular .Name}}) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *{{toSingular .Name}}) (key string, includeInMap bool) {
+			{{- if .GetMapKey }}
+			testVal := {{.GetMapKey}}
+			return testVal, testVal != ""
+			{{- else}}
+			return "", false
+			{{- end}}
 		}
 
 		storeName := c.getStoreName(payload, facet)

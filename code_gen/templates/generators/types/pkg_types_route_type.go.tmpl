@@ -55,6 +55,7 @@ func (c *{{$class}}Collection) initializeFacets(payload *types.Payload) {
 		c.get{{.StoreName}}Store(payload, {{$class}}{{.Name}}),
 		"{{toLower $class}}",
 		c,
+		{{.UseMapKey}},
 	)
 	{{end}}}
 

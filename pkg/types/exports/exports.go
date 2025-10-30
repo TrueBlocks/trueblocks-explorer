@@ -85,6 +85,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getStatementsStore(payload, ExportsStatements),
 		"exports",
 		c,
+		false,
 	)
 
 	c.balancesFacet = facets.NewFacet(
@@ -94,6 +95,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getBalancesStore(payload, ExportsBalances),
 		"exports",
 		c,
+		false,
 	)
 
 	c.transfersFacet = facets.NewFacet(
@@ -103,6 +105,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getTransfersStore(payload, ExportsTransfers),
 		"exports",
 		c,
+		false,
 	)
 
 	c.transactionsFacet = facets.NewFacet(
@@ -112,6 +115,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getTransactionsStore(payload, ExportsTransactions),
 		"exports",
 		c,
+		false,
 	)
 
 	c.openapprovalsFacet = facets.NewFacet(
@@ -121,6 +125,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getOpenApprovalsStore(payload, ExportsOpenApprovals),
 		"exports",
 		c,
+		false,
 	)
 
 	c.approvallogsFacet = facets.NewFacet(
@@ -130,6 +135,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getApprovalLogsStore(payload, ExportsApprovalLogs),
 		"exports",
 		c,
+		false,
 	)
 
 	c.approvaltxsFacet = facets.NewFacet(
@@ -139,6 +145,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getApprovalTxsStore(payload, ExportsApprovalTxs),
 		"exports",
 		c,
+		false,
 	)
 
 	c.withdrawalsFacet = facets.NewFacet(
@@ -148,6 +155,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getWithdrawalsStore(payload, ExportsWithdrawals),
 		"exports",
 		c,
+		false,
 	)
 
 	c.assetsFacet = facets.NewFacet(
@@ -157,6 +165,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getAssetsStore(payload, ExportsAssets),
 		"exports",
 		c,
+		true,
 	)
 
 	c.assetchartsFacet = facets.NewFacet(
@@ -166,6 +175,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getStatementsStore(payload, ExportsAssetCharts),
 		"exports",
 		c,
+		false,
 	)
 
 	c.logsFacet = facets.NewFacet(
@@ -175,6 +185,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getLogsStore(payload, ExportsLogs),
 		"exports",
 		c,
+		false,
 	)
 
 	c.tracesFacet = facets.NewFacet(
@@ -184,6 +195,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getTracesStore(payload, ExportsTraces),
 		"exports",
 		c,
+		false,
 	)
 
 	c.receiptsFacet = facets.NewFacet(
@@ -193,6 +205,7 @@ func (c *ExportsCollection) initializeFacets(payload *types.Payload) {
 		c.getReceiptsStore(payload, ExportsReceipts),
 		"exports",
 		c,
+		false,
 	)
 }
 
@@ -528,17 +541,6 @@ func (c *ExportsCollection) AccumulateItem(item interface{}, summary *types.Summ
 		balanceCount, _ := summary.CustomData["balancesCount"].(int)
 		balanceCount++
 		summary.CustomData["balancesCount"] = balanceCount
-
-	case *Asset:
-		summary.TotalCount++
-		summary.FacetCounts[ExportsAssets]++
-		if summary.CustomData == nil {
-			summary.CustomData = make(map[string]interface{})
-		}
-
-		assetCount, _ := summary.CustomData["assetsCount"].(int)
-		assetCount++
-		summary.CustomData["assetsCount"] = assetCount
 
 	case *Transaction:
 		summary.TotalCount++

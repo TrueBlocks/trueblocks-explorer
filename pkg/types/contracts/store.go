@@ -60,10 +60,8 @@ func (c *ContractsCollection) getContractsStore(payload *types.Payload, facet ty
 			return nil
 		}
 
-		mappingFunc := func(item *Contract) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Contract) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)
@@ -122,10 +120,8 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 			return nil
 		}
 
-		mappingFunc := func(item *Log) (key interface{}, includeInMap bool) {
-			// EXISTING_CODE
-			// EXISTING_CODE
-			return nil, false
+		mappingFunc := func(item *Log) (key string, includeInMap bool) {
+			return "", false
 		}
 
 		storeName := c.getStoreName(payload, facet)

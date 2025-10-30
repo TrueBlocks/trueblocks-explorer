@@ -62,6 +62,7 @@ func (c *NamesCollection) initializeFacets(payload *types.Payload) {
 		c.getNamesStore(payload, NamesAll),
 		"names",
 		c,
+		false,
 	)
 
 	c.customFacet = facets.NewFacet(
@@ -71,6 +72,7 @@ func (c *NamesCollection) initializeFacets(payload *types.Payload) {
 		c.getNamesStore(payload, NamesCustom),
 		"names",
 		c,
+		false,
 	)
 
 	c.prefundFacet = facets.NewFacet(
@@ -80,6 +82,7 @@ func (c *NamesCollection) initializeFacets(payload *types.Payload) {
 		c.getNamesStore(payload, NamesPrefund),
 		"names",
 		c,
+		false,
 	)
 
 	c.regularFacet = facets.NewFacet(
@@ -89,6 +92,7 @@ func (c *NamesCollection) initializeFacets(payload *types.Payload) {
 		c.getNamesStore(payload, NamesRegular),
 		"names",
 		c,
+		false,
 	)
 
 	c.baddressFacet = facets.NewFacet(
@@ -98,6 +102,7 @@ func (c *NamesCollection) initializeFacets(payload *types.Payload) {
 		c.getNamesStore(payload, NamesBaddress),
 		"names",
 		c,
+		false,
 	)
 }
 

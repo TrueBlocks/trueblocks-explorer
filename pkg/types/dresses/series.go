@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
 	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/storage"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // seriesCrud handles create, update, remove for series facet
@@ -33,7 +33,7 @@ func (c *DressesCollection) seriesCrud(
 	case crud.Create, crud.Update:
 		if op == crud.Create {
 			// uniqueness check
-			for _, existing := range c.seriesFacet.GetStore().GetItems() {
+			for _, existing := range c.seriesFacet.GetStore().GetItems(false) {
 				if existing != nil && existing.Suffix == item.Suffix {
 					return fmt.Errorf("series suffix already exists: %s", item.Suffix)
 				}
@@ -105,7 +105,7 @@ func (c *DressesCollection) seriesCrud(
 	})
 	c.seriesFacet.SyncWithStore()
 	// emit enriched event so frontend refreshes with context
-	currentItems := c.seriesFacet.GetStore().GetItems()
+	currentItems := c.seriesFacet.GetStore().GetItems(false)
 	currentCount := len(currentItems)
 	payloadSummary := types.Summary{TotalCount: currentCount, FacetCounts: map[types.DataFacet]int{DressesSeries: currentCount}, LastUpdated: time.Now().Unix()}
 	operation := "update"

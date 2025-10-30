@@ -13,6 +13,7 @@ store = "Statements"
 actions = ["export"]
 renderer = "panel"
 needsCalcs = true
+mapKey = "item.Asset.Hex()"
 
 [[facets]]
 name = "Balances"
@@ -54,6 +55,9 @@ actions = ["export"]
 name = "Assets"
 store = "Assets"
 actions = ["export"]
+mapKey = "item.Asset.Hex()"
+useMapKey = true
+needsCalcs = true
 
 [[facets]]
 name = "AssetCharts"
@@ -63,11 +67,13 @@ renderer = "facet"
 viewType = "canvas"
 facetChart = true
 needsCalcs = true
+mapKey = "item.Asset.Hex()"
 
 [[facets]]
 name = "Logs"
 store = "Logs"
 actions = ["export"]
+needsCalcs = true
 
 [[facets]]
 name = "Traces"

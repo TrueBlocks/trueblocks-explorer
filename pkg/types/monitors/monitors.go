@@ -49,6 +49,7 @@ func (c *MonitorsCollection) initializeFacets(payload *types.Payload) {
 		c.getMonitorsStore(payload, MonitorsMonitors),
 		"monitors",
 		c,
+		false,
 	)
 }
 

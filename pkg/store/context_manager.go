@@ -3,7 +3,7 @@ package store
 import (
 	"sync"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 )
 
 var (

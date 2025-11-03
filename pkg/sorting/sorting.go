@@ -1,6 +1,6 @@
 package sorting
 
-import sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+import sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 
 // NewSortSpec creates a single-field SortSpec with proper slice initialization
 // Always returns initialized slices to prevent nil slice panics in SDK functions

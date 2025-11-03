@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 func TestDressesGalleryPageUsesDresses(t *testing.T) {

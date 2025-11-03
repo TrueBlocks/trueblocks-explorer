@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/wailsapp/wails/v2/pkg/menu"

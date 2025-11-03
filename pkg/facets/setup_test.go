@@ -7,8 +7,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
+	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
 )
 
 // -------------------- Helper/Mock Functions and Types --------------------

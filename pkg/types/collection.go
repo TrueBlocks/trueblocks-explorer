@@ -1,7 +1,7 @@
 package types
 
 import (
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 type Page interface {

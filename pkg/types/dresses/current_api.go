@@ -1,9 +1,9 @@
 package dresses
 
 import (
-	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/progress"
+	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/model"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/progress"
 )
 
 func GetCurrentDressFor(series, address string) *model.DalleDress {

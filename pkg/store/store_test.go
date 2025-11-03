@@ -6,7 +6,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/stretchr/testify/assert"
 )

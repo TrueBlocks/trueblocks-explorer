@@ -4,7 +4,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 )
 
 // NameFromAddress resolves an Ethereum address to a named entity if one exists

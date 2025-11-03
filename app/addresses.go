@@ -7,8 +7,8 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 var ensLock sync.Mutex

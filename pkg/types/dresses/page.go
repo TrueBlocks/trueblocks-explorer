@@ -13,9 +13,9 @@ import (
 	"fmt"
 	"strings"
 
-	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
+	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 // EXISTING_CODE

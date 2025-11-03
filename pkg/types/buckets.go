@@ -1,6 +1,6 @@
 package types
 
-import coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+import coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
 
 type Buckets struct {
 	// Flexible series structure using named metrics

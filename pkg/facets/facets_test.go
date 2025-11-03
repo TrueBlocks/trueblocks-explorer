@@ -12,8 +12,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 	"github.com/stretchr/testify/assert"
 )
 

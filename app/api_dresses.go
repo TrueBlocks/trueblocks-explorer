@@ -13,12 +13,13 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/dresses"
 
 	//
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/crud"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
+
 	// EXISTING_CODE
 	"fmt"
 
-	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
+	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
 	// EXISTING_CODE
 )
 

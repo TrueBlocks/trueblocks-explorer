@@ -3,7 +3,7 @@ package dresses
 import (
 	"fmt"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/crud"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 

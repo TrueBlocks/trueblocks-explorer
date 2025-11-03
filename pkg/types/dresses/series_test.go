@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
-	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/crud"
+	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )

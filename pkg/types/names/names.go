@@ -14,7 +14,7 @@ import (
 	"time"
 
 	// EXISTING_CODE
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
+	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
 	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"

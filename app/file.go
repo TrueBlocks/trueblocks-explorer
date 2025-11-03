@@ -8,8 +8,8 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )

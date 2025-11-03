@@ -10,7 +10,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 )
 
 // Manager handles multiple Project instances, maintaining a collection of open projects

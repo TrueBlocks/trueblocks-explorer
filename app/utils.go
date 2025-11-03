@@ -9,9 +9,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/markdown"
 
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/utils"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 // LogFrontend logs a message to the frontend logger

@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 )
 
 type FacetObserver[T any] interface {

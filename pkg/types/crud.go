@@ -1,6 +1,6 @@
 package types
 
-import "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/crud"
+import "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/crud"
 
 type Crud string
 

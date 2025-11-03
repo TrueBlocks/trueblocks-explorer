@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 // ExportData is the unified export function that handles file creation with proper extension and format

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/storage"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/model"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/storage"
 )
 
 // loadCurrentDressFromSidecars attempts to reconstruct a model.DalleDress from existing sidecar files

@@ -10,7 +10,7 @@ package app
 import (
 	"fmt"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/utils"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"

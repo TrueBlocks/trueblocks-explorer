@@ -21,11 +21,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
-	dalle "github.com/TrueBlocks/trueblocks-dalle/v2"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/model"
-	"github.com/TrueBlocks/trueblocks-dalle/v2/pkg/storage"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
+	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/model"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/storage"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
 type DalleDress = model.DalleDress

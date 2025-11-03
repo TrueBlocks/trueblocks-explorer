@@ -6,8 +6,8 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
-	coreTypes "github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/utils"
 	"github.com/stretchr/testify/assert"
 )
 

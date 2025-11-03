@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
 )
 
 // Skin represents a hybrid Mantine-focused visual theme with enhanced visual properties

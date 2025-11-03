@@ -7,7 +7,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 )
 
 // TestProject tests the basic functionality of the Project type

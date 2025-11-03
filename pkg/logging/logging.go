@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/colors"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/colors"
 )
 
 func LogBEError(msg string) {

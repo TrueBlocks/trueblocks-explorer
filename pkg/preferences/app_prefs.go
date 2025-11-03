@@ -8,7 +8,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 
-	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
 	"github.com/kbinani/screenshot"
 )
 

@@ -67,7 +67,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - nonce: sequence number of the transactions sent by the sender
   - type: the transaction type
 
-- **Assets Store (43 members)**
+- **Assets Store (44 members)**
 
   - timestamp: the Unix timestamp of the object
   - asset: 0xeeee...eeee for ETH reconciliations, the token address otherwise
@@ -80,6 +80,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - calcs.amountNetEth: net amount in ETH
   - calcs.endBalEth: ending balance in ETH
   - spotPrice: the on-chain price in USD at the time of the transaction
+  - statementId: the number of statements for this asset
   - calcs.endBalCalcEth: calculated ending balance in ETH
   - date: the timestamp as a date
   - gasUsed: gas used in the transaction

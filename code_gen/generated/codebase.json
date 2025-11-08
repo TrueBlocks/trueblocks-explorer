@@ -149,11 +149,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Known",
@@ -169,11 +172,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Functions",
@@ -189,11 +195,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Events",
@@ -209,11 +218,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         }
                     ]
                 },
@@ -480,7 +492,6 @@
                         {
                             "name": "symbol",
                             "type": "string",
-                            "attributes": "noTable",
                             "section": "Asset",
                             "docOrder": 3,
                             "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
@@ -548,298 +559,305 @@
                         {
                             "name": "spotPrice",
                             "type": "float",
-                            "attributes": "noTable",
                             "section": "Asset",
                             "docOrder": 11,
                             "description": "the on-chain price in USD at the time of the transaction",
                             "num": 11
                         },
                         {
+                            "name": "statementId",
+                            "type": "uint64",
+                            "section": "Asset",
+                            "docOrder": 12,
+                            "description": "the number of statements for this asset",
+                            "num": 12
+                        },
+                        {
                             "name": "calcs.endBalCalcEth",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Reconciliation",
-                            "docOrder": 12,
+                            "docOrder": 13,
                             "description": "calculated ending balance in ETH",
-                            "num": 12
+                            "num": 13
                         },
                         {
                             "name": "date",
                             "type": "datetime",
                             "attributes": "noTable",
                             "section": "Summary",
-                            "docOrder": 13,
+                            "docOrder": 14,
                             "description": "the timestamp as a date",
-                            "num": 13
+                            "num": 14
                         },
                         {
                             "name": "gasUsed",
                             "type": "value",
                             "attributes": "noTable",
                             "section": "Summary",
-                            "docOrder": 14,
+                            "docOrder": 15,
                             "description": "gas used in the transaction",
-                            "num": 14
+                            "num": 15
                         },
                         {
                             "name": "calcs.reconciliationType",
                             "type": "string",
                             "attributes": "noTable",
                             "section": "Summary",
-                            "docOrder": 15,
+                            "docOrder": 16,
                             "description": "type of reconciliation",
-                            "num": 15
+                            "num": 16
                         },
                         {
                             "name": "accountedFor",
                             "type": "address",
                             "attributes": "noTable",
-                            "section": "Summary",
-                            "docOrder": 16,
+                            "section": "Asset",
+                            "docOrder": 17,
                             "description": "the address being accounted for",
-                            "num": 16
+                            "num": 17
                         },
                         {
                             "name": "calcs.reconciled",
                             "type": "bool",
                             "section": "Summary",
-                            "docOrder": 17,
+                            "docOrder": 18,
                             "description": "true if reconciled",
-                            "num": 17
+                            "num": 18
                         },
                         {
                             "name": "amountIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 18,
+                            "docOrder": 19,
                             "description": "incoming amount",
-                            "num": 18
+                            "num": 19
                         },
                         {
                             "name": "internalIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 19,
+                            "docOrder": 20,
                             "description": "internal incoming amount",
-                            "num": 19
+                            "num": 20
                         },
                         {
                             "name": "selfDestructIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 20,
+                            "docOrder": 21,
                             "description": "self-destruct incoming amount",
-                            "num": 20
+                            "num": 21
                         },
                         {
                             "name": "minerBaseRewardIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 21,
+                            "docOrder": 22,
                             "description": "miner base reward",
-                            "num": 21
+                            "num": 22
                         },
                         {
                             "name": "minerTxFeeIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 22,
+                            "docOrder": 23,
                             "description": "miner transaction fee",
-                            "num": 22
+                            "num": 23
                         },
                         {
                             "name": "prefundIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Inflow",
-                            "docOrder": 23,
+                            "docOrder": 24,
                             "description": "prefund amount",
-                            "num": 23
+                            "num": 24
                         },
                         {
                             "name": "amountOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Outflow",
-                            "docOrder": 24,
+                            "docOrder": 25,
                             "description": "outgoing amount",
-                            "num": 24
+                            "num": 25
                         },
                         {
                             "name": "internalOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Outflow",
-                            "docOrder": 25,
+                            "docOrder": 26,
                             "description": "internal outgoing amount",
-                            "num": 25
+                            "num": 26
                         },
                         {
                             "name": "selfDestructOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Outflow",
-                            "docOrder": 26,
+                            "docOrder": 27,
                             "description": "self-destruct outgoing amount",
-                            "num": 26
+                            "num": 27
                         },
                         {
                             "name": "gasOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Outflow",
-                            "docOrder": 27,
+                            "docOrder": 28,
                             "description": "gas out",
-                            "num": 27
+                            "num": 28
                         },
                         {
                             "name": "blockNumber",
                             "type": "blknum",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 28,
+                            "docOrder": 29,
                             "description": "the number of the block",
-                            "num": 28
+                            "num": 29
                         },
                         {
                             "name": "transactionIndex",
                             "type": "txnum",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 29,
+                            "docOrder": 30,
                             "description": "the zero-indexed position of the transaction",
-                            "num": 29
+                            "num": 30
                         },
                         {
                             "name": "logIndex",
                             "type": "lognum",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 30,
+                            "docOrder": 31,
                             "description": "the zero-indexed position of the log",
-                            "num": 30
+                            "num": 31
                         },
                         {
                             "name": "transactionHash",
                             "type": "hash",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 31,
+                            "docOrder": 32,
                             "description": "the hash of the transaction",
-                            "num": 31
+                            "num": 32
                         },
                         {
                             "name": "sender",
                             "type": "address",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 32,
+                            "docOrder": 33,
                             "description": "the transaction sender",
-                            "num": 32
+                            "num": 33
                         },
                         {
                             "name": "recipient",
                             "type": "address",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 33,
+                            "docOrder": 34,
                             "description": "the transaction recipient",
-                            "num": 33
+                            "num": 34
                         },
                         {
                             "name": "prevBal",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Analysis",
-                            "docOrder": 34,
+                            "docOrder": 35,
                             "description": "previous balance",
-                            "num": 34
+                            "num": 35
                         },
                         {
                             "name": "begBalDiff",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Analysis",
-                            "docOrder": 35,
+                            "docOrder": 36,
                             "description": "beginning balance difference",
-                            "num": 35
+                            "num": 36
                         },
                         {
                             "name": "endBalDiff",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Analysis",
-                            "docOrder": 36,
+                            "docOrder": 37,
                             "description": "ending balance difference",
-                            "num": 36
+                            "num": 37
                         },
                         {
                             "name": "correctingReasons",
                             "type": "string",
                             "attributes": "noTable",
                             "section": "Analysis",
-                            "docOrder": 37,
+                            "docOrder": 38,
                             "description": "reasons for corrections",
-                            "num": 37
+                            "num": 38
                         },
                         {
                             "name": "correctBegBalIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 38,
+                            "docOrder": 39,
                             "description": "correct beginning balance in",
-                            "num": 38
+                            "num": 39
                         },
                         {
                             "name": "correctAmountIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 39,
+                            "docOrder": 40,
                             "description": "correct amount in",
-                            "num": 39
+                            "num": 40
                         },
                         {
                             "name": "correctEndBalIn",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 40,
+                            "docOrder": 41,
                             "description": "correct ending balance in",
-                            "num": 40
+                            "num": 41
                         },
                         {
                             "name": "correctBegBalOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 41,
+                            "docOrder": 42,
                             "description": "correct beginning balance out",
-                            "num": 41
+                            "num": 42
                         },
                         {
                             "name": "correctAmountOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 42,
+                            "docOrder": 43,
                             "description": "correct amount out",
-                            "num": 42
+                            "num": 43
                         },
                         {
                             "name": "correctEndBalOut",
                             "type": "int256",
                             "attributes": "noTable",
                             "section": "Corrections",
-                            "docOrder": 43,
+                            "docOrder": 44,
                             "description": "correct ending balance out",
-                            "num": 43
+                            "num": 44
                         }
                     ]
                 },
@@ -1123,11 +1141,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Index",
@@ -1143,11 +1164,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Blooms",
@@ -1163,11 +1187,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": true,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Manifest",
@@ -1181,11 +1208,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         }
                     ]
                 },
@@ -2147,11 +2177,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Balances",
@@ -2167,11 +2200,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Transfers",
@@ -2187,11 +2223,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Transactions",
@@ -2207,11 +2246,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "OpenApprovals",
@@ -2227,11 +2269,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "ApprovalLogs",
@@ -2247,11 +2292,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "ApprovalTxs",
@@ -2267,11 +2315,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Withdrawals",
@@ -2287,11 +2338,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Assets",
@@ -2307,11 +2361,14 @@
                             "renderer": "panel",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": true,
                             "facetChart": false,
-                            "useMapKey": true
+                            "useMapKey": true,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "AssetCharts",
@@ -2327,11 +2384,14 @@
                             "renderer": "facet",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": false,
                             "facetChart": true,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Logs",
@@ -2347,11 +2407,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": true,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Traces",
@@ -2367,11 +2430,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Receipts",
@@ -2387,11 +2453,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         }
                     ]
                 },
@@ -2899,11 +2968,14 @@
                             "renderer": "",
                             "navigate": "exports|\u003clatest\u003e|address|address",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         }
                     ]
                 }
@@ -3074,11 +3146,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Custom",
@@ -3102,11 +3177,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Prefund",
@@ -3124,11 +3202,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "dividerBefore",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Regular",
@@ -3147,11 +3228,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         },
                         {
                             "display_name": "Baddress",
@@ -3168,11 +3252,14 @@
                             "renderer": "",
                             "navigate": "",
                             "attributes": "",
+                            "count": 0,
                             "disabled": false,
                             "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": false
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
                         }
                     ]
                 }
@@ -3262,11 +3349,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Balances",
@@ -3282,11 +3372,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Transfers",
@@ -3302,11 +3395,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Transactions",
@@ -3322,11 +3418,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "OpenApprovals",
@@ -3342,11 +3441,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "ApprovalLogs",
@@ -3362,11 +3464,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "ApprovalTxs",
@@ -3382,11 +3487,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Withdrawals",
@@ -3402,11 +3510,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Assets",
@@ -3422,11 +3533,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": true,
                     "facetChart": false,
-                    "useMapKey": true
+                    "useMapKey": true,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "AssetCharts",
@@ -3442,11 +3556,14 @@
                     "renderer": "facet",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": true,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Logs",
@@ -3462,11 +3579,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Traces",
@@ -3482,11 +3602,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Receipts",
@@ -3502,11 +3625,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -4674,11 +4800,14 @@
                     "renderer": "",
                     "navigate": "exports|\u003clatest\u003e|address|address",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -6456,11 +6585,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Known",
@@ -6476,11 +6608,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Functions",
@@ -6496,11 +6631,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Events",
@@ -6516,11 +6654,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -6678,11 +6819,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Custom",
@@ -6706,11 +6850,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Prefund",
@@ -6728,11 +6875,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "dividerBefore",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Regular",
@@ -6751,11 +6901,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Baddress",
@@ -6772,11 +6925,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -6810,7 +6966,6 @@
                 {
                     "name": "symbol",
                     "type": "string",
-                    "attributes": "noTable",
                     "section": "Asset",
                     "docOrder": 3,
                     "description": "either ETH, WEI, or the symbol of the asset being reconciled as extracted from the chain",
@@ -6878,298 +7033,305 @@
                 {
                     "name": "spotPrice",
                     "type": "float",
-                    "attributes": "noTable",
                     "section": "Asset",
                     "docOrder": 11,
                     "description": "the on-chain price in USD at the time of the transaction",
                     "num": 11
                 },
                 {
+                    "name": "statementId",
+                    "type": "uint64",
+                    "section": "Asset",
+                    "docOrder": 12,
+                    "description": "the number of statements for this asset",
+                    "num": 12
+                },
+                {
                     "name": "calcs.endBalCalcEth",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Reconciliation",
-                    "docOrder": 12,
+                    "docOrder": 13,
                     "description": "calculated ending balance in ETH",
-                    "num": 12
+                    "num": 13
                 },
                 {
                     "name": "date",
                     "type": "datetime",
                     "attributes": "noTable",
                     "section": "Summary",
-                    "docOrder": 13,
+                    "docOrder": 14,
                     "description": "the timestamp as a date",
-                    "num": 13
+                    "num": 14
                 },
                 {
                     "name": "gasUsed",
                     "type": "value",
                     "attributes": "noTable",
                     "section": "Summary",
-                    "docOrder": 14,
+                    "docOrder": 15,
                     "description": "gas used in the transaction",
-                    "num": 14
+                    "num": 15
                 },
                 {
                     "name": "calcs.reconciliationType",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Summary",
-                    "docOrder": 15,
+                    "docOrder": 16,
                     "description": "type of reconciliation",
-                    "num": 15
+                    "num": 16
                 },
                 {
                     "name": "accountedFor",
                     "type": "address",
                     "attributes": "noTable",
-                    "section": "Summary",
-                    "docOrder": 16,
+                    "section": "Asset",
+                    "docOrder": 17,
                     "description": "the address being accounted for",
-                    "num": 16
+                    "num": 17
                 },
                 {
                     "name": "calcs.reconciled",
                     "type": "bool",
                     "section": "Summary",
-                    "docOrder": 17,
+                    "docOrder": 18,
                     "description": "true if reconciled",
-                    "num": 17
+                    "num": 18
                 },
                 {
                     "name": "amountIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 18,
+                    "docOrder": 19,
                     "description": "incoming amount",
-                    "num": 18
+                    "num": 19
                 },
                 {
                     "name": "internalIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 19,
+                    "docOrder": 20,
                     "description": "internal incoming amount",
-                    "num": 19
+                    "num": 20
                 },
                 {
                     "name": "selfDestructIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 20,
+                    "docOrder": 21,
                     "description": "self-destruct incoming amount",
-                    "num": 20
+                    "num": 21
                 },
                 {
                     "name": "minerBaseRewardIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 21,
+                    "docOrder": 22,
                     "description": "miner base reward",
-                    "num": 21
+                    "num": 22
                 },
                 {
                     "name": "minerTxFeeIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 22,
+                    "docOrder": 23,
                     "description": "miner transaction fee",
-                    "num": 22
+                    "num": 23
                 },
                 {
                     "name": "prefundIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Inflow",
-                    "docOrder": 23,
+                    "docOrder": 24,
                     "description": "prefund amount",
-                    "num": 23
+                    "num": 24
                 },
                 {
                     "name": "amountOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Outflow",
-                    "docOrder": 24,
+                    "docOrder": 25,
                     "description": "outgoing amount",
-                    "num": 24
+                    "num": 25
                 },
                 {
                     "name": "internalOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Outflow",
-                    "docOrder": 25,
+                    "docOrder": 26,
                     "description": "internal outgoing amount",
-                    "num": 25
+                    "num": 26
                 },
                 {
                     "name": "selfDestructOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Outflow",
-                    "docOrder": 26,
+                    "docOrder": 27,
                     "description": "self-destruct outgoing amount",
-                    "num": 26
+                    "num": 27
                 },
                 {
                     "name": "gasOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Outflow",
-                    "docOrder": 27,
+                    "docOrder": 28,
                     "description": "gas out",
-                    "num": 27
+                    "num": 28
                 },
                 {
                     "name": "blockNumber",
                     "type": "blknum",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 28,
+                    "docOrder": 29,
                     "description": "the number of the block",
-                    "num": 28
+                    "num": 29
                 },
                 {
                     "name": "transactionIndex",
                     "type": "txnum",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 29,
+                    "docOrder": 30,
                     "description": "the zero-indexed position of the transaction",
-                    "num": 29
+                    "num": 30
                 },
                 {
                     "name": "logIndex",
                     "type": "lognum",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 30,
+                    "docOrder": 31,
                     "description": "the zero-indexed position of the log",
-                    "num": 30
+                    "num": 31
                 },
                 {
                     "name": "transactionHash",
                     "type": "hash",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 31,
+                    "docOrder": 32,
                     "description": "the hash of the transaction",
-                    "num": 31
+                    "num": 32
                 },
                 {
                     "name": "sender",
                     "type": "address",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 32,
+                    "docOrder": 33,
                     "description": "the transaction sender",
-                    "num": 32
+                    "num": 33
                 },
                 {
                     "name": "recipient",
                     "type": "address",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 33,
+                    "docOrder": 34,
                     "description": "the transaction recipient",
-                    "num": 33
+                    "num": 34
                 },
                 {
                     "name": "prevBal",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Analysis",
-                    "docOrder": 34,
+                    "docOrder": 35,
                     "description": "previous balance",
-                    "num": 34
+                    "num": 35
                 },
                 {
                     "name": "begBalDiff",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Analysis",
-                    "docOrder": 35,
+                    "docOrder": 36,
                     "description": "beginning balance difference",
-                    "num": 35
+                    "num": 36
                 },
                 {
                     "name": "endBalDiff",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Analysis",
-                    "docOrder": 36,
+                    "docOrder": 37,
                     "description": "ending balance difference",
-                    "num": 36
+                    "num": 37
                 },
                 {
                     "name": "correctingReasons",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Analysis",
-                    "docOrder": 37,
+                    "docOrder": 38,
                     "description": "reasons for corrections",
-                    "num": 37
+                    "num": 38
                 },
                 {
                     "name": "correctBegBalIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 38,
+                    "docOrder": 39,
                     "description": "correct beginning balance in",
-                    "num": 38
+                    "num": 39
                 },
                 {
                     "name": "correctAmountIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 39,
+                    "docOrder": 40,
                     "description": "correct amount in",
-                    "num": 39
+                    "num": 40
                 },
                 {
                     "name": "correctEndBalIn",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 40,
+                    "docOrder": 41,
                     "description": "correct ending balance in",
-                    "num": 40
+                    "num": 41
                 },
                 {
                     "name": "correctBegBalOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 41,
+                    "docOrder": 42,
                     "description": "correct beginning balance out",
-                    "num": 41
+                    "num": 42
                 },
                 {
                     "name": "correctAmountOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 42,
+                    "docOrder": 43,
                     "description": "correct amount out",
-                    "num": 42
+                    "num": 43
                 },
                 {
                     "name": "correctEndBalOut",
                     "type": "int256",
                     "attributes": "noTable",
                     "section": "Corrections",
-                    "docOrder": 43,
+                    "docOrder": 44,
                     "description": "correct ending balance out",
-                    "num": 43
+                    "num": 44
                 }
             ]
         },
@@ -7950,11 +8112,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Index",
@@ -7970,11 +8135,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Blooms",
@@ -7990,11 +8158,14 @@
                     "renderer": "panel",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": true,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Manifest",
@@ -8008,11 +8179,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -8100,11 +8274,14 @@
                     "renderer": "facet",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Execute",
@@ -8118,11 +8295,14 @@
                     "renderer": "facet",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Events",
@@ -8138,11 +8318,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -8735,11 +8918,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Caches",
@@ -8755,11 +8941,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Chains",
@@ -8775,11 +8964,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -9149,11 +9341,14 @@
                     "renderer": "facet",
                     "navigate": "dresses|gallery|address|original",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Series",
@@ -9173,11 +9368,14 @@
                     "renderer": "facet",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Databases",
@@ -9193,11 +9391,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Events",
@@ -9213,11 +9414,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Gallery",
@@ -9233,11 +9437,14 @@
                     "renderer": "facet",
                     "navigate": "dresses|generator|address|original",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },
@@ -9485,11 +9692,14 @@
                     "renderer": "facet",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Chifra",
@@ -9505,11 +9715,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Etherscan",
@@ -9525,11 +9738,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Covalent",
@@ -9545,11 +9761,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 },
                 {
                     "display_name": "Alchemy",
@@ -9565,11 +9784,14 @@
                     "renderer": "",
                     "navigate": "",
                     "attributes": "",
+                    "count": 0,
                     "disabled": false,
                     "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": false
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         }

@@ -15,7 +15,6 @@ import (
 	//
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/crud"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
-
 	// EXISTING_CODE
 	"fmt"
 

@@ -679,3 +679,94 @@ func TestUniqueProjectName(t *testing.T) {
 		})
 	}
 }
+
+// TestMultipleAddressInput tests the fix for GitHub issue #2
+func TestMultipleAddressInput(t *testing.T) {
+	tests := []struct {
+		name      string
+		input     string
+		setup     func(*App)
+		expectErr bool
+		errMsg    string
+	}{
+		{
+			name:  "multiple addresses with spaces",
+			input: "trueblocks.eth meriam.eth rotki.eth",
+			setup: func(app *App) {
+				app.ensMap = map[string]base.Address{
+					"trueblocks.eth": base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
+					"meriam.eth":     base.HexToAddress("0x1234567890abcdef1234567890abcdef12345678"),
+					"rotki.eth":      base.HexToAddress("0xabcdef1234567890abcdef1234567890abcdef12"),
+				}
+			},
+			expectErr: false,
+		},
+		{
+			name:  "multiple addresses with trailing whitespace",
+			input: "trueblocks.eth  meriam.eth   rotki.eth ",
+			setup: func(app *App) {
+				app.ensMap = map[string]base.Address{
+					"trueblocks.eth": base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
+					"meriam.eth":     base.HexToAddress("0x1234567890abcdef1234567890abcdef12345678"),
+					"rotki.eth":      base.HexToAddress("0xabcdef1234567890abcdef1234567890abcdef12"),
+				}
+			},
+			expectErr: false,
+		},
+		{
+			name:  "multiple addresses separated by commas and newlines",
+			input: "trueblocks.eth,meriam.eth\nrotki.eth",
+			setup: func(app *App) {
+				app.ensMap = map[string]base.Address{
+					"trueblocks.eth": base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
+					"meriam.eth":     base.HexToAddress("0x1234567890abcdef1234567890abcdef12345678"),
+					"rotki.eth":      base.HexToAddress("0xabcdef1234567890abcdef1234567890abcdef12"),
+				}
+			},
+			expectErr: false,
+		},
+		{
+			name:  "empty string after trimming should be skipped",
+			input: "trueblocks.eth   meriam.eth",
+			setup: func(app *App) {
+				app.ensMap = map[string]base.Address{
+					"trueblocks.eth": base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
+					"meriam.eth":     base.HexToAddress("0x1234567890abcdef1234567890abcdef12345678"),
+				}
+			},
+			expectErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			app := &App{
+				Projects: project.NewManager(),
+				Preferences: &preferences.Preferences{
+					User: preferences.UserPreferences{},
+				},
+			}
+			tt.setup(app)
+
+			// Create a project first
+			err := app.NewProject("test-project", tt.input)
+
+			if tt.expectErr {
+				require.Error(t, err)
+				if tt.errMsg != "" {
+					assert.Contains(t, err.Error(), tt.errMsg)
+				}
+			} else {
+				require.NoError(t, err)
+				// Verify project was created with addresses
+				assert.True(t, app.HasActiveProject())
+				proj := app.GetActiveProject()
+				assert.NotNil(t, proj)
+
+				// Check that addresses were added (at least one should be present)
+				addresses := proj.GetAddresses()
+				assert.Greater(t, len(addresses), 0, "Should have at least one address")
+			}
+		})
+	}
+}

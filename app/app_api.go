@@ -77,7 +77,7 @@ func (a *App) GetRegisteredViews() []string {
 	}
 }
 
-func getCollection(payload *types.Payload, missingOk bool) types.Collection {
+func (a *App) getCollection(payload *types.Payload, missingOk bool) types.Collection {
 	switch payload.Collection {
 	case "exports":
 		return exports.GetExportsCollection(payload)
@@ -110,7 +110,7 @@ func (a *App) IsDisabled(viewName string) bool {
 	payload := &types.Payload{
 		Collection: viewName,
 	}
-	collection := getCollection(payload, true)
+	collection := a.getCollection(payload, true)
 	if collection == nil {
 		return false // not disabled if not found
 	}

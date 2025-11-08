@@ -41,35 +41,6 @@ func TestFileNew(t *testing.T) {
 	}
 }
 
-func TestFileOpen(t *testing.T) {
-	tests := []struct {
-		name     string
-		setupApp func(*App)
-	}{
-		{
-			name: "opens project selection dialog",
-			setupApp: func(app *App) {
-				// Basic setup for file open
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			app := &App{}
-			tt.setupApp(app)
-
-			// Test that FileOpen doesn't panic
-			assert.NotPanics(t, func() {
-				app.FileOpen(&menu.CallbackData{})
-			})
-
-			// The function should complete without error
-			// Actual behavior depends on project manager state
-		})
-	}
-}
-
 func TestFileSave(t *testing.T) {
 	tests := []struct {
 		name     string

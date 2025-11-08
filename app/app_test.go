@@ -359,6 +359,10 @@ func (m MockCollection) ExportData(payload *types.Payload) (string, error) {
 	return "", nil
 }
 
+func (m MockCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 func (m MockCollection) AccumulateItem(item interface{}, summary *types.Summary) {}
 
 func (m MockCollection) ResetSummary() {}

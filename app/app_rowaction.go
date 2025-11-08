@@ -77,7 +77,7 @@ func (a *App) handleNavigationAction(payload *types.RowActionPayload) error {
 func (a *App) getFirstAvailableFacet(viewName string) (string, error) {
 	// Create a dummy payload to get the view configuration
 	dummyPayload := &types.Payload{Collection: viewName}
-	collection := getCollection(dummyPayload, true)
+	collection := a.getCollection(dummyPayload, true)
 	if collection == nil {
 		return "", fmt.Errorf("view '%s' not found", viewName)
 	}

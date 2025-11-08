@@ -71,20 +71,17 @@ func (a *App) AddAddressToProject(addrStr string) error {
 }
 
 func (a *App) AddAddressesToProject(input string) error {
-	first := base.Address{}
 	addrs := strings.Split(strings.ReplaceAll(strings.ReplaceAll(input, "\n", "|"), ",", "|"), "|")
 	for _, addr := range addrs {
-		if err := a.AddAddressToProject(addr); err != nil {
+		trimmedAddr := strings.TrimSpace(addr)
+		if trimmedAddr == "" {
+			continue // Skip empty addresses
+		}
+		if err := a.AddAddressToProject(trimmedAddr); err != nil {
 			return err
 		}
-		if first == base.ZeroAddr {
-			first = base.HexToAddress(addr)
-		}
 	}
-	if first.IsZero() {
-		return fmt.Errorf("no valid addresses found")
-	}
-	return a.SetActiveAddress(first.Hex())
+	return nil
 }
 
 func (a *App) RemoveAddressFromProject(addrStr string) error {

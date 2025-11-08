@@ -61,7 +61,7 @@ func NewProject(name string, activeAddress base.Address, chains []string) *Proje
 }
 
 // ------------------------------------------------------------------------------------
-var ErrProjectRecoveryIncomplete = fmt.Errorf("failed to parse project file, recovery attempted but may not be complete")
+var ErrProjectRecoveryIncomplete = fmt.Errorf("failed to parse project file")
 
 // ------------------------------------------------------------------------------------
 // Load loads a project from the specified file path with optimized deserialization
@@ -86,16 +86,17 @@ func Load(path string) (*Project, error) {
 
 	var project Project
 	if err := json.Unmarshal(data, &project); err != nil {
-		projectPtr := NewProject("Recovered Project", base.ZeroAddr, []string{"mainnet"})
-		projectPtr.Path = path
-		if saveErr := projectPtr.Save(); saveErr != nil {
-			return nil, fmt.Errorf("failed to parse project file and could not save recovered version: %w (original error: %v)", saveErr, err)
-		}
 		return nil, ErrProjectRecoveryIncomplete
 	}
 
 	// Set in-memory fields
 	project.Path = path
+
+	// Validate and fix active address if necessary
+	if err := project.validateAndFixActiveAddress(); err != nil {
+		return nil, fmt.Errorf("failed to validate project addresses: %w", err)
+	}
+
 	return &project, nil
 }
 
@@ -103,7 +104,7 @@ func Load(path string) (*Project, error) {
 // Save persists the project to its file path
 func (p *Project) Save() error {
 	if p.Path == "" {
-		return fmt.Errorf("cannot save project with empty path")
+		return nil
 	}
 	return p.SaveAs(p.Path)
 }
@@ -484,5 +485,21 @@ func (p *Project) SetViewStates(viewName string, states map[string]FilterState) 
 		p.FilterStates[key] = state
 	}
 
+	return p.Save()
+}
+
+// validateAndFixActiveAddress ensures the active address is valid and in the addresses list
+func (p *Project) validateAndFixActiveAddress() error {
+	if len(p.Addresses) == 0 {
+		return nil
+	}
+	if p.ActiveAddress != base.ZeroAddr {
+		for _, addr := range p.Addresses {
+			if addr == p.ActiveAddress {
+				return nil
+			}
+		}
+	}
+	p.ActiveAddress = p.Addresses[0]
 	return p.Save()
 }

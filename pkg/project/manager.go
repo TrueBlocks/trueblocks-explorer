@@ -4,7 +4,6 @@ package project
 import (
 	"errors"
 	"fmt"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -97,7 +96,7 @@ func (m *Manager) Open(path string) (*Project, error) {
 		return nil, err
 	}
 
-	id := filepath.Base(path)
+	id := path
 	m.OpenProjects[id] = project
 	m.ActiveID = id
 

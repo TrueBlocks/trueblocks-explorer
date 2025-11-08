@@ -20,7 +20,7 @@ export const AssetChartsFacet = ({
   });
   const [selectedMetric, setSelectedMetric] =
     useState<MetricOption>('frequency');
-  const createPayload = usePayload();
+  const createPayload = usePayload('exports');
   const { error, handleError, clearError } = useErrorHandler();
 
   // Load metric from backend preferences on component mount

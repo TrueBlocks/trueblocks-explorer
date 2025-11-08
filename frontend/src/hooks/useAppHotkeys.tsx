@@ -22,7 +22,6 @@ type Hotkey = {
 export const useAppHotkeys = (): void => {
   const [currentLocation] = useLocation();
   const { getLastFacet } = useActiveProject();
-  const createPayload = usePayload();
   const {
     debugCollapsed,
     setDebugCollapsed,
@@ -44,7 +43,7 @@ export const useAppHotkeys = (): void => {
   // Helper function to get current facet for the current route
   const vR = currentLocation.replace(/^\/+/, '');
   const currentFacet = getLastFacet(vR);
-
+  const createPayload = usePayload(vR);
   const [, navigate] = useLocation();
 
   const handleHotkey = useCallback(

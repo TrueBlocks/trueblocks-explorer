@@ -17,7 +17,7 @@ function validatePayloadAddress(address: string, context: string) {
 }
 
 // Single payload function - backend decides what data to use for collection sharing
-export const usePayload = () => {
+export const usePayload = (collection: string) => {
   const { activeAddress, activeChain, activePeriod } = useActiveProject();
   return useCallback(
     (dataFacet: types.DataFacet, targetAddress?: string) => {
@@ -35,13 +35,14 @@ export const usePayload = () => {
       }
 
       return types.Payload.createFrom({
-        dataFacet,
+        collection: collection,
+        dataFacet: dataFacet,
         activeChain: activeChain,
         activeAddress: activeAddress,
         activePeriod: activePeriod,
         targetAddress: targetAddress || '', // Send specific target address when provided
       });
     },
-    [activeChain, activeAddress, activePeriod],
+    [collection, activeChain, activeAddress, activePeriod],
   );
 };

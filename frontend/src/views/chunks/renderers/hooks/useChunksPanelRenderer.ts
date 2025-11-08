@@ -5,7 +5,7 @@ import { usePayload } from '@hooks';
 import { types } from '@models';
 
 export const useChunksPanelRenderer = (dataFacet: types.DataFacet) => {
-  const createPayload = usePayload();
+  const createPayload = usePayload('chunks');
 
   const fetchBuckets = useCallback(async () => {
     const payload = createPayload(dataFacet);

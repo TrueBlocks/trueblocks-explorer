@@ -37,7 +37,7 @@ import { ROUTE } from './constants';
 export const Status = () => {
   // === SECTION 2: Hook Initialization ===
   const renderCnt = useRef(0);
-  const createPayload = usePayload();
+  const createPayload = usePayload(ROUTE);
   // === SECTION 2.5: Initial ViewConfig Load ===
   const { config: viewConfig } = useViewConfig({ viewName: ROUTE });
   assertRouteConsistency(ROUTE, viewConfig);

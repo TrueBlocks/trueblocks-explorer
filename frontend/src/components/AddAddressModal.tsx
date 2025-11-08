@@ -46,7 +46,11 @@ export const AddAddressModal = ({
           'No active project found. Please create or open a project first.',
         );
       }
-      await AddAddressesToProject(values.addresses);
+      const trimmedValues = {
+        ...values,
+        addresses: values.addresses?.trim() || '',
+      };
+      await AddAddressesToProject(trimmedValues.addresses);
       if (onSubmit) {
         onSubmit();
       }

@@ -6,6 +6,10 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['status']['StatusCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ChangeVisibility(arg1) {
+  return window['go']['status']['StatusCollection']['ChangeVisibility'](arg1);
+}
+
 export function ExportData(arg1) {
   return window['go']['status']['StatusCollection']['ExportData'](arg1);
 }

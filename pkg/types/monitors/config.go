@@ -8,9 +8,7 @@
 
 package monitors
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Monitors view
 func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
@@ -27,10 +25,13 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "monitors")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "monitors",
 		Facets:     facets,
-		FacetOrder: []string{"monitors"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
 			"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},

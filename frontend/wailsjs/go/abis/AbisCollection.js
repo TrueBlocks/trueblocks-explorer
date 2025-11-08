@@ -6,6 +6,10 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['abis']['AbisCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ChangeVisibility(arg1) {
+  return window['go']['abis']['AbisCollection']['ChangeVisibility'](arg1);
+}
+
 export function Crud(arg1, arg2, arg3) {
   return window['go']['abis']['AbisCollection']['Crud'](arg1, arg2, arg3);
 }

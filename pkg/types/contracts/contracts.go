@@ -243,5 +243,9 @@ func (c *ContractsCollection) ExportData(payload *types.Payload) (string, error)
 	}
 }
 
+func (c *ContractsCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

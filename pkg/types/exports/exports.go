@@ -642,6 +642,10 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 	}
 }
 
+func (c *ExportsCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 var collectionMutex sync.RWMutex
 

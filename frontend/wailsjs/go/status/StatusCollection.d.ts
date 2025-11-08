@@ -5,6 +5,8 @@ import {sdk} from '../models';
 
 export function AccumulateItem(arg1:any,arg2:types.Summary):Promise<void>;
 
+export function ChangeVisibility(arg1:types.Payload):Promise<void>;
+
 export function ExportData(arg1:types.Payload):Promise<string>;
 
 export function FetchByFacet(arg1:types.DataFacet):Promise<void>;

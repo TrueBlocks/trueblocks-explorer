@@ -1,5 +1,6 @@
 import { Textarea } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { ADDRESS_DESCRIPTION, ADDRESS_PLACEHOLDER } from '@utils';
 
 interface AddressInputProps<T = Record<string, unknown>> {
   form: UseFormReturnType<T>;
@@ -15,8 +16,8 @@ export const AddressInput = <T extends Record<string, unknown>>({
   form,
   fieldName,
   label = 'Addresses',
-  placeholder = '0x... or vitalik.eth (one per line or comma-separated)',
-  description = 'Enter Ethereum addresses or ENS names, separated by commas or new lines',
+  placeholder = ADDRESS_PLACEHOLDER,
+  description = ADDRESS_DESCRIPTION,
   rows = 4,
   required = true,
 }: AddressInputProps<T>) => {

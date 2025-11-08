@@ -278,6 +278,8 @@ export const Names = () => {
         value: facetConfig.id,
         content: perTabContent,
         dividerBefore: facetConfig.dividerBefore,
+        hideable: facetConfig.hideable,
+        hidden: facetConfig.hidden,
       })),
     [availableFacets, perTabContent],
   );

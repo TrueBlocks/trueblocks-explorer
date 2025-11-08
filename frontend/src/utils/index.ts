@@ -1,6 +1,7 @@
 export * from './Debugger';
 export * from './StateDisplay';
 export * from './addresses';
+export * from './addressConstants';
 export * from './clipboard';
 export * from './debugLayout';
 export * from './eventUtils';

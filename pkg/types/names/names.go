@@ -285,5 +285,9 @@ func (c *NamesCollection) ExportData(payload *types.Payload) (string, error) {
 	}
 }
 
+func (c *NamesCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

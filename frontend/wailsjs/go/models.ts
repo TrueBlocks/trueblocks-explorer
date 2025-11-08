@@ -709,6 +709,9 @@ export namespace msgs {
 	    IMAGES_CHANGED = "images:changed",
 	    PROJECT_OPENED = "project:opened",
 	    ROW_ACTION = "action:row",
+	    FACET_CHANGED = "facet:changed",
+	    PROJECT_CLOSED = "project:closed",
+	    PROJECT_SWITCHED = "project:switched",
 	}
 
 }
@@ -2452,6 +2455,8 @@ export namespace types {
 	    viewType?: string;
 	    dividerBefore: boolean;
 	    disabled: boolean;
+	    hideable: boolean;
+	    hidden: boolean;
 	    fields: FieldConfig[];
 	    columns: ColumnConfig[];
 	    detailPanels: DetailPanelConfig[];
@@ -2473,6 +2478,8 @@ export namespace types {
 	        this.viewType = source["viewType"];
 	        this.dividerBefore = source["dividerBefore"];
 	        this.disabled = source["disabled"];
+	        this.hideable = source["hideable"];
+	        this.hidden = source["hidden"];
 	        this.fields = this.convertValues(source["fields"], FieldConfig);
 	        this.columns = this.convertValues(source["columns"], ColumnConfig);
 	        this.detailPanels = this.convertValues(source["detailPanels"], DetailPanelConfig);
@@ -2777,6 +2784,7 @@ export namespace types {
 	    activeAddress?: string;
 	    activePeriod?: Period;
 	    targetAddress?: string;
+	    targetSwitch?: boolean;
 	    format?: string;
 	    projectPath?: string;
 	
@@ -2792,6 +2800,7 @@ export namespace types {
 	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
 	        this.targetAddress = source["targetAddress"];
+	        this.targetSwitch = source["targetSwitch"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	    }
@@ -2958,6 +2967,7 @@ export namespace types {
 	    activeAddress?: string;
 	    activePeriod?: Period;
 	    targetAddress?: string;
+	    targetSwitch?: boolean;
 	    format?: string;
 	    projectPath?: string;
 	    rowData: Record<string, any>;
@@ -2976,6 +2986,7 @@ export namespace types {
 	        this.activeAddress = source["activeAddress"];
 	        this.activePeriod = source["activePeriod"];
 	        this.targetAddress = source["targetAddress"];
+	        this.targetSwitch = source["targetSwitch"];
 	        this.format = source["format"];
 	        this.projectPath = source["projectPath"];
 	        this.rowData = source["rowData"];

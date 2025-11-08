@@ -260,6 +260,8 @@ export const Chunks = () => {
         value: facetConfig.id,
         content: perTabContent,
         dividerBefore: facetConfig.dividerBefore,
+        hideable: facetConfig.hideable,
+        hidden: facetConfig.hidden,
       })),
     [availableFacets, perTabContent],
   );

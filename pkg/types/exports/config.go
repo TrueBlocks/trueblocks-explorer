@@ -8,9 +8,7 @@
 
 package exports
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Exports view
 func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
@@ -137,10 +135,25 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "statements")
+	facetOrder = append(facetOrder, "balances")
+	facetOrder = append(facetOrder, "transfers")
+	facetOrder = append(facetOrder, "transactions")
+	facetOrder = append(facetOrder, "openapprovals")
+	facetOrder = append(facetOrder, "approvallogs")
+	facetOrder = append(facetOrder, "approvaltxs")
+	facetOrder = append(facetOrder, "withdrawals")
+	facetOrder = append(facetOrder, "assets")
+	facetOrder = append(facetOrder, "assetcharts")
+	facetOrder = append(facetOrder, "logs")
+	facetOrder = append(facetOrder, "traces")
+	facetOrder = append(facetOrder, "receipts")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "exports",
 		Facets:     facets,
-		FacetOrder: []string{"statements", "balances", "transfers", "transactions", "openapprovals", "approvallogs", "approvaltxs", "withdrawals", "assets", "assetcharts", "logs", "traces", "receipts"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},

@@ -20,10 +20,10 @@ func (c *{{$class}}Collection) GetBuckets(payload *types.Payload) (*types.Bucket
 	var facet types.BucketInterface
 
 	switch payload.DataFacet {
-    {{- range .Facets }}
-        case {{$class}}{{.Name}}:
-            facet = c.{{toLower .Name}}Facet
-    {{- end }}
+	{{- range .Facets}}
+	case {{$class}}{{.Name}}:
+		facet = c.{{toLower .Name}}Facet
+	{{- end}}
 	default:
 		return &types.Buckets{
 			Series: make(map[string][]types.Bucket),

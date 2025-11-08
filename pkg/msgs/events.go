@@ -133,6 +133,25 @@ func EmitLoaded(payload types.DataLoadedPayload) {
 	emitMessage(EventDataLoaded, payload.Collection, payload)
 }
 
+// EmitFacetChanged signals that a facet's visibility has changed.
+func EmitFacetChanged(payload *types.Payload) {
+	emitMessage(EventFacetChanged, payload.Collection, map[string]interface{}{
+		"collection": payload.Collection,
+		"dataFacet":  payload.DataFacet,
+		"hidden":     payload.TargetSwitch,
+	})
+}
+
+// EmitProjectClosed signals that a project has been closed.
+func EmitProjectClosed(projectID string, payload ...interface{}) {
+	emitMessage(EventProjectClosed, projectID, payload...)
+}
+
+// EmitProjectSwitched signals that the active project has been switched.
+func EmitProjectSwitched(projectID string, payload ...interface{}) {
+	emitMessage(EventProjectSwitched, projectID, payload...)
+}
+
 func EmitReloaded(payload types.Payload) {
 	emitMessage(EventDataReloaded, payload.Collection, payload)
 }

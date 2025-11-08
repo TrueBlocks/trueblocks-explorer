@@ -8,9 +8,7 @@
 
 package comparitoor
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Comparitoor view
 func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
@@ -63,10 +61,17 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "comparitoor")
+	facetOrder = append(facetOrder, "chifra")
+	facetOrder = append(facetOrder, "etherscan")
+	facetOrder = append(facetOrder, "covalent")
+	facetOrder = append(facetOrder, "alchemy")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "comparitoor",
 		Facets:     facets,
-		FacetOrder: []string{"comparitoor", "chifra", "etherscan", "covalent", "alchemy"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},

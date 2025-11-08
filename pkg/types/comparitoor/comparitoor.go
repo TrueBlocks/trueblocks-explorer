@@ -284,5 +284,9 @@ func (c *ComparitoorCollection) ExportData(payload *types.Payload) (string, erro
 	}
 }
 
+func (c *ComparitoorCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

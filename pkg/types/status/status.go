@@ -253,5 +253,9 @@ func (c *StatusCollection) ExportData(payload *types.Payload) (string, error) {
 	}
 }
 
+func (c *StatusCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

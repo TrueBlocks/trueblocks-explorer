@@ -90,7 +90,7 @@ export function processColumns<T>(
       ? [...nonActionColumns, configuredActionsColumn]
       : nonActionColumns;
   } else {
-    const slicedColumns = nonActionColumns.slice(0, 6);
+    const slicedColumns = nonActionColumns.slice(0, 7);
     return configuredActionsColumn
       ? [...slicedColumns, configuredActionsColumn]
       : slicedColumns;

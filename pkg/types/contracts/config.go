@@ -8,9 +8,7 @@
 
 package contracts
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Contracts view
 func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
@@ -46,10 +44,15 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "dashboard")
+	facetOrder = append(facetOrder, "execute")
+	facetOrder = append(facetOrder, "events")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "contracts",
 		Facets:     facets,
-		FacetOrder: []string{"dashboard", "execute", "events"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},

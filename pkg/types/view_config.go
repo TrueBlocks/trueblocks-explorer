@@ -17,6 +17,8 @@ type FacetConfig struct {
 	ViewType         string              `json:"viewType,omitempty"`
 	DividerBefore    bool                `json:"dividerBefore"`
 	Disabled         bool                `json:"disabled"`
+	Hideable         bool                `json:"hideable"`
+	Hidden           bool                `json:"hidden"`
 	Fields           []FieldConfig       `json:"fields"`
 	Columns          []ColumnConfig      `json:"columns"`
 	DetailPanels     []DetailPanelConfig `json:"detailPanels"`
@@ -26,6 +28,26 @@ type FacetConfig struct {
 	PanelChartConfig *PanelChartConfig   `json:"panelChartConfig,omitempty"`
 	FacetChartConfig *FacetChartConfig   `json:"facetChartConfig,omitempty"`
 	RowAction        *RowActionConfig    `json:"rowAction,omitempty"`
+}
+
+// Hide sets the Hidden field to true
+func (fc *FacetConfig) Hide() {
+	fc.Hidden = true
+}
+
+// Show sets the Hidden field to false
+func (fc *FacetConfig) Show() {
+	fc.Hidden = false
+}
+
+// IsHideable returns true if the facet can be hidden
+func (fc *FacetConfig) IsHideable() bool {
+	return fc.Hideable
+}
+
+// IsHidden returns true if the facet is currently hidden
+func (fc *FacetConfig) IsHidden() bool {
+	return fc.Hidden
 }
 
 // FieldConfig is the single source-of-truth for facet fields

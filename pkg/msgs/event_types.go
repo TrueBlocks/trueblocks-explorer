@@ -3,19 +3,22 @@ package msgs
 type EventType string
 
 const (
-	EventStatus         EventType = "statusbar:status"
-	EventError          EventType = "statusbar:error"
-	EventManager        EventType = "manager:change"
-	EventProjectModal   EventType = "project:modal"
-	EventAddressChanged EventType = "address:changed"
-	EventChainChanged   EventType = "chain:changed"
-	EventPeriodChanged  EventType = "period:changed"
-	EventDataLoaded     EventType = "data:loaded"
-	EventDataReloaded   EventType = "data:reloaded"
-	EventTabCycle       EventType = "hotkey:tab-cycle"
-	EventImagesChanged  EventType = "images:changed"
-	EventProjectOpened  EventType = "project:opened"
-	EventRowAction      EventType = "action:row"
+	EventStatus          EventType = "statusbar:status"
+	EventError           EventType = "statusbar:error"
+	EventManager         EventType = "manager:change"
+	EventProjectModal    EventType = "project:modal"
+	EventAddressChanged  EventType = "address:changed"
+	EventChainChanged    EventType = "chain:changed"
+	EventPeriodChanged   EventType = "period:changed"
+	EventDataLoaded      EventType = "data:loaded"
+	EventDataReloaded    EventType = "data:reloaded"
+	EventTabCycle        EventType = "hotkey:tab-cycle"
+	EventImagesChanged   EventType = "images:changed"
+	EventProjectOpened   EventType = "project:opened"
+	EventRowAction       EventType = "action:row"
+	EventFacetChanged    EventType = "facet:changed"
+	EventProjectClosed   EventType = "project:closed"
+	EventProjectSwitched EventType = "project:switched"
 )
 
 var AllMessages = []struct {
@@ -35,4 +38,7 @@ var AllMessages = []struct {
 	{EventImagesChanged, "IMAGES_CHANGED"},
 	{EventProjectOpened, "PROJECT_OPENED"},
 	{EventRowAction, "ROW_ACTION"},
+	{EventFacetChanged, "FACET_CHANGED"},
+	{EventProjectClosed, "PROJECT_CLOSED"},
+	{EventProjectSwitched, "PROJECT_SWITCHED"},
 }

@@ -7,11 +7,11 @@ export const VIEW_ROUTES = [
   'chunks',
   'comparitoor',
   'contracts',
+  'dresses',
   'exports',
   'monitors',
   'names',
   'status',
-  'dresses',
 ] as const;
 
 export type ViewRoute = (typeof VIEW_ROUTES)[number];

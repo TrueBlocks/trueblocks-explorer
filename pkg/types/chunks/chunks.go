@@ -306,5 +306,9 @@ func (c *ChunksCollection) ExportData(payload *types.Payload) (string, error) {
 	}
 }
 
+func (c *ChunksCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

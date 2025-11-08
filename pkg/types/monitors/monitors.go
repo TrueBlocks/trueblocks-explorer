@@ -189,5 +189,9 @@ func (c *MonitorsCollection) ExportData(payload *types.Payload) (string, error) 
 	}
 }
 
+func (c *MonitorsCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

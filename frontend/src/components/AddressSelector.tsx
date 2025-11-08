@@ -11,7 +11,14 @@ import { useActiveProject, useIconSets } from '@hooks';
 import { ActionIcon, Group, Stack, TextInput, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { base } from '@models';
-import { Log, LogError, addressToHex, getDisplayAddress } from '@utils';
+import {
+  ADDRESS_PLACEHOLDER,
+  Log,
+  LogError,
+  addressToHex,
+  getDisplayAddress,
+  validateAddressOrEns,
+} from '@utils';
 
 import { GetAddresses } from '../../wailsjs/go/project/Project';
 
@@ -34,19 +41,7 @@ export const AddressSelector = () => {
   const form = useForm<AddAddressForm>({
     initialValues: { address: '' },
     validate: {
-      address: (value) => {
-        if (!value) return 'Address is required';
-        if (value.endsWith('.eth')) {
-          if (value.length < 5) return 'ENS name too short';
-          if (!/^[a-z0-9-]+\.eth$/i.test(value))
-            return 'Invalid ENS name format';
-          return null;
-        }
-        if (!/^0x[a-fA-F0-9]{40}$/.test(value)) {
-          return 'Invalid Ethereum address format (use 0x... or .eth name)';
-        }
-        return null;
-      },
+      address: (value) => validateAddressOrEns(value),
     },
   });
 
@@ -93,13 +88,17 @@ export const AddressSelector = () => {
     try {
       setLoading(true);
 
-      const result = await ConvertToAddress(values.address);
+      const trimmedValues = {
+        ...values,
+        address: values.address?.trim() || '',
+      };
+      const result = await ConvertToAddress(trimmedValues.address);
       if (result && typeof result === 'object' && 'hex' in result) {
         await AddAddressToProject(addressToHex(result as base.Address));
         await loadAddresses();
         form.reset();
         setAddModalOpened(false);
-        Log(`Added address: ${values.address}`);
+        Log(`Added address: ${trimmedValues.address}`);
       } else {
         throw new Error('Invalid address format');
       }
@@ -156,7 +155,7 @@ export const AddressSelector = () => {
 
             <TextInput
               label="Address"
-              placeholder="0x... or vitalik.eth"
+              placeholder={ADDRESS_PLACEHOLDER}
               required
               {...form.getInputProps('address')}
             />

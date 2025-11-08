@@ -8,9 +8,7 @@
 
 package abis
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Abis view
 func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
@@ -53,10 +51,16 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "downloaded")
+	facetOrder = append(facetOrder, "known")
+	facetOrder = append(facetOrder, "functions")
+	facetOrder = append(facetOrder, "events")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "abis",
 		Facets:     facets,
-		FacetOrder: []string{"downloaded", "known", "functions", "events"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
 			"export":   {Name: "export", Label: "Export", Icon: "Export"},

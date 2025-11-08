@@ -8,9 +8,7 @@
 
 package status
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Status view
 func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
@@ -45,10 +43,15 @@ func (c *StatusCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "status")
+	facetOrder = append(facetOrder, "caches")
+	facetOrder = append(facetOrder, "chains")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "status",
 		Facets:     facets,
-		FacetOrder: []string{"status", "caches", "chains"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},

@@ -315,5 +315,9 @@ func (c *AbisCollection) ExportData(payload *types.Payload) (string, error) {
 	}
 }
 
+func (c *AbisCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
+}
+
 // EXISTING_CODE
 // EXISTING_CODE

@@ -77,9 +77,10 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 func (c *{{$class}}Collection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
 	switch facet {
-	{{range .Facets}}case {{$class}}{{.Name}}:
+	{{- range .Facets}}
+	case {{$class}}{{.Name}}:
 		name = "{{toLower $class}}-{{toLower .StoreName}}"
-	{{end -}}
+	{{- end}}
 	default:
 		return ""
 	}

@@ -42,8 +42,9 @@ export const useAppHotkeys = (): void => {
 
   // Helper function to get current facet for the current route
   const vR = currentLocation.replace(/^\/+/, '');
-  const currentFacet = getLastFacet(vR);
   const createPayload = usePayload(vR);
+  const currentFacet = getLastFacet(vR);
+
   const [, navigate] = useLocation();
 
   const handleHotkey = useCallback(
@@ -253,11 +254,11 @@ export const useAppHotkeys = (): void => {
     enabledMenuItems.forEach((item) => {
       // Special hotkeys that don't use sequential numbering
       if (item.path === '/wizard') {
-        registry['mod+w'] = (e: KeyboardEvent) => {
+        registry['mod+shift+w'] = (e: KeyboardEvent) => {
           handleHotkey(
             {
               type: item.type || 'navigation',
-              hotkey: 'mod+w',
+              hotkey: 'mod+shift+w',
               path: item.path,
               label: `Navigate to ${item.label}`,
               action: item.action,

@@ -67,8 +67,12 @@ export const ProjectSelectionModal = ({
     setError(null);
 
     try {
+      const trimmedValues = {
+        ...values,
+        addresses: values.addresses?.trim() || '',
+      };
       await newProject(values.name, '');
-      await AddAddressesToProject(values.addresses);
+      await AddAddressesToProject(trimmedValues.addresses);
 
       // Immediately save the project after creation/updates
       await SaveProject();

@@ -8,9 +8,7 @@
 
 package dresses
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Dresses view
 func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
@@ -67,10 +65,17 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "generator")
+	facetOrder = append(facetOrder, "series")
+	facetOrder = append(facetOrder, "databases")
+	facetOrder = append(facetOrder, "events")
+	facetOrder = append(facetOrder, "gallery")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "dresses",
 		Facets:     facets,
-		FacetOrder: []string{"generator", "series", "databases", "events", "gallery"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"create": {Name: "create", Label: "Create", Icon: "Create"},
 			"delete": {Name: "delete", Label: "Delete", Icon: "Delete"},

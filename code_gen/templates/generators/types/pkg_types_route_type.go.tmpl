@@ -33,8 +33,10 @@ const (
 )
 
 func init() {
-{{range .Facets}}types.RegisterDataFacet({{$class}}{{.Name}})
-{{end}}}
+{{- range .Facets}}
+	types.RegisterDataFacet({{$class}}{{.Name}})
+{{- end}}
+}
 
 type {{$class}}Collection struct {
 	{{- range .Facets}}
@@ -165,6 +167,10 @@ func (c *{{$class}}Collection) ExportData(payload *types.Payload) (string, error
 	default:
 		return "", fmt.Errorf("[ExportData] unsupported {{$lower}} facet: %s", payload.DataFacet)
 	}
+}
+
+func (c *{{$class}}Collection) ChangeVisibility(payload *types.Payload) error {
+	return nil
 }
 
 // EXISTING_CODE

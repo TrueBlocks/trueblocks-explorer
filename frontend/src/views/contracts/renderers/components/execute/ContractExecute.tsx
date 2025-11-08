@@ -18,7 +18,7 @@ import {
   Title,
 } from '@mantine/core';
 import { types } from '@models';
-import { LogError, addressToHex } from '@utils';
+import { ADDRESS_HELP_TEXT, LogError, addressToHex } from '@utils';
 import {
   PreparedTransaction,
   TransactionData,
@@ -111,7 +111,7 @@ const getPlaceholder = (parameter: types.Parameter): string => {
 // Generate help text for complex types
 const getHelpText = (parameter: types.Parameter): string | undefined => {
   if (parameter.type === 'address') {
-    return 'Must be a valid Ethereum address (42 characters starting with 0x)';
+    return ADDRESS_HELP_TEXT;
   }
 
   if (isArrayType(parameter.type)) {

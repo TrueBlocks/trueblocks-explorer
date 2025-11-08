@@ -10,6 +10,8 @@ export interface DataFacetConfig {
   id: DataFacet;
   label: string;
   dividerBefore?: boolean;
+  hideable?: boolean;
+  hidden?: boolean;
 }
 
 export interface UseActiveFacetReturn {

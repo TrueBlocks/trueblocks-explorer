@@ -6,6 +6,10 @@ export function AccumulateItem(arg1, arg2) {
   return window['go']['comparitoor']['ComparitoorCollection']['AccumulateItem'](arg1, arg2);
 }
 
+export function ChangeVisibility(arg1) {
+  return window['go']['comparitoor']['ComparitoorCollection']['ChangeVisibility'](arg1);
+}
+
 export function ExportData(arg1) {
   return window['go']['comparitoor']['ComparitoorCollection']['ExportData'](arg1);
 }

@@ -18,6 +18,7 @@ type Collection interface {
 	NeedsUpdate(facet DataFacet) bool
 	GetSummary() Summary
 	ExportData(payload *Payload) (string, error)
+	ChangeVisibility(payload *Payload) error
 	GetConfig() (*ViewConfig, error)
 	SummaryAccumulator
 }

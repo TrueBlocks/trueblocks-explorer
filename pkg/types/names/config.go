@@ -8,9 +8,7 @@
 
 package names
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Names view
 func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
@@ -62,10 +60,17 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "all")
+	facetOrder = append(facetOrder, "custom")
+	facetOrder = append(facetOrder, "prefund")
+	facetOrder = append(facetOrder, "regular")
+	facetOrder = append(facetOrder, "baddress")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "names",
 		Facets:     facets,
-		FacetOrder: []string{"all", "custom", "prefund", "regular", "baddress"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
 			"create":   {Name: "create", Label: "Create", Icon: "Create"},

@@ -1,5 +1,7 @@
 import { types } from '@models';
 
+import { ADDRESS_VALIDATION_ERROR } from './addressConstants';
+
 export const isValidSolidityType = (type: string): boolean => {
   const validTypes = [
     // Basic types
@@ -116,7 +118,7 @@ export const validateSolidityValue = (
   // Address validation
   if (type === 'address') {
     if (!/^0x[a-fA-F0-9]{40}$/.test(value)) {
-      return 'Invalid Ethereum address format (must be 0x followed by 40 hex characters)';
+      return ADDRESS_VALIDATION_ERROR;
     }
     return null;
   }

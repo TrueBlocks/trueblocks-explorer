@@ -8,9 +8,7 @@
 
 package chunks
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Chunks view
 func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
@@ -57,10 +55,16 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 		},
 	}
 
+	facetOrder := []string{}
+	facetOrder = append(facetOrder, "stats")
+	facetOrder = append(facetOrder, "index")
+	facetOrder = append(facetOrder, "blooms")
+	facetOrder = append(facetOrder, "manifest")
+
 	cfg := &types.ViewConfig{
 		ViewName:   "chunks",
 		Facets:     facets,
-		FacetOrder: []string{"stats", "index", "blooms", "manifest"},
+		FacetOrder: facetOrder,
 		Actions: map[string]types.ActionConfig{
 			"export": {Name: "export", Label: "Export", Icon: "Export"},
 		},

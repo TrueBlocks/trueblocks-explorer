@@ -15,9 +15,7 @@ scope: type
 
 package {{$lower}}
 
-import (
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
-)
+import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the {{$class}} view
 func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
@@ -45,14 +43,25 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 			{{- if .NavigateTo }}
 				RowAction:   {{.NavigateTo}},
 			{{- end}}
+			{{- if or .Hidden .Hideable }}
+				Hideable:   true,
+			{{- end}}
+			{{- if .Hidden }}
+				Hidden:   true,
+			{{- end}}
 		},
 		{{- end}}
 	}
 
+	facetOrder := []string{}
+	{{- range .Facets}}
+	facetOrder = append(facetOrder, "{{toLower .Name}}")
+	{{- end}}
+
 	cfg := &types.ViewConfig{
 		ViewName:   "{{$lower}}",
 		Facets:     facets,
-		FacetOrder: []string{ {{- range .Facets}}{{printf "%q" (toLower .Name)}}, {{- end}}},
+		FacetOrder: facetOrder,
 		Actions:    map[string]types.ActionConfig{
 		{{- range .AllActions }}
 			{{.}}

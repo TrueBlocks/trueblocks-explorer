@@ -14,7 +14,6 @@ import (
 	"time"
 
 	// EXISTING_CODE
-
 	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
@@ -304,6 +303,10 @@ func (c *DressesCollection) ExportData(payload *types.Payload) (string, error) {
 	default:
 		return "", fmt.Errorf("[ExportData] unsupported dresses facet: %s", payload.DataFacet)
 	}
+}
+
+func (c *DressesCollection) ChangeVisibility(payload *types.Payload) error {
+	return nil
 }
 
 // EXISTING_CODE

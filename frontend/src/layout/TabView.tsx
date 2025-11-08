@@ -12,6 +12,8 @@ interface Tab {
   value: string;
   content: React.ReactNode;
   dividerBefore?: boolean;
+  hideable?: boolean;
+  hidden?: boolean;
 }
 
 interface TabViewProps {
@@ -23,14 +25,10 @@ interface TabViewProps {
 export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
   const { getLastFacet, setLastFacet, loading, lastFacetMap } =
     useActiveProject();
-
   const [activeTab, setActiveTab] = useState<string>('');
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-
+    if (loading) return;
     const vR = route.replace(/^\/+/, '');
     const savedTab = getLastFacet(vR);
     const isValidSavedTab =
@@ -38,8 +36,6 @@ export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
       String(savedTab) !== 'undefined' &&
       tabs.some((tab) => tab.value === savedTab);
     const targetTab = isValidSavedTab ? savedTab : tabs[0]?.value || '';
-
-    // Update active tab whenever lastFacetMap changes or on initial load
     if (targetTab && targetTab !== activeTab) {
       setActiveTab(targetTab);
     }
@@ -93,21 +89,27 @@ export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
         }}
       >
         <Tabs.List>
-          {tabs.map((tab, index) => (
-            <Fragment key={`tab-${index}`}>
-              {tab.dividerBefore && <StyledDivider key={`divider-${index}`} />}
-              <Tabs.Tab key={tab.value} value={tab.value}>
-                {tab.label}
-              </Tabs.Tab>
-            </Fragment>
-          ))}
+          {tabs
+            .filter((tab) => !tab.hidden)
+            .map((tab, index) => (
+              <Fragment key={`tab-${index}`}>
+                {tab.dividerBefore && (
+                  <StyledDivider key={`divider-${index}`} />
+                )}
+                <Tabs.Tab key={tab.value} value={tab.value}>
+                  {tab.label}
+                </Tabs.Tab>
+              </Fragment>
+            ))}
         </Tabs.List>
 
-        {tabs.map((tab) => (
-          <Tabs.Panel key={tab.value} value={tab.value}>
-            {tab.content}
-          </Tabs.Panel>
-        ))}
+        {tabs
+          .filter((tab) => !tab.hidden)
+          .map((tab) => (
+            <Tabs.Panel key={tab.value} value={tab.value}>
+              {tab.content}
+            </Tabs.Panel>
+          ))}
       </Tabs>
     </div>
   );

@@ -23,7 +23,6 @@ export type IconSet = {
 {{- end }}
 {{- end }}
 
-  Home: IconType;
   Khedra: IconType;
   Settings: IconType;
   Wizard: IconType;
@@ -71,7 +70,6 @@ const faIcons: IconSet = {
 {{- end }}
 
   // App navigation
-  Home: Icons.FaHome,
   Khedra: Icons.FaIndustry,
   Settings: Icons.FaCog,
   Wizard: Icons.FaHatWizard,
@@ -126,7 +124,6 @@ const biIcons: IconSet = {
 {{- end }}
 
   // App navigation
-  Home: Icons.BiHome,
   Khedra: Icons.BiBuildings,
   Settings: Icons.BiCog,
   Wizard: Icons.BiCog,
@@ -208,8 +205,6 @@ export const useIconSets = (
 {{- end }}
 {{- end }}
 
-    const Home: FC<IconProps> = (props = {}) =>
-      createElement(iconSet.Home, { size, ...props });
     const Khedra: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Khedra, { size, ...props });
     const Settings: FC<IconProps> = (props = {}) =>
@@ -280,7 +275,6 @@ export const useIconSets = (
 {{- end }}
 {{- end }}
 
-      Home,
       Khedra,
       Settings,
       Wizard,

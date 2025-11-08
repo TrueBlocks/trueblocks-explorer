@@ -11,7 +11,7 @@ scope: codebase
  * the code inside of 'EXISTING_CODE' tags.
  */
 import { SetInitialized } from '@app';
-import { Khedra, Projects, Settings } from '@views';
+import { Khedra, Settings } from '@views';
 import {
   {{ .Views }}
 } from '@views';
@@ -29,13 +29,6 @@ export interface MenuItem {
 }
 
 export const MenuItems: MenuItem[] = [
-  {
-    label: 'Home',
-    path: '/',
-    position: 'top',
-    component: Projects,
-    type: 'navigation',
-  },
 {{- range .Structures }}
 {{- if and (ne .Class "") (not .DisableGo) }}
   {

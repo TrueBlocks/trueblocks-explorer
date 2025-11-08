@@ -288,3 +288,30 @@ func (a *App) ConfigOk() {
 		msgs.EmitError("Configuration error", err)
 	}
 }
+
+// ChangeVisibility delegates facet visibility change to the correct collection
+func (a *App) ChangeVisibility(payload *types.Payload) error {
+	collection := a.getCollection(payload, false)
+	return collection.ChangeVisibility(payload)
+}
+
+// CloseActiveProject closes the currently active project facet using backend state
+func (a *App) CloseActiveProject() error {
+	currentView := a.GetLastView()
+	if currentView == "" {
+		currentView = "projects"
+	}
+
+	currentFacet := a.GetLastFacet(currentView)
+	if currentFacet == "" {
+		return fmt.Errorf("no current facet available for view: %s", currentView)
+	}
+
+	payload := &types.Payload{
+		Collection:   currentView,
+		DataFacet:    types.DataFacet(currentFacet),
+		TargetSwitch: true, // true = hide/close
+	}
+
+	return a.ChangeVisibility(payload)
+}

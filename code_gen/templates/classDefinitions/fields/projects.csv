@@ -1,0 +1,5 @@
+name, type, section, docOrder, description
+id, string, Identity, 1, unique identifier for the project
+name, string, Identity, 2, human-readable name of the project
+path, string, Identity, 3, file system path to the project
+isActive, bool, State, 4, whether this project is currently active

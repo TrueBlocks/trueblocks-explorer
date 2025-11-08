@@ -14,8 +14,8 @@ beforeEach(() => {
 
 // Utility to generate icon mocks
 const iconNames = [
-  'Home',
   'Khedra',
+  'Projects',
   'Exports',
   'Monitors',
   'Abis',

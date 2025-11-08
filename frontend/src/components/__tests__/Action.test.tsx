@@ -16,30 +16,30 @@ describe('Action Component', () => {
 
   describe('Icon Rendering', () => {
     it('renders the primary icon by default', () => {
-      renderWithProvider(<Action icon="Home" onClick={mockOnClick} />);
+      renderWithProvider(<Action icon="Projects" onClick={mockOnClick} />);
 
-      expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('projects-icon')).toBeInTheDocument();
       expect(screen.queryByTestId('delete-icon')).not.toBeInTheDocument();
     });
 
     it('renders the primary icon when isOn is true', () => {
       renderWithProvider(
         <Action
-          icon="Home"
+          icon="Projects"
           iconOff="Delete"
           isOn={true}
           onClick={mockOnClick}
         />,
       );
 
-      expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('projects-icon')).toBeInTheDocument();
       expect(screen.queryByTestId('delete-icon')).not.toBeInTheDocument();
     });
 
     it('renders the iconOff when isOn is false and iconOff is provided', () => {
       renderWithProvider(
         <Action
-          icon="Home"
+          icon="Projects"
           iconOff="Delete"
           isOn={false}
           onClick={mockOnClick}
@@ -47,15 +47,15 @@ describe('Action Component', () => {
       );
 
       expect(screen.getByTestId('delete-icon')).toBeInTheDocument();
-      expect(screen.queryByTestId('home-icon')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('projects-icon')).not.toBeInTheDocument();
     });
 
     it('renders the primary icon when isOn is false but iconOff is not provided', () => {
       renderWithProvider(
-        <Action icon="Home" isOn={false} onClick={mockOnClick} />,
+        <Action icon="Projects" isOn={false} onClick={mockOnClick} />,
       );
 
-      expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('projects-icon')).toBeInTheDocument();
     });
 
     it('works with Delete and Undelete icons as specified in design', () => {
@@ -75,7 +75,7 @@ describe('Action Component', () => {
 
   describe('onClick Handler', () => {
     it('invokes onClick handler when enabled and clicked', () => {
-      renderWithProvider(<Action icon="Home" onClick={mockOnClick} />);
+      renderWithProvider(<Action icon="Projects" onClick={mockOnClick} />);
 
       const button = screen.getByRole('button');
       fireEvent.click(button);
@@ -84,7 +84,7 @@ describe('Action Component', () => {
     });
 
     it('invokes onClick handler multiple times when clicked multiple times', () => {
-      renderWithProvider(<Action icon="Home" onClick={mockOnClick} />);
+      renderWithProvider(<Action icon="Projects" onClick={mockOnClick} />);
 
       const button = screen.getByRole('button');
       fireEvent.click(button);
@@ -96,7 +96,7 @@ describe('Action Component', () => {
 
     it('does not invoke onClick handler when disabled', () => {
       renderWithProvider(
-        <Action icon="Home" onClick={mockOnClick} disabled={true} />,
+        <Action icon="Projects" onClick={mockOnClick} disabled={true} />,
       );
 
       const button = screen.getByRole('button');
@@ -106,7 +106,9 @@ describe('Action Component', () => {
     });
 
     it('does not invoke onClick handler when disabled is explicitly true', () => {
-      renderWithProvider(<Action icon="Home" onClick={mockOnClick} disabled />);
+      renderWithProvider(
+        <Action icon="Projects" onClick={mockOnClick} disabled />,
+      );
 
       const button = screen.getByRole('button');
       fireEvent.click(button);
@@ -118,7 +120,7 @@ describe('Action Component', () => {
   describe('Disabled State', () => {
     it('passes disabled prop to underlying ActionIcon', () => {
       renderWithProvider(
-        <Action icon="Home" onClick={mockOnClick} disabled={true} />,
+        <Action icon="Projects" onClick={mockOnClick} disabled={true} />,
       );
 
       const button = screen.getByRole('button');
@@ -126,7 +128,7 @@ describe('Action Component', () => {
     });
 
     it('is enabled by default when disabled prop is not provided', () => {
-      renderWithProvider(<Action icon="Home" onClick={mockOnClick} />);
+      renderWithProvider(<Action icon="Projects" onClick={mockOnClick} />);
 
       const button = screen.getByRole('button');
       expect(button).not.toBeDisabled();
@@ -134,7 +136,7 @@ describe('Action Component', () => {
 
     it('is enabled when disabled is explicitly false', () => {
       renderWithProvider(
-        <Action icon="Home" onClick={mockOnClick} disabled={false} />,
+        <Action icon="Projects" onClick={mockOnClick} disabled={false} />,
       );
 
       const button = screen.getByRole('button');
@@ -145,17 +147,21 @@ describe('Action Component', () => {
   describe('Title and Mantine Props Passthrough', () => {
     it('passes title prop to ActionIcon', () => {
       renderWithProvider(
-        <Action icon="Home" onClick={mockOnClick} title="Home button" />,
+        <Action
+          icon="Projects"
+          onClick={mockOnClick}
+          title="Projects button"
+        />,
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('title', 'Home button');
+      expect(button).toHaveAttribute('title', 'Projects button');
     });
 
     it('passes Mantine props to ActionIcon', () => {
       renderWithProvider(
         <Action
-          icon="Home"
+          icon="Projects"
           onClick={mockOnClick}
           variant="filled"
           size="lg"
@@ -170,14 +176,14 @@ describe('Action Component', () => {
     it('passes aria-label prop to ActionIcon', () => {
       renderWithProvider(
         <Action
-          icon="Home"
+          icon="Projects"
           onClick={mockOnClick}
-          aria-label="Navigate to home"
+          aria-label="Navigate to projects"
         />,
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('aria-label', 'Navigate to home');
+      expect(button).toHaveAttribute('aria-label', 'Navigate to projects');
     });
   });
 

@@ -79,7 +79,7 @@ export const ProjectSelectionModal = ({
 
       await restoreProjectFilterStates();
 
-      const targetView = lastView || '/';
+      const targetView = lastView || '/projects'; // DEFAULT_ROUTE
       navigate(targetView);
 
       onProjectSelected();
@@ -100,7 +100,7 @@ export const ProjectSelectionModal = ({
       await openProjectFile(projectPath);
       await restoreProjectFilterStates();
 
-      const targetView = lastView || '/';
+      const targetView = lastView || '/projects'; // DEFAULT_ROUTE
       navigate(targetView);
 
       onProjectSelected();
@@ -122,7 +122,7 @@ export const ProjectSelectionModal = ({
       await openProjectFile('');
       await restoreProjectFilterStates();
 
-      const targetView = lastView || '/';
+      const targetView = lastView || '/projects'; // DEFAULT_ROUTE
       navigate(targetView);
 
       onProjectSelected();

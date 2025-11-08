@@ -5,6 +5,7 @@
  * This file was auto generated. Do not edit.
  */
 
+export { Projects } from './projects';
 export { Exports } from './exports';
 export { Monitors } from './monitors';
 export { Abis } from './abis';
@@ -16,6 +17,5 @@ export { Dresses } from './dresses';
 export { Comparitoor } from './comparitoor';
 
 export { Khedra } from './khedra';
-export { Projects } from './projects';
 
 export * from './settings';

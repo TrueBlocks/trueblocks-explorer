@@ -3268,6 +3268,135 @@
     ],
     "structures": [
         {
+            "class": "AddressList",
+            "display_name": "AddressList",
+            "doc_group": "001-Route",
+            "doc_route": "001-addresslist",
+            "doc_descr": "project management and home dashboard for the TrueBlocks Explorer",
+            "produced_by": "addresslist",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "address",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 1,
+                    "description": "unique identifier for the project",
+                    "num": 1
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 2,
+                    "description": "human-readable name of the project",
+                    "num": 2
+                },
+                {
+                    "name": "appearances",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 3,
+                    "description": "file system path to the project",
+                    "num": 3
+                },
+                {
+                    "name": "lastUpdated",
+                    "type": "string",
+                    "section": "State",
+                    "docOrder": 4,
+                    "description": "whether this project is currently active",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Projects",
+            "display_name": "Projects",
+            "doc_group": "001-Route",
+            "doc_route": "001-projects",
+            "doc_descr": "project management and home dashboard for the TrueBlocks Explorer",
+            "produced_by": "projects",
+            "members": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 1,
+                    "description": "unique identifier for the project",
+                    "num": 1
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 2,
+                    "description": "human-readable name of the project",
+                    "num": 2
+                },
+                {
+                    "name": "path",
+                    "type": "string",
+                    "section": "Identity",
+                    "docOrder": 3,
+                    "description": "file system path to the project",
+                    "num": 3
+                },
+                {
+                    "name": "isActive",
+                    "type": "bool",
+                    "section": "State",
+                    "docOrder": 4,
+                    "description": "whether this project is currently active",
+                    "num": 4
+                }
+            ],
+            "facets": [
+                {
+                    "display_name": "Manage",
+                    "name": "Manage",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Projects",
+                    "storeSource": "project",
+                    "actions": [],
+                    "viewType": "",
+                    "renderer": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "count": 0,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Projects",
+                    "name": "Projects",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "AddressList",
+                    "storeSource": "project",
+                    "actions": [],
+                    "viewType": "",
+                    "renderer": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "count": 0,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                }
+            ]
+        },
+        {
             "class": "Exports",
             "display_name": "Exports",
             "doc_group": "001-Route",

@@ -6,7 +6,7 @@
  * the code inside of 'EXISTING_CODE' tags.
  */
 import { SetInitialized } from '@app';
-import { Khedra, Projects, Settings } from '@views';
+import { Khedra, Settings } from '@views';
 import {
   Abis,
   Chunks,
@@ -16,6 +16,7 @@ import {
   Exports,
   Monitors,
   Names,
+  Projects,
   Status,
 } from '@views';
 import { Wizard } from '@wizards';
@@ -33,8 +34,8 @@ export interface MenuItem {
 
 export const MenuItems: MenuItem[] = [
   {
-    label: 'Home',
-    path: '/',
+    label: 'Projects',
+    path: '/projects',
     position: 'top',
     component: Projects,
     type: 'navigation',

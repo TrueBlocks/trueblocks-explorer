@@ -7,6 +7,7 @@ import {
   GetExportsConfig,
   GetMonitorsConfig,
   GetNamesConfig,
+  GetProjectsConfig,
   GetStatusConfig,
 } from '@app';
 import { types } from '@models';
@@ -50,6 +51,7 @@ export async function initializeAllViewConfigs(): Promise<{
 
       // Define all view configs to load
       const viewConfigs = [
+        { name: 'projects', getter: GetProjectsConfig },
         { name: 'exports', getter: GetExportsConfig },
         { name: 'monitors', getter: GetMonitorsConfig },
         { name: 'abis', getter: GetAbisConfig },

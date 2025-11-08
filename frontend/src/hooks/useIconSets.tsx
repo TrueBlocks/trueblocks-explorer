@@ -12,6 +12,7 @@ import { IconType } from 'react-icons';
 import * as Icons from './Icons';
 
 export type IconSet = {
+  Projects: IconType;
   Exports: IconType;
   Monitors: IconType;
   Abis: IconType;
@@ -22,7 +23,6 @@ export type IconSet = {
   Dresses: IconType;
   Comparitoor: IconType;
 
-  Home: IconType;
   Khedra: IconType;
   Settings: IconType;
   Wizard: IconType;
@@ -63,6 +63,7 @@ export type IconSet = {
 
 const faIcons: IconSet = {
   // Collections
+  Projects: Icons.FaProjects,
   Exports: Icons.FaExports,
   Monitors: Icons.FaMonitors,
   Abis: Icons.FaAbis,
@@ -74,7 +75,6 @@ const faIcons: IconSet = {
   Comparitoor: Icons.FaComparitoor,
 
   // App navigation
-  Home: Icons.FaHome,
   Khedra: Icons.FaIndustry,
   Settings: Icons.FaCog,
   Wizard: Icons.FaHatWizard,
@@ -122,6 +122,7 @@ const faIcons: IconSet = {
 
 const biIcons: IconSet = {
   // Collections
+  Projects: Icons.BiProjects,
   Exports: Icons.BiExports,
   Monitors: Icons.BiMonitors,
   Abis: Icons.BiAbis,
@@ -133,7 +134,6 @@ const biIcons: IconSet = {
   Comparitoor: Icons.BiComparitoor,
 
   // App navigation
-  Home: Icons.BiHome,
   Khedra: Icons.BiBuildings,
   Settings: Icons.BiCog,
   Wizard: Icons.BiCog,
@@ -208,6 +208,8 @@ export const useIconSets = (
   const iconSet = getIconSet(iconSetName);
 
   return useMemo(() => {
+    const Projects: FC<IconProps> = (props = {}) =>
+      createElement(iconSet.Projects, { size, ...props });
     const Exports: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Exports, { size, ...props });
     const Monitors: FC<IconProps> = (props = {}) =>
@@ -227,8 +229,6 @@ export const useIconSets = (
     const Comparitoor: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Comparitoor, { size, ...props });
 
-    const Home: FC<IconProps> = (props = {}) =>
-      createElement(iconSet.Home, { size, ...props });
     const Khedra: FC<IconProps> = (props = {}) =>
       createElement(iconSet.Khedra, { size, ...props });
     const Settings: FC<IconProps> = (props = {}) =>
@@ -293,6 +293,7 @@ export const useIconSets = (
       createElement(iconSet.Missing, { size, ...props });
 
     return {
+      Projects,
       Exports,
       Monitors,
       Abis,
@@ -303,7 +304,6 @@ export const useIconSets = (
       Dresses,
       Comparitoor,
 
-      Home,
       Khedra,
       Settings,
       Wizard,

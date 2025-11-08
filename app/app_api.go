@@ -37,6 +37,8 @@ func (a *App) Reload(payload *types.Payload) (err error) {
 	}()
 
 	switch a.GetLastView() {
+	case "projects":
+		err = a.ReloadProjects(payload)
 	case "exports":
 		err = a.ReloadExports(payload)
 	case "monitors":
@@ -65,6 +67,7 @@ func (a *App) Reload(payload *types.Payload) (err error) {
 // GetRegisteredViews returns all registered view names
 func (a *App) GetRegisteredViews() []string {
 	return []string{
+		"projects",
 		"exports",
 		"monitors",
 		"abis",
@@ -79,6 +82,8 @@ func (a *App) GetRegisteredViews() []string {
 
 func (a *App) getCollection(payload *types.Payload, missingOk bool) types.Collection {
 	switch payload.Collection {
+	case "projects":
+		return projects.GetProjectsCollection(payload)
 	case "exports":
 		return exports.GetExportsCollection(payload)
 	case "monitors":

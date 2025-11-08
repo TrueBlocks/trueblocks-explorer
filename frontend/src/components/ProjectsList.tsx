@@ -20,7 +20,7 @@ export const ProjectsList = () => {
 
   useEvent(msgs.EventType.PROJECT_OPENED, async (lastView: string) => {
     await restoreProjectFilterStates();
-    const targetView = lastView || '/';
+    const targetView = lastView || '/projects'; // DEFAULT_ROUTE
     navigate(targetView);
   });
 
@@ -28,7 +28,7 @@ export const ProjectsList = () => {
     try {
       await switchProject(id);
       await restoreProjectFilterStates();
-      const targetView = lastView || '/';
+      const targetView = lastView || '/projects'; // DEFAULT_ROUTE
       navigate(targetView);
     } catch (error) {
       LogError(`Switching projects: ${error}`);

@@ -1,0 +1,8 @@
+[settings]
+    class = "AddressList"
+    doc_group = "001-Route"
+    doc_descr = "project management and home dashboard for the TrueBlocks Explorer"
+    doc_route = "001-addresslist"
+    attributes = ""
+    produced_by = "addresslist"
+    disable_go = true

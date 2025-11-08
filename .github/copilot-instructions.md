@@ -81,10 +81,12 @@ When I say "Let's go into design mode" or similar, switch to these rules:
 
 ### Mode Switching Rules (CRITICAL)
 - **MUTUALLY EXCLUSIVE**: You can NEVER be in both design mode and step-by-step mode simultaneously
+- **NO SELF-INITIATED MODE EXITS**: You may NEVER exit any mode on your own volition for any reason whatsoever
 - **Only two ways to exit each mode:**
   1. Explicit command: "exit [mode-name] mode"
   2. Command to enter the other mode: "go into [other-mode] mode"
 - **Mode persistence**: Once in a mode, stay there across all requests and conversations until explicitly changed
+- **ABSOLUTE PROHIBITION**: Even if the user asks you to implement something while in design mode, you must respond: "I cannot implement code changes while in design mode." You may NOT assume permission to exit modes or ask for permission to exit.
 
 ### VS Code Problems Server Reset
 When VS Code shows stale errors for deleted files or incorrect TypeScript diagnostics:

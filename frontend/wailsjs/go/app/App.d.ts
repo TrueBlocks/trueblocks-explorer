@@ -220,6 +220,8 @@ export function GetUserPreferences():Promise<preferences.UserPreferences>;
 
 export function GetWizardReturn():Promise<string>;
 
+export function HandleProjectsRowAction(arg1:types.RowActionPayload):Promise<void>;
+
 export function HasActiveProject():Promise<boolean>;
 
 export function ImportSkin(arg1:string):Promise<void>;

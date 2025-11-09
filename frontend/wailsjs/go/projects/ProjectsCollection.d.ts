@@ -19,6 +19,8 @@ export function GetPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.Sort
 
 export function GetSummary():Promise<types.Summary>;
 
+export function HandleRowAction(arg1:types.RowActionPayload):Promise<void>;
+
 export function NeedsUpdate(arg1:types.DataFacet):Promise<boolean>;
 
 export function OnProjectClosed(arg1:string):Promise<void>;

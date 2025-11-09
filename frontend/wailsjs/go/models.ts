@@ -1056,8 +1056,10 @@ export namespace project {
 export namespace projects {
 	
 	export class AddressList {
-	    Address: string;
-	    Thing: string;
+	    address: string;
+	    name: string;
+	    appearances: number;
+	    lastUpdated: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AddressList(source);
@@ -1065,8 +1067,10 @@ export namespace projects {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Address = source["Address"];
-	        this.Thing = source["Thing"];
+	        this.address = source["address"];
+	        this.name = source["name"];
+	        this.appearances = source["appearances"];
+	        this.lastUpdated = source["lastUpdated"];
 	    }
 	}
 	export class ProjectsPage {
@@ -1286,15 +1290,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
-	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1343,6 +1338,15 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;

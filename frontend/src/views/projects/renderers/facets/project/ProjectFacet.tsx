@@ -1,7 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
-import { BaseTab, createDetailPanel } from '@components';
-import { useFacetColumns, useViewConfig } from '@hooks';
+import { BaseTab, createDetailPanel, useTableContext } from '@components';
+import {
+  useActions,
+  useActiveProject,
+  useFacetColumns,
+  useViewConfig,
+} from '@hooks';
 import { project, projects, types } from '@models';
 
 export type ProjectFacetProps = {
@@ -19,6 +24,36 @@ export const ProjectFacet = ({
 }: ProjectFacetProps) => {
   // Get view configuration for columns
   const { config: viewConfig } = useViewConfig({ viewName: 'projects' });
+
+  // Get active address to pre-select matching row
+  const { activeAddress } = useActiveProject();
+
+  // Get table context for row selection
+  const { setSelectedRowIndex } = useTableContext();
+
+  // Get row action handler for navigation
+  const { handlers } = useActions({
+    collection: 'projects',
+    viewStateKey,
+    pagination: { currentPage: 0, pageSize: 50, totalItems: 0 }, // Default pagination for row actions
+    goToPage: () => {}, // Not used for row actions
+    sort: { fields: [], orders: [] }, // Default sort for row actions
+    filter: '', // Default filter for row actions
+    viewConfig,
+    pageData,
+    setPageData: () => {}, // Not used for row actions
+    setTotalItems: () => {}, // Not used for row actions
+    crudFunc: () => Promise.resolve(), // Not used for projects
+    pageFunc: () => Promise.resolve({ totalItems: 0 }), // Not used for row actions
+    pageClass: projects.ProjectsPage,
+    updateItem: undefined,
+    createPayload: () => ({
+      collection: 'projects',
+      dataFacet: viewStateKey.facetName,
+    }), // Default payload creator
+    getCurrentDataFacet: () => viewStateKey.facetName,
+  });
+  const { handleRowAction } = handlers;
 
   // Create detail panel for the project facet
   const detailPanel = useMemo(
@@ -40,6 +75,25 @@ export const ProjectFacet = ({
     { rowActions: [] },
   );
 
+  // Select the row that matches the active address when data loads
+  useEffect(() => {
+    if (!activeAddress || !pageData?.addresslist?.length) {
+      return;
+    }
+
+    // Find the index of the row that matches the active address
+    const matchingRowIndex = pageData.addresslist.findIndex(
+      (item) =>
+        item.address &&
+        item.address.toLowerCase() === activeAddress.toLowerCase(),
+    );
+
+    // If found, select that row
+    if (matchingRowIndex >= 0) {
+      setSelectedRowIndex(matchingRowIndex);
+    }
+  }, [activeAddress, pageData?.addresslist, setSelectedRowIndex]);
+
   // Render project facet with BaseTab
   return (
     <BaseTab<Record<string, unknown>>
@@ -52,6 +106,7 @@ export const ProjectFacet = ({
       viewStateKey={viewStateKey}
       headerActions={null}
       detailPanel={detailPanel}
+      onSubmit={handleRowAction}
     />
   );
 };

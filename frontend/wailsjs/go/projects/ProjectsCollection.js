@@ -34,6 +34,10 @@ export function GetSummary() {
   return window['go']['projects']['ProjectsCollection']['GetSummary']();
 }
 
+export function HandleRowAction(arg1) {
+  return window['go']['projects']['ProjectsCollection']['HandleRowAction'](arg1);
+}
+
 export function NeedsUpdate(arg1) {
   return window['go']['projects']['ProjectsCollection']['NeedsUpdate'](arg1);
 }

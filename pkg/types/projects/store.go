@@ -12,28 +12,34 @@ package projects
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 )
 
 type Project = project.Project
 type AddressList struct {
-	Address string
-	Thing   string
+	Address     string `json:"address"`
+	Name        string `json:"name"`
+	Appearances int    `json:"appearances"`
+	LastUpdated string `json:"lastUpdated"`
 }
 
 // Model implements the sdk.Modeler interface for AddressList
 func (a *AddressList) Model(format string, verbose string, extraOpts bool, extraOptions map[string]any) coreTypes.Model {
 	return coreTypes.Model{
 		Data: map[string]any{
-			"address": a.Address,
-			"thing":   a.Thing,
+			"address":     a.Address,
+			"name":        a.Name,
+			"appearances": a.Appearances,
+			"lastUpdated": a.LastUpdated,
 		},
-		Order: []string{"address", "thing"},
+		Order: []string{"address", "name", "appearances", "lastUpdated"},
 	}
 }
 
@@ -70,9 +76,17 @@ func (c *ProjectsCollection) getAddressListStore(projectID string) *store.Store[
 
 			addresses := project.GetAddresses()
 			for _, addr := range addresses {
+				// Try to get the actual name for the address from the names database
+				addressName := addr.Hex() // default to hex address
+				if name, found := names.NameFromAddress(addr); found && name.Name != "" {
+					addressName = name.Name
+				}
+
 				item := &AddressList{
-					Address: addr.Hex(),
-					Thing:   project.GetName(), // You might want to customize this
+					Address:     addr.Hex(),
+					Name:        addressName,
+					Appearances: 0,                               // TODO: Get actual appearances count
+					LastUpdated: time.Now().Format(time.RFC3339), // Set current time as placeholder
 				}
 				ctx.ModelChan <- item
 			}

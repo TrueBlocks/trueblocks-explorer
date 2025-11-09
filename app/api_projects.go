@@ -56,4 +56,16 @@ func (a *App) GetProjectsBuckets(payload *types.Payload) (*types.Buckets, error)
 }
 
 // EXISTING_CODE
+// HandleProjectsRowAction processes row actions for the projects collection
+func (a *App) HandleProjectsRowAction(payload *types.RowActionPayload) error {
+	collection := projects.GetProjectsCollection(&types.Payload{
+		Collection:    payload.Collection,
+		DataFacet:     payload.DataFacet,
+		ActiveChain:   payload.ActiveChain,
+		ActiveAddress: payload.ActiveAddress, // Critical for data fetching
+		ActivePeriod:  payload.ActivePeriod,
+	}, a.Projects)
+	return collection.HandleRowAction(payload)
+}
+
 // EXISTING_CODE

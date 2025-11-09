@@ -398,6 +398,10 @@ export function GetWizardReturn() {
   return window['go']['app']['App']['GetWizardReturn']();
 }
 
+export function HandleProjectsRowAction(arg1) {
+  return window['go']['app']['App']['HandleProjectsRowAction'](arg1);
+}
+
 export function HasActiveProject() {
   return window['go']['app']['App']['HasActiveProject']();
 }

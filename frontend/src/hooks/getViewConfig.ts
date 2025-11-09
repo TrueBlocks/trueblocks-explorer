@@ -136,6 +136,47 @@ export function areViewConfigsReady(): boolean {
 }
 
 /**
+ * Get initialization status for debugging.
+ */
+export function getInitializationStatus(): {
+  isInitialized: boolean;
+  cachedViews: string[];
+  cacheSize: number;
+} {
+  return {
+    isInitialized,
+    cachedViews: Array.from(configCache.keys()),
+    cacheSize: configCache.size,
+  };
+}
+
+// One-time runtime validation of facet ordering coherence
+const validatedViews = new Set<string>();
+function validateViewConfigOnce(cfg: types.ViewConfig) {
+  if (!cfg || validatedViews.has(cfg.viewName)) return;
+  validatedViews.add(cfg.viewName);
+  const errs: string[] = [];
+  const order = cfg.facetOrder || [];
+  if (!order.length) {
+    errs.push('empty facetOrder');
+  }
+  const seen = new Set<string>();
+  for (const id of order) {
+    if (seen.has(id)) errs.push('duplicate ' + id);
+    seen.add(id);
+    if (!cfg.facets[id]) errs.push('unknown facet ' + id);
+  }
+  for (const key of Object.keys(cfg.facets)) {
+    if (!seen.has(key)) errs.push('missing in facetOrder ' + key);
+  }
+  if (errs.length) {
+    LogError(
+      '[FACET_ORDER_VALIDATION ' + cfg.viewName + '] ' + errs.join('; '),
+    );
+  }
+}
+
+/**
  * Refresh a specific ViewConfig (for dynamic content like Projects).
  * Forces a reload of the ViewConfig from the backend.
  */
@@ -199,46 +240,5 @@ export async function refreshViewConfig(viewName: string): Promise<void> {
     configCache.set(viewName, config);
   } catch (error) {
     LogError(`Failed to refresh ViewConfig for ${viewName}: ${error}`);
-  }
-}
-
-/**
- * Get initialization status for debugging.
- */
-export function getInitializationStatus(): {
-  isInitialized: boolean;
-  cachedViews: string[];
-  cacheSize: number;
-} {
-  return {
-    isInitialized,
-    cachedViews: Array.from(configCache.keys()),
-    cacheSize: configCache.size,
-  };
-}
-
-// One-time runtime validation of facet ordering coherence
-const validatedViews = new Set<string>();
-function validateViewConfigOnce(cfg: types.ViewConfig) {
-  if (!cfg || validatedViews.has(cfg.viewName)) return;
-  validatedViews.add(cfg.viewName);
-  const errs: string[] = [];
-  const order = cfg.facetOrder || [];
-  if (!order.length) {
-    errs.push('empty facetOrder');
-  }
-  const seen = new Set<string>();
-  for (const id of order) {
-    if (seen.has(id)) errs.push('duplicate ' + id);
-    seen.add(id);
-    if (!cfg.facets[id]) errs.push('unknown facet ' + id);
-  }
-  for (const key of Object.keys(cfg.facets)) {
-    if (!seen.has(key)) errs.push('missing in facetOrder ' + key);
-  }
-  if (errs.length) {
-    LogError(
-      '[FACET_ORDER_VALIDATION ' + cfg.viewName + '] ' + errs.join('; '),
-    );
   }
 }

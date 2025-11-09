@@ -42,7 +42,8 @@ func (c *ProjectsCollection) GetConfig() (*types.ViewConfig, error) {
 					Actions:       []string{},
 					HeaderActions: []string{},
 					RendererTypes: "",
-					Hideable:      true, // facets may be closed
+					Hideable:      true,
+					RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 				}
 				facetOrder = append(facetOrder, id)
 			}

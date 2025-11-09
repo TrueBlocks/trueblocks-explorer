@@ -303,4 +303,13 @@ func (c *ProjectsCollection) ensureProjectFacet(projectID string) {
 	)
 }
 
+// HandleRowAction processes row actions for project addresses (navigation to exports view)
+func (c *ProjectsCollection) HandleRowAction(payload *types.RowActionPayload) error {
+	// For projects, the row action simply passes through the address context
+	// The navigation to exports view with the last opened facet will be handled
+	// by the general navigation system. The address from the project will be
+	// used to set the active address context for the exports view.
+	return nil
+}
+
 // EXISTING_CODE

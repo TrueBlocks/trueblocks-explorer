@@ -19,7 +19,7 @@ describe('Projects View Integration Tests (DataFacet refactor preparation)', () 
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support manage, projects facets', () => {
+    it('should support manage facet', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

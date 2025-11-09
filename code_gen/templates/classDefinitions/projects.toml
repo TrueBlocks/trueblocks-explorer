@@ -13,3 +13,11 @@
     actions = []
     viewType = "canvas"
     renderer = "facet"
+
+[[facets]]
+    name = "Projects"
+    store = "this.AddressesList"
+    actions = []
+    viewType = "canvas"
+    renderer = "facet"
+    dynamic = true

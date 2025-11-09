@@ -779,6 +779,20 @@ export namespace preferences {
 	        this.height = source["height"];
 	    }
 	}
+	export class OpenProject {
+	    path: string;
+	    isActive?: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new OpenProject(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.path = source["path"];
+	        this.isActive = source["isActive"];
+	    }
+	}
 	export class AppPreferences {
 	    version: string;
 	    name: string;
@@ -786,7 +800,7 @@ export namespace preferences {
 	    lastSkin: string;
 	    lastFormat: string;
 	    lastLanguage: string;
-	    lastProject: string;
+	    lastProjects: OpenProject[];
 	    helpCollapsed: boolean;
 	    menuCollapsed: boolean;
 	    chromeCollapsed: boolean;
@@ -810,7 +824,7 @@ export namespace preferences {
 	        this.lastSkin = source["lastSkin"];
 	        this.lastFormat = source["lastFormat"];
 	        this.lastLanguage = source["lastLanguage"];
-	        this.lastProject = source["lastProject"];
+	        this.lastProjects = this.convertValues(source["lastProjects"], OpenProject);
 	        this.helpCollapsed = source["helpCollapsed"];
 	        this.menuCollapsed = source["menuCollapsed"];
 	        this.chromeCollapsed = source["chromeCollapsed"];
@@ -884,6 +898,7 @@ export namespace preferences {
 	        this.twitter = source["twitter"];
 	    }
 	}
+	
 	export class OrgPreferences {
 	    version?: string;
 	    telemetry?: boolean;
@@ -1015,6 +1030,65 @@ export namespace project {
 	        this.activeContract = source["activeContract"];
 	        this.activePeriod = source["activePeriod"];
 	        this.filterStates = this.convertValues(source["filterStates"], FilterState, true);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace projects {
+	
+	export class AddressList {
+	    Address: string;
+	    Thing: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AddressList(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Address = source["Address"];
+	        this.Thing = source["Thing"];
+	    }
+	}
+	export class ProjectsPage {
+	    facet: types.DataFacet;
+	    addresslist: AddressList[];
+	    projects: project.Project[];
+	    totalItems: number;
+	    expectedTotal: number;
+	    state: types.StoreState;
+	
+	    static createFrom(source: any = {}) {
+	        return new ProjectsPage(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.facet = source["facet"];
+	        this.addresslist = this.convertValues(source["addresslist"], AddressList);
+	        this.projects = this.convertValues(source["projects"], project.Project);
+	        this.totalItems = source["totalItems"];
+	        this.expectedTotal = source["expectedTotal"];
+	        this.state = source["state"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1212,6 +1286,15 @@ export namespace status {
 
 export namespace types {
 	
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
+	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1251,6 +1334,7 @@ export namespace types {
 	    TRACES = "traces",
 	    RECEIPTS = "receipts",
 	    MONITORS = "monitors",
+	    MANAGE = "manage",
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
@@ -1259,15 +1343,6 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
-	}
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;

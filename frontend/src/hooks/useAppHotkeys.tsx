@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { GetAvailableSkins, Reload } from '@app';
+import { CloseActiveProject, GetAvailableSkins, Reload } from '@app';
 import {
   useActiveProject,
   useEnabledMenuItems,
@@ -231,6 +231,26 @@ export const useAppHotkeys = (): void => {
                 await toggleTheme();
               } catch (error) {
                 LogError(`Failed to toggle theme: ${error}`);
+              }
+            },
+          },
+          e,
+        ),
+      options: { preventDefault: true, enableOnFormTags: true },
+    },
+    {
+      key: 'mod+w',
+      handler: (e: KeyboardEvent) =>
+        handleHotkey(
+          {
+            type: 'toggle',
+            hotkey: 'mod+w',
+            label: 'Close project',
+            action: async () => {
+              try {
+                await CloseActiveProject();
+              } catch (error) {
+                LogError(`Failed to close project: ${error}`);
               }
             },
           },

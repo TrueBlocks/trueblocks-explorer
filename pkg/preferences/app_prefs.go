@@ -36,6 +36,11 @@ func (b *Bounds) IsValid() bool {
 	return b.X >= 0 && b.Y >= 0 && b.Width > 100 && b.Height > 100
 }
 
+type OpenProject struct {
+	Path     string `json:"path"`               // File path - the project identifier
+	IsActive bool   `json:"isActive,omitempty"` // Which project is currently active
+}
+
 type AppPreferences struct {
 	Version         string            `json:"version"`
 	Name            string            `json:"name"`
@@ -43,7 +48,7 @@ type AppPreferences struct {
 	LastSkin        string            `json:"lastSkin"`
 	LastFormat      string            `json:"lastFormat"`
 	LastLanguage    string            `json:"lastLanguage"`
-	LastProject     string            `json:"lastProject"`
+	LastProjects    []OpenProject     `json:"lastProjects"`
 	HelpCollapsed   bool              `json:"helpCollapsed"`
 	MenuCollapsed   bool              `json:"menuCollapsed"`
 	ChromeCollapsed bool              `json:"chromeCollapsed"`
@@ -69,6 +74,7 @@ func NewAppPreferences() *AppPreferences {
 		LastSkin:        "default",
 		LastFormat:      "csv",
 		LastLanguage:    "en",
+		LastProjects:    []OpenProject{},
 		DetailCollapsed: true,
 		HelpCollapsed:   false,
 		MenuCollapsed:   false,
@@ -118,6 +124,10 @@ func GetAppPreferences() (AppPreferences, error) {
 	}
 	if appPrefs.SilencedDialogs == nil {
 		appPrefs.SilencedDialogs = make(map[string]bool)
+		needsSave = true
+	}
+	if appPrefs.LastProjects == nil {
+		appPrefs.LastProjects = []OpenProject{}
 		needsSave = true
 	}
 	if appPrefs.Version == "" {
@@ -186,6 +196,10 @@ func validateAppPreferences(appPrefs *AppPreferences) error {
 
 	if appPrefs.SilencedDialogs == nil {
 		return fmt.Errorf("silencedDialogs field cannot be nil (suggests memory corruption)")
+	}
+
+	if appPrefs.LastProjects == nil {
+		return fmt.Errorf("lastProjects field cannot be nil (suggests memory corruption)")
 	}
 
 	if appPrefs.Bounds.Width < 0 || appPrefs.Bounds.Height < 0 {

@@ -4,7 +4,10 @@ scope: type
 */
 
 {{- $class := .Class -}}
+{{- $lower := toLower $class -}}
+{{- $singular := toSingular $lower -}}
 {{- $isNames := eq .Class "Names" -}}
+{{- $isDynamic := eq .Class "Projects" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -93,7 +96,7 @@ var (
 	collectionsMu sync.Mutex
 )
 
-func Get{{.Class}}Collection(payload *types.Payload) *{{.Class}}Collection {
+func Get{{.Class}}Collection(payload *types.Payload{{if $isDynamic}}, {{$singular}}Manager *{{$singular}}.Manager{{end}}) *{{.Class}}Collection {
 	collectionsMu.Lock()
 	defer collectionsMu.Unlock()
 

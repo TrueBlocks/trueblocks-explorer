@@ -3,6 +3,7 @@ import { LogError } from '@utils';
 
 // TODO: BOGUS - THIS SHOULD BE AUTO-GENERATE OR REMOVED - I THINK IT'S USED FOR TESTING
 export const VIEW_ROUTES = [
+  'projects',
   'abis',
   'chunks',
   'comparitoor',

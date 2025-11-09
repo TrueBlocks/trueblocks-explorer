@@ -23,7 +23,7 @@ export const useAppNavigation = () => {
 
   // Sync location changes to the preferences store
   useEffect(() => {
-    if (ready && !loading && location !== '/') {
+    if (ready && !loading) {
       setLastView(location);
     }
   }, [location, ready, loading, setLastView]);

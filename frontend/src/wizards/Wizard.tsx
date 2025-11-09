@@ -73,7 +73,7 @@ export const Wizard = () => {
   const handleClose = async () => {
     await completeWizard();
     const ret = await GetWizardReturn();
-    navigate(ret || '/');
+    navigate(ret || '/projects'); // DEFAULT_ROUTE
   };
 
   const handleCompletionSubmit = async (e: FormEvent) => {

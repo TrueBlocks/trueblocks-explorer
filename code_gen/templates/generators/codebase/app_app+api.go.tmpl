@@ -3,6 +3,7 @@ output: app/app_api.go
 scope: codebase
 */
 
+{{- $isDynamic := eq .Class "Projects" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -54,7 +55,7 @@ func (a *App) getCollection(payload *types.Payload, missingOk bool) types.Collec
 	{{- range .Structures }}
 	{{- if and (not (eq .Class "")) (not .DisableGo) }}
 	case "{{toLower .Class}}":
-		return {{toLower .Class}}.Get{{ .Class }}Collection(payload)
+		return {{toLower .Class}}.Get{{ .Class }}Collection(payload{{if $isDynamic}}, a.Projects{{end}}))
 	{{- end }}
 	{{- end }}
 	default:

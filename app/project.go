@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
@@ -11,24 +12,31 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// NewProject creates a new project with the given name and optional address
+// NewProject creates a new project with the given name and addresses
 func (a *App) NewProject(name string, currentAddress string) error {
-	var addr base.Address
-	if currentAddress != "" {
-		convertedAddr, ok := a.ConvertToAddress(currentAddress)
-		if !ok {
-			return fmt.Errorf("invalid address: %s", currentAddress)
-		}
-		addr = convertedAddr
-	}
-
-	// Create new project with current address
-	newProject := a.Projects.NewProject(name, addr, []string{"mainnet"})
+	newProject := a.Projects.NewProject(name, base.ZeroAddr, []string{"mainnet"})
 	if newProject == nil {
 		return fmt.Errorf("failed to create project")
 	}
 
-	// Emit event for frontend synchronization
+	if currentAddress != "" {
+		if err := a.AddAddressesToProject(currentAddress); err != nil {
+			return fmt.Errorf("failed to add currentAddress to project: %w", err)
+		}
+	}
+
+	// Add new project to LastProjects if it has a path (will be added on save if no path yet)
+	if projectPath := newProject.GetPath(); projectPath != "" {
+		a.addProjectToLastProjects(projectPath)
+		a.setActiveProject(projectPath)
+
+		// Save preferences to persist the new project
+		if err := a.SetAppPreferences(&a.Preferences.App); err != nil {
+			msgs.EmitError("Failed to save preferences after creating project", err)
+		}
+	}
+
+	// Emit event for frontend synchronization (after everything is complete)
 	msgs.EmitManager("project_created")
 	return nil
 }
@@ -61,6 +69,9 @@ func (a *App) OpenProjectFile(path string) error {
 	if active == nil {
 		return fmt.Errorf("failed to get active project after opening")
 	}
+
+	// Add project to LastProjects array (for session restoration)
+	a.addProjectToLastProjects(path)
 
 	// Get the active project ID from the manager
 	activeProjectID := a.Projects.ActiveID
@@ -118,6 +129,15 @@ func (a *App) SaveProject() error {
 		if err := a.Projects.SaveActiveAs(path); err != nil {
 			return err
 		}
+
+		// Add newly saved project to LastProjects (now it has a path)
+		a.addProjectToLastProjects(path)
+		a.setActiveProject(path)
+
+		// Save preferences to persist the new project
+		if err := a.SetAppPreferences(&a.Preferences.App); err != nil {
+			msgs.EmitError("Failed to save preferences after saving project", err)
+		}
 	} else {
 		// Project has a path, use normal save
 		if err := a.Projects.SaveActive(); err != nil {
@@ -174,7 +194,7 @@ func (a *App) ClearActiveProject() error {
 
 // GetOpenProjects returns a list of all open projects with their metadata
 func (a *App) GetOpenProjects() []map[string]interface{} {
-	projectIDs := a.Projects.GetOpenProjectIDs()
+	projectIDs := a.Projects.GetOpenIDs()
 	result := make([]map[string]interface{}, 0, len(projectIDs))
 
 	for _, id := range projectIDs {
@@ -275,7 +295,10 @@ func (a *App) RestoreProjectContext(projectID string) error {
 		return fmt.Errorf("failed to get active project after switching to %s", projectID)
 	}
 
-	a.Preferences.App.LastProject = projectID
+	// Update LastProjects array to mark this project as active
+	projectPath := project.GetPath()
+	a.setActiveProject(projectPath)
+
 	if err := a.SetAppPreferences(&a.Preferences.App); err != nil {
 		return fmt.Errorf("failed to update app preferences: %w", err)
 	}
@@ -285,10 +308,34 @@ func (a *App) RestoreProjectContext(projectID string) error {
 
 // CloseProject closes a project, prompting to save if it has unsaved changes
 func (a *App) CloseProject(id string) error {
-	if project := a.Projects.GetProjectByID(id); project != nil {
-		return a.Projects.Close(id)
+	project := a.Projects.GetProjectByID(id)
+	if project == nil {
+		return fmt.Errorf("no project with ID %s exists", id)
 	}
-	return fmt.Errorf("no project with ID %s exists", id)
+
+	// Get project path before closing
+	projectPath := project.GetPath()
+
+	// Close the project
+	if err := a.Projects.Close(id); err != nil {
+		return err
+	}
+
+	// Remove from LastProjects array (for session restoration)
+	msgs.EmitStatus(fmt.Sprintf("Removing project from LastProjects: %s", projectPath))
+	lenBefore := len(a.Preferences.App.LastProjects)
+	a.removeProjectFromLastProjects(projectPath)
+	lenAfter := len(a.Preferences.App.LastProjects)
+	msgs.EmitStatus(fmt.Sprintf("LastProjects array: %d -> %d items", lenBefore, lenAfter))
+
+	// Save updated preferences
+	if err := a.SetAppPreferences(&a.Preferences.App); err != nil {
+		msgs.EmitError("Failed to save preferences after closing project", err)
+	} else {
+		msgs.EmitStatus("Successfully saved preferences after closing project")
+	}
+
+	return nil
 }
 
 // GetProjectAddress returns the address of the active project
@@ -316,7 +363,7 @@ func (a *App) GetFilename() *project.Project {
 // uniqueProjectName generates a unique project name by appending numbers if needed
 func (a *App) uniqueProjectName(baseName string) string {
 	projectExists := func(name string) bool {
-		for _, project := range a.Projects.GetOpenProjectIDs() {
+		for _, project := range a.Projects.GetOpenIDs() {
 			projectObj := a.Projects.GetProjectByID(project)
 			if projectObj.Name == name {
 				return true
@@ -333,4 +380,138 @@ func (a *App) uniqueProjectName(baseName string) string {
 	}
 
 	return uniqueName
+}
+
+// addProjectToLastProjects adds a project to the LastProjects array if not already present
+func (a *App) addProjectToLastProjects(path string) {
+	if path == "" {
+		return
+	}
+
+	// Check if already exists
+	for _, proj := range a.Preferences.App.LastProjects {
+		if proj.Path == path {
+			return // Already exists, don't add duplicate
+		}
+	}
+
+	// Add to end of array (preserves tab opening order)
+	a.Preferences.App.LastProjects = append(a.Preferences.App.LastProjects,
+		preferences.OpenProject{Path: path, IsActive: false})
+}
+
+// removeProjectFromLastProjects removes a project from the LastProjects array
+func (a *App) removeProjectFromLastProjects(path string) {
+	if path == "" {
+		return
+	}
+
+	for i, proj := range a.Preferences.App.LastProjects {
+		if proj.Path == path {
+			// Remove from slice
+			a.Preferences.App.LastProjects = append(
+				a.Preferences.App.LastProjects[:i],
+				a.Preferences.App.LastProjects[i+1:]...)
+			return
+		}
+	}
+}
+
+// setActiveProject marks the specified project as active and all others as inactive
+func (a *App) setActiveProject(path string) {
+	if path == "" {
+		return
+	}
+
+	found := false
+	for i := range a.Preferences.App.LastProjects {
+		if a.Preferences.App.LastProjects[i].Path == path {
+			a.Preferences.App.LastProjects[i].IsActive = true
+			found = true
+		} else {
+			a.Preferences.App.LastProjects[i].IsActive = false
+		}
+	}
+
+	// If project not in array, add it as active
+	if !found {
+		a.Preferences.App.LastProjects = append(a.Preferences.App.LastProjects,
+			preferences.OpenProject{Path: path, IsActive: true})
+	}
+}
+
+// restoreLastProjects restores all previously opened projects from the LastProjects array
+func (a *App) restoreLastProjects() {
+	if len(a.Preferences.App.LastProjects) == 0 {
+		return // No projects to restore
+	}
+
+	var activeProjectPath string
+	validProjects := make([]preferences.OpenProject, 0)
+
+	// Open projects in tab order and identify the active one
+	for _, openProj := range a.Preferences.App.LastProjects {
+		if openProj.Path == "" {
+			continue // Skip invalid entries
+		}
+
+		// Try to open the project file
+		if err := a.fileOpen(openProj.Path); err != nil {
+			msgs.EmitError("Failed to restore project", fmt.Errorf("could not open %s: %w", openProj.Path, err))
+			continue // Skip files that can't be opened
+		}
+
+		// Project opened successfully, keep it in the list
+		validProjects = append(validProjects, openProj)
+
+		// Remember which project should be active
+		if openProj.IsActive {
+			activeProjectPath = openProj.Path
+		}
+	}
+
+	// Update the LastProjects array to only include successfully opened projects
+	a.Preferences.App.LastProjects = validProjects
+
+	// After all projects are opened, reset the active project based on metadata
+	// (the opening process may have changed the active project multiple times)
+	if activeProjectPath != "" {
+		// Find the project by path and get its ID to set as active
+		for _, id := range a.Projects.GetOpenIDs() {
+			if project := a.Projects.GetProjectByID(id); project != nil {
+				if project.GetPath() == activeProjectPath {
+					if err := a.Projects.SetActiveProject(id); err == nil {
+						// Update the LastProjects metadata to ensure consistency
+						a.setActiveProject(activeProjectPath)
+						msgs.EmitStatus(fmt.Sprintf("Restored active project from metadata: %s", project.GetName()))
+					}
+					break
+				}
+			}
+		}
+	} else if len(validProjects) > 0 {
+		// No project was marked active in metadata, make the first one active
+		firstPath := validProjects[0].Path
+		for _, id := range a.Projects.GetOpenIDs() {
+			if project := a.Projects.GetProjectByID(id); project != nil {
+				if project.GetPath() == firstPath {
+					if err := a.Projects.SetActiveProject(id); err == nil {
+						// Update the LastProjects array to mark this as active
+						a.setActiveProject(firstPath)
+						msgs.EmitStatus(fmt.Sprintf("No active project in metadata, set first project as active: %s", project.GetName()))
+					}
+					break
+				}
+			}
+		}
+	}
+
+	// Save updated preferences (cleaned up invalid projects)
+	if err := a.SetAppPreferences(&a.Preferences.App); err != nil {
+		msgs.EmitError("Failed to save updated project preferences", err)
+	}
+
+	if len(validProjects) > 0 {
+		msgs.EmitStatus(fmt.Sprintf("Restored %d project(s) from last session", len(validProjects)))
+	}
 }

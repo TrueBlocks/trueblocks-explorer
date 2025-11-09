@@ -16,26 +16,38 @@ func (c *ProjectsCollection) GetConfig() (*types.ViewConfig, error) {
 		"manage": {
 			Name:          "Manage",
 			Store:         "projects",
+			ViewType:      "canvas",
 			DividerBefore: false,
 			Fields:        getProjectsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{},
-			RendererTypes: "",
-		},
-		"projects": {
-			Name:          "Projects",
-			Store:         "addresslist",
-			DividerBefore: false,
-			Fields:        getAddresslistFields(),
-			Actions:       []string{},
-			HeaderActions: []string{},
-			RendererTypes: "",
+			RendererTypes: "facet",
 		},
 	}
 
 	facetOrder := []string{}
 	facetOrder = append(facetOrder, "manage")
-	facetOrder = append(facetOrder, "projects")
+
+	// Add dynamic facets based on the manager
+	if c.projectManager != nil {
+		openIDs := c.projectManager.GetOpenIDs()
+		for _, id := range openIDs {
+			project := c.projectManager.GetProjectByID(id)
+			if project != nil {
+				facets[id] = types.FacetConfig{
+					Name:          project.GetName(),
+					Store:         "addresslist",
+					DividerBefore: false,
+					Fields:        getAddresslistFields(),
+					Actions:       []string{},
+					HeaderActions: []string{},
+					RendererTypes: "",
+					Hideable:      true, // facets may be closed
+				}
+				facetOrder = append(facetOrder, id)
+			}
+		}
+	}
 
 	cfg := &types.ViewConfig{
 		ViewName:   "projects",

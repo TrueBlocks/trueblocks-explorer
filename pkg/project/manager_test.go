@@ -45,8 +45,8 @@ func TestManager(t *testing.T) {
 	proj2 := manager.NewProject("second-project", base.ZeroAddr, []string{"mainnet"})
 
 	// Verify we now have two open projects
-	if len(manager.GetOpenProjectIDs()) != 2 {
-		t.Errorf("Expected 2 open projects, got %d", len(manager.GetOpenProjectIDs()))
+	if len(manager.GetOpenIDs()) != 2 {
+		t.Errorf("Expected 2 open projects, got %d", len(manager.GetOpenIDs()))
 	}
 
 	// Verify the active project is the second one
@@ -72,15 +72,15 @@ func TestManager(t *testing.T) {
 	}
 
 	// Verify we now have one open project
-	if len(manager.GetOpenProjectIDs()) != 1 {
-		t.Errorf("Expected 1 open project, got %d", len(manager.GetOpenProjectIDs()))
+	if len(manager.GetOpenIDs()) != 1 {
+		t.Errorf("Expected 1 open project, got %d", len(manager.GetOpenIDs()))
 	}
 
 	// Close all projects
 	manager.CloseAll()
 
 	// Verify we have no open projects
-	if len(manager.GetOpenProjectIDs()) != 0 {
-		t.Errorf("Expected 0 open projects, got %d", len(manager.GetOpenProjectIDs()))
+	if len(manager.GetOpenIDs()) != 0 {
+		t.Errorf("Expected 0 open projects, got %d", len(manager.GetOpenIDs()))
 	}
 }

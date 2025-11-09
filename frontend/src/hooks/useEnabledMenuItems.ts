@@ -42,7 +42,8 @@ export function useEnabledMenuItems(): UseEnabledMenuItemsResult {
             let menuOrder: number | undefined;
 
             // Handle special cases first
-            if (item.path === '/') {
+            // DEFAULT_ROUTE
+            if (item.path === '/projects') {
               // Home should always be first
               menuOrder = 1;
             } else if (item.path === '/settings') {

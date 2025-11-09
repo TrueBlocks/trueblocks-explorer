@@ -20,10 +20,40 @@ func (a *App) FileNew(_ *menu.CallbackData) {
 	msgs.EmitStatus("new project dialog opened")
 }
 
-// FileOpen opens the project selection dialog while keeping current project active
+// FileOpen opens the file picker to select a project file directly
 func (a *App) FileOpen(_ *menu.CallbackData) {
-	msgs.EmitProjectModal("show_project_modal")
-	msgs.EmitStatus("project selection dialog opened")
+	var defaultDirectory string
+	if recentPath := a.GetActiveProjectPath(); recentPath != "" {
+		defaultDirectory = filepath.Dir(recentPath)
+	}
+
+	selectedPath, err := wailsRuntime.OpenFileDialog(a.ctx, wailsRuntime.OpenDialogOptions{
+		Title:            "Open Project File",
+		DefaultDirectory: defaultDirectory,
+		Filters: []wailsRuntime.FileFilter{
+			{
+				DisplayName: "Project Files (*.tbx)",
+				Pattern:     "*.tbx",
+			},
+		},
+	})
+
+	if err != nil {
+		msgs.EmitError("file picker error", err)
+		return
+	}
+
+	if selectedPath == "" {
+		msgs.EmitStatus("file open canceled")
+		return
+	}
+
+	if err := a.OpenProjectFile(selectedPath); err != nil {
+		msgs.EmitError("failed to open project", err)
+		return
+	}
+
+	msgs.EmitStatus("project opened successfully")
 }
 
 // FileSave saves the active project to its current file path

@@ -18,6 +18,7 @@ import {dresses} from '../models';
 import {exports} from '../models';
 import {monitors} from '../models';
 import {names} from '../models';
+import {projects} from '../models';
 import {status} from '../models';
 import {app} from '../models';
 
@@ -31,9 +32,13 @@ export function CancelFetches():Promise<number>;
 
 export function ChangeImageStorageLocation(arg1:string):Promise<void>;
 
+export function ChangeVisibility(arg1:types.Payload):Promise<void>;
+
 export function ClearActiveProject():Promise<void>;
 
 export function ClearFilterState(arg1:project.ViewStateKey):Promise<void>;
+
+export function CloseActiveProject():Promise<void>;
 
 export function CloseProject(arg1:string):Promise<void>;
 
@@ -185,6 +190,14 @@ export function GetProjectAddress():Promise<base.Address>;
 
 export function GetProjectViewState(arg1:string):Promise<Record<string, project.FilterState>>;
 
+export function GetProjectsBuckets(arg1:types.Payload):Promise<types.Buckets>;
+
+export function GetProjectsConfig(arg1:types.Payload):Promise<types.ViewConfig>;
+
+export function GetProjectsPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<projects.ProjectsPage>;
+
+export function GetProjectsSummary(arg1:types.Payload):Promise<types.Summary>;
+
 export function GetRegisteredViews():Promise<Array<string>>;
 
 export function GetSkin():Promise<string>;
@@ -254,6 +267,8 @@ export function ReloadExports(arg1:types.Payload):Promise<void>;
 export function ReloadMonitors(arg1:types.Payload):Promise<void>;
 
 export function ReloadNames(arg1:types.Payload):Promise<void>;
+
+export function ReloadProjects(arg1:types.Payload):Promise<void>;
 
 export function ReloadSkins():Promise<void>;
 

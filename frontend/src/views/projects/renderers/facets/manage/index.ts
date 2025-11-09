@@ -1,0 +1,1 @@
+export { ManageFacet } from './ManageFacet';

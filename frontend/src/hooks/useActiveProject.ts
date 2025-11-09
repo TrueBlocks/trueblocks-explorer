@@ -9,6 +9,7 @@ import {
   GetOpenProjects,
   NewProject,
   OpenProjectFile,
+  RestoreProjectContext,
   SetActiveAddress,
   SetActiveChain,
   SetActiveContract,
@@ -17,7 +18,6 @@ import {
   SetLastFacet,
   SetLastView,
   SetViewAndFacet,
-  SwitchToProject,
 } from '@app';
 import { preferences, types } from '@models';
 import { EventsOn } from '@runtime';
@@ -93,7 +93,7 @@ const initialProjectState: ProjectState = {
   activeAddress: '',
   activeContract: '',
   activePeriod: types.Period.BLOCKLY,
-  lastView: '/',
+  lastView: '/projects', // DEFAULT_ROUTE
   lastFacetMap: {},
   projects: [],
 };
@@ -172,13 +172,16 @@ class ProjectStore {
         GetOpenProjects(),
       ]);
 
+      const activeProject = prefs.lastProjects?.find((p) => p.isActive);
+      const lastProjectPath = activeProject?.path || '';
+
       this.setState({
-        lastProject: prefs.lastProject || '',
+        lastProject: lastProjectPath,
         activeChain: projectData.activeChain || '',
         activeAddress: projectData.activeAddress || '',
         activeContract: projectData.activeContract || '',
         activePeriod: projectData.activePeriod || 'blockly',
-        lastView: projectData.lastView || '/',
+        lastView: projectData.lastView || '/projects', // DEFAULT_ROUTE
         lastFacetMap: Object.fromEntries(
           Object.entries(projectData.lastFacetMap || {}).map(([key, value]) => [
             key,
@@ -214,7 +217,7 @@ class ProjectStore {
         lastProject: '',
         activeAddress: '',
         activeChain: '',
-        lastView: '/',
+        lastView: '/projects', // DEFAULT_ROUTE
       });
       this.refreshProjects();
     };
@@ -318,11 +321,36 @@ class ProjectStore {
   };
 
   switchProject = async (projectId: string): Promise<void> => {
-    await SwitchToProject(projectId);
-    await this.updatePreferences({ lastProject: projectId });
-    this.setState({ lastProject: projectId });
-    await this.refreshProjects();
-    await this.initialize();
+    await RestoreProjectContext(projectId);
+    const updatedProjects = this.state.projects.map((p) => ({
+      ...p,
+      isActive: p.id === projectId,
+    }));
+
+    const activeProject = updatedProjects.find((p) => p.id === projectId);
+    this.setState({
+      lastProject: activeProject?.path || '',
+      projects: updatedProjects,
+    });
+
+    try {
+      const projectData = await GetActiveProjectData();
+      this.setState({
+        activeChain: projectData.activeChain || '',
+        activeAddress: projectData.activeAddress || '',
+        activeContract: projectData.activeContract || '',
+        activePeriod: projectData.activePeriod || 'blockly',
+        lastView: projectData.lastView || '/projects', // DEFAULT_ROUTE
+        lastFacetMap: Object.fromEntries(
+          Object.entries(projectData.lastFacetMap || {}).map(([key, value]) => [
+            key,
+            value as types.DataFacet,
+          ]),
+        ),
+      });
+    } catch (error) {
+      LogError('Failed to load project data after switch: ' + String(error));
+    }
   };
 
   newProject = async (name: string, address: string): Promise<void> => {
@@ -344,7 +372,6 @@ class ProjectStore {
 
   clearActiveProject = async (): Promise<void> => {
     await ClearActiveProject();
-    await this.updatePreferences({ lastProject: '' });
     this.setState({ lastProject: '' });
     await this.refreshProjects();
   };

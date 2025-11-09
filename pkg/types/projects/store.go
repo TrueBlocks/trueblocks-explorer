@@ -9,6 +9,34 @@
 package projects
 
 // EXISTING_CODE
+import (
+	"fmt"
+	"sync"
+
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
+	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+)
+
+type Project = project.Project
+type AddressList struct {
+	Address string
+	Thing   string
+}
+
+// Model implements the sdk.Modeler interface for AddressList
+func (a *AddressList) Model(format string, verbose string, extraOpts bool, extraOptions map[string]any) coreTypes.Model {
+	return coreTypes.Model{
+		Data: map[string]any{
+			"address": a.Address,
+			"thing":   a.Thing,
+		},
+		Order: []string{"address", "thing"},
+	}
+}
+
 // EXISTING_CODE
 
 var (
@@ -19,18 +47,35 @@ var (
 	projectsStoreMu sync.Mutex
 )
 
-func (c *ProjectsCollection) getAddressListStore(payload *types.Payload, facet types.DataFacet) *store.Store[AddressList] {
+func (c *ProjectsCollection) getAddressListStore(projectID string) *store.Store[AddressList] {
 	addresslistStoreMu.Lock()
 	defer addresslistStoreMu.Unlock()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
 
-	storeKey := getStoreKey(payload)
+	storeKey := fmt.Sprintf("project_%s", projectID)
 	theStore := addresslistStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
+			if c.projectManager == nil {
+				return fmt.Errorf("project manager not available")
+			}
+
+			project := c.projectManager.GetProjectByID(projectID)
+			if project == nil {
+				return fmt.Errorf("project %s not found", projectID)
+			}
+
+			addresses := project.GetAddresses()
+			for _, addr := range addresses {
+				item := &AddressList{
+					Address: addr.Hex(),
+					Thing:   project.GetName(), // You might want to customize this
+				}
+				ctx.ModelChan <- item
+			}
 			// EXISTING_CODE
 			return nil
 		}
@@ -48,7 +93,7 @@ func (c *ProjectsCollection) getAddressListStore(payload *types.Payload, facet t
 			return "", false
 		}
 
-		storeName := c.getStoreName(payload, facet)
+		storeName := fmt.Sprintf("projects-addresslist-project-%s", projectID)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -106,8 +151,6 @@ func (c *ProjectsCollection) getStoreName(payload *types.Payload, facet types.Da
 	switch facet {
 	case ProjectsManage:
 		name = "projects-projects"
-	case ProjectsProjects:
-		name = "projects-addresslist"
 	default:
 		return ""
 	}
@@ -120,7 +163,7 @@ var (
 	collectionsMu sync.Mutex
 )
 
-func GetProjectsCollection(payload *types.Payload) *ProjectsCollection {
+func GetProjectsCollection(payload *types.Payload, projectManager *project.Manager) *ProjectsCollection {
 	collectionsMu.Lock()
 	defer collectionsMu.Unlock()
 
@@ -130,7 +173,7 @@ func GetProjectsCollection(payload *types.Payload) *ProjectsCollection {
 		return collection
 	}
 
-	collection := NewProjectsCollection(payload)
+	collection := NewProjectsCollection(payload, projectManager)
 	collections[key] = collection
 	return collection
 }

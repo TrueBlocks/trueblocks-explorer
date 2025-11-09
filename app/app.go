@@ -126,22 +126,15 @@ func (a *App) Startup(ctx context.Context) {
 	a.Preferences.User = user
 	a.Preferences.App = appPrefs
 
+	// Restore previously opened projects from last session
+	a.restoreLastProjects()
+
 	// Initialize file server directly on the dalle OutputDir
 	if out := storage.OutputDir(); out != "" {
 		if _, err := os.Stat(out); err == nil {
 			a.fileServer = fileserver.NewFileServer(out)
 			if err := a.fileServer.Start(); err != nil {
 				msgs.EmitError("Failed to start image file server", err)
-			}
-		}
-	}
-
-	if len(a.Preferences.App.RecentProjects) > 0 {
-		mostRecentPath := a.Preferences.App.RecentProjects[0]
-		if file.FileExists(mostRecentPath) {
-			_, err := a.Projects.Open(mostRecentPath)
-			if err != nil {
-				msgs.EmitError("Failed to open recent project", err)
 			}
 		}
 	}

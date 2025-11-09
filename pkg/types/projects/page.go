@@ -85,28 +85,39 @@ func (c *ProjectsCollection) GetPage(
 			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
-	case ProjectsProjects:
-		facet := c.projectsFacet
-		var filterFunc func(*AddressList) bool
-		if filter != "" {
-			filterFunc = func(item *AddressList) bool {
-				return c.matchesProjectFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []AddressList, sort sdk.SortSpec) error {
-			return project.SortAddressList(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("projects", dataFacet, "GetPage", err)
-		} else {
-			page.AddressList = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
+
 	default:
-		return nil, types.NewValidationError("projects", dataFacet, "GetPage",
-			fmt.Errorf("[GetPage] unsupported dataFacet: %v", dataFacet))
+		// Check if this is a dynamic project facet
+		projectID := string(dataFacet)
+		if c.registeredFacets[projectID] {
+			// Ensure the project facet exists
+			c.ensureProjectFacet(projectID)
+			if projectFacet, exists := c.projectFacets[projectID]; exists {
+				var filterFunc func(*AddressList) bool
+				if filter != "" {
+					filterFunc = func(item *AddressList) bool {
+						return c.matchesProjectFilter(item, filter)
+					}
+				}
+				sortFunc := func(items []AddressList, sort sdk.SortSpec) error {
+					return nil // project.SortAddressList(items, sort)
+				}
+				if result, err := projectFacet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+					return nil, types.NewStoreError("projects", dataFacet, "GetPage", err)
+				} else {
+					page.AddressList = result.Items
+					page.TotalItems = result.TotalItems
+					page.State = result.State
+				}
+				page.ExpectedTotal = projectFacet.ExpectedCount()
+			} else {
+				return nil, types.NewValidationError("projects", dataFacet, "GetPage",
+					fmt.Errorf("[GetPage] project facet not found: %v", dataFacet))
+			}
+		} else {
+			return nil, types.NewValidationError("projects", dataFacet, "GetPage",
+				fmt.Errorf("[GetPage] unsupported dataFacet: %v", dataFacet))
+		}
 	}
 
 	return page, nil

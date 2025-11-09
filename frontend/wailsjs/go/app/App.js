@@ -22,12 +22,20 @@ export function ChangeImageStorageLocation(arg1) {
   return window['go']['app']['App']['ChangeImageStorageLocation'](arg1);
 }
 
+export function ChangeVisibility(arg1) {
+  return window['go']['app']['App']['ChangeVisibility'](arg1);
+}
+
 export function ClearActiveProject() {
   return window['go']['app']['App']['ClearActiveProject']();
 }
 
 export function ClearFilterState(arg1) {
   return window['go']['app']['App']['ClearFilterState'](arg1);
+}
+
+export function CloseActiveProject() {
+  return window['go']['app']['App']['CloseActiveProject']();
 }
 
 export function CloseProject(arg1) {
@@ -330,6 +338,22 @@ export function GetProjectViewState(arg1) {
   return window['go']['app']['App']['GetProjectViewState'](arg1);
 }
 
+export function GetProjectsBuckets(arg1) {
+  return window['go']['app']['App']['GetProjectsBuckets'](arg1);
+}
+
+export function GetProjectsConfig(arg1) {
+  return window['go']['app']['App']['GetProjectsConfig'](arg1);
+}
+
+export function GetProjectsPage(arg1, arg2, arg3, arg4, arg5) {
+  return window['go']['app']['App']['GetProjectsPage'](arg1, arg2, arg3, arg4, arg5);
+}
+
+export function GetProjectsSummary(arg1) {
+  return window['go']['app']['App']['GetProjectsSummary'](arg1);
+}
+
 export function GetRegisteredViews() {
   return window['go']['app']['App']['GetRegisteredViews']();
 }
@@ -468,6 +492,10 @@ export function ReloadMonitors(arg1) {
 
 export function ReloadNames(arg1) {
   return window['go']['app']['App']['ReloadNames'](arg1);
+}
+
+export function ReloadProjects(arg1) {
+  return window['go']['app']['App']['ReloadProjects'](arg1);
 }
 
 export function ReloadSkins() {

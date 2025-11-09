@@ -24,7 +24,7 @@ func (a *App) GetProjectsPage(
 	sort sdk.SortSpec,
 	filter string,
 ) (*projects.ProjectsPage, error) {
-	collection := projects.GetProjectsCollection(payload)
+	collection := projects.GetProjectsCollection(payload, a.Projects)
 	ret, err := getCollectionPage[*projects.ProjectsPage](collection, payload, first, pageSize, sort, filter)
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -32,12 +32,12 @@ func (a *App) GetProjectsPage(
 }
 
 func (a *App) GetProjectsSummary(payload *types.Payload) types.Summary {
-	collection := projects.GetProjectsCollection(payload)
+	collection := projects.GetProjectsCollection(payload, a.Projects)
 	return collection.GetSummary()
 }
 
 func (a *App) ReloadProjects(payload *types.Payload) error {
-	collection := projects.GetProjectsCollection(payload)
+	collection := projects.GetProjectsCollection(payload, a.Projects)
 	collection.Reset(payload.DataFacet)
 	collection.FetchByFacet(payload.DataFacet)
 	return nil
@@ -45,13 +45,13 @@ func (a *App) ReloadProjects(payload *types.Payload) error {
 
 // GetProjectsConfig returns the view configuration for projects
 func (a *App) GetProjectsConfig(payload types.Payload) (*types.ViewConfig, error) {
-	collection := projects.GetProjectsCollection(&payload)
+	collection := projects.GetProjectsCollection(&payload, a.Projects)
 	return collection.GetConfig()
 }
 
 // GetProjectsBuckets returns bucket visualization data for projects
 func (a *App) GetProjectsBuckets(payload *types.Payload) (*types.Buckets, error) {
-	collection := projects.GetProjectsCollection(payload)
+	collection := projects.GetProjectsCollection(payload, a.Projects)
 	return collection.GetBuckets(payload)
 }
 

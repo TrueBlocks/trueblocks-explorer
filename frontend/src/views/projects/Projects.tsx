@@ -8,7 +8,7 @@
 // === SECTION 1: Imports & Dependencies ===
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GetProjectsPage, Reload } from '@app';
+import { ChangeVisibility, GetProjectsPage, Reload } from '@app';
 import { BaseTab, usePagination } from '@components';
 import { Action, ConfirmModal, ExportFormatModal } from '@components';
 import { createDetailPanel } from '@components';
@@ -16,6 +16,7 @@ import { useFiltering, useSorting } from '@contexts';
 import {
   DataFacetConfig,
   buildFacetConfigs,
+  refreshViewConfig,
   useActions,
   useActiveFacet,
   useEvent,
@@ -33,6 +34,7 @@ import { Debugger, LogError, useErrorHandler } from '@utils';
 
 import { assertRouteConsistency } from '../routes';
 import { ROUTE } from './constants';
+import { renderers } from './renderers';
 
 export const Projects = () => {
   // === SECTION 2: Hook Initialization ===
@@ -41,6 +43,8 @@ export const Projects = () => {
   // === SECTION 2.5: Initial ViewConfig Load ===
   const { config: viewConfig } = useViewConfig({ viewName: ROUTE });
   assertRouteConsistency(ROUTE, viewConfig);
+
+  const [_configRefreshCount, setConfigRefreshCount] = useState(0);
 
   const facetsFromConfig: DataFacetConfig[] = useMemo(
     () => buildFacetConfigs(viewConfig),
@@ -101,9 +105,10 @@ export const Projects = () => {
     switch (facet) {
       case types.DataFacet.MANAGE:
         return pageData.projects || [];
-      case types.DataFacet.PROJECTS:
-        return pageData.addresslist || [];
       default:
+        if (typeof facet === 'string' && facet.endsWith('.tbx')) {
+          return pageData.addresslist || [];
+        }
         LogError('[Projects] unexpected facet=' + String(facet));
         return [];
     }
@@ -126,6 +131,23 @@ export const Projects = () => {
   useEvent(msgs.EventType.ADDRESS_CHANGED, fetchData);
   useEvent(msgs.EventType.CHAIN_CHANGED, fetchData);
   useEvent(msgs.EventType.PERIOD_CHANGED, fetchData);
+
+  // Listen for changes to dynamic facets to refresh ViewConfig and data
+  useEvent(msgs.EventType.PROJECT_OPENED, async () => {
+    await refreshViewConfig('projects');
+    setConfigRefreshCount((prev) => prev + 1);
+    await fetchData();
+  });
+  useEvent(msgs.EventType.PROJECT_CLOSED, async () => {
+    await refreshViewConfig('projects');
+    setConfigRefreshCount((prev) => prev + 1);
+    await fetchData();
+  });
+  useEvent(msgs.EventType.MANAGER, async () => {
+    await refreshViewConfig('projects');
+    setConfigRefreshCount((prev) => prev + 1);
+    await fetchData();
+  });
 
   useEffect(() => {
     fetchData();
@@ -219,10 +241,31 @@ export const Projects = () => {
       currentColumns as unknown as import('@components').FormField<
         Record<string, unknown>
       >[],
+    renderers: renderers.facets,
     viewName: ROUTE,
   });
 
   const perTabContent = useMemo(() => {
+    const facet = getCurrentDataFacet();
+
+    // Check if there's a custom renderer for this facet
+    const renderer = Object.prototype.hasOwnProperty.call(
+      renderers.facets,
+      facet,
+    )
+      ? (renderers.facets as Record<string, typeof renderers.facets.default>)[
+          facet
+        ]
+      : renderers.facets.default;
+    if (renderer) {
+      return renderer({
+        data: currentData as unknown as Record<string, unknown>[],
+        columns: currentColumns,
+        facet,
+      });
+    }
+
+    // Fallback to existing logic
     if (isCanvas && formNode) return formNode;
     return (
       <BaseTab<Record<string, unknown>>
@@ -245,6 +288,7 @@ export const Projects = () => {
     formNode,
     headerActions,
     detailPanel,
+    getCurrentDataFacet,
   ]);
 
   const tabs = useMemo(
@@ -261,10 +305,29 @@ export const Projects = () => {
     [availableFacets, perTabContent],
   );
 
+  const handleHideFacet = useCallback(
+    async (facetId: string, e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      try {
+        // Call ChangeVisibility to close the project
+        const payload = createPayload(facetId as types.DataFacet);
+        await ChangeVisibility(payload);
+        await refreshViewConfig(ROUTE);
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        LogError(`[Projects] Error closing facet ${facetId}: ${errorMsg}`);
+        handleError(err, `Failed to close project ${facetId}`);
+      }
+    },
+    [handleError, createPayload],
+  );
+
   // === SECTION 7: Render ===
   return (
     <div className="mainView">
-      <TabView tabs={tabs} route={ROUTE} />
+      <TabView tabs={tabs} route={ROUTE} onHideFacet={handleHideFacet} />
       {error && (
         <div>
           <h3>{`Error fetching ${getCurrentDataFacet()}`}</h3>
@@ -296,4 +359,5 @@ export const Projects = () => {
   );
 };
 
+// EXISTING_CODE
 // EXISTING_CODE

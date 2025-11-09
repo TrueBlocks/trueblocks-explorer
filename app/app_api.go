@@ -23,6 +23,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/exports"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/monitors"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/projects"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/status"
 )
 
@@ -83,7 +84,7 @@ func (a *App) GetRegisteredViews() []string {
 func (a *App) getCollection(payload *types.Payload, missingOk bool) types.Collection {
 	switch payload.Collection {
 	case "projects":
-		return projects.GetProjectsCollection(payload)
+		return projects.GetProjectsCollection(payload, a.Projects)
 	case "exports":
 		return exports.GetExportsCollection(payload)
 	case "monitors":

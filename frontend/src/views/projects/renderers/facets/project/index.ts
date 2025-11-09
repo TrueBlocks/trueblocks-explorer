@@ -1,0 +1,1 @@
+export { ProjectFacet } from './ProjectFacet';

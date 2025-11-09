@@ -5,6 +5,7 @@ scope: type
 
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
+{{- $isDynamic := eq $class "Projects" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
@@ -34,7 +35,7 @@ func (a *App) Get{{$class}}Page(
 	sort sdk.SortSpec,
 	filter string,
 ) (*{{$lower}}.{{$class}}Page, error) {
-	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	collection := {{$lower}}.Get{{$class}}Collection(payload{{if $isDynamic}}, a.Projects{{end}})
 	ret, err := getCollectionPage[*{{$lower}}.{{$class}}Page](collection, payload, first, pageSize, sort, filter)
 	// EXISTING_CODE
 	// EXISTING_CODE
@@ -46,17 +47,17 @@ func (a *App) Get{{$class}}Page(
 	op crud.Operation,
 	item *any,
 ) error {
-	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	collection := {{$lower}}.Get{{$class}}Collection(payload{{if $isDynamic}}, a.Projects{{end}})
 	return collection.Crud(payload, op, item)
 }{{end}}
 
 func (a *App) Get{{$class}}Summary(payload *types.Payload) types.Summary {
-	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	collection := {{$lower}}.Get{{$class}}Collection(payload{{if $isDynamic}}, a.Projects{{end}})
 	return collection.GetSummary()
 }
 
 func (a *App) Reload{{$class}}(payload *types.Payload) error {
-	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	collection := {{$lower}}.Get{{$class}}Collection(payload{{if $isDynamic}}, a.Projects{{end}})
 	collection.Reset(payload.DataFacet)
 	collection.FetchByFacet(payload.DataFacet)
 	return nil
@@ -70,7 +71,7 @@ func (a *App) Get{{$class}}Config(payload types.Payload) (*types.ViewConfig, err
 
 // Get{{$class}}Buckets returns bucket visualization data for {{$lower}}
 func (a *App) Get{{$class}}Buckets(payload *types.Payload) (*types.Buckets, error) {
-	collection := {{$lower}}.Get{{$class}}Collection(payload)
+	collection := {{$lower}}.Get{{$class}}Collection(payload{{if $isDynamic}}, a.Projects{{end}})
 	return collection.GetBuckets(payload)
 }
 

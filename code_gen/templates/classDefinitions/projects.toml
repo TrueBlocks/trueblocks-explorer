@@ -11,8 +11,5 @@
     name = "Manage"
     store = "project.Projects"
     actions = []
-
-[[facets]]
-    name = "Projects"
-    store = "project.AddressList"
-    actions = []
+    viewType = "canvas"
+    renderer = "facet"

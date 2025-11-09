@@ -10,6 +10,7 @@ export * from './DebugToggle';
 export * from './ExportFormatModal';
 export * from './LightDarkToggle';
 export * from './NodeStatus';
+export * from './ProjectCard';
 export * from './ProjectContextBar';
 export * from './ProjectSelectionModal';
 export * from './ProjectsList';

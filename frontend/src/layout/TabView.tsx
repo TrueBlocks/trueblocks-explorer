@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { StyledDivider } from '@components';
 import { useActiveProject, useEvent } from '@hooks';
-import { Tabs } from '@mantine/core';
+import { ActionIcon, Tabs } from '@mantine/core';
 import { msgs, types } from '@models';
 
 import './TabView.css';
@@ -20,9 +20,15 @@ interface TabViewProps {
   tabs: Tab[];
   route: string;
   onTabChange?: (newTab: string) => void;
+  onHideFacet?: (facetId: string, e: React.MouseEvent) => void;
 }
 
-export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
+export const TabView = ({
+  tabs,
+  route,
+  onTabChange,
+  onHideFacet,
+}: TabViewProps) => {
   const { getLastFacet, setLastFacet, loading, lastFacetMap } =
     useActiveProject();
   const [activeTab, setActiveTab] = useState<string>('');
@@ -96,7 +102,23 @@ export const TabView = ({ tabs, route, onTabChange }: TabViewProps) => {
                 {tab.dividerBefore && (
                   <StyledDivider key={`divider-${index}`} />
                 )}
-                <Tabs.Tab key={tab.value} value={tab.value}>
+                <Tabs.Tab
+                  key={tab.value}
+                  value={tab.value}
+                  rightSection={
+                    tab.hideable ? (
+                      <ActionIcon
+                        variant="subtle"
+                        size="xs"
+                        onClick={(e) => onHideFacet?.(tab.value, e)}
+                        tabIndex={0}
+                        c="error"
+                      >
+                        &#10005;
+                      </ActionIcon>
+                    ) : null
+                  }
+                >
                   {tab.label}
                 </Tabs.Tab>
               </Fragment>

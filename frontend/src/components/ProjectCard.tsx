@@ -158,9 +158,7 @@ export const ProjectCard = ({
         <Group justify="space-between" align="center">
           <div>
             <Title order={2}>Project Manager</Title>
-            <StyledText variant="dimmed" size="md">
-              Manage your projects
-            </StyledText>
+            <StyledText variant="dimmed">Manage your projects</StyledText>
           </div>
 
           <StyledButton
@@ -195,7 +193,7 @@ export const ProjectCard = ({
               <Stack align="center" gap="md">
                 <File size={48} opacity={0.5} />
                 <div style={{ textAlign: 'center' }}>
-                  <StyledText variant="primary" size="lg" fw={600}>
+                  <StyledText variant="primary" fw={600}>
                     {searchQuery
                       ? 'No projects match your search'
                       : 'No open projects'}

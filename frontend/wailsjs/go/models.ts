@@ -811,6 +811,7 @@ export namespace preferences {
 	    chunksMetrics?: Record<string, string>;
 	    exportsMetrics?: Record<string, string>;
 	    bounds?: Bounds;
+	    fontScale: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppPreferences(source);
@@ -835,6 +836,7 @@ export namespace preferences {
 	        this.chunksMetrics = source["chunksMetrics"];
 	        this.exportsMetrics = source["exportsMetrics"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
+	        this.fontScale = source["fontScale"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1186,8 +1188,11 @@ export namespace skin {
 	    shadows: Record<string, string>;
 	    defaultGradient: Record<string, any>;
 	    autoContrast: boolean;
-	    smallSize: string;
-	    normalSize: string;
+	    tinySize?: string;
+	    smallSize?: string;
+	    mediumSize?: string;
+	    largeSize?: string;
+	    hugeSize?: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Skin(source);
@@ -1212,8 +1217,11 @@ export namespace skin {
 	        this.shadows = source["shadows"];
 	        this.defaultGradient = source["defaultGradient"];
 	        this.autoContrast = source["autoContrast"];
+	        this.tinySize = source["tinySize"];
 	        this.smallSize = source["smallSize"];
-	        this.normalSize = source["normalSize"];
+	        this.mediumSize = source["mediumSize"];
+	        this.largeSize = source["largeSize"];
+	        this.hugeSize = source["hugeSize"];
 	    }
 	}
 	export class SkinMetadata {

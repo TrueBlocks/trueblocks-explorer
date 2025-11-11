@@ -84,16 +84,16 @@ export const Wizard = () => {
   const welcomeText = `Welcome to ${appName}`;
 
   return (
-    <Container size="md" mt="xl">
+    <Container mt="xl">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <StyledText variant="primary" size="xl" fw={600}>
+        <StyledText variant="primary" fw={600}>
           {state.data.isFirstTimeSetup
             ? welcomeText
             : state.ui.activeStep === 2
               ? 'All Issues Resolved'
               : 'Something is Wrong'}
         </StyledText>
-        <StyledText variant="dimmed" size="md">
+        <StyledText variant="dimmed">
           {state.data.isFirstTimeSetup
             ? 'Complete the following steps to get started'
             : state.ui.activeStep === 2

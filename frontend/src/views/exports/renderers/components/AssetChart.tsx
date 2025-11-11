@@ -123,7 +123,7 @@ export const AssetChart = ({
           <div style={{ marginLeft: '8px' }}>
             <AssetHeader assetKey={assetKey} assetNames={assetNames} />
           </div>
-          <Text size="xs" c="dimmed" ta="center">
+          <Text size="sm" c="dimmed" ta="center">
             No {selectedMetric} data
           </Text>
         </Stack>
@@ -161,7 +161,7 @@ export const AssetChart = ({
           <div style={{ marginLeft: '8px' }}>
             <AssetHeader assetKey={assetKey} assetNames={assetNames} />
           </div>
-          <Text size="xs" c="dimmed" ta="center">
+          <Text size="sm" c="dimmed" ta="center">
             No chart data
           </Text>
         </Stack>
@@ -224,7 +224,6 @@ export const AssetChart = ({
             tickFormatter: (value: string | number, index: number) =>
               formatXAxisLabel(value, index, chartData),
             interval: 0,
-            tick: { fontSize: 10 },
             angle: -90,
           }}
         />

@@ -574,6 +574,10 @@ export function SetFilterState(arg1, arg2) {
   return window['go']['app']['App']['SetFilterState'](arg1, arg2);
 }
 
+export function SetFontScale(arg1) {
+  return window['go']['app']['App']['SetFontScale'](arg1);
+}
+
 export function SetFormat(arg1) {
   return window['go']['app']['App']['SetFormat'](arg1);
 }

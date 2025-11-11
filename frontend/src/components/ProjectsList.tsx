@@ -68,11 +68,7 @@ export const ProjectsList = () => {
           >
             <Group justify="space-between" wrap="nowrap">
               <div>
-                <StyledText
-                  variant="primary"
-                  size="md"
-                  fw={project.isActive ? 600 : 400}
-                >
+                <StyledText variant="primary" fw={project.isActive ? 600 : 400}>
                   {project.name}
                 </StyledText>
                 <StyledText variant="dimmed" size="xs">

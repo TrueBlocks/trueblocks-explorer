@@ -52,7 +52,7 @@
 
 .detail-json-block {
   font-family: monospace;
-  font-size: 12px;
+  font-size: var(--mantine-font-size-xs);
   background: transparent;
   color: var(--mantine-color-text);
   padding: 8px;

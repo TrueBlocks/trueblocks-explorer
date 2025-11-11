@@ -68,7 +68,6 @@ export const AddAddressModal = ({
       opened={opened}
       onClose={onCancel}
       centered
-      size="md"
       withCloseButton
       closeOnClickOutside
       closeOnEscape

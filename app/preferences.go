@@ -282,3 +282,19 @@ func (a *App) SetExportsMetric(facet string, metric string) {
 		msgs.EmitError("failed to save exports metric preference", err)
 	}
 }
+
+// SetFontScale updates the font scale preference with bounds checking
+func (a *App) SetFontScale(scale float64) error {
+	a.prefsMu.Lock()
+	defer a.prefsMu.Unlock()
+
+	if scale < 0.6 {
+		scale = 0.6
+	} else if scale > 1.4 {
+		scale = 1.4
+	}
+	
+	scale = float64(int(scale*10+0.5)) / 10
+	a.Preferences.App.FontScale = scale
+	return preferences.SetAppPreferences(&a.Preferences.App)
+}

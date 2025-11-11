@@ -85,7 +85,6 @@ export const ExportFormatModal = ({
       opened={opened}
       onClose={handleCancel}
       title="Select Export Format"
-      size="md"
       centered
       withCloseButton={false}
       onKeyDown={handleKeyDown}

@@ -5,6 +5,7 @@ import {
   SetAppPreferences,
   SetChromeCollapsed,
   SetDebugCollapsed,
+  SetFontScale,
   SetHelpCollapsed,
   SetLanguage,
   SetMenuCollapsed,
@@ -23,6 +24,7 @@ export interface UsePreferencesReturn {
   helpCollapsed: boolean;
   chromeCollapsed: boolean;
   detailCollapsed: boolean;
+  fontScale: number;
   loading: boolean;
   toggleTheme: () => Promise<void>;
   setSkin: (skin: string) => Promise<void>;
@@ -32,6 +34,7 @@ export interface UsePreferencesReturn {
   setHelpCollapsed: (collapsed: boolean) => Promise<void>;
   setChromeCollapsed: (collapsed: boolean) => Promise<void>;
   setDetailCollapsed: (enabled: boolean) => Promise<void>;
+  setFontScale: (scale: number) => Promise<void>;
   isDarkMode: boolean;
 }
 
@@ -44,6 +47,7 @@ interface PreferencesState {
   helpCollapsed: boolean;
   chromeCollapsed: boolean;
   detailCollapsed: boolean;
+  fontScale: number;
   loading: boolean;
 }
 
@@ -56,6 +60,7 @@ const initialPreferencesState: PreferencesState = {
   helpCollapsed: false,
   chromeCollapsed: false,
   detailCollapsed: true,
+  fontScale: 1.0,
   loading: false,
 };
 
@@ -82,6 +87,7 @@ class PreferencesStore {
         helpCollapsed: effectiveHelpCollapsed,
         chromeCollapsed: this.state.chromeCollapsed,
         detailCollapsed: this.state.detailCollapsed,
+        fontScale: this.state.fontScale,
         loading: this.state.loading,
         toggleTheme: this.toggleTheme,
         setSkin: this.setSkin,
@@ -91,6 +97,7 @@ class PreferencesStore {
         setHelpCollapsed: this.setHelpCollapsed,
         setChromeCollapsed: this.setChromeCollapsed,
         setDetailCollapsed: this.setDetailCollapsed,
+        setFontScale: this.setFontScale,
         isDarkMode: this.isDarkMode,
       };
     }
@@ -162,6 +169,11 @@ class PreferencesStore {
 
       const prefs = await GetAppPreferences();
 
+      // Clamp fontScale to valid range (0.6 to 1.4) and ensure single decimal precision
+      let fontScale = prefs.fontScale ?? 1.0;
+      fontScale = Math.max(0.6, Math.min(1.4, fontScale));
+      fontScale = Math.round(fontScale * 10) / 10; // Ensure single decimal precision
+
       this.setState({
         lastTheme: prefs.lastTheme || 'dark',
         lastSkin: prefs.lastSkin || 'default',
@@ -171,17 +183,21 @@ class PreferencesStore {
         helpCollapsed: prefs.helpCollapsed ?? false,
         chromeCollapsed: prefs.chromeCollapsed ?? false,
         detailCollapsed: prefs.detailCollapsed ?? true,
+        fontScale,
         loading: false,
       });
     } catch (error) {
       LogError('Failed to load preferences: ' + String(error));
       this.setState({
         lastTheme: 'dark',
+        lastSkin: 'default',
         lastLanguage: 'en',
         debugCollapsed: true,
         menuCollapsed: false,
         helpCollapsed: false,
+        chromeCollapsed: false,
         detailCollapsed: true,
+        fontScale: 1.0,
         loading: false,
       });
     }
@@ -232,6 +248,15 @@ class PreferencesStore {
   setDetailCollapsed = async (collapsed: boolean): Promise<void> => {
     await this.updatePreferences({ detailCollapsed: collapsed });
     this.setState({ detailCollapsed: collapsed });
+  };
+
+  setFontScale = async (scale: number): Promise<void> => {
+    // Clamp scale to valid range (0.6 to 1.4) and ensure single decimal precision
+    let clampedScale = Math.max(0.6, Math.min(1.4, scale));
+    clampedScale = Math.round(clampedScale * 10) / 10; // Ensure single decimal precision
+    await SetFontScale(clampedScale);
+    await this.updatePreferences({ fontScale: clampedScale });
+    this.setState({ fontScale: clampedScale });
   };
 
   get isDarkMode(): boolean {

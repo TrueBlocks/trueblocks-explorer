@@ -43,9 +43,12 @@ type Skin struct {
 	// Visual Enhancement Options
 	AutoContrast bool `json:"autoContrast"` // Automatic text contrast adjustment
 
-	// Legacy size properties (maintain compatibility)
-	SmallSize  string `json:"smallSize"`
-	NormalSize string `json:"normalSize"`
+	// Font size system (5-tier Mantine mapping)
+	TinySize   string `json:"tinySize,omitempty"`   // xs: 0.75rem
+	SmallSize  string `json:"smallSize,omitempty"`  // sm: 0.875rem
+	MediumSize string `json:"mediumSize,omitempty"` // md: 1rem
+	LargeSize  string `json:"largeSize,omitempty"`  // lg: 1.125rem
+	HugeSize   string `json:"hugeSize,omitempty"`   // xl: 1.25rem
 }
 
 // SkinMetadata provides basic information about a skin without full content

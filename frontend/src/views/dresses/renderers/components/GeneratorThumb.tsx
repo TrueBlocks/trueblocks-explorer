@@ -42,7 +42,7 @@ export const GeneratorThumb = ({
           />
           <StyledBadge
             variant="light"
-            size="xs"
+            size="sm"
             style={{
               position: 'absolute',
               top: 2,

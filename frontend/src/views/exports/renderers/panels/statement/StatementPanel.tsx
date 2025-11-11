@@ -94,24 +94,18 @@ export const renderStatementDetailPanel = (
       <Group justify="space-between" align="flex-start">
         <StyledText
           variant="primary"
-          size="lg"
           fw={600}
           style={{ color: 'var(--mantine-color-text)' }}
         >
           Tx {hashToHex(statement.transactionHash)}
         </StyledText>
-        <StyledText
-          variant={isReconciled ? 'success' : 'error'}
-          size="xl"
-          fw={600}
-        >
+        <StyledText variant={isReconciled ? 'success' : 'error'} fw={600}>
           {isReconciled ? '✓' : '✗'}
         </StyledText>
       </Group>
       <Group justify="space-between" gap={4} wrap="nowrap">
         <StyledText
           variant="primary"
-          size="md"
           fw={600}
           style={{ color: 'var(--mantine-color-text)' }}
         >
@@ -119,7 +113,6 @@ export const renderStatementDetailPanel = (
         </StyledText>
         <StyledText
           variant="primary"
-          size="md"
           fw={600}
           style={{ color: 'var(--mantine-color-text)' }}
         >
@@ -183,17 +176,18 @@ export const renderStatementDetailPanel = (
               </Grid.Col>
               <Grid.Col span={12}>
                 <div className="detail-row-value">
-                  <div
+                  <StyledText
+                    variant="primary"
+                    size="sm"
                     style={{
                       border: 'none',
                       padding: '0 8px 0 0',
                       fontFamily: 'monospace',
                       textAlign: 'right',
-                      fontSize: '0.85em',
                     }}
                   >
                     {formatRaw(beginBalRaw)}
-                  </div>
+                  </StyledText>
                 </div>
               </Grid.Col>
             </Grid.Col>
@@ -247,17 +241,18 @@ export const renderStatementDetailPanel = (
               </Grid.Col>
               <Grid.Col span={12}>
                 <div className="detail-row-value">
-                  <div
+                  <StyledText
+                    variant="primary"
+                    size="sm"
                     style={{
                       border: 'none',
                       padding: '0 8px 0 0',
                       fontFamily: 'monospace',
                       textAlign: 'right',
-                      fontSize: '0.85em',
                     }}
                   >
                     {formatRaw(endBalRaw)}
-                  </div>
+                  </StyledText>
                 </div>
               </Grid.Col>
             </Grid.Col>
@@ -278,18 +273,19 @@ export const renderStatementDetailPanel = (
                   return (
                     <div key={label} style={{ display: 'contents' }}>
                       <Grid.Col span={5}>
-                        <div
+                        <StyledText
+                          variant="dimmed"
+                          size="sm"
                           className="detail-row-prompt"
                           style={{
                             padding: '1px 4px',
-                            fontSize: '0.85em',
                             textOverflow: 'clip',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                           }}
                         >
                           {label}
-                        </div>
+                        </StyledText>
                       </Grid.Col>
                       <Grid.Col span={7}>
                         <div
@@ -298,17 +294,18 @@ export const renderStatementDetailPanel = (
                             padding: '1px 4px',
                           }}
                         >
-                          <div
+                          <StyledText
+                            variant="primary"
+                            size="sm"
                             style={{
                               border: 'none',
                               padding: '0 8px 0 0',
                               fontFamily: 'monospace',
                               textAlign: 'right',
-                              fontSize: '0.85em',
                             }}
                           >
                             {formatRaw(raw)}
-                          </div>
+                          </StyledText>
                         </div>
                       </Grid.Col>
                     </div>
@@ -330,18 +327,19 @@ export const renderStatementDetailPanel = (
                   return (
                     <div key={label} style={{ display: 'contents' }}>
                       <Grid.Col span={5}>
-                        <div
+                        <StyledText
+                          variant="dimmed"
+                          size="sm"
                           className="detail-row-prompt"
                           style={{
                             padding: '1px 4px',
-                            fontSize: '0.85em',
                             textOverflow: 'clip',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                           }}
                         >
                           {label}
-                        </div>
+                        </StyledText>
                       </Grid.Col>
                       <Grid.Col span={7}>
                         <div
@@ -350,17 +348,18 @@ export const renderStatementDetailPanel = (
                             padding: '1px 4px',
                           }}
                         >
-                          <div
+                          <StyledText
+                            variant="primary"
+                            size="sm"
                             style={{
                               border: 'none',
                               padding: '0 8px 0 0',
                               fontFamily: 'monospace',
                               textAlign: 'right',
-                              fontSize: '0.85em',
                             }}
                           >
                             {formatRaw(raw)}
-                          </div>
+                          </StyledText>
                         </div>
                       </Grid.Col>
                     </div>
@@ -376,7 +375,6 @@ export const renderStatementDetailPanel = (
             gridTemplateColumns: '5fr 7fr 5fr 7fr',
             alignItems: 'center',
             gap: 0,
-            fontSize: '0.85em',
           }}
         >
           <div
@@ -433,12 +431,10 @@ export const renderStatementDetailPanel = (
           </div>
         </div>
         {!isReconciled && statement.correctingReasons && (
-          <StyledText variant="error" size="md">
-            {statement.correctingReasons}
-          </StyledText>
+          <StyledText variant="error">{statement.correctingReasons}</StyledText>
         )}
         {statement.correctionId ? (
-          <StyledText variant="dimmed" size="md">
+          <StyledText variant="dimmed">
             Correction Id: {statement.correctionId}
           </StyledText>
         ) : null}

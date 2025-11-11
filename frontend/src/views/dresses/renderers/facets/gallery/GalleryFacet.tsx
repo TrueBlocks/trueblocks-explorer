@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import { Center, Container, Title } from '@mantine/core';
+import { Center, Container, Text, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 
 import { GalleryControls, GalleryGrouping } from '../../components';
@@ -189,11 +189,11 @@ export const GalleryFacet = ({ pageData, viewStateKey }: GalleryFacetProps) => {
         <Center
           style={{
             opacity: 0.6,
-            fontSize: 12,
-            fontFamily: 'monospace',
           }}
         >
-          No images found
+          <Text size="sm" style={{ fontFamily: 'monospace' }}>
+            No images found
+          </Text>
         </Center>
       )}
       <div

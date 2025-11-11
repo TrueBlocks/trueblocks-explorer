@@ -44,6 +44,9 @@
     "deg": 135
   },
   "autoContrast": true,
+  "tinySize": "0.75rem",
   "smallSize": "0.875rem",
-  "normalSize": "1rem"
+  "mediumSize": "1rem",
+  "largeSize": "1.125rem",
+  "hugeSize": "1.25rem"
 }

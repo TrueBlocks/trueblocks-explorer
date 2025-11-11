@@ -63,7 +63,7 @@ export const DalleDressCard = ({
             style={{ width: '100%', height: '100%' }}
           />
         </Box>
-        <StyledText variant="primary" size="xs" fw={600}>
+        <StyledText variant="primary" size="sm" fw={600}>
           {getDisplayAddress(item.original || '')}
         </StyledText>
       </Stack>

@@ -22,9 +22,7 @@ export const MetricSelector = ({
   onMetricChange,
 }: MetricSelectorProps) => (
   <Stack gap="sm">
-    <Text size="lg" fw={600}>
-      {metricConfig.label}
-    </Text>
+    <Text fw={600}>{metricConfig.label}</Text>
     <Group gap="xs">
       {metrics.map((metric) => (
         <StyledButton

@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import { StyledText } from '@components';
+
 import { formatTimestamp } from './utils';
 
 export const IdentifierRenderer = memo(
@@ -57,33 +59,30 @@ export const IdentifierRenderer = memo(
 
         return (
           <div style={{ lineHeight: '1.2' }}>
-            <div
-              style={{
-                fontSize: '0.85em',
-                fontWeight: '500',
-              }}
-            >
+            <StyledText variant="primary" size="xs" fw={500}>
               {dateStr}
-            </div>
+            </StyledText>
             {hashStr ? (
-              <div
+              <StyledText
+                variant="primary"
+                size="xs"
                 style={{
-                  fontSize: '0.8em',
                   fontFamily: 'monospace',
                   color: 'var(--skin-text-dimmed)',
                 }}
               >
                 {hashStr}
-              </div>
+              </StyledText>
             ) : null}
-            <div
+            <StyledText
+              variant="primary"
+              size="xs"
               style={{
-                fontSize: '0.9em',
                 color: 'var(--skin-text-secondary)',
               }}
             >
               {dottedNotation}
-            </div>
+            </StyledText>
           </div>
         );
       } else {

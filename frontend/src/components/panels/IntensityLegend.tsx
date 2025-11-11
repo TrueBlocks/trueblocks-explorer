@@ -34,7 +34,6 @@ export const IntensityLegend = ({
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          fontSize: '10px',
           color: theme.colors.gray[6],
         }}
       >

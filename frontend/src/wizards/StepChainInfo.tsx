@@ -287,7 +287,7 @@ export const StepChainInfo = ({
       onCancel={onCancel}
     >
       <Group justify="space-between" mb="md">
-        <StyledText variant="primary" size="xl" fw={600}>
+        <StyledText variant="primary" fw={600}>
           Chain Configuration
         </StyledText>
       </Group>
@@ -302,7 +302,7 @@ export const StepChainInfo = ({
                 rightSection={
                   <ActionIcon
                     variant="subtle"
-                    size="xs"
+                    size="sm"
                     onClick={(e) => handleRemoveChain(index, e)}
                     tabIndex={0}
                     c="error"

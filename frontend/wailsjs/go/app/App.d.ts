@@ -308,6 +308,8 @@ export function SetExportsMetric(arg1:string,arg2:string):Promise<void>;
 
 export function SetFilterState(arg1:project.ViewStateKey,arg2:project.FilterState):Promise<void>;
 
+export function SetFontScale(arg1:number):Promise<void>;
+
 export function SetFormat(arg1:string):Promise<void>;
 
 export function SetHelpCollapsed(arg1:boolean):Promise<void>;

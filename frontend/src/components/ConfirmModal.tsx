@@ -69,7 +69,6 @@ export const ConfirmModal = ({
       onClose={handleCancel}
       title={title}
       centered
-      size="md"
       overlayProps={{
         backgroundOpacity: 0.55,
         blur: 3,

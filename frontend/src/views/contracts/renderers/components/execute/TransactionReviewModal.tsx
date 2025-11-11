@@ -124,7 +124,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
       onClose={onClose}
       title={
         <Group gap="sm">
-          <StyledText variant="primary" size="md" fw={600}>
+          <StyledText variant="primary" fw={600}>
             Review Transaction
           </StyledText>
           <StyledBadge variant="light">
@@ -152,7 +152,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
                 {transactionData.function.stateMutability}
               </StyledBadge>
             </Group>
-            <StyledText variant="primary" size="lg" fw={600}>
+            <StyledText variant="primary" fw={600}>
               {transactionData.function.name}
             </StyledText>
             <StyledText variant="dimmed" size="sm">
@@ -194,7 +194,7 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
                   ETH Value
                 </StyledText>
               </Group>
-              <StyledText variant="primary" size="lg" fw={600}>
+              <StyledText variant="primary" fw={600}>
                 {formatEther(transactionData.value)} ETH
               </StyledText>
             </Group>

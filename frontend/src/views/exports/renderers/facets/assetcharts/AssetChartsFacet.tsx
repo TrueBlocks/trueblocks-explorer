@@ -193,9 +193,7 @@ export const AssetChartsFacet = ({
   if (error) {
     return (
       <Stack gap="md" p="xl" align="center" justify="center" h={400}>
-        <Text size="lg" c="red">
-          Error loading data: {error.message}
-        </Text>
+        <Text c="red">Error loading data: {error.message}</Text>
       </Stack>
     );
   }
@@ -205,9 +203,7 @@ export const AssetChartsFacet = ({
   if (assetCount === 0 && bucketsData) {
     return (
       <Stack gap="md" p="xl" align="center" justify="center" h={400}>
-        <Text size="lg" c="dimmed">
-          No asset chart data available
-        </Text>
+        <Text c="dimmed">No asset chart data available</Text>
       </Stack>
     );
   }

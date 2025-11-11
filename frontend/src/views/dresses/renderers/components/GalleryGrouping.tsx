@@ -87,9 +87,7 @@ export const GalleryGrouping = ({
             marginBottom: '16px',
           }}
         >
-          <StyledText variant="primary" size="md">
-            {descriptiveText}
-          </StyledText>
+          <StyledText variant="primary">{descriptiveText}</StyledText>
         </Box>
       )}
       <SimpleGrid cols={columns} spacing={6} verticalSpacing={6}>

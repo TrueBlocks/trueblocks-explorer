@@ -20,7 +20,6 @@ export const FormView = <T extends Record<string, unknown>>({
 }: FormViewProps<T>) => {
   return (
     <Container
-      size="md"
       mt="xl"
       bg="gray.1"
       c="text"

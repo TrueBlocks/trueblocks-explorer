@@ -17,7 +17,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const { isDarkMode, loading, lastSkin } = usePreferences();
+  const { isDarkMode, loading, lastSkin, fontScale } = usePreferences();
   const [backendSkin, setBackendSkin] = useState<skin.Skin | null>(null);
   const [_skinError, setSkinError] = useState<string | null>(null);
   const [colorScheme, setColorScheme] = useState<MantineColorScheme>('dark');
@@ -117,8 +117,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
             },
             defaultGradient: { from: '#000000', to: '#ffffff', deg: 45 },
             autoContrast: true,
-            smallSize: '0.75rem',
-            normalSize: '1rem',
+            tinySize: '0.75rem',
+            smallSize: '0.875rem',
+            mediumSize: '1rem',
+            largeSize: '1.125rem',
+            hugeSize: '1.25rem',
           } as skin.Skin);
         }
       }
@@ -195,12 +198,12 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           '--mantine-shadow-xl':
             backendSkin.shadows?.xl || '0 12px 20px rgba(0,0,0,0.1)',
 
-          // Font sizes
-          '--mantine-font-size-xs': backendSkin.smallSize,
-          '--mantine-font-size-sm': backendSkin.smallSize,
-          '--mantine-font-size-md': backendSkin.normalSize,
-          '--mantine-font-size-lg': backendSkin.normalSize,
-          '--mantine-font-size-xl': backendSkin.normalSize,
+          // Font sizes - Full 5-tier mapping to Mantine system with fontScale applied
+          '--mantine-font-size-xs': `calc((${backendSkin.tinySize || '0.75rem'}) * ${fontScale})`,
+          '--mantine-font-size-sm': `calc((${backendSkin.smallSize || '0.875rem'}) * ${fontScale})`,
+          '--mantine-font-size-md': `calc((${backendSkin.mediumSize || '1rem'}) * ${fontScale})`,
+          '--mantine-font-size-lg': `calc((${backendSkin.largeSize || '1.125rem'}) * ${fontScale})`,
+          '--mantine-font-size-xl': `calc((${backendSkin.hugeSize || '1.25rem'}) * ${fontScale})`,
 
           // Primary color variations (most important for visual changes)
           '--mantine-primary-color': backendSkin.primary?.[6] || '#339AF0',
@@ -276,7 +279,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         };
       }
     };
-  }, [backendSkin]);
+  }, [backendSkin, fontScale]);
 
   // Create dynamic theme using backend skin
   const dynamicTheme = useMemo(() => {

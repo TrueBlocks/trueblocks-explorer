@@ -10,7 +10,6 @@ const debuggerStyle = {
   color: '#2e2e2e',
   padding: '10px',
   margin: '5px 0',
-  fontSize: '12px',
   fontFamily: 'monospace',
   border: '1px solid var(--skin-border-secondary)',
   borderRadius: '4px',

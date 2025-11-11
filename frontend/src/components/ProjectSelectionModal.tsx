@@ -158,7 +158,7 @@ export const ProjectSelectionModal = ({
               ? 'Select or Create a Project'
               : 'Project Required'}
           </Title>
-          <StyledText variant="dimmed" size="md">
+          <StyledText variant="dimmed">
             {hasActiveProject
               ? 'Choose a different project or create a new one'
               : 'An active project with at least one address is required to continue'}
@@ -251,12 +251,12 @@ export const ProjectSelectionModal = ({
                                       {project.name}
                                     </StyledText>
                                     {project.isActive && (
-                                      <StyledBadge variant="filled" size="xs">
+                                      <StyledBadge variant="filled" size="sm">
                                         Active
                                       </StyledBadge>
                                     )}
                                     {isRecent && (
-                                      <StyledBadge variant="light" size="xs">
+                                      <StyledBadge variant="light" size="sm">
                                         Recent
                                       </StyledBadge>
                                     )}
@@ -273,11 +273,8 @@ export const ProjectSelectionModal = ({
                             </Group>
 
                             {/* Project Metadata */}
-                            <Group
-                              justify="space-between"
-                              style={{ fontSize: '11px' }}
-                            >
-                              <StyledText variant="dimmed" size="xs">
+                            <Group justify="space-between">
+                              <StyledText variant="dimmed" size="sm">
                                 {new Date(
                                   project.lastOpened,
                                 ).toLocaleDateString()}{' '}

@@ -26,7 +26,7 @@ describe('{{$class}} View Integration Tests (DataFacet refactor preparation)', (
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support {{range $i, $facet := .Facets}}{{if $i}}, {{end}}{{toLower $facet.Name}}{{end}} facet{{if gt (len .Facets) 1}}s{{end}}', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

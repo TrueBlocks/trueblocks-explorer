@@ -42,7 +42,6 @@ export const Exports = () => {
   // === SECTION 2.5: Initial ViewConfig Load ===
   const { config: viewConfig } = useViewConfig({ viewName: ROUTE });
   assertRouteConsistency(ROUTE, viewConfig);
-
   const facetsFromConfig: DataFacetConfig[] = useMemo(
     () => buildFacetConfigs(viewConfig),
     [viewConfig],
@@ -279,8 +278,7 @@ export const Exports = () => {
         value: facetConfig.id,
         content: perTabContent,
         dividerBefore: facetConfig.dividerBefore,
-        hideable: facetConfig.hideable,
-        hidden: facetConfig.hidden,
+        canClose: facetConfig.canClose,
       })),
     [availableFacets, perTabContent],
   );

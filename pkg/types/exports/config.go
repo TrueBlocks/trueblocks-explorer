@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Exports view
 func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "exports",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *ExportsCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"statements": {
 			Name:          "Statements",
 			Store:         "statements",
@@ -134,35 +151,30 @@ func (c *ExportsCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "statements")
-	facetOrder = append(facetOrder, "balances")
-	facetOrder = append(facetOrder, "transfers")
-	facetOrder = append(facetOrder, "transactions")
-	facetOrder = append(facetOrder, "openapprovals")
-	facetOrder = append(facetOrder, "approvallogs")
-	facetOrder = append(facetOrder, "approvaltxs")
-	facetOrder = append(facetOrder, "withdrawals")
-	facetOrder = append(facetOrder, "assets")
-	facetOrder = append(facetOrder, "assetcharts")
-	facetOrder = append(facetOrder, "logs")
-	facetOrder = append(facetOrder, "traces")
-	facetOrder = append(facetOrder, "receipts")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "exports",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-		},
+func (c *ExportsCollection) buildFacetOrder() []string {
+	return []string{
+		"statements",
+		"balances",
+		"transfers",
+		"transactions",
+		"openapprovals",
+		"approvallogs",
+		"approvaltxs",
+		"withdrawals",
+		"assets",
+		"assetcharts",
+		"logs",
+		"traces",
+		"receipts",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *ExportsCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"export": {Name: "export", Label: "Export", Icon: "Export"},
+	}
 }
 
 func getApprovallogsFields() []types.FieldConfig {

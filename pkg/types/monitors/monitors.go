@@ -65,8 +65,9 @@ func isDupMonitor() func(existing []*Monitor, newItem *Monitor) bool {
 	// EXISTING_CODE
 }
 
-func (c *MonitorsCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *MonitorsCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -83,8 +84,8 @@ func (c *MonitorsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *MonitorsCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *MonitorsCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case MonitorsMonitors:
 		c.monitorsFacet.Reset()
 	default:
@@ -92,8 +93,8 @@ func (c *MonitorsCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *MonitorsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *MonitorsCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case MonitorsMonitors:
 		return c.monitorsFacet.NeedsUpdate()
 	default:
@@ -149,7 +150,8 @@ func (c *MonitorsCollection) AccumulateItem(item interface{}, summary *types.Sum
 	// EXISTING_CODE
 }
 
-func (c *MonitorsCollection) GetSummary() types.Summary {
+func (c *MonitorsCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -190,6 +192,8 @@ func (c *MonitorsCollection) ExportData(payload *types.Payload) (string, error) 
 }
 
 func (c *MonitorsCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

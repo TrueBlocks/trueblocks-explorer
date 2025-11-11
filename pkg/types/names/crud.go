@@ -51,13 +51,17 @@ func AutonameAddress(address string) error {
 	}
 	collection := GetNamesCollection(payload)
 
+	reset := func(c *NamesCollection, f types.DataFacet) {
+		payload := &types.Payload{DataFacet: f}
+		c.Reset(payload)
+	}
 	// Reset all facets to ensure consistency across all Names views
-	collection.Reset(NamesAll)
-	collection.Reset(NamesCustom)
-	collection.Reset(NamesRegular)
+	reset(collection, NamesAll)
+	reset(collection, NamesCustom)
+	reset(collection, NamesRegular)
 	// Note: Prefund and Baddress typically don't change with autoname, but reset for consistency
-	collection.Reset(NamesPrefund)
-	collection.Reset(NamesBaddress)
+	reset(collection, NamesPrefund)
+	reset(collection, NamesBaddress)
 
 	msgs.EmitStatus(fmt.Sprintf("completed autoname operation for address: %s", address))
 	return nil
@@ -84,7 +88,7 @@ func (c *NamesCollection) Crud(
 		if err := AutonameAddress(name.Address.Hex()); err != nil {
 			return err
 		}
-		c.Reset(dataFacet)
+		c.Reset(payload)
 		return nil
 	}
 

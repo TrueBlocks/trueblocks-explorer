@@ -30,8 +30,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['contracts']['ContractsCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetSummary() {
-  return window['go']['contracts']['ContractsCollection']['GetSummary']();
+export function GetSummary(arg1) {
+  return window['go']['contracts']['ContractsCollection']['GetSummary'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

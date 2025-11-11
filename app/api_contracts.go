@@ -33,13 +33,13 @@ func (a *App) GetContractsPage(
 
 func (a *App) GetContractsSummary(payload *types.Payload) types.Summary {
 	collection := contracts.GetContractsCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadContracts(payload *types.Payload) error {
 	collection := contracts.GetContractsCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

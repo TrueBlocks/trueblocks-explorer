@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Abis view
 func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "abis",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *AbisCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"downloaded": {
 			Name:          "Downloaded",
 			Store:         "abis",
@@ -50,28 +67,23 @@ func (c *AbisCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "downloaded")
-	facetOrder = append(facetOrder, "known")
-	facetOrder = append(facetOrder, "functions")
-	facetOrder = append(facetOrder, "events")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "abis",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
-			"export":   {Name: "export", Label: "Export", Icon: "Export"},
-			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
-		},
+func (c *AbisCollection) buildFacetOrder() []string {
+	return []string{
+		"downloaded",
+		"known",
+		"functions",
+		"events",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *AbisCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
+		"export":   {Name: "export", Label: "Export", Icon: "Export"},
+		"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
+	}
 }
 
 func getAbisFields() []types.FieldConfig {

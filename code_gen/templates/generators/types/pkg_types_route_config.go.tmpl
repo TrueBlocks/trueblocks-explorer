@@ -19,54 +19,18 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the {{$class}} view
 func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
-		{{- range .Facets}}
-		{{- $rowActionsBe := .RowActionsBe .Name -}}
-		{{- $headerActionsBe := .HeaderActionsBe .Name}}
-		"{{toLower .Name}}": {
-			Name:          "{{toHeader .DisplayName}}",
-			Store:         "{{toLower .StoreName}}",
-			{{- if .ViewType }}
-						ViewType:      "{{.ViewType}}",
-			{{- end }}
-			DividerBefore: {{contains .Attributes "dividerBefore"}},
-			Fields:        get{{toProper .StoreName}}Fields(),
-			Actions:       []string{ {{if $rowActionsBe}}{{$rowActionsBe}}{{end}} },
-			HeaderActions: []string{ {{if $headerActionsBe}}{{$headerActionsBe}}{{end}} },
-			RendererTypes: "{{.Renderer}}",
-			{{- if .PanelChart }}
-				PanelChartConfig:   get{{.Name}}PanelConfig(),
-			{{- end}}
-			{{- if .FacetChart }}
-				FacetChartConfig:   get{{.Name}}FacetConfig(),
-			{{- end}}
-			{{- if .NavigateTo }}
-				RowAction:   {{.NavigateTo}},
-			{{- end}}
-			{{- if or .Hidden .Hideable }}
-				Hideable:   true,
-			{{- end}}
-			{{- if .Hidden }}
-				Hidden:   true,
-			{{- end}}
-		},
-		{{- end}}
-	}
-
-	facetOrder := []string{}
-	{{- range .Facets}}
-	facetOrder = append(facetOrder, "{{toLower .Name}}")
-	{{- end}}
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+	
+	{{- if .HasDynamicFacets }}
+	c.addDynamicFacets(facets, &facetOrder)
+	{{- end }}
 
 	cfg := &types.ViewConfig{
 		ViewName:   "{{$lower}}",
 		Facets:     facets,
 		FacetOrder: facetOrder,
-		Actions:    map[string]types.ActionConfig{
-		{{- range .AllActions }}
-			{{.}}
-		{{- end }}
-		},
+		Actions:    c.buildActions(),
 	}
 
 	types.DeriveFacets(cfg)
@@ -74,6 +38,91 @@ func (c *{{$class}}Collection) GetConfig() (*types.ViewConfig, error) {
 	types.SetMenuOrder(cfg)
 	return cfg, nil
 }
+
+func (c *{{$class}}Collection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
+		{{- range .Facets}}
+		{{- if not .IsDynamic}}
+		{{- $rowActionsBe := .RowActionsBe .Name -}}
+		{{- $headerActionsBe := .HeaderActionsBe .Name}}
+		"{{toLower .Name}}": {
+			Name:          "{{toHeader .DisplayName}}",
+			Store:         "{{toLower .StoreName}}",
+			{{- if .ViewType }}
+			ViewType:      "{{.ViewType}}",
+			{{- end }}
+			DividerBefore: {{contains .Attributes "dividerBefore"}},
+			Fields:        get{{toProper .StoreName}}Fields(),
+			Actions:       []string{ {{$rowActionsBe}} },
+			HeaderActions: []string{ {{$headerActionsBe}} },
+			RendererTypes: "{{.Renderer}}",
+			{{- if .PanelChart }}
+			PanelChartConfig: get{{.Name}}PanelConfig(),
+			{{- end}}
+			{{- if .FacetChart }}
+			FacetChartConfig: get{{.Name}}FacetConfig(),
+			{{- end}}
+			{{- if .NavigateTo }}
+			RowAction: {{.NavigateTo}},
+			{{- end}}
+			{{- if .Hideable }}
+			CanClose: true,
+			{{- end}}
+		},
+		{{- end}}
+		{{- end}}
+	}
+}
+
+func (c *{{$class}}Collection) buildFacetOrder() []string {
+	return []string{
+		{{- range .Facets}}
+		{{- if not .IsDynamic}}
+		"{{toLower .Name}}",
+		{{- end}}
+		{{- end}}
+	}
+}
+
+func (c *{{$class}}Collection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		{{- range .AllActions }}
+		{{.}}
+		{{- end }}
+	}
+}
+
+{{if .HasDynamicFacets -}}
+func (c *{{$class}}Collection) addDynamicFacets(facets map[string]types.FacetConfig, facetOrder *[]string) {
+	if c.{{$lower}}Manager == nil {
+		return
+	}
+	
+	for _, id := range c.{{$lower}}Manager.GetOpenIDs() {
+		if item, exists := c.{{$lower}}Manager.GetItemByID(id); exists {
+			{{- range .Facets -}}
+			{{- if .IsDynamic }}
+			facets[id] = types.FacetConfig{
+				Name:          item.GetName(),
+				Store:         "{{toLower .StoreName}}",
+				DividerBefore: false,
+				Fields:        get{{firstUpper (toLower .StoreName)}}Fields(),
+				Actions:       []string{},
+				HeaderActions: []string{},
+				RendererTypes: "",
+				CanClose:      true,
+				{{- if .NavigateTo }}
+				RowAction: {{.NavigateTo}},
+				{{- end}}
+			}
+			{{- end -}}
+			{{- end}}
+			*facetOrder = append(*facetOrder, id)
+		}
+	}
+}
+{{- end}}
+
 {{- range .Stores }}
 
 func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {

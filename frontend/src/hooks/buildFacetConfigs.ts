@@ -11,7 +11,6 @@ export function buildFacetConfigs(
       const fc = viewConfig.facets[facetId];
       if (!fc) return false;
       if (fc.disabled) return false;
-      if (fc.hidden) return false;
       return true;
     })
     .map((facetId: string) => {
@@ -22,8 +21,7 @@ export function buildFacetConfigs(
           facetCfg?.name ||
           (labelTransform ? labelTransform(facetId) : facetId),
         dividerBefore: facetCfg?.dividerBefore,
-        hideable: facetCfg?.hideable,
-        hidden: facetCfg?.hidden,
+        canClose: facetCfg?.canClose,
       };
     });
 }

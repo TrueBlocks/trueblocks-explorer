@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Chunks view
 func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "chunks",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *ChunksCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"stats": {
 			Name:             "Stats",
 			Store:            "stats",
@@ -54,26 +71,21 @@ func (c *ChunksCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "stats")
-	facetOrder = append(facetOrder, "index")
-	facetOrder = append(facetOrder, "blooms")
-	facetOrder = append(facetOrder, "manifest")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "chunks",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-		},
+func (c *ChunksCollection) buildFacetOrder() []string {
+	return []string{
+		"stats",
+		"index",
+		"blooms",
+		"manifest",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *ChunksCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"export": {Name: "export", Label: "Export", Icon: "Export"},
+	}
 }
 
 func getBloomsFields() []types.FieldConfig {

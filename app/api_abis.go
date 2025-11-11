@@ -51,13 +51,13 @@ func (a *App) AbisCrud(
 
 func (a *App) GetAbisSummary(payload *types.Payload) types.Summary {
 	collection := abis.GetAbisCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadAbis(payload *types.Payload) error {
 	collection := abis.GetAbisCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

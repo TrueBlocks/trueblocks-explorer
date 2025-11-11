@@ -138,6 +138,6 @@ func (c *MonitorsCollection) Clean(payload *types.Payload, addresses []string) e
 		logging.LogBEWarning("Cleaned all monitors")
 	}
 
-	c.FetchByFacet(MonitorsMonitors)
+	c.FetchByFacet(payload)
 	return nil
 }

@@ -16,8 +16,9 @@
 
 [[facets]]
     name = "Projects"
-    store = "this.AddressesList"
+    store = "project.AddressList"
     actions = []
     viewType = "canvas"
     renderer = "facet"
-    dynamic = true
+    isDynamic = true
+    navigate = "exports|<latest>|address|address"

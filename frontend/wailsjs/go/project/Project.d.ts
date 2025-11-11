@@ -65,3 +65,5 @@ export function SetName(arg1:string):Promise<void>;
 export function SetViewAndFacet(arg1:string,arg2:string):Promise<void>;
 
 export function SetViewStates(arg1:string,arg2:Record<string, project.FilterState>):Promise<void>;
+
+export function String():Promise<string>;

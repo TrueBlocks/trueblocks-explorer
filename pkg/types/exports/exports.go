@@ -359,8 +359,9 @@ func isDupWithdrawal() func(existing []*Withdrawal, newItem *Withdrawal) bool {
 	// EXISTING_CODE
 }
 
-func (c *ExportsCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *ExportsCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -425,8 +426,8 @@ func (c *ExportsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *ExportsCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case ExportsStatements:
 		c.statementsFacet.Reset()
 	case ExportsBalances:
@@ -458,8 +459,8 @@ func (c *ExportsCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *ExportsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *ExportsCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case ExportsStatements:
 		return c.statementsFacet.NeedsUpdate()
 	case ExportsBalances:
@@ -578,7 +579,8 @@ func (c *ExportsCollection) AccumulateItem(item interface{}, summary *types.Summ
 	// EXISTING_CODE
 }
 
-func (c *ExportsCollection) GetSummary() types.Summary {
+func (c *ExportsCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -643,6 +645,8 @@ func (c *ExportsCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 func (c *ExportsCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

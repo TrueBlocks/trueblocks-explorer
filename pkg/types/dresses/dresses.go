@@ -184,8 +184,9 @@ func isDupSeries() func(existing []*Series, newItem *Series) bool {
 	// EXISTING_CODE
 }
 
-func (c *DressesCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *DressesCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -218,8 +219,8 @@ func (c *DressesCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *DressesCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *DressesCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case DressesGenerator:
 		c.generatorFacet.Reset()
 	case DressesSeries:
@@ -235,8 +236,8 @@ func (c *DressesCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *DressesCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *DressesCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case DressesGenerator:
 		return c.generatorFacet.NeedsUpdate()
 	case DressesSeries:
@@ -257,7 +258,8 @@ func (c *DressesCollection) AccumulateItem(item interface{}, summary *types.Summ
 	// EXISTING_CODE
 }
 
-func (c *DressesCollection) GetSummary() types.Summary {
+func (c *DressesCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -306,6 +308,8 @@ func (c *DressesCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 func (c *DressesCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

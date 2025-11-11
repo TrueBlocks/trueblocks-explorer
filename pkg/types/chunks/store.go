@@ -267,6 +267,10 @@ func (c *ChunksCollection) getStatsStore(payload *types.Payload, facet types.Dat
 
 func (c *ChunksCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case ChunksStats:
 		name = "chunks-stats"

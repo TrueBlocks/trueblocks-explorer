@@ -23,8 +23,8 @@ import (
 
 // ExportData handles export requests with full context logging and CSV creation
 func (a *App) ExportData(payload *types.Payload) error {
-	activeProject := a.Projects.GetActiveProject()
-	if activeProject == nil {
+	activeProject, exists := a.Projects.GetActiveItem()
+	if !exists {
 		err := fmt.Errorf("no active project")
 		msgs.EmitError("export failed: no active project", err)
 		return err

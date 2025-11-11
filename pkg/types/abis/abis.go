@@ -146,8 +146,9 @@ func isDupFunction() func(existing []*Function, newItem *Function) bool {
 	// EXISTING_CODE
 }
 
-func (c *AbisCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *AbisCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -176,8 +177,8 @@ func (c *AbisCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *AbisCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *AbisCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case AbisDownloaded:
 		c.downloadedFacet.Reset()
 	case AbisKnown:
@@ -191,8 +192,8 @@ func (c *AbisCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *AbisCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *AbisCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case AbisDownloaded:
 		return c.downloadedFacet.NeedsUpdate()
 	case AbisKnown:
@@ -269,7 +270,8 @@ func (c *AbisCollection) AccumulateItem(item interface{}, summary *types.Summary
 	// EXISTING_CODE
 }
 
-func (c *AbisCollection) GetSummary() types.Summary {
+func (c *AbisCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -316,6 +318,8 @@ func (c *AbisCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 func (c *AbisCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

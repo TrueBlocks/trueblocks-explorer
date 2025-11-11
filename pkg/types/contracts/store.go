@@ -138,6 +138,10 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 
 func (c *ContractsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case ContractsDashboard:
 		name = "contracts-contracts"

@@ -19,7 +19,7 @@ describe('Contracts View Integration Tests (DataFacet refactor preparation)', ()
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support dashboard, execute, events facets', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

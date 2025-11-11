@@ -61,6 +61,12 @@ func NewProject(name string, activeAddress base.Address, chains []string) *Proje
 }
 
 // ------------------------------------------------------------------------------------
+// String returns a string representation of the project
+func (p *Project) String() string {
+	return p.Name
+}
+
+// ------------------------------------------------------------------------------------
 var ErrProjectRecoveryIncomplete = fmt.Errorf("failed to parse project file")
 
 // ------------------------------------------------------------------------------------

@@ -33,13 +33,13 @@ func (a *App) GetProjectsPage(
 
 func (a *App) GetProjectsSummary(payload *types.Payload) types.Summary {
 	collection := projects.GetProjectsCollection(payload, a.Projects)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadProjects(payload *types.Payload) error {
 	collection := projects.GetProjectsCollection(payload, a.Projects)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

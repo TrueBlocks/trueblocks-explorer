@@ -9,7 +9,7 @@ export function ChangeVisibility(arg1:types.Payload):Promise<void>;
 
 export function ExportData(arg1:types.Payload):Promise<string>;
 
-export function FetchByFacet(arg1:types.DataFacet):Promise<void>;
+export function FetchByFacet(arg1:types.Payload):Promise<void>;
 
 export function GetBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
@@ -17,10 +17,10 @@ export function GetConfig():Promise<types.ViewConfig>;
 
 export function GetPage(arg1:types.Payload,arg2:number,arg3:number,arg4:sdk.SortSpec,arg5:string):Promise<types.Page>;
 
-export function GetSummary():Promise<types.Summary>;
+export function GetSummary(arg1:types.Payload):Promise<types.Summary>;
 
-export function NeedsUpdate(arg1:types.DataFacet):Promise<boolean>;
+export function NeedsUpdate(arg1:types.Payload):Promise<boolean>;
 
-export function Reset(arg1:types.DataFacet):Promise<void>;
+export function Reset(arg1:types.Payload):Promise<void>;
 
 export function ResetSummary():Promise<void>;

@@ -5,7 +5,6 @@ scope: type
 
 {{- $class := .Class -}}
 {{- $lower := toLower $class -}}
-{{- $singular := toSingular $lower -}}
 {{- $isNames := eq .Class "Names" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
@@ -28,13 +27,14 @@ var (
 )
 
 {{range .Stores}}
-func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet types.DataFacet) *store.Store[{{toSingular .Name}}] {
+{{- $isDyn := eq .Name "AddressList"}}
+func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload{{if not $isDyn}}, facet types.DataFacet{{end}}) *store.Store[{{toSingular .Name}}] {
 	{{toLower .Name}}StoreMu.Lock()
 	defer {{toLower .Name}}StoreMu.Unlock()
 
 	// EXISTING_CODE
 	// EXISTING_CODE
-	
+
 	storeKey := getStoreKey(payload)
 	theStore := {{toLower .Name}}Store[storeKey]
 	if theStore == nil {
@@ -78,10 +78,16 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload, facet t
 
 func (c *{{$class}}Collection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	case {{$class}}{{.Name}}:
 		name = "{{toLower $class}}-{{toLower .StoreName}}"
+	{{- end}}
 	{{- end}}
 	default:
 		return ""
@@ -95,7 +101,7 @@ var (
 	collectionsMu sync.Mutex
 )
 
-func Get{{.Class}}Collection(payload *types.Payload{{if .HasDynamicFacets}}, {{$singular}}Manager *{{$singular}}.Manager{{end}}) *{{.Class}}Collection {
+func Get{{.Class}}Collection(payload *types.Payload{{if .HasDynamicFacets}}, {{$lower}}Manager *manager.Manager[*{{toSingular $lower}}.{{toSingular .Class}}]{{end}}) *{{.Class}}Collection {
 	collectionsMu.Lock()
 	defer collectionsMu.Unlock()
 
@@ -109,7 +115,7 @@ func Get{{.Class}}Collection(payload *types.Payload{{if .HasDynamicFacets}}, {{$
 		return collection
 	}
 
-	collection := New{{.Class}}Collection(payload{{if .HasDynamicFacets}}, {{$singular}}Manager{{end}})
+	collection := New{{.Class}}Collection(payload{{if .HasDynamicFacets}}, {{$lower}}Manager{{end}})
 	collections[key] = collection
 	return collection
 }

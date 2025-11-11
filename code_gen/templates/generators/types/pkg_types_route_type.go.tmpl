@@ -28,26 +28,45 @@ import (
 )
 
 const (
-{{range .Facets}}{{$class}}{{.Name}} types.DataFacet = "{{toLower .Name}}"
-{{end}}
+{{range .Facets}}
+{{- if not .IsDynamic}}
+{{$class}}{{.Name}} types.DataFacet = "{{toLower .Name}}"
+{{- end}}
+{{- end}}
 )
 
 func init() {
-{{- range .Facets}}
+	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	types.RegisterDataFacet({{$class}}{{.Name}})
-{{- end}}
+	{{- end}}
+	{{- end}}
 }
 
 type {{$class}}Collection struct {
 	{{- range .Facets}}
-	{{toLower .Name}}Facet *facets.Facet[{{toSingular .StoreName}}]
+	{{- $name := toLower .Name -}}
+	{{- if not .IsDynamic}}
+	{{$name}}Facet *facets.Facet[{{toSingular .StoreName}}]
+	{{- else}}
+	{{$name}}Facets    map[string]*facets.Facet[{{toSingular .StoreName}}]
+	{{$name}}Manager   *manager.Manager[*project.Project]
+	{{- end}}
 	{{- end}}
 	summary         types.Summary
 	summaryMutex    sync.RWMutex
 }
 
-func New{{$class}}Collection(payload *types.Payload) *{{$class}}Collection {
+{{$hasDyn := .HasDynamicFacets -}}
+func New{{$class}}Collection(payload *types.Payload{{if $hasDyn}}, {{$lower}}Manager *manager.Manager[*{{toSingular $lower}}.{{toSingular $class}}]{{end}}) *{{$class}}Collection {
+	{{- if $hasDyn}}
+	c := &{{$class}}Collection{
+		{{$lower}}Manager:   {{$lower}}Manager,
+		{{$lower}}Facets:    make(map[string]*facets.Facet[AddressList]),
+	}
+	{{- else}}
 	c := &{{$class}}Collection{}
+	{{- end}}
 	c.ResetSummary()
 	c.initializeFacets(payload)
 	return c
@@ -55,6 +74,7 @@ func New{{$class}}Collection(payload *types.Payload) *{{$class}}Collection {
 
 func (c *{{$class}}Collection) initializeFacets(payload *types.Payload) {
 	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	c.{{toLower .Name}}Facet = facets.NewFacet(
 		{{$class}}{{.Name}},
 		is{{toSingular .Name}},
@@ -64,7 +84,16 @@ func (c *{{$class}}Collection) initializeFacets(payload *types.Payload) {
 		c,
 		{{.UseMapKey}},
 	)
-	{{end}}}
+	{{- end}}
+	{{end -}}
+	{{if $hasDyn}}
+	if c.{{$lower}}Manager != nil {
+		openIDs := c.{{$lower}}Manager.GetOpenIDs()
+		for _, id := range openIDs {
+			types.RegisterDataFacet(types.DataFacet(id))
+		}
+	}{{end -}}
+}
 
 {{range .Facets}}
 func is{{toSingular .Name}}(item *{{toSingular .StoreName}}) bool {
@@ -80,44 +109,80 @@ func isDup{{toSingular .Name}}() func(existing []*{{toSingular .Name}}, newItem 
 }
 {{end}}
 
-func (c *{{$class}}Collection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *{{$class}}Collection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
 	go func() {
 		switch dataFacet {
 		{{- range .Facets}}
+		{{- if not .IsDynamic}}
 		case {{$class}}{{.Name}}:
 			if err := c.{{toLower .Name}}Facet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		{{- end}}
+		{{- end}}
 		default:
+			{{- if $hasDyn}}
+			id := string(dataFacet)
+			if _, exists := c.projectsFacets[id]; exists {
+				payload := types.Payload{DataFacet: types.DataFacet(id)}
+				c.ensureProjectFacet(&payload)
+				if facet, exists := c.{{$lower}}Facets[id]; exists {
+					if err := facet.FetchFacet(); err != nil {
+						logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+					}
+				}
+			} else {
+				// Silently ignore requests for unknown facets. This is normal
+				// when a facet has been closed but there are still pending data requests
+				return
+			}
+			{{- else}}
 			logging.LogError("LoadData: unexpected dataFacet: %v", fmt.Errorf("invalid dataFacet: %s", dataFacet), nil)
 			return
+			{{- end}}
 		}
 	}()
 }
 
-func (c *{{$class}}Collection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *{{$class}}Collection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	case {{$class}}{{.Name}}:
 		c.{{toLower .Name}}Facet.Reset()
 	{{- end}}
+	{{- end}}
 	default:
+		{{- if $hasDyn}}
+		id := string(payload.DataFacet)
+		if facet, exists := c.{{$lower}}Facets[id]; exists {
+			facet.Reset()
+		}
+		{{- end}}
 		return
 	}
 }
 
-func (c *{{$class}}Collection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *{{$class}}Collection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	case {{$class}}{{.Name}}:
 		return c.{{toLower .Name}}Facet.NeedsUpdate()
 	{{- end}}
+	{{- end}}
 	default:
+		{{- if $hasDyn}}
+		id := string(payload.DataFacet)
+		if facet, exists := c.{{$lower}}Facets[id]; exists {
+			return facet.NeedsUpdate()
+		}
+		{{- end}}
 		return false
 	}
 }
@@ -127,7 +192,8 @@ func (c *{{$class}}Collection) AccumulateItem(item interface{}, summary *types.S
 	// EXISTING_CODE
 }
 
-func (c *{{$class}}Collection) GetSummary() types.Summary {
+func (c *{{$class}}Collection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -161,15 +227,35 @@ func (c *{{$class}}Collection) ResetSummary() {
 func (c *{{$class}}Collection) ExportData(payload *types.Payload) (string, error) {
 	switch payload.DataFacet {
 	{{- range .Facets}}
+	{{- if not .IsDynamic}}
 	case {{$class}}{{.Name}}:
 		return c.{{toLower .Name}}Facet.ExportData(payload, string({{$class}}{{.Name}}))
 	{{- end}}
+	{{- end}}
 	default:
+		{{- if $hasDyn}}
+		// TODO: Export dynamic facet data
+		{{- end}}
 		return "", fmt.Errorf("[ExportData] unsupported {{$lower}} facet: %s", payload.DataFacet)
 	}
 }
 
 func (c *{{$class}}Collection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	{{- if $hasDyn}}
+	id := string(payload.DataFacet)
+	if c.{{$lower}}Manager == nil {
+		return fmt.Errorf("item manager not available")
+	}
+
+	if err := c.{{$lower}}Manager.Close(id); err != nil {
+		return fmt.Errorf("failed to close item %s: %w", id, err)
+	}
+
+	delete(c.{{$lower}}Facets, id)
+	{{- end}}
 	return nil
 }
 

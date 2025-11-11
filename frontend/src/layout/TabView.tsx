@@ -12,8 +12,7 @@ interface Tab {
   value: string;
   content: React.ReactNode;
   dividerBefore?: boolean;
-  hideable?: boolean;
-  hidden?: boolean;
+  canClose?: boolean;
 }
 
 interface TabViewProps {
@@ -95,43 +94,37 @@ export const TabView = ({
         }}
       >
         <Tabs.List>
-          {tabs
-            .filter((tab) => !tab.hidden)
-            .map((tab, index) => (
-              <Fragment key={`tab-${index}`}>
-                {tab.dividerBefore && (
-                  <StyledDivider key={`divider-${index}`} />
-                )}
-                <Tabs.Tab
-                  key={tab.value}
-                  value={tab.value}
-                  rightSection={
-                    tab.hideable ? (
-                      <ActionIcon
-                        variant="subtle"
-                        size="xs"
-                        onClick={(e) => onHideFacet?.(tab.value, e)}
-                        tabIndex={0}
-                        c="error"
-                      >
-                        &#10005;
-                      </ActionIcon>
-                    ) : null
-                  }
-                >
-                  {tab.label}
-                </Tabs.Tab>
-              </Fragment>
-            ))}
+          {tabs.map((tab, index) => (
+            <Fragment key={`tab-${index}`}>
+              {tab.dividerBefore && <StyledDivider key={`divider-${index}`} />}
+              <Tabs.Tab
+                key={tab.value}
+                value={tab.value}
+                rightSection={
+                  tab.canClose ? (
+                    <ActionIcon
+                      variant="subtle"
+                      size="xs"
+                      onClick={(e) => onHideFacet?.(tab.value, e)}
+                      tabIndex={0}
+                      c="error"
+                    >
+                      &#10005;
+                    </ActionIcon>
+                  ) : null
+                }
+              >
+                {tab.label}
+              </Tabs.Tab>
+            </Fragment>
+          ))}
         </Tabs.List>
 
-        {tabs
-          .filter((tab) => !tab.hidden)
-          .map((tab) => (
-            <Tabs.Panel key={tab.value} value={tab.value}>
-              {tab.content}
-            </Tabs.Panel>
-          ))}
+        {tabs.map((tab) => (
+          <Tabs.Panel key={tab.value} value={tab.value}>
+            {tab.content}
+          </Tabs.Panel>
+        ))}
       </Tabs>
     </div>
   );

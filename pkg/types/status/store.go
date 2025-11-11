@@ -190,6 +190,10 @@ func (c *StatusCollection) getStatusStore(payload *types.Payload, facet types.Da
 
 func (c *StatusCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case StatusStatus:
 		name = "status-status"

@@ -16,6 +16,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -53,24 +54,26 @@ var (
 	projectsStoreMu sync.Mutex
 )
 
-func (c *ProjectsCollection) getAddressListStore(projectID string) *store.Store[AddressList] {
+func (c *ProjectsCollection) getAddressListStore(payload *types.Payload) *store.Store[AddressList] {
 	addresslistStoreMu.Lock()
 	defer addresslistStoreMu.Unlock()
 
 	// EXISTING_CODE
+	facet := payload.DataFacet
 	// EXISTING_CODE
 
-	storeKey := fmt.Sprintf("project_%s", projectID)
+	storeKey := getStoreKey(payload)
 	theStore := addresslistStore[storeKey]
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			if c.projectManager == nil {
+			projectID := string(payload.DataFacet)
+			if c.projectsManager == nil {
 				return fmt.Errorf("project manager not available")
 			}
 
-			project := c.projectManager.GetProjectByID(projectID)
-			if project == nil {
+			project, ok := c.projectsManager.GetItemByID(projectID)
+			if !ok {
 				return fmt.Errorf("project %s not found", projectID)
 			}
 
@@ -107,7 +110,7 @@ func (c *ProjectsCollection) getAddressListStore(projectID string) *store.Store[
 			return "", false
 		}
 
-		storeName := fmt.Sprintf("projects-addresslist-project-%s", projectID)
+		storeName := c.getStoreName(payload, facet)
 		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
 
 		// EXISTING_CODE
@@ -131,6 +134,9 @@ func (c *ProjectsCollection) getProjectsStore(payload *types.Payload, facet type
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
+			// The Projects Manage facet uses useActiveProject hook instead of this store.
+			// Projects are managed through dedicated APIs (GetOpenProjects, RestoreProjectContext, etc.)
+			// rather than the standard collection/store pattern used by other data facets.
 			// EXISTING_CODE
 			return nil
 		}
@@ -162,6 +168,13 @@ func (c *ProjectsCollection) getProjectsStore(payload *types.Payload, facet type
 
 func (c *ProjectsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	if facet != ProjectsManage {
+		return fmt.Sprintf("projects-addresslist-project-%s", string(payload.DataFacet))
+	}
+	// EXISTING_CODE
+
 	switch facet {
 	case ProjectsManage:
 		name = "projects-projects"
@@ -177,7 +190,7 @@ var (
 	collectionsMu sync.Mutex
 )
 
-func GetProjectsCollection(payload *types.Payload, projectManager *project.Manager) *ProjectsCollection {
+func GetProjectsCollection(payload *types.Payload, projectsManager *manager.Manager[*project.Project]) *ProjectsCollection {
 	collectionsMu.Lock()
 	defer collectionsMu.Unlock()
 
@@ -187,13 +200,16 @@ func GetProjectsCollection(payload *types.Payload, projectManager *project.Manag
 		return collection
 	}
 
-	collection := NewProjectsCollection(payload, projectManager)
+	collection := NewProjectsCollection(payload, projectsManager)
 	collections[key] = collection
 	return collection
 }
 
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
+	if payload.DataFacet != ProjectsManage {
+		return fmt.Sprintf("project_%s", payload.DataFacet)
+	}
 	// EXISTING_CODE
 	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }

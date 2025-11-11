@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Dresses view
 func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "dresses",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *DressesCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"generator": {
 			Name:          "Generator",
 			Store:         "dalledress",
@@ -64,31 +81,26 @@ func (c *DressesCollection) GetConfig() (*types.ViewConfig, error) {
 			RowAction:     types.NewRowActionNavigation("dresses", "generator", "address", "original"),
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "generator")
-	facetOrder = append(facetOrder, "series")
-	facetOrder = append(facetOrder, "databases")
-	facetOrder = append(facetOrder, "events")
-	facetOrder = append(facetOrder, "gallery")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "dresses",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"create": {Name: "create", Label: "Create", Icon: "Create"},
-			"delete": {Name: "delete", Label: "Delete", Icon: "Delete"},
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-			"remove": {Name: "remove", Label: "Remove", Icon: "Remove"},
-			"update": {Name: "update", Label: "Update", Icon: "Update"},
-		},
+func (c *DressesCollection) buildFacetOrder() []string {
+	return []string{
+		"generator",
+		"series",
+		"databases",
+		"events",
+		"gallery",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *DressesCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"create": {Name: "create", Label: "Create", Icon: "Create"},
+		"delete": {Name: "delete", Label: "Delete", Icon: "Delete"},
+		"export": {Name: "export", Label: "Export", Icon: "Export"},
+		"remove": {Name: "remove", Label: "Remove", Icon: "Remove"},
+		"update": {Name: "update", Label: "Update", Icon: "Update"},
+	}
 }
 
 func getDalledressFields() []types.FieldConfig {

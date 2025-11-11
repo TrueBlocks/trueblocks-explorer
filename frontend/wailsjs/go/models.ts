@@ -2534,8 +2534,7 @@ export namespace types {
 	    viewType?: string;
 	    dividerBefore: boolean;
 	    disabled: boolean;
-	    hideable: boolean;
-	    hidden: boolean;
+	    canClose: boolean;
 	    fields: FieldConfig[];
 	    columns: ColumnConfig[];
 	    detailPanels: DetailPanelConfig[];
@@ -2557,8 +2556,7 @@ export namespace types {
 	        this.viewType = source["viewType"];
 	        this.dividerBefore = source["dividerBefore"];
 	        this.disabled = source["disabled"];
-	        this.hideable = source["hideable"];
-	        this.hidden = source["hidden"];
+	        this.canClose = source["canClose"];
 	        this.fields = this.convertValues(source["fields"], FieldConfig);
 	        this.columns = this.convertValues(source["columns"], ColumnConfig);
 	        this.detailPanels = this.convertValues(source["detailPanels"], DetailPanelConfig);

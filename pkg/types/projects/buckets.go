@@ -12,6 +12,7 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 func (c *ProjectsCollection) GetBuckets(payload *types.Payload) (*types.Buckets, error) {
 	var facet types.BucketInterface
+
 	switch payload.DataFacet {
 	case ProjectsManage:
 		facet = c.manageFacet

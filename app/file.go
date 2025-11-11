@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
@@ -109,7 +110,10 @@ var ErrDeserializeFailed = errors.New("failed to deserialize data")
 
 // fileNew creates a new project with the given address and default settings
 func (a *App) fileNew(address base.Address) error {
-	a.Projects.NewProject(a.uniqueProjectName("New Project"), address, []string{"mainnet"})
+	name := a.uniqueProjectName("New Project")
+	a.Projects.Create(name, func() *project.Project {
+		return project.NewProject(name, address, []string{"mainnet"})
+	})
 	a.updateRecentProjects()
 	return nil
 }
@@ -168,7 +172,7 @@ func (a *App) fileOpen(path string) error {
 		return ErrFileNotFound
 	}
 
-	_, err := a.Projects.Open(path)
+	_, err := a.Projects.Open(path, project.Load)
 	if err != nil {
 		return err
 	}

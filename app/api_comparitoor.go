@@ -33,13 +33,13 @@ func (a *App) GetComparitoorPage(
 
 func (a *App) GetComparitoorSummary(payload *types.Payload) types.Summary {
 	collection := comparitoor.GetComparitoorCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadComparitoor(payload *types.Payload) error {
 	collection := comparitoor.GetComparitoorCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

@@ -83,6 +83,10 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 
 func (c *MonitorsCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case MonitorsMonitors:
 		name = "monitors-monitors"

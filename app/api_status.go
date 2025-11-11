@@ -33,13 +33,13 @@ func (a *App) GetStatusPage(
 
 func (a *App) GetStatusSummary(payload *types.Payload) types.Summary {
 	collection := status.GetStatusCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadStatus(payload *types.Payload) error {
 	collection := status.GetStatusCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

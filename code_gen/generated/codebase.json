@@ -3372,6 +3372,27 @@
                     "useMapKey": false,
                     "hidden": false,
                     "hideable": false
+                },
+                {
+                    "display_name": "Projects",
+                    "name": "Projects",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "AddressList",
+                    "storeSource": "project",
+                    "actions": [],
+                    "viewType": "canvas",
+                    "renderer": "facet",
+                    "navigate": "exports|\u003clatest\u003e|address|address",
+                    "attributes": "",
+                    "isDynamic": true,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
                 }
             ]
         },

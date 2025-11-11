@@ -14,7 +14,9 @@ import (
 
 // NewProject creates a new project with the given name and addresses
 func (a *App) NewProject(name string, currentAddress string) error {
-	newProject := a.Projects.NewProject(name, base.ZeroAddr, []string{"mainnet"})
+	newProject := a.Projects.Create(name, func() *project.Project {
+		return project.NewProject(name, base.ZeroAddr, []string{"mainnet"})
+	})
 	if newProject == nil {
 		return fmt.Errorf("failed to create project")
 	}
@@ -198,8 +200,8 @@ func (a *App) GetOpenProjects() []map[string]interface{} {
 	result := make([]map[string]interface{}, 0, len(projectIDs))
 
 	for _, id := range projectIDs {
-		project := a.Projects.GetProjectByID(id)
-		if project == nil {
+		project, ok := a.Projects.GetItemByID(id)
+		if !ok {
 			continue
 		}
 
@@ -226,7 +228,11 @@ func (a *App) GetOpenProjects() []map[string]interface{} {
 }
 
 func (a *App) GetActiveProject() *project.Project {
-	return a.Projects.GetActiveProject()
+	project, ok := a.Projects.GetActiveItem()
+	if !ok {
+		return nil
+	}
+	return project
 }
 
 // GetActiveProjectData returns all active project state in a single call
@@ -273,11 +279,11 @@ func (a *App) GetActiveProjectData() *types.ProjectPayload {
 
 // SwitchToProject sets the specified project as the active project
 func (a *App) SwitchToProject(id string) error {
-	if a.Projects.GetProjectByID(id) == nil {
+	if _, ok := a.Projects.GetItemByID(id); !ok {
 		return fmt.Errorf("no project with ID %s exists", id)
 	}
 
-	err := a.Projects.SetActiveProject(id)
+	err := a.Projects.SetActiveItem(id)
 	if err == nil {
 		msgs.EmitManager("project_switched")
 	}
@@ -308,8 +314,8 @@ func (a *App) RestoreProjectContext(projectID string) error {
 
 // CloseProject closes a project, prompting to save if it has unsaved changes
 func (a *App) CloseProject(id string) error {
-	project := a.Projects.GetProjectByID(id)
-	if project == nil {
+	project, ok := a.Projects.GetItemByID(id)
+	if !ok {
 		return fmt.Errorf("no project with ID %s exists", id)
 	}
 
@@ -364,9 +370,10 @@ func (a *App) GetFilename() *project.Project {
 func (a *App) uniqueProjectName(baseName string) string {
 	projectExists := func(name string) bool {
 		for _, project := range a.Projects.GetOpenIDs() {
-			projectObj := a.Projects.GetProjectByID(project)
-			if projectObj.Name == name {
-				return true
+			if projectObj, ok := a.Projects.GetItemByID(project); ok {
+				if projectObj.Name == name {
+					return true
+				}
 			}
 		}
 		return false
@@ -478,9 +485,9 @@ func (a *App) restoreLastProjects() {
 	if activeProjectPath != "" {
 		// Find the project by path and get its ID to set as active
 		for _, id := range a.Projects.GetOpenIDs() {
-			if project := a.Projects.GetProjectByID(id); project != nil {
+			if project, ok := a.Projects.GetItemByID(id); ok {
 				if project.GetPath() == activeProjectPath {
-					if err := a.Projects.SetActiveProject(id); err == nil {
+					if err := a.Projects.SetActiveItem(id); err == nil {
 						// Update the LastProjects metadata to ensure consistency
 						a.setActiveProject(activeProjectPath)
 						msgs.EmitStatus(fmt.Sprintf("Restored active project from metadata: %s", project.GetName()))
@@ -493,9 +500,9 @@ func (a *App) restoreLastProjects() {
 		// No project was marked active in metadata, make the first one active
 		firstPath := validProjects[0].Path
 		for _, id := range a.Projects.GetOpenIDs() {
-			if project := a.Projects.GetProjectByID(id); project != nil {
+			if project, ok := a.Projects.GetItemByID(id); ok {
 				if project.GetPath() == firstPath {
-					if err := a.Projects.SetActiveProject(id); err == nil {
+					if err := a.Projects.SetActiveItem(id); err == nil {
 						// Update the LastProjects array to mark this as active
 						a.setActiveProject(firstPath)
 						msgs.EmitStatus(fmt.Sprintf("No active project in metadata, set first project as active: %s", project.GetName()))

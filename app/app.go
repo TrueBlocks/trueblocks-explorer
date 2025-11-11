@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/fileserver"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
@@ -34,7 +35,7 @@ import (
 type App struct {
 	Assets      embed.FS
 	Preferences *preferences.Preferences
-	Projects    *project.Manager
+	Projects    *manager.Manager[*project.Project]
 	chainList   *utils.ChainList
 	// ADD_ROUTE
 	// QUESTION: DO WE ACTUALLY NEED THIS?
@@ -53,7 +54,7 @@ type App struct {
 
 func NewApp(assets embed.FS) (*App, *menu.Menu) {
 	app := &App{
-		Projects: project.NewManager(),
+		Projects: manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{
 			Org:  preferences.OrgPreferences{},
 			User: preferences.UserPreferences{},

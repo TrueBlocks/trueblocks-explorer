@@ -109,8 +109,9 @@ func isDupLog() func(existing []*Log, newItem *Log) bool {
 	// EXISTING_CODE
 }
 
-func (c *ContractsCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *ContractsCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -135,8 +136,8 @@ func (c *ContractsCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *ContractsCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *ContractsCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case ContractsDashboard:
 		c.dashboardFacet.Reset()
 	case ContractsExecute:
@@ -148,8 +149,8 @@ func (c *ContractsCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *ContractsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *ContractsCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case ContractsDashboard:
 		return c.dashboardFacet.NeedsUpdate()
 	case ContractsExecute:
@@ -199,7 +200,8 @@ func (c *ContractsCollection) AccumulateItem(item interface{}, summary *types.Su
 	// EXISTING_CODE
 }
 
-func (c *ContractsCollection) GetSummary() types.Summary {
+func (c *ContractsCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -244,6 +246,8 @@ func (c *ContractsCollection) ExportData(payload *types.Payload) (string, error)
 }
 
 func (c *ContractsCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

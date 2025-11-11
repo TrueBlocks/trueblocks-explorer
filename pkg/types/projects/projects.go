@@ -14,7 +14,9 @@ import (
 	"time"
 
 	// EXISTING_CODE
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
+
 	// EXISTING_CODE
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/facets"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
@@ -30,23 +32,20 @@ func init() {
 }
 
 type ProjectsCollection struct {
-	manageFacet      *facets.Facet[Project]
-	projectFacets    map[string]*facets.Facet[AddressList]
-	projectManager   *project.Manager
-	registeredFacets map[string]bool // Track dynamically registered facets
-	summary          types.Summary
-	summaryMutex     sync.RWMutex
+	manageFacet     *facets.Facet[Project]
+	projectsFacets  map[string]*facets.Facet[AddressList]
+	projectsManager *manager.Manager[*project.Project]
+	summary         types.Summary
+	summaryMutex    sync.RWMutex
 }
 
-func NewProjectsCollection(payload *types.Payload, projectManager *project.Manager) *ProjectsCollection {
+func NewProjectsCollection(payload *types.Payload, projectsManager *manager.Manager[*project.Project]) *ProjectsCollection {
 	c := &ProjectsCollection{
-		projectManager:   projectManager,
-		projectFacets:    make(map[string]*facets.Facet[AddressList]),
-		registeredFacets: make(map[string]bool),
+		projectsManager: projectsManager,
+		projectsFacets:  make(map[string]*facets.Facet[AddressList]),
 	}
 	c.ResetSummary()
 	c.initializeFacets(payload)
-	c.registerDynamicFacets()
 	return c
 }
 
@@ -60,6 +59,13 @@ func (c *ProjectsCollection) initializeFacets(payload *types.Payload) {
 		c,
 		false,
 	)
+
+	if c.projectsManager != nil {
+		openIDs := c.projectsManager.GetOpenIDs()
+		for _, id := range openIDs {
+			types.RegisterDataFacet(types.DataFacet(id))
+		}
+	}
 }
 
 func isManage(item *Project) bool {
@@ -86,8 +92,9 @@ func isDupProject() func(existing []*Project, newItem *Project) bool {
 	// EXISTING_CODE
 }
 
-func (c *ProjectsCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *ProjectsCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -98,53 +105,45 @@ func (c *ProjectsCollection) FetchByFacet(dataFacet types.DataFacet) {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
 		default:
-			// Check if this is a dynamic project facet
-			projectID := string(dataFacet)
-			if c.registeredFacets[projectID] {
-				// Ensure the project facet exists
-				c.ensureProjectFacet(projectID)
-				if projectFacet, exists := c.projectFacets[projectID]; exists {
-					if err := projectFacet.FetchFacet(); err != nil {
+			id := string(dataFacet)
+			if _, exists := c.projectsFacets[id]; exists {
+				payload := types.Payload{DataFacet: types.DataFacet(id)}
+				c.ensureProjectFacet(&payload)
+				if facet, exists := c.projectsFacets[id]; exists {
+					if err := facet.FetchFacet(); err != nil {
 						logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 					}
 				}
 			} else {
-				// Silently ignore requests for unregistered project facets
-				// This is normal when a project has been closed but there are still pending data requests
+				// Silently ignore requests for unknown facets. This is normal
+				// when a facet has been closed but there are still pending data requests
 				return
 			}
-			return
 		}
 	}()
 }
 
-func (c *ProjectsCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *ProjectsCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case ProjectsManage:
 		c.manageFacet.Reset()
 	default:
-		// Check if this is a dynamic project facet
-		projectID := string(dataFacet)
-		if c.registeredFacets[projectID] {
-			if projectFacet, exists := c.projectFacets[projectID]; exists {
-				projectFacet.Reset()
-			}
+		id := string(payload.DataFacet)
+		if facet, exists := c.projectsFacets[id]; exists {
+			facet.Reset()
 		}
 		return
 	}
 }
 
-func (c *ProjectsCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *ProjectsCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case ProjectsManage:
 		return c.manageFacet.NeedsUpdate()
 	default:
-		// Check if this is a dynamic project facet
-		projectID := string(dataFacet)
-		if c.registeredFacets[projectID] {
-			if projectFacet, exists := c.projectFacets[projectID]; exists {
-				return projectFacet.NeedsUpdate()
-			}
+		id := string(payload.DataFacet)
+		if facet, exists := c.projectsFacets[id]; exists {
+			return facet.NeedsUpdate()
 		}
 		return false
 	}
@@ -155,7 +154,8 @@ func (c *ProjectsCollection) AccumulateItem(item interface{}, summary *types.Sum
 	// EXISTING_CODE
 }
 
-func (c *ProjectsCollection) GetSummary() types.Summary {
+func (c *ProjectsCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -191,42 +191,27 @@ func (c *ProjectsCollection) ExportData(payload *types.Payload) (string, error) 
 	case ProjectsManage:
 		return c.manageFacet.ExportData(payload, string(ProjectsManage))
 	default:
+		// TODO: Export dynamic facet data
 		return "", fmt.Errorf("[ExportData] unsupported projects facet: %s", payload.DataFacet)
 	}
 }
 
 func (c *ProjectsCollection) ChangeVisibility(payload *types.Payload) error {
-	logging.LogBackend(fmt.Sprintf("ChangeVisibility called for facet: %s", payload.DataFacet))
-
-	// Static facets (like "manage") can't be closed
+	// EXISTING_CODE
 	if payload.DataFacet == ProjectsManage {
-		logging.LogBackend("Ignoring close request for manage facet")
-		return nil // Ignore attempts to close the manage tab
+		return nil
+	}
+	// EXISTING_CODE
+	id := string(payload.DataFacet)
+	if c.projectsManager == nil {
+		return fmt.Errorf("item manager not available")
 	}
 
-	// For project facets, the DataFacet should be the project ID
-	projectID := string(payload.DataFacet)
-	logging.LogBackend(fmt.Sprintf("Attempting to close project: %s", projectID))
-
-	// Close the project using the stored project manager
-	if c.projectManager == nil {
-		logging.LogError("Project manager not available", fmt.Errorf("project manager is nil"))
-		return fmt.Errorf("project manager not available")
+	if err := c.projectsManager.Close(id); err != nil {
+		return fmt.Errorf("failed to close item %s: %w", id, err)
 	}
 
-	// Close the project first, then unregister the facet
-	logging.LogBackend(fmt.Sprintf("Calling project manager Close for: %s", projectID))
-	if err := c.projectManager.Close(projectID); err != nil {
-		logging.LogError(fmt.Sprintf("Failed to close project %s", projectID), err)
-		return fmt.Errorf("failed to close project %s: %w", projectID, err)
-	}
-
-	// Unregister the project facet after closing
-	logging.LogBackend(fmt.Sprintf("Unregistering project facet: %s", projectID))
-	c.unregisterProjectFacet(projectID)
-
-	// The project manager will emit PROJECT_CLOSED events automatically
-	logging.LogBackend(fmt.Sprintf("Project close completed: %s", projectID))
+	delete(c.projectsFacets, id)
 	return nil
 }
 
@@ -243,60 +228,24 @@ func (c *ProjectsCollection) matchesProjectFilter(item *AddressList, filter stri
 	return true
 }
 
-// registerDynamicFacets registers facets for currently open projects
-func (c *ProjectsCollection) registerDynamicFacets() {
-	if c.projectManager == nil {
-		return
-	}
-
-	openProjectIDs := c.projectManager.GetOpenIDs()
-	for _, projectID := range openProjectIDs {
-		c.registerProjectFacet(projectID)
-	}
-}
-
-// registerProjectFacet registers a single project as a DataFacet
-func (c *ProjectsCollection) registerProjectFacet(projectID string) {
-	if c.registeredFacets[projectID] {
-		return // Already registered
-	}
-
-	// Register the project ID as a valid DataFacet
-	types.RegisterDataFacet(types.DataFacet(projectID))
-	c.registeredFacets[projectID] = true
-}
-
-// unregisterProjectFacet removes a project facet when project is closed
-func (c *ProjectsCollection) unregisterProjectFacet(projectID string) {
-	if !c.registeredFacets[projectID] {
-		return // Not registered
-	}
-
-	// Remove from our tracking
-	delete(c.registeredFacets, projectID)
-	delete(c.projectFacets, projectID)
-
-	// Note: We don't remove from types.RegisterDataFacet because it doesn't have an unregister method
-	// This is okay - the facet just won't be available in GetConfig() anymore
-}
-
 // OnProjectClosed should be called when a project is closed to clean up its facet
-func (c *ProjectsCollection) OnProjectClosed(projectID string) {
-	c.unregisterProjectFacet(projectID)
+func (c *ProjectsCollection) OnProjectClosed(id string) {
+	delete(c.projectsFacets, id)
 }
 
 // ensureProjectFacet creates a project facet if it doesn't exist
-func (c *ProjectsCollection) ensureProjectFacet(projectID string) {
-	if _, exists := c.projectFacets[projectID]; exists {
+func (c *ProjectsCollection) ensureProjectFacet(payload *types.Payload) {
+	id := string(payload.DataFacet)
+	if _, exists := c.projectsFacets[id]; exists {
 		return // Already exists
 	}
 
 	// Create a new facet for this project
-	c.projectFacets[projectID] = facets.NewFacet(
-		types.DataFacet(projectID),
+	c.projectsFacets[id] = facets.NewFacet(
+		types.DataFacet(id),
 		isProject,
 		isDupAddressList(),
-		c.getAddressListStore(projectID),
+		c.getAddressListStore(payload),
 		"projects",
 		c,
 		false,

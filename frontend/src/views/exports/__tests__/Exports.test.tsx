@@ -19,7 +19,7 @@ describe('Exports View Integration Tests (DataFacet refactor preparation)', () =
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support statements, balances, transfers, transactions, openapprovals, approvallogs, approvaltxs, withdrawals, assets, assetcharts, logs, traces, receipts facets', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

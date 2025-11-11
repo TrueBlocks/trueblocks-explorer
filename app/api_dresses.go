@@ -46,13 +46,13 @@ func (a *App) DressesCrud(
 
 func (a *App) GetDressesSummary(payload *types.Payload) types.Summary {
 	collection := dresses.GetDressesCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadDresses(payload *types.Payload) error {
 	collection := dresses.GetDressesCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

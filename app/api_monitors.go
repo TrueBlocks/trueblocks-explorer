@@ -51,13 +51,13 @@ func (a *App) MonitorsCrud(
 
 func (a *App) GetMonitorsSummary(payload *types.Payload) types.Summary {
 	collection := monitors.GetMonitorsCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadMonitors(payload *types.Payload) error {
 	collection := monitors.GetMonitorsCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

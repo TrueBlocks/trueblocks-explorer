@@ -340,7 +340,7 @@ func (r *Facet[T]) OnStateChanged(state types.StoreState, reason string) {
 				CurrentCount:  currentCount,
 				ExpectedTotal: currentCount,
 				State:         types.StateLoaded,
-				Summary:       r.summaryProvider.GetSummary(),
+				Summary:       r.summaryProvider.GetSummary(nil),
 				Timestamp:     time.Now().Unix(),
 				EventPhase:    "complete",
 				Operation:     "load",

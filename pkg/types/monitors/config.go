@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Monitors view
 func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "monitors",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *MonitorsCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"monitors": {
 			Name:          "Monitors",
 			Store:         "monitors",
@@ -24,27 +41,22 @@ func (c *MonitorsCollection) GetConfig() (*types.ViewConfig, error) {
 			RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "monitors")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "monitors",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
-			"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},
-			"export":   {Name: "export", Label: "Export", Icon: "Export"},
-			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
-			"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
-		},
+func (c *MonitorsCollection) buildFacetOrder() []string {
+	return []string{
+		"monitors",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *MonitorsCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
+		"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},
+		"export":   {Name: "export", Label: "Export", Icon: "Export"},
+		"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
+		"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
+	}
 }
 
 func getMonitorsFields() []types.FieldConfig {

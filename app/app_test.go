@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -25,7 +26,7 @@ func TestGetContext(t *testing.T) {
 		{
 			name: "returns nil context when not set",
 			app: &App{
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			expected: nil,
@@ -34,7 +35,7 @@ func TestGetContext(t *testing.T) {
 			name: "returns valid context when set",
 			app: &App{
 				ctx:         context.Background(),
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			expected: context.Background(),
@@ -51,7 +52,7 @@ func TestGetContext(t *testing.T) {
 
 // func TestStartup(t *testing.T) {
 // 	app := &App{
-// 		Projects:    project.NewManager(),
+// 		Projects:    manager.NewManager[*project.Project]("project"),
 // 		Preferences: &preferences.Preferences{},
 // 	}
 
@@ -74,7 +75,7 @@ func TestGetContext(t *testing.T) {
 // 		{
 // 			name: "handles nil context",
 // 			app: &App{
-// 				Projects:    project.NewManager(),
+// 				Projects:    manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{},
 // 			},
 // 		},
@@ -82,7 +83,7 @@ func TestGetContext(t *testing.T) {
 // 			name: "handles valid context",
 // 			app: &App{
 // 				ctx:         context.Background(),
-// 				Projects:    project.NewManager(),
+// 				Projects:    manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{},
 // 			},
 // 		},
@@ -113,7 +114,7 @@ func TestGetContext(t *testing.T) {
 // 		{
 // 			name: "returns false to allow window close",
 // 			app: &App{
-// 				Projects:    project.NewManager(),
+// 				Projects:    manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{},
 // 			},
 // 			expected:   false,
@@ -122,7 +123,7 @@ func TestGetContext(t *testing.T) {
 // 		{
 // 			name: "handles file server shutdown",
 // 			app: &App{
-// 				Projects:    project.NewManager(),
+// 				Projects:    manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{},
 // 			},
 // 			expected:   false,
@@ -154,7 +155,7 @@ func TestAppIsReady(t *testing.T) {
 		{
 			name: "returns false when context is nil",
 			app: &App{
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			expected: false,
@@ -163,7 +164,7 @@ func TestAppIsReady(t *testing.T) {
 			name: "returns true when context is set",
 			app: &App{
 				ctx:         context.Background(),
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			expected: true,
@@ -180,7 +181,7 @@ func TestAppIsReady(t *testing.T) {
 
 func TestIsInitialized(t *testing.T) {
 	app := &App{
-		Projects:    project.NewManager(),
+		Projects:    manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{},
 	}
 
@@ -204,7 +205,7 @@ func TestIsInitialized(t *testing.T) {
 
 func TestSetInitialized(t *testing.T) {
 	app := &App{
-		Projects:    project.NewManager(),
+		Projects:    manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{},
 	}
 
@@ -250,7 +251,7 @@ func TestSetInitialized(t *testing.T) {
 
 func TestWatchWindowBounds(t *testing.T) {
 	app := &App{
-		Projects:    project.NewManager(),
+		Projects:    manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{},
 	}
 
@@ -283,7 +284,7 @@ func TestSaveBounds(t *testing.T) {
 			name: "saves bounds when app is ready",
 			app: &App{
 				ctx:         context.Background(),
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			x: 100, y: 200, w: 800, h: 600,
@@ -291,7 +292,7 @@ func TestSaveBounds(t *testing.T) {
 		{
 			name: "handles not ready state gracefully",
 			app: &App{
-				Projects:    project.NewManager(),
+				Projects:    manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{},
 			},
 			x: 100, y: 200, w: 800, h: 600,
@@ -318,7 +319,7 @@ func TestSaveBounds(t *testing.T) {
 
 func TestGetAppId(t *testing.T) {
 	app := &App{
-		Projects:    project.NewManager(),
+		Projects:    manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{},
 	}
 
@@ -339,11 +340,11 @@ func (m MockCollection) GetPage(payload *types.Payload, first, pageSize int, sor
 	return nil, nil
 }
 
-func (m MockCollection) FetchByFacet(facet types.DataFacet) {}
+func (m MockCollection) FetchByFacet(payload *types.Payload) {}
 
-func (m MockCollection) Reset(facet types.DataFacet) {}
+func (m MockCollection) Reset(payload *types.Payload) {}
 
-func (m MockCollection) NeedsUpdate(facet types.DataFacet) bool {
+func (m MockCollection) NeedsUpdate(payload *types.Payload) bool {
 	return false
 }
 
@@ -351,7 +352,7 @@ func (m MockCollection) CancelFetch(payload *types.Payload) bool {
 	return false
 }
 
-func (m MockCollection) GetSummary() types.Summary {
+func (m MockCollection) GetSummary(payload *types.Payload) types.Summary {
 	return types.Summary{}
 }
 
@@ -377,7 +378,7 @@ func (m MockCollection) GetConfig() (*types.ViewConfig, error) {
 
 func TestRegisterCollection(t *testing.T) {
 	app := &App{
-		Projects:    project.NewManager(),
+		Projects:    manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{},
 		collections: []types.Collection{},
 	}

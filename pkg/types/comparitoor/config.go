@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Comparitoor view
 func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "comparitoor",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *ComparitoorCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"comparitoor": {
 			Name:          "Comparitoor",
 			Store:         "transaction",
@@ -60,27 +77,22 @@ func (c *ComparitoorCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "comparitoor")
-	facetOrder = append(facetOrder, "chifra")
-	facetOrder = append(facetOrder, "etherscan")
-	facetOrder = append(facetOrder, "covalent")
-	facetOrder = append(facetOrder, "alchemy")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "comparitoor",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-		},
+func (c *ComparitoorCollection) buildFacetOrder() []string {
+	return []string{
+		"comparitoor",
+		"chifra",
+		"etherscan",
+		"covalent",
+		"alchemy",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *ComparitoorCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"export": {Name: "export", Label: "Export", Icon: "Export"},
+	}
 }
 
 func getTransactionFields() []types.FieldConfig {

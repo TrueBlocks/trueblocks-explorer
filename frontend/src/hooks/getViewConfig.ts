@@ -135,21 +135,6 @@ export function areViewConfigsReady(): boolean {
   return isInitialized;
 }
 
-/**
- * Get initialization status for debugging.
- */
-export function getInitializationStatus(): {
-  isInitialized: boolean;
-  cachedViews: string[];
-  cacheSize: number;
-} {
-  return {
-    isInitialized,
-    cachedViews: Array.from(configCache.keys()),
-    cacheSize: configCache.size,
-  };
-}
-
 // One-time runtime validation of facet ordering coherence
 const validatedViews = new Set<string>();
 function validateViewConfigOnce(cfg: types.ViewConfig) {
@@ -176,10 +161,7 @@ function validateViewConfigOnce(cfg: types.ViewConfig) {
   }
 }
 
-/**
- * Refresh a specific ViewConfig (for dynamic content like Projects).
- * Forces a reload of the ViewConfig from the backend.
- */
+// refreshViewConfig - refresh a specific ViewConfig (for dynamic content like Projects).
 export async function refreshViewConfig(viewName: string): Promise<void> {
   if (!isInitialized) {
     LogError(`Cannot refresh ViewConfig before initialization: ${viewName}`);
@@ -200,8 +182,20 @@ export async function refreshViewConfig(viewName: string): Promise<void> {
     // Get the appropriate config getter
     let getter;
     switch (viewName) {
-      case 'projects':
-        getter = GetProjectsConfig;
+      case 'abis':
+        getter = GetAbisConfig;
+        break;
+      case 'chunks':
+        getter = GetChunksConfig;
+        break;
+      case 'comparitoor':
+        getter = GetComparitoorConfig;
+        break;
+      case 'contracts':
+        getter = GetContractsConfig;
+        break;
+      case 'dresses':
+        getter = GetDressesConfig;
         break;
       case 'exports':
         getter = GetExportsConfig;
@@ -209,26 +203,14 @@ export async function refreshViewConfig(viewName: string): Promise<void> {
       case 'monitors':
         getter = GetMonitorsConfig;
         break;
-      case 'abis':
-        getter = GetAbisConfig;
-        break;
       case 'names':
         getter = GetNamesConfig;
         break;
-      case 'chunks':
-        getter = GetChunksConfig;
-        break;
-      case 'contracts':
-        getter = GetContractsConfig;
+      case 'projects':
+        getter = GetProjectsConfig;
         break;
       case 'status':
         getter = GetStatusConfig;
-        break;
-      case 'dresses':
-        getter = GetDressesConfig;
-        break;
-      case 'comparitoor':
-        getter = GetComparitoorConfig;
         break;
       default:
         LogError(`Unknown view name for refresh: ${viewName}`);

@@ -9,6 +9,6 @@ type Summary struct {
 
 type SummaryAccumulator interface {
 	AccumulateItem(item interface{}, summary *Summary)
-	GetSummary() Summary
+	GetSummary(payload *Payload) Summary
 	ResetSummary()
 }

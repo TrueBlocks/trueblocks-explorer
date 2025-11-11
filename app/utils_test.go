@@ -3,6 +3,7 @@ package app
 import (
 	"testing"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
@@ -13,7 +14,7 @@ import (
 
 func TestLogFrontend(t *testing.T) {
 	app := &App{
-		Projects: project.NewManager(),
+		Projects: manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{
 			User: preferences.UserPreferences{},
 		},
@@ -49,7 +50,7 @@ func TestGetMarkdown(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					App: preferences.AppPreferences{
 						LastLanguage: "en",
@@ -82,7 +83,7 @@ func TestGetNodeStatus(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -97,7 +98,7 @@ func TestGetNodeStatus(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	app := &App{
-		Projects: project.NewManager(),
+		Projects: manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{
 			User: preferences.UserPreferences{},
 		},
@@ -110,7 +111,7 @@ func TestEncode(t *testing.T) {
 
 func TestGetChainList(t *testing.T) {
 	app := &App{
-		Projects: project.NewManager(),
+		Projects: manager.NewManager[*project.Project]("project"),
 		Preferences: &preferences.Preferences{
 			User: preferences.UserPreferences{},
 		},

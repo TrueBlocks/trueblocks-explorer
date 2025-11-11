@@ -130,21 +130,6 @@ export function areViewConfigsReady(): boolean {
   return isInitialized;
 }
 
-/**
- * Get initialization status for debugging.
- */
-export function getInitializationStatus(): {
-  isInitialized: boolean;
-  cachedViews: string[];
-  cacheSize: number;
-} {
-  return {
-    isInitialized,
-    cachedViews: Array.from(configCache.keys()),
-    cacheSize: configCache.size,
-  };
-}
-
 // One-time runtime validation of facet ordering coherence
 const validatedViews = new Set<string>();
 function validateViewConfigOnce(cfg: types.ViewConfig) {
@@ -168,5 +153,46 @@ function validateViewConfigOnce(cfg: types.ViewConfig) {
     LogError(
       '[FACET_ORDER_VALIDATION ' + cfg.viewName + '] ' + errs.join('; '),
     );
+  }
+}
+
+// refreshViewConfig - refresh a specific ViewConfig (for dynamic content like Projects).
+export async function refreshViewConfig(viewName: string): Promise<void> {
+  if (!isInitialized) {
+    LogError(`Cannot refresh ViewConfig before initialization: ${viewName}`);
+    return;
+  }
+
+  try {
+    // Create base payload
+    const basePayload: Omit<types.Payload, 'collection'> = {
+      dataFacet: types.DataFacet.ALL,
+      activeChain: 'mainnet',
+      activeAddress: '0x0000000000000000000000000000000000000000',
+      activePeriod: types.Period.BLOCKLY,
+    };
+
+    const payload = { ...basePayload, collection: viewName };
+
+    // Get the appropriate config getter
+    let getter;
+    switch (viewName) {
+      {{- range .SortedStructs }}
+        {{- if and (not (eq .Class "")) (not .DisableGo) }}
+      case '{{toLower .Class}}':
+        getter = Get{{ .Class }}Config;
+        break;
+        {{- end }}
+      {{- end }}
+      default:
+        LogError(`Unknown view name for refresh: ${viewName}`);
+        return;
+    }
+
+    // Fetch fresh config and update cache
+    const config = await getter(payload);
+    configCache.set(viewName, config);
+  } catch (error) {
+    LogError(`Failed to refresh ViewConfig for ${viewName}: ${error}`);
   }
 }

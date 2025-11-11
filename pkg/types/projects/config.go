@@ -12,7 +12,25 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Projects view
 func (c *ProjectsCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+	c.addDynamicFacets(facets, &facetOrder)
+
+	cfg := &types.ViewConfig{
+		ViewName:   "projects",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *ProjectsCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"manage": {
 			Name:          "Manage",
 			Store:         "projects",
@@ -24,43 +42,39 @@ func (c *ProjectsCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "facet",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "manage")
+func (c *ProjectsCollection) buildFacetOrder() []string {
+	return []string{
+		"manage",
+	}
+}
 
-	// Add dynamic facets based on the manager
-	if c.projectManager != nil {
-		openIDs := c.projectManager.GetOpenIDs()
-		for _, id := range openIDs {
-			project := c.projectManager.GetProjectByID(id)
-			if project != nil {
-				facets[id] = types.FacetConfig{
-					Name:          project.GetName(),
-					Store:         "addresslist",
-					DividerBefore: false,
-					Fields:        getAddresslistFields(),
-					Actions:       []string{},
-					HeaderActions: []string{},
-					RendererTypes: "",
-					Hideable:      true,
-					RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
-				}
-				facetOrder = append(facetOrder, id)
+func (c *ProjectsCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{}
+}
+
+func (c *ProjectsCollection) addDynamicFacets(facets map[string]types.FacetConfig, facetOrder *[]string) {
+	if c.projectsManager == nil {
+		return
+	}
+
+	for _, id := range c.projectsManager.GetOpenIDs() {
+		if item, exists := c.projectsManager.GetItemByID(id); exists {
+			facets[id] = types.FacetConfig{
+				Name:          item.GetName(),
+				Store:         "addresslist",
+				DividerBefore: false,
+				Fields:        getAddresslistFields(),
+				Actions:       []string{},
+				HeaderActions: []string{},
+				RendererTypes: "",
+				CanClose:      true,
+				RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 			}
+			*facetOrder = append(*facetOrder, id)
 		}
 	}
-
-	cfg := &types.ViewConfig{
-		ViewName:   "projects",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions:    map[string]types.ActionConfig{},
-	}
-
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
 }
 
 func getAddresslistFields() []types.FieldConfig {

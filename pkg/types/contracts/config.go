@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Contracts view
 func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "contracts",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *ContractsCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"dashboard": {
 			Name:          "Dashboard",
 			Store:         "contracts",
@@ -43,25 +60,20 @@ func (c *ContractsCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "dashboard")
-	facetOrder = append(facetOrder, "execute")
-	facetOrder = append(facetOrder, "events")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "contracts",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"export": {Name: "export", Label: "Export", Icon: "Export"},
-		},
+func (c *ContractsCollection) buildFacetOrder() []string {
+	return []string{
+		"dashboard",
+		"execute",
+		"events",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *ContractsCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"export": {Name: "export", Label: "Export", Icon: "Export"},
+	}
 }
 
 func getContractsFields() []types.FieldConfig {

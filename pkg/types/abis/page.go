@@ -60,7 +60,7 @@ func (c *AbisCollection) GetPage(
 	_ = preprocessPage(c, page, payload, first, pageSize, sortSpec)
 
 	if c.shouldSummarize(payload) {
-		return c.getSummaryPage(dataFacet, payload.ActivePeriod, first, pageSize, sortSpec, filter)
+		return c.getSummaryPage(payload, first, pageSize, sortSpec, filter)
 	}
 
 	switch dataFacet {
@@ -142,8 +142,8 @@ func (c *AbisCollection) GetPage(
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
 	default:
-		return nil, types.NewValidationError("abis", dataFacet, "GetPage",
-			fmt.Errorf("[GetPage] unsupported dataFacet: %v", dataFacet))
+		return nil, types.NewValidationError("abis", payload.DataFacet, "GetPage",
+			fmt.Errorf("[GetPage] unsupported dataFacet: %v", payload.DataFacet))
 	}
 
 	return page, nil
@@ -161,20 +161,21 @@ func (c *AbisCollection) shouldSummarize(payload *types.Payload) bool {
 
 // getSummaryPage returns paginated summary data for a given period
 func (c *AbisCollection) getSummaryPage(
-	dataFacet types.DataFacet,
-	period types.Period,
+	payload *types.Payload,
 	first, pageSize int,
 	sortSpec sdk.SortSpec,
 	filter string,
 ) (types.Page, error) {
 	// TODO: Use these
+	dataFacet := payload.DataFacet
+	period := payload.ActivePeriod
 	_ = first
 	_ = pageSize
 	_ = sortSpec
 	_ = filter
 	// CRITICAL: Ensure underlying raw data is loaded before generating summaries
 	// For summary periods, we need the blockly (raw) data to be loaded first
-	c.FetchByFacet(dataFacet)
+	c.FetchByFacet(payload)
 	if err := c.generateSummariesForPeriod(dataFacet, period); err != nil {
 		return nil, types.NewStoreError("exports", dataFacet, "getSummaryPage", err)
 	}

@@ -30,8 +30,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['projects']['ProjectsCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetSummary() {
-  return window['go']['projects']['ProjectsCollection']['GetSummary']();
+export function GetSummary(arg1) {
+  return window['go']['projects']['ProjectsCollection']['GetSummary'](arg1);
 }
 
 export function HandleRowAction(arg1) {

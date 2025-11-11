@@ -19,7 +19,7 @@ describe('Dresses View Integration Tests (DataFacet refactor preparation)', () =
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support generator, series, databases, events, gallery facets', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

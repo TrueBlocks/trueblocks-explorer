@@ -3,6 +3,7 @@ package app
 import (
 	"testing"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
@@ -23,7 +24,7 @@ func TestViewConfigIntegrity(t *testing.T) {
 	// Each subtest will create its own App instance to mirror original isolation.
 	buildApp := func() *App {
 		return &App{
-			Projects:    project.NewManager(),
+			Projects:    manager.NewManager[*project.Project]("project"),
 			Preferences: &preferences.Preferences{},
 			apiKeys:     map[string]string{},
 		}

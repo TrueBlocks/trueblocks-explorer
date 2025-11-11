@@ -85,6 +85,10 @@ func (c *NamesCollection) getNamesStore(payload *types.Payload, facet types.Data
 
 func (c *NamesCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case NamesAll:
 		name = "names-names"

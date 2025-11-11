@@ -154,8 +154,9 @@ func isDupTransaction() func(existing []*Transaction, newItem *Transaction) bool
 	// EXISTING_CODE
 }
 
-func (c *ComparitoorCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *ComparitoorCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -188,8 +189,8 @@ func (c *ComparitoorCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *ComparitoorCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *ComparitoorCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case ComparitoorComparitoor:
 		c.comparitoorFacet.Reset()
 	case ComparitoorChifra:
@@ -205,8 +206,8 @@ func (c *ComparitoorCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *ComparitoorCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *ComparitoorCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case ComparitoorComparitoor:
 		return c.comparitoorFacet.NeedsUpdate()
 	case ComparitoorChifra:
@@ -236,7 +237,8 @@ func (c *ComparitoorCollection) AccumulateItem(item interface{}, summary *types.
 	// EXISTING_CODE
 }
 
-func (c *ComparitoorCollection) GetSummary() types.Summary {
+func (c *ComparitoorCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -285,6 +287,8 @@ func (c *ComparitoorCollection) ExportData(payload *types.Payload) (string, erro
 }
 
 func (c *ComparitoorCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

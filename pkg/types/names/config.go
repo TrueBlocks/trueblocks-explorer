@@ -12,7 +12,24 @@ import "github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
 // GetConfig returns the ViewConfig for the Names view
 func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
-	facets := map[string]types.FacetConfig{
+	facets := c.buildStaticFacets()
+	facetOrder := c.buildFacetOrder()
+
+	cfg := &types.ViewConfig{
+		ViewName:   "names",
+		Facets:     facets,
+		FacetOrder: facetOrder,
+		Actions:    c.buildActions(),
+	}
+
+	types.DeriveFacets(cfg)
+	types.SortFields(cfg)
+	types.SetMenuOrder(cfg)
+	return cfg, nil
+}
+
+func (c *NamesCollection) buildStaticFacets() map[string]types.FacetConfig {
+	return map[string]types.FacetConfig{
 		"all": {
 			Name:          "All",
 			Store:         "names",
@@ -59,35 +76,30 @@ func (c *NamesCollection) GetConfig() (*types.ViewConfig, error) {
 			RendererTypes: "",
 		},
 	}
+}
 
-	facetOrder := []string{}
-	facetOrder = append(facetOrder, "all")
-	facetOrder = append(facetOrder, "custom")
-	facetOrder = append(facetOrder, "prefund")
-	facetOrder = append(facetOrder, "regular")
-	facetOrder = append(facetOrder, "baddress")
-
-	cfg := &types.ViewConfig{
-		ViewName:   "names",
-		Facets:     facets,
-		FacetOrder: facetOrder,
-		Actions: map[string]types.ActionConfig{
-			"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
-			"create":   {Name: "create", Label: "Create", Icon: "Create"},
-			"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},
-			"export":   {Name: "export", Label: "Export", Icon: "Export"},
-			"pin":      {Name: "pin", Label: "Pin", Icon: "Pin"},
-			"publish":  {Name: "publish", Label: "Publish", Icon: "Publish"},
-			"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
-			"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
-			"update":   {Name: "update", Label: "Update", Icon: "Update"},
-		},
+func (c *NamesCollection) buildFacetOrder() []string {
+	return []string{
+		"all",
+		"custom",
+		"prefund",
+		"regular",
+		"baddress",
 	}
+}
 
-	types.DeriveFacets(cfg)
-	types.SortFields(cfg)
-	types.SetMenuOrder(cfg)
-	return cfg, nil
+func (c *NamesCollection) buildActions() map[string]types.ActionConfig {
+	return map[string]types.ActionConfig{
+		"autoname": {Name: "autoname", Label: "Autoname", Icon: "Autoname"},
+		"create":   {Name: "create", Label: "Create", Icon: "Create"},
+		"delete":   {Name: "delete", Label: "Delete", Icon: "Delete"},
+		"export":   {Name: "export", Label: "Export", Icon: "Export"},
+		"pin":      {Name: "pin", Label: "Pin", Icon: "Pin"},
+		"publish":  {Name: "publish", Label: "Publish", Icon: "Publish"},
+		"remove":   {Name: "remove", Label: "Remove", Icon: "Remove"},
+		"undelete": {Name: "undelete", Label: "Undelete", Icon: "Undelete"},
+		"update":   {Name: "update", Label: "Update", Icon: "Update"},
+	}
 }
 
 func getNamesFields() []types.FieldConfig {

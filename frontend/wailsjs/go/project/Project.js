@@ -125,3 +125,7 @@ export function SetViewAndFacet(arg1, arg2) {
 export function SetViewStates(arg1, arg2) {
   return window['go']['project']['Project']['SetViewStates'](arg1, arg2);
 }
+
+export function String() {
+  return window['go']['project']['Project']['String']();
+}

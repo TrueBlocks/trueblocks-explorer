@@ -33,13 +33,13 @@ func (a *App) GetChunksPage(
 
 func (a *App) GetChunksSummary(payload *types.Payload) types.Summary {
 	collection := chunks.GetChunksCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadChunks(payload *types.Payload) error {
 	collection := chunks.GetChunksCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

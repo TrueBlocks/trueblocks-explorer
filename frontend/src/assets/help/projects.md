@@ -13,8 +13,16 @@ Welcome to the **Projects** view! This section provides information about managi
 ## Facets
 
 - Manage Facet uses the Projects store.
+- Projects Facet uses the AddressList store.
 
 ## Stores
+
+- **AddressList Store (4 members)**
+
+  - address: unique identifier for the project
+  - name: human-readable name of the project
+  - appearances: file system path to the project
+  - lastUpdated: whether this project is currently active
 
 - **Projects Store (4 members)**
 

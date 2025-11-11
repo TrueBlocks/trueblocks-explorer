@@ -52,19 +52,19 @@ func (a *App) Get{{$class}}Page(
 
 func (a *App) Get{{$class}}Summary(payload *types.Payload) types.Summary {
 	collection := {{$lower}}.Get{{$class}}Collection(payload{{if .HasDynamicFacets}}, a.Projects{{end}})
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) Reload{{$class}}(payload *types.Payload) error {
 	collection := {{$lower}}.Get{{$class}}Collection(payload{{if .HasDynamicFacets}}, a.Projects{{end}})
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 
 // Get{{$class}}Config returns the view configuration for {{$lower}}
 func (a *App) Get{{$class}}Config(payload types.Payload) (*types.ViewConfig, error) {
-	collection := {{$lower}}.Get{{$class}}Collection(&payload)
+	collection := {{$lower}}.Get{{$class}}Collection(&payload{{if .HasDynamicFacets}}, a.Projects{{end}})
 	return collection.GetConfig()
 }
 

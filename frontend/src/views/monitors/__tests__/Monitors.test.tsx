@@ -19,7 +19,7 @@ describe('Monitors View Integration Tests (DataFacet refactor preparation)', () 
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support monitors facet', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

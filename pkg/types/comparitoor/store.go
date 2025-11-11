@@ -97,6 +97,10 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 
 func (c *ComparitoorCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case ComparitoorComparitoor:
 		name = "comparitoor-transaction"

@@ -33,13 +33,13 @@ func (a *App) GetExportsPage(
 
 func (a *App) GetExportsSummary(payload *types.Payload) types.Summary {
 	collection := exports.GetExportsCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadExports(payload *types.Payload) error {
 	collection := exports.GetExportsCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

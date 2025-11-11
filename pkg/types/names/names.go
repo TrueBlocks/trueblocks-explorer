@@ -142,8 +142,9 @@ func isDupName() func(existing []*Name, newItem *Name) bool {
 	// EXISTING_CODE
 }
 
-func (c *NamesCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *NamesCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -176,8 +177,8 @@ func (c *NamesCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *NamesCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *NamesCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case NamesAll:
 		c.allFacet.Reset()
 	case NamesCustom:
@@ -193,8 +194,8 @@ func (c *NamesCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *NamesCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *NamesCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case NamesAll:
 		return c.allFacet.NeedsUpdate()
 	case NamesCustom:
@@ -237,7 +238,8 @@ func (c *NamesCollection) AccumulateItem(item interface{}, summary *types.Summar
 	// EXISTING_CODE
 }
 
-func (c *NamesCollection) GetSummary() types.Summary {
+func (c *NamesCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -286,6 +288,8 @@ func (c *NamesCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 func (c *NamesCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

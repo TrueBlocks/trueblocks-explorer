@@ -34,8 +34,8 @@ export function GetPage(arg1, arg2, arg3, arg4, arg5) {
   return window['go']['names']['NamesCollection']['GetPage'](arg1, arg2, arg3, arg4, arg5);
 }
 
-export function GetSummary() {
-  return window['go']['names']['NamesCollection']['GetSummary']();
+export function GetSummary(arg1) {
+  return window['go']['names']['NamesCollection']['GetSummary'](arg1);
 }
 
 export function NeedsUpdate(arg1) {

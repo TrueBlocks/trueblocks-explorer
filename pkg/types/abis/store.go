@@ -139,6 +139,10 @@ func (c *AbisCollection) getFunctionsStore(payload *types.Payload, facet types.D
 
 func (c *AbisCollection) getStoreName(payload *types.Payload, facet types.DataFacet) string {
 	name := ""
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 	switch facet {
 	case AbisDownloaded:
 		name = "abis-abis"

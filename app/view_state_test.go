@@ -3,6 +3,7 @@ package app
 import (
 	"testing"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
@@ -27,7 +28,7 @@ func TestGetLastView(t *testing.T) {
 		{
 			name: "has active project with last view",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 				_ = proj.SetLastView("/monitors")
 			},
@@ -38,7 +39,7 @@ func TestGetLastView(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -69,7 +70,7 @@ func TestSetLastView(t *testing.T) {
 		{
 			name: "has active project",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 			},
 			view:      "/names",
@@ -80,7 +81,7 @@ func TestSetLastView(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -120,7 +121,7 @@ func TestLastFacet(t *testing.T) {
 		{
 			name: "has active project",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 			},
 			view:      "names",
@@ -132,7 +133,7 @@ func TestLastFacet(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -178,7 +179,7 @@ func TestFilterState(t *testing.T) {
 		{
 			name: "has active project",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 			},
 			expectErr: false,
@@ -188,7 +189,7 @@ func TestFilterState(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -226,7 +227,7 @@ func TestGetWizardReturn(t *testing.T) {
 		{
 			name: "no wizard in path",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 				_ = proj.SetLastView("/monitors")
 			},
@@ -235,7 +236,7 @@ func TestGetWizardReturn(t *testing.T) {
 		{
 			name: "wizard in path",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx" // Set path so project can save
 				_ = proj.SetLastView("monitors/wizard")
 			},
@@ -253,7 +254,7 @@ func TestGetWizardReturn(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -286,7 +287,7 @@ func TestSetViewAndFacet(t *testing.T) {
 		{
 			name: "has active project - atomic operation",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test-atomic.tbx" // Set path so project can save
 			},
 			view:      "exports",
@@ -298,7 +299,7 @@ func TestSetViewAndFacet(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},

@@ -121,8 +121,9 @@ func isDupStatus() func(existing []*Status, newItem *Status) bool {
 	// EXISTING_CODE
 }
 
-func (c *StatusCollection) FetchByFacet(dataFacet types.DataFacet) {
-	if !c.NeedsUpdate(dataFacet) {
+func (c *StatusCollection) FetchByFacet(payload *types.Payload) {
+	dataFacet := payload.DataFacet
+	if !c.NeedsUpdate(payload) {
 		return
 	}
 
@@ -147,8 +148,8 @@ func (c *StatusCollection) FetchByFacet(dataFacet types.DataFacet) {
 	}()
 }
 
-func (c *StatusCollection) Reset(dataFacet types.DataFacet) {
-	switch dataFacet {
+func (c *StatusCollection) Reset(payload *types.Payload) {
+	switch payload.DataFacet {
 	case StatusStatus:
 		c.statusFacet.Reset()
 	case StatusCaches:
@@ -160,8 +161,8 @@ func (c *StatusCollection) Reset(dataFacet types.DataFacet) {
 	}
 }
 
-func (c *StatusCollection) NeedsUpdate(dataFacet types.DataFacet) bool {
-	switch dataFacet {
+func (c *StatusCollection) NeedsUpdate(payload *types.Payload) bool {
+	switch payload.DataFacet {
 	case StatusStatus:
 		return c.statusFacet.NeedsUpdate()
 	case StatusCaches:
@@ -209,7 +210,8 @@ func (c *StatusCollection) AccumulateItem(item interface{}, summary *types.Summa
 	// EXISTING_CODE
 }
 
-func (c *StatusCollection) GetSummary() types.Summary {
+func (c *StatusCollection) GetSummary(payload *types.Payload) types.Summary {
+	_ = payload // delint
 	c.summaryMutex.RLock()
 	defer c.summaryMutex.RUnlock()
 
@@ -254,6 +256,8 @@ func (c *StatusCollection) ExportData(payload *types.Payload) (string, error) {
 }
 
 func (c *StatusCollection) ChangeVisibility(payload *types.Payload) error {
+	// EXISTING_CODE
+	// EXISTING_CODE
 	return nil
 }
 

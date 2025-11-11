@@ -19,7 +19,7 @@ describe('Names View Integration Tests (DataFacet refactor preparation)', () => 
   });
 
   describe('facet management (placeholder)', () => {
-    it('should support all, custom, prefund, regular, baddress facets', () => {
+    it('should support all facets.', () => {
       // Placeholder for future facet switching tests
       expect(true).toBe(true);
     });

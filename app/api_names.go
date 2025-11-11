@@ -43,13 +43,13 @@ func (a *App) NamesCrud(
 
 func (a *App) GetNamesSummary(payload *types.Payload) types.Summary {
 	collection := names.GetNamesCollection(payload)
-	return collection.GetSummary()
+	return collection.GetSummary(payload)
 }
 
 func (a *App) ReloadNames(payload *types.Payload) error {
 	collection := names.GetNamesCollection(payload)
-	collection.Reset(payload.DataFacet)
-	collection.FetchByFacet(payload.DataFacet)
+	collection.Reset(payload)
+	collection.FetchByFacet(payload)
 	return nil
 }
 

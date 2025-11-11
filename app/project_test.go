@@ -3,6 +3,7 @@ package app
 import (
 	"testing"
 
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
@@ -53,7 +54,7 @@ func TestNewProject(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -106,7 +107,7 @@ func TestNewProject(t *testing.T) {
 // 	for _, tt := range tests {
 // 		t.Run(tt.name, func(t *testing.T) {
 // 			app := &App{
-// 				Projects: project.NewManager(),
+// 				Projects: manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{
 // 					User: preferences.UserPreferences{},
 // 				},
@@ -146,7 +147,7 @@ func TestNewProject(t *testing.T) {
 // 			name: "save project without path triggers save dialog",
 // 			setup: func(app *App) {
 // 				// Create a project but don't set path
-// 				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+// 				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 // 				proj.Path = "" // Ensure no path is set
 // 			},
 // 			expectErr: true, // Will fail in test environment due to UI dialog
@@ -156,7 +157,7 @@ func TestNewProject(t *testing.T) {
 // 	for _, tt := range tests {
 // 		t.Run(tt.name, func(t *testing.T) {
 // 			app := &App{
-// 				Projects: project.NewManager(),
+// 				Projects: manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{
 // 					App:  preferences.AppPreferences{},
 // 					User: preferences.UserPreferences{},
@@ -203,7 +204,7 @@ func TestGetActiveProjectPath(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					App: *preferences.NewAppPreferences(),
 				},
@@ -239,7 +240,7 @@ func TestHasActiveProject(t *testing.T) {
 		{
 			name: "has active project",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx"
 			},
 			expected: true,
@@ -249,7 +250,7 @@ func TestHasActiveProject(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -278,7 +279,7 @@ func TestValidateActiveProject(t *testing.T) {
 		{
 			name: "project with no addresses",
 			setup: func(app *App) {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx"
 			},
 			expected: false,
@@ -287,7 +288,7 @@ func TestValidateActiveProject(t *testing.T) {
 			name: "project with valid address",
 			setup: func(app *App) {
 				validAddr := base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8")
-				proj := app.Projects.NewProject("test", validAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", validAddr, []string{"mainnet"}) })
 				proj.Path = "/tmp/test.tbx"
 			},
 			expected: true,
@@ -297,7 +298,7 @@ func TestValidateActiveProject(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -327,7 +328,7 @@ func TestValidateActiveProject(t *testing.T) {
 // 		{
 // 			name: "clear project with unsaved changes",
 // 			setup: func(app *App) {
-// 				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+// 				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 // 				proj.Path = "/tmp/test.tbx"
 // 			},
 // 			expectErr: false, // Will succeed
@@ -337,7 +338,7 @@ func TestValidateActiveProject(t *testing.T) {
 // 	for _, tt := range tests {
 // 		t.Run(tt.name, func(t *testing.T) {
 // 			app := &App{
-// 				Projects: project.NewManager(),
+// 				Projects: manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{
 // 					User: preferences.UserPreferences{},
 // 				},
@@ -374,8 +375,10 @@ func TestGetOpenProjects(t *testing.T) {
 		{
 			name: "multiple open projects",
 			setup: func(app *App) {
-				app.Projects.NewProject("project1", base.ZeroAddr, []string{"mainnet"})
-				app.Projects.NewProject("project2", base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"), []string{"mainnet"})
+				app.Projects.Create("project1", func() *project.Project { return project.NewProject("project1", base.ZeroAddr, []string{"mainnet"}) })
+				app.Projects.Create("project2", func() *project.Project {
+					return project.NewProject("project2", base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"), []string{"mainnet"})
+				})
 			},
 			expectedLength: 2,
 		},
@@ -384,7 +387,7 @@ func TestGetOpenProjects(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -425,7 +428,7 @@ func TestSwitchToProject(t *testing.T) {
 		{
 			name: "switch to existing project",
 			setup: func(app *App) string {
-				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 				return proj.Name
 			},
 			expectErr: false,
@@ -435,7 +438,7 @@ func TestSwitchToProject(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -479,7 +482,7 @@ func TestSwitchToProject(t *testing.T) {
 // 		{
 // 			name: "close existing project",
 // 			setup: func(app *App) string {
-// 				proj := app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+// 				proj := app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 // 				return proj.Name
 // 			},
 // 			expectErr: false,
@@ -489,7 +492,7 @@ func TestSwitchToProject(t *testing.T) {
 // 	for _, tt := range tests {
 // 		t.Run(tt.name, func(t *testing.T) {
 // 			app := &App{
-// 				Projects: project.NewManager(),
+// 				Projects: manager.NewManager[*project.Project]("project"),
 // 				Preferences: &preferences.Preferences{
 // 					User: preferences.UserPreferences{},
 // 				},
@@ -530,7 +533,7 @@ func TestGetProjectAddress(t *testing.T) {
 			name: "project with address",
 			setup: func(app *App) {
 				addr := base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8")
-				app.Projects.NewProject("test", addr, []string{"mainnet"})
+				app.Projects.Create("test", func() *project.Project { return project.NewProject("test", addr, []string{"mainnet"}) })
 			},
 			expected: base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
 		},
@@ -539,7 +542,7 @@ func TestGetProjectAddress(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -569,7 +572,7 @@ func TestSetProjectAddress(t *testing.T) {
 			name:    "set address with active project",
 			address: base.HexToAddress("0x742d35Cc6634C0532925a3b8D25D19Dcf9d0c7c8"),
 			setup: func(app *App) {
-				app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 			},
 		},
 	}
@@ -577,7 +580,7 @@ func TestSetProjectAddress(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -611,7 +614,7 @@ func TestGetFilename(t *testing.T) {
 		{
 			name: "has active project",
 			setup: func(app *App) {
-				app.Projects.NewProject("test", base.ZeroAddr, []string{"mainnet"})
+				app.Projects.Create("test", func() *project.Project { return project.NewProject("test", base.ZeroAddr, []string{"mainnet"}) })
 			},
 			expected: false, // should not be nil
 		},
@@ -620,7 +623,7 @@ func TestGetFilename(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -657,7 +660,7 @@ func TestUniqueProjectName(t *testing.T) {
 			baseName: "test-project",
 			setup: func(app *App) {
 				// Create a project with the same name
-				proj := app.Projects.NewProject("test-project", base.ZeroAddr, []string{"mainnet"})
+				proj := app.Projects.Create("test-project", func() *project.Project { return project.NewProject("test-project", base.ZeroAddr, []string{"mainnet"}) })
 				proj.Name = "test-project"
 			},
 			expected: "test-project 1",
@@ -667,7 +670,7 @@ func TestUniqueProjectName(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},
@@ -741,7 +744,7 @@ func TestMultipleAddressInput(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			app := &App{
-				Projects: project.NewManager(),
+				Projects: manager.NewManager[*project.Project]("project"),
 				Preferences: &preferences.Preferences{
 					User: preferences.UserPreferences{},
 				},

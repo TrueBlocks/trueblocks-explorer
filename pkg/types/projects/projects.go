@@ -106,18 +106,12 @@ func (c *ProjectsCollection) FetchByFacet(payload *types.Payload) {
 			}
 		default:
 			id := string(dataFacet)
-			if _, exists := c.projectsFacets[id]; exists {
-				payload := types.Payload{DataFacet: types.DataFacet(id)}
-				c.ensureProjectFacet(&payload)
-				if facet, exists := c.projectsFacets[id]; exists {
-					if err := facet.FetchFacet(); err != nil {
-						logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
-					}
+			payload := types.Payload{DataFacet: types.DataFacet(id)}
+			c.ensureProjectFacet(&payload)
+			if facet, exists := c.projectsFacets[id]; exists {
+				if err := facet.FetchFacet(); err != nil {
+					logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 				}
-			} else {
-				// Silently ignore requests for unknown facets. This is normal
-				// when a facet has been closed but there are still pending data requests
-				return
 			}
 		}
 	}()
@@ -128,6 +122,7 @@ func (c *ProjectsCollection) Reset(payload *types.Payload) {
 	case ProjectsManage:
 		c.manageFacet.Reset()
 	default:
+		c.ensureProjectFacet(payload)
 		id := string(payload.DataFacet)
 		if facet, exists := c.projectsFacets[id]; exists {
 			facet.Reset()
@@ -141,6 +136,7 @@ func (c *ProjectsCollection) NeedsUpdate(payload *types.Payload) bool {
 	case ProjectsManage:
 		return c.manageFacet.NeedsUpdate()
 	default:
+		c.ensureProjectFacet(payload)
 		id := string(payload.DataFacet)
 		if facet, exists := c.projectsFacets[id]; exists {
 			return facet.NeedsUpdate()
@@ -237,10 +233,18 @@ func (c *ProjectsCollection) OnProjectClosed(id string) {
 func (c *ProjectsCollection) ensureProjectFacet(payload *types.Payload) {
 	id := string(payload.DataFacet)
 	if _, exists := c.projectsFacets[id]; exists {
-		return // Already exists
+		return
 	}
 
-	// Create a new facet for this project
+	if c.projectsManager == nil {
+		return
+	}
+
+	if _, exists := c.projectsManager.GetItemByID(id); !exists {
+		return
+	}
+
+	types.RegisterDataFacet(types.DataFacet(id))
 	c.projectsFacets[id] = facets.NewFacet(
 		types.DataFacet(id),
 		isProject,

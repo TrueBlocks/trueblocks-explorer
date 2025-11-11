@@ -111,34 +111,29 @@ func (c *{{.Class}}Collection) GetPage(
 	{{- end}}
 	default:
 		{{- if .HasDynamicFacets}}
-		itemID := string(payload.DataFacet)
-		if _, exists := c.projectsFacets[itemID]; exists {
-			c.ensureProjectFacet(payload)
-			if projectFacet, exists := c.projectsFacets[itemID]; exists {
-				var filterFunc func(*AddressList) bool
-				if filter != "" {
-					filterFunc = func(item *AddressList) bool {
-						return c.matchesProjectFilter(item, filter)
-					}
+		id := string(payload.DataFacet)
+		c.ensureProjectFacet(payload)
+		if projectFacet, exists := c.projectsFacets[id]; exists {
+			var filterFunc func(*AddressList) bool
+			if filter != "" {
+				filterFunc = func(item *AddressList) bool {
+					return c.matchesProjectFilter(item, filter)
 				}
-				sortFunc := func(items []AddressList, sort sdk.SortSpec) error {
-					return nil // project.SortAddressList(items, sort)
-				}
-				if result, err := projectFacet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-					return nil, types.NewStoreError("{{$lower}}", payload.DataFacet, "GetPage", err)
-				} else {
-					page.AddressList = result.Items
-					page.TotalItems = result.TotalItems
-					page.State = result.State
-				}
-				page.ExpectedTotal = projectFacet.ExpectedCount()
-			} else {
-				return nil, types.NewValidationError("{{$lower}}", payload.DataFacet, "GetPage",
-					fmt.Errorf("[GetPage] facet not found: %v", payload.DataFacet))
 			}
+			sortFunc := func(items []AddressList, sort sdk.SortSpec) error {
+				return nil // project.SortAddressList(items, sort)
+			}
+			if result, err := projectFacet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+				return nil, types.NewStoreError("{{$lower}}", payload.DataFacet, "GetPage", err)
+			} else {
+				page.AddressList = result.Items
+				page.TotalItems = result.TotalItems
+				page.State = result.State
+			}
+			page.ExpectedTotal = projectFacet.ExpectedCount()
 		} else {
 			return nil, types.NewValidationError("{{$lower}}", payload.DataFacet, "GetPage",
-				fmt.Errorf("[GetPage] unsupported dataFacet: %v", payload.DataFacet))
+				fmt.Errorf("[GetPage] facet not found: %v", payload.DataFacet))
 		}
 		{{- else}}
 		return nil, types.NewValidationError("{{$lower}}", payload.DataFacet, "GetPage",

@@ -128,18 +128,12 @@ func (c *{{$class}}Collection) FetchByFacet(payload *types.Payload) {
 		default:
 			{{- if $hasDyn}}
 			id := string(dataFacet)
-			if _, exists := c.projectsFacets[id]; exists {
-				payload := types.Payload{DataFacet: types.DataFacet(id)}
-				c.ensureProjectFacet(&payload)
-				if facet, exists := c.{{$lower}}Facets[id]; exists {
-					if err := facet.FetchFacet(); err != nil {
-						logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
-					}
+			payload := types.Payload{DataFacet: types.DataFacet(id)}
+			c.ensureProjectFacet(&payload)
+			if facet, exists := c.{{$lower}}Facets[id]; exists {
+				if err := facet.FetchFacet(); err != nil {
+					logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 				}
-			} else {
-				// Silently ignore requests for unknown facets. This is normal
-				// when a facet has been closed but there are still pending data requests
-				return
 			}
 			{{- else}}
 			logging.LogError("LoadData: unexpected dataFacet: %v", fmt.Errorf("invalid dataFacet: %s", dataFacet), nil)
@@ -159,6 +153,7 @@ func (c *{{$class}}Collection) Reset(payload *types.Payload) {
 	{{- end}}
 	default:
 		{{- if $hasDyn}}
+		c.ensureProjectFacet(payload)
 		id := string(payload.DataFacet)
 		if facet, exists := c.{{$lower}}Facets[id]; exists {
 			facet.Reset()
@@ -178,6 +173,7 @@ func (c *{{$class}}Collection) NeedsUpdate(payload *types.Payload) bool {
 	{{- end}}
 	default:
 		{{- if $hasDyn}}
+		c.ensureProjectFacet(payload)
 		id := string(payload.DataFacet)
 		if facet, exists := c.{{$lower}}Facets[id]; exists {
 			return facet.NeedsUpdate()

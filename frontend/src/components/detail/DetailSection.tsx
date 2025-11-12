@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Grid, Text } from '@mantine/core';
+import { Grid } from '@mantine/core';
+import { StyledText } from 'src/components/StyledText';
 
 export interface DetailSectionProps {
   title: string;
@@ -56,9 +57,9 @@ export const DetailSection = ({
         {...headerProps}
       >
         {collapsible && (
-          <Text component="span" size="xs">
+          <StyledText component="span" size="xs">
             {isCollapsed ? '▶' : '▼'}
-          </Text>
+          </StyledText>
         )}{' '}
         {title}
       </div>

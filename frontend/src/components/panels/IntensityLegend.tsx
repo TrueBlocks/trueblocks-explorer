@@ -1,4 +1,5 @@
-import { Box, Text, useMantineTheme } from '@mantine/core';
+import { Box, useMantineTheme } from '@mantine/core';
+import { StyledText } from 'src/components/StyledText';
 
 import { MetricConfig } from './MetricSelector';
 
@@ -17,9 +18,9 @@ export const IntensityLegend = ({
 
   return (
     <Box mt="md">
-      <Text size="sm" fw={500} mb="xs">
+      <StyledText size="sm" fw={500} mb="xs">
         Intensity Legend
-      </Text>
+      </StyledText>
       <Box
         style={{
           width: '100%',
@@ -37,8 +38,8 @@ export const IntensityLegend = ({
           color: theme.colors.gray[6],
         }}
       >
-        <Text size="xs">{metricConfig.formatValue(minValue)}</Text>
-        <Text size="xs">{metricConfig.formatValue(maxValue)}</Text>
+        <StyledText size="xs">{metricConfig.formatValue(minValue)}</StyledText>
+        <StyledText size="xs">{metricConfig.formatValue(maxValue)}</StyledText>
       </Box>
     </Box>
   );

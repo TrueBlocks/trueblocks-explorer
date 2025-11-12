@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { useAppHotkeys } from '../hooks/useAppHotkeys';
 import { render, setupFocusedHookMocks, triggerHotkey } from './mocks';

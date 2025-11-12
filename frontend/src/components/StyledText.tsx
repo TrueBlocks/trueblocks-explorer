@@ -1,14 +1,27 @@
+import * as React from 'react';
 import { ReactNode } from 'react';
 
 import { Text, TextProps } from '@mantine/core';
 
 export interface StyledTextProps extends Omit<TextProps, 'c'> {
-  variant: 'primary' | 'secondary' | 'dimmed' | 'success' | 'error' | 'warning';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'dimmed'
+    | 'success'
+    | 'error'
+    | 'warning';
+  fw?: TextProps['fw'];
+  size?: TextProps['size'];
+  component?: 'span' | 'div' | 'label' | 'p' | 'strong' | 'em';
   children?: ReactNode;
 }
 
 export const StyledText = ({
   variant = 'primary',
+  fw = 400,
+  size = 'md',
+  component = 'div',
   ...props
 }: StyledTextProps) => {
   const getColor = () => {
@@ -30,5 +43,7 @@ export const StyledText = ({
     }
   };
 
-  return <Text {...props} c={getColor()} />;
+  return (
+    <Text {...props} size={size} fw={fw} c={getColor()} component={component} />
+  );
 };

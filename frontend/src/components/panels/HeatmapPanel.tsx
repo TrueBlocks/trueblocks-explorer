@@ -5,6 +5,7 @@ import {
   IntensityLegend,
   MetricSelector,
   StatsBox,
+  StyledText,
 } from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import {
@@ -214,9 +215,9 @@ export const HeatmapPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <Text c="dimmed" mb="md">
+        <StyledText variant="dimmed" mb="md">
           Loading...
-        </Text>
+        </StyledText>
       </Box>
     );
   }
@@ -250,9 +251,9 @@ export const HeatmapPanel = ({
       )}
 
       <Box>
-        <Text size="sm" fw={500} mb="sm">
+        <StyledText size="sm" fw={500} mb="sm">
           Heat Map
-        </Text>
+        </StyledText>
 
         <Box
           style={{
@@ -287,21 +288,21 @@ export const HeatmapPanel = ({
                 label={
                   <Box>
                     {config.timeGroupBy ? (
-                      <Text size="xs">
+                      <StyledText size="xs">
                         Period: {formatGroupKey(dataPoint.bucketIndex)}
-                      </Text>
+                      </StyledText>
                     ) : (
-                      <Text size="xs">
+                      <StyledText size="xs">
                         Blocks: {formatNumericValue(dataPoint.startBlock)} -{' '}
                         {formatNumericValue(dataPoint.endBlock)}
-                      </Text>
+                      </StyledText>
                     )}
-                    <Text size="xs">
+                    <StyledText size="xs">
                       {getMetricConfig(selectedMetric)?.label}:{' '}
                       {getMetricConfig(selectedMetric)?.formatValue(
                         dataPoint.total,
                       )}
-                    </Text>
+                    </StyledText>
                   </Box>
                 }
               >
@@ -319,13 +320,13 @@ export const HeatmapPanel = ({
         </Box>
 
         <Box mt="md">
-          <Text size="xs" c="dimmed">
+          <StyledText size="xs" variant="dimmed">
             {formatNumericValue(statsData.count)} buckets,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
             total,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.average)}{' '}
             avg per {formatNumericValue(buckets.gridInfo.size)}-block range
-          </Text>
+          </StyledText>
         </Box>
 
         <IntensityLegend

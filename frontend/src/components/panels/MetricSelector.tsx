@@ -1,5 +1,5 @@
-import { StyledButton } from '@components';
-import { Group, Stack, Text } from '@mantine/core';
+import { StyledButton, StyledText } from '@components';
+import { Group, Stack } from '@mantine/core';
 import { types } from '@models';
 
 export interface MetricConfig {
@@ -22,7 +22,7 @@ export const MetricSelector = ({
   onMetricChange,
 }: MetricSelectorProps) => (
   <Stack gap="sm">
-    <Text fw={600}>{metricConfig.label}</Text>
+    <StyledText fw={600}>{metricConfig.label}</StyledText>
     <Group gap="xs">
       {metrics.map((metric) => (
         <StyledButton

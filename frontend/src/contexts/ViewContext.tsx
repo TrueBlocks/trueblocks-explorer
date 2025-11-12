@@ -13,11 +13,11 @@ import {
   SetProjectViewState,
 } from '@app';
 import { project, sdk, types } from '@models';
-import { LogError, createEmptySortSpec } from '@utils';
+import { EMPTY_SORT_SPEC, LogError } from '@utils';
 
 import { viewStateKeyToString } from '.';
 
-const EMPTY_SORT = createEmptySortSpec();
+const EMPTY_SORT = EMPTY_SORT_SPEC;
 
 // Pagination interfaces
 export interface PaginationState {

@@ -1,5 +1,6 @@
 import { BucketStats } from '@hooks';
-import { Box, Text } from '@mantine/core';
+import { Box } from '@mantine/core';
+import { StyledText } from 'src/components/StyledText';
 
 export interface StatsBoxProps {
   statsData: BucketStats;
@@ -18,26 +19,26 @@ export const StatsBox = ({ statsData, formatValue }: StatsBoxProps) => (
       alignItems: 'center',
     }}
   >
-    <Text size="sm" fw={600}>
+    <StyledText size="sm" fw={600}>
       Total:
-    </Text>
-    <Text size="sm">{formatValue(statsData.total)}</Text>
-    <Text size="sm" fw={600}>
+    </StyledText>
+    <StyledText size="sm">{formatValue(statsData.total)}</StyledText>
+    <StyledText size="sm" fw={600}>
       Avg:
-    </Text>
-    <Text size="sm">{formatValue(statsData.average)}</Text>
-    <Text size="sm" fw={600}>
+    </StyledText>
+    <StyledText size="sm">{formatValue(statsData.average)}</StyledText>
+    <StyledText size="sm" fw={600}>
       Buckets:
-    </Text>
-    <Text size="sm">{statsData.count}</Text>
-    <Text size="sm" fw={600}>
+    </StyledText>
+    <StyledText size="sm">{statsData.count}</StyledText>
+    <StyledText size="sm" fw={600}>
       Min:
-    </Text>
-    <Text size="sm">{formatValue(statsData.min)}</Text>
-    <Text size="sm" fw={600}>
+    </StyledText>
+    <StyledText size="sm">{formatValue(statsData.min)}</StyledText>
+    <StyledText size="sm" fw={600}>
       Max:
-    </Text>
-    <Text size="sm">{formatValue(statsData.max)}</Text>
+    </StyledText>
+    <StyledText size="sm">{formatValue(statsData.max)}</StyledText>
     <Box></Box>
     <Box></Box>
   </Box>

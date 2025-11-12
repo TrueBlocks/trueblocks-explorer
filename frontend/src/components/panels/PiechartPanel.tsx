@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { BucketsConfig, MetricSelector, StatsBox } from '@components';
+import {
+  BucketsConfig,
+  MetricSelector,
+  StatsBox,
+  StyledText,
+} from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import { PieChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
@@ -179,9 +184,9 @@ export const PiechartPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <Text c="dimmed" mb="md">
+        <StyledText variant="dimmed" mb="md">
           Loading...
-        </Text>
+        </StyledText>
       </Box>
     );
   }
@@ -221,11 +226,11 @@ export const PiechartPanel = ({
         />
       )}
 
-      <Text size="sm" fw={500} mb="sm">
+      <StyledText size="sm" fw={500} mb="sm">
         {config.timeGroupBy
           ? `${currentMetric.label} - ${config.timeGroupBy.charAt(0).toUpperCase() + config.timeGroupBy.slice(1)} View`
           : 'Pie Chart'}
-      </Text>
+      </StyledText>
 
       <PieChart
         h={400}
@@ -240,11 +245,11 @@ export const PiechartPanel = ({
         size={200}
       />
 
-      <Text size="sm" c="dimmed" ta="center">
+      <StyledText size="sm" variant="dimmed" ta="center">
         Showing {currentMetric.label.toLowerCase()} distribution across{' '}
         {statsData?.count || 0} buckets
         {statsData && ` (avg: ${currentMetric.formatValue(statsData.average)})`}
-      </Text>
+      </StyledText>
     </Stack>
   );
 };

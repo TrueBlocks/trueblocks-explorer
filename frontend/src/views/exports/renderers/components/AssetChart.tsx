@@ -1,5 +1,6 @@
+import { StyledText } from '@components';
 import { LineChart } from '@mantine/charts';
-import { Paper, Stack, Text } from '@mantine/core';
+import { Paper, Stack } from '@mantine/core';
 import { types } from '@models';
 
 import { AssetHeader, type MetricOption } from './AssetHeader';
@@ -123,9 +124,9 @@ export const AssetChart = ({
           <div style={{ marginLeft: '8px' }}>
             <AssetHeader assetKey={assetKey} assetNames={assetNames} />
           </div>
-          <Text size="sm" c="dimmed" ta="center">
+          <StyledText size="sm" variant="dimmed" ta="center">
             No {selectedMetric} data
-          </Text>
+          </StyledText>
         </Stack>
       </Paper>
     );
@@ -161,9 +162,9 @@ export const AssetChart = ({
           <div style={{ marginLeft: '8px' }}>
             <AssetHeader assetKey={assetKey} assetNames={assetNames} />
           </div>
-          <Text size="sm" c="dimmed" ta="center">
+          <StyledText size="sm" variant="dimmed" ta="center">
             No chart data
-          </Text>
+          </StyledText>
         </Stack>
       </Paper>
     );

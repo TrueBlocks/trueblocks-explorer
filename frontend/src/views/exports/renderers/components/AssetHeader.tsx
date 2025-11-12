@@ -1,13 +1,6 @@
+import { StyledText } from '@components';
 import { useActiveProject } from '@hooks';
-import {
-  Badge,
-  Button,
-  Group,
-  Select,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Badge, Button, Group, Select, Stack, Title } from '@mantine/core';
 import { types } from '@models';
 
 export type MetricOption = 'frequency' | 'volume' | 'endBal';
@@ -117,19 +110,15 @@ export const AssetHeader = ({
       <Stack gap="xs">
         {/* Main row with address and controls */}
         <Group justify="space-between" align="center" wrap="nowrap">
-          {/* Address */}
-          <Text fw={500}>
-            Current Address:{' '}
-            <Text component="span" fw="bold">
-              {formatAddress(activeAddress)}
-            </Text>
-          </Text>
+          <StyledText variant="primary" fw="bold">
+            Current Address: {formatAddress(activeAddress)}
+          </StyledText>
 
           {/* Metrics and Sort Controls */}
           <Group gap="sm" align="center" wrap="nowrap">
-            <Text size="sm" c="dimmed">
+            <StyledText size="sm" variant="dimmed">
               Metrics:
-            </Text>
+            </StyledText>
             {selectedMetric && onMetricChange && (
               <Select
                 size="sm"

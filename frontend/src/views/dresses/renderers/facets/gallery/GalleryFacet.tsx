@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { Center, Container, Text, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 
@@ -9,7 +9,7 @@ import { GalleryControls, GalleryGrouping } from '../../components';
 import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView';
 import { getItemKey, useGalleryStore } from '../../store';
 
-export const GalleryFacet = ({ params }: { params: CustomRendererParams }) => {
+export const GalleryFacet = ({ params }: { params: RendererParams }) => {
   const { data } = params;
   const pageData = useMemo(
     () =>

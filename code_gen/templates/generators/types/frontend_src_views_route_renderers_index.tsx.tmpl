@@ -1,0 +1,44 @@
+/*
+output: frontend/src/views/[[route]]/renderers/index.tsx
+scope: type
+*/
+
+{{- if or .HasCustomPanel (or .HasCustomFacet .HasDynamicFacets) -}}
+{{- $needsRendererParams := or .HasCustomFacet .HasDynamicFacets }}
+{{- if $needsRendererParams }}
+import { RendererParams } from '@components';
+{{- end }}
+import { types } from '@models';
+
+{{- if .HasCustomPanel }}
+import * as panels from './panels';
+{{- end }}
+{{- if or .HasCustomFacet .HasDynamicFacets }}
+import * as facets from './facets';
+{{- end }}
+
+export const renderers = {
+  panels: {
+    {{- range .Facets }}
+    {{- if and (eq .ViewType "table") (eq .Panel "custom") }}
+    [types.DataFacet.{{toUpper .Name}}]: panels.{{printf "%sPanel" .Name}},
+    {{- end }}
+    {{- end }}
+  },
+  facets: {
+    {{- range .Facets }}
+    {{- if eq .ViewType "custom" }}
+    {{- if .IsDynamic }}
+    dynamic: (params: RendererParams) => {
+      return <facets.{{printf "%sFacet" (firstUpper $.Name)}} params={params} />;
+    },
+    {{- else }}
+    [types.DataFacet.{{toUpper .Name}}]: (params: RendererParams) => {
+      return <facets.{{printf "%sFacet" .Name}} params={params} />;
+    },
+    {{- end }}
+    {{- end }}
+    {{- end }}
+  },
+};
+{{- end }}

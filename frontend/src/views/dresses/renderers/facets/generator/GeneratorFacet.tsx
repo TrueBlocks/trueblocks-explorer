@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
 import {
-  CustomRendererParams,
+  RendererParams,
   StyledButton,
   StyledSelect,
   StyledText,
@@ -17,11 +17,7 @@ import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView
 import { useSpeakPrompt } from '../../hooks/useSpeakPrompt';
 import { getItemKey, useGalleryStore } from '../../store';
 
-export const GeneratorFacet = ({
-  params,
-}: {
-  params: CustomRendererParams;
-}) => {
+export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
   const { data } = params;
   const pageData = useMemo(
     () =>

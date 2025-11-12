@@ -1,1 +1,0 @@
-export { ApprovalsPanel } from './ApprovalsPanel';

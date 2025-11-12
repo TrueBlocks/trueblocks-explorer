@@ -1,18 +1,16 @@
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { types } from '@models';
 
-import { ManageFacet, ProjectsFacet } from './facets';
-
-export * from './facets';
+import * as facets from './facets';
 
 export const renderers = {
   panels: {},
   facets: {
-    [types.DataFacet.MANAGE]: (params: CustomRendererParams) => {
-      return <ManageFacet params={params} />;
+    [types.DataFacet.MANAGE]: (params: RendererParams) => {
+      return <facets.ManageFacet params={params} />;
     },
-    default: (params: CustomRendererParams) => {
-      return <ProjectsFacet params={params} />;
+    dynamic: (params: RendererParams) => {
+      return <facets.ProjectsFacet params={params} />;
     },
   },
 };

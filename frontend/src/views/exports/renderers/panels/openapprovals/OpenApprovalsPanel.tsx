@@ -2,7 +2,7 @@ import { DetailPanelContainer } from '@components';
 import { Code, ScrollArea } from '@mantine/core';
 import { types } from '@models';
 
-export const ApprovalsPanel = (rowData: Record<string, unknown> | null) => {
+export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   if (!rowData) return null;
   const approval = rowData as unknown as types.Transaction;
   return (

@@ -14,7 +14,7 @@ scope: type
 {{- range .Facets }}
 {{- if eq .Panel "custom" }}
 {{- $lower := toLower .Name }}
-export { render{{.Name}}DetailPanel } from './{{$lower}}';
+export { {{.Name}}Panel } from './{{$lower}}{{- if eq $lower "index" }}data{{end}}';
 {{- end }}
 {{- end }}
 {{- end }}

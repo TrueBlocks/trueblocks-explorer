@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 
-import { CustomRendererParams, StyledText } from '@components';
+import { RendererParams, StyledText } from '@components';
 import {
   Box,
   Group,
@@ -24,11 +24,7 @@ export type AppearanceItem = {
   unique?: boolean;
 };
 
-export const ComparitoorFacet = ({
-  params,
-}: {
-  params: CustomRendererParams;
-}) => {
+export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
   const { data } = params;
   const pageData = data;
   const address = '0x503017d7baf7fbc0fff7492b751025c6a78179b'; // Default address for now

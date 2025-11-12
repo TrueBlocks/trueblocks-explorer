@@ -1,14 +1,12 @@
 import { types } from '@models';
 
-import { BloomsPanel, IndexPanel, StatsPanel } from './panels';
-
-export * from './panels';
+import * as panels from './panels';
 
 export const renderers = {
   panels: {
-    [types.DataFacet.BLOOMS]: BloomsPanel,
-    [types.DataFacet.INDEX]: IndexPanel,
-    [types.DataFacet.STATS]: StatsPanel,
+    [types.DataFacet.STATS]: panels.StatsPanel,
+    [types.DataFacet.INDEX]: panels.IndexPanel,
+    [types.DataFacet.BLOOMS]: panels.BloomsPanel,
   },
   facets: {},
 };

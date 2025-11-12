@@ -5,5 +5,5 @@
  * This file was auto generated. Do not edit.
  */
 export { StatementsPanel } from './statements';
-export { ApprovalsPanel } from './approvals';
+export { OpenApprovalsPanel } from './openapprovals';
 export { AssetsPanel } from './assets';

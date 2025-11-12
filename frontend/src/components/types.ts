@@ -6,13 +6,13 @@ export type PanelRenderer = (
   rowData: Record<string, unknown> | null,
 ) => React.ReactNode;
 
-export type CustomRendererParams = {
+export type RendererParams = {
   data: Record<string, unknown>[];
   columns: unknown[];
   facet: types.DataFacet;
 };
 
-export type FacetRenderer = (params: CustomRendererParams) => React.ReactNode;
+export type FacetRenderer = (params: RendererParams) => React.ReactNode;
 export type RendererMap = {
   panels: Partial<Record<types.DataFacet, PanelRenderer>>;
   facets: Partial<Record<types.DataFacet, FacetRenderer>>;

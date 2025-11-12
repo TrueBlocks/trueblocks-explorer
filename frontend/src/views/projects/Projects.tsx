@@ -252,10 +252,10 @@ export const Projects = () => {
       renderers.facets,
       facet,
     )
-      ? (renderers.facets as Record<string, typeof renderers.facets.default>)[
+      ? (renderers.facets as Record<string, typeof renderers.facets.dynamic>)[
           facet
         ]
-      : renderers.facets.default;
+      : renderers.facets.dynamic;
     if (renderer) {
       return renderer({
         data: currentData as unknown as Record<string, unknown>[],

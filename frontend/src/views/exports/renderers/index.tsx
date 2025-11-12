@@ -1,21 +1,18 @@
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { types } from '@models';
 
-import { AssetChartsFacet } from './facets';
-import { ApprovalsPanel, AssetsPanel, StatementsPanel } from './panels';
-
-export * from './panels';
-export * from './facets';
+import * as facets from './facets';
+import * as panels from './panels';
 
 export const renderers = {
   panels: {
-    [types.DataFacet.OPENAPPROVALS]: ApprovalsPanel,
-    [types.DataFacet.STATEMENTS]: StatementsPanel,
-    [types.DataFacet.ASSETS]: AssetsPanel,
+    [types.DataFacet.STATEMENTS]: panels.StatementsPanel,
+    [types.DataFacet.OPENAPPROVALS]: panels.OpenApprovalsPanel,
+    [types.DataFacet.ASSETS]: panels.AssetsPanel,
   },
   facets: {
-    [types.DataFacet.ASSETCHARTS]: (params: CustomRendererParams) => {
-      return <AssetChartsFacet _params={params} />;
+    [types.DataFacet.ASSETCHARTS]: (params: RendererParams) => {
+      return <facets.AssetChartsFacet params={params} />;
     },
   },
 };

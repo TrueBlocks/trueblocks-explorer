@@ -1,10 +1,10 @@
-import { CustomRendererParams, StyledText } from '@components';
+import { RendererParams, StyledText } from '@components';
 import { Alert, Container, Stack, Title } from '@mantine/core';
 import { types } from '@models';
 
 import { ContractExecute } from '../../components/execute/ContractExecute';
 
-export const ExecuteFacet = ({ params }: { params: CustomRendererParams }) => {
+export const ExecuteFacet = ({ params }: { params: RendererParams }) => {
   const { data } = params;
   const pageData = data[0] || {};
   const contractState = pageData as unknown as types.Contract | undefined;

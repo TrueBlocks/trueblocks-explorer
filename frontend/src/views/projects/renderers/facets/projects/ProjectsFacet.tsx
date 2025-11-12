@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 
 import {
   BaseTab,
-  CustomRendererParams,
+  RendererParams,
   createDetailPanel,
   useTableContext,
 } from '@components';
@@ -14,7 +14,7 @@ import {
 } from '@hooks';
 import { project, projects, types } from '@models';
 
-export const ProjectsFacet = ({ params }: { params: CustomRendererParams }) => {
+export const ProjectsFacet = ({ params }: { params: RendererParams }) => {
   const { data, facet } = params;
   const pageData = {
     addresslist: data || [],

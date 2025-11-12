@@ -4,6 +4,6 @@
 /*
  * This file was auto generated. Do not edit.
  */
-export { BloomsPanel } from './blooms';
-export { IndexPanel } from './indexdata';
 export { StatsPanel } from './stats';
+export { IndexPanel } from './indexdata';
+export { BloomsPanel } from './blooms';

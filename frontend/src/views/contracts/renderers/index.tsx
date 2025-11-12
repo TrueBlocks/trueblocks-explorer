@@ -1,18 +1,16 @@
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { types } from '@models';
 
-import { DashboardFacet, ExecuteFacet } from './facets';
-
-export * from './facets';
+import * as facets from './facets';
 
 export const renderers = {
   panels: {},
   facets: {
-    [types.DataFacet.DASHBOARD]: (params: CustomRendererParams) => {
-      return <DashboardFacet params={params} />;
+    [types.DataFacet.DASHBOARD]: (params: RendererParams) => {
+      return <facets.DashboardFacet params={params} />;
     },
-    [types.DataFacet.EXECUTE]: (params: CustomRendererParams) => {
-      return <ExecuteFacet params={params} />;
+    [types.DataFacet.EXECUTE]: (params: RendererParams) => {
+      return <facets.ExecuteFacet params={params} />;
     },
   },
 };

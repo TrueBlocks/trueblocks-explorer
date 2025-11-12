@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { GetExportsBuckets, GetExportsMetric, SetExportsMetric } from '@app';
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { useEvent, usePayload } from '@hooks';
 import { SimpleGrid, Stack, Text } from '@mantine/core';
 import { msgs, types } from '@models';
@@ -9,12 +9,11 @@ import { LogError, useErrorHandler } from '@utils';
 
 import { AssetChart, AssetHeader, type MetricOption } from '../../components';
 
-export const AssetChartsFacet = ({
-  _params,
-}: {
-  _params: CustomRendererParams;
-}) => {
-  // const { data: _data, columns: _columns, facet: _facet } = params;
+export const AssetChartsFacet = ({ params }: { params: RendererParams }) => {
+  const { columns } = params;
+  if (columns.length == 100) {
+    LogError('columns length equals 100. weird.'); // delinting only
+  }
   const [bucketsData, setBucketsData] = useState<types.Buckets | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(() => {
     const saved = localStorage.getItem('assetCharts-sortDirection');

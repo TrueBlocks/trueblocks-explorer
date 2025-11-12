@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { CustomRendererParams, ProjectCard } from '@components';
+import { ProjectCard, RendererParams } from '@components';
 import { useActiveProject } from '@hooks';
 import { project, projects, types } from '@models';
 import { Log, useEmitters } from '@utils';
 
-export const ManageFacet = ({ params }: { params: CustomRendererParams }) => {
+export const ManageFacet = ({ params }: { params: RendererParams }) => {
   const { data } = params;
   const _pageData = {
     projects: data || [],

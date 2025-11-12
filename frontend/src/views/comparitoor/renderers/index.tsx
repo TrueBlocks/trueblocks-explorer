@@ -1,13 +1,13 @@
-import { CustomRendererParams } from '@components';
+import { RendererParams } from '@components';
 import { types } from '@models';
 
-import { ComparitoorFacet } from './facets';
+import * as facets from './facets';
 
 export const renderers = {
   panels: {},
   facets: {
-    [types.DataFacet.COMPARITOOR]: (params: CustomRendererParams) => {
-      return <ComparitoorFacet params={params} />;
+    [types.DataFacet.COMPARITOOR]: (params: RendererParams) => {
+      return <facets.ComparitoorFacet params={params} />;
     },
   },
 };

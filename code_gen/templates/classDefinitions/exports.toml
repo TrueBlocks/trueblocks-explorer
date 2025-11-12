@@ -11,7 +11,8 @@ disable_go = false
 name = "Statements"
 store = "Statements"
 actions = ["export"]
-renderer = "panel"
+viewType = "table"
+panel = "custom"
 needsCalcs = true
 mapKey = "item.Asset.Hex()"
 
@@ -19,37 +20,44 @@ mapKey = "item.Asset.Hex()"
 name = "Balances"
 store = "Balances"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Transfers"
 store = "Transfers"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Transactions"
 store = "Transactions"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "OpenApprovals"
 store = "OpenApprovals"
 actions = ["export"]
-renderer = "panel"
+viewType = "table"
+panel = "custom"
 
 [[facets]]
 name = "ApprovalLogs"
 store = "ApprovalLogs"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "ApprovalTxs"
 store = "ApprovalTxs"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Withdrawals"
 store = "Withdrawals"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Assets"
@@ -58,15 +66,15 @@ actions = ["export"]
 mapKey = "item.Asset.Hex()"
 useMapKey = true
 needsCalcs = true
-renderer = "panel"
+viewType = "table"
+panel = "custom"
 panelChart = true
 
 [[facets]]
 name = "AssetCharts"
 store = "Statements"
 actions = ["export"]
-renderer = "facet"
-viewType = "canvas"
+viewType = "custom"
 facetChart = true
 needsCalcs = true
 mapKey = "item.Asset.Hex()"
@@ -76,14 +84,17 @@ name = "Logs"
 store = "Logs"
 actions = ["export"]
 needsCalcs = true
+viewType = "table"
 
 [[facets]]
 name = "Traces"
 store = "Traces"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Receipts"
 store = "Receipts"
 actions = ["export"]
+viewType = "table"
 

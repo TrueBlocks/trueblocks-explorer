@@ -1,24 +1,22 @@
 [settings]
-    class = "Projects"
-    doc_group = "001-Route"
-    doc_descr = "project management and home dashboard for the TrueBlocks Explorer"
-    doc_route = "001-projects"
-    attributes = ""
-    produced_by = "projects"
-    disable_go = false
+class = "Projects"
+doc_group = "001-Route"
+doc_descr = "project management and home dashboard for the TrueBlocks Explorer"
+doc_route = "001-projects"
+attributes = ""
+produced_by = "projects"
+disable_go = false
 
 [[facets]]
-    name = "Manage"
-    store = "project.Projects"
-    actions = []
-    viewType = "canvas"
-    renderer = "facet"
+name = "Manage"
+store = "project.Projects"
+actions = []
+viewType = "custom"
 
 [[facets]]
-    name = "Projects"
-    store = "project.AddressList"
-    actions = []
-    viewType = "canvas"
-    renderer = "facet"
-    isDynamic = true
-    navigate = "exports|<latest>|address|address"
+name = "Projects"
+store = "project.AddressList"
+actions = []
+viewType = "custom"
+isDynamic = true
+navigate = "exports|<latest>|address|address"

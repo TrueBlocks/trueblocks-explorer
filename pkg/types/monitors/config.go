@@ -33,11 +33,11 @@ func (c *MonitorsCollection) buildStaticFacets() map[string]types.FacetConfig {
 		"monitors": {
 			Name:          "Monitors",
 			Store:         "monitors",
+			ViewType:      "table",
 			DividerBefore: false,
 			Fields:        getMonitorsFields(),
 			Actions:       []string{"autoname", "delete", "remove"},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
 			RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 		},
 	}

@@ -39,7 +39,7 @@ export function useFacetForm<T extends Record<string, unknown>>({
 } {
   const facet = getCurrentDataFacet();
   const facetConfig = viewConfig?.facets?.[facet];
-  const isCanvas = facetConfig?.viewType === 'canvas';
+  const isCanvas = facetConfig?.viewType !== 'table';
 
   // Use the new facet renderer for canvas views
   const {

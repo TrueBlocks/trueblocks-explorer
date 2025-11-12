@@ -34,13 +34,12 @@ const TestComponent = ({
 };
 
 describe('useFacetRenderer', () => {
-  const mockViewConfig = {
+  const mockCustomViewConfig = {
     viewName: 'test',
     facets: {
       [types.DataFacet.MANIFEST]: {
         name: 'Manifest',
-        viewType: 'canvas',
-        rendererTypes: 'facet', // Expects custom renderer
+        viewType: 'custom',
       },
     },
   } as any;
@@ -51,11 +50,11 @@ describe('useFacetRenderer', () => {
     { name: 'value', header: 'Value', label: 'Value' },
   ];
 
-  it('should show warning when custom renderer expected but missing for canvas view', () => {
+  it('should return null when custom renderer expected but missing (no warning in new system)', () => {
     render(
       <MantineProvider>
         <TestComponent
-          viewConfig={mockViewConfig}
+          viewConfig={mockCustomViewConfig}
           getCurrentDataFacet={() => types.DataFacet.MANIFEST}
           currentData={mockData}
           currentColumns={mockColumns}
@@ -64,11 +63,10 @@ describe('useFacetRenderer', () => {
       </MantineProvider>,
     );
 
-    // Should render a warning message
-    expect(screen.getByText('Rendering Component Missing')).toBeInTheDocument();
-    expect(screen.getByText('manifest')).toBeInTheDocument();
-    expect(screen.getByText('renderer = "facet"')).toBeInTheDocument();
-    expect(screen.getByText('renderer = ""')).toBeInTheDocument();
+    // Should render nothing (will fall back to default FormView in the parent component)
+    expect(
+      screen.queryByText('Rendering Component Missing'),
+    ).not.toBeInTheDocument();
   });
 
   it('should use custom renderer when provided', () => {
@@ -82,7 +80,7 @@ describe('useFacetRenderer', () => {
 
     render(
       <TestComponent
-        viewConfig={mockViewConfig}
+        viewConfig={mockCustomViewConfig}
         getCurrentDataFacet={() => types.DataFacet.MANIFEST}
         currentData={mockData}
         currentColumns={mockColumns}
@@ -121,21 +119,20 @@ describe('useFacetRenderer', () => {
     expect(screen.queryByDisplayValue('Test Item')).not.toBeInTheDocument();
   });
 
-  it('should return null when renderer is empty (escape hatch)', () => {
-    const escapeHatchConfig = {
+  it('should return null for form views (escape hatch)', () => {
+    const formConfig = {
       viewName: 'test',
       facets: {
         [types.DataFacet.MANIFEST]: {
           name: 'Manifest',
-          viewType: 'canvas',
-          rendererTypes: '', // Empty renderer = escape hatch
+          viewType: 'form',
         },
       },
     } as any;
 
     render(
       <TestComponent
-        viewConfig={escapeHatchConfig}
+        viewConfig={formConfig}
         getCurrentDataFacet={() => types.DataFacet.MANIFEST}
         currentData={mockData}
         currentColumns={mockColumns}

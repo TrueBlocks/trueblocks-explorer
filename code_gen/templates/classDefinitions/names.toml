@@ -13,12 +13,14 @@ name = "All"
 store = "Names"
 actions = ["autoname", "create", "export", "update"]
 mapKey = "item.Address.Hex()"
+viewType = "table"
 
 [[facets]]
 name = "Custom"
 store = "Names"
 actions = ["autoname", "create", "delete", "export", "pin", "publish", "remove", "undelete", "update"]
 mapKey = "item.Address.Hex()"
+viewType = "table"
 
 [[facets]]
 name = "Prefund"
@@ -26,15 +28,18 @@ store = "Names"
 actions = ["create", "export", "update"]
 attributes = "dividerBefore"
 mapKey = "item.Address.Hex()"
+viewType = "table"
 
 [[facets]]
 name = "Regular"
 store = "Names"
 actions = ["autoname", "create", "export", "update"]
 mapKey = "item.Address.Hex()"
+viewType = "table"
 
 [[facets]]
 name = "Baddress"
 store = "Names"
 actions = ["create", "export"]
 mapKey = "item.Address.Hex()"
+viewType = "table"

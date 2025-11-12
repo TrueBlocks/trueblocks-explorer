@@ -48,14 +48,14 @@ func (c *{{$class}}Collection) buildStaticFacets() map[string]types.FacetConfig 
 		"{{toLower .Name}}": {
 			Name:          "{{toHeader .DisplayName}}",
 			Store:         "{{toLower .StoreName}}",
-			{{- if .ViewType }}
 			ViewType:      "{{.ViewType}}",
-			{{- end }}
+			{{- if .Panel }}
+			Panel: "{{.Panel}}",
+			{{- end}}
 			DividerBefore: {{contains .Attributes "dividerBefore"}},
 			Fields:        get{{toProper .StoreName}}Fields(),
 			Actions:       []string{ {{$rowActionsBe}} },
 			HeaderActions: []string{ {{$headerActionsBe}} },
-			RendererTypes: "{{.Renderer}}",
 			{{- if .PanelChart }}
 			PanelChartConfig: get{{.Name}}PanelConfig(),
 			{{- end}}
@@ -105,11 +105,11 @@ func (c *{{$class}}Collection) addDynamicFacets(facets map[string]types.FacetCon
 			facets[id] = types.FacetConfig{
 				Name:          item.GetName(),
 				Store:         "{{toLower .StoreName}}",
+				ViewType:      "table",
 				DividerBefore: false,
 				Fields:        get{{firstUpper (toLower .StoreName)}}Fields(),
 				Actions:       []string{},
 				HeaderActions: []string{},
-				RendererTypes: "",
 				CanClose:      true,
 				{{- if .NavigateTo }}
 				RowAction: {{.NavigateTo}},

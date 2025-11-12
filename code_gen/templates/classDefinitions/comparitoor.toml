@@ -11,29 +11,28 @@ disable_go = false
 name = "Comparitoor"
 store = "Transaction"
 actions = ["export"]
-viewType = "canvas"
-renderer = "facet"
+viewType = "custom"
 
 [[facets]]
 name = "Chifra"
 store = "Transaction"
 actions = ["export"]
-renderer = ""
+viewType = "table"
 
 [[facets]]
 name = "Etherscan"
 store = "Transaction"
 actions = ["export"]
-renderer = ""
+viewType = "table"
 
 [[facets]]
 name = "Covalent"
 store = "Transaction"
 actions = ["export"]
-renderer = ""
+viewType = "table"
 
 [[facets]]
 name = "Alchemy"
 store = "Transaction"
 actions = ["export"]
-renderer = ""
+viewType = "table"

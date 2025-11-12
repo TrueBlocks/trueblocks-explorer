@@ -11,15 +11,13 @@ disable_go = false
 name = "Generator"
 store = "dalle.DalleDress"
 actions = [""]
-viewType = "canvas"
-renderer = "facet"
+viewType = "custom"
 navigate = "dresses|gallery|address|original"
 
 [[facets]]
 name = "Series"
 store = "dalle.Series"
-renderer = "facet"
-viewType = "canvas"
+viewType = "custom"
 actions = ["update","create","delete","remove","export"]
 mapKey = "item.Suffix"
 
@@ -27,17 +25,18 @@ mapKey = "item.Suffix"
 name = "Databases"
 store = "dalle.Databases"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Events"
 store = "Logs"
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Gallery"
 store = "dalle.DalleDress"
 actions = ["export"]
-viewType = "canvas"
-renderer = "facet"
+viewType = "custom"
 navigate = "dresses|generator|address|original"
 mapKey = "item.Original + \":\" + item.AnnotatedPath"

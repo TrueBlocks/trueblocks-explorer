@@ -48,7 +48,6 @@ const mockFacetConfig = new types.FacetConfig({
   detailPanels: [],
   actions: [],
   headerActions: [],
-  rendererTypes: '',
 });
 
 const mockViewConfig = new types.ViewConfig({

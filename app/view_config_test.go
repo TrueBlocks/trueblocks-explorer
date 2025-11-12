@@ -108,14 +108,14 @@ func TestViewConfigIntegrity(t *testing.T) {
 					if facet.HeaderActions == nil {
 						t.Errorf("%s: facet %q has nil HeaderActions (must be empty slice when none)", tc.name, facetKey)
 					}
-					reqExport := facet.ViewType != "canvas"
+					reqExport := facet.ViewType == "table"
 					if ex, ok := exceptions[cfg.ViewName]; ok {
 						if ex[facetKey] {
 							reqExport = false
 						}
 					}
 					if reqExport && !containsString(facet.HeaderActions, "export") {
-						t.Errorf("%s: non-canvas facet %q missing required 'export' in HeaderActions", tc.name, facetKey)
+						t.Errorf("%s: table facet %q missing required 'export' in HeaderActions", tc.name, facetKey)
 					}
 				}
 			})

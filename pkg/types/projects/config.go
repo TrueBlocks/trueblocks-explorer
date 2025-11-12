@@ -34,12 +34,11 @@ func (c *ProjectsCollection) buildStaticFacets() map[string]types.FacetConfig {
 		"manage": {
 			Name:          "Manage",
 			Store:         "projects",
-			ViewType:      "canvas",
+			ViewType:      "custom",
 			DividerBefore: false,
 			Fields:        getProjectsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{},
-			RendererTypes: "facet",
 		},
 	}
 }
@@ -64,11 +63,11 @@ func (c *ProjectsCollection) addDynamicFacets(facets map[string]types.FacetConfi
 			facets[id] = types.FacetConfig{
 				Name:          item.GetName(),
 				Store:         "addresslist",
+				ViewType:      "table",
 				DividerBefore: false,
 				Fields:        getAddresslistFields(),
 				Actions:       []string{},
 				HeaderActions: []string{},
-				RendererTypes: "",
 				CanClose:      true,
 				RowAction:     types.NewRowActionNavigation("exports", "<latest>", "address", "address"),
 			}

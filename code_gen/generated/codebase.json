@@ -145,8 +145,8 @@
                                 "remove",
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -168,8 +168,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -191,8 +191,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -214,8 +214,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -1137,8 +1137,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -1160,8 +1160,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -1183,8 +1183,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -1204,8 +1204,8 @@
                             "storeName": "Manifest",
                             "storeSource": "sdk",
                             "actions": null,
-                            "viewType": "canvas",
-                            "renderer": "",
+                            "viewType": "form",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2173,8 +2173,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2196,8 +2196,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2219,8 +2219,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2242,8 +2242,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2265,8 +2265,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2288,8 +2288,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2311,8 +2311,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2334,8 +2334,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2357,8 +2357,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "panel",
+                            "viewType": "table",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2380,8 +2380,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "canvas",
-                            "renderer": "facet",
+                            "viewType": "custom",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2403,8 +2403,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2426,8 +2426,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2449,8 +2449,8 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -2964,8 +2964,8 @@
                                 "remove",
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "exports|\u003clatest\u003e|address|address",
                             "attributes": "",
                             "isDynamic": false,
@@ -3142,8 +3142,8 @@
                                 "export",
                                 "update"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -3173,8 +3173,8 @@
                                 "undelete",
                                 "update"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -3198,8 +3198,8 @@
                                 "export",
                                 "update"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "dividerBefore",
                             "isDynamic": false,
@@ -3224,8 +3224,8 @@
                                 "export",
                                 "update"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -3248,8 +3248,8 @@
                                 "create",
                                 "export"
                             ],
-                            "viewType": "",
-                            "renderer": "",
+                            "viewType": "table",
+                            "panel": "",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -3360,8 +3360,8 @@
                     "storeName": "Projects",
                     "storeSource": "project",
                     "actions": [],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3381,8 +3381,8 @@
                     "storeName": "AddressList",
                     "storeSource": "project",
                     "actions": [],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "exports|\u003clatest\u003e|address|address",
                     "attributes": "",
                     "isDynamic": true,
@@ -3474,8 +3474,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3497,8 +3497,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3520,8 +3520,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3543,8 +3543,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3566,8 +3566,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3589,8 +3589,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3612,8 +3612,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3635,8 +3635,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3658,8 +3658,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3681,8 +3681,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3704,8 +3704,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3727,8 +3727,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -3750,8 +3750,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -4925,8 +4925,8 @@
                         "remove",
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "exports|\u003clatest\u003e|address|address",
                     "attributes": "",
                     "isDynamic": false,
@@ -6710,8 +6710,8 @@
                         "remove",
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -6733,8 +6733,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -6756,8 +6756,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -6779,8 +6779,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -6944,8 +6944,8 @@
                         "export",
                         "update"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -6975,8 +6975,8 @@
                         "undelete",
                         "update"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -7000,8 +7000,8 @@
                         "export",
                         "update"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "dividerBefore",
                     "isDynamic": false,
@@ -7026,8 +7026,8 @@
                         "export",
                         "update"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -7050,8 +7050,8 @@
                         "create",
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8237,8 +8237,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8260,8 +8260,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8283,8 +8283,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "panel",
+                    "viewType": "table",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8304,8 +8304,8 @@
                     "storeName": "Manifest",
                     "storeSource": "sdk",
                     "actions": null,
-                    "viewType": "canvas",
-                    "renderer": "",
+                    "viewType": "form",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8399,8 +8399,8 @@
                     "storeName": "Contracts",
                     "storeSource": "sdk",
                     "actions": null,
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8420,8 +8420,8 @@
                     "storeName": "Contracts",
                     "storeSource": "sdk",
                     "actions": null,
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -8443,8 +8443,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9043,8 +9043,8 @@
                     "storeName": "Status",
                     "storeSource": "sdk",
                     "actions": null,
-                    "viewType": "canvas",
-                    "renderer": "",
+                    "viewType": "form",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9066,8 +9066,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9089,8 +9089,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9466,8 +9466,8 @@
                     "storeName": "DalleDress",
                     "storeSource": "dalle",
                     "actions": [],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "dresses|gallery|address|original",
                     "attributes": "",
                     "isDynamic": false,
@@ -9493,8 +9493,8 @@
                         "remove",
                         "export"
                     ],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9516,8 +9516,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9539,8 +9539,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9562,8 +9562,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "dresses|generator|address|original",
                     "attributes": "",
                     "isDynamic": false,
@@ -9817,8 +9817,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "canvas",
-                    "renderer": "facet",
+                    "viewType": "custom",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9840,8 +9840,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9863,8 +9863,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9886,8 +9886,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
@@ -9909,8 +9909,8 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "",
-                    "renderer": "",
+                    "viewType": "table",
+                    "panel": "",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,

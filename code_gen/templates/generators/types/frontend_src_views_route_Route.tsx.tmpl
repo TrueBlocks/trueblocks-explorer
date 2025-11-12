@@ -47,7 +47,7 @@ import { Debugger, LogError, useErrorHandler } from '@utils';
 import { assertRouteConsistency } from '../routes';
 import { ROUTE } from './constants';
 import { createDetailPanel } from '@components';
-{{- if ne .RendererTypes "" }}
+{{- if or .HasCustomPanel .HasCustomFacet }}
 import { renderers } from './renderers';
 {{- end }}
 

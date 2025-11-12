@@ -23,7 +23,7 @@ type FacetConfig struct {
 	DetailPanels     []DetailPanelConfig `json:"detailPanels"`
 	Actions          []string            `json:"actions"`
 	HeaderActions    []string            `json:"headerActions"`
-	RendererTypes    string              `json:"rendererTypes"`
+	Panel            string              `json:"panel"`
 	PanelChartConfig *PanelChartConfig   `json:"panelChartConfig,omitempty"`
 	FacetChartConfig *FacetChartConfig   `json:"facetChartConfig,omitempty"`
 	RowAction        *RowActionConfig    `json:"rowAction,omitempty"`

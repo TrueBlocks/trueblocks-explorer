@@ -1298,15 +1298,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
-	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1355,6 +1346,15 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;
@@ -2548,7 +2548,7 @@ export namespace types {
 	    detailPanels: DetailPanelConfig[];
 	    actions: string[];
 	    headerActions: string[];
-	    rendererTypes: string;
+	    panel: string;
 	    panelChartConfig?: PanelChartConfig;
 	    facetChartConfig?: FacetChartConfig;
 	    rowAction?: RowActionConfig;
@@ -2570,7 +2570,7 @@ export namespace types {
 	        this.detailPanels = this.convertValues(source["detailPanels"], DetailPanelConfig);
 	        this.actions = source["actions"];
 	        this.headerActions = source["headerActions"];
-	        this.rendererTypes = source["rendererTypes"];
+	        this.panel = source["panel"];
 	        this.panelChartConfig = this.convertValues(source["panelChartConfig"], PanelChartConfig);
 	        this.facetChartConfig = this.convertValues(source["facetChartConfig"], FacetChartConfig);
 	        this.rowAction = this.convertValues(source["rowAction"], RowActionConfig);

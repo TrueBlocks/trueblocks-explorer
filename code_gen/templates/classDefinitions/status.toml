@@ -11,17 +11,19 @@ disable_go = false
 [[facets]]
 name = "Status"
 store = "Status"
-viewType = "canvas"
+viewType = "form"
 
 [[facets]]
 name = "Caches"
 store = "Caches"
 # TODO: BOGUS - Add clean
 actions = ["export"]
+viewType = "table"
 
 [[facets]]
 name = "Chains"
 store = "Chains"
 # TODO: BOGUS - Add clean
 actions = ["export"]
+viewType = "table"
 

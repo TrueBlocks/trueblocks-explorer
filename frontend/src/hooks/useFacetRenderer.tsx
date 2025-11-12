@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { FormField } from '@components';
-import { Alert, Stack, Text } from '@mantine/core';
 import { types } from '@models';
 
 type RendererCtx<T extends Record<string, unknown>> = {
@@ -35,7 +34,6 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
   currentData,
   currentColumns,
   renderers,
-  viewName,
 }: UseFacetRendererParams<T>): {
   isCanvas: boolean;
   node: React.ReactNode | null;
@@ -43,71 +41,13 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
 } {
   const facet = getCurrentDataFacet();
   const facetConfig = viewConfig?.facets?.[facet];
-  const isCanvas = facetConfig?.viewType === 'canvas';
+  const isCanvas = facetConfig?.viewType !== 'table';
 
   const node = useMemo(() => {
     if (!isCanvas) return null;
 
     const data = currentData || [];
     const hasCustomRenderer = renderers && renderers[facet];
-
-    // If renderer is expected but missing, show warning
-    if (!hasCustomRenderer && facetConfig?.rendererTypes === 'facet') {
-      const facetName = facet.toString();
-      const lowerFacetName = facetName.toLowerCase();
-
-      return (
-        <Stack gap="md" p="xl">
-          <Alert
-            variant="light"
-            color="orange"
-            title="Rendering Component Missing"
-          >
-            <Stack gap="sm">
-              <Text>
-                The <strong>{facetName}</strong> facet is configured with{' '}
-                <code>renderer = &quot;facet&quot;</code> but no custom renderer
-                was found.
-              </Text>
-
-              <Text>To implement the custom renderer for this facet:</Text>
-
-              <Stack gap="xs" ml="md">
-                <Text size="sm">
-                  1. Create folder:{' '}
-                  <code>
-                    frontend/src/views/{viewName.toLowerCase()}/renderers/
-                    {lowerFacetName}/
-                  </code>
-                </Text>
-                <Text size="sm">
-                  2. Add your custom component in that folder
-                </Text>
-                <Text size="sm">
-                  3. Export it from{' '}
-                  <code>
-                    frontend/src/views/{viewName.toLowerCase()}
-                    /renderers/index.tsx
-                  </code>{' '}
-                  like:
-                </Text>
-                <Text size="sm" ml="md" fw={500}>
-                  {`[types.DataFacet.${facetName.toUpperCase()}]: () => <Your${facetName}Component />`}
-                </Text>
-              </Stack>
-
-              <Text size="sm" c="dimmed">
-                <strong>Alternative:</strong> Set{' '}
-                <code>renderer = &quot;&quot;</code> in the backend config to{' '}
-                use the default Form renderer instead.
-              </Text>
-            </Stack>
-          </Alert>
-        </Stack>
-      );
-    }
-
-    // Has custom renderer and data - use it
     if (hasCustomRenderer && data.length > 0) {
       const renderer = renderers[facet];
       return renderer
@@ -117,15 +57,7 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
 
     // No custom renderer expected OR no data - return null (fall back to default form handling)
     return null;
-  }, [
-    isCanvas,
-    currentData,
-    currentColumns,
-    renderers,
-    facet,
-    facetConfig,
-    viewName,
-  ]);
+  }, [isCanvas, currentData, currentColumns, renderers, facet]);
 
   return { isCanvas, node, facetConfig };
 }

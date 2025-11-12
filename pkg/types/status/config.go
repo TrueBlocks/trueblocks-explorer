@@ -33,30 +33,29 @@ func (c *StatusCollection) buildStaticFacets() map[string]types.FacetConfig {
 		"status": {
 			Name:          "Status",
 			Store:         "status",
-			ViewType:      "canvas",
+			ViewType:      "form",
 			DividerBefore: false,
 			Fields:        getStatusFields(),
 			Actions:       []string{},
 			HeaderActions: []string{},
-			RendererTypes: "",
 		},
 		"caches": {
 			Name:          "Caches",
 			Store:         "caches",
+			ViewType:      "table",
 			DividerBefore: false,
 			Fields:        getCachesFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
 		},
 		"chains": {
 			Name:          "Chains",
 			Store:         "chains",
+			ViewType:      "table",
 			DividerBefore: false,
 			Fields:        getChainsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RendererTypes: "",
 		},
 	}
 }

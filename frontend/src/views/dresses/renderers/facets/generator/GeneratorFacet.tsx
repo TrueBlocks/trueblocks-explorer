@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import { StyledButton, StyledSelect, StyledText } from '@components';
+import {
+  CustomRendererParams,
+  StyledButton,
+  StyledSelect,
+  StyledText,
+} from '@components';
 import { useIconSets, usePreferences } from '@hooks';
 import { Center, Grid, Image, ScrollArea, Stack, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
@@ -12,15 +17,27 @@ import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView
 import { useSpeakPrompt } from '../../hooks/useSpeakPrompt';
 import { getItemKey, useGalleryStore } from '../../store';
 
-export type GeneratorFacetProps = {
-  pageData: dresses.DressesPage | null;
-  viewStateKey: project.ViewStateKey; // Make required since persistence depends on it
-};
-
 export const GeneratorFacet = ({
-  pageData,
-  viewStateKey,
-}: GeneratorFacetProps) => {
+  params,
+}: {
+  params: CustomRendererParams;
+}) => {
+  const { data } = params;
+  const pageData = useMemo(
+    () =>
+      ({
+        dalledress: data || [],
+      }) as unknown as dresses.DressesPage,
+    [data],
+  );
+  const viewStateKey: project.ViewStateKey = useMemo(
+    () => ({
+      viewName: 'dresses',
+      facetName: types.DataFacet.GENERATOR,
+    }),
+    [],
+  );
+
   const thumbRowRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnMount = useRef(false);
   const icons = useIconSets();

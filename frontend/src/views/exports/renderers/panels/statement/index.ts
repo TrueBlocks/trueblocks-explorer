@@ -1,1 +1,0 @@
-export { renderStatementDetailPanel } from './StatementPanel';

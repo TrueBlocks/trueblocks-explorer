@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import { BaseTab, createDetailPanel, useTableContext } from '@components';
+import {
+  BaseTab,
+  CustomRendererParams,
+  createDetailPanel,
+  useTableContext,
+} from '@components';
 import {
   useActions,
   useActiveProject,
@@ -9,19 +14,18 @@ import {
 } from '@hooks';
 import { project, projects, types } from '@models';
 
-export type ProjectFacetProps = {
-  pageData: projects.ProjectsPage | null;
-  viewStateKey: project.ViewStateKey;
-  projectId: string;
-  projectName: string;
-};
-
-export const ProjectFacet = ({
-  pageData,
-  viewStateKey,
-  projectId: _projectId,
-  projectName: _projectName,
-}: ProjectFacetProps) => {
+export const ProjectsFacet = ({ params }: { params: CustomRendererParams }) => {
+  const { data, facet } = params;
+  const pageData = {
+    addresslist: data || [],
+  } as unknown as projects.ProjectsPage;
+  const viewStateKey: project.ViewStateKey = useMemo(
+    () => ({
+      viewName: 'projects',
+      facetName: facet,
+    }),
+    [facet],
+  );
   // Get view configuration for columns
   const { config: viewConfig } = useViewConfig({ viewName: 'projects' });
 
@@ -95,6 +99,9 @@ export const ProjectFacet = ({
   }, [activeAddress, pageData?.addresslist, setSelectedRowIndex]);
 
   // Render project facet with BaseTab
+  if (facet === types.DataFacet.MANAGE) {
+    return <></>;
+  }
   return (
     <BaseTab<Record<string, unknown>>
       data={

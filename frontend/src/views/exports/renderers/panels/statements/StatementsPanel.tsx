@@ -6,9 +6,7 @@ import { addressToHex } from '@utils';
 
 import '../../../../../components/detail/DetailTable.css';
 
-export const renderStatementDetailPanel = (
-  rowData: Record<string, unknown> | null,
-) => {
+export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
   if (!rowData) return null;
   const statement = rowData as unknown as types.Statement;
   const decimals = statement.decimals || 18;

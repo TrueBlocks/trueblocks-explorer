@@ -1,15 +1,17 @@
-import { StyledText } from '@components';
+import { CustomRendererParams, StyledText } from '@components';
 import { Alert, Container, Stack, Title } from '@mantine/core';
 import { types } from '@models';
 
 import { ContractDashboard } from '../../components/dashboard/ContractDashboard';
 
-interface DashboardFacetProps {
-  data: Record<string, unknown>;
-}
-
-export const DashboardFacet = ({ data }: DashboardFacetProps) => {
-  const contractState = data as unknown as types.Contract | undefined;
+export const DashboardFacet = ({
+  params,
+}: {
+  params: CustomRendererParams;
+}) => {
+  const { data } = params;
+  const pageData = data[0] || {};
+  const contractState = pageData as unknown as types.Contract | undefined;
 
   if (!contractState) {
     return (

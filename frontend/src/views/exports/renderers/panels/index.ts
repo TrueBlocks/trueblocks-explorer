@@ -1,3 +1,9 @@
-export { renderApprovalDetailPanel } from './approval';
-export { renderStatementDetailPanel } from './statement';
-export { renderAssetDetailPanel } from './asset';
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+export { StatementsPanel } from './statements';
+export { ApprovalsPanel } from './approvals';
+export { AssetsPanel } from './assets';

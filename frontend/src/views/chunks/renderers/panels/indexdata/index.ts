@@ -1,0 +1,1 @@
+export { IndexPanel } from './IndexPanel';

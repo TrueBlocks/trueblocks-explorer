@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { GetExportsBuckets, GetExportsMetric, SetExportsMetric } from '@app';
+import { CustomRendererParams } from '@components';
 import { useEvent, usePayload } from '@hooks';
 import { SimpleGrid, Stack, Text } from '@mantine/core';
-import { exports, msgs, types } from '@models';
+import { msgs, types } from '@models';
 import { LogError, useErrorHandler } from '@utils';
 
 import { AssetChart, AssetHeader, type MetricOption } from '../../components';
 
 export const AssetChartsFacet = ({
-  pageData: _pageData,
+  _params,
 }: {
-  pageData: exports.ExportsPage;
+  _params: CustomRendererParams;
 }) => {
+  // const { data: _data, columns: _columns, facet: _facet } = params;
   const [bucketsData, setBucketsData] = useState<types.Buckets | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(() => {
     const saved = localStorage.getItem('assetCharts-sortDirection');

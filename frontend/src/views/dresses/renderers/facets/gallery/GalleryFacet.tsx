@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
+import { CustomRendererParams } from '@components';
 import { Center, Container, Text, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 
@@ -8,12 +9,23 @@ import { GalleryControls, GalleryGrouping } from '../../components';
 import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView';
 import { getItemKey, useGalleryStore } from '../../store';
 
-export type GalleryFacetProps = {
-  pageData: dresses.DressesPage | null;
-  viewStateKey: project.ViewStateKey;
-};
+export const GalleryFacet = ({ params }: { params: CustomRendererParams }) => {
+  const { data } = params;
+  const pageData = useMemo(
+    () =>
+      ({
+        dalledress: data || [],
+      }) as unknown as dresses.DressesPage,
+    [data],
+  );
+  const viewStateKey: project.ViewStateKey = useMemo(
+    () => ({
+      viewName: 'dresses',
+      facetName: types.DataFacet.GALLERY,
+    }),
+    [],
+  );
 
-export const GalleryFacet = ({ pageData, viewStateKey }: GalleryFacetProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const keyScopeRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnMount = useRef(false);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 
-import { StyledText } from '@components';
+import { CustomRendererParams, StyledText } from '@components';
 import {
   Box,
   Group,
@@ -24,19 +24,14 @@ export type AppearanceItem = {
   unique?: boolean;
 };
 
-export type ComparitoorRendererProps = {
-  _pageData: comparitoor.ComparitoorPage | null;
-  address?: string;
-};
-// TODO: Replace with real icons/components
-const MaterialIcon = () => (
-  <span style={{ fontWeight: 'bold', marginLeft: 4 }}>★</span>
-);
-
 export const ComparitoorFacet = ({
-  _pageData,
-  address,
-}: ComparitoorRendererProps) => {
+  params,
+}: {
+  params: CustomRendererParams;
+}) => {
+  const { data } = params;
+  const pageData = data;
+  const address = '0x503017d7baf7fbc0fff7492b751025c6a78179b'; // Default address for now
   const containerRef = useRef<HTMLDivElement>(null);
   const theme = useMantineTheme();
   // statusColors and getRowStyle removed (no longer used)
@@ -86,7 +81,21 @@ export const ComparitoorFacet = ({
     setActive({ sourceIdx, itemIdx });
   }
 
-  const sources = useComparitoorData(_pageData);
+  // Transform raw pageData
+  const transformed = pageData
+    ? ({
+        transaction: pageData,
+        chifra: pageData,
+        etherscan: pageData,
+        covalent: pageData,
+        alchemy: pageData,
+        unionCount: pageData.length,
+        overlapCount: 0,
+        intersectionCount: 0,
+      } as unknown as comparitoor.ComparitoorPage)
+    : null;
+
+  const sources = useComparitoorData(transformed);
 
   // Data-driven row style: assign by item properties only
   // getRowStyle removed (no longer used)
@@ -222,11 +231,11 @@ export const ComparitoorFacet = ({
           sourceKeys={sources.map((src) => src.key)}
           sources={sources}
           unionStats={
-            _pageData
+            transformed
               ? {
-                  unionCount: _pageData.unionCount,
-                  overlapCount: _pageData.overlapCount,
-                  intersectionCount: _pageData.intersectionCount,
+                  unionCount: transformed.unionCount,
+                  overlapCount: transformed.overlapCount,
+                  intersectionCount: transformed.intersectionCount,
                 }
               : undefined
           }
@@ -236,3 +245,8 @@ export const ComparitoorFacet = ({
     </Stack>
   );
 };
+
+// TODO: Replace with real icons/components
+const MaterialIcon = () => (
+  <span style={{ fontWeight: 'bold', marginLeft: 4 }}>★</span>
+);

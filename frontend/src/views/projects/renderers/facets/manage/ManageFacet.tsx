@@ -1,16 +1,22 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ProjectCard } from '@components';
+import { CustomRendererParams, ProjectCard } from '@components';
 import { useActiveProject } from '@hooks';
-import { project, projects } from '@models';
+import { project, projects, types } from '@models';
 import { Log, useEmitters } from '@utils';
 
-export type ManageFacetProps = {
-  pageData: projects.ProjectsPage | null;
-  viewStateKey: project.ViewStateKey;
-};
-
-export const ManageFacet = ({ pageData: _pageData }: ManageFacetProps) => {
+export const ManageFacet = ({ params }: { params: CustomRendererParams }) => {
+  const { data } = params;
+  const _pageData = {
+    projects: data || [],
+  } as unknown as projects.ProjectsPage;
+  const _viewStateKey: project.ViewStateKey = useMemo(
+    () => ({
+      viewName: 'projects',
+      facetName: types.DataFacet.MANAGE,
+    }),
+    [],
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const {
     projects: projectInfos,

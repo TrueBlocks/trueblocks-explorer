@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import {
-  RendererParams,
-  StyledButton,
-  StyledSelect,
-  StyledText,
-} from '@components';
+import { RendererParams, StyledButton, StyledSelect } from '@components';
 import { useIconSets, usePreferences } from '@hooks';
-import { Center, Grid, Image, ScrollArea, Stack, Title } from '@mantine/core';
+import {
+  Center,
+  Grid,
+  Image,
+  ScrollArea,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 import { Log } from '@utils';
 
@@ -335,9 +338,9 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                   />
                 ) : (
                   <Center h={160}>
-                    <StyledText variant="dimmed" size="sm">
+                    <Text variant="dimmed" size="sm">
                       No image
-                    </StyledText>
+                    </Text>
                   </Center>
                 )}
               </div>
@@ -387,15 +390,17 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                   >
                     <Stack gap={2}>
                       {attributes.length === 0 && (
-                        <StyledText variant="dimmed" size="sm">
+                        <Text variant="dimmed" size="sm">
                           No attributes
-                        </StyledText>
+                        </Text>
                       )}
                       {attributes.map((a, i) => (
-                        <StyledText variant="secondary" size="sm" key={i}>
-                          {a.name}:{' '}
-                          {a.value || a.selector || a.number || a.count || ''}
-                        </StyledText>
+                        <div key={i}>
+                          <Text variant="secondary" size="sm">
+                            {a.name}:{' '}
+                            {a.value || a.selector || a.number || a.count || ''}
+                          </Text>
+                        </div>
                       ))}
                     </Stack>
                   </ScrollArea>
@@ -415,9 +420,9 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                       padding: 6,
                     }}
                   >
-                    <StyledText variant="secondary" size="sm">
+                    <Text variant="secondary" size="sm">
                       {selectedItem?.prompt || ''}
-                    </StyledText>
+                    </Text>
                   </ScrollArea>
                 </div>
 
@@ -464,9 +469,9 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                         padding: 6,
                       }}
                     >
-                      <StyledText variant="secondary" size="sm">
+                      <Text variant="secondary" size="sm">
                         {selectedItem?.enhancedPrompt || ''}
-                      </StyledText>
+                      </Text>
                     </ScrollArea>
                   </div>
                 )}

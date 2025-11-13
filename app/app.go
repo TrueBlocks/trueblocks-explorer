@@ -22,6 +22,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/config"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/logger"
 	coreTypes "github.com/TrueBlocks/trueblocks-chifra/v6/pkg/types"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/utils"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
@@ -239,6 +240,15 @@ func (a *App) SaveBounds(x, y, w, h int) {
 // GetAppId returns the application identifier
 func (a *App) GetAppId() preferences.Id {
 	return preferences.GetAppId()
+}
+
+// OpenURL opens the given URL in the default browser
+func (a *App) OpenURL(url string) {
+	logger.InfoBY("OpenURL:", url)
+	if a.ctx != nil {
+		logger.InfoBY("Opening...")
+		runtime.BrowserOpenURL(a.ctx, url)
+	}
 }
 
 // RegisterCollection adds a collection to the application's collection registry

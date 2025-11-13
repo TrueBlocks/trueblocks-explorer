@@ -4,11 +4,10 @@ import {
   FieldRenderer,
   FormField,
   StyledButton,
-  StyledText,
   usePreprocessedFields,
 } from '@components';
 import { useFormHotkeys } from '@components';
-import { Group, Stack, Title } from '@mantine/core';
+import { Group, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 // Helper function to recursively extract initial values
@@ -275,7 +274,11 @@ export const Form = <
           {title}
         </Title>
       )}
-      {description && <StyledText variant="primary">{description}</StyledText>}
+      {description && (
+        <Text variant="primary" size="md">
+          {description}
+        </Text>
+      )}
       <form role="form" onSubmit={handleFormSubmit}>
         <Stack gap={compact ? 'xs' : 'md'}>
           {processedFields.map((field, index) => renderField(field, index))}

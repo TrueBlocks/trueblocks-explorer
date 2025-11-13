@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import { RendererParams, StyledText } from '@components';
-import { Center, Container, Title } from '@mantine/core';
+import { RendererParams } from '@components';
+import { Center, Container, Text, Title } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
 
 import { GalleryControls, GalleryGrouping } from '../../components';
@@ -193,7 +193,7 @@ export const GalleryFacet = ({ params }: { params: RendererParams }) => {
       onMouseDown={() => keyScopeRef.current && keyScopeRef.current.focus()}
       style={{ outline: 'none', width: '100%' }}
     >
-      <Title order={4} mb="sm">
+      <Title order={4} mb="xs">
         Preview Gallery
       </Title>
       <GalleryControls />
@@ -203,9 +203,9 @@ export const GalleryFacet = ({ params }: { params: RendererParams }) => {
             opacity: 0.6,
           }}
         >
-          <StyledText size="sm" style={{ fontFamily: 'monospace' }}>
+          <Text variant="primary" size="sm">
             No images found
-          </StyledText>
+          </Text>
         </Center>
       )}
       <div

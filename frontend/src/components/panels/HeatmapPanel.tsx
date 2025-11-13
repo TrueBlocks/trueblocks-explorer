@@ -5,7 +5,6 @@ import {
   IntensityLegend,
   MetricSelector,
   StatsBox,
-  StyledText,
 } from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import {
@@ -204,7 +203,11 @@ export const HeatmapPanel = ({
 
   // Only show loading if we've never loaded any data before
   if (!hasEverLoaded) {
-    return <Text>Loading heat map...</Text>;
+    return (
+      <Text variant="primary" size="md">
+        Loading heat map...
+      </Text>
+    );
   }
 
   if (!bucketsData?.length || !statsData || !buckets) {
@@ -215,9 +218,9 @@ export const HeatmapPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <StyledText variant="dimmed" mb="md">
+        <Text variant="dimmed" size="md">
           Loading...
-        </StyledText>
+        </Text>
       </Box>
     );
   }
@@ -251,9 +254,9 @@ export const HeatmapPanel = ({
       )}
 
       <Box>
-        <StyledText size="sm" fw={500} mb="sm">
+        <Text variant="primary" size="sm" fw={600}>
           Heat Map
-        </StyledText>
+        </Text>
 
         <Box
           style={{
@@ -288,21 +291,21 @@ export const HeatmapPanel = ({
                 label={
                   <Box>
                     {config.timeGroupBy ? (
-                      <StyledText size="xs">
+                      <Text variant="primary" size="sm">
                         Period: {formatGroupKey(dataPoint.bucketIndex)}
-                      </StyledText>
+                      </Text>
                     ) : (
-                      <StyledText size="xs">
+                      <Text variant="primary" size="sm">
                         Blocks: {formatNumericValue(dataPoint.startBlock)} -{' '}
                         {formatNumericValue(dataPoint.endBlock)}
-                      </StyledText>
+                      </Text>
                     )}
-                    <StyledText size="xs">
+                    <Text variant="primary" size="sm">
                       {getMetricConfig(selectedMetric)?.label}:{' '}
                       {getMetricConfig(selectedMetric)?.formatValue(
                         dataPoint.total,
                       )}
-                    </StyledText>
+                    </Text>
                   </Box>
                 }
               >
@@ -320,13 +323,13 @@ export const HeatmapPanel = ({
         </Box>
 
         <Box mt="md">
-          <StyledText size="xs" variant="dimmed">
+          <Text variant="dimmed" size="sm">
             {formatNumericValue(statsData.count)} buckets,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
             total,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.average)}{' '}
             avg per {formatNumericValue(buckets.gridInfo.size)}-block range
-          </StyledText>
+          </Text>
         </Box>
 
         <IntensityLegend

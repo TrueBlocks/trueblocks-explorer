@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { GetExportsBuckets, GetExportsMetric, SetExportsMetric } from '@app';
-import { RendererParams, StyledText } from '@components';
+import { RendererParams } from '@components';
 import { useEvent, usePayload } from '@hooks';
-import { SimpleGrid, Stack } from '@mantine/core';
+import { SimpleGrid, Stack, Text } from '@mantine/core';
 import { msgs, types } from '@models';
 import { LogError, useErrorHandler } from '@utils';
 
@@ -194,9 +194,9 @@ export const AssetChartsFacet = ({ params }: { params: RendererParams }) => {
   if (error) {
     return (
       <Stack gap="md" p="xl" align="center" justify="center" h={400}>
-        <StyledText variant="error">
-          Error loading data: {error.message}
-        </StyledText>
+        <Text variant="error" size="sm">
+          Error: {error.message}
+        </Text>
       </Stack>
     );
   }
@@ -206,7 +206,9 @@ export const AssetChartsFacet = ({ params }: { params: RendererParams }) => {
   if (assetCount === 0 && bucketsData) {
     return (
       <Stack gap="md" p="xl" align="center" justify="center" h={400}>
-        <StyledText variant="warning">No asset chart data available</StyledText>
+        <Text variant="warning" size="md">
+          No asset chart data available
+        </Text>
       </Stack>
     );
   }

@@ -1,5 +1,5 @@
-import { StyledBadge, StyledText } from '@components';
-import { Group } from '@mantine/core';
+import { StyledBadge } from '@components';
+import { Group, Text } from '@mantine/core';
 
 type StatusType = 'healthy' | 'inactive';
 
@@ -29,22 +29,18 @@ export const StatusIndicator = ({
 
   return (
     <Group gap="xs" align="center" role="status" aria-label={statusText}>
-      <StyledBadge
-        variant={status}
-        size="xs"
-        aria-label={`Status: ${config.label}`}
-      >
+      <StyledBadge variant={status} size="xs">
         {config.label}
       </StyledBadge>
 
-      <StyledText variant="dimmed" size="xs">
+      <Text variant="dimmed" size="sm">
         {label}
-      </StyledText>
+      </Text>
 
       {count !== undefined && (
-        <StyledText variant="primary" size="sm" fw={600}>
+        <Text variant="primary" size="sm" fw={600}>
           ({count})
-        </StyledText>
+        </Text>
       )}
     </Group>
   );

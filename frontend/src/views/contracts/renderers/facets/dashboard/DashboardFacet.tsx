@@ -1,5 +1,5 @@
-import { RendererParams, StyledText } from '@components';
-import { Alert, Container, Stack, Title } from '@mantine/core';
+import { RendererParams } from '@components';
+import { Alert, Container, Stack, Text, Title } from '@mantine/core';
 import { types } from '@models';
 
 import { ContractDashboard } from '../../components/dashboard/ContractDashboard';
@@ -24,9 +24,9 @@ export const DashboardFacet = ({ params }: { params: RendererParams }) => {
       <Stack gap="md">
         <Title order={3}>Contract Dashboard</Title>
         {contractState.name && (
-          <StyledText variant="dimmed" size="sm">
+          <Text variant="dimmed" size="sm">
             {contractState.name} ({contractState.address?.toString()})
-          </StyledText>
+          </Text>
         )}
         <ContractDashboard contractState={contractState} />
       </Stack>

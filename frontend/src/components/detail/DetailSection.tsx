@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { Grid } from '@mantine/core';
-import { StyledText } from 'src/components/StyledText';
+import { Grid, Text } from '@mantine/core';
 
 export interface DetailSectionProps {
   title: string;
@@ -31,7 +30,7 @@ export const DetailSection = ({
   collapsible = true,
   defaultCollapsed = false,
   onToggle,
-  headerProps = {},
+  headerProps: _headerProps = {},
   className,
   span,
 }: DetailSectionProps) => {
@@ -46,25 +45,21 @@ export const DetailSection = ({
   };
 
   const sectionContent = (
-    <>
+    <div
+      className={className}
+      onClick={handleToggle}
+      style={{
+        cursor: collapsible ? 'pointer' : 'default',
+      }}
+    >
       <div className="detail-separator" />
-      <div
-        className={`detail-section-header${className ? ` ${className}` : ''}`}
-        onClick={handleToggle}
-        style={{
-          cursor: collapsible ? 'pointer' : 'default',
-        }}
-        {...headerProps}
-      >
-        {collapsible && (
-          <StyledText component="span" size="xs">
-            {isCollapsed ? '▶' : '▼'}
-          </StyledText>
-        )}{' '}
-        {title}
-      </div>
+      <Text variant="primary" size="sm">
+        <div className="detail-section-header">
+          {`${collapsible ? (isCollapsed ? '▶ ' : '▼ ') : ''}${title}`}
+        </div>
+      </Text>
       {!isCollapsed && children}
-    </>
+    </div>
   );
 
   // If span is provided, wrap in Grid.Col for horizontal layouts

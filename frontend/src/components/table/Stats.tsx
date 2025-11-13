@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyledText } from '@components';
+import { Text } from '@mantine/core';
 import { project } from '@models';
 import { usePagination } from 'src/components/table/usePagination';
 
@@ -23,9 +23,9 @@ export const Stats = ({ nRecords, nCols, viewStateKey }: StatsProps) => {
     <tfoot>
       <tr>
         <td colSpan={nCols}>
-          <StyledText variant="dimmed" size="sm">
+          <Text variant="dimmed" size="sm">
             {`Showing ${startRecord} to ${endRecord} of ${totalItems} entries`}
-          </StyledText>
+          </Text>
         </td>
       </tr>
     </tfoot>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { AddAddressesToProject } from '@app';
-import { StyledButton, StyledModal, StyledText } from '@components';
+import { StyledButton, StyledModal } from '@components';
 import { useActiveProject, useIconSets } from '@hooks';
-import { Group, Paper, Stack, Title } from '@mantine/core';
+import { Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { LogError } from '@utils';
 
@@ -78,14 +78,14 @@ export const AddAddressModal = ({
       }}
     >
       <Stack gap="lg">
-        <StyledText variant="dimmed" size="sm">
+        <Text variant="dimmed" size="sm">
           Add multiple Ethereum addresses or ENS names to your current project
-        </StyledText>
+        </Text>
 
         {error && (
-          <StyledText variant="error" size="sm">
-            {error}
-          </StyledText>
+          <Text variant="error" size="sm">
+            Error: {error}
+          </Text>
         )}
 
         <Paper p="md" withBorder>

@@ -248,6 +248,8 @@ export function NewProject(arg1:string,arg2:string):Promise<void>;
 
 export function OpenProjectFile(arg1:string):Promise<void>;
 
+export function OpenURL(arg1:string):Promise<void>;
+
 export function ReadToMe(arg1:types.Payload,arg2:string):Promise<string>;
 
 export function RegisterCollection(arg1:types.Collection):Promise<void>;

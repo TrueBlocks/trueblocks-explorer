@@ -1,8 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 import { GetAppId, GetWizardReturn } from '@app';
-import { StyledText } from '@components';
-import { Card, Container, Stepper } from '@mantine/core';
+import { Card, Container, Stepper, Text } from '@mantine/core';
 import { checkAndNavigateToWizard } from '@utils';
 import { useLocation } from 'wouter';
 
@@ -86,20 +85,20 @@ export const Wizard = () => {
   return (
     <Container mt="xl">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <StyledText variant="primary" fw={600}>
+        <Text variant="primary" size="md" fw={600}>
           {state.data.isFirstTimeSetup
             ? welcomeText
             : state.ui.activeStep === 2
               ? 'All Issues Resolved'
               : 'Something is Wrong'}
-        </StyledText>
-        <StyledText variant="dimmed">
+        </Text>
+        <Text variant="dimmed" size="md">
           {state.data.isFirstTimeSetup
             ? 'Complete the following steps to get started'
             : state.ui.activeStep === 2
               ? 'Your application is now ready to use again.'
               : "Let's fix the issue to get you back on track"}
-        </StyledText>
+        </Text>
 
         <Stepper active={state.ui.activeStep}>
           <Stepper.Step

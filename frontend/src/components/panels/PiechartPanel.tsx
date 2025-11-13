@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-  BucketsConfig,
-  MetricSelector,
-  StatsBox,
-  StyledText,
-} from '@components';
+import { BucketsConfig, MetricSelector, StatsBox } from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import { PieChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
@@ -173,7 +168,11 @@ export const PiechartPanel = ({
 
   // Only show loading if we've never loaded any data before
   if (!hasEverLoaded) {
-    return <Text>Loading chart data...</Text>;
+    return (
+      <Text variant="primary" size="md">
+        Loading chart data...
+      </Text>
+    );
   }
 
   if (!statsData || !bucketsData?.length) {
@@ -184,9 +183,9 @@ export const PiechartPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <StyledText variant="dimmed" mb="md">
+        <Text variant="dimmed" size="md">
           Loading...
-        </StyledText>
+        </Text>
       </Box>
     );
   }
@@ -226,11 +225,11 @@ export const PiechartPanel = ({
         />
       )}
 
-      <StyledText size="sm" fw={500} mb="sm">
+      <Text variant="primary" size="sm" fw={600}>
         {config.timeGroupBy
           ? `${currentMetric.label} - ${config.timeGroupBy.charAt(0).toUpperCase() + config.timeGroupBy.slice(1)} View`
           : 'Pie Chart'}
-      </StyledText>
+      </Text>
 
       <PieChart
         h={400}
@@ -245,11 +244,14 @@ export const PiechartPanel = ({
         size={200}
       />
 
-      <StyledText size="sm" variant="dimmed" ta="center">
-        Showing {currentMetric.label.toLowerCase()} distribution across{' '}
-        {statsData?.count || 0} buckets
-        {statsData && ` (avg: ${currentMetric.formatValue(statsData.average)})`}
-      </StyledText>
+      <div style={{ textAlign: 'center' }}>
+        <Text variant="dimmed" size="sm">
+          Showing {currentMetric.label.toLowerCase()} distribution across{' '}
+          {statsData?.count || 0} buckets
+          {statsData &&
+            ` (avg: ${currentMetric.formatValue(statsData.average)})`}
+        </Text>
+      </div>
     </Stack>
   );
 };

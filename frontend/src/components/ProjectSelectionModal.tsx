@@ -8,11 +8,18 @@ import {
   StyledBadge,
   StyledButton,
   StyledModal,
-  StyledText,
 } from '@components';
 import { useViewContext } from '@contexts';
 import { useActiveProject, useIconSets } from '@hooks';
-import { Card, Group, Paper, Stack, TextInput, Title } from '@mantine/core';
+import {
+  Card,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useLocation } from 'wouter';
 
@@ -158,17 +165,17 @@ export const ProjectSelectionModal = ({
               ? 'Select or Create a Project'
               : 'Project Required'}
           </Title>
-          <StyledText variant="dimmed">
+          <Text variant="dimmed" size="md">
             {hasActiveProject
               ? 'Choose a different project or create a new one'
               : 'An active project with at least one address is required to continue'}
-          </StyledText>
+          </Text>
         </div>
 
         {error && (
-          <StyledText variant="error" size="sm">
-            {error}
-          </StyledText>
+          <Text variant="error" size="sm">
+            Error: {error}
+          </Text>
         )}
 
         <Group gap="xl" align="flex-start" grow>
@@ -224,9 +231,9 @@ export const ProjectSelectionModal = ({
 
               {projects.length > 0 && (
                 <>
-                  <StyledText variant="primary" size="sm" fw={600}>
+                  <Text variant="primary" size="sm" fw={600}>
                     Recent Projects
-                  </StyledText>
+                  </Text>
                   <Stack gap="sm">
                     {projects.map((project, index) => {
                       const isRecent =
@@ -234,6 +241,7 @@ export const ProjectSelectionModal = ({
                           new Date(project.lastOpened).getTime() <
                         24 * 60 * 60 * 1000; // Within 24 hours
 
+                      var fw = project.isActive ? 600 : 400;
                       return (
                         <Card key={index} withBorder padding="sm" radius="md">
                           <Stack gap="xs">
@@ -243,13 +251,9 @@ export const ProjectSelectionModal = ({
                                 <File size={16} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <Group gap="xs" wrap="nowrap">
-                                    <StyledText
-                                      variant="primary"
-                                      size="sm"
-                                      fw={project.isActive ? 600 : 400}
-                                    >
+                                    <Text variant="primary" size="sm" fw={fw}>
                                       {project.name}
-                                    </StyledText>
+                                    </Text>
                                     {project.isActive && (
                                       <StyledBadge variant="filled" size="sm">
                                         Active
@@ -274,7 +278,7 @@ export const ProjectSelectionModal = ({
 
                             {/* Project Metadata */}
                             <Group justify="space-between">
-                              <StyledText variant="dimmed" size="sm">
+                              <Text variant="dimmed" size="sm">
                                 {new Date(
                                   project.lastOpened,
                                 ).toLocaleDateString()}{' '}
@@ -285,7 +289,7 @@ export const ProjectSelectionModal = ({
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
-                              </StyledText>
+                              </Text>
                               <StatusIndicator
                                 status={
                                   project.isActive ? 'healthy' : 'inactive'

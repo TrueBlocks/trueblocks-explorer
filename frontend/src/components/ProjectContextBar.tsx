@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { AddAddressModal, StyledSelect, StyledText } from '@components';
+import { AddAddressModal, StyledSelect } from '@components';
 import { useActiveProject } from '@hooks';
-import { Group, Loader } from '@mantine/core';
+import { Group, Loader, Text } from '@mantine/core';
 import { types } from '@models';
 import { PeriodOptions, getDisplayAddress } from '@utils';
 
@@ -89,9 +89,9 @@ export const ProjectContextBar = ({}) => {
     return (
       <Group justify="center" p="md">
         <Loader size="sm" />
-        <StyledText variant="primary" size="sm">
+        <Text variant="primary" size="sm">
           Loading project context...
-        </StyledText>
+        </Text>
       </Group>
     );
   }

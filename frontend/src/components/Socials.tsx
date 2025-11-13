@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { GetAppId } from '@app';
+import { GetAppId, OpenURL } from '@app';
 import { Flex } from '@mantine/core';
-import { BrowserOpenURL } from '@runtime';
 
 import { Action } from './Action';
 
@@ -20,7 +19,7 @@ export const Socials = () => {
   }, []);
 
   const handleClick = (url: string) => {
-    BrowserOpenURL(url);
+    OpenURL(url);
   };
 
   const handleEmailClick = () => {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { StyledSelect, StyledText } from '@components';
+import { StyledSelect } from '@components';
 import { BarChart } from '@mantine/charts';
-import { Divider, Paper, Stack, Title } from '@mantine/core';
+import { Divider, Paper, Stack, Text, Title } from '@mantine/core';
 
 import type { AppearanceItem } from '../../hooks/useComparitoorData';
 
@@ -94,15 +94,15 @@ export const SummaryColumn = ({
       }}
     >
       <Stack gap={8} style={{ flexGrow: 1, minHeight: 0 }}>
-        <Title order={5} ta="center" mb={2}>
+        <Title order={5} ta="center" mb="xs">
           Summary
         </Title>
-        <StyledText variant="primary" size="sm">
+        <Text variant="primary" size="sm">
           This summary compares the effectiveness and speed of each source. Use
           the dropdowns below to switch metrics and see how each provider
           performs in terms of total found, unique, missing, present, and
           completion speed.
-        </StyledText>
+        </Text>
         <StyledSelect
           label="Effectiveness Metric"
           data={effectivenessOptions}
@@ -114,7 +114,7 @@ export const SummaryColumn = ({
             )
           }
           size="xs"
-          mb={2}
+          mb="xs"
         />
         <BarChart
           h={120}
@@ -145,15 +145,17 @@ export const SummaryColumn = ({
         ) : null}
         {active && rowValues ? (
           <>
-            <StyledText variant="primary" size="sm" fw={600}>
+            <Text variant="primary" size="sm" fw={600}>
               Selected: {active.blockNum}.{active.txid}
-            </StyledText>
+            </Text>
             <Stack gap={2} mt={2}>
               {rowValues.map((item, idx) => (
-                <StyledText variant="primary" size="sm" key={sourceKeys[idx]}>
-                  <b>{sourceKeys[idx]}</b>: {item?.value ?? '[missing]'}
-                  {item?.missing ? ' (missing)' : ''}
-                </StyledText>
+                <div key={sourceKeys[idx]}>
+                  <Text variant="primary" size="sm">
+                    <b>{sourceKeys[idx]}</b>: {item?.value ?? '[missing]'}
+                    {item?.missing ? ' (missing)' : ''}
+                  </Text>
+                </div>
               ))}
             </Stack>
           </>

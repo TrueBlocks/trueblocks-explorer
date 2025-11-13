@@ -9,7 +9,6 @@
   background: transparent;
   cursor: pointer;
   border-radius: var(--mantine-radius-sm);
-  color: var(--skin-text-primary);
   transition: opacity 0.15s ease;
 }
 
@@ -32,6 +31,5 @@
 
 .pagination button.active {
   font-weight: bold;
-  color: var(--skin-text-primary);
   opacity: 1;
 }

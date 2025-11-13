@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { StyledBadge, StyledButton, StyledText } from '@components';
+import { StyledBadge, StyledButton } from '@components';
 import { useWalletGatedAction } from '@hooks';
 import {
   Alert,
@@ -13,6 +13,7 @@ import {
   Select,
   Stack,
   Switch,
+  Text,
   TextInput,
   Textarea,
   Title,
@@ -279,7 +280,9 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     return (
       <Stack gap="md" align="center" style={{ padding: '2rem' }}>
         <Loader size="lg" />
-        <StyledText variant="dimmed">Loading write functions...</StyledText>
+        <Text variant="dimmed" size="md">
+          Loading write functions...
+        </Text>
       </Stack>
     );
   }
@@ -462,18 +465,18 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         </Group>
 
         {currentFunction.inputs.length === 0 && (
-          <StyledText variant="dimmed" size="sm">
+          <Text variant="dimmed" size="sm">
             This function takes no parameters
-          </StyledText>
+          </Text>
         )}
       </div>
 
       {currentFunction.inputs.length > 0 && (
         <Card withBorder>
           <Stack gap="md">
-            <StyledText variant="primary" size="sm" fw={600}>
+            <Text variant="primary" size="sm" fw={600}>
               Function Parameters
-            </StyledText>
+            </Text>
             <Divider />
 
             <Grid>

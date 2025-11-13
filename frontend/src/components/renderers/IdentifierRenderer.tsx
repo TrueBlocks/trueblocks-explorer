@@ -1,99 +1,192 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
-import { StyledText } from '@components';
+import { OpenURL } from '@app';
+import { Anchor, Grid, Popover, Stack, Text } from '@mantine/core';
+import { displayHash } from '@utils';
 
 import { formatTimestamp } from './utils';
 
 export const IdentifierRenderer = memo(
   ({
     value,
-    rowDataSource,
+    rowData,
   }: {
     value: unknown;
-    rowDataSource?: Record<string, unknown>;
+    rowData?: Record<string, unknown>;
   }) => {
-    // If we have rowDataSource, use complex blockchain identifier formatting
-    if (rowDataSource) {
-      const buildDottedNotation = () => {
-        const parts: string[] = [];
+    const [opened, setOpened] = useState(false);
 
-        // Always start with block number
-        if (rowDataSource.blockNumber)
-          parts.push(String(rowDataSource.blockNumber));
+    if (rowData) {
+      const hasTimestamp = !!rowData.timestamp;
+      const dateStr = hasTimestamp
+        ? formatTimestamp(rowData.timestamp as number)
+        : '';
+      const dottedValue = dotted(rowData);
 
-        // Add transaction index if present
-        if (
-          rowDataSource.transactionIndex !== undefined &&
-          rowDataSource.transactionIndex !== null
-        ) {
-          parts.push(String(rowDataSource.transactionIndex));
-        }
+      // Build tooltip content with tabular layout when timestamp is available
+      const tooltipContent = hasTimestamp ? (
+        <Grid>
+          <Grid.Col span={4}>
+            <Text size="sm" fw={600}>
+              Date:
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={8}>
+            <Text size="sm">{dateStr}</Text>
+          </Grid.Col>
 
-        // Add log index or trace index (not both)
-        if (
-          rowDataSource.logIndex !== undefined &&
-          rowDataSource.logIndex !== null
-        ) {
-          parts.push(String(rowDataSource.logIndex));
-        } else if (
-          rowDataSource.traceIndex !== undefined &&
-          rowDataSource.traceIndex !== null
-        ) {
-          parts.push(`[${rowDataSource.traceIndex}]`);
-        }
+          {dottedValue && (
+            <>
+              <Grid.Col span={4}>
+                <Text size="sm" fw={600}>
+                  Block.Tx.Log:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={8}>
+                <Text size="sm">{dottedValue}</Text>
+              </Grid.Col>
+            </>
+          )}
 
-        return parts.join('.');
-      };
+          {typeof rowData.transactionHash === 'string' &&
+            rowData.transactionHash && (
+              <>
+                <Grid.Col span={4}>
+                  <Text size="sm" fw={600}>
+                    Tx Hash:
+                  </Text>
+                </Grid.Col>
+                <Grid.Col span={8}>
+                  <Anchor
+                    size="sm"
+                    c="blue.6"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() =>
+                      OpenURL(
+                        `https://etherscan.io/tx/${rowData.transactionHash}`,
+                      )
+                    }
+                  >
+                    {displayHash(rowData.transactionHash)}
+                  </Anchor>
+                </Grid.Col>
+              </>
+            )}
 
-      // Three-row format implementation
-      const hasTimestamp =
-        rowDataSource.timestamp !== undefined &&
-        rowDataSource.timestamp !== null;
+          {typeof rowData.blockHash === 'string' && rowData.blockHash && (
+            <>
+              <Grid.Col span={4}>
+                <Text size="sm" fw={600}>
+                  Block Hash:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={8}>
+                <Anchor
+                  size="sm"
+                  c="blue.6"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    OpenURL(`https://etherscan.io/block/${rowData.blockHash}`)
+                  }
+                >
+                  {displayHash(rowData.blockHash)}
+                </Anchor>
+              </Grid.Col>
+            </>
+          )}
 
-      if (hasTimestamp) {
-        // Multi-row format with timestamp
-        const dateStr = formatTimestamp(rowDataSource.timestamp as number);
-        const dottedNotation = buildDottedNotation();
+          {typeof rowData.address === 'string' && rowData.address && (
+            <>
+              <Grid.Col span={4}>
+                <Text size="sm" fw={600}>
+                  Address:
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={8}>
+                <Text size="sm">{displayHash(rowData.address)}</Text>
+              </Grid.Col>
+            </>
+          )}
+        </Grid>
+      ) : (
+        <Stack gap="xs">
+          {dottedValue && (
+            <Text size="sm">
+              <strong>Block.Tx.Log:</strong> {dottedValue}
+            </Text>
+          )}
+          {typeof rowData.transactionHash === 'string' &&
+            rowData.transactionHash && (
+              <Text size="sm">
+                <strong>Tx Hash:</strong> {displayHash(rowData.transactionHash)}
+              </Text>
+            )}
+          {typeof rowData.blockHash === 'string' && rowData.blockHash && (
+            <Text size="sm">
+              <strong>Block Hash:</strong> {displayHash(rowData.blockHash)}
+            </Text>
+          )}
+          {typeof rowData.address === 'string' && rowData.address && (
+            <Text size="sm">
+              <strong>Address:</strong> {displayHash(rowData.address)}
+            </Text>
+          )}
+        </Stack>
+      );
 
-        let hashStr = '';
+      // Display text: date if available, otherwise dotted notation
+      const displayText = hasTimestamp ? dateStr : dottedValue;
 
-        return (
-          <div style={{ lineHeight: '1.2' }}>
-            <StyledText variant="primary" size="xs" fw={500}>
-              {dateStr}
-            </StyledText>
-            {hashStr ? (
-              <StyledText
-                variant="primary"
-                size="xs"
-                style={{
-                  fontFamily: 'monospace',
-                  color: 'var(--skin-text-dimmed)',
-                }}
-              >
-                {hashStr}
-              </StyledText>
-            ) : null}
-            <StyledText
+      return (
+        <Popover
+          opened={opened}
+          onChange={setOpened}
+          width={320}
+          position="right"
+          offset={{ mainAxis: 10, crossAxis: 0 }}
+          withArrow
+          shadow="md"
+          radius="md"
+          middlewares={{ flip: false, shift: false }}
+          transitionProps={{ duration: 20 }}
+        >
+          <Popover.Target>
+            <Text
               variant="primary"
-              size="xs"
-              style={{
-                color: 'var(--skin-text-secondary)',
-              }}
+              size="sm"
+              style={{ cursor: 'help', textDecoration: 'underline dotted' }}
+              onMouseEnter={() => setOpened(true)}
+              onMouseLeave={() => setOpened(false)}
             >
-              {dottedNotation}
-            </StyledText>
-          </div>
-        );
-      } else {
-        // Single row fallback for entries without timestamp
-        return buildDottedNotation() || 'N/A';
-      }
+              {displayText || 'N/A'}
+            </Text>
+          </Popover.Target>
+          <Popover.Dropdown
+            onMouseEnter={() => setOpened(true)}
+            onMouseLeave={() => setOpened(false)}
+          >
+            {tooltipContent}
+          </Popover.Dropdown>
+        </Popover>
+      );
     }
-
-    // Simple identifier fallback when no rowDataSource
     return (value as React.ReactNode) || 'N/A';
   },
 );
 
 IdentifierRenderer.displayName = 'IdentifierRenderer';
+
+const dotted = (data: Record<string, unknown>) => {
+  if (!data) return '';
+  if (!data.blockNumber) return '';
+  const parts = [String(data.blockNumber)];
+  if (data.transactionIndex != null) {
+    parts.push(String(data.transactionIndex));
+    if (data.logIndex != null) {
+      parts.push(String(data.logIndex));
+    } else if (data.traceIndex != null) {
+      parts.push(`[${data.traceIndex}]`);
+    }
+  }
+  return parts.join('.');
+};

@@ -9,16 +9,10 @@ export const PanelDataWarning = ({ facet }: PanelDataWarningProps) => {
     <Box p="md" style={{ wordWrap: 'break-word', overflowWrap: 'anywhere' }}>
       <Stack gap="sm">
         <Title order={4}>No Panel Data Available</Title>
-        <Text
-          size="sm"
-          style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
-        >
+        <Text variant="primary" size="sm">
           No bucket data was received for this custom panel.
         </Text>
-        <Text
-          size="xs"
-          style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}
-        >
+        <Text variant="primary" size="sm">
           This may indicate a store scoping configuration issue. Verify that
           getStoreKey() returns consistent scoping for facet: {facet}
         </Text>

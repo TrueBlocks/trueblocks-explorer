@@ -1,7 +1,6 @@
 import { CSSProperties } from 'react';
 
-import { StyledText } from '@components';
-import { Badge, Flex } from '@mantine/core';
+import { Badge, Flex, Text } from '@mantine/core';
 import { types } from '@models';
 
 interface StateDisplayProps {
@@ -53,16 +52,16 @@ export const StateDisplay = ({
         ...style,
       }}
     >
-      <StyledText size="sm" variant="dimmed">
+      <Text variant="dimmed" size="sm">
         Facet: <strong>{facetName}</strong>
-      </StyledText>
+      </Text>
       <Badge color={getStateColor(state)} variant="light" size="sm">
         {getStateLabel(state)}
       </Badge>
       {totalItems !== undefined && (
-        <StyledText size="sm" variant="dimmed">
+        <Text variant="dimmed" size="sm">
           Items: <strong>{totalItems}</strong>
-        </StyledText>
+        </Text>
       )}
     </Flex>
   );

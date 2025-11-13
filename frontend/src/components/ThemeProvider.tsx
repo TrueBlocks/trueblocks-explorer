@@ -201,7 +201,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           // Font sizes - Full 5-tier mapping to Mantine system with fontScale applied
           '--mantine-font-size-xs': `calc((${backendSkin.tinySize || '0.75rem'}) * ${fontScale})`,
           '--mantine-font-size-sm': `calc((${backendSkin.smallSize || '0.875rem'}) * ${fontScale})`,
-          '--mantine-font-size-md': `calc((${backendSkin.mediumSize || '1rem'}) * ${fontScale})`,
+          '--mantine-font-size-md': `calc((${backendSkin.mediumSize || '1.0rem'}) * ${fontScale})`,
           '--mantine-font-size-lg': `calc((${backendSkin.largeSize || '1.125rem'}) * ${fontScale})`,
           '--mantine-font-size-xl': `calc((${backendSkin.hugeSize || '1.25rem'}) * ${fontScale})`,
 

@@ -1,7 +1,7 @@
-import { StyledText } from './StyledText';
+import { Text } from '@mantine/core';
 
 export const ShouldNotHappen = ({ message }: { message: string }) => (
-  <StyledText variant="error" size="xs">
-    ERROR: {message}
-  </StyledText>
+  <Text variant="error" size="sm">
+    Error: {message}
+  </Text>
 );

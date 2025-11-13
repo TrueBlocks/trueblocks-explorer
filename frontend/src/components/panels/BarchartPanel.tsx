@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-  BucketsConfig,
-  MetricSelector,
-  StatsBox,
-  StyledText,
-} from '@components';
+import { BucketsConfig, MetricSelector, StatsBox } from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import { BarChart } from '@mantine/charts';
 import { Alert, Box, Stack, Text } from '@mantine/core';
@@ -173,7 +168,11 @@ export const BarchartPanel = ({
 
   // Only show loading if we've never loaded any data before
   if (!hasEverLoaded) {
-    return <Text>Loading chart data...</Text>;
+    return (
+      <Text variant="primary" size="md">
+        Loading chart data...
+      </Text>
+    );
   }
 
   if (!statsData || !bucketsData?.length) {
@@ -184,9 +183,9 @@ export const BarchartPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <StyledText variant="dimmed" mb="md">
+        <Text variant="dimmed" size="md">
           Loading...
-        </StyledText>
+        </Text>
       </Box>
     );
   }
@@ -225,11 +224,11 @@ export const BarchartPanel = ({
         />
       )}
 
-      <StyledText size="sm" fw={500} mb="sm">
+      <Text variant="primary" size="sm" fw={600}>
         {config.timeGroupBy
           ? `${currentMetric.label} - ${config.timeGroupBy.charAt(0).toUpperCase() + config.timeGroupBy.slice(1)} View`
           : 'Bar Chart'}
-      </StyledText>
+      </Text>
 
       <BarChart
         h={400}
@@ -256,27 +255,30 @@ export const BarchartPanel = ({
                 p="xs"
                 style={{ border: '1px solid #ddd', borderRadius: 4 }}
               >
-                <StyledText size="sm" fw={600}>
+                <Text variant="primary" size="sm" fw={600}>
                   {config.timeGroupBy ? 'Time Period' : 'Block Range'}:{' '}
                   {data.name}
-                </StyledText>
-                <StyledText size="sm">
+                </Text>
+                <Text variant="primary" size="sm">
                   {currentMetric.label}: {currentMetric.formatValue(data.value)}
-                </StyledText>
-                <StyledText size="xs" variant="dimmed">
+                </Text>
+                <Text variant="dimmed" size="sm">
                   Bucket: {data.bucket}
-                </StyledText>
+                </Text>
               </Box>
             );
           },
         }}
       />
 
-      <StyledText size="sm" variant="dimmed" ta="center">
-        Showing {currentMetric.label.toLowerCase()} distribution across{' '}
-        {statsData?.count || 0} buckets
-        {statsData && ` (avg: ${currentMetric.formatValue(statsData.average)})`}
-      </StyledText>
+      <div style={{ textAlign: 'center' }}>
+        <Text variant="dimmed" size="sm">
+          Showing {currentMetric.label.toLowerCase()} distribution across{' '}
+          {statsData?.count || 0} buckets
+          {statsData &&
+            ` (avg: ${currentMetric.formatValue(statsData.average)})`}
+        </Text>
+      </div>
     </Stack>
   );
 };

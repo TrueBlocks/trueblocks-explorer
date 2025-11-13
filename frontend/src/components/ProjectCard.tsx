@@ -1,4 +1,4 @@
-import { Action, StyledBadge, StyledButton, StyledText } from '@components';
+import { Action, StyledBadge, StyledButton } from '@components';
 import { ProjectInfo, useIconSets } from '@hooks';
 import {
   Card,
@@ -6,6 +6,7 @@ import {
   Grid,
   Group,
   Stack,
+  Text,
   TextInput,
   Title,
 } from '@mantine/core';
@@ -95,21 +96,21 @@ export const ProjectCard = ({
                 )}
               </Group>
 
-              <StyledText variant="dimmed" size="xs">
+              <Text variant="dimmed" size="sm">
                 {project.path}
-              </StyledText>
+              </Text>
 
               {project.description && (
-                <StyledText variant="primary" size="sm">
+                <Text variant="primary" size="sm">
                   {project.description}
-                </StyledText>
+                </Text>
               )}
 
               <Group gap="xs" mt="xs">
-                <StyledText variant="dimmed" size="xs">
+                <Text variant="dimmed" size="sm">
                   Last opened:{' '}
                   {new Date(project.lastOpened).toLocaleDateString()}
-                </StyledText>
+                </Text>
                 {project.addresses && project.addresses.length > 0 && (
                   <StyledBadge variant="light" size="xs">
                     {project.addresses.length} address
@@ -158,7 +159,9 @@ export const ProjectCard = ({
         <Group justify="space-between" align="center">
           <div>
             <Title order={2}>Project Manager</Title>
-            <StyledText variant="dimmed">Manage your projects</StyledText>
+            <Text variant="dimmed" size="md">
+              Manage your projects
+            </Text>
           </div>
 
           <StyledButton
@@ -170,7 +173,6 @@ export const ProjectCard = ({
           </StyledButton>
         </Group>
 
-        {/* Search */}
         <Group gap="md">
           <TextInput
             placeholder="Search projects..."
@@ -182,27 +184,27 @@ export const ProjectCard = ({
 
         {/* Project List */}
         <div>
-          <Title order={3} mb="md">
-            Open Projects ({filteredProjects.length})
-          </Title>
+          <Title order={3}>Open Projects ({filteredProjects.length})</Title>
 
           {loading ? (
-            <StyledText variant="primary">Loading projects...</StyledText>
+            <Text variant="primary" size="md">
+              Loading projects...
+            </Text>
           ) : filteredProjects.length === 0 ? (
             <Card shadow="sm" padding="xl" radius="md" withBorder>
               <Stack align="center" gap="md">
                 <File size={48} opacity={0.5} />
                 <div style={{ textAlign: 'center' }}>
-                  <StyledText variant="primary" fw={600}>
+                  <Text variant="primary" size="md" fw={600}>
                     {searchQuery
                       ? 'No projects match your search'
                       : 'No open projects'}
-                  </StyledText>
-                  <StyledText variant="dimmed" size="sm">
+                  </Text>
+                  <Text variant="dimmed" size="sm">
                     {searchQuery
                       ? 'Try a different search term or clear the search'
                       : 'Create a new project to get started with blockchain analysis'}
-                  </StyledText>
+                  </Text>
                 </div>
                 {!searchQuery && (
                   <StyledButton

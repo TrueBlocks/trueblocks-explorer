@@ -1,5 +1,4 @@
-import { Center, Loader, Stack } from '@mantine/core';
-import { StyledText } from 'src/components/StyledText';
+import { Center, Loader, Stack, Text } from '@mantine/core';
 
 interface SplashScreenProps {
   message?: string;
@@ -24,7 +23,9 @@ export const SplashScreen = ({
     >
       <Stack align="center" gap="md">
         {showSpinner && <Loader size="lg" color="primary.6" />}
-        <StyledText variant="secondary">{message}</StyledText>
+        <Text variant="secondary" size="md">
+          {message}
+        </Text>
       </Stack>
     </Center>
   );

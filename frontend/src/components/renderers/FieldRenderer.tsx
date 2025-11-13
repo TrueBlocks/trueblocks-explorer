@@ -1,7 +1,7 @@
 import { ChangeEvent, forwardRef, isValidElement } from 'react';
 
-import { FormField, StyledText } from '@components';
-import { Fieldset, Stack, TextInput } from '@mantine/core';
+import { FormField } from '@components';
+import { Fieldset, Stack, Text, TextInput } from '@mantine/core';
 
 import {
   BooleanRenderer,
@@ -104,7 +104,7 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         displayValue = <BooleanRenderer value={value} tableCell={tableCell} />;
       } else if ((field.type as string) === 'identifier') {
         displayValue = (
-          <IdentifierRenderer value={value} rowDataSource={rowDataSource} />
+          <IdentifierRenderer value={value} rowData={rowDataSource} />
         );
       } else if ((field.type as string) === 'float64') {
         displayValue = formatNumberWithFallback(value, 2, '0.00');
@@ -130,14 +130,12 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           field.type === 'gas' ||
           field.type === 'ether' ||
           field.type === 'wei';
-
         if (shouldRightAlign) {
           return <div style={{ textAlign: 'right' }}>{displayValue}</div>;
         }
         return <>{displayValue}</>;
       }
 
-      // For date/datetime fields, split on '|' and render each part on its own line
       if (field.type === 'datetime') {
         return (
           <DateTimeRenderer
@@ -205,31 +203,6 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
               !(row && field.key ? row[field.key] : field.value) &&
               `${field.label} is required`)
           }
-          styles={{
-            label: {
-              color: 'var(--skin-text-primary)',
-            },
-            input: {
-              color: 'var(--skin-text-primary)',
-              backgroundColor: 'var(--skin-surface-default)',
-              borderColor: 'var(--skin-border-default)',
-              ...(field.error
-                ? {
-                    borderColor: 'var(--skin-error)',
-                    backgroundColor: 'var(--skin-error-background)',
-                  }
-                : {}),
-              ...(field.readOnly
-                ? {
-                    color: 'var(--skin-text-primary)',
-                    opacity: 0.6, // Slightly reduce opacity to differentiate but keep readable
-                  }
-                : {}),
-            },
-            error: {
-              fontWeight: 500,
-            },
-          }}
           rightSection={field.rightSection}
           name={field.name}
           readOnly={field.readOnly}
@@ -238,9 +211,9 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
           autoFocus={autoFocus}
         />
         {hint && (
-          <StyledText variant="dimmed" size="sm">
+          <Text variant="dimmed" size="sm">
             {hint}
-          </StyledText>
+          </Text>
         )}
       </div>
     );

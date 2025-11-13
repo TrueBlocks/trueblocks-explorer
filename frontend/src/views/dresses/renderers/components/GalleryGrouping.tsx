@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { FromTemplate } from '@app';
-import { StyledText } from '@components';
-import { Box, SimpleGrid, Title } from '@mantine/core';
+import { Box, SimpleGrid, Text, Title } from '@mantine/core';
 import { model, types } from '@models';
 
 import { getItemKey } from '../store';
@@ -73,8 +72,8 @@ export const GalleryGrouping = ({
   }, [sortMode, series, itemsLength, firstItemOriginal, generateDescription]);
 
   return (
-    <Box mb="lg">
-      <Title order={5} mb={6} style={{ fontFamily: 'monospace' }}>
+    <Box>
+      <Title order={5}>
         {series || 'unknown'} ({items.length})
       </Title>
       {sortMode === 'address' && descriptiveText && (
@@ -87,7 +86,9 @@ export const GalleryGrouping = ({
             marginBottom: '16px',
           }}
         >
-          <StyledText variant="primary">{descriptiveText}</StyledText>
+          <Text variant="primary" size="md">
+            {descriptiveText}
+          </Text>
         </Box>
       )}
       <SimpleGrid cols={columns} spacing={6} verticalSpacing={6}>

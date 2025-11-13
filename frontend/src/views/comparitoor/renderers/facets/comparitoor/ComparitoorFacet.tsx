@@ -1,12 +1,13 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 
-import { RendererParams, StyledText } from '@components';
+import { RendererParams } from '@components';
 import {
   Box,
   Group,
   Paper,
   Stack,
+  Text,
   TextInput,
   Title,
   useMantineTheme,
@@ -143,7 +144,7 @@ export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
               }}
             >
               <Stack gap={2} style={{ flexGrow: 1, minHeight: 0 }}>
-                <Title order={5} mb={2} ta="center" style={{ flexShrink: 0 }}>
+                <Title order={5} mb="xs" ta="center" style={{ flexShrink: 0 }}>
                   {src.label}
                 </Title>
                 <Stack gap={2} style={{ flexGrow: 1, overflowY: 'auto' }}>
@@ -161,6 +162,7 @@ export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
                     } else if (isMatching) {
                       borderStyle = `2px solid ${theme.colors.blue[2]}`;
                     }
+                    var variant = isMissing ? 'error' : 'warning';
                     return (
                       <Group
                         key={item.value + itemIdx}
@@ -178,12 +180,9 @@ export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
                           })
                         }
                       >
-                        <StyledText
-                          variant={isMissing ? 'error' : 'warning'}
-                          size="sm"
-                        >
+                        <Text variant={variant} size="sm">
                           {isMissing ? '[missing]' : item.value}
-                        </StyledText>
+                        </Text>
                         {item.value === '100.100' && src.key === 'chifra' ? (
                           <MaterialIcon />
                         ) : null}
@@ -191,11 +190,11 @@ export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
                     );
                   })}
                 </Stack>
-                <StyledText variant="primary" size="xs">
+                <Text variant="primary" size="sm">
                   {src.stats.appearances.toLocaleString()} appearances
                   <br />
                   {src.stats.unique} unique
-                </StyledText>
+                </Text>
               </Stack>
             </Paper>
           );

@@ -5,7 +5,7 @@
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <ComponentName>"
-    echo "Example: $0 StyledText"
+    echo "Example: $0 Text"
     exit 1
 fi
 

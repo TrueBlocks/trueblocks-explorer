@@ -4,11 +4,10 @@ import {
   FieldRenderer,
   FormField,
   StyledButton,
-  StyledText,
   usePreprocessedFields,
 } from '@components';
 import { useFormHotkeys } from '@components';
-import { Group, Stack, Title } from '@mantine/core';
+import { Group, Stack, Text, Title } from '@mantine/core';
 
 export interface WizardFormProps<T extends Record<string, unknown>> {
   children?: ReactNode;
@@ -59,7 +58,11 @@ export const WizardForm = <T extends Record<string, unknown>>({
   return (
     <Stack>
       {title && <Title order={3}>{title}</Title>}
-      {description && <StyledText variant="primary">{description}</StyledText>}
+      {description && (
+        <Text variant="primary" size="md">
+          {description}
+        </Text>
+      )}
       {children ? (
         children
       ) : (

@@ -1,7 +1,7 @@
-import { Action, StyledText } from '@components';
+import { Action } from '@components';
 import { useViewContext } from '@contexts';
 import { useActiveProject, useEvent, useIconSets } from '@hooks';
-import { Group, List, Paper, ThemeIcon, Title } from '@mantine/core';
+import { Group, List, Paper, Text, ThemeIcon, Title } from '@mantine/core';
 import { msgs } from '@models';
 import { Log, LogError } from '@utils';
 import { useLocation } from 'wouter';
@@ -48,53 +48,56 @@ export const ProjectsList = () => {
   }
 
   return (
-    <Paper p="md" withBorder radius="md" mb="md">
-      <Title order={4} mb="sm">
+    <Paper withBorder>
+      <Title order={4} mb="xs">
         Open Projects
       </Title>
       <List spacing="xs">
-        {projects.map((project) => (
-          <List.Item
-            key={project.id}
-            icon={
-              <ThemeIcon
-                color={project.isActive ? 'primary' : 'dimmed'}
-                size={24}
-                radius="xl"
-              >
-                <File size={16} />
-              </ThemeIcon>
-            }
-          >
-            <Group justify="space-between" wrap="nowrap">
-              <div>
-                <StyledText variant="primary" fw={project.isActive ? 600 : 400}>
-                  {project.name}
-                </StyledText>
-                <StyledText variant="dimmed" size="xs">
-                  {project.path}
-                </StyledText>
-              </div>
-              <Group gap="xs">
-                {!project.isActive && (
+        {projects.map((project) => {
+          var fw = project.isActive ? 600 : 400;
+          return (
+            <List.Item
+              key={project.id}
+              icon={
+                <ThemeIcon
+                  color={project.isActive ? 'primary' : 'dimmed'}
+                  size={24}
+                  radius="xl"
+                >
+                  <File size={16} />
+                </ThemeIcon>
+              }
+            >
+              <Group justify="space-between" wrap="nowrap">
+                <div>
+                  <Text variant="primary" size="md" fw={fw}>
+                    {project.name}
+                  </Text>
+                  <Text variant="dimmed" size="sm">
+                    {project.path}
+                  </Text>
+                </div>
+                <Group gap="xs">
+                  {!project.isActive && (
+                    <Action
+                      icon="Switch"
+                      title="Switch to this project"
+                      variant="light"
+                      onClick={() => handleSwitchProject(project.id)}
+                    />
+                  )}
                   <Action
-                    icon="Switch"
-                    title="Switch to this project"
+                    icon="Delete"
+                    title="Close project"
                     variant="light"
-                    onClick={() => handleSwitchProject(project.id)}
+                    onClick={() => handleCloseProject(project.id)}
+                    c="error.6"
                   />
-                )}
-                <Action
-                  icon="Delete"
-                  title="Close project"
-                  variant="light"
-                  onClick={() => handleCloseProject(project.id)}
-                  c="error.6"
-                />
+                </Group>
               </Group>
-            </Group>
-          </List.Item>
-        ))}
+            </List.Item>
+          );
+        })}
       </List>
     </Paper>
   );

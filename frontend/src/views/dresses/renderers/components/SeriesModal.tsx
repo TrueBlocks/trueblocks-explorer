@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import {
-  StyledBadge,
-  StyledButton,
-  StyledModal,
-  StyledText,
-} from '@components';
-import { Group, Stack, TextInput } from '@mantine/core';
+import { StyledBadge, StyledButton, StyledModal } from '@components';
+import { Group, Stack, Text, TextInput } from '@mantine/core';
 import { dalle } from '@models';
 
 interface SeriesModalProps {
@@ -104,11 +99,11 @@ export const SeriesModal = ({
       size="lg"
     >
       <Stack gap="sm">
-        <StyledText variant="primary" size="sm">
+        <Text variant="primary" size="sm">
           {mode === 'edit'
             ? 'Update fields and save.'
             : 'Enter series details.'}
-        </StyledText>
+        </Text>
         <TextInput
           label="Suffix"
           value={suffix}

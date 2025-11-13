@@ -1,7 +1,6 @@
 export * from './Action';
 export * from './AddAddressModal';
 export * from './AddressInput';
-export * from './AddressSelector';
 export * from './BaseTab';
 export * from './ChevronButton';
 export * from './ConfirmModal';
@@ -24,7 +23,6 @@ export * from './StyledButton';
 export * from './StyledDivider';
 export * from './StyledModal';
 export * from './StyledSelect';
-export * from './StyledText';
 export * from './ThemeProvider';
 export * from './WalletConnectButton';
 

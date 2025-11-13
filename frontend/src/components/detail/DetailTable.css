@@ -90,5 +90,3 @@
   overflow-x: auto;
   word-break: break-word;
 }
-
-/* Title now reuses .detail-section-header (optionally with .first-section-header) */

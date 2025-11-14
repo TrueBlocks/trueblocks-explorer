@@ -3,6 +3,7 @@
 import {base} from '../models';
 import {project} from '../models';
 import {types} from '../models';
+import {filewriter} from '../models';
 
 export function AddAddress(arg1:base.Address):Promise<void>;
 
@@ -45,6 +46,10 @@ export function RemoveContract(arg1:string):Promise<void>;
 export function Save():Promise<void>;
 
 export function SaveAs(arg1:string):Promise<void>;
+
+export function SaveAsWithPriority(arg1:string,arg2:filewriter.Priority):Promise<void>;
+
+export function SaveWithPriority(arg1:filewriter.Priority):Promise<void>;
 
 export function SetActiveAddress(arg1:base.Address):Promise<void>;
 

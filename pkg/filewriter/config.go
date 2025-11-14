@@ -44,7 +44,7 @@ func InitializeGlobalWriter(config Config) {
 	_ = GetGlobalWriter()
 
 	if globalWriter != nil {
-		globalWriter.Shutdown()
+		_ = globalWriter.Shutdown()
 	}
 	globalWriter = NewWriterWithConfig(config)
 	globalWriter.Start()

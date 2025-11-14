@@ -86,6 +86,14 @@ export function SaveAs(arg1) {
   return window['go']['project']['Project']['SaveAs'](arg1);
 }
 
+export function SaveAsWithPriority(arg1, arg2) {
+  return window['go']['project']['Project']['SaveAsWithPriority'](arg1, arg2);
+}
+
+export function SaveWithPriority(arg1) {
+  return window['go']['project']['Project']['SaveWithPriority'](arg1);
+}
+
 export function SetActiveAddress(arg1) {
   return window['go']['project']['Project']['SetActiveAddress'](arg1);
 }

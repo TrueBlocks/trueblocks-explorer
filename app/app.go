@@ -177,7 +177,7 @@ func (a *App) BeforeClose(ctx context.Context) bool {
 
 	// Shutdown global file writer and flush any pending writes
 	writer := filewriter.GetGlobalWriter()
-	writer.Shutdown()
+	_ = writer.Shutdown()
 
 	return false // allow window to close
 }

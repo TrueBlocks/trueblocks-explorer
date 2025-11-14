@@ -33,7 +33,9 @@ func TestImmediateWrite(t *testing.T) {
 
 	writer := NewWriter()
 	writer.Start()
-	defer writer.Shutdown()
+	defer func() {
+		_ = writer.Shutdown()
+	}()
 
 	err := writer.WriteFile(testFile, testData, Immediate)
 	if err != nil {
@@ -64,7 +66,9 @@ func TestBatchedWriteCoalescing(t *testing.T) {
 		ShutdownTimeout: 100 * time.Millisecond,
 	})
 	writer.Start()
-	defer writer.Shutdown()
+	defer func() {
+		_ = writer.Shutdown()
+	}()
 
 	errChan1 := make(chan error, 1)
 	errChan2 := make(chan error, 1)
@@ -112,7 +116,7 @@ func TestShutdownFlushes(t *testing.T) {
 	})
 	writer.Start()
 
-	writer.WriteFile(testFile, testData, OnShutdown)
+	_ = writer.WriteFile(testFile, testData, OnShutdown)
 
 	err := writer.Shutdown()
 	if err != nil {
@@ -133,11 +137,13 @@ func TestPriorityHandling(t *testing.T) {
 		ShutdownTimeout: 50 * time.Millisecond,
 	})
 	writer.Start()
-	defer writer.Shutdown()
+	defer func() {
+		_ = writer.Shutdown()
+	}()
 
-	writer.WriteFile(filepath.Join(tempDir, "test1.txt"), []byte("immediate"), Immediate)
-	writer.WriteFile(filepath.Join(tempDir, "test2.txt"), []byte("batched"), Batched)
-	writer.WriteFile(filepath.Join(tempDir, "test3.txt"), []byte("shutdown"), OnShutdown)
+	_ = writer.WriteFile(filepath.Join(tempDir, "test1.txt"), []byte("immediate"), Immediate)
+	_ = writer.WriteFile(filepath.Join(tempDir, "test2.txt"), []byte("batched"), Batched)
+	_ = writer.WriteFile(filepath.Join(tempDir, "test3.txt"), []byte("shutdown"), OnShutdown)
 
 	time.Sleep(5 * time.Millisecond)
 

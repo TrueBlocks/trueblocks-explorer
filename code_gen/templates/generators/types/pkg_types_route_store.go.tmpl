@@ -48,6 +48,19 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload{{if not 
 			if it, ok := item.(*{{toSingular .Name}}); ok {
 				// EXISTING_CODE
 				// EXISTING_CODE
+				{{- if .NeedsCalcs}}
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
+				{{- end}}
 {{if .NeedsBuckets}}				c.update{{.Name}}Bucket(it)
 {{end}}				return it
 			}

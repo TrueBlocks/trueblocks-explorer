@@ -220,6 +220,17 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 					it.StatementId = 1
 				}
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				c.updateAssetsBucket(it)
 				return it
 			}
@@ -334,6 +345,17 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 			if it, ok := item.(*Log); ok {
 				// EXISTING_CODE
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				return it
 			}
 			return nil
@@ -490,6 +512,17 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 			if it, ok := item.(*Statement); ok {
 				// EXISTING_CODE
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				c.updateStatementsBucket(it)
 				return it
 			}

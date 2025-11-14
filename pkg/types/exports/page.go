@@ -14,7 +14,6 @@ import (
 	"strings"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
-	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	storePkg "github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
@@ -92,19 +91,6 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			props := &sdk.ModelProps{
-				Chain:   payload.ActiveChain,
-				Format:  "json",
-				Verbose: true,
-				ExtraOpts: map[string]any{
-					"ether": true,
-				},
-			}
-			for i := range result.Items {
-				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
-					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
-				}
-			}
 			page.Statements = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
@@ -257,19 +243,6 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			props := &sdk.ModelProps{
-				Chain:   payload.ActiveChain,
-				Format:  "json",
-				Verbose: true,
-				ExtraOpts: map[string]any{
-					"ether": true,
-				},
-			}
-			for i := range result.Items {
-				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
-					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
-				}
-			}
 			page.Assets = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
@@ -289,19 +262,6 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			props := &sdk.ModelProps{
-				Chain:   payload.ActiveChain,
-				Format:  "json",
-				Verbose: true,
-				ExtraOpts: map[string]any{
-					"ether": true,
-				},
-			}
-			for i := range result.Items {
-				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
-					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
-				}
-			}
 			page.Statements = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
@@ -321,19 +281,6 @@ func (c *ExportsCollection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
-			props := &sdk.ModelProps{
-				Chain:   payload.ActiveChain,
-				Format:  "json",
-				Verbose: true,
-				ExtraOpts: map[string]any{
-					"ether": true,
-				},
-			}
-			for i := range result.Items {
-				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
-					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
-				}
-			}
 			page.Logs = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State

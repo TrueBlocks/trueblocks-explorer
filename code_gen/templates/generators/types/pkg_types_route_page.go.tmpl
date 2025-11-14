@@ -87,21 +87,6 @@ func (c *{{.Class}}Collection) GetPage(
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("{{$lower}}", dataFacet, "GetPage", err)
 		} else {
-			{{- if .NeedsCalcs}}
-			props := &sdk.ModelProps{
-				Chain:   payload.ActiveChain,
-				Format:  "json",
-				Verbose: true,
-				ExtraOpts: map[string]any{
-					"ether": true,
-				},
-			}
-			for i := range result.Items {
-				if err := result.Items[i].EnsureCalcs(props, nil); err != nil {
-					logging.LogBEError(fmt.Sprintf("Failed to calculate fields for item %d: %v", i, err))
-				}
-			}
-			{{- end}}
 			page.{{.StoreName}} = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State

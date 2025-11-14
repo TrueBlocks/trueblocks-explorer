@@ -450,6 +450,10 @@ export function NewProject(arg1, arg2) {
   return window['go']['app']['App']['NewProject'](arg1, arg2);
 }
 
+export function OpenLink(arg1, arg2) {
+  return window['go']['app']['App']['OpenLink'](arg1, arg2);
+}
+
 export function OpenProjectFile(arg1) {
   return window['go']['app']['App']['OpenProjectFile'](arg1);
 }

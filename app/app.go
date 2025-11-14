@@ -251,6 +251,26 @@ func (a *App) OpenURL(url string) {
 	}
 }
 
+// OpenLink opens a blockchain explorer link for the given key and value
+func (a *App) OpenLink(key string, value string) {
+	var url string
+	if key == "blockHash" {
+		url = "https://etherscan.io/block/" + value
+	} else if key == "transactionHash" || key == "hash" {
+		url = "https://etherscan.io/tx/" + value
+	} else if base.IsValidAddress(value) {
+		url = "https://etherscan.io/address/" + value
+	} else {
+		logger.InfoBY("OpenLink: unknown key type:", key)
+		return
+	}
+
+	logger.InfoBY("OpenLink:", key, value, "->", url)
+	if a.ctx != nil {
+		runtime.BrowserOpenURL(a.ctx, url)
+	}
+}
+
 // RegisterCollection adds a collection to the application's collection registry
 func (a *App) RegisterCollection(collection types.Collection) {
 	a.collections = append(a.collections, collection)

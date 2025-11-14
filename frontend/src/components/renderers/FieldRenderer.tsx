@@ -8,7 +8,7 @@ import {
   DateTimeRenderer,
   EtherRenderer,
   FileSizeRenderer,
-  IdentifierRenderer,
+  PopoverRenderer,
   WeiRenderer,
 } from './FieldRenderer.renderers';
 import {
@@ -104,7 +104,22 @@ export const FieldRenderer = forwardRef<HTMLInputElement, FieldRendererProps>(
         displayValue = <BooleanRenderer value={value} tableCell={tableCell} />;
       } else if ((field.type as string) === 'identifier') {
         displayValue = (
-          <IdentifierRenderer value={value} rowData={rowDataSource} />
+          <PopoverRenderer
+            value={value}
+            rowData={rowDataSource}
+            popFields={[
+              { key: 'timestamp', label: 'timestamp', type: 'string' },
+              {
+                key: 'transactionHash|hash',
+                label: 'txHash',
+                type: 'hash',
+              },
+              { key: 'blockHash', label: 'blockHash', type: 'blockHash' },
+              { key: 'sender', label: 'sender', type: 'address' },
+              { key: 'recipient', label: 'recipient', type: 'address' },
+              { key: 'asset', label: 'asset', type: 'address' },
+            ]}
+          />
         );
       } else if ((field.type as string) === 'float64') {
         displayValue = formatNumberWithFallback(value, 2, '0.00');

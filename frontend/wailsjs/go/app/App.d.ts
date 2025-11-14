@@ -246,6 +246,8 @@ export function NamesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promi
 
 export function NewProject(arg1:string,arg2:string):Promise<void>;
 
+export function OpenLink(arg1:string,arg2:string):Promise<void>;
+
 export function OpenProjectFile(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;

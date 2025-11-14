@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/filewriter"
 )
 
 type OrgPreferences struct {
@@ -64,18 +66,19 @@ func GetOrgPreferences() (OrgPreferences, error) {
 }
 
 func SetOrgPreferences(orgPrefs *OrgPreferences) error {
-	path := getOrgPrefsPath()
+	return SetOrgPreferencesWithPriority(orgPrefs, filewriter.Immediate)
+}
 
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-		return err
-	}
+func SetOrgPreferencesWithPriority(orgPrefs *OrgPreferences, priority filewriter.Priority) error {
+	path := getOrgPrefsPath()
 
 	data, err := json.MarshalIndent(orgPrefs, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	return os.WriteFile(path, data, 0644)
+	writer := filewriter.GetGlobalWriter()
+	return writer.WriteFile(path, data, priority)
 }
 
 func getOrgPrefsPath() string {

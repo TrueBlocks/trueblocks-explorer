@@ -13,6 +13,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/filewriter"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
@@ -109,16 +110,26 @@ func Load(path string) (*Project, error) {
 // ------------------------------------------------------------------------------------
 // Save persists the project to its file path
 func (p *Project) Save() error {
+	return p.SaveWithPriority(filewriter.Immediate)
+}
+
+// SaveWithPriority persists the project with specified priority
+func (p *Project) SaveWithPriority(priority filewriter.Priority) error {
 	if p.Path == "" {
 		return nil
 	}
-	return p.SaveAs(p.Path)
+	return p.SaveAsWithPriority(p.Path, priority)
 }
 
 // ------------------------------------------------------------------------------------
 // SaveAs saves the project to a new file path and updates the project's path
 // with optimized serialization for better performance
 func (p *Project) SaveAs(path string) error {
+	return p.SaveAsWithPriority(path, filewriter.Immediate)
+}
+
+// SaveAsWithPriority saves the project to a new file path with specified priority
+func (p *Project) SaveAsWithPriority(path string, priority filewriter.Priority) error {
 	_ = file.EstablishFolder(filepath.Dir(path))
 
 	p.LastOpened = time.Now().Format(time.RFC3339)
@@ -128,7 +139,8 @@ func (p *Project) SaveAs(path string) error {
 		return fmt.Errorf("failed to serialize project: %w", err)
 	}
 
-	if err := os.WriteFile(path, data, 0644); err != nil {
+	writer := filewriter.GetGlobalWriter()
+	if err := writer.WriteFile(path, data, priority); err != nil {
 		return fmt.Errorf("failed to write project file: %w", err)
 	}
 
@@ -353,7 +365,7 @@ func (p *Project) SetFilterState(key ViewStateKey, state FilterState) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.FilterStates[key] = state
-	return p.Save()
+	return p.SaveWithPriority(filewriter.Batched)
 }
 
 // ------------------------------------------------------------------------------------
@@ -363,7 +375,7 @@ func (p *Project) ClearFilterState(key ViewStateKey) error {
 		p.mu.Lock()
 		defer p.mu.Unlock()
 		delete(p.FilterStates, key)
-		return p.Save()
+		return p.SaveWithPriority(filewriter.Batched)
 	}
 	return nil
 }
@@ -374,7 +386,7 @@ func (p *Project) ClearAllFilterStates() error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.FilterStates = make(map[ViewStateKey]FilterState)
-	return p.Save()
+	return p.SaveWithPriority(filewriter.Batched)
 }
 
 // ------------------------------------------------------------------------------------
@@ -390,7 +402,7 @@ func (p *Project) GetLastView() string {
 func (p *Project) SetLastView(view string) error {
 	if p.LastView != view {
 		p.LastView = strings.Trim(view, "/")
-		return p.Save()
+		return p.SaveWithPriority(filewriter.Batched)
 	}
 	return nil
 }
@@ -416,7 +428,7 @@ func (p *Project) SetLastFacet(view, facet string) error {
 	current := p.LastFacetMap[view]
 	if current != facet {
 		p.LastFacetMap[view] = facet
-		return p.Save()
+		return p.SaveWithPriority(filewriter.Batched)
 	}
 	return nil
 }

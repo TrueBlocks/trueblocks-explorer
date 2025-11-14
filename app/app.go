@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/fileserver"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/filewriter"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/manager"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
@@ -128,6 +129,9 @@ func (a *App) Startup(ctx context.Context) {
 	a.Preferences.User = user
 	a.Preferences.App = appPrefs
 
+	// Initialize global file writer to eliminate race conditions (auto-starts)
+	_ = filewriter.GetGlobalWriter()
+
 	// Restore previously opened projects from last session
 	a.restoreLastProjects()
 
@@ -170,6 +174,10 @@ func (a *App) BeforeClose(ctx context.Context) bool {
 			log.Printf("Error shutting down file server: %v", err)
 		}
 	}
+
+	// Shutdown global file writer and flush any pending writes
+	writer := filewriter.GetGlobalWriter()
+	writer.Shutdown()
 
 	return false // allow window to close
 }

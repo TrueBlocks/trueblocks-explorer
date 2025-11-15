@@ -1,0 +1,349 @@
+/* Type-based column width classes for table rendering */
+
+/* Default widths when DetailPanel is HIDDEN (full table width available) */
+
+/* Address fields - Wide to display full Ethereum addresses */
+.column-type-address {
+  width: 25%;
+  min-width: 240px;
+  max-width: 400px;
+}
+
+/* Hash fields - Medium width for transaction/block hashes */
+.column-type-hash {
+  width: 18%;
+  min-width: 160px;
+  max-width: 240px;
+}
+
+/* Block range fields - Medium width for range display */
+.column-type-blkrange {
+  width: 15%;
+  min-width: 120px;
+  max-width: 180px;
+}
+
+/* String fields - Variable width based on content type */
+.column-type-string {
+  width: 15%;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+/* Numeric fields - Compact width for numbers */
+.column-type-uint64,
+.column-type-int64,
+.column-type-blknum,
+.column-type-txnum,
+.column-type-lognum,
+.column-type-value {
+  width: 12%;
+  min-width: 80px;
+  max-width: 150px;
+  text-align: right;
+}
+
+/* Float fields - Compact width with right alignment */
+.column-type-float64,
+.column-type-float {
+  width: 10%;
+  min-width: 70px;
+  max-width: 130px;
+  text-align: right;
+}
+
+/* Wei/Ether fields - Medium width for currency values */
+.column-type-wei,
+.column-type-ether,
+.column-type-gas {
+  width: 14%;
+  min-width: 100px;
+  max-width: 180px;
+  text-align: right;
+}
+
+/* Timestamp/DateTime fields - Medium width for dates */
+.column-type-timestamp,
+.column-type-datetime {
+  width: 16%;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* Boolean fields - Very compact */
+.column-type-boolean {
+  width: 8%;
+  min-width: 60px;
+  max-width: 100px;
+  text-align: center;
+}
+
+/* IPFS Hash fields - Wide for IPFS hashes */
+.column-type-ipfshash {
+  width: 18%;
+  min-width: 160px;
+  max-width: 280px;
+}
+
+/* Bytes fields - Medium width */
+.column-type-bytes {
+  width: 15%;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+/* Path fields - Wide for file paths */
+.column-type-path {
+  width: 22%;
+  min-width: 180px;
+  max-width: 350px;
+}
+
+/* Actions column - Fixed narrow width */
+.column-type-actions {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+}
+
+/* Identifier fields - Medium width for consolidated display */
+.column-type-identifier {
+  width: 18%;
+  min-width: 150px;
+  max-width: 250px;
+}
+
+/* FileSize fields - Compact for file size display */
+.column-type-fileSize {
+  width: 10%;
+  min-width: 80px;
+  max-width: 120px;
+  text-align: right;
+}
+
+/* Compressed widths when DetailPanel is VISIBLE (table confined to ~65% width) */
+.table-main-content.with-detail-panel .column-type-address {
+  width: 30%;
+  min-width: 140px;
+  max-width: 220px;
+}
+
+.table-main-content.with-detail-panel .column-type-hash,
+.table-main-content.with-detail-panel .column-type-ipfshash {
+  width: 22%;
+  min-width: 100px;
+  max-width: 160px;
+}
+
+.table-main-content.with-detail-panel .column-type-path {
+  width: 25%;
+  min-width: 120px;
+  max-width: 180px;
+}
+
+.table-main-content.with-detail-panel .column-type-string {
+  width: 18%;
+  min-width: 80px;
+  max-width: 120px;
+}
+
+.table-main-content.with-detail-panel .column-type-identifier {
+  width: 22%;
+  min-width: 100px;
+  max-width: 160px;
+}
+
+.table-main-content.with-detail-panel .column-type-blkrange,
+.table-main-content.with-detail-panel .column-type-timestamp,
+.table-main-content.with-detail-panel .column-type-datetime {
+  width: 18%;
+  min-width: 80px;
+  max-width: 120px;
+}
+
+.table-main-content.with-detail-panel .column-type-bytes {
+  width: 18%;
+  min-width: 80px;
+  max-width: 120px;
+}
+
+.table-main-content.with-detail-panel .column-type-uint64,
+.table-main-content.with-detail-panel .column-type-int64,
+.table-main-content.with-detail-panel .column-type-blknum,
+.table-main-content.with-detail-panel .column-type-txnum,
+.table-main-content.with-detail-panel .column-type-lognum,
+.table-main-content.with-detail-panel .column-type-value {
+  width: 15%;
+  min-width: 60px;
+  max-width: 100px;
+}
+
+.table-main-content.with-detail-panel .column-type-wei,
+.table-main-content.with-detail-panel .column-type-ether,
+.table-main-content.with-detail-panel .column-type-gas {
+  width: 16%;
+  min-width: 70px;
+  max-width: 110px;
+}
+
+.table-main-content.with-detail-panel .column-type-float64,
+.table-main-content.with-detail-panel .column-type-float {
+  width: 12%;
+  min-width: 60px;
+  max-width: 90px;
+}
+
+.table-main-content.with-detail-panel .column-type-boolean {
+  width: 8%;
+  min-width: 50px;
+  max-width: 70px;
+}
+
+.table-main-content.with-detail-panel .column-type-fileSize {
+  width: 12%;
+  min-width: 60px;
+  max-width: 90px;
+}
+
+/* Responsive behavior for medium screens */
+@media (max-width: 1200px) {
+  /* Adjust default widths for medium screens */
+  .column-type-address {
+    width: 24%;
+    min-width: 200px;
+    max-width: 320px;
+  }
+
+  .column-type-hash,
+  .column-type-ipfshash {
+    width: 17%;
+    min-width: 140px;
+    max-width: 200px;
+  }
+
+  .column-type-path {
+    width: 20%;
+    min-width: 160px;
+    max-width: 280px;
+  }
+
+  .column-type-string {
+    width: 14%;
+    min-width: 90px;
+    max-width: 170px;
+  }
+
+  /* Compressed widths when DetailPanel is visible on medium screens */
+  .table-main-content.with-detail-panel .column-type-address {
+    width: 32%;
+    min-width: 130px;
+    max-width: 190px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-hash,
+  .table-main-content.with-detail-panel .column-type-ipfshash {
+    width: 24%;
+    min-width: 90px;
+    max-width: 140px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-path {
+    width: 26%;
+    min-width: 110px;
+    max-width: 160px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-string {
+    width: 20%;
+    min-width: 70px;
+    max-width: 110px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile default widths */
+  .column-type-address {
+    width: 30%;
+    min-width: 160px;
+    max-width: 240px;
+  }
+
+  .column-type-hash,
+  .column-type-ipfshash {
+    width: 22%;
+    min-width: 100px;
+    max-width: 150px;
+  }
+
+  .column-type-string,
+  .column-type-path {
+    width: 20%;
+    min-width: 80px;
+    max-width: 140px;
+  }
+
+  .column-type-blkrange,
+  .column-type-timestamp,
+  .column-type-datetime {
+    width: 16%;
+    min-width: 70px;
+    max-width: 120px;
+  }
+
+  .column-type-uint64,
+  .column-type-int64,
+  .column-type-blknum,
+  .column-type-txnum,
+  .column-type-lognum,
+  .column-type-value,
+  .column-type-wei,
+  .column-type-ether,
+  .column-type-gas {
+    width: 14%;
+    min-width: 60px;
+    max-width: 100px;
+  }
+
+  /* Mobile behavior with DetailPanel visible */
+  .table-main-content.with-detail-panel .column-type-address {
+    width: 40%;
+    min-width: 120px;
+    max-width: 160px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-hash,
+  .table-main-content.with-detail-panel .column-type-ipfshash {
+    width: 28%;
+    min-width: 80px;
+    max-width: 120px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-string,
+  .table-main-content.with-detail-panel .column-type-path {
+    width: 25%;
+    min-width: 70px;
+    max-width: 110px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-blkrange,
+  .table-main-content.with-detail-panel .column-type-timestamp,
+  .table-main-content.with-detail-panel .column-type-datetime {
+    width: 20%;
+    min-width: 60px;
+    max-width: 90px;
+  }
+
+  .table-main-content.with-detail-panel .column-type-uint64,
+  .table-main-content.with-detail-panel .column-type-int64,
+  .table-main-content.with-detail-panel .column-type-blknum,
+  .table-main-content.with-detail-panel .column-type-txnum,
+  .table-main-content.with-detail-panel .column-type-lognum,
+  .table-main-content.with-detail-panel .column-type-value,
+  .table-main-content.with-detail-panel .column-type-wei,
+  .table-main-content.with-detail-panel .column-type-ether,
+  .table-main-content.with-detail-panel .column-type-gas {
+    width: 18%;
+    min-width: 50px;
+    max-width: 80px;
+  }
+}

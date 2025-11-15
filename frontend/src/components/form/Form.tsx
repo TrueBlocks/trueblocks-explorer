@@ -126,26 +126,41 @@ export const Form = <
         if (field.name && field.name in convertedValues) {
           const value = convertedValues[field.name];
 
-          // Convert based on field type
-          switch (field.type) {
+          // Convert based on field input type (for forms) or data type (for display)
+          const inputType = field.inputType || field.type;
+          switch (inputType) {
             case 'number':
-            // case 'ether':
             case 'gas':
             case 'timestamp':
+            case 'blknum':
+            case 'txnum':
+            case 'lognum':
+            case 'value':
+            case 'uint64':
+            case 'int64':
+            case 'float64':
+            case 'float':
               convertedValues[field.name] = safeStringToNumber(value);
               break;
 
             case 'checkbox':
+            case 'boolean':
               convertedValues[field.name] = safeToBoolean(value);
               break;
 
             case 'text':
             case 'password':
             case 'textarea':
-            case 'address':
             case 'select':
             case 'radio':
             case 'button':
+            case 'string':
+            case 'address':
+            case 'hash':
+            case 'wei':
+            case 'bytes':
+            case 'path':
+            case 'url':
             default:
               if (value !== null && value !== undefined) {
                 convertedValues[field.name] = String(value);

@@ -1,5 +1,7 @@
 import { FormField } from 'src/components/form';
 
+import './TypeBasedWidths.css';
+
 export function processColumns<T>(
   columns: FormField<T>[],
   detailCollapsed: boolean,
@@ -29,9 +31,14 @@ export function processColumns<T>(
     ]);
     const textAlign = rightAlignTypes.has(col.type || '') ? 'right' : 'left';
     return {
-      ...(col.width ? { width: col.width } : undefined),
       textAlign,
     };
+  };
+
+  const getColumnClass = <T>(col: FormField<T>): string => {
+    const baseClass = 'column-type-';
+    const type = col.type || 'string';
+    return baseClass + type;
   };
 
   const isSortable = (col: FormField<T>): boolean => {
@@ -47,7 +54,7 @@ export function processColumns<T>(
       'int',
       'int256',
       'int64',
-      'ipfshash',
+      'ipfsHash',
       'number',
       'string',
       'text',
@@ -62,6 +69,7 @@ export function processColumns<T>(
     ...col,
     sortable: isSortable(col),
     style: getCellStyle(col),
+    className: getColumnClass(col),
   }));
 
   const actionsColumn = processedColumns.find((col) => col.key === 'actions');

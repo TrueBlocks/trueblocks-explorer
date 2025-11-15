@@ -123,7 +123,7 @@ func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Manifest", Key: "version"},
 		{Section: "Manifest", Key: "chain"},
-		{Section: "Manifest", Key: "specification", Type: "ipfshash"},
+		{Section: "Manifest", Key: "specification", Type: "ipfsHash"},
 	}
 	types.NormalizeFields(&ret)
 	return ret

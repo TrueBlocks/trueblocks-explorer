@@ -78,7 +78,8 @@ export const SettingsOrg = () => {
           label: 'Telemetry',
           placeholder: 'Enter your telemetry',
           sameLine: true,
-          type: 'checkbox',
+          inputType: 'checkbox',
+          type: 'boolean',
         },
         {
           name: 'logLevel',
@@ -93,7 +94,8 @@ export const SettingsOrg = () => {
           label: 'Experimental',
           placeholder: 'Enter your experimental',
           sameLine: true,
-          type: 'checkbox',
+          inputType: 'checkbox',
+          type: 'boolean',
         },
         {
           name: 'version',

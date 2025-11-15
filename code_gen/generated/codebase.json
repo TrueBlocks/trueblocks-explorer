@@ -1308,7 +1308,7 @@
                         },
                         {
                             "name": "specification",
-                            "type": "ipfshash",
+                            "type": "ipfsHash",
                             "attributes": "readOnly",
                             "section": "Manifest",
                             "docOrder": 3,
@@ -8015,7 +8015,7 @@
                 },
                 {
                     "name": "specification",
-                    "type": "ipfshash",
+                    "type": "ipfsHash",
                     "attributes": "readOnly",
                     "section": "Manifest",
                     "docOrder": 3,
@@ -9230,7 +9230,7 @@
                 },
                 {
                     "name": "ipfsHash",
-                    "type": "ipfshash",
+                    "type": "ipfsHash",
                     "section": "General",
                     "docOrder": 17,
                     "description": "The ipfsHash value",

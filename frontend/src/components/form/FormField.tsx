@@ -1,5 +1,51 @@
 import { ChangeEvent, ReactNode } from 'react';
 
+// HTML form input types (for form controls only)
+export type FormInputType =
+  | 'text'
+  | 'number'
+  | 'password'
+  | 'checkbox'
+  | 'radio'
+  | 'button'
+  | 'textarea'
+  | 'select';
+
+export type DataDisplayType =
+  // Core blockchain types (from CSV)
+  | 'address'
+  | 'hash'
+  | 'wei'
+  | 'gas'
+  | 'timestamp'
+  | 'datetime'
+  | 'blknum'
+  | 'txnum'
+  | 'lognum'
+  | 'blkrange'
+  // Data types (from CSV)
+  | 'string'
+  | 'boolean'
+  | 'bytes'
+  | 'int256'
+  | 'uint64'
+  | 'int64'
+  | 'value'
+  | 'float64'
+  | 'float'
+  // Special types (from CSV)
+  | 'path'
+  | 'url'
+  | 'ipfsHash'
+  | 'topic'
+  | 'Function'
+  | 'fileSize'
+  // Synthetic types (FieldRenderer)
+  | 'identifier'
+  | 'ether'
+  // Legacy/compatibility
+  | 'custom';
+
 export interface FormField<T = Record<string, unknown>> {
   name?: string;
   key?: string;
@@ -28,39 +74,8 @@ export interface FormField<T = Record<string, unknown>> {
   hint?: string;
   visible?: boolean | ((formData: T) => boolean);
   objType?: string;
-  type?:
-    | 'text'
-    | 'number'
-    | 'password'
-    | 'checkbox'
-    | 'radio'
-    | 'button'
-    | 'textarea'
-    | 'select'
-    | 'ether'
-    | 'address'
-    | 'timestamp'
-    | 'gas'
-    | 'button'
-    | 'wei'
-    | 'int256'
-    | 'lognum'
-    | 'txnum'
-    | 'hash'
-    | 'value'
-    | 'bytes'
-    | 'blknum'
-    | 'blkrange'
-    | 'ipfshash'
-    | 'float64'
-    | 'float'
-    | 'topic'
-    | 'ipfsHash'
-    | 'datetime'
-    | 'Function'
-    | 'fileSize'
-    | 'boolean'
-    | 'custom';
+  type?: DataDisplayType;
+  inputType?: FormInputType;
   fields?: FormField<T>[];
   isButtonGroup?: boolean;
   buttonAlignment?: 'left' | 'center' | 'right';

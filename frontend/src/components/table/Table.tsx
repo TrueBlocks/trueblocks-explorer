@@ -351,74 +351,79 @@ export const Table = <T extends Record<string, unknown>>({
       <div
         className={`table-main-content ${!detailCollapsed ? 'with-detail-panel' : ''} ${getDebugClass(2)}`}
       >
-        <table
-          className={`data-table ${getDebugClass(4)}`}
-          ref={tableRef}
-          tabIndex={0}
-          aria-label="Table with keyboard navigation"
-          onClick={focusTable}
-        >
-          <Header columns={displayColumns} viewStateKey={viewStateKey} />
-          <tbody className={getDebugClass(5)}>
-            {data.length === 0 ? (
-              state === types.StoreState.FETCHING ? (
-                <tr>
-                  <td
-                    colSpan={displayColumns.length}
-                    style={{
-                      textAlign: 'left',
-                      padding: '20px',
-                      color: 'var(--mantine-color-dimmed)',
-                    }}
-                  >
-                    Loading...
-                  </td>
-                </tr>
-              ) : (placeholderCount ?? 0) > 0 ? (
-                <>
-                  {Array.from({ length: placeholderCount ?? 0 }, (_, index) => (
-                    <PlaceholderRow
-                      key={`skeleton-${index}`}
-                      index={index + 1}
-                      columns={displayColumns}
-                      isActive={index === cyclingRowIndex}
-                    />
-                  ))}
-                </>
+        <div className={`table-section ${getDebugClass(3)}`}>
+          <table
+            className={`data-table ${getDebugClass(4)}`}
+            ref={tableRef}
+            tabIndex={0}
+            aria-label="Table with keyboard navigation"
+            onClick={focusTable}
+          >
+            <Header columns={displayColumns} viewStateKey={viewStateKey} />
+            <tbody className={getDebugClass(5)}>
+              {data.length === 0 ? (
+                state === types.StoreState.FETCHING ? (
+                  <tr>
+                    <td
+                      colSpan={displayColumns.length}
+                      style={{
+                        textAlign: 'left',
+                        padding: '20px',
+                        color: 'var(--mantine-color-dimmed)',
+                      }}
+                    >
+                      Loading...
+                    </td>
+                  </tr>
+                ) : (placeholderCount ?? 0) > 0 ? (
+                  <>
+                    {Array.from(
+                      { length: placeholderCount ?? 0 },
+                      (_, index) => (
+                        <PlaceholderRow
+                          key={`skeleton-${index}`}
+                          index={index + 1}
+                          columns={displayColumns}
+                          isActive={index === cyclingRowIndex}
+                        />
+                      ),
+                    )}
+                  </>
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={displayColumns.length}
+                      style={{
+                        textAlign: 'left',
+                        padding: '20px',
+                        color: 'var(--mantine-color-dimmed)',
+                      }}
+                    >
+                      No data found.
+                    </td>
+                  </tr>
+                )
               ) : (
-                <tr>
-                  <td
-                    colSpan={displayColumns.length}
-                    style={{
-                      textAlign: 'left',
-                      padding: '20px',
-                      color: 'var(--mantine-color-dimmed)',
-                    }}
-                  >
-                    No data found.
-                  </td>
-                </tr>
-              )
-            ) : (
-              <TableBody
-                columns={displayColumns}
-                data={data}
-                selectedRowIndex={selectedRowIndex}
-                handleRowClick={handleRowClick}
-                noDataMessage={
-                  state === types.StoreState.FETCHING
-                    ? 'Loading...'
-                    : 'No data found.'
-                }
-              />
-            )}
-          </tbody>
-          <Stats
-            nRecords={data.length}
-            nCols={displayColumns.length}
-            viewStateKey={viewStateKey}
-          />
-        </table>
+                <TableBody
+                  columns={displayColumns}
+                  data={data}
+                  selectedRowIndex={selectedRowIndex}
+                  handleRowClick={handleRowClick}
+                  noDataMessage={
+                    state === types.StoreState.FETCHING
+                      ? 'Loading...'
+                      : 'No data found.'
+                  }
+                />
+              )}
+            </tbody>
+            <Stats
+              nRecords={data.length}
+              nCols={displayColumns.length}
+              viewStateKey={viewStateKey}
+            />
+          </table>
+        </div>
 
         {!detailCollapsed && (
           <DetailPanel

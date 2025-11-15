@@ -15,7 +15,7 @@ imageUrl       , string     , false   , noTable   , Image     ,       13, The im
 generatedPath  , string     , false   ,           , Image     ,       14, The generatedPath value
 annotatedPath  , string     , false   ,           , Image     ,       15, The annotatedPath value
 downloadMode   , string     , false   ,           , General   ,       16, The downloadMode value
-ipfsHash       , ipfshash   , false   ,           , General   ,       17, The ipfsHash value
+ipfsHash       , ipfsHash   , false   ,           , General   ,       17, The ipfsHash value
 cacheHit       , bool       , false   ,           , General   ,       18, The cacheHit value
 completed      , bool       , false   ,           , General   ,       19, The completed value
 series         , string     , false   ,           , General   ,       20, The series value

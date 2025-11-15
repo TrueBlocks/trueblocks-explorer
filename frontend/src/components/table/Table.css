@@ -8,7 +8,6 @@
 
 .data-table {
   width: 100%;
-  min-width: max-content;
   table-layout: fixed;
   border-collapse: collapse;
   outline: none;
@@ -18,6 +17,11 @@
   -ms-overflow-style: none;
   height: auto;
   max-height: max-content;
+}
+
+/* When DetailPanel is visible, allow horizontal scrolling */
+.table-main-content.with-detail-panel .data-table {
+  min-width: max-content;
 }
 
 .data-table::-webkit-scrollbar {
@@ -250,7 +254,7 @@
 .table-section {
   display: flex;
   flex-direction: column;
-  flex: 0 0 65%;
+  flex: 1 1 auto; /* Take full width when DetailPanel is hidden */
   min-height: 0;
   height: auto;
   overflow-x: auto;

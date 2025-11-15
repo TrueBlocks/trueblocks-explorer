@@ -1,4 +1,4 @@
 name         , type    , strDefault, attributes, section , upgrades, docOrder, description
 version      , string  ,           , readOnly  , Manifest,         ,        1, the version string hashed into the chunk data
 chain        , string  ,           , readOnly  , Manifest,         ,        2, the chain to which this manifest belongs
-specification, ipfshash,           , readOnly  , Manifest,         ,        3, IPFS cid of the specification
+specification, ipfsHash,           , readOnly  , Manifest,         ,        3, IPFS cid of the specification

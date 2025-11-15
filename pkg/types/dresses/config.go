@@ -118,7 +118,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "Image", Key: "generatedPath", Type: "path"},
 		{Section: "Image", Key: "annotatedPath", Type: "path"},
 		{Section: "General", Key: "downloadMode"},
-		{Section: "General", Key: "ipfsHash", Type: "ipfshash"},
+		{Section: "General", Key: "ipfsHash", Type: "ipfsHash"},
 		{Section: "General", Key: "cacheHit", Type: "boolean"},
 		{Section: "General", Key: "completed", Type: "boolean"},
 		{Section: "General", Key: "series"},

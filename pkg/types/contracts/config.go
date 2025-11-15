@@ -79,9 +79,9 @@ func getContractsFields() []types.FieldConfig {
 		{Section: "Overview", Key: "address", Type: "address"},
 		{Section: "Overview", Key: "name"},
 		{Section: "Technical", Key: "abi"},
-		{Section: "Status", Key: "lastUpdated", Type: "datetime"},
-		{Section: "Status", Key: "date"},
-		{Section: "Status", Key: "errorCount"},
+		{Section: "Status", Key: "lastUpdated", Type: "timestamp"},
+		{Section: "Status", Key: "date", Type: "datetime"},
+		{Section: "Status", Key: "errorCount", Type: "int64"},
 		{Section: "Status", Key: "lastError"},
 	}
 	types.NormalizeFields(&ret)
@@ -90,18 +90,18 @@ func getContractsFields() []types.FieldConfig {
 
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Context", Key: "blockNumber", Type: "number"},
-		{Section: "Context", Key: "transactionIndex", Type: "number"},
-		{Section: "Context", Key: "logIndex", Type: "number"},
+		{Section: "Context", Key: "blockNumber", Type: "blknum"},
+		{Section: "Context", Key: "transactionIndex", Type: "txnum"},
+		{Section: "Context", Key: "logIndex", Type: "lognum"},
 		{Section: "Context", Key: "address", Type: "address"},
-		{Section: "Context", Key: "timestamp", Type: "datetime", NoTable: true},
+		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Context", Key: "transactionHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "topic0", Type: "hash"},
 		{Section: "Details", Key: "topic1", Type: "hash"},
 		{Section: "Details", Key: "topic2", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
-		{Section: "Details", Key: "data", NoTable: true},
+		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},

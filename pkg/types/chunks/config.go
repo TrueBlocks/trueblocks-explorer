@@ -97,8 +97,8 @@ func getBloomsFields() []types.FieldConfig {
 		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nBlooms"},
 		{Section: "Counts", Key: "nInserted"},
-		{Section: "Sizes", Key: "calc.fileSize", Type: "number"},
-		{Section: "Sizes", Key: "byteWidth", Type: "number"},
+		{Section: "Sizes", Key: "calc.fileSize", Type: "uint64"},
+		{Section: "Sizes", Key: "byteWidth", Type: "uint64"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -112,7 +112,7 @@ func getIndexFields() []types.FieldConfig {
 		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nAddresses"},
 		{Section: "Counts", Key: "nAppearances"},
-		{Section: "Sizes", Key: "size", Type: "number"},
+		{Section: "Sizes", Key: "size", Type: "uint64"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -123,7 +123,7 @@ func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Manifest", Key: "version"},
 		{Section: "Manifest", Key: "chain"},
-		{Section: "Manifest", Key: "specification", Type: "hash"},
+		{Section: "Manifest", Key: "specification", Type: "ipfshash"},
 	}
 	types.NormalizeFields(&ret)
 	return ret
@@ -132,17 +132,17 @@ func getManifestFields() []types.FieldConfig {
 func getStatsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Range", Key: "range", Type: "blkrange"},
-		{Section: "Efficiency", Key: "ratio", Type: "number"},
+		{Section: "Efficiency", Key: "ratio", Type: "float64"},
 		{Section: "Efficiency", Key: "addrsPerBlock"},
 		{Section: "Efficiency", Key: "appsPerBlock"},
 		{Section: "Efficiency", Key: "appsPerAddr"},
-		{Section: "Sizes", Key: "bloomSz", Type: "number", NoTable: true},
-		{Section: "Sizes", Key: "chunkSz", Type: "number", NoTable: true},
+		{Section: "Sizes", Key: "bloomSz", Type: "uint64", NoTable: true},
+		{Section: "Sizes", Key: "chunkSz", Type: "uint64", NoTable: true},
 		{Section: "Counts", Key: "nAddrs", NoTable: true},
 		{Section: "Counts", Key: "nApps", NoTable: true},
 		{Section: "Counts", Key: "nBlocks", NoTable: true},
 		{Section: "Counts", Key: "nBlooms", NoTable: true},
-		{Section: "Sizes", Key: "recWid", Type: "number", NoTable: true},
+		{Section: "Sizes", Key: "recWid", Type: "uint64", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

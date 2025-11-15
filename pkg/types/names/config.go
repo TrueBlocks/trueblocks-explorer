@@ -107,7 +107,7 @@ func getNamesFields() []types.FieldConfig {
 		{Section: "Identity", Key: "address", Type: "address"},
 		{Section: "Identity", Key: "name"},
 		{Section: "Identity", Key: "symbol"},
-		{Section: "Identity", Key: "decimals", Type: "number"},
+		{Section: "Identity", Key: "decimals", Type: "uint64"},
 		{Section: "Classification", Key: "source"},
 		{Section: "Classification", Key: "tags"},
 		{Section: "Classification", Key: "deleted", Type: "boolean", NoTable: true},

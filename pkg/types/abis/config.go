@@ -93,12 +93,12 @@ func getAbisFields() []types.FieldConfig {
 		{Section: "Identity", Key: "path", Type: "path", NoTable: true},
 		{Section: "Statistics", Key: "nFunctions"},
 		{Section: "Statistics", Key: "nEvents"},
-		{Section: "Statistics", Key: "fileSize"},
+		{Section: "Statistics", Key: "fileSize", Type: "int64"},
 		{Section: "Properties", Key: "isEmpty", NoTable: true},
 		{Section: "Properties", Key: "isKnown", NoTable: true},
 		{Section: "Properties", Key: "hasConstructor", NoTable: true},
 		{Section: "Properties", Key: "hasFallback", NoTable: true},
-		{Section: "Metadata", Key: "lastModDate", Type: "datetime"},
+		{Section: "Metadata", Key: "lastModDate"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

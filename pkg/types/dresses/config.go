@@ -114,11 +114,11 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "General", Key: "seedChunks", NoTable: true},
 		{Section: "General", Key: "selectedTokens", NoTable: true},
 		{Section: "General", Key: "selectedRecords", NoTable: true},
-		{Section: "Image", Key: "imageUrl", Type: "url", NoTable: true},
+		{Section: "Image", Key: "imageUrl", NoTable: true},
 		{Section: "Image", Key: "generatedPath", Type: "path"},
 		{Section: "Image", Key: "annotatedPath", Type: "path"},
 		{Section: "General", Key: "downloadMode"},
-		{Section: "General", Key: "ipfsHash", Type: "hash"},
+		{Section: "General", Key: "ipfsHash", Type: "ipfshash"},
 		{Section: "General", Key: "cacheHit", Type: "boolean"},
 		{Section: "General", Key: "completed", Type: "boolean"},
 		{Section: "General", Key: "series"},
@@ -131,7 +131,7 @@ func getDalledressFields() []types.FieldConfig {
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "databaseName"},
-		{Section: "General", Key: "count", Type: "number"},
+		{Section: "General", Key: "count", Type: "value"},
 		{Section: "General", Key: "sample"},
 		{Section: "General", Key: "filtered"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
@@ -142,18 +142,18 @@ func getDatabasesFields() []types.FieldConfig {
 
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Context", Key: "blockNumber", Type: "number"},
-		{Section: "Context", Key: "transactionIndex", Type: "number"},
-		{Section: "Context", Key: "logIndex", Type: "number"},
+		{Section: "Context", Key: "blockNumber", Type: "blknum"},
+		{Section: "Context", Key: "transactionIndex", Type: "txnum"},
+		{Section: "Context", Key: "logIndex", Type: "lognum"},
 		{Section: "Context", Key: "address", Type: "address"},
-		{Section: "Context", Key: "timestamp", Type: "datetime", NoTable: true},
+		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Context", Key: "transactionHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "topic0", Type: "hash"},
 		{Section: "Details", Key: "topic1", Type: "hash"},
 		{Section: "Details", Key: "topic2", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
-		{Section: "Details", Key: "data", NoTable: true},
+		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
@@ -165,7 +165,7 @@ func getLogsFields() []types.FieldConfig {
 func getSeriesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "suffix"},
-		{Section: "General", Key: "last"},
+		{Section: "General", Key: "last", Type: "value"},
 		{Section: "General", Key: "deleted", Type: "boolean"},
 		{Section: "General", Key: "modifiedAt"},
 		{Section: "Content", Key: "adverbs", NoTable: true},

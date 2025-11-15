@@ -66,9 +66,9 @@ func getMonitorsFields() []types.FieldConfig {
 		{Section: "Overview", Key: "deleted", Type: "boolean", NoTable: true},
 		{Section: "Overview", Key: "isStaged", NoTable: true},
 		{Section: "Statistics", Key: "nRecords"},
-		{Section: "Statistics", Key: "fileSize"},
+		{Section: "Statistics", Key: "fileSize", Type: "int64"},
 		{Section: "Statistics", Key: "isEmpty", NoTable: true},
-		{Section: "Statistics", Key: "lastScanned", Type: "number"},
+		{Section: "Statistics", Key: "lastScanned", Type: "blknum"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

@@ -91,7 +91,7 @@ func getCachesFields() []types.FieldConfig {
 func getChainsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "chain"},
-		{Section: "General", Key: "chainId", Type: "number"},
+		{Section: "General", Key: "chainId", Type: "uint64"},
 		{Section: "General", Key: "symbol"},
 		{Section: "Providers", Key: "rpcProvider"},
 		{Section: "Providers", Key: "ipfsGateway"},

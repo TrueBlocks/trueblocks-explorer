@@ -50,9 +50,9 @@ export const EditRenderer = forwardRef<HTMLInputElement, EditRendererProps>(
           error={field.error}
           disabled={field.disabled}
           autoFocus={autoFocus}
-          {/* tabIndex={field.readOnly ? -1 : 0}
+          tabIndex={field.readOnly ? -1 : 0}
           rightSection={field.rightSection}
-          name={field.name} */}
+          name={field.name}
         />
         {hint && (
           <Text size="xs" c="gray.6" mt={4}>

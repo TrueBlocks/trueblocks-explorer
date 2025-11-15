@@ -1,6 +1,8 @@
 import { isValidElement } from 'react';
 
-import { FormField } from '@components';
+import { FormField, shouldRightAlign } from '@components';
+import { usePreferences } from '@hooks';
+import { useMantineTheme } from '@mantine/core';
 
 import {
   RenderContext,
@@ -23,6 +25,40 @@ const TableAlignmentWrapper = ({
   return <>{children}</>;
 };
 
+// Type debugging wrapper
+const TypeDebugWrapper = ({
+  children,
+  fieldType,
+  showTypes,
+  secondaryColor,
+}: {
+  children: React.ReactNode;
+  fieldType?: string;
+  showTypes: boolean;
+  secondaryColor: string;
+}) => {
+  if (!showTypes) {
+    return <>{children}</>;
+  }
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {children}
+      <div
+        style={{
+          fontSize: '9px',
+          color: secondaryColor,
+          fontFamily: 'monospace',
+          lineHeight: '10px',
+          marginTop: '1px',
+        }}
+      >
+        {fieldType || 'undefined'}
+      </div>
+    </div>
+  );
+};
+
 export interface DisplayRendererProps {
   field: FormField<Record<string, unknown>>;
   row?: Record<string, unknown>;
@@ -38,6 +74,9 @@ export const DisplayRenderer = ({
   tableCell = true,
   keyProp,
 }: DisplayRendererProps) => {
+  const { showFieldTypes } = usePreferences();
+  const theme = useMantineTheme();
+
   // Extract value from rowData if available, otherwise use field.value
   const rowDataSource = rowData || row; // Support both prop names
   const value =
@@ -67,20 +106,31 @@ export const DisplayRenderer = ({
     }
   }
 
+  // Wrap with type debugging if enabled
+  const wrappedValue = (
+    <TypeDebugWrapper
+      fieldType={field.type}
+      showTypes={showFieldTypes}
+      secondaryColor={theme.colors.gray[6]}
+    >
+      {processedDisplayValue}
+    </TypeDebugWrapper>
+  );
+
   // Special case for datetime - render directly without wrapper
   if (field.type === 'datetime') {
-    return processedDisplayValue as React.ReactElement;
+    return wrappedValue;
   }
 
   // Handle table cell alignment
   if (context === RenderContext.TABLE_CELL) {
     return (
-      <TableAlignmentWrapper shouldRightAlign={typeRenderer.shouldRightAlign}>
-        {processedDisplayValue}
+      <TableAlignmentWrapper shouldRightAlign={shouldRightAlign(field.type)}>
+        {wrappedValue}
       </TableAlignmentWrapper>
     );
   }
 
   // Detail view or other display contexts
-  return <div key={keyProp}>{processedDisplayValue}</div>;
+  return <div key={keyProp}>{wrappedValue}</div>;
 };

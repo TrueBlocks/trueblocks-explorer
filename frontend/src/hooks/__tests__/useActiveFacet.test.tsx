@@ -100,6 +100,7 @@ describe('useActiveFacet Hook Tests (Focused Hook implementation)', () => {
       chromeCollapsed: false,
       detailCollapsed: true,
       fontScale: 1.0,
+      showFieldTypes: false,
       isDarkMode: true,
       loading: false,
       toggleTheme: vi.fn(),
@@ -111,6 +112,7 @@ describe('useActiveFacet Hook Tests (Focused Hook implementation)', () => {
       setChromeCollapsed: vi.fn(),
       setDetailCollapsed: vi.fn(),
       setFontScale: vi.fn(),
+      setShowFieldTypes: vi.fn(),
     });
   });
 

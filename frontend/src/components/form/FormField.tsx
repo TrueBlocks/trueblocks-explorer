@@ -43,8 +43,146 @@ export type DataDisplayType =
   // Synthetic types (FieldRenderer)
   | 'identifier'
   | 'ether'
+  | 'actions'
   // Legacy/compatibility
   | 'custom';
+
+// Centralized type categorization system
+export const NUMERIC_TYPES: Set<DataDisplayType> = new Set([
+  'blknum',
+  'txnum',
+  'lognum',
+  'wei',
+  'gas',
+  'ether',
+  'int256',
+  'uint64',
+  'int64',
+  'value',
+  'float64',
+  'float',
+  'fileSize',
+  'timestamp',
+  'datetime',
+]);
+
+export const SORTABLE_TYPES: Set<DataDisplayType> = new Set([
+  'address',
+  'blkrange',
+  'boolean',
+  'ether',
+  'float',
+  'float64',
+  'hash',
+  'int256',
+  'int64',
+  'string',
+  'uint64',
+  'value',
+  'blknum',
+  'txnum',
+  'lognum',
+  'wei',
+  'gas',
+  'timestamp',
+  'datetime',
+  'fileSize',
+  'ipfsHash',
+]);
+
+// Type utility functions
+export const isNumericType = (type?: DataDisplayType): boolean => {
+  return type ? NUMERIC_TYPES.has(type) : false;
+};
+
+export const shouldRightAlign = (type?: DataDisplayType): boolean => {
+  return isNumericType(type);
+};
+
+export const isSortableType = (type?: DataDisplayType): boolean => {
+  return type ? SORTABLE_TYPES.has(type) : false;
+};
+
+// Form value conversion functions by type
+export const convertFormValue = (
+  value: unknown,
+  type?: DataDisplayType | FormInputType,
+): unknown => {
+  if (value === null || value === undefined) return value;
+
+  const safeStringToNumber = (val: unknown): number => {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') {
+      const trimmed = val.trim();
+      if (trimmed === '') return 0;
+      const parsed = Number(trimmed);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    return 0;
+  };
+
+  const safeToBoolean = (val: unknown): boolean => {
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'string') {
+      const lower = val.toLowerCase().trim();
+      return (
+        lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on'
+      );
+    }
+    if (typeof val === 'number') return val !== 0;
+    return false;
+  };
+
+  switch (type) {
+    // Numeric data types
+    case 'blknum':
+    case 'txnum':
+    case 'lognum':
+    case 'gas':
+    case 'timestamp':
+    case 'value':
+    case 'uint64':
+    case 'int64':
+    case 'int256':
+    case 'float64':
+    case 'float':
+    case 'fileSize':
+    // Form input types that should be numeric
+    case 'number':
+      return safeStringToNumber(value);
+
+    // Boolean types
+    case 'boolean':
+    case 'checkbox':
+      return safeToBoolean(value);
+
+    // String-based types (both data and form input types)
+    case 'string':
+    case 'address':
+    case 'hash':
+    case 'wei':
+    case 'ether':
+    case 'bytes':
+    case 'path':
+    case 'url':
+    case 'ipfsHash':
+    case 'topic':
+    case 'Function':
+    case 'blkrange':
+    case 'datetime':
+    case 'identifier':
+    case 'actions':
+    case 'custom':
+    case 'text':
+    case 'password':
+    case 'textarea':
+    case 'select':
+    case 'radio':
+    case 'button':
+    default:
+      return value !== null && value !== undefined ? String(value) : value;
+  }
+};
 
 export interface FormField<T = Record<string, unknown>> {
   name?: string;

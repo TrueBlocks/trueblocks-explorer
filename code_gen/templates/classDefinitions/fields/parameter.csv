@@ -2,7 +2,7 @@ name        , type       , strDefault, attributes, section   , upgrades, docOrde
 type        , string     ,           ,           , Definition,         ,        1, the type of this parameter
 name        , string     ,           ,           , Definition,         ,        2, the name of this parameter
 strDefault  , string     ,           ,           , Definition,         ,        3, the default value of this parameter&#44; if any
-indexed     , bool       ,           ,           , Metadata  ,         ,        4, `true` if this parameter is indexed
+indexed     , boolean       ,           ,           , Metadata  ,         ,        4, `true` if this parameter is indexed
 internalType, string     ,           ,           , Definition,         ,        5, for composite types&#44; the internal type of the parameter
 components  , []Parameter,           ,           , Structure ,         ,        6, for composite types&#44; the parameters making up the composite
 value       , string     ,           ,           , Runtime   ,         ,        7, 

@@ -24,6 +24,7 @@ function getDefaults(): preferences.AppPreferences {
     menuCollapsed: false,
     detailCollapsed: true,
     debugCollapsed: true,
+    showFieldTypes: false,
     recentProjects: [],
     silencedDialogs: {},
     bounds: {

@@ -16,7 +16,7 @@ recipient          , address  ,           , readOnly  , Parties    ,         ,  
 begBal             , int256   ,           ,           , Balances   ,         ,       15, the on-chain or running beginning balance prior to the transaction (see notes about intra-block reconciliations)
 amountNet          , int256   ,           , calc      , Balances   ,         ,       16, totalIn - totalOut
 endBal             , int256   ,           ,           , Balances   ,         ,       17, the on-chain or running balance after the transaction (see notes about intra-block reconciliations)
-reconciled         , bool     ,           ,           , Status     ,         ,       18, true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.
+reconciled         , boolean     ,           ,           , Status     ,         ,       18, true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.
 totalIn            , int256   ,           ,           , Inflows    ,         ,       19, the sum of the following `In` fields
 amountIn           , int256   ,           ,           , Inflows    ,         ,       20, the top-level value of the incoming transfer for the accountedFor address
 internalIn         , int256   ,           ,           , Inflows    ,         ,       21, the internal value of the incoming transfer for the accountedFor address

@@ -54,7 +54,7 @@
                         },
                         {
                             "name": "path",
-                            "type": "string",
+                            "type": "path",
                             "attributes": "noui|noTable",
                             "section": "Identity",
                             "docOrder": 3,
@@ -63,7 +63,7 @@
                         },
                         {
                             "name": "nFunctions",
-                            "type": "int64",
+                            "type": "uint64",
                             "section": "Statistics",
                             "docOrder": 4,
                             "description": "the number of functions in the ABI",
@@ -71,7 +71,7 @@
                         },
                         {
                             "name": "nEvents",
-                            "type": "int64",
+                            "type": "uint64",
                             "section": "Statistics",
                             "docOrder": 5,
                             "description": "the number of events in the ABI",
@@ -79,7 +79,7 @@
                         },
                         {
                             "name": "fileSize",
-                            "type": "int64",
+                            "type": "fileSize",
                             "section": "Statistics",
                             "docOrder": 6,
                             "description": "the size of this file on disc",
@@ -87,7 +87,7 @@
                         },
                         {
                             "name": "isEmpty",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 7,
@@ -96,7 +96,7 @@
                         },
                         {
                             "name": "isKnown",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 8,
@@ -105,7 +105,7 @@
                         },
                         {
                             "name": "hasConstructor",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 9,
@@ -114,7 +114,7 @@
                         },
                         {
                             "name": "hasFallback",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 10,
@@ -123,7 +123,7 @@
                         },
                         {
                             "name": "lastModDate",
-                            "type": "string",
+                            "type": "datetime",
                             "attributes": "noui",
                             "section": "Metadata",
                             "docOrder": 11,
@@ -282,7 +282,7 @@
                         },
                         {
                             "name": "constant",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui",
                             "section": "Properties",
                             "docOrder": 6,
@@ -290,7 +290,7 @@
                         },
                         {
                             "name": "anonymous",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 7,
@@ -354,21 +354,21 @@
                         },
                         {
                             "name": "fileSize",
-                            "type": "int64",
+                            "type": "fileSize",
                             "docOrder": 3,
                             "description": "File Size",
                             "num": 3
                         },
                         {
                             "name": "nFunctions",
-                            "type": "int64",
+                            "type": "uint64",
                             "docOrder": 4,
                             "description": "Functions",
                             "num": 4
                         },
                         {
                             "name": "nEvents",
-                            "type": "int64",
+                            "type": "uint64",
                             "docOrder": 5,
                             "description": "Events",
                             "num": 5
@@ -412,7 +412,7 @@
                         },
                         {
                             "name": "indexed",
-                            "type": "bool",
+                            "type": "boolean",
                             "section": "Metadata",
                             "docOrder": 4,
                             "description": "`true` if this parameter is indexed",
@@ -614,7 +614,7 @@
                         },
                         {
                             "name": "calcs.reconciled",
-                            "type": "bool",
+                            "type": "boolean",
                             "section": "Summary",
                             "docOrder": 18,
                             "description": "true if reconciled",
@@ -1035,7 +1035,7 @@
                         },
                         {
                             "name": "calc.fileSize",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "attributes": "readOnly",
                             "section": "Sizes",
                             "docOrder": 6,
@@ -1114,7 +1114,7 @@
                         },
                         {
                             "name": "size",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "section": "Metadata",
                             "docOrder": 6,
                             "description": "the size of the chunk in bytes",
@@ -1270,7 +1270,7 @@
                         },
                         {
                             "name": "size",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "attributes": "readOnly",
                             "section": "Sizes",
                             "docOrder": 6,
@@ -1382,7 +1382,7 @@
                         },
                         {
                             "name": "bloomSz",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "attributes": "readOnly|noTable",
                             "section": "Sizes",
                             "docOrder": 6,
@@ -1391,7 +1391,7 @@
                         },
                         {
                             "name": "chunkSz",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "attributes": "readOnly|noTable",
                             "section": "Sizes",
                             "docOrder": 7,
@@ -1882,7 +1882,7 @@
                         },
                         {
                             "name": "reconciled",
-                            "type": "bool",
+                            "type": "boolean",
                             "section": "Status",
                             "docOrder": 18,
                             "description": "true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.",
@@ -2140,7 +2140,7 @@
                         },
                         {
                             "name": "size",
-                            "type": "uint64",
+                            "type": "fileSize",
                             "section": "Metadata",
                             "docOrder": 6,
                             "description": "the size of the chunk in bytes",
@@ -2609,7 +2609,7 @@
                         },
                         {
                             "name": "calcs.reconciled",
-                            "type": "bool",
+                            "type": "boolean",
                             "section": "Summary",
                             "docOrder": 17,
                             "description": "true if reconciled",
@@ -2893,7 +2893,7 @@
                         },
                         {
                             "name": "deleted",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Overview",
                             "docOrder": 3,
@@ -2902,7 +2902,7 @@
                         },
                         {
                             "name": "isStaged",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Overview",
                             "docOrder": 4,
@@ -2911,7 +2911,7 @@
                         },
                         {
                             "name": "nRecords",
-                            "type": "int64",
+                            "type": "uint64",
                             "section": "Statistics",
                             "docOrder": 5,
                             "description": "the number of appearances for this monitor",
@@ -2919,7 +2919,7 @@
                         },
                         {
                             "name": "fileSize",
-                            "type": "int64",
+                            "type": "fileSize",
                             "section": "Statistics",
                             "docOrder": 6,
                             "description": "the size of this monitor on disc",
@@ -2927,7 +2927,7 @@
                         },
                         {
                             "name": "isEmpty",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noTable",
                             "section": "Statistics",
                             "docOrder": 7,
@@ -3047,7 +3047,7 @@
                         },
                         {
                             "name": "deleted",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Classification",
                             "docOrder": 7,
@@ -3056,7 +3056,7 @@
                         },
                         {
                             "name": "isContract",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 8,
@@ -3065,7 +3065,7 @@
                         },
                         {
                             "name": "isCustom",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 9,
@@ -3074,7 +3074,7 @@
                         },
                         {
                             "name": "isErc20",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 10,
@@ -3083,7 +3083,7 @@
                         },
                         {
                             "name": "isErc721",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 11,
@@ -3092,7 +3092,7 @@
                         },
                         {
                             "name": "isPrefund",
-                            "type": "bool",
+                            "type": "boolean",
                             "attributes": "noui|noTable",
                             "section": "Properties",
                             "docOrder": 12,
@@ -3268,10 +3268,10 @@
             "members": [
                 {
                     "name": "address",
-                    "type": "string",
+                    "type": "address",
                     "section": "Identity",
                     "docOrder": 1,
-                    "description": "unique identifier for the project",
+                    "description": "an Ethereum address",
                     "num": 1
                 },
                 {
@@ -3283,19 +3283,19 @@
                     "num": 2
                 },
                 {
-                    "name": "appearances",
-                    "type": "string",
+                    "name": "nAppearances",
+                    "type": "uint64",
                     "section": "Identity",
                     "docOrder": 3,
-                    "description": "file system path to the project",
+                    "description": "number of appearances in the address",
                     "num": 3
                 },
                 {
                     "name": "lastUpdated",
-                    "type": "string",
+                    "type": "datetime",
                     "section": "State",
                     "docOrder": 4,
-                    "description": "whether this project is currently active",
+                    "description": "the last time this file was written to",
                     "num": 4
                 }
             ]
@@ -3326,7 +3326,7 @@
                 },
                 {
                     "name": "path",
-                    "type": "string",
+                    "type": "path",
                     "section": "Identity",
                     "docOrder": 3,
                     "description": "file system path to the project",
@@ -3334,7 +3334,7 @@
                 },
                 {
                     "name": "isActive",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "State",
                     "docOrder": 4,
                     "description": "whether this project is currently active",
@@ -3436,7 +3436,7 @@
                 },
                 {
                     "name": "size",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "section": "Metadata",
                     "docOrder": 6,
                     "description": "the size of the chunk in bytes",
@@ -3913,7 +3913,7 @@
                 },
                 {
                     "name": "reconciled",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Status",
                     "docOrder": 18,
                     "description": "true if `endBal === endBalCalc` and `begBal === prevBal`. `false` otherwise.",
@@ -4271,7 +4271,7 @@
                 },
                 {
                     "name": "calcs.reconciled",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Summary",
                     "docOrder": 17,
                     "description": "true if reconciled",
@@ -4849,7 +4849,7 @@
                 },
                 {
                     "name": "deleted",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Overview",
                     "docOrder": 3,
@@ -4858,7 +4858,7 @@
                 },
                 {
                     "name": "isStaged",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Overview",
                     "docOrder": 4,
@@ -4867,7 +4867,7 @@
                 },
                 {
                     "name": "nRecords",
-                    "type": "int64",
+                    "type": "uint64",
                     "section": "Statistics",
                     "docOrder": 5,
                     "description": "the number of appearances for this monitor",
@@ -4875,7 +4875,7 @@
                 },
                 {
                     "name": "fileSize",
-                    "type": "int64",
+                    "type": "fileSize",
                     "section": "Statistics",
                     "docOrder": 6,
                     "description": "the size of this monitor on disc",
@@ -4883,7 +4883,7 @@
                 },
                 {
                     "name": "isEmpty",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Statistics",
                     "docOrder": 7,
@@ -5027,7 +5027,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 11,
@@ -5036,7 +5036,7 @@
                 },
                 {
                     "name": "hasToken",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 12,
@@ -5206,7 +5206,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 11,
@@ -5215,7 +5215,7 @@
                 },
                 {
                     "name": "hasToken",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 12,
@@ -5359,7 +5359,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Details",
                     "docOrder": 8,
@@ -5496,7 +5496,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Details",
                     "docOrder": 8,
@@ -5721,7 +5721,7 @@
             "members": [
                 {
                     "name": "thumbnail",
-                    "type": "string",
+                    "type": "path",
                     "section": "Display",
                     "docOrder": 1,
                     "description": "Path to thumbnail image",
@@ -5753,7 +5753,7 @@
                 },
                 {
                     "name": "enhanced",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Properties",
                     "docOrder": 5,
                     "description": "Has enhanced prompt",
@@ -5811,7 +5811,7 @@
                 },
                 {
                     "name": "imagePath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Output",
                     "docOrder": 4,
                     "description": "Path to generated image",
@@ -6127,7 +6127,7 @@
                 },
                 {
                     "name": "deleted",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "General",
                     "docOrder": 3,
                     "description": "Deletion status",
@@ -6477,7 +6477,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 11,
@@ -6486,7 +6486,7 @@
                 },
                 {
                     "name": "hasToken",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
                     "docOrder": 12,
@@ -6608,7 +6608,7 @@
                 },
                 {
                     "name": "path",
-                    "type": "string",
+                    "type": "path",
                     "attributes": "noui|noTable",
                     "section": "Identity",
                     "docOrder": 3,
@@ -6617,7 +6617,7 @@
                 },
                 {
                     "name": "nFunctions",
-                    "type": "int64",
+                    "type": "uint64",
                     "section": "Statistics",
                     "docOrder": 4,
                     "description": "the number of functions in the ABI",
@@ -6625,7 +6625,7 @@
                 },
                 {
                     "name": "nEvents",
-                    "type": "int64",
+                    "type": "uint64",
                     "section": "Statistics",
                     "docOrder": 5,
                     "description": "the number of events in the ABI",
@@ -6633,7 +6633,7 @@
                 },
                 {
                     "name": "fileSize",
-                    "type": "int64",
+                    "type": "fileSize",
                     "section": "Statistics",
                     "docOrder": 6,
                     "description": "the size of this file on disc",
@@ -6641,7 +6641,7 @@
                 },
                 {
                     "name": "isEmpty",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 7,
@@ -6650,7 +6650,7 @@
                 },
                 {
                     "name": "isKnown",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 8,
@@ -6659,7 +6659,7 @@
                 },
                 {
                     "name": "hasConstructor",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 9,
@@ -6668,7 +6668,7 @@
                 },
                 {
                     "name": "hasFallback",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 10,
@@ -6677,7 +6677,7 @@
                 },
                 {
                     "name": "lastModDate",
-                    "type": "string",
+                    "type": "datetime",
                     "attributes": "noui",
                     "section": "Metadata",
                     "docOrder": 11,
@@ -6843,7 +6843,7 @@
                 },
                 {
                     "name": "deleted",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Classification",
                     "docOrder": 7,
@@ -6852,7 +6852,7 @@
                 },
                 {
                     "name": "isContract",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 8,
@@ -6861,7 +6861,7 @@
                 },
                 {
                     "name": "isCustom",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 9,
@@ -6870,7 +6870,7 @@
                 },
                 {
                     "name": "isErc20",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 10,
@@ -6879,7 +6879,7 @@
                 },
                 {
                     "name": "isErc721",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 11,
@@ -6888,7 +6888,7 @@
                 },
                 {
                     "name": "isPrefund",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 12,
@@ -7206,7 +7206,7 @@
                 },
                 {
                     "name": "calcs.reconciled",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Summary",
                     "docOrder": 18,
                     "description": "true if reconciled",
@@ -7903,7 +7903,7 @@
                 },
                 {
                     "name": "calc.fileSize",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "attributes": "readOnly",
                     "section": "Sizes",
                     "docOrder": 6,
@@ -7977,7 +7977,7 @@
                 },
                 {
                     "name": "size",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "attributes": "readOnly",
                     "section": "Sizes",
                     "docOrder": 6,
@@ -8080,7 +8080,7 @@
                 },
                 {
                     "name": "bloomSz",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "attributes": "readOnly|noTable",
                     "section": "Sizes",
                     "docOrder": 6,
@@ -8089,7 +8089,7 @@
                 },
                 {
                     "name": "chunkSz",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "attributes": "readOnly|noTable",
                     "section": "Sizes",
                     "docOrder": 7,
@@ -8203,7 +8203,7 @@
                 },
                 {
                     "name": "size",
-                    "type": "uint64",
+                    "type": "fileSize",
                     "section": "Metadata",
                     "docOrder": 6,
                     "description": "the size of the chunk in bytes",
@@ -8503,7 +8503,7 @@
                 },
                 {
                     "name": "constant",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui",
                     "section": "Properties",
                     "docOrder": 6,
@@ -8511,7 +8511,7 @@
                 },
                 {
                     "name": "anonymous",
-                    "type": "bool",
+                    "type": "boolean",
                     "attributes": "noui|noTable",
                     "section": "Properties",
                     "docOrder": 7,
@@ -8575,21 +8575,21 @@
                 },
                 {
                     "name": "fileSize",
-                    "type": "int64",
+                    "type": "fileSize",
                     "docOrder": 3,
                     "description": "File Size",
                     "num": 3
                 },
                 {
                     "name": "nFunctions",
-                    "type": "int64",
+                    "type": "uint64",
                     "docOrder": 4,
                     "description": "Functions",
                     "num": 4
                 },
                 {
                     "name": "nEvents",
-                    "type": "int64",
+                    "type": "uint64",
                     "docOrder": 5,
                     "description": "Events",
                     "num": 5
@@ -8633,7 +8633,7 @@
                 },
                 {
                     "name": "indexed",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Metadata",
                     "docOrder": 4,
                     "description": "`true` if this parameter is indexed",
@@ -8684,7 +8684,7 @@
                 },
                 {
                     "name": "path",
-                    "type": "string",
+                    "type": "path",
                     "section": "General",
                     "docOrder": 2,
                     "description": "the path to the cache",
@@ -8869,7 +8869,7 @@
             "members": [
                 {
                     "name": "cachePath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Paths",
                     "docOrder": 1,
                     "description": "path to the cache directory",
@@ -8877,7 +8877,7 @@
                 },
                 {
                     "name": "indexPath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Paths",
                     "docOrder": 2,
                     "description": "path to the index directory",
@@ -8909,7 +8909,7 @@
                 },
                 {
                     "name": "chainConfig",
-                    "type": "string",
+                    "type": "path",
                     "section": "Chain",
                     "docOrder": 6,
                     "description": "path to chain configuration",
@@ -8917,7 +8917,7 @@
                 },
                 {
                     "name": "rootConfig",
-                    "type": "string",
+                    "type": "path",
                     "section": "Config",
                     "docOrder": 7,
                     "description": "path to root configuration",
@@ -8957,7 +8957,7 @@
                 },
                 {
                     "name": "hasEsKey",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 12,
                     "description": "whether Etherscan API key is available",
@@ -8965,7 +8965,7 @@
                 },
                 {
                     "name": "hasPinKey",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 13,
                     "description": "whether Pinata API key is available",
@@ -8973,7 +8973,7 @@
                 },
                 {
                     "name": "isApi",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 14,
                     "description": "whether running in API mode",
@@ -8981,7 +8981,7 @@
                 },
                 {
                     "name": "isArchive",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 15,
                     "description": "whether node is archive node",
@@ -8989,7 +8989,7 @@
                 },
                 {
                     "name": "isScraping",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 16,
                     "description": "whether scraper is running",
@@ -8997,7 +8997,7 @@
                 },
                 {
                     "name": "isTesting",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 17,
                     "description": "whether in testing mode",
@@ -9005,7 +9005,7 @@
                 },
                 {
                     "name": "isTracing",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Flags",
                     "docOrder": 18,
                     "description": "whether tracing is enabled",
@@ -9101,7 +9101,7 @@
                 },
                 {
                     "name": "fileName",
-                    "type": "string",
+                    "type": "path",
                     "section": "General",
                     "docOrder": 2,
                     "description": "The fileName value",
@@ -9206,7 +9206,7 @@
                 },
                 {
                     "name": "generatedPath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Image",
                     "docOrder": 14,
                     "description": "The generatedPath value",
@@ -9214,7 +9214,7 @@
                 },
                 {
                     "name": "annotatedPath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Image",
                     "docOrder": 15,
                     "description": "The annotatedPath value",
@@ -9238,7 +9238,7 @@
                 },
                 {
                     "name": "cacheHit",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "General",
                     "docOrder": 18,
                     "description": "The cacheHit value",
@@ -9246,7 +9246,7 @@
                 },
                 {
                     "name": "completed",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "General",
                     "docOrder": 19,
                     "description": "The completed value",
@@ -9280,7 +9280,7 @@
                 },
                 {
                     "name": "fileName",
-                    "type": "string",
+                    "type": "path",
                     "section": "Source",
                     "docOrder": 2,
                     "description": "The fileName value",
@@ -9380,7 +9380,7 @@
                 },
                 {
                     "name": "generatedPath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Output",
                     "docOrder": 14,
                     "description": "The generatedPath value",
@@ -9388,7 +9388,7 @@
                 },
                 {
                     "name": "annotatedPath",
-                    "type": "string",
+                    "type": "path",
                     "section": "Output",
                     "docOrder": 15,
                     "description": "The annotatedPath value",
@@ -9412,7 +9412,7 @@
                 },
                 {
                     "name": "cacheHit",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Status",
                     "docOrder": 18,
                     "description": "The cacheHit value",
@@ -9420,7 +9420,7 @@
                 },
                 {
                     "name": "completed",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "Status",
                     "docOrder": 19,
                     "description": "The completed value",
@@ -9761,7 +9761,7 @@
                 },
                 {
                     "name": "hasToken",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "General",
                     "docOrder": 25,
                     "description": "`true` if the transaction is token related, `false` otherwise",
@@ -9769,7 +9769,7 @@
                 },
                 {
                     "name": "isError",
-                    "type": "bool",
+                    "type": "boolean",
                     "section": "General",
                     "docOrder": 26,
                     "description": "`true` if the transaction ended in error, `false` otherwise",

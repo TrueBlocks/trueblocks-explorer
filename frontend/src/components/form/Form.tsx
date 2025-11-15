@@ -4,6 +4,7 @@ import {
   FieldRenderer,
   FormField,
   StyledButton,
+  convertFormValue,
   usePreprocessedFields,
 } from '@components';
 import { useFormHotkeys } from '@components';
@@ -98,75 +99,13 @@ export const Form = <
   const convertFormValues = (values: Record<string, unknown>): T => {
     const convertedValues = { ...values };
 
-    const safeStringToNumber = (value: unknown): number => {
-      if (typeof value === 'number') return value;
-      if (typeof value === 'string') {
-        const trimmed = value.trim();
-        if (trimmed === '') return 0;
-        const parsed = Number(trimmed);
-        return isNaN(parsed) ? 0 : parsed;
-      }
-      return 0;
-    };
-
-    const safeToBoolean = (value: unknown): boolean => {
-      if (typeof value === 'boolean') return value;
-      if (typeof value === 'string') {
-        const lower = value.toLowerCase().trim();
-        return (
-          lower === 'true' || lower === '1' || lower === 'yes' || lower === 'on'
-        );
-      }
-      if (typeof value === 'number') return value !== 0;
-      return false;
-    };
-
     const processFields = (fieldsToProcess: FormField<T>[]) => {
       fieldsToProcess.forEach((field) => {
         if (field.name && field.name in convertedValues) {
           const value = convertedValues[field.name];
-
-          // Convert based on field input type (for forms) or data type (for display)
-          const inputType = field.inputType || field.type;
-          switch (inputType) {
-            case 'number':
-            case 'gas':
-            case 'timestamp':
-            case 'blknum':
-            case 'txnum':
-            case 'lognum':
-            case 'value':
-            case 'uint64':
-            case 'int64':
-            case 'float64':
-            case 'float':
-              convertedValues[field.name] = safeStringToNumber(value);
-              break;
-
-            case 'checkbox':
-            case 'boolean':
-              convertedValues[field.name] = safeToBoolean(value);
-              break;
-
-            case 'text':
-            case 'password':
-            case 'textarea':
-            case 'select':
-            case 'radio':
-            case 'button':
-            case 'string':
-            case 'address':
-            case 'hash':
-            case 'wei':
-            case 'bytes':
-            case 'path':
-            case 'url':
-            default:
-              if (value !== null && value !== undefined) {
-                convertedValues[field.name] = String(value);
-              }
-              break;
-          }
+          // Use centralized conversion based on field data type or input type
+          const typeToUse = field.type || field.inputType;
+          convertedValues[field.name] = convertFormValue(value, typeToUse);
         }
 
         if (field.fields && field.fields.length > 0) {

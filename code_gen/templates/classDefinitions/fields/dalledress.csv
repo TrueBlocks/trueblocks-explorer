@@ -1,6 +1,6 @@
 name           , type       , required, attributes, section   , docOrder, description
 original       , address    , false   ,           , General   ,        1, The original value
-fileName       , string     , false   ,           , General   ,        2, The fileName value
+fileName       , path       , false   ,           , General   ,        2, The fileName value
 seed           , string     , false   ,           , General   ,        3, The seed value
 prompt         , string     , false   ,           , Prompts   ,        4, The prompt value
 dataPrompt     , string     , false   ,           , Prompts   ,        5, The dataPrompt value
@@ -12,10 +12,10 @@ seedChunks     , []string   , false   , noTable   , General   ,       10, The se
 selectedTokens , []string   , false   , noTable   , General   ,       11, The selectedTokens value
 selectedRecords, []string   , false   , noTable   , General   ,       12, The selectedRecords value
 imageUrl       , string     , false   , noTable   , Image     ,       13, The imageUrl value
-generatedPath  , string     , false   ,           , Image     ,       14, The generatedPath value
-annotatedPath  , string     , false   ,           , Image     ,       15, The annotatedPath value
+generatedPath  , path       , false   ,           , Image     ,       14, The generatedPath value
+annotatedPath  , path       , false   ,           , Image     ,       15, The annotatedPath value
 downloadMode   , string     , false   ,           , General   ,       16, The downloadMode value
 ipfsHash       , ipfsHash   , false   ,           , General   ,       17, The ipfsHash value
-cacheHit       , bool       , false   ,           , General   ,       18, The cacheHit value
-completed      , bool       , false   ,           , General   ,       19, The completed value
+cacheHit       , boolean       , false   ,           , General   ,       18, The cacheHit value
+completed      , boolean       , false   ,           , General   ,       19, The completed value
 series         , string     , false   ,           , General   ,       20, The series value

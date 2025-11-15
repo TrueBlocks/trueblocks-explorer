@@ -16,7 +16,7 @@ date                    , datetime ,           , noTable   , Summary       ,    
 gasUsed                 , value    ,           , noTable   , Summary       ,         ,       15, gas used in the transaction
 calcs.reconciliationType, string   ,           , noTable   , Summary       ,         ,       16, type of reconciliation
 accountedFor            , address  ,           , noTable   , Asset         ,         ,       17, the address being accounted for
-calcs.reconciled        , bool     ,           ,           , Summary       ,         ,       18, true if reconciled
+calcs.reconciled        , boolean     ,           ,           , Summary       ,         ,       18, true if reconciled
 amountIn                , int256   ,           , noTable   , Inflow        ,         ,       19, incoming amount
 internalIn              , int256   ,           , noTable   , Inflow        ,         ,       20, internal incoming amount
 selfDestructIn          , int256   ,           , noTable   , Inflow        ,         ,       21, self-destruct incoming amount

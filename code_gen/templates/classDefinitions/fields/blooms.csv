@@ -4,5 +4,5 @@ magic        , string  ,           , readOnly|noTable, Identity,         ,      
 hash         , hash    ,           , readOnly|noTable, Identity,         ,        3, the hash of the specification under which this chunk was generated
 nBlooms      , uint64  ,           , readOnly        , Counts  ,         ,        4, the number of individual bloom filters in this bloom file
 nInserted    , uint64  ,           , readOnly        , Counts  ,         ,        5, the number of addresses inserted into the bloom file
-calc.fileSize, uint64  ,           , readOnly        , Sizes   ,         ,        6, the size on disc in bytes of this bloom file
+calc.fileSize, fileSize,           , readOnly        , Sizes   ,         ,        6, the size on disc in bytes of this bloom file
 byteWidth    , uint64  ,           , readOnly        , Sizes   ,         ,        7, the width of the bloom filter

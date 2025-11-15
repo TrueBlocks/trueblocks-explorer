@@ -25,6 +25,7 @@ export interface UsePreferencesReturn {
   chromeCollapsed: boolean;
   detailCollapsed: boolean;
   fontScale: number;
+  showFieldTypes: boolean;
   loading: boolean;
   toggleTheme: () => Promise<void>;
   setSkin: (skin: string) => Promise<void>;
@@ -35,6 +36,7 @@ export interface UsePreferencesReturn {
   setChromeCollapsed: (collapsed: boolean) => Promise<void>;
   setDetailCollapsed: (enabled: boolean) => Promise<void>;
   setFontScale: (scale: number) => Promise<void>;
+  setShowFieldTypes: (enabled: boolean) => Promise<void>;
   isDarkMode: boolean;
 }
 
@@ -48,6 +50,7 @@ interface PreferencesState {
   chromeCollapsed: boolean;
   detailCollapsed: boolean;
   fontScale: number;
+  showFieldTypes: boolean;
   loading: boolean;
 }
 
@@ -61,6 +64,7 @@ const initialPreferencesState: PreferencesState = {
   chromeCollapsed: false,
   detailCollapsed: true,
   fontScale: 1.0,
+  showFieldTypes: false,
   loading: false,
 };
 
@@ -88,6 +92,7 @@ class PreferencesStore {
         chromeCollapsed: this.state.chromeCollapsed,
         detailCollapsed: this.state.detailCollapsed,
         fontScale: this.state.fontScale,
+        showFieldTypes: this.state.showFieldTypes,
         loading: this.state.loading,
         toggleTheme: this.toggleTheme,
         setSkin: this.setSkin,
@@ -98,6 +103,7 @@ class PreferencesStore {
         setChromeCollapsed: this.setChromeCollapsed,
         setDetailCollapsed: this.setDetailCollapsed,
         setFontScale: this.setFontScale,
+        setShowFieldTypes: this.setShowFieldTypes,
         isDarkMode: this.isDarkMode,
       };
     }
@@ -184,6 +190,7 @@ class PreferencesStore {
         chromeCollapsed: prefs.chromeCollapsed ?? false,
         detailCollapsed: prefs.detailCollapsed ?? true,
         fontScale,
+        showFieldTypes: prefs.showFieldTypes ?? false,
         loading: false,
       });
     } catch (error) {
@@ -198,6 +205,7 @@ class PreferencesStore {
         chromeCollapsed: false,
         detailCollapsed: true,
         fontScale: 1.0,
+        showFieldTypes: false,
         loading: false,
       });
     }
@@ -257,6 +265,11 @@ class PreferencesStore {
     await SetFontScale(clampedScale);
     await this.updatePreferences({ fontScale: clampedScale });
     this.setState({ fontScale: clampedScale });
+  };
+
+  setShowFieldTypes = async (enabled: boolean): Promise<void> => {
+    await this.updatePreferences({ showFieldTypes: enabled });
+    this.setState({ showFieldTypes: enabled });
   };
 
   get isDarkMode(): boolean {

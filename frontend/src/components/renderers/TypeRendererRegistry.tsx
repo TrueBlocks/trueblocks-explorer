@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 
-import { FormField } from '@components';
+import {
+  DataDisplayType,
+  FormField,
+  shouldRightAlign as shouldRightAlignType,
+} from '@components';
 
 import {
   BooleanRenderer,
@@ -27,12 +31,8 @@ export enum RenderContext {
 
 export interface TypeRendererConfig {
   displayRenderer: (value: unknown, props: DisplayRendererProps) => ReactNode;
-  shouldRightAlign: boolean;
   editPlaceholder?: string;
   editHint?: string;
-  // Context-specific rendering options
-  supportsTableAlignment?: boolean;
-  supportsDetailView?: boolean;
 }
 
 export interface DisplayRendererProps {
@@ -50,11 +50,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Block number (e.g., 18000000)',
     editHint: 'Enter blockchain block number',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   txnum: {
     displayRenderer: (value) => {
@@ -62,11 +59,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Transaction index (e.g., 42)',
     editHint: 'Enter transaction index within block',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   lognum: {
     displayRenderer: (value) => {
@@ -74,11 +68,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Log index (e.g., 15)',
     editHint: 'Enter log index within transaction',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   // Blockchain addresses and hashes
   address: {
@@ -89,20 +80,14 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       }
       return addr;
     },
-    shouldRightAlign: false,
     editPlaceholder: '0x1234567890abcdef1234567890abcdef12345678',
     editHint: 'Enter Ethereum address (42 characters starting with 0x)',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   hash: {
     displayRenderer: (value) => String(value || ''),
-    shouldRightAlign: false,
     editPlaceholder:
       '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
     editHint: 'Enter hash value (66 characters starting with 0x)',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   bytes: {
     displayRenderer: (value) => {
@@ -110,11 +95,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       if (!bytesStr || bytesStr === '0x') return '0x';
       return bytesStr;
     },
-    shouldRightAlign: false,
     editPlaceholder: '0x1234abcd',
     editHint: 'Enter hex bytes (starting with 0x)',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   // Numeric types (preserved semantic meaning)
   int256: {
@@ -126,11 +108,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? str : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Large integer (e.g., 1000000000000000000)',
     editHint: 'Enter 256-bit signed integer',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   int64: {
     displayRenderer: (value) => {
@@ -138,11 +117,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Integer (e.g., 1234567890)',
     editHint: 'Enter 64-bit signed integer',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   uint64: {
     displayRenderer: (value) => {
@@ -150,11 +126,8 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Positive integer (e.g., 1234567890)',
     editHint: 'Enter 64-bit unsigned integer',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   value: {
     displayRenderer: (value) => {
@@ -162,88 +135,55 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
     editPlaceholder: 'Numeric value (e.g., 42000)',
     editHint: 'Enter numeric value',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   float: {
     displayRenderer: (value) => formatNumberWithFallback(value, 6, '0.000000'),
-    shouldRightAlign: true,
     editPlaceholder: 'Decimal number (e.g., 123.456789)',
     editHint: 'Enter floating point number',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   // Special blockchain types
   blkrange: {
     displayRenderer: (value) => String(value || ''),
-    shouldRightAlign: false,
     editPlaceholder: '18000000-18001000',
     editHint: 'Enter block range (e.g., start-end)',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
-  ipfshash: {
+  ipfsHash: {
     displayRenderer: (value) => String(value || ''),
-    shouldRightAlign: false,
     editPlaceholder: 'QmXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     editHint: 'Enter IPFS hash',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   path: {
     displayRenderer: (value) => String(value || ''),
-    shouldRightAlign: false,
     editPlaceholder: '/path/to/file.ext',
     editHint: 'Enter file path',
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   actions: {
     displayRenderer: () => '', // Actions are handled specially by ActionRenderer
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: false,
   },
   // Existing types (preserved)
   wei: {
     displayRenderer: (value) => <WeiRenderer value={value} />,
-    shouldRightAlign: true,
     editPlaceholder: 'Wei value (e.g., 1000000000000000000 for 1 ETH)',
     editHint: 'Enter value in Wei (smallest unit of Ether)',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   ether: {
     displayRenderer: (value) => <EtherRenderer value={value} />,
-    shouldRightAlign: true,
     editPlaceholder: 'Ether value (e.g., 1.000000)',
     editHint: 'Enter value in Ether (will be displayed as entered)',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   gas: {
     displayRenderer: (value) =>
       value ? formatWeiToGigawei(value as string) : '0.000',
-    shouldRightAlign: true,
     editPlaceholder: 'Wei value (e.g., 21000000000000 for 21 Gwei)',
     editHint: 'Enter value in Wei (will display as Gigawei)',
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   timestamp: {
     displayRenderer: (value) => <DateTimeRenderer value={value} />,
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   fileSize: {
     displayRenderer: (value) => <FileSizeRenderer value={value} />,
-    shouldRightAlign: true,
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   number: {
     displayRenderer: (value) => {
@@ -253,9 +193,6 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
-    shouldRightAlign: true,
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   boolean: {
     displayRenderer: (value, { context }) => (
@@ -264,9 +201,6 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
         tableCell={context === RenderContext.TABLE_CELL}
       />
     ),
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   identifier: {
     displayRenderer: (value, { rowData }) => (
@@ -287,23 +221,14 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
         ]}
       />
     ),
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
   float64: {
     displayRenderer: (value) => formatNumberWithFallback(value, 2, '0.00'),
-    shouldRightAlign: true,
-    supportsTableAlignment: true,
-    supportsDetailView: true,
   },
   datetime: {
     displayRenderer: (value, { field, keyProp }) => (
       <DateTimeRenderer value={value} field={field} keyProp={keyProp || ''} />
     ),
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   },
 };
 
@@ -320,10 +245,27 @@ export function getTypeRenderer(type: string): TypeRendererConfig | null {
 export function getDefaultRenderer(): TypeRendererConfig {
   return {
     displayRenderer: (value) => withFallback(value, 'N/A'),
-    shouldRightAlign: false,
-    supportsTableAlignment: false,
-    supportsDetailView: true,
   };
+}
+
+// Helper functions using centralized type system
+
+export function supportsTableAlignment(type?: string): boolean {
+  // Table alignment is supported for numeric types that right-align
+  return shouldRightAlignType(type as DataDisplayType);
+}
+
+export function supportsDetailView(
+  field?: FormField<Record<string, unknown>>,
+): boolean {
+  // Use CSV-derived properties instead of hardcoded config
+  // If field has detailOnly=true, it supports detail view
+  // If field has showInDetail=false, it doesn't support detail view
+  if (field?.detailOnly) return true;
+  if (field?.showInDetail === false) return false;
+
+  // Most types support detail view by default (only actions typically don't)
+  return field?.type !== 'actions';
 }
 
 // Helper function to determine RenderContext from legacy parameters

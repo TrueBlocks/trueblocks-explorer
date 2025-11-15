@@ -6,6 +6,7 @@ export * from './ChevronButton';
 export * from './ConfirmModal';
 export * from './DashboardCard';
 export * from './DebugToggle';
+export * from './FieldTypeToggle';
 export * from './ExportFormatModal';
 export * from './LightDarkToggle';
 export * from './NodeStatus';

@@ -23,6 +23,6 @@ input               , bytes       , false   , General   ,       21, false  , byt
 receipt             , *Receipt    , false   , General   ,       22, false  , transaction receipt
 statements          , []Statements, false   , General   ,       23, false  , array of reconciliation statements
 articulatedTx       , *Function   , false   , General   ,       24, false  , articulated transaction
-hasToken            , bool        , false   , General   ,       25, false  , `true` if the transaction is token related&#44; `false` otherwise
-isError             , bool        , false   , General   ,       26, false  , `true` if the transaction ended in error&#44; `false` otherwise
+hasToken            , boolean        , false   , General   ,       25, false  , `true` if the transaction is token related&#44; `false` otherwise
+isError             , boolean        , false   , General   ,       26, false  , `true` if the transaction ended in error&#44; `false` otherwise
 compressedTx        , string      , false   , General   ,       27, false  , truncated&#44; more readable version of the articulation

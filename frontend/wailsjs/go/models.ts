@@ -812,6 +812,7 @@ export namespace preferences {
 	    exportsMetrics?: Record<string, string>;
 	    bounds?: Bounds;
 	    fontScale: number;
+	    showFieldTypes: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppPreferences(source);
@@ -837,6 +838,7 @@ export namespace preferences {
 	        this.exportsMetrics = source["exportsMetrics"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
 	        this.fontScale = source["fontScale"];
+	        this.showFieldTypes = source["showFieldTypes"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

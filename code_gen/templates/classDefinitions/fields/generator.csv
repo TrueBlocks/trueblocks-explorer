@@ -2,5 +2,5 @@ name         , type    , required, section  , docOrder, description
 activeAddress, string  , true    , Identity ,        1, Current active address in project
 series       , string  , true    , Source   ,        2, Selected series
 prompt       , string  , false   , Output   ,        3, Generated prompt
-imagePath    , string  , false   , Output   ,        4, Path to generated image
+imagePath    , path    , false   , Output   ,        4, Path to generated image
 createdAt    , datetime, false   , Metadata ,        5, Creation timestamp

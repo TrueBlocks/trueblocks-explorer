@@ -4,8 +4,8 @@ ratio        , float64 ,           , readOnly        , Efficiency,         ,    
 addrsPerBlock, float64 ,           , readOnly        , Efficiency,         ,        3, the average number of addresses per block
 appsPerBlock , float64 ,           , readOnly        , Efficiency,         ,        4, the average number of appearances per block
 appsPerAddr  , float64 ,           , readOnly        , Efficiency,         ,        5, the average number of appearances per address
-bloomSz      , uint64  ,           , readOnly|noTable, Sizes     ,         ,        6, the size of the bloom filters on disc in bytes
-chunkSz      , uint64  ,           , readOnly|noTable, Sizes     ,         ,        7, the size of the chunks on disc in bytes
+bloomSz      , fileSize,           , readOnly|noTable, Sizes     ,         ,        6, the size of the bloom filters on disc in bytes
+chunkSz      , fileSize,           , readOnly|noTable, Sizes     ,         ,        7, the size of the chunks on disc in bytes
 nAddrs       , uint64  ,           , readOnly|noTable, Counts    ,         ,        8, the number of addresses in the chunk
 nApps        , uint64  ,           , readOnly|noTable, Counts    ,         ,        9, the number of appearances in the chunk
 nBlocks      , uint64  ,           , readOnly|noTable, Counts    ,         ,       10, the number of blocks in the chunk

@@ -4,4 +4,4 @@ magic       , string     ,           ,               , Metadata ,         ,     
 hash        , hash       ,           ,               , Metadata ,         ,        3, the hash of the specification under which this chunk was generated
 nAddresses  , uint64     ,           ,               , Content  ,         ,        4, the number of addresses in this chunk
 nAppearances, uint64     ,           ,               , Content  ,         ,        5, the number of appearances in this chunk
-size        , uint64     ,           ,               , Metadata ,         ,        6, the size of the chunk in bytes
+size        , fileSize   ,           ,               , Metadata ,         ,        6, the size of the chunk in bytes

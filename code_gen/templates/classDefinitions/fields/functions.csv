@@ -1,6 +1,6 @@
-name      , type   , strDefault, attributes, upgrades, docOrder, description
-address   , address,           , readOnly  ,         ,        1, Address
-name      , string ,           ,           ,         ,        2, Name
-fileSize  , int64  ,           ,           ,         ,        3, File Size
-nFunctions, int64  ,           ,           ,         ,        4, Functions
-nEvents   , int64  ,           ,           ,         ,        5, Events
+name      , type    , strDefault, attributes, upgrades, docOrder, description
+address   , address ,           , readOnly  ,         ,        1, Address
+name      , string  ,           ,           ,         ,        2, Name
+fileSize  , fileSize,           ,           ,         ,        3, File Size
+nFunctions, uint64  ,           ,           ,         ,        4, Functions
+nEvents   , uint64  ,           ,           ,         ,        5, Events

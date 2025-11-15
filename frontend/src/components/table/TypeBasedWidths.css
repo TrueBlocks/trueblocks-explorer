@@ -79,7 +79,7 @@
 }
 
 /* IPFS Hash fields - Wide for IPFS hashes */
-.column-type-ipfshash {
+.column-type-ipfsHash {
   width: 18%;
   min-width: 160px;
   max-width: 280px;
@@ -129,7 +129,7 @@
 }
 
 .table-main-content.with-detail-panel .column-type-hash,
-.table-main-content.with-detail-panel .column-type-ipfshash {
+.table-main-content.with-detail-panel .column-type-ipfsHash {
   width: 22%;
   min-width: 100px;
   max-width: 160px;
@@ -215,7 +215,7 @@
   }
 
   .column-type-hash,
-  .column-type-ipfshash {
+  .column-type-ipfsHash {
     width: 17%;
     min-width: 140px;
     max-width: 200px;
@@ -241,7 +241,7 @@
   }
 
   .table-main-content.with-detail-panel .column-type-hash,
-  .table-main-content.with-detail-panel .column-type-ipfshash {
+  .table-main-content.with-detail-panel .column-type-ipfsHash {
     width: 24%;
     min-width: 90px;
     max-width: 140px;
@@ -269,7 +269,7 @@
   }
 
   .column-type-hash,
-  .column-type-ipfshash {
+  .column-type-ipfsHash {
     width: 22%;
     min-width: 100px;
     max-width: 150px;
@@ -312,7 +312,7 @@
   }
 
   .table-main-content.with-detail-panel .column-type-hash,
-  .table-main-content.with-detail-panel .column-type-ipfshash {
+  .table-main-content.with-detail-panel .column-type-ipfsHash {
     width: 28%;
     min-width: 80px;
     max-width: 120px;

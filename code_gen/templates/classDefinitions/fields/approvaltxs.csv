@@ -9,8 +9,8 @@ gasUsed             , gas         ,           ,                 , Gas         , 
 timestamp           , timestamp   ,           , noTable         , Overview    ,         ,        8, the Unix timestamp of the object
 input               , bytes       ,           , noTable         , Overview    ,         ,        9, byte data either containing a message or funcational data for a smart contracts
 articulatedTx       , *Function   ,           , noTable         , Overview    ,         ,       10, articulated transaction data
-isError             , bool        ,           , noTable         , Overview    ,         ,       11, `true` if the transaction ended in error&#44; `false` otherwise
-hasToken            , bool        ,           , noTable         , Overview    ,         ,       12, `true` if the transaction is token related&#44; `false` otherwise
+isError             , boolean        ,           , noTable         , Overview    ,         ,       11, `true` if the transaction ended in error&#44; `false` otherwise
+hasToken            , boolean        ,           , noTable         , Overview    ,         ,       12, `true` if the transaction is token related&#44; `false` otherwise
 gas                 , gas         ,           , noTable         , Gas         ,         ,       13, the maximum number of gas allowed for this transaction
 gasPrice            , gas         ,           , noTable         , Gas         ,         ,       14, the number of wei per unit of gas the sender is willing to spend
 maxFeePerGas        , gas         ,           , noTable         , Gas         ,         ,       15, maximum fee per gas

@@ -61,6 +61,7 @@ type AppPreferences struct {
 	ExportsMetrics  map[string]string `json:"exportsMetrics,omitempty"`
 	Bounds          Bounds            `json:"bounds,omitempty"`
 	FontScale       float64           `json:"fontScale"`
+	ShowFieldTypes  bool              `json:"showFieldTypes"`
 }
 
 func (p *AppPreferences) String() string {
@@ -88,6 +89,7 @@ func NewAppPreferences() *AppPreferences {
 		ExportsMetrics:  make(map[string]string),
 		Bounds:          NewBounds(),
 		FontScale:       1.0,
+		ShowFieldTypes:  false,
 	}
 }
 

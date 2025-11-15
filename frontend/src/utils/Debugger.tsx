@@ -1,3 +1,4 @@
+import { FieldTypeToggle } from '@components';
 import { ActionDefinition, useActiveProject, useIconSets } from '@hooks';
 import { usePreferences } from '@hooks';
 import { ActionIcon, Badge, Group } from '@mantine/core';
@@ -70,6 +71,7 @@ export const Debugger: React.FC<DebuggerProps> = ({
           />
         </div>
         <Group style={{ flexShrink: 0 }}>
+          <FieldTypeToggle />
           <ActionIcon
             size="sm"
             variant="subtle"

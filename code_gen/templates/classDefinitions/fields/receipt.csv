@@ -6,7 +6,7 @@ from             , address,           ,             , Context  ,             ,  
 to               , address,           ,             , Context  ,             ,        5, the recipient of the transaction
 gasUsed          , gas    ,           ,             , Details  ,             ,        6, the amount of gas actually used by the transaction
 status           , value  ,           ,             , Details  , 2.5.9:uint32,        7, `1` on transaction suceess&#44; `null` if tx precedes Byzantium&#44; `0` otherwise
-isError          , bool   ,           , noTable     , Details  ,             ,        8, whether the transaction resulted in an error
+isError          , boolean   ,           , noTable     , Details  ,             ,        8, whether the transaction resulted in an error
 contractAddress  , address,           , noTable     , Details  ,             ,        9, the address of the newly created contract&#44; if any
 cumulativeGasUsed, gas    ,           , noTable     , Details  , 2.5.8:string,       10, cumulative gas used
 effectiveGasPrice, gas    ,           , noTable     , Details  ,             ,       11, effective gas price

@@ -79,7 +79,7 @@ func getContractsFields() []types.FieldConfig {
 		{Section: "Overview", Key: "address", Type: "address"},
 		{Section: "Overview", Key: "name"},
 		{Section: "Technical", Key: "abi"},
-		{Section: "Status", Key: "lastUpdated", Type: "timestamp"},
+		{Section: "Status", Key: "lastUpdated", Type: "datetime"},
 		{Section: "Status", Key: "date", Type: "datetime"},
 		{Section: "Status", Key: "errorCount", Type: "int64"},
 		{Section: "Status", Key: "lastError"},

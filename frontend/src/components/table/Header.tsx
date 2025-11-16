@@ -91,7 +91,11 @@ export const Header = <T extends Record<string, unknown>>({
               }
             >
               <span className="header-cell">
-                <span className="header-label">{col.header}</span>
+                <span className="header-label">
+                  {typeof col.header === 'string' && col.header.match(/^[nN] /)
+                    ? col.header.replace(/^[nN] /, 'n')
+                    : col.header}
+                </span>
                 {col.sortable && (
                   <span className="sort-indicator">{sortIndicator}</span>
                 )}

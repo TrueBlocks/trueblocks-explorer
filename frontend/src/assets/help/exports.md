@@ -114,9 +114,8 @@ Welcome to the **Exports** view! This section provides information about managin
   - correctAmountOut: correct amount out
   - correctEndBalOut: correct ending balance out
 
-- **Balances Store (13 members)**
+- **Balances Store (12 members)**
 
-  - date: the timestamp as a date
   - holder: Holder
   - address: Token Address
   - symbol: Symbol
@@ -270,31 +269,30 @@ Welcome to the **Exports** view! This section provides information about managin
   - nonce: sequence number of the transactions sent by the sender
   - type: the transaction type
 
-- **Transfers Store (23 members)**
+- **Transfers Store (22 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position the log in the block, if applicable
-  - from: the initiator of the transfer (the sender)
-  - to: the receiver of the transfer (the recipient)
   - asset: 0xeeee...eeee for ETH transfers, the token address otherwise
-  - amount: the amount of the transfer
   - sender: the initiator of the transfer (the sender)
   - recipient: the receiver of the transfer (the recipient)
+  - amountIn: the top-level value of the incoming transfer for the holder address
+  - amountOut: the amount (in units of the asset) of regular outflow during this transaction
   - holder: the address of the holder of the asset
   - decimals: the number of decimal places in the asset units
-  - amountIn: the top-level value of the incoming transfer
-  - amountOut: the amount of regular outflow during this transaction
-  - internalIn: the internal value of the incoming transfer
-  - internalOut: the value of any internal value transfers out
-  - gasOut: the amount of gas expended
+  - internalIn: the internal value of the incoming transfer for the holder address
   - minerBaseRewardIn: the base fee reward if the miner is the holder address
   - minerNephewRewardIn: the nephew reward if the miner is the holder address
   - minerTxFeeIn: the transaction fee reward if the miner is the holder address
   - minerUncleRewardIn: the uncle reward if the miner who won the uncle block is the holder address
-  - selfDestructIn: the incoming value of a self-destruct if recipient is the holder address
-  - selfDestructOut: the outgoing value of a self-destruct if sender is the holder address
   - prefundIn: at block zero (0) only, the amount of genesis income for the holder address
+  - selfDestructIn: the incoming value of a self-destruct if recipient is the holder address
+  - internalOut: the value of any internal value transfers out of the holder account
+  - gasOut: if the transaction's original sender is the holder address, the amount of gas expended
+  - selfDestructOut: the outgoing value of a self-destruct if sender is the holder address
+  - transaction: the transaction that triggered the transfer
+  - log: if a token transfer, the log that triggered the transfer
 
 - **Withdrawals Store (6 members)**
 

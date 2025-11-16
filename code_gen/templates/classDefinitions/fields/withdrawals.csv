@@ -1,7 +1,7 @@
 name          , type     , strDefault, attributes      , section   , upgrades, docOrder, description
 blockNumber   , blknum   ,           ,                 , Context   ,         ,        1, the number of this block
 timestamp     , timestamp,           ,                 , Context   ,         ,        2, the timestamp for this block
-index         , value    ,           ,                 , Details   ,         ,        3, a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal
-validatorIndex, value    ,           ,                 , Details   ,         ,        4, the validator_index of the validator on the consensus layer the withdrawal corresponds to
+index         , uint64   ,           ,                 , Details   ,         ,        3, a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal
+validatorIndex, uint64   ,           ,                 , Details   ,         ,        4, the validator_index of the validator on the consensus layer the withdrawal corresponds to
 address       , address  ,           ,                 , Details   ,         ,        5, the recipient for the withdrawn ether
 amount        , wei      ,           ,                 , Details   ,         ,        6, a nonzero amount of ether given in gwei (1e9 wei)

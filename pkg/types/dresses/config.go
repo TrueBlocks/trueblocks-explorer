@@ -114,7 +114,7 @@ func getDalledressFields() []types.FieldConfig {
 		{Section: "General", Key: "seedChunks", NoTable: true},
 		{Section: "General", Key: "selectedTokens", NoTable: true},
 		{Section: "General", Key: "selectedRecords", NoTable: true},
-		{Section: "Image", Key: "imageUrl", NoTable: true},
+		{Section: "Image", Key: "imageUrl", Type: "url", NoTable: true},
 		{Section: "Image", Key: "generatedPath", Type: "path"},
 		{Section: "Image", Key: "annotatedPath", Type: "path"},
 		{Section: "General", Key: "downloadMode"},
@@ -131,7 +131,7 @@ func getDalledressFields() []types.FieldConfig {
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "databaseName"},
-		{Section: "General", Key: "count", Type: "value"},
+		{Section: "General", Key: "count", Type: "uint64"},
 		{Section: "General", Key: "sample"},
 		{Section: "General", Key: "filtered"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
@@ -167,7 +167,7 @@ func getSeriesFields() []types.FieldConfig {
 		{Section: "General", Key: "suffix"},
 		{Section: "General", Key: "last", Type: "value"},
 		{Section: "General", Key: "deleted", Type: "boolean"},
-		{Section: "General", Key: "modifiedAt"},
+		{Section: "General", Key: "modifiedAt", Type: "datetime"},
 		{Section: "Content", Key: "adverbs", NoTable: true},
 		{Section: "Content", Key: "adjectives", NoTable: true},
 		{Section: "Content", Key: "nouns", NoTable: true},

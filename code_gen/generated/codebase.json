@@ -512,7 +512,7 @@
                         },
                         {
                             "name": "calcs.begBalEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 6,
                             "description": "the beginning balance in ETH",
@@ -520,7 +520,7 @@
                         },
                         {
                             "name": "calcs.totalInEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 7,
                             "description": "total inflow in ETH",
@@ -528,7 +528,7 @@
                         },
                         {
                             "name": "calcs.totalOutEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 8,
                             "description": "total outflow in ETH",
@@ -536,7 +536,7 @@
                         },
                         {
                             "name": "calcs.amountNetEth",
-                            "type": "int256",
+                            "type": "ether",
                             "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 9,
@@ -545,7 +545,7 @@
                         },
                         {
                             "name": "calcs.endBalEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 10,
                             "description": "ending balance in ETH",
@@ -553,7 +553,7 @@
                         },
                         {
                             "name": "spotPrice",
-                            "type": "float",
+                            "type": "float64",
                             "section": "Asset",
                             "docOrder": 11,
                             "description": "the on-chain price in USD at the time of the transaction",
@@ -569,7 +569,7 @@
                         },
                         {
                             "name": "calcs.endBalCalcEth",
-                            "type": "int256",
+                            "type": "ether",
                             "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 13,
@@ -587,7 +587,7 @@
                         },
                         {
                             "name": "gasUsed",
-                            "type": "value",
+                            "type": "gas",
                             "attributes": "noTable",
                             "section": "Summary",
                             "docOrder": 15,
@@ -867,115 +867,107 @@
                     "disable_go": true,
                     "members": [
                         {
-                            "name": "date",
-                            "type": "datetime",
-                            "section": "Balance Info",
-                            "docOrder": 1,
-                            "description": "the timestamp as a date",
-                            "num": 1
-                        },
-                        {
                             "name": "holder",
                             "type": "address",
                             "section": "Balance Info",
-                            "docOrder": 2,
+                            "docOrder": 1,
                             "description": "Holder",
-                            "num": 2
+                            "num": 1
                         },
                         {
                             "name": "address",
                             "type": "address",
                             "section": "Balance Info",
-                            "docOrder": 3,
+                            "docOrder": 2,
                             "description": "Token Address",
-                            "num": 3
+                            "num": 2
                         },
                         {
                             "name": "symbol",
                             "type": "string",
                             "section": "Balance Info",
-                            "docOrder": 4,
+                            "docOrder": 3,
                             "description": "Symbol",
-                            "num": 4
+                            "num": 3
                         },
                         {
                             "name": "balance",
                             "type": "ether",
                             "section": "Balance Info",
-                            "docOrder": 5,
+                            "docOrder": 4,
                             "description": "Balance",
-                            "num": 5
+                            "num": 4
                         },
                         {
                             "name": "decimals",
                             "type": "int64",
                             "section": "Details",
-                            "docOrder": 6,
+                            "docOrder": 5,
                             "description": "Decimals",
-                            "num": 6
+                            "num": 5
                         },
                         {
                             "name": "priorBalance",
                             "type": "ether",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 7,
+                            "docOrder": 6,
                             "description": "Prior Balance",
-                            "num": 7
+                            "num": 6
                         },
                         {
                             "name": "totalSupply",
                             "type": "ether",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 8,
+                            "docOrder": 7,
                             "description": "Total Supply",
-                            "num": 8
+                            "num": 7
                         },
                         {
                             "name": "type",
                             "type": "string",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 9,
+                            "docOrder": 8,
                             "description": "Type",
-                            "num": 9
+                            "num": 8
                         },
                         {
                             "name": "name",
                             "type": "string",
                             "attributes": "noTable",
                             "section": "Details",
-                            "docOrder": 10,
+                            "docOrder": 9,
                             "description": "Token Name",
-                            "num": 10
+                            "num": 9
                         },
                         {
                             "name": "blockNumber",
                             "type": "blknum",
                             "attributes": "noTable",
                             "section": "Context",
-                            "docOrder": 11,
+                            "docOrder": 10,
                             "description": "the number of the block",
-                            "num": 11
+                            "num": 10
                         },
                         {
                             "name": "transactionIndex",
                             "type": "txnum",
                             "attributes": "noTable",
                             "section": "Context",
-                            "docOrder": 12,
+                            "docOrder": 11,
                             "description": "the zero-indexed position of the transaction in the block",
-                            "num": 12
+                            "num": 11
                         },
                         {
                             "name": "timestamp",
                             "type": "timestamp",
                             "attributes": "noTable",
                             "section": "Context",
-                            "docOrder": 13,
+                            "docOrder": 12,
                             "description": "the timestamp of the block this log appears in",
-                            "num": 13
+                            "num": 12
                         }
                     ]
                 },
@@ -1679,7 +1671,7 @@
                         },
                         {
                             "name": "index",
-                            "type": "value",
+                            "type": "uint64",
                             "section": "Details",
                             "docOrder": 3,
                             "description": "a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal",
@@ -1687,7 +1679,7 @@
                         },
                         {
                             "name": "validatorIndex",
-                            "type": "value",
+                            "type": "uint64",
                             "section": "Details",
                             "docOrder": 4,
                             "description": "the validator_index of the validator on the consensus layer the withdrawal corresponds to",
@@ -1814,7 +1806,7 @@
                         },
                         {
                             "name": "spotPrice",
-                            "type": "float",
+                            "type": "float64",
                             "section": "Asset",
                             "docOrder": 10,
                             "description": "the on-chain price in USD (or if a token in ETH, or zero) at the time of the transaction",
@@ -2149,7 +2141,7 @@
                         {
                             "name": "rangeDates",
                             "type": "RangeDates",
-                            "attributes": "noui|omitempty",
+                            "attributes": "noui",
                             "section": "Range",
                             "docOrder": 7,
                             "description": "if verbose, the block and timestamp bounds of the chunk (may be null)",
@@ -2514,7 +2506,7 @@
                         },
                         {
                             "name": "calcs.begBalEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 6,
                             "description": "the beginning balance in ETH",
@@ -2522,7 +2514,7 @@
                         },
                         {
                             "name": "calcs.totalInEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 7,
                             "description": "total inflow in ETH",
@@ -2530,7 +2522,7 @@
                         },
                         {
                             "name": "calcs.totalOutEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 8,
                             "description": "total outflow in ETH",
@@ -2538,7 +2530,7 @@
                         },
                         {
                             "name": "calcs.amountNetEth",
-                            "type": "int256",
+                            "type": "ether",
                             "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 9,
@@ -2547,7 +2539,7 @@
                         },
                         {
                             "name": "calcs.endBalEth",
-                            "type": "int256",
+                            "type": "ether",
                             "section": "Reconciliation",
                             "docOrder": 10,
                             "description": "ending balance in ETH",
@@ -2555,7 +2547,7 @@
                         },
                         {
                             "name": "spotPrice",
-                            "type": "float",
+                            "type": "float64",
                             "attributes": "noTable",
                             "section": "Asset",
                             "docOrder": 11,
@@ -2564,7 +2556,7 @@
                         },
                         {
                             "name": "calcs.endBalCalcEth",
-                            "type": "int256",
+                            "type": "ether",
                             "attributes": "noTable",
                             "section": "Reconciliation",
                             "docOrder": 12,
@@ -2582,7 +2574,7 @@
                         },
                         {
                             "name": "gasUsed",
-                            "type": "value",
+                            "type": "gas",
                             "attributes": "noTable",
                             "section": "Summary",
                             "docOrder": 14,
@@ -3445,7 +3437,7 @@
                 {
                     "name": "rangeDates",
                     "type": "RangeDates",
-                    "attributes": "noui|omitempty",
+                    "attributes": "noui",
                     "section": "Range",
                     "docOrder": 7,
                     "description": "if verbose, the block and timestamp bounds of the chunk (may be null)",
@@ -3845,7 +3837,7 @@
                 },
                 {
                     "name": "spotPrice",
-                    "type": "float",
+                    "type": "float64",
                     "section": "Asset",
                     "docOrder": 10,
                     "description": "the on-chain price in USD (or if a token in ETH, or zero) at the time of the transaction",
@@ -4176,7 +4168,7 @@
                 },
                 {
                     "name": "calcs.begBalEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 6,
                     "description": "the beginning balance in ETH",
@@ -4184,7 +4176,7 @@
                 },
                 {
                     "name": "calcs.totalInEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 7,
                     "description": "total inflow in ETH",
@@ -4192,7 +4184,7 @@
                 },
                 {
                     "name": "calcs.totalOutEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 8,
                     "description": "total outflow in ETH",
@@ -4200,7 +4192,7 @@
                 },
                 {
                     "name": "calcs.amountNetEth",
-                    "type": "int256",
+                    "type": "ether",
                     "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 9,
@@ -4209,7 +4201,7 @@
                 },
                 {
                     "name": "calcs.endBalEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 10,
                     "description": "ending balance in ETH",
@@ -4217,7 +4209,7 @@
                 },
                 {
                     "name": "spotPrice",
-                    "type": "float",
+                    "type": "float64",
                     "attributes": "noTable",
                     "section": "Asset",
                     "docOrder": 11,
@@ -4226,7 +4218,7 @@
                 },
                 {
                     "name": "calcs.endBalCalcEth",
-                    "type": "int256",
+                    "type": "ether",
                     "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 12,
@@ -4244,7 +4236,7 @@
                 },
                 {
                     "name": "gasUsed",
-                    "type": "value",
+                    "type": "gas",
                     "attributes": "noTable",
                     "section": "Summary",
                     "docOrder": 14,
@@ -4525,7 +4517,6 @@
                 {
                     "name": "blockNumber",
                     "type": "blknum",
-                    "section": "Context",
                     "docOrder": 1,
                     "description": "the number of the block",
                     "num": 1
@@ -4533,7 +4524,6 @@
                 {
                     "name": "transactionIndex",
                     "type": "txnum",
-                    "section": "Context",
                     "docOrder": 2,
                     "description": "the zero-indexed position of the transaction in the block",
                     "num": 2
@@ -4541,186 +4531,148 @@
                 {
                     "name": "logIndex",
                     "type": "lognum",
-                    "section": "Context",
                     "docOrder": 3,
                     "description": "the zero-indexed position the log in the block, if applicable",
                     "num": 3
                 },
                 {
-                    "name": "from",
-                    "type": "address",
-                    "section": "Details",
-                    "docOrder": 4,
-                    "description": "the initiator of the transfer (the sender)",
-                    "num": 4
-                },
-                {
-                    "name": "to",
-                    "type": "address",
-                    "section": "Details",
-                    "docOrder": 5,
-                    "description": "the receiver of the transfer (the recipient)",
-                    "num": 5
-                },
-                {
                     "name": "asset",
                     "type": "address",
-                    "section": "Details",
-                    "docOrder": 6,
+                    "docOrder": 4,
                     "description": "0xeeee...eeee for ETH transfers, the token address otherwise",
-                    "num": 6
-                },
-                {
-                    "name": "amount",
-                    "type": "int256",
-                    "section": "Breakdown",
-                    "docOrder": 7,
-                    "description": "the amount of the transfer",
-                    "num": 7
+                    "num": 5
                 },
                 {
                     "name": "sender",
                     "type": "address",
-                    "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 8,
+                    "docOrder": 5,
                     "description": "the initiator of the transfer (the sender)",
-                    "num": 8
+                    "num": 7
                 },
                 {
                     "name": "recipient",
                     "type": "address",
-                    "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 9,
+                    "docOrder": 6,
                     "description": "the receiver of the transfer (the recipient)",
+                    "num": 8
+                },
+                {
+                    "name": "amountIn",
+                    "type": "int256",
+                    "docOrder": 7,
+                    "description": "the top-level value of the incoming transfer for the holder address",
                     "num": 9
+                },
+                {
+                    "name": "amountOut",
+                    "type": "int256",
+                    "docOrder": 8,
+                    "description": "the amount (in units of the asset) of regular outflow during this transaction",
+                    "num": 17
                 },
                 {
                     "name": "holder",
                     "type": "address",
                     "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 10,
+                    "docOrder": 9,
                     "description": "the address of the holder of the asset",
-                    "num": 10
+                    "num": 4
                 },
                 {
                     "name": "decimals",
                     "type": "uint64",
                     "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 11,
+                    "docOrder": 10,
                     "description": "the number of decimal places in the asset units",
-                    "num": 11
-                },
-                {
-                    "name": "amountIn",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Breakdown",
-                    "docOrder": 12,
-                    "description": "the top-level value of the incoming transfer",
-                    "num": 12
-                },
-                {
-                    "name": "amountOut",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Breakdown",
-                    "docOrder": 13,
-                    "description": "the amount of regular outflow during this transaction",
-                    "num": 13
+                    "num": 6
                 },
                 {
                     "name": "internalIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Breakdown",
-                    "docOrder": 14,
-                    "description": "the internal value of the incoming transfer",
-                    "num": 14
-                },
-                {
-                    "name": "internalOut",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Breakdown",
-                    "docOrder": 15,
-                    "description": "the value of any internal value transfers out",
-                    "num": 15
-                },
-                {
-                    "name": "gasOut",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Breakdown",
-                    "docOrder": 16,
-                    "description": "the amount of gas expended",
-                    "num": 16
+                    "docOrder": 11,
+                    "description": "the internal value of the incoming transfer for the holder address",
+                    "num": 10
                 },
                 {
                     "name": "minerBaseRewardIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Mining",
-                    "docOrder": 17,
+                    "docOrder": 12,
                     "description": "the base fee reward if the miner is the holder address",
-                    "num": 17
+                    "num": 11
                 },
                 {
                     "name": "minerNephewRewardIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Mining",
-                    "docOrder": 18,
+                    "docOrder": 13,
                     "description": "the nephew reward if the miner is the holder address",
-                    "num": 18
+                    "num": 12
                 },
                 {
                     "name": "minerTxFeeIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Mining",
-                    "docOrder": 19,
+                    "docOrder": 14,
                     "description": "the transaction fee reward if the miner is the holder address",
-                    "num": 19
+                    "num": 13
                 },
                 {
                     "name": "minerUncleRewardIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Mining",
-                    "docOrder": 20,
+                    "docOrder": 15,
                     "description": "the uncle reward if the miner who won the uncle block is the holder address",
-                    "num": 20
-                },
-                {
-                    "name": "selfDestructIn",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Special",
-                    "docOrder": 21,
-                    "description": "the incoming value of a self-destruct if recipient is the holder address",
-                    "num": 21
-                },
-                {
-                    "name": "selfDestructOut",
-                    "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Special",
-                    "docOrder": 22,
-                    "description": "the outgoing value of a self-destruct if sender is the holder address",
-                    "num": 22
+                    "num": 14
                 },
                 {
                     "name": "prefundIn",
                     "type": "int256",
-                    "attributes": "noTable",
-                    "section": "Special",
-                    "docOrder": 23,
+                    "docOrder": 16,
                     "description": "at block zero (0) only, the amount of genesis income for the holder address",
-                    "num": 23
+                    "num": 15
+                },
+                {
+                    "name": "selfDestructIn",
+                    "type": "int256",
+                    "docOrder": 17,
+                    "description": "the incoming value of a self-destruct if recipient is the holder address",
+                    "num": 16
+                },
+                {
+                    "name": "internalOut",
+                    "type": "int256",
+                    "docOrder": 18,
+                    "description": "the value of any internal value transfers out of the holder account",
+                    "num": 18
+                },
+                {
+                    "name": "gasOut",
+                    "type": "int256",
+                    "docOrder": 19,
+                    "description": "if the transaction's original sender is the holder address, the amount of gas expended",
+                    "num": 19
+                },
+                {
+                    "name": "selfDestructOut",
+                    "type": "int256",
+                    "docOrder": 20,
+                    "description": "the outgoing value of a self-destruct if sender is the holder address",
+                    "num": 20
+                },
+                {
+                    "name": "transaction",
+                    "type": "Transaction",
+                    "attributes": "calc",
+                    "docOrder": 21,
+                    "description": "the transaction that triggered the transfer",
+                    "num": 21,
+                    "isPointer": true
+                },
+                {
+                    "name": "log",
+                    "type": "Log",
+                    "attributes": "calc",
+                    "docOrder": 22,
+                    "description": "if a token transfer, the log that triggered the transfer",
+                    "num": 22,
+                    "isPointer": true
                 }
             ]
         },
@@ -5645,7 +5597,7 @@
                 },
                 {
                     "name": "count",
-                    "type": "value",
+                    "type": "uint64",
                     "section": "General",
                     "docOrder": 2,
                     "description": "Number of entries",
@@ -5687,7 +5639,7 @@
                 },
                 {
                     "name": "count",
-                    "type": "value",
+                    "type": "uint64",
                     "section": "General",
                     "docOrder": 2,
                     "description": "Number of entries",
@@ -5787,7 +5739,7 @@
             "members": [
                 {
                     "name": "activeAddress",
-                    "type": "string",
+                    "type": "address",
                     "section": "Identity",
                     "docOrder": 1,
                     "description": "Current active address in project",
@@ -6135,7 +6087,7 @@
                 },
                 {
                     "name": "modifiedAt",
-                    "type": "string",
+                    "type": "datetime",
                     "section": "General",
                     "docOrder": 4,
                     "description": "Last modified timestamp",
@@ -7104,7 +7056,7 @@
                 },
                 {
                     "name": "calcs.begBalEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 6,
                     "description": "the beginning balance in ETH",
@@ -7112,7 +7064,7 @@
                 },
                 {
                     "name": "calcs.totalInEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 7,
                     "description": "total inflow in ETH",
@@ -7120,7 +7072,7 @@
                 },
                 {
                     "name": "calcs.totalOutEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 8,
                     "description": "total outflow in ETH",
@@ -7128,7 +7080,7 @@
                 },
                 {
                     "name": "calcs.amountNetEth",
-                    "type": "int256",
+                    "type": "ether",
                     "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 9,
@@ -7137,7 +7089,7 @@
                 },
                 {
                     "name": "calcs.endBalEth",
-                    "type": "int256",
+                    "type": "ether",
                     "section": "Reconciliation",
                     "docOrder": 10,
                     "description": "ending balance in ETH",
@@ -7145,7 +7097,7 @@
                 },
                 {
                     "name": "spotPrice",
-                    "type": "float",
+                    "type": "float64",
                     "section": "Asset",
                     "docOrder": 11,
                     "description": "the on-chain price in USD at the time of the transaction",
@@ -7161,7 +7113,7 @@
                 },
                 {
                     "name": "calcs.endBalCalcEth",
-                    "type": "int256",
+                    "type": "ether",
                     "attributes": "noTable",
                     "section": "Reconciliation",
                     "docOrder": 13,
@@ -7179,7 +7131,7 @@
                 },
                 {
                     "name": "gasUsed",
-                    "type": "value",
+                    "type": "gas",
                     "attributes": "noTable",
                     "section": "Summary",
                     "docOrder": 15,
@@ -7459,115 +7411,107 @@
             "disable_go": true,
             "members": [
                 {
-                    "name": "date",
-                    "type": "datetime",
-                    "section": "Balance Info",
-                    "docOrder": 1,
-                    "description": "the timestamp as a date",
-                    "num": 1
-                },
-                {
                     "name": "holder",
                     "type": "address",
                     "section": "Balance Info",
-                    "docOrder": 2,
+                    "docOrder": 1,
                     "description": "Holder",
-                    "num": 2
+                    "num": 1
                 },
                 {
                     "name": "address",
                     "type": "address",
                     "section": "Balance Info",
-                    "docOrder": 3,
+                    "docOrder": 2,
                     "description": "Token Address",
-                    "num": 3
+                    "num": 2
                 },
                 {
                     "name": "symbol",
                     "type": "string",
                     "section": "Balance Info",
-                    "docOrder": 4,
+                    "docOrder": 3,
                     "description": "Symbol",
-                    "num": 4
+                    "num": 3
                 },
                 {
                     "name": "balance",
                     "type": "ether",
                     "section": "Balance Info",
-                    "docOrder": 5,
+                    "docOrder": 4,
                     "description": "Balance",
-                    "num": 5
+                    "num": 4
                 },
                 {
                     "name": "decimals",
                     "type": "int64",
                     "section": "Details",
-                    "docOrder": 6,
+                    "docOrder": 5,
                     "description": "Decimals",
-                    "num": 6
+                    "num": 5
                 },
                 {
                     "name": "priorBalance",
                     "type": "ether",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 7,
+                    "docOrder": 6,
                     "description": "Prior Balance",
-                    "num": 7
+                    "num": 6
                 },
                 {
                     "name": "totalSupply",
                     "type": "ether",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 8,
+                    "docOrder": 7,
                     "description": "Total Supply",
-                    "num": 8
+                    "num": 7
                 },
                 {
                     "name": "type",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 9,
+                    "docOrder": 8,
                     "description": "Type",
-                    "num": 9
+                    "num": 8
                 },
                 {
                     "name": "name",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 10,
+                    "docOrder": 9,
                     "description": "Token Name",
-                    "num": 10
+                    "num": 9
                 },
                 {
                     "name": "blockNumber",
                     "type": "blknum",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 11,
+                    "docOrder": 10,
                     "description": "the number of the block",
-                    "num": 11
+                    "num": 10
                 },
                 {
                     "name": "transactionIndex",
                     "type": "txnum",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 12,
+                    "docOrder": 11,
                     "description": "the zero-indexed position of the transaction in the block",
-                    "num": 12
+                    "num": 11
                 },
                 {
                     "name": "timestamp",
                     "type": "timestamp",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 13,
+                    "docOrder": 12,
                     "description": "the timestamp of the block this log appears in",
-                    "num": 13
+                    "num": 12
                 }
             ]
         },
@@ -7815,7 +7759,7 @@
                 },
                 {
                     "name": "index",
-                    "type": "value",
+                    "type": "uint64",
                     "section": "Details",
                     "docOrder": 3,
                     "description": "a monotonically increasing zero-based index that increments by 1 per withdrawal to uniquely identify each withdrawal",
@@ -7823,7 +7767,7 @@
                 },
                 {
                     "name": "validatorIndex",
-                    "type": "value",
+                    "type": "uint64",
                     "section": "Details",
                     "docOrder": 4,
                     "description": "the validator_index of the validator on the consensus layer the withdrawal corresponds to",
@@ -8340,7 +8284,7 @@
                 },
                 {
                     "name": "lastUpdated",
-                    "type": "timestamp",
+                    "type": "datetime",
                     "section": "Status",
                     "docOrder": 4,
                     "description": "timestamp when this contract state was last updated",
@@ -8759,7 +8703,7 @@
                 },
                 {
                     "name": "rpcProvider",
-                    "type": "string",
+                    "type": "url",
                     "section": "Providers",
                     "docOrder": 4,
                     "description": "the RPC provider URL",
@@ -8767,7 +8711,7 @@
                 },
                 {
                     "name": "ipfsGateway",
-                    "type": "string",
+                    "type": "url",
                     "section": "Providers",
                     "docOrder": 5,
                     "description": "the IPFS gateway URL",
@@ -8775,7 +8719,7 @@
                 },
                 {
                     "name": "localExplorer",
-                    "type": "string",
+                    "type": "url",
                     "section": "Explorers",
                     "docOrder": 6,
                     "description": "the local block explorer URL",
@@ -8783,7 +8727,7 @@
                 },
                 {
                     "name": "remoteExplorer",
-                    "type": "string",
+                    "type": "url",
                     "section": "Explorers",
                     "docOrder": 7,
                     "description": "the remote block explorer URL",
@@ -8826,7 +8770,7 @@
                 },
                 {
                     "name": "rpcProvider",
-                    "type": "string",
+                    "type": "url",
                     "section": "Providers",
                     "docOrder": 4,
                     "description": "the RPC provider URL",
@@ -8834,7 +8778,7 @@
                 },
                 {
                     "name": "ipfsGateway",
-                    "type": "string",
+                    "type": "url",
                     "section": "Providers",
                     "docOrder": 5,
                     "description": "the IPFS gateway URL",
@@ -8842,7 +8786,7 @@
                 },
                 {
                     "name": "localExplorer",
-                    "type": "string",
+                    "type": "url",
                     "section": "Explorers",
                     "docOrder": 6,
                     "description": "the local block explorer URL",
@@ -8850,7 +8794,7 @@
                 },
                 {
                     "name": "remoteExplorer",
-                    "type": "string",
+                    "type": "url",
                     "section": "Explorers",
                     "docOrder": 7,
                     "description": "the remote block explorer URL",
@@ -8893,7 +8837,7 @@
                 },
                 {
                     "name": "chainId",
-                    "type": "string",
+                    "type": "uint64",
                     "section": "Chain",
                     "docOrder": 4,
                     "description": "the chain ID",
@@ -8949,7 +8893,7 @@
                 },
                 {
                     "name": "rpcProvider",
-                    "type": "string",
+                    "type": "url",
                     "section": "Providers",
                     "docOrder": 11,
                     "description": "RPC provider URL",
@@ -9197,7 +9141,7 @@
                 },
                 {
                     "name": "imageUrl",
-                    "type": "string",
+                    "type": "url",
                     "attributes": "noTable",
                     "section": "Image",
                     "docOrder": 13,
@@ -9272,7 +9216,7 @@
             "members": [
                 {
                     "name": "original",
-                    "type": "string",
+                    "type": "address",
                     "section": "Source",
                     "docOrder": 1,
                     "description": "The original value",
@@ -9372,7 +9316,7 @@
                 },
                 {
                     "name": "imageUrl",
-                    "type": "string",
+                    "type": "url",
                     "section": "Output",
                     "docOrder": 13,
                     "description": "The imageUrl value",
@@ -9404,7 +9348,7 @@
                 },
                 {
                     "name": "ipfsHash",
-                    "type": "string",
+                    "type": "ipfsHash",
                     "section": "Storage",
                     "docOrder": 17,
                     "description": "The ipfsHash value",
@@ -9573,7 +9517,7 @@
                 },
                 {
                     "name": "chainId",
-                    "type": "string",
+                    "type": "uint64",
                     "section": "General",
                     "docOrder": 2,
                     "description": "the chain identifier",

@@ -1,5 +1,5 @@
 name        , type  , required, section  , docOrder, noTable, description
 databaseName, string, false   , General  ,        1, false  , Name of the database
-count       , value , false   , General  ,        2, false  , Number of entries
+count       , uint64, false   , General  ,        2, false  , Number of entries
 sample      , string, false   , General  ,        3, false  , Sample entry
 filtered    , string, false   , General  ,        4, false  , Is database filtered by series

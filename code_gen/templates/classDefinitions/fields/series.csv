@@ -1,8 +1,8 @@
 name        , type    , required, attributes, section  , docOrder, description
 suffix      , string  , false   ,           , General  ,        1, Series identifier
 last        , value   , false   ,           , General  ,        2, Last used index
-deleted     , boolean    , false   ,           , General  ,        3, Deletion status
-modifiedAt  , string  , false   ,           , General  ,        4, Last modified timestamp
+deleted     , boolean , false   ,           , General  ,        3, Deletion status
+modifiedAt  , datetime, false   ,           , General  ,        4, Last modified timestamp
 adverbs     , []string, false   , noTable   , Content  ,        5, List of adverbs
 adjectives  , []string, false   , noTable   , Content  ,        6, List of adjectives
 nouns       , []string, false   , noTable   , Content  ,        7, List of nouns

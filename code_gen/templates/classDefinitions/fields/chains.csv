@@ -2,7 +2,7 @@ name          , type  , strDefault, attributes, section  , upgrades, docOrder, d
 chain         , string,           ,           , General  ,         ,        1, the chain identifier
 chainId       , uint64,           ,           , General  ,         ,        2, the chain ID
 symbol        , string,           ,           , General  ,         ,        3, the chain's native token symbol
-rpcProvider   , string,           ,           , Providers,         ,        4, the RPC provider URL
-ipfsGateway   , string,           ,           , Providers,         ,        5, the IPFS gateway URL
-localExplorer , string,           ,           , Explorers,         ,        6, the local block explorer URL
-remoteExplorer, string,           ,           , Explorers,         ,        7, the remote block explorer URL
+rpcProvider   , url   ,           ,           , Providers,         ,        4, the RPC provider URL
+ipfsGateway   , url   ,           ,           , Providers,         ,        5, the IPFS gateway URL
+localExplorer , url   ,           ,           , Explorers,         ,        6, the local block explorer URL
+remoteExplorer, url   ,           ,           , Explorers,         ,        7, the remote block explorer URL

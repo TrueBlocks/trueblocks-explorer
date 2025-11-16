@@ -1,5 +1,5 @@
 name           , type       , required, section   , docOrder, description
-original       , string     ,         , Source    ,        1, The original value
+original       , address    ,         , Source    ,        1, The original value
 fileName       , path       ,         , Source    ,        2, The fileName value
 seed           , string     ,         , Source    ,        3, The seed value
 prompt         , string     ,         , Prompts   ,        4, The prompt value
@@ -11,11 +11,11 @@ attributes     , []Attribute,         , Data      ,        9, The attributes val
 seedChunks     , []string   ,         , Data      ,       10, The seedChunks value
 selectedTokens , []string   ,         , Data      ,       11, The selectedTokens value
 selectedRecords, []string   ,         , Data      ,       12, The selectedRecords value
-imageUrl       , string     ,         , Output    ,       13, The imageUrl value
+imageUrl       , url        ,         , Output    ,       13, The imageUrl value
 generatedPath  , path       ,         , Output    ,       14, The generatedPath value
 annotatedPath  , path       ,         , Output    ,       15, The annotatedPath value
 downloadMode   , string     ,         , Output    ,       16, The downloadMode value
-ipfsHash       , string     ,         , Storage   ,       17, The ipfsHash value
-cacheHit       , boolean       ,         , Status    ,       18, The cacheHit value
-completed      , boolean       ,         , Status    ,       19, The completed value
+ipfsHash       , ipfsHash   ,         , Storage   ,       17, The ipfsHash value
+cacheHit       , boolean    ,         , Status    ,       18, The cacheHit value
+completed      , boolean    ,         , Status    ,       19, The completed value
 series         , string     ,         , Source    ,       20, The series value

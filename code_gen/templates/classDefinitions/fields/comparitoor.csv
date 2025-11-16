@@ -1,6 +1,6 @@
 name                , type        , required, section   , docOrder, noTable, description
 gasUsed             , gas         , false   , General   ,        1, false  , the maximum number of gas allowed for this transaction
-chainId             , string      , false   , General   ,        2, true   , the chain identifier
+chainId             , uint64      , false   , General   ,        2, true   , the chain identifier
 maxPriorityFeePerGas, gas         , false   , General   ,        3, false  , maximum priority fee per gas
 type                , string      , false   , General   ,        4, false  , the transaction type
 traces              , []Traces    , false   , General   ,        5, true   , array of traces

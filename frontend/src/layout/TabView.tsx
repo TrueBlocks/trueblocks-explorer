@@ -1,4 +1,10 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import {
+  Fragment,
+  startTransition,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { StyledDivider } from '@components';
 import { useActiveProject, useEvent } from '@hooks';
@@ -67,7 +73,9 @@ export const TabView = ({
       if (vER === vR) {
         const newTab = event.key.startsWith('alt+') ? prevTab() : nextTab();
         setActiveTab(newTab);
-        setLastFacet(vR, newTab as types.DataFacet);
+        startTransition(() => {
+          setLastFacet(vR, newTab as types.DataFacet);
+        });
         if (onTabChange) {
           onTabChange(newTab);
         }
@@ -79,7 +87,9 @@ export const TabView = ({
     if (newTab === null) return;
     setActiveTab(newTab);
     const vR = route.replace(/^\/+/, '');
-    setLastFacet(vR, newTab as types.DataFacet);
+    startTransition(() => {
+      setLastFacet(vR, newTab as types.DataFacet);
+    });
     if (onTabChange) {
       onTabChange(newTab);
     }

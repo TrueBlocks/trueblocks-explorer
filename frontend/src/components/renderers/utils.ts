@@ -3,7 +3,11 @@ import { isValidElement } from 'react';
 import { LogError } from '@utils';
 
 export function formatWeiToEther(weiValue: string | number): string {
-  if (!weiValue || weiValue === '0') {
+  if (weiValue === null || weiValue === undefined || weiValue === '') {
+    return '[null]';
+  }
+
+  if (weiValue === '0' || weiValue === 0) {
     return '-';
   }
 

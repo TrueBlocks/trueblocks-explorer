@@ -79,8 +79,33 @@ export const DisplayRenderer = ({
 
   // Extract value from rowData if available, otherwise use field.value
   const rowDataSource = rowData || row; // Support both prop names
+
+  // Handle dotted field keys like "calcs.begBalEth"
+  const getValue = (data: Record<string, unknown>, key: string): unknown => {
+    if (!data || !key) return undefined;
+
+    // If key contains dots, traverse nested objects
+    if (key.includes('.')) {
+      const parts = key.split('.');
+      let current: any = data;
+      for (const part of parts) {
+        if (current && typeof current === 'object') {
+          current = current[part];
+        } else {
+          return undefined;
+        }
+      }
+      return current;
+    }
+
+    // Simple key access
+    return data[key];
+  };
+
   const value =
-    rowDataSource && field.key ? rowDataSource[field.key] : field.value;
+    rowDataSource && field.key
+      ? getValue(rowDataSource, field.key)
+      : field.value;
 
   // Get renderer from registry
   const typeRenderer =

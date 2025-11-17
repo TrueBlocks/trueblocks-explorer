@@ -146,8 +146,8 @@ func consolidateNamedAddresses(fields *[]FieldConfig) {
 					Sortable:    addressField.Sortable,
 					Order:       addressField.Order,
 					DetailOrder: addressField.DetailOrder,
-					NoTable:     false,
-					NoDetail:    true, // Hide from detail view like identifier
+					NoTable:     addressField.NoTable, // Only hide from table if original was hidden
+					NoDetail:    true,                 // Always hide synthetics from detail view
 					Type:        "namedAddress",
 				}
 

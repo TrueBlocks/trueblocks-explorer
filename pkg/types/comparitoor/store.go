@@ -15,6 +15,7 @@ import (
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
@@ -72,6 +73,8 @@ func (c *ComparitoorCollection) getTransactionStore(payload *types.Payload, face
 
 		processFunc := func(item interface{}) *Transaction {
 			if it, ok := item.(*Transaction); ok {
+				it.FromName = names.NameAddress(it.From)
+				it.ToName = names.NameAddress(it.To)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it

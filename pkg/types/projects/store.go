@@ -26,6 +26,7 @@ import (
 type Project = project.Project
 type AddressList struct {
 	Address     string `json:"address"`
+	AddressName string `json:"addressName"`
 	Name        string `json:"name"`
 	Appearances int    `json:"appearances"`
 	LastUpdated string `json:"lastUpdated"`
@@ -99,6 +100,7 @@ func (c *ProjectsCollection) getAddressListStore(payload *types.Payload) *store.
 
 		processFunc := func(item interface{}) *AddressList {
 			if it, ok := item.(*AddressList); ok {
+				it.AddressName = names.NameAddressStr(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it

@@ -16,6 +16,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
@@ -103,6 +104,7 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 
 		processFunc := func(item interface{}) *ApprovalLog {
 			if it, ok := item.(*ApprovalLog); ok {
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				if tx, ok := item.(*sdk.Transaction); ok {
 					for _, log := range tx.Receipt.Logs {
@@ -161,6 +163,8 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 
 		processFunc := func(item interface{}) *ApprovalTx {
 			if it, ok := item.(*ApprovalTx); ok {
+				it.FromName = names.NameAddress(it.From)
+				it.ToName = names.NameAddress(it.To)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -213,6 +217,10 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 
 		processFunc := func(item interface{}) *Asset {
 			if it, ok := item.(*Asset); ok {
+				it.AssetName = names.NameAddress(it.Asset)
+				it.AccountedForName = names.NameAddress(it.AccountedFor)
+				it.SenderName = names.NameAddress(it.Sender)
+				it.RecipientName = names.NameAddress(it.Recipient)
 				// EXISTING_CODE
 				if existing, ok := theStore.GetItemFromMap(it.Asset.Hex()); ok {
 					it.StatementId = existing.StatementId + 1
@@ -291,6 +299,8 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 
 		processFunc := func(item interface{}) *Balance {
 			if it, ok := item.(*Balance); ok {
+				it.HolderName = names.NameAddress(it.Holder)
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -343,6 +353,7 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 
 		processFunc := func(item interface{}) *Log {
 			if it, ok := item.(*Log); ok {
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				props := &sdk.ModelProps{
@@ -406,6 +417,9 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 
 		processFunc := func(item interface{}) *OpenApproval {
 			if it, ok := item.(*OpenApproval); ok {
+				it.OwnerName = names.NameAddress(it.Owner)
+				it.TokenName = names.NameAddress(it.Token)
+				it.SpenderName = names.NameAddress(it.Spender)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -458,6 +472,9 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 
 		processFunc := func(item interface{}) *Receipt {
 			if it, ok := item.(*Receipt); ok {
+				it.FromName = names.NameAddress(it.From)
+				it.ToName = names.NameAddress(it.To)
+				it.ContractAddressName = names.NameAddress(it.ContractAddress)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -510,6 +527,10 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 
 		processFunc := func(item interface{}) *Statement {
 			if it, ok := item.(*Statement); ok {
+				it.AssetName = names.NameAddress(it.Asset)
+				it.AccountedForName = names.NameAddress(it.AccountedFor)
+				it.SenderName = names.NameAddress(it.Sender)
+				it.RecipientName = names.NameAddress(it.Recipient)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				props := &sdk.ModelProps{
@@ -626,6 +647,8 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 
 		processFunc := func(item interface{}) *Transaction {
 			if it, ok := item.(*Transaction); ok {
+				it.FromName = names.NameAddress(it.From)
+				it.ToName = names.NameAddress(it.To)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -678,6 +701,10 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 
 		processFunc := func(item interface{}) *Transfer {
 			if it, ok := item.(*Transfer); ok {
+				it.AssetName = names.NameAddress(it.Asset)
+				it.SenderName = names.NameAddress(it.Sender)
+				it.RecipientName = names.NameAddress(it.Recipient)
+				it.HolderName = names.NameAddress(it.Holder)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -729,6 +756,7 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 
 		processFunc := func(item interface{}) *Withdrawal {
 			if it, ok := item.(*Withdrawal); ok {
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it

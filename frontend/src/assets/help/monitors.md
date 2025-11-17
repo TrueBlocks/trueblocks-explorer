@@ -19,7 +19,7 @@ Welcome to the **Monitors** view! This section provides information about managi
 - **Monitors Store (8 members)**
 
   - address: the address of this monitor
-  - name: the name of this monitor (if any)
+  - addressName: the name for this monitor address
   - deleted: if this monitor has been deleted, `false` otherwise
   - isStaged: if the monitor file in on the stage, `false` otherwise
   - nRecords: the number of appearances for this monitor

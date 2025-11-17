@@ -21,19 +21,20 @@ Welcome to the **Contracts** view! This section provides information about manag
 - **Contracts Store (7 members)**
 
   - address: the address of this smart contract
-  - name: the name of this contract (if available)
+  - addressName: the name for this contract address
   - abi: the ABI for this contract
   - lastUpdated: timestamp when this contract state was last updated
   - date: date when this contract state was last updated
   - errorCount: number of errors encountered when calling read functions
   - lastError: the most recent error message when calling functions
 
-- **Logs Store (14 members)**
+- **Logs Store (15 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position of this log relative to the block
   - address: the smart contract that emitted this log
+  - addressName: the name for this address
   - timestamp: the timestamp of the block this log appears in
   - blockHash: the hash of the block
   - transactionHash: the hash of the transaction

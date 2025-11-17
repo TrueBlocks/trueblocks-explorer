@@ -20,7 +20,7 @@ Welcome to the **Projects** view! This section provides information about managi
 - **AddressList Store (4 members)**
 
   - address: an Ethereum address
-  - name: human-readable name of the project
+  - addressName: the name for this address
   - nAppearances: number of appearances in the address
   - lastUpdated: the last time this file was written to
 

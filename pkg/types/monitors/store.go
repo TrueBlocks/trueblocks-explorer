@@ -16,6 +16,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
@@ -58,6 +59,7 @@ func (c *MonitorsCollection) getMonitorsStore(payload *types.Payload, facet type
 
 		processFunc := func(item interface{}) *Monitor {
 			if it, ok := item.(*Monitor); ok {
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it

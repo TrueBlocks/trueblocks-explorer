@@ -1,15 +1,16 @@
 name            , type     , strDefault, attributes, section     , upgrades     , docOrder, description
 blockNumber     , blknum   ,           ,           , Context     ,              ,        1, the number of the block
 transactionIndex, txnum    ,           ,           , Context     ,              ,        2, the zero-indexed position of the transaction in the block
-logIndex        , lognum   ,           ,           , Context     ,              ,        3, the zero-indexed position of this log relative to the block
+logIndex        , lognum   ,           ,           , Context     ,              ,        3, the zero-indexed position of the log in the block
 address         , address  ,           ,           , Context     ,              ,        4, the smart contract that emitted this log
-timestamp       , timestamp,           , noTable   , Context     ,              ,        5, the timestamp of the block this log appears in
-blockHash       , hash     ,           , noTable   , Context     ,              ,        6, the hash of the block
-transactionHash , hash     ,           , noTable   , Context     ,              ,        7, the hash of the transction
-topic0          , hash     ,           ,           , Details     ,              ,        8, the first topic hash (event signature)
-topic1          , hash     ,           ,           , Details     ,              ,        9, the second topic hash (first indexed parameter)
-topic2          , hash     ,           , noTable   , Details     ,              ,       10, the third topic hash (second indexed parameter)
-topic3          , hash     ,           , noTable   , Details     ,              ,       11, the fourth topic hash (third indexed parameter)
-data            , bytes    ,           , noTable   , Details     ,              ,       12, any remaining un-indexed parameters to the event
-articulatedLog  , *Function,           , noTable   , Articulation,              ,       13, a human-readable version of the topic and data fields
-compressedLog   , string   ,           , noTable   , Articulation, 2.5.10:string,       14, a truncated version of the articulation
+addressName     , string   ,           ,           , Context     ,              ,        5, the name for this address
+timestamp       , timestamp,           , noTable   , Context     ,              ,        6, the timestamp of the block this log appears in
+blockHash       , hash     ,           , noTable   , Context     ,              ,        7, the hash of the block
+transactionHash , hash     ,           , noTable   , Context     ,              ,        8, the hash of the transction
+topic0          , hash     ,           ,           , Details     ,              ,        9, the first topic hash (event signature)
+topic1          , hash     ,           ,           , Details     ,              ,       10, the second topic hash (first indexed parameter)
+topic2          , hash     ,           , noTable   , Details     ,              ,       11, the third topic hash (second indexed parameter)
+topic3          , hash     ,           , noTable   , Details     ,              ,       12, the fourth topic hash (third indexed parameter)
+data            , bytes    ,           , noTable   , Details     ,              ,       13, any remaining un-indexed parameters to the event
+articulatedLog  , *Function,           , noTable   , Articulation,              ,       14, a human-readable version of the topic and data fields
+compressedLog   , string   ,           , noTable   , Articulation, 2.5.10:string,       15, a truncated version of the articulation

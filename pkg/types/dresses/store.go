@@ -20,6 +20,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/fileserver"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
@@ -98,6 +99,7 @@ func (c *DressesCollection) getDalleDressStore(payload *types.Payload, facet typ
 
 		processFunc := func(item interface{}) *DalleDress {
 			if it, ok := item.(*DalleDress); ok {
+				it.OriginalName = names.NameAddressStr(it.Original)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it
@@ -181,6 +183,7 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 
 		processFunc := func(item interface{}) *Log {
 			if it, ok := item.(*Log); ok {
+				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
 				return it

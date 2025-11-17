@@ -103,6 +103,7 @@ func (c *DressesCollection) buildActions() map[string]types.ActionConfig {
 func getDalledressFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "original", Type: "address"},
+		{Section: "General", Key: "originalName", Type: "string"},
 		{Section: "General", Key: "fileName", Type: "path"},
 		{Section: "General", Key: "seed", Type: "string"},
 		{Section: "Prompts", Key: "prompt", Type: "string"},
@@ -146,6 +147,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Context", Key: "transactionIndex", Type: "txnum"},
 		{Section: "Context", Key: "logIndex", Type: "lognum"},
 		{Section: "Context", Key: "address", Type: "address"},
+		{Section: "Context", Key: "addressName", Type: "string"},
 		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Context", Key: "transactionHash", Type: "hash", NoTable: true},

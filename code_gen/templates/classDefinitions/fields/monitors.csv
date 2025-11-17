@@ -1,6 +1,6 @@
 name       , type    , strDefault, attributes  , section   , upgrades, docOrder, description
 address    , address ,           , readOnly    , Overview  ,         ,        1, the address of this monitor
-name       , string  ,           ,             , Overview  ,         ,        2, the name of this monitor (if any)
+addressName, string  ,           , readOnly    , Overview  ,         ,        2, the name for this monitor address
 deleted    , boolean ,           , noui|noTable, Overview  ,         ,        3, if this monitor has been deleted&#44; `false` otherwise
 isStaged   , boolean ,           , noui|noTable, Overview  ,         ,        4, if the monitor file in on the stage&#44; `false` otherwise
 nRecords   , uint64  ,           ,             , Statistics,         ,        5, the number of appearances for this monitor

@@ -1,23 +1,15 @@
-name            , type        , strDefault, attributes      , section    , upgrades     , docOrder, description
-blockNumber     , blknum      ,           ,                 , Context    ,              ,        1, the number of the block
-transactionIndex, txnum       ,           ,                 , Context    ,              ,        2, the zero-indexed position of the transaction in the block
-traceIndex      , uint64      ,           ,                 , Context    ,              ,        3, the zero-indexed position of the trace in the transaction
-from            , address     ,           ,                 , Action     ,              ,        4, the address that initiated the trace
-to              , address     ,           ,                 , Action     ,              ,        5, the address that received the trace
-value           , wei         ,           ,                 , Action     ,              ,        6, the value transferred in wei
-type            , string      ,           ,                 , Overview   ,              ,        7, the type of the trace
-error           , string      ,           , noTable         , Overview   ,              ,        8, error message if any
-subtraces       , uint64      ,           , noTable         , Overview   ,              ,        9, the number of children traces
-traceAddress    , []uint64    ,           , noTable         , Overview   ,              ,       10, a particular trace's address in the trace tree
-gas             , gas         ,           , noTable         , Action     ,              ,       11, the gas limit for this trace
-callType        , string      ,           , noTable         , Action     ,              ,       12, the type of call
-input           , bytes       ,           , noTable         , Action     ,              ,       13, the input data for the trace
-gasUsed         , gas         ,           , noTable         , Result     ,              ,       14, the amount of gas used
-output          , bytes       ,           , noTable         , Result     ,              ,       15, the output data from the trace
-address         , address     ,           , noTable         , Result     ,              ,       16, the contract address if created
-code            , bytes       ,           , noTable         , Result     ,              ,       17, the contract code if created
-blockHash       , hash        ,           , noTable         , Context    ,              ,       18, the hash of the block containing this trace
-transactionHash , hash        ,           , noTable         , Context    ,              ,       19, the transaction's hash containing this trace
-timestamp       , timestamp   ,           , noTable         , Context    ,              ,       20, the timestamp of the block
-articulatedTrace, *Function   ,           , noTable         , Articulation,            ,       21, human readable version of the trace action input data
-compressedTrace , string      ,           , noTable         , Articulation, 2.5.10:string,      22, a compressed string version of the articulated trace
+name            , type        , strDefault, attributes    , section     , upgrades     , docOrder, description
+blockHash       , hash        ,           , noTable       , Context     ,              ,        1, the hash of the block containing this trace
+blockNumber     , blknum      ,           ,               , Context     ,              ,        2, the number of the block
+subtraces       , uint64      ,           , noTable       , Overview    ,              ,        3, the number of children traces that the trace hash
+traceAddress    , []uint64    ,           , noTable       , Overview    ,              ,        4, a particular trace's address in the trace tree
+transactionHash , hash        ,           , noTable       , Context     ,              ,        5, the transaction's hash containing this trace
+transactionIndex, txnum       ,           ,               , Context     ,              ,        6, the zero-indexed position of the transaction in the block
+type            , string      ,           ,               , Overview    ,              ,        7, the type of the trace
+error           , string      ,           , noTable       , Overview    ,              ,        8, error message if any
+action          , *TraceAction,           ,               ,             ,              ,        9, the trace action for this trace
+result          , *TraceResult,           ,               ,             ,              ,       10, the trace result of this trace
+articulatedTrace, *Function   ,           , noTable       , Articulation,              ,       11, human readable version of the trace action input data
+compressedTrace , string      ,           , noTable       , Articulation, 2.5.10:string,       12, a compressed string version of the articulated trace
+timestamp       , timestamp   ,           ,               ,             ,              ,       13, the timestamp of the block
+date            , datetime    ,           , omitempty|calc,             ,              ,       14, the timestamp as a date

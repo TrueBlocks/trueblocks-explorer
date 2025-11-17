@@ -20,9 +20,10 @@ Welcome to the **Dresses** view! This section provides information about managin
 
 ## Stores
 
-- **DalleDress Store (20 members)**
+- **DalleDress Store (21 members)**
 
   - original: The original value
+  - originalName: the name for this address
   - fileName: The fileName value
   - seed: The seed value
   - prompt: The prompt value
@@ -50,12 +51,13 @@ Welcome to the **Dresses** view! This section provides information about managin
   - sample: Sample entry
   - filtered: Is database filtered by series
 
-- **Logs Store (14 members)**
+- **Logs Store (15 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
   - logIndex: the zero-indexed position of this log relative to the block
   - address: the smart contract that emitted this log
+  - addressName: the name for this address
   - timestamp: the timestamp of the block this log appears in
   - blockHash: the hash of the block
   - transactionHash: the hash of the transaction

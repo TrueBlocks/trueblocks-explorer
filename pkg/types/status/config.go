@@ -81,7 +81,7 @@ func getCachesFields() []types.FieldConfig {
 		{Section: "Statistics", Key: "nFiles", Type: "uint64"},
 		{Section: "Statistics", Key: "nFolders", Type: "uint64"},
 		{Section: "Statistics", Key: "sizeInBytes", Type: "uint64"},
-		{Section: "Timestamps", Key: "lastCached", Type: "datetime"},
+		{Section: "Timestamps", Key: "lastCached", Type: "string"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

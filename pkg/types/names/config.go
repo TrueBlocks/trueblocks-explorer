@@ -105,6 +105,7 @@ func (c *NamesCollection) buildActions() map[string]types.ActionConfig {
 func getNamesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Identity", Key: "address", Type: "address"},
+		{Section: "Identity", Key: "addressName", Type: "string"},
 		{Section: "Identity", Key: "name", Type: "string"},
 		{Section: "Identity", Key: "symbol", Type: "string"},
 		{Section: "Identity", Key: "decimals", Type: "uint64"},

@@ -28,6 +28,7 @@ var (
 
 {{range .Stores}}
 {{- $isDyn := eq .Name "AddressList"}}
+{{- $storeName := .Name}}
 func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload{{if not $isDyn}}, facet types.DataFacet{{end}}) *store.Store[{{toSingular .Name}}] {
 	{{toLower .Name}}StoreMu.Lock()
 	defer {{toLower .Name}}StoreMu.Unlock()
@@ -46,6 +47,19 @@ func (c *{{$class}}Collection) get{{.Name}}Store(payload *types.Payload{{if not 
 
 		processFunc := func(item interface{}) *{{toSingular .Name}} {
 			if it, ok := item.(*{{toSingular .Name}}); ok {
+				{{- range .Members}}
+				{{- $isDB := eq .GoName "DatabaseName" -}}
+				{{- if and (not $isDB) (and (hasSuffix .Name "Name") (eq .Type "string"))}}
+				{{- $baseName := replace .Name "Name" ""}}
+				{{- if $isNames}}
+				it.{{.GoName}} = NameAddress(it.{{firstUpper $baseName}})
+				{{- else if or (eq $storeName "DalleDress") (eq $storeName "AddressList")}}
+				it.{{.GoName}} = names.NameAddressStr(it.{{firstUpper $baseName}})
+				{{- else}}
+				it.{{.GoName}} = names.NameAddress(it.{{firstUpper $baseName}})
+				{{- end}}
+				{{- end}}
+				{{- end}}
 				// EXISTING_CODE
 				// EXISTING_CODE
 				{{- if .NeedsCalcs}}

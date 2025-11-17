@@ -6,6 +6,24 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
+// NameAddress takes an address and returns the name as a string if found, empty string otherwise
+func NameAddress(address base.Address) string {
+	name, found := NameFromAddress(address)
+	if found && name != nil && name.Name != "" {
+		return name.Name
+	}
+	return ""
+}
+
+// NameAddressStr takes a string address and returns the name as a string if found, empty string otherwise
+func NameAddressStr(address string) string {
+	name, found := NameFromAddress(base.HexToAddress(address))
+	if found && name != nil && name.Name != "" {
+		return name.Name
+	}
+	return ""
+}
+
 func NameFromAddress(address base.Address) (*Name, bool) {
 	if !ensureLoadedSync() {
 		return nil, false

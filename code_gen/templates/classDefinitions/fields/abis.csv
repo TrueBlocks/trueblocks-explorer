@@ -1,6 +1,6 @@
 name          , type    , strDefault, attributes  , section   , upgrades, docOrder, description
 address       , address ,           , readOnly    , Identity  ,         ,        1, the address for the ABI
-name          , string  ,           ,             , Identity  ,         ,        2, the filename of the ABI (likely the smart contract address)
+addressName   , string  ,           , readOnly    , Identity  ,         ,        2, the name for this address
 path          , path    ,           , noui|noTable, Identity  ,         ,        3, the folder holding the abi file
 nFunctions    , uint64  ,           ,             , Statistics,         ,        4, the number of functions in the ABI
 nEvents       , uint64  ,           ,             , Statistics,         ,        5, the number of events in the ABI

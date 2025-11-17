@@ -22,7 +22,7 @@ Welcome to the **Abis** view! This section provides information about managing a
 - **Abis Store (11 members)**
 
   - address: the address for the ABI
-  - name: the filename of the ABI (likely the smart contract address)
+  - addressName: the name for this address
   - path: the folder holding the abi file
   - nFunctions: the number of functions in the ABI
   - nEvents: the number of events in the ABI

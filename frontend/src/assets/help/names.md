@@ -20,9 +20,10 @@ Welcome to the **Names** view! This section provides information about managing 
 
 ## Stores
 
-- **Names Store (14 members)**
+- **Names Store (15 members)**
 
   - address: the address associated with this name
+  - addressName: the name for this address
   - name: the name associated with this address
   - symbol: the symbol for this address
   - decimals: number of decimals retrieved from an ERC20 smart contract

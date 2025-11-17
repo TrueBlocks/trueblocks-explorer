@@ -563,6 +563,7 @@ export namespace model {
 	
 	export class DalleDress {
 	    original: string;
+	    originalName: string;
 	    fileName: string;
 	    fileSize: number;
 	    modifiedAt: number;
@@ -592,6 +593,7 @@ export namespace model {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.original = source["original"];
+	        this.originalName = source["originalName"];
 	        this.fileName = source["fileName"];
 	        this.fileSize = source["fileSize"];
 	        this.modifiedAt = source["modifiedAt"];
@@ -1061,6 +1063,7 @@ export namespace projects {
 	
 	export class AddressList {
 	    address: string;
+	    addressName: string;
 	    name: string;
 	    appearances: number;
 	    lastUpdated: string;
@@ -1072,6 +1075,7 @@ export namespace projects {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.address = source["address"];
+	        this.addressName = source["addressName"];
 	        this.name = source["name"];
 	        this.appearances = source["appearances"];
 	        this.lastUpdated = source["lastUpdated"];
@@ -1305,18 +1309,6 @@ export namespace types {
 	    INDEX = "index",
 	    BLOOMS = "blooms",
 	    MANIFEST = "manifest",
-	    COMPARITOOR = "comparitoor",
-	    CHIFRA = "chifra",
-	    ETHERSCAN = "etherscan",
-	    COVALENT = "covalent",
-	    ALCHEMY = "alchemy",
-	    DASHBOARD = "dashboard",
-	    EXECUTE = "execute",
-	    EVENTS = "events",
-	    GENERATOR = "generator",
-	    SERIES = "series",
-	    DATABASES = "databases",
-	    GALLERY = "gallery",
 	    ALL = "all",
 	    CUSTOM = "custom",
 	    PREFUND = "prefund",
@@ -1325,6 +1317,18 @@ export namespace types {
 	    DOWNLOADED = "downloaded",
 	    KNOWN = "known",
 	    FUNCTIONS = "functions",
+	    EVENTS = "events",
+	    COMPARITOOR = "comparitoor",
+	    CHIFRA = "chifra",
+	    ETHERSCAN = "etherscan",
+	    COVALENT = "covalent",
+	    ALCHEMY = "alchemy",
+	    DASHBOARD = "dashboard",
+	    EXECUTE = "execute",
+	    GENERATOR = "generator",
+	    SERIES = "series",
+	    DATABASES = "databases",
+	    GALLERY = "gallery",
 	    STATEMENTS = "statements",
 	    BALANCES = "balances",
 	    TRANSFERS = "transfers",

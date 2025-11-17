@@ -140,6 +140,11 @@ func (r *Facet[T]) FetchFacet() error {
 		return ErrAlreadyLoading
 	}
 
+	// If already loaded and has data, no need to fetch again
+	if currentState == types.StateLoaded && r.Count() > 0 {
+		return nil
+	}
+
 	go func() {
 		ticker := time.NewTicker(progress.MaxWaitTime / 2)
 		defer ticker.Stop()

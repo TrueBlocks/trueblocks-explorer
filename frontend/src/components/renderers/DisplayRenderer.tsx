@@ -87,10 +87,10 @@ export const DisplayRenderer = ({
     // If key contains dots, traverse nested objects
     if (key.includes('.')) {
       const parts = key.split('.');
-      let current: any = data;
+      let current: unknown = data;
       for (const part of parts) {
-        if (current && typeof current === 'object') {
-          current = current[part];
+        if (current && typeof current === 'object' && current !== null) {
+          current = (current as Record<string, unknown>)[part];
         } else {
           return undefined;
         }

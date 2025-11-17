@@ -293,7 +293,7 @@ func (a *App) SetFontScale(scale float64) error {
 	} else if scale > 1.4 {
 		scale = 1.4
 	}
-	
+
 	scale = float64(int(scale*10+0.5)) / 10
 	a.Preferences.App.FontScale = scale
 	return preferences.SetAppPreferences(&a.Preferences.App)

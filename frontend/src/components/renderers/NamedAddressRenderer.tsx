@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import { useActiveProject, useIconSets } from '@hooks';
-import { Box, Group, Stack, Text } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 import { addressToHex, getDisplayAddress } from '@utils';
 
 import { withFallback } from './utils';

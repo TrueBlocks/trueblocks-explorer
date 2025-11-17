@@ -1,6 +1,6 @@
 import { isValidElement } from 'react';
 
-import { DataDisplayType, FormField, shouldRightAlign } from '@components';
+import { FormField, shouldRightAlign } from '@components';
 import { usePreferences } from '@hooks';
 import { useMantineTheme } from '@mantine/core';
 

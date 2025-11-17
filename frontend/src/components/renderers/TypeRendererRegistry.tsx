@@ -5,6 +5,7 @@ import {
   FormField,
   shouldRightAlign as shouldRightAlignType,
 } from '@components';
+import { displayHash } from '@utils';
 
 import {
   BooleanRenderer,
@@ -85,7 +86,12 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
     editHint: 'Enter Ethereum address (42 characters starting with 0x)',
   },
   hash: {
-    displayRenderer: (value) => String(value || ''),
+    displayRenderer: (value, { context }) => {
+      const hashStr = String(value || '');
+      return context === RenderContext.TABLE_CELL
+        ? displayHash(hashStr)
+        : hashStr;
+    },
     editPlaceholder:
       '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
     editHint: 'Enter hash value (66 characters starting with 0x)',
@@ -151,7 +157,12 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
     editHint: 'Enter block range (e.g., start-end)',
   },
   ipfsHash: {
-    displayRenderer: (value) => String(value || ''),
+    displayRenderer: (value, { context }) => {
+      const hashStr = String(value || '');
+      return context === RenderContext.TABLE_CELL
+        ? displayHash(hashStr)
+        : hashStr;
+    },
     editPlaceholder: 'QmXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     editHint: 'Enter IPFS hash',
   },

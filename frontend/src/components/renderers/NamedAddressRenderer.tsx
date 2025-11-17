@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { Stack, Text } from '@mantine/core';
+import { getDisplayAddress } from '@utils';
 
 import { withFallback } from './utils';
 
@@ -28,14 +29,17 @@ export const NamedAddressRenderer = memo(
     // If both are missing, return fallback
     if (!address && !name) {
       return withFallback(value, 'N/A');
-    } // If we only have address, show it normally
+    }
+
+    // If we only have address, show it (shortened in table mode)
     if (address && !name) {
+      const displayAddress = tableCell ? getDisplayAddress(address) : address;
       return (
         <Text
           size={tableCell ? 'sm' : 'md'}
           style={{ fontFamily: 'monospace' }}
         >
-          {address}
+          {displayAddress}
         </Text>
       );
     }
@@ -45,7 +49,8 @@ export const NamedAddressRenderer = memo(
       return <Text size={tableCell ? 'sm' : 'md'}>{name}</Text>;
     }
 
-    // Show both name and address in two lines
+    // Show both name and address in two lines (address shortened in table mode)
+    const displayAddress = tableCell ? getDisplayAddress(address) : address;
     return (
       <Stack gap={2}>
         <Text
@@ -60,7 +65,7 @@ export const NamedAddressRenderer = memo(
           c="dimmed"
           style={{ fontFamily: 'monospace', lineHeight: 1.2 }}
         >
-          {address}
+          {displayAddress}
         </Text>
       </Stack>
     );

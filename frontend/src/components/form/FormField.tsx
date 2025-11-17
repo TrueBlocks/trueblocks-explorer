@@ -44,6 +44,7 @@ export type DataDisplayType =
   | 'identifier'
   | 'ether'
   | 'actions'
+  | 'namedAddress'
   // Legacy/compatibility
   | 'custom';
 

@@ -4,5 +4,6 @@ export { DateTimeRenderer } from './DateTimeRenderer';
 export { FileSizeRenderer } from './FileSizeRenderer';
 export { BooleanRenderer } from './BooleanRenderer';
 export { PopoverRenderer } from './PopoverRenderer';
+export { NamedAddressRenderer } from './NamedAddressRenderer';
 export { DisplayRenderer } from './DisplayRenderer';
 export { EditRenderer } from './EditRenderer';

@@ -59,6 +59,7 @@ export const TableBody = <T extends Record<string, unknown>>({
                     <FieldRenderer
                       field={
                         {
+                          key: col.key as string,
                           type: col.type || 'text',
                           value: (col.key !== undefined
                             ? isNestedProperty(col.key)

@@ -11,6 +11,7 @@ import {
   DateTimeRenderer,
   EtherRenderer,
   FileSizeRenderer,
+  NamedAddressRenderer,
   PopoverRenderer,
   WeiRenderer,
 } from './FieldRenderer.renderers';
@@ -221,6 +222,18 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
         ]}
       />
     ),
+  },
+  namedAddress: {
+    displayRenderer: (value, { context, rowData, field }) => {
+      return (
+        <NamedAddressRenderer
+          value={value}
+          rowData={rowData}
+          field={field}
+          tableCell={context === RenderContext.TABLE_CELL}
+        />
+      );
+    },
   },
   float64: {
     displayRenderer: (value) => formatNumberWithFallback(value, 2, '0.00'),

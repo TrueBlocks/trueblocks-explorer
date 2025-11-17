@@ -1,10 +1,4 @@
-import {
-  Fragment,
-  startTransition,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import { StyledDivider } from '@components';
 import { useActiveProject, useEvent } from '@hooks';
@@ -38,8 +32,9 @@ export const TabView = ({
     useActiveProject();
   const [activeTab, setActiveTab] = useState<string>('');
 
+  // Make activeTab purely reactive to backend state - no more restoration race conditions
   useEffect(() => {
-    if (loading) return;
+    if (loading || tabs.length === 0) return;
     const vR = route.replace(/^\/+/, '');
     const savedTab = getLastFacet(vR);
     const isValidSavedTab =
@@ -47,10 +42,11 @@ export const TabView = ({
       String(savedTab) !== 'undefined' &&
       tabs.some((tab) => tab.value === savedTab);
     const targetTab = isValidSavedTab ? savedTab : tabs[0]?.value || '';
+    // Only update if different - prevents unnecessary re-renders
     if (targetTab && targetTab !== activeTab) {
       setActiveTab(targetTab);
     }
-  }, [getLastFacet, route, tabs, loading, lastFacetMap, activeTab]);
+  }, [lastFacetMap, route, tabs, loading, getLastFacet, activeTab]);
 
   const nextTab = useCallback((): string => {
     const currentIndex = tabs.findIndex((tab) => tab.value === activeTab);
@@ -66,16 +62,14 @@ export const TabView = ({
 
   useEvent<{ route: string; key: string }>(
     msgs.EventType.TAB_CYCLE,
-    (_message: string, event?: { route: string; key: string }) => {
+    async (_message: string, event?: { route: string; key: string }) => {
       if (!event) return;
       const vER = event.route?.replace(/^\/+/, '') || '';
       const vR = route.replace(/^\/+/, '');
       if (vER === vR) {
         const newTab = event.key.startsWith('alt+') ? prevTab() : nextTab();
-        setActiveTab(newTab);
-        startTransition(() => {
-          setLastFacet(vR, newTab as types.DataFacet);
-        });
+        // Backend-first update - UI will respond via useEffect above
+        await setLastFacet(vR, newTab as types.DataFacet);
         if (onTabChange) {
           onTabChange(newTab);
         }
@@ -83,13 +77,11 @@ export const TabView = ({
     },
   );
 
-  const handleTabChange = (newTab: string | null) => {
+  const handleTabChange = async (newTab: string | null) => {
     if (newTab === null) return;
-    setActiveTab(newTab);
     const vR = route.replace(/^\/+/, '');
-    startTransition(() => {
-      setLastFacet(vR, newTab as types.DataFacet);
-    });
+    // Backend-first update - UI will respond via useEffect above
+    await setLastFacet(vR, newTab as types.DataFacet);
     if (onTabChange) {
       onTabChange(newTab);
     }

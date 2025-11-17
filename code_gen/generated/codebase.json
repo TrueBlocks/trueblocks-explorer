@@ -904,114 +904,60 @@
                     "disable_go": true,
                     "members": [
                         {
+                            "name": "date",
+                            "type": "string",
+                            "section": "Context",
+                            "docOrder": 1,
+                            "description": "the date and time of the block",
+                            "num": 1
+                        },
+                        {
+                            "name": "blockNumber",
+                            "type": "blknum",
+                            "section": "Context",
+                            "docOrder": 2,
+                            "description": "the number of the block",
+                            "num": 2
+                        },
+                        {
                             "name": "holder",
                             "type": "address",
                             "section": "Balance Info",
-                            "docOrder": 1,
+                            "docOrder": 3,
                             "description": "Holder",
-                            "num": 1
+                            "num": 3
                         },
                         {
                             "name": "holderName",
                             "type": "string",
                             "section": "Balance Info",
-                            "docOrder": 2,
+                            "docOrder": 4,
                             "description": "the name for this holder address",
-                            "num": 2
+                            "num": 4
                         },
                         {
                             "name": "address",
                             "type": "address",
                             "section": "Balance Info",
-                            "docOrder": 3,
+                            "docOrder": 5,
                             "description": "Token Address",
-                            "num": 3
+                            "num": 5
                         },
                         {
                             "name": "addressName",
                             "type": "string",
                             "section": "Balance Info",
-                            "docOrder": 4,
-                            "description": "the name for this token address",
-                            "num": 4
-                        },
-                        {
-                            "name": "symbol",
-                            "type": "string",
-                            "section": "Balance Info",
-                            "docOrder": 5,
-                            "description": "Symbol",
-                            "num": 5
-                        },
-                        {
-                            "name": "balance",
-                            "type": "ether",
-                            "section": "Balance Info",
                             "docOrder": 6,
-                            "description": "Balance",
+                            "description": "the name for this token address",
                             "num": 6
                         },
                         {
-                            "name": "decimals",
-                            "type": "int64",
-                            "section": "Details",
+                            "name": "balance",
+                            "type": "wei",
+                            "section": "Balance Info",
                             "docOrder": 7,
-                            "description": "Decimals",
+                            "description": "Balance in wei",
                             "num": 7
-                        },
-                        {
-                            "name": "priorBalance",
-                            "type": "ether",
-                            "attributes": "noTable",
-                            "section": "Details",
-                            "docOrder": 8,
-                            "description": "Prior Balance",
-                            "num": 8
-                        },
-                        {
-                            "name": "totalSupply",
-                            "type": "ether",
-                            "attributes": "noTable",
-                            "section": "Details",
-                            "docOrder": 9,
-                            "description": "Total Supply",
-                            "num": 9
-                        },
-                        {
-                            "name": "type",
-                            "type": "string",
-                            "attributes": "noTable",
-                            "section": "Details",
-                            "docOrder": 10,
-                            "description": "Type",
-                            "num": 10
-                        },
-                        {
-                            "name": "blockNumber",
-                            "type": "blknum",
-                            "attributes": "noTable",
-                            "section": "Context",
-                            "docOrder": 11,
-                            "description": "the number of the block",
-                            "num": 11
-                        },
-                        {
-                            "name": "transactionIndex",
-                            "type": "txnum",
-                            "attributes": "noTable",
-                            "section": "Context",
-                            "docOrder": 12,
-                            "description": "the zero-indexed position of the transaction in the block",
-                            "num": 12
-                        },
-                        {
-                            "name": "timestamp",
-                            "type": "timestamp",
-                            "attributes": "noTable",
-                            "section": "Context",
-                            "docOrder": 13,
-                            "description": "the timestamp of the block this log appears in",
-                            "num": 13
                         }
                     ]
                 },
@@ -2204,7 +2150,7 @@
                             "attributes": "",
                             "isDynamic": false,
                             "disabled": false,
-                            "needsCalcs": false,
+                            "needsCalcs": true,
                             "panelChart": false,
                             "facetChart": false,
                             "useMapKey": false,
@@ -3546,7 +3492,7 @@
                     "attributes": "",
                     "isDynamic": false,
                     "disabled": false,
-                    "needsCalcs": false,
+                    "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
                     "useMapKey": false,
@@ -7774,114 +7720,60 @@
             "disable_go": true,
             "members": [
                 {
+                    "name": "date",
+                    "type": "string",
+                    "section": "Context",
+                    "docOrder": 1,
+                    "description": "the date and time of the block",
+                    "num": 1
+                },
+                {
+                    "name": "blockNumber",
+                    "type": "blknum",
+                    "section": "Context",
+                    "docOrder": 2,
+                    "description": "the number of the block",
+                    "num": 2
+                },
+                {
                     "name": "holder",
                     "type": "address",
                     "section": "Balance Info",
-                    "docOrder": 1,
+                    "docOrder": 3,
                     "description": "Holder",
-                    "num": 1
+                    "num": 3
                 },
                 {
                     "name": "holderName",
                     "type": "string",
                     "section": "Balance Info",
-                    "docOrder": 2,
+                    "docOrder": 4,
                     "description": "the name for this holder address",
-                    "num": 2
+                    "num": 4
                 },
                 {
                     "name": "address",
                     "type": "address",
                     "section": "Balance Info",
-                    "docOrder": 3,
+                    "docOrder": 5,
                     "description": "Token Address",
-                    "num": 3
+                    "num": 5
                 },
                 {
                     "name": "addressName",
                     "type": "string",
                     "section": "Balance Info",
-                    "docOrder": 4,
-                    "description": "the name for this token address",
-                    "num": 4
-                },
-                {
-                    "name": "symbol",
-                    "type": "string",
-                    "section": "Balance Info",
-                    "docOrder": 5,
-                    "description": "Symbol",
-                    "num": 5
-                },
-                {
-                    "name": "balance",
-                    "type": "ether",
-                    "section": "Balance Info",
                     "docOrder": 6,
-                    "description": "Balance",
+                    "description": "the name for this token address",
                     "num": 6
                 },
                 {
-                    "name": "decimals",
-                    "type": "int64",
-                    "section": "Details",
+                    "name": "balance",
+                    "type": "wei",
+                    "section": "Balance Info",
                     "docOrder": 7,
-                    "description": "Decimals",
+                    "description": "Balance in wei",
                     "num": 7
-                },
-                {
-                    "name": "priorBalance",
-                    "type": "ether",
-                    "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 8,
-                    "description": "Prior Balance",
-                    "num": 8
-                },
-                {
-                    "name": "totalSupply",
-                    "type": "ether",
-                    "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 9,
-                    "description": "Total Supply",
-                    "num": 9
-                },
-                {
-                    "name": "type",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Details",
-                    "docOrder": 10,
-                    "description": "Type",
-                    "num": 10
-                },
-                {
-                    "name": "blockNumber",
-                    "type": "blknum",
-                    "attributes": "noTable",
-                    "section": "Context",
-                    "docOrder": 11,
-                    "description": "the number of the block",
-                    "num": 11
-                },
-                {
-                    "name": "transactionIndex",
-                    "type": "txnum",
-                    "attributes": "noTable",
-                    "section": "Context",
-                    "docOrder": 12,
-                    "description": "the zero-indexed position of the transaction in the block",
-                    "num": 12
-                },
-                {
-                    "name": "timestamp",
-                    "type": "timestamp",
-                    "attributes": "noTable",
-                    "section": "Context",
-                    "docOrder": 13,
-                    "description": "the timestamp of the block this log appears in",
-                    "num": 13
                 }
             ]
         },

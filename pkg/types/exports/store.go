@@ -284,7 +284,7 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain, Ether: true},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 			}
@@ -303,6 +303,17 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				return it
 			}
 			return nil

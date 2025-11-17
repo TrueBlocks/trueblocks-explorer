@@ -1,14 +1,8 @@
-name            , type     , strDefault, attributes , section     , upgrades, docOrder, description
-holder          , address  ,           ,            , Balance Info,         ,        1, Holder
-holderName      , string   ,           ,            , Balance Info,         ,        2, the name for this holder address
-address         , address  ,           ,            , Balance Info,         ,        3, Token Address
-addressName     , string   ,           ,            , Balance Info,         ,        4, the name for this token address
-symbol          , string   ,           ,            , Balance Info,         ,        5, Symbol
-balance         , ether    ,           ,            , Balance Info,         ,        6, Balance
-decimals        , int64    ,           ,            , Details     ,         ,        7, Decimals
-priorBalance    , ether    ,           , noTable    , Details     ,         ,        8, Prior Balance
-totalSupply     , ether    ,           , noTable    , Details     ,         ,        9, Total Supply
-type            , string   ,           , noTable    , Details     ,         ,       10, Type
-blockNumber     , blknum   ,           , noTable    , Context     ,         ,       11, the number of the block
-transactionIndex, txnum    ,           , noTable    , Context     ,         ,       12, the zero-indexed position of the transaction in the block
-timestamp       , timestamp,           , noTable    , Context     ,         ,       13, the timestamp of the block this log appears in
+name       , type   , strDefault, attributes, section     , upgrades, docOrder, description
+date       , string ,           ,           , Context     ,         ,        1, the date and time of the block
+blockNumber, blknum ,           ,           , Context     ,         ,        2, the number of the block
+holder     , address,           ,           , Balance Info,         ,        3, Holder
+holderName , string ,           ,           , Balance Info,         ,        4, the name for this holder address
+address    , address,           ,           , Balance Info,         ,        5, Token Address
+addressName, string ,           ,           , Balance Info,         ,        6, the name for this token address
+balance    , wei    ,           ,           , Balance Info,         ,        7, Balance in wei

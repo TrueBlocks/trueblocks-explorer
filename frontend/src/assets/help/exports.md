@@ -121,21 +121,15 @@ Welcome to the **Exports** view! This section provides information about managin
   - correctAmountOut: correct amount out
   - correctEndBalOut: correct ending balance out
 
-- **Balances Store (13 members)**
+- **Balances Store (7 members)**
 
+  - date: the date and time of the block
+  - blockNumber: the number of the block
   - holder: Holder
   - holderName: the name for this holder address
   - address: Token Address
   - addressName: the name for this token address
-  - symbol: Symbol
-  - balance: Balance
-  - decimals: Decimals
-  - priorBalance: Prior Balance
-  - totalSupply: Total Supply
-  - type: Type
-  - blockNumber: the number of the block
-  - transactionIndex: the zero-indexed position of the transaction in the block
-  - timestamp: the timestamp of the block this log appears in
+  - balance: Balance in wei
 
 - **Logs Store (15 members)**
 

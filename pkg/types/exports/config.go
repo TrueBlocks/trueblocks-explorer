@@ -289,19 +289,13 @@ func getAssetsFields() []types.FieldConfig {
 
 func getBalancesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
+		{Section: "Context", Key: "date", Type: "string"},
+		{Section: "Context", Key: "blockNumber", Type: "blknum"},
 		{Section: "Balance Info", Key: "holder", Type: "address"},
 		{Section: "Balance Info", Key: "holderName", Type: "string"},
 		{Section: "Balance Info", Key: "address", Type: "address"},
 		{Section: "Balance Info", Key: "addressName", Type: "string"},
-		{Section: "Balance Info", Key: "symbol", Type: "string"},
-		{Section: "Balance Info", Key: "balance", Type: "ether"},
-		{Section: "Details", Key: "decimals", Type: "int64"},
-		{Section: "Details", Key: "priorBalance", Type: "ether", NoTable: true},
-		{Section: "Details", Key: "totalSupply", Type: "ether", NoTable: true},
-		{Section: "Details", Key: "type", Type: "string", NoTable: true},
-		{Section: "Context", Key: "blockNumber", Type: "blknum", NoTable: true},
-		{Section: "Context", Key: "transactionIndex", Type: "txnum", NoTable: true},
-		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
+		{Section: "Balance Info", Key: "balance", Type: "wei"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

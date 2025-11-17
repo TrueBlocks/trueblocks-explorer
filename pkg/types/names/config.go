@@ -105,11 +105,11 @@ func (c *NamesCollection) buildActions() map[string]types.ActionConfig {
 func getNamesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Identity", Key: "address", Type: "address"},
-		{Section: "Identity", Key: "name"},
-		{Section: "Identity", Key: "symbol"},
+		{Section: "Identity", Key: "name", Type: "string"},
+		{Section: "Identity", Key: "symbol", Type: "string"},
 		{Section: "Identity", Key: "decimals", Type: "uint64"},
-		{Section: "Classification", Key: "source"},
-		{Section: "Classification", Key: "tags"},
+		{Section: "Classification", Key: "source", Type: "string"},
+		{Section: "Classification", Key: "tags", Type: "string"},
 		{Section: "Classification", Key: "deleted", Type: "boolean", NoTable: true},
 		{Section: "Properties", Key: "isContract", Type: "boolean", NoTable: true},
 		{Section: "Properties", Key: "isCustom", Type: "boolean", NoTable: true},
@@ -117,7 +117,7 @@ func getNamesFields() []types.FieldConfig {
 		{Section: "Properties", Key: "isErc721", Type: "boolean", NoTable: true},
 		{Section: "Properties", Key: "isPrefund", Type: "boolean", NoTable: true},
 		{Section: "Data", Key: "prefund", Type: "wei", NoTable: true},
-		{Section: "Data", Key: "parts", NoTable: true},
+		{Section: "Data", Key: "parts", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

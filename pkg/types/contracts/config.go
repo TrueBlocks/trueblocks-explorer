@@ -77,12 +77,12 @@ func (c *ContractsCollection) buildActions() map[string]types.ActionConfig {
 func getContractsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Overview", Key: "address", Type: "address"},
-		{Section: "Overview", Key: "name"},
+		{Section: "Overview", Key: "addressName", Type: "string"},
 		{Section: "Technical", Key: "abi"},
 		{Section: "Status", Key: "lastUpdated", Type: "datetime"},
 		{Section: "Status", Key: "date", Type: "datetime"},
 		{Section: "Status", Key: "errorCount", Type: "int64"},
-		{Section: "Status", Key: "lastError"},
+		{Section: "Status", Key: "lastError", Type: "string"},
 	}
 	types.NormalizeFields(&ret)
 	return ret
@@ -103,7 +103,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
-		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

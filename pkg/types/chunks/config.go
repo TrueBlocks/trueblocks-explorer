@@ -93,7 +93,7 @@ func (c *ChunksCollection) buildActions() map[string]types.ActionConfig {
 func getBloomsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Range", Key: "range", Type: "blkrange"},
-		{Section: "Identity", Key: "magic", NoTable: true},
+		{Section: "Identity", Key: "magic", Type: "string", NoTable: true},
 		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nBlooms", Type: "uint64"},
 		{Section: "Counts", Key: "nInserted", Type: "uint64"},
@@ -108,7 +108,7 @@ func getBloomsFields() []types.FieldConfig {
 func getIndexFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Range", Key: "range", Type: "blkrange"},
-		{Section: "Identity", Key: "magic", NoTable: true},
+		{Section: "Identity", Key: "magic", Type: "string", NoTable: true},
 		{Section: "Identity", Key: "hash", Type: "hash", NoTable: true},
 		{Section: "Counts", Key: "nAddresses", Type: "uint64"},
 		{Section: "Counts", Key: "nAppearances", Type: "uint64"},
@@ -121,8 +121,8 @@ func getIndexFields() []types.FieldConfig {
 
 func getManifestFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Manifest", Key: "version"},
-		{Section: "Manifest", Key: "chain"},
+		{Section: "Manifest", Key: "version", Type: "string"},
+		{Section: "Manifest", Key: "chain", Type: "string"},
 		{Section: "Manifest", Key: "specification", Type: "ipfsHash"},
 	}
 	types.NormalizeFields(&ret)

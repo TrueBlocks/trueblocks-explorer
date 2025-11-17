@@ -89,7 +89,7 @@ func (c *AbisCollection) buildActions() map[string]types.ActionConfig {
 func getAbisFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Identity", Key: "address", Type: "address"},
-		{Section: "Identity", Key: "name"},
+		{Section: "Identity", Key: "addressName", Type: "string"},
 		{Section: "Identity", Key: "path", Type: "path", NoTable: true},
 		{Section: "Statistics", Key: "nFunctions", Type: "uint64"},
 		{Section: "Statistics", Key: "nEvents", Type: "uint64"},
@@ -107,16 +107,16 @@ func getAbisFields() []types.FieldConfig {
 
 func getFunctionsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Overview", Key: "name"},
-		{Section: "Overview", Key: "type", NoTable: true},
-		{Section: "Overview", Key: "encoding"},
-		{Section: "Overview", Key: "signature"},
-		{Section: "Properties", Key: "stateMutability"},
+		{Section: "Overview", Key: "name", Type: "string"},
+		{Section: "Overview", Key: "type", Type: "string", NoTable: true},
+		{Section: "Overview", Key: "encoding", Type: "string"},
+		{Section: "Overview", Key: "signature", Type: "string"},
+		{Section: "Properties", Key: "stateMutability", Type: "string"},
 		{Section: "Properties", Key: "constant", Type: "boolean"},
 		{Section: "Properties", Key: "anonymous", Type: "boolean", NoTable: true},
 		{Section: "Parameters", Key: "inputs", NoTable: true},
 		{Section: "Parameters", Key: "outputs", NoTable: true},
-		{Section: "Parameters", Key: "message", NoTable: true},
+		{Section: "Parameters", Key: "message", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

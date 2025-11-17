@@ -114,7 +114,7 @@ func getTransactionFields() []types.FieldConfig {
 		{Section: "Gas", Key: "maxPriorityFeePerGas", Type: "gas", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", Type: "value", NoTable: true},
-		{Section: "Details", Key: "type", NoTable: true},
+		{Section: "Details", Key: "type", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

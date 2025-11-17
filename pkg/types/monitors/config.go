@@ -62,7 +62,7 @@ func (c *MonitorsCollection) buildActions() map[string]types.ActionConfig {
 func getMonitorsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Overview", Key: "address", Type: "address"},
-		{Section: "Overview", Key: "name"},
+		{Section: "Overview", Key: "addressName", Type: "string"},
 		{Section: "Overview", Key: "deleted", Type: "boolean", NoTable: true},
 		{Section: "Overview", Key: "isStaged", Type: "boolean", NoTable: true},
 		{Section: "Statistics", Key: "nRecords", Type: "uint64"},

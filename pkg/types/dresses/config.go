@@ -104,24 +104,24 @@ func getDalledressFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "General", Key: "original", Type: "address"},
 		{Section: "General", Key: "fileName", Type: "path"},
-		{Section: "General", Key: "seed"},
-		{Section: "Prompts", Key: "prompt"},
-		{Section: "Prompts", Key: "dataPrompt"},
-		{Section: "Prompts", Key: "titlePrompt"},
-		{Section: "Prompts", Key: "tersePrompt"},
-		{Section: "Prompts", Key: "enhancedPrompt"},
+		{Section: "General", Key: "seed", Type: "string"},
+		{Section: "Prompts", Key: "prompt", Type: "string"},
+		{Section: "Prompts", Key: "dataPrompt", Type: "string"},
+		{Section: "Prompts", Key: "titlePrompt", Type: "string"},
+		{Section: "Prompts", Key: "tersePrompt", Type: "string"},
+		{Section: "Prompts", Key: "enhancedPrompt", Type: "string"},
 		{Section: "Attributes", Key: "attributes", NoTable: true},
-		{Section: "General", Key: "seedChunks", NoTable: true},
-		{Section: "General", Key: "selectedTokens", NoTable: true},
-		{Section: "General", Key: "selectedRecords", NoTable: true},
+		{Section: "General", Key: "seedChunks", Type: "string", NoTable: true},
+		{Section: "General", Key: "selectedTokens", Type: "string", NoTable: true},
+		{Section: "General", Key: "selectedRecords", Type: "string", NoTable: true},
 		{Section: "Image", Key: "imageUrl", Type: "url", NoTable: true},
 		{Section: "Image", Key: "generatedPath", Type: "path"},
 		{Section: "Image", Key: "annotatedPath", Type: "path"},
-		{Section: "General", Key: "downloadMode"},
+		{Section: "General", Key: "downloadMode", Type: "string"},
 		{Section: "General", Key: "ipfsHash", Type: "ipfsHash"},
 		{Section: "General", Key: "cacheHit", Type: "boolean"},
 		{Section: "General", Key: "completed", Type: "boolean"},
-		{Section: "General", Key: "series"},
+		{Section: "General", Key: "series", Type: "string"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -130,10 +130,10 @@ func getDalledressFields() []types.FieldConfig {
 
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "databaseName"},
+		{Section: "General", Key: "databaseName", Type: "string"},
 		{Section: "General", Key: "count", Type: "uint64"},
-		{Section: "General", Key: "sample"},
-		{Section: "General", Key: "filtered"},
+		{Section: "General", Key: "sample", Type: "string"},
+		{Section: "General", Key: "filtered", Type: "string"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -155,7 +155,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
-		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -164,20 +164,20 @@ func getLogsFields() []types.FieldConfig {
 
 func getSeriesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "suffix"},
+		{Section: "General", Key: "suffix", Type: "string"},
 		{Section: "General", Key: "last", Type: "value"},
 		{Section: "General", Key: "deleted", Type: "boolean"},
 		{Section: "General", Key: "modifiedAt", Type: "datetime"},
-		{Section: "Content", Key: "adverbs", NoTable: true},
-		{Section: "Content", Key: "adjectives", NoTable: true},
-		{Section: "Content", Key: "nouns", NoTable: true},
-		{Section: "Content", Key: "emotions", NoTable: true},
-		{Section: "Style", Key: "artstyles", NoTable: true},
-		{Section: "Style", Key: "colors", NoTable: true},
-		{Section: "Style", Key: "viewpoints", NoTable: true},
-		{Section: "Style", Key: "gazes", NoTable: true},
-		{Section: "Style", Key: "backstyles", NoTable: true},
-		{Section: "Style", Key: "compositions", NoTable: true},
+		{Section: "Content", Key: "adverbs", Type: "string", NoTable: true},
+		{Section: "Content", Key: "adjectives", Type: "string", NoTable: true},
+		{Section: "Content", Key: "nouns", Type: "string", NoTable: true},
+		{Section: "Content", Key: "emotions", Type: "string", NoTable: true},
+		{Section: "Style", Key: "artstyles", Type: "string", NoTable: true},
+		{Section: "Style", Key: "colors", Type: "string", NoTable: true},
+		{Section: "Style", Key: "viewpoints", Type: "string", NoTable: true},
+		{Section: "Style", Key: "gazes", Type: "string", NoTable: true},
+		{Section: "Style", Key: "backstyles", Type: "string", NoTable: true},
+		{Section: "Style", Key: "compositions", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

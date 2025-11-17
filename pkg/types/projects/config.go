@@ -79,7 +79,7 @@ func (c *ProjectsCollection) addDynamicFacets(facets map[string]types.FacetConfi
 func getAddresslistFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Identity", Key: "address", Type: "address"},
-		{Section: "Identity", Key: "name"},
+		{Section: "Identity", Key: "addressNme", Type: "string"},
 		{Section: "Identity", Key: "nAppearances", Type: "uint64"},
 		{Section: "State", Key: "lastUpdated", Type: "datetime"},
 	}
@@ -89,8 +89,8 @@ func getAddresslistFields() []types.FieldConfig {
 
 func getProjectsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Identity", Key: "id"},
-		{Section: "Identity", Key: "name"},
+		{Section: "Identity", Key: "id", Type: "string"},
+		{Section: "Identity", Key: "name", Type: "string"},
 		{Section: "Identity", Key: "path", Type: "path"},
 		{Section: "State", Key: "isActive", Type: "boolean"},
 	}

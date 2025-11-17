@@ -76,12 +76,12 @@ func (c *StatusCollection) buildActions() map[string]types.ActionConfig {
 
 func getCachesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "type"},
+		{Section: "General", Key: "type", Type: "string"},
 		{Section: "General", Key: "path", Type: "path"},
 		{Section: "Statistics", Key: "nFiles", Type: "uint64"},
 		{Section: "Statistics", Key: "nFolders", Type: "uint64"},
 		{Section: "Statistics", Key: "sizeInBytes", Type: "uint64"},
-		{Section: "Timestamps", Key: "lastCached"},
+		{Section: "Timestamps", Key: "lastCached", Type: "datetime"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -90,9 +90,9 @@ func getCachesFields() []types.FieldConfig {
 
 func getChainsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "chain"},
+		{Section: "General", Key: "chain", Type: "string"},
 		{Section: "General", Key: "chainId", Type: "uint64"},
-		{Section: "General", Key: "symbol"},
+		{Section: "General", Key: "symbol", Type: "string"},
 		{Section: "Providers", Key: "rpcProvider", Type: "url"},
 		{Section: "Providers", Key: "ipfsGateway", Type: "url"},
 		{Section: "Explorers", Key: "localExplorer", Type: "url"},
@@ -107,14 +107,14 @@ func getStatusFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Paths", Key: "cachePath", Type: "path"},
 		{Section: "Paths", Key: "indexPath", Type: "path"},
-		{Section: "Chain", Key: "chain"},
+		{Section: "Chain", Key: "chain", Type: "string"},
 		{Section: "Chain", Key: "chainId", Type: "uint64"},
-		{Section: "Chain", Key: "networkId"},
+		{Section: "Chain", Key: "networkId", Type: "string"},
 		{Section: "Chain", Key: "chainConfig", Type: "path"},
 		{Section: "Config", Key: "rootConfig", Type: "path"},
-		{Section: "Config", Key: "clientVersion"},
-		{Section: "Config", Key: "version"},
-		{Section: "Progress", Key: "progress"},
+		{Section: "Config", Key: "clientVersion", Type: "string"},
+		{Section: "Config", Key: "version", Type: "string"},
+		{Section: "Progress", Key: "progress", Type: "string"},
 		{Section: "Providers", Key: "rpcProvider", Type: "url"},
 		{Section: "Flags", Key: "hasEsKey", Type: "boolean"},
 		{Section: "Flags", Key: "hasPinKey", Type: "boolean"},

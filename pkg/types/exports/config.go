@@ -194,7 +194,7 @@ func getApprovallogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
-		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -221,7 +221,7 @@ func getApprovaltxsFields() []types.FieldConfig {
 		{Section: "Gas", Key: "maxPriorityFeePerGas", Type: "gas", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", Type: "value", NoTable: true},
-		{Section: "Details", Key: "type", NoTable: true},
+		{Section: "Details", Key: "type", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -232,9 +232,9 @@ func getAssetsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Asset", Key: "timestamp", Type: "timestamp"},
 		{Section: "Asset", Key: "asset", Type: "address"},
-		{Section: "Asset", Key: "symbol"},
+		{Section: "Asset", Key: "symbol", Type: "string"},
 		{Section: "Asset", Key: "decimals", Type: "value", NoTable: true},
-		{Section: "Asset", Key: "priceSource", NoTable: true},
+		{Section: "Asset", Key: "priceSource", Type: "string", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.begBalEth", Type: "ether"},
 		{Section: "Reconciliation", Key: "calcs.totalInEth", Type: "ether"},
 		{Section: "Reconciliation", Key: "calcs.totalOutEth", Type: "ether"},
@@ -245,7 +245,7 @@ func getAssetsFields() []types.FieldConfig {
 		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Type: "ether", NoTable: true},
 		{Section: "Summary", Key: "date", Type: "datetime", NoTable: true},
 		{Section: "Summary", Key: "gasUsed", Type: "gas", NoTable: true},
-		{Section: "Summary", Key: "calcs.reconciliationType", NoTable: true},
+		{Section: "Summary", Key: "calcs.reconciliationType", Type: "string", NoTable: true},
 		{Section: "Asset", Key: "accountedFor", Type: "address", NoTable: true},
 		{Section: "Summary", Key: "calcs.reconciled", Type: "boolean"},
 		{Section: "Inflow", Key: "amountIn", Type: "int256", NoTable: true},
@@ -267,7 +267,7 @@ func getAssetsFields() []types.FieldConfig {
 		{Section: "Analysis", Key: "prevBal", Type: "int256", NoTable: true},
 		{Section: "Analysis", Key: "begBalDiff", Type: "int256", NoTable: true},
 		{Section: "Analysis", Key: "endBalDiff", Type: "int256", NoTable: true},
-		{Section: "Analysis", Key: "correctingReasons", NoTable: true},
+		{Section: "Analysis", Key: "correctingReasons", Type: "string", NoTable: true},
 		{Section: "Corrections", Key: "correctBegBalIn", Type: "int256", NoTable: true},
 		{Section: "Corrections", Key: "correctAmountIn", Type: "int256", NoTable: true},
 		{Section: "Corrections", Key: "correctEndBalIn", Type: "int256", NoTable: true},
@@ -283,14 +283,14 @@ func getAssetsFields() []types.FieldConfig {
 func getBalancesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Balance Info", Key: "holder", Type: "address"},
+		{Section: "Details", Key: "name", Type: "string", NoTable: true},
 		{Section: "Balance Info", Key: "address", Type: "address"},
-		{Section: "Balance Info", Key: "symbol"},
+		{Section: "Balance Info", Key: "symbol", Type: "string"},
 		{Section: "Balance Info", Key: "balance", Type: "ether"},
 		{Section: "Details", Key: "decimals", Type: "int64"},
 		{Section: "Details", Key: "priorBalance", Type: "ether", NoTable: true},
 		{Section: "Details", Key: "totalSupply", Type: "ether", NoTable: true},
-		{Section: "Details", Key: "type", NoTable: true},
-		{Section: "Details", Key: "name", NoTable: true},
+		{Section: "Details", Key: "type", Type: "string", NoTable: true},
 		{Section: "Context", Key: "blockNumber", Type: "blknum", NoTable: true},
 		{Section: "Context", Key: "transactionIndex", Type: "txnum", NoTable: true},
 		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
@@ -315,7 +315,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "topic3", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
-		{Section: "Articulation", Key: "compressedLog", NoTable: true},
+		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -354,7 +354,7 @@ func getReceiptsFields() []types.FieldConfig {
 		{Section: "Details", Key: "cumulativeGasUsed", Type: "gas", NoTable: true},
 		{Section: "Details", Key: "effectiveGasPrice", Type: "gas", NoTable: true},
 		{Section: "Details", Key: "blockHash", Type: "hash", NoTable: true},
-		{Section: "Details", Key: "logsBloom", NoTable: true},
+		{Section: "Details", Key: "logsBloom", Type: "string", NoTable: true},
 		{Section: "Data", Key: "logs", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
@@ -366,9 +366,9 @@ func getStatementsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Asset", Key: "timestamp", Type: "timestamp"},
 		{Section: "Asset", Key: "asset", Type: "address"},
-		{Section: "Asset", Key: "symbol", NoTable: true},
+		{Section: "Asset", Key: "symbol", Type: "string", NoTable: true},
 		{Section: "Asset", Key: "decimals", Type: "value", NoTable: true},
-		{Section: "Asset", Key: "priceSource", NoTable: true},
+		{Section: "Asset", Key: "priceSource", Type: "string", NoTable: true},
 		{Section: "Reconciliation", Key: "calcs.begBalEth", Type: "ether"},
 		{Section: "Reconciliation", Key: "calcs.totalInEth", Type: "ether"},
 		{Section: "Reconciliation", Key: "calcs.totalOutEth", Type: "ether"},
@@ -378,7 +378,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Reconciliation", Key: "calcs.endBalCalcEth", Type: "ether", NoTable: true},
 		{Section: "Summary", Key: "date", Type: "datetime", NoTable: true},
 		{Section: "Summary", Key: "gasUsed", Type: "gas", NoTable: true},
-		{Section: "Summary", Key: "calcs.reconciliationType", NoTable: true},
+		{Section: "Summary", Key: "calcs.reconciliationType", Type: "string", NoTable: true},
 		{Section: "Summary", Key: "accountedFor", Type: "address", NoTable: true},
 		{Section: "Summary", Key: "calcs.reconciled", Type: "boolean"},
 		{Section: "Inflow", Key: "amountIn", Type: "int256", NoTable: true},
@@ -400,7 +400,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Analysis", Key: "prevBal", Type: "int256", NoTable: true},
 		{Section: "Analysis", Key: "begBalDiff", Type: "int256", NoTable: true},
 		{Section: "Analysis", Key: "endBalDiff", Type: "int256", NoTable: true},
-		{Section: "Analysis", Key: "correctingReasons", NoTable: true},
+		{Section: "Analysis", Key: "correctingReasons", Type: "string", NoTable: true},
 		{Section: "Corrections", Key: "correctBegBalIn", Type: "int256", NoTable: true},
 		{Section: "Corrections", Key: "correctAmountIn", Type: "int256", NoTable: true},
 		{Section: "Corrections", Key: "correctEndBalIn", Type: "int256", NoTable: true},
@@ -421,12 +421,12 @@ func getTracesFields() []types.FieldConfig {
 		{Section: "Action", Key: "from", Type: "address"},
 		{Section: "Action", Key: "to", Type: "address"},
 		{Section: "Action", Key: "value", Type: "wei"},
-		{Section: "Overview", Key: "type"},
-		{Section: "Overview", Key: "error", NoTable: true},
+		{Section: "Overview", Key: "type", Type: "string"},
+		{Section: "Overview", Key: "error", Type: "string", NoTable: true},
 		{Section: "Overview", Key: "subtraces", Type: "uint64", NoTable: true},
 		{Section: "Overview", Key: "traceAddress", Type: "uint64", NoTable: true},
 		{Section: "Action", Key: "gas", Type: "gas", NoTable: true},
-		{Section: "Action", Key: "callType", NoTable: true},
+		{Section: "Action", Key: "callType", Type: "string", NoTable: true},
 		{Section: "Action", Key: "input", Type: "bytes", NoTable: true},
 		{Section: "Result", Key: "gasUsed", Type: "gas", NoTable: true},
 		{Section: "Result", Key: "output", Type: "bytes", NoTable: true},
@@ -436,7 +436,7 @@ func getTracesFields() []types.FieldConfig {
 		{Section: "Context", Key: "transactionHash", Type: "hash", NoTable: true},
 		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
 		{Section: "Articulation", Key: "articulatedTrace", NoTable: true},
-		{Section: "Articulation", Key: "compressedTrace", NoTable: true},
+		{Section: "Articulation", Key: "compressedTrace", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -463,7 +463,7 @@ func getTransactionsFields() []types.FieldConfig {
 		{Section: "Gas", Key: "maxPriorityFeePerGas", Type: "gas", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},
 		{Section: "Details", Key: "nonce", Type: "value", NoTable: true},
-		{Section: "Details", Key: "type", NoTable: true},
+		{Section: "Details", Key: "type", Type: "string", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

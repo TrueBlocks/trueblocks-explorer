@@ -45,6 +45,7 @@ export type DataDisplayType =
   | 'ether'
   | 'actions'
   | 'namedAddress'
+  | 'checkmark'
   // Legacy/compatibility
   | 'custom';
 

@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import {
   DataDisplayType,
+  DisplayRendererProps,
   FormField,
   shouldRightAlign as shouldRightAlignType,
 } from '@components';
@@ -9,6 +10,7 @@ import { displayHash } from '@utils';
 
 import {
   BooleanRenderer,
+  CheckmarkRenderer,
   DateTimeRenderer,
   EtherRenderer,
   FileSizeRenderer,
@@ -35,13 +37,6 @@ export interface TypeRendererConfig {
   displayRenderer: (value: unknown, props: DisplayRendererProps) => ReactNode;
   editPlaceholder?: string;
   editHint?: string;
-}
-
-export interface DisplayRendererProps {
-  context: RenderContext;
-  rowData?: Record<string, unknown>;
-  field?: FormField<Record<string, unknown>>;
-  keyProp?: string | number;
 }
 
 export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
@@ -209,6 +204,14 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
   boolean: {
     displayRenderer: (value, { context }) => (
       <BooleanRenderer
+        value={value}
+        tableCell={context === RenderContext.TABLE_CELL}
+      />
+    ),
+  },
+  checkmark: {
+    displayRenderer: (value, { context }) => (
+      <CheckmarkRenderer
         value={value}
         tableCell={context === RenderContext.TABLE_CELL}
       />

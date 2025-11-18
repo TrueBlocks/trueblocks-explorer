@@ -45,20 +45,25 @@ export const DetailSection = ({
   };
 
   const sectionContent = (
-    <div
-      className={className}
-      onClick={handleToggle}
-      style={{
-        cursor: collapsible ? 'pointer' : 'default',
-      }}
-    >
+    <div className={className}>
       <div className="detail-separator" />
-      <Text variant="primary" size="sm">
-        <div className="detail-section-header">
-          {`${collapsible ? (isCollapsed ? '▶ ' : '▼ ') : ''}${title}`}
+      <div
+        onClick={handleToggle}
+        style={{
+          cursor: collapsible ? 'pointer' : 'default',
+        }}
+      >
+        <Text variant="primary" size="sm">
+          <div className="detail-section-header">
+            {`${collapsible ? (isCollapsed ? '▶ ' : '▼ ') : ''}${title}`}
+          </div>
+        </Text>
+      </div>
+      {!isCollapsed && (
+        <div onClick={(e) => e.stopPropagation()} style={{ cursor: 'default' }}>
+          {children}
         </div>
-      </Text>
-      {!isCollapsed && children}
+      )}
     </div>
   );
 

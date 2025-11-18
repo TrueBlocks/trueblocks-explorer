@@ -7,3 +7,4 @@
 export { StatementsPanel } from './statements';
 export { TransactionsPanel } from './transactions';
 export { AssetsPanel } from './assets';
+export { LogsPanel } from './logs';

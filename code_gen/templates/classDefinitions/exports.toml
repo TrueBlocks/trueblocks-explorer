@@ -87,6 +87,7 @@ store = "Logs"
 actions = ["export"]
 needsCalcs = true
 viewType = "table"
+panel = "custom"
 
 [[facets]]
 name = "Traces"

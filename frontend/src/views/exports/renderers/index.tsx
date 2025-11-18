@@ -9,6 +9,7 @@ export const renderers = {
     [types.DataFacet.STATEMENTS]: panels.StatementsPanel,
     [types.DataFacet.TRANSACTIONS]: panels.TransactionsPanel,
     [types.DataFacet.ASSETS]: panels.AssetsPanel,
+    [types.DataFacet.LOGS]: panels.LogsPanel,
   },
   facets: {
     [types.DataFacet.ASSETCHARTS]: (params: RendererParams) => {

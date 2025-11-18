@@ -3,6 +3,7 @@ export { EtherRenderer } from './EtherRenderer';
 export { DateTimeRenderer } from './DateTimeRenderer';
 export { FileSizeRenderer } from './FileSizeRenderer';
 export { BooleanRenderer } from './BooleanRenderer';
+export { CheckmarkRenderer } from './CheckmarkRenderer';
 export { PopoverRenderer } from './PopoverRenderer';
 export { NamedAddressRenderer } from './NamedAddressRenderer';
 export { DisplayRenderer } from './DisplayRenderer';

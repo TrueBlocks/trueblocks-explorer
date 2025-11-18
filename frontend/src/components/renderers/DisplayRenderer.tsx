@@ -61,10 +61,11 @@ const TypeDebugWrapper = ({
 
 export interface DisplayRendererProps {
   field: FormField<Record<string, unknown>>;
-  row?: Record<string, unknown>;
-  rowData?: Record<string, unknown>; // Alias for row - backwards compatibility
-  tableCell?: boolean;
+  rowData?: Record<string, unknown>;
   keyProp?: string | number;
+  row?: Record<string, unknown>;
+  tableCell?: boolean;
+  context?: RenderContext;
 }
 
 export const DisplayRenderer = ({

@@ -1,8 +1,9 @@
 name       , type   , strDefault, attributes, section     , upgrades, docOrder, description
-date       , string ,           ,           , Context     ,         ,        1, the date and time of the block
-blockNumber, blknum ,           ,           , Context     ,         ,        2, the number of the block
-holder     , address,           ,           , Balance Info,         ,        3, Holder
-holderName , string ,           ,           , Balance Info,         ,        4, the name for this holder address
-address    , address,           ,           , Balance Info,         ,        5, Token Address
-addressName, string ,           ,           , Balance Info,         ,        6, the name for this token address
-balance    , wei    ,           ,           , Balance Info,         ,        7, Balance in wei
+blockNumber, blknum ,           ,           , Context     ,         ,        1, the number of the block
+holder     , address,           ,           , Balance Info,         ,        2, Holder
+holderName , string ,           ,           , Balance Info,         ,        3, the name for this holder address
+address    , address,           ,           , Balance Info,         ,        4, Token Address
+addressName, string ,           ,           , Balance Info,         ,        5, the name for this token address
+balance    , wei    ,           ,           , Balance Info,         ,        6, Balance in wei
+diff       , wei    ,           , noTable   , Balance Info,         ,        7, Balance in wei
+

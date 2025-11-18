@@ -123,13 +123,13 @@ Welcome to the **Exports** view! This section provides information about managin
 
 - **Balances Store (7 members)**
 
-  - date: the date and time of the block
   - blockNumber: the number of the block
   - holder: Holder
   - holderName: the name for this holder address
   - address: Token Address
   - addressName: the name for this token address
   - balance: Balance in wei
+  - diff: Balance in wei
 
 - **Logs Store (15 members)**
 
@@ -276,7 +276,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - nonce: sequence number of the transactions sent by the sender
   - type: the transaction type
 
-- **Transfers Store (26 members)**
+- **Transfers Store (13 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
@@ -290,20 +290,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - holder: the address of the holder of the asset
   - holderName: the name for this holder address
   - decimals: the number of decimal places in the asset units
-  - amountIn: the top-level value of the incoming transfer for the holder address
-  - internalIn: the internal value of the incoming transfer for the holder address
-  - minerBaseRewardIn: the base fee reward if the miner is the holder address
-  - minerNephewRewardIn: the nephew reward if the miner is the holder address
-  - minerTxFeeIn: the transaction fee reward if the miner is the holder address
-  - minerUncleRewardIn: the uncle reward if the miner who won the uncle block is the holder address
-  - prefundIn: at block zero (0) only, the amount of genesis income for the holder address
-  - selfDestructIn: the incoming value of a self-destruct if recipient is the holder address
-  - amountOut: the amount (in units of the asset) of regular outflow during this transaction
-  - internalOut: the value of any internal value transfers out of the holder account
-  - gasOut: if the transaction's original sender is the holder address, the amount of gas expended
-  - selfDestructOut: the outgoing value of a self-destruct if sender is the holder address
-  - transaction: the transaction that triggered the transfer
-  - log: if a token transfer, the log that triggered the transfer
+  - amount: the amount of this transfer (use sender/receiver to assertain direction)
 
 - **Withdrawals Store (7 members)**
 

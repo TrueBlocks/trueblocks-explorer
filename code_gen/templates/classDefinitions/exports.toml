@@ -28,6 +28,7 @@ name = "Transfers"
 store = "Transfers"
 actions = ["export"]
 viewType = "table"
+needsCalcs = true
 
 [[facets]]
 name = "Transactions"

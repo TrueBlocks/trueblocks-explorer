@@ -718,6 +718,17 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 				it.HolderName = names.NameAddress(it.Holder)
 				// EXISTING_CODE
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				return it
 			}
 			return nil

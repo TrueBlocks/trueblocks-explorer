@@ -26,7 +26,7 @@ export const Header = () => {
   return (
     <AppShell.Header>
       <Group justify="space-between" p="md" h="100%">
-        <Title order={2}>{baseName}</Title>
+        <Title order={1}>{baseName}</Title>
         <ProjectContextBar />
         <Group justify="flex-end" align="center" gap="xs">
           <DebugToggle />

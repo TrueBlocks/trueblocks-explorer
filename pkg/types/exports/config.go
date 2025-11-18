@@ -289,13 +289,13 @@ func getAssetsFields() []types.FieldConfig {
 
 func getBalancesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "Context", Key: "date", Type: "string"},
 		{Section: "Context", Key: "blockNumber", Type: "blknum"},
 		{Section: "Balance Info", Key: "holder", Type: "address"},
 		{Section: "Balance Info", Key: "holderName", Type: "string"},
 		{Section: "Balance Info", Key: "address", Type: "address"},
 		{Section: "Balance Info", Key: "addressName", Type: "string"},
 		{Section: "Balance Info", Key: "balance", Type: "wei"},
+		{Section: "Balance Info", Key: "diff", Type: "wei", NoTable: true},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)
@@ -491,20 +491,7 @@ func getTransfersFields() []types.FieldConfig {
 		{Section: "General", Key: "holder", Type: "address", NoTable: true},
 		{Section: "General", Key: "holderName", Type: "string", NoTable: true},
 		{Section: "General", Key: "decimals", Type: "uint64", NoTable: true},
-		{Section: "General", Key: "amountIn", Type: "int256"},
-		{Section: "General", Key: "internalIn", Type: "int256"},
-		{Section: "General", Key: "minerBaseRewardIn", Type: "int256"},
-		{Section: "General", Key: "minerNephewRewardIn", Type: "int256"},
-		{Section: "General", Key: "minerTxFeeIn", Type: "int256"},
-		{Section: "General", Key: "minerUncleRewardIn", Type: "int256"},
-		{Section: "General", Key: "prefundIn", Type: "int256"},
-		{Section: "General", Key: "selfDestructIn", Type: "int256"},
-		{Section: "General", Key: "amountOut", Type: "int256"},
-		{Section: "General", Key: "internalOut", Type: "int256"},
-		{Section: "General", Key: "gasOut", Type: "int256"},
-		{Section: "General", Key: "selfDestructOut", Type: "int256"},
-		{Section: "General", Key: "transaction"},
-		{Section: "General", Key: "log"},
+		{Section: "General", Key: "amount", Type: "wei"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

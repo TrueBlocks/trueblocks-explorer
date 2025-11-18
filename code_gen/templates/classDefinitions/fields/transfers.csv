@@ -2,26 +2,13 @@ name               , type        , strDefault, attributes, section, upgrades, do
 blockNumber        , blknum      ,           ,           ,        ,         ,        1, the number of the block
 transactionIndex   , txnum       ,           ,           ,        ,         ,        2, the zero-indexed position of the transaction in the block
 logIndex           , lognum      ,           ,           ,        ,         ,        3, the zero-indexed position the log in the block&#44; if applicable
-asset              , address     ,           ,           ,        ,         ,        4, 0xeeee...eeee for ETH transfers&#44; the token address otherwise
-assetName          , string      ,           ,           ,        ,         ,        5, the name for this asset address
 sender             , address     ,           ,           ,        ,         ,        6, the initiator of the transfer (the sender)
 senderName         , string      ,           ,           ,        ,         ,        7, the name for this sender address
 recipient          , address     ,           ,           ,        ,         ,        8, the receiver of the transfer (the recipient)
 recipientName      , string      ,           ,           ,        ,         ,        9, the name for this recipient address
+asset              , address     ,           ,           ,        ,         ,        4, 0xeeee...eeee for ETH transfers&#44; the token address otherwise
+assetName          , string      ,           ,           ,        ,         ,        5, the name for this asset address
 holder             , address     ,           , noTable   ,        ,         ,       10, the address of the holder of the asset
 holderName         , string      ,           , noTable   ,        ,         ,       11, the name for this holder address
 decimals           , uint64      ,           , noTable   ,        ,         ,       12, the number of decimal places in the asset units
-amountIn           , int256      ,           ,           ,        ,         ,       13, the top-level value of the incoming transfer for the holder address
-internalIn         , int256      ,           ,           ,        ,         ,       14, the internal value of the incoming transfer for the holder address
-minerBaseRewardIn  , int256      ,           ,           ,        ,         ,       15, the base fee reward if the miner is the holder address
-minerNephewRewardIn, int256      ,           ,           ,        ,         ,       16, the nephew reward if the miner is the holder address
-minerTxFeeIn       , int256      ,           ,           ,        ,         ,       17, the transaction fee reward if the miner is the holder address
-minerUncleRewardIn , int256      ,           ,           ,        ,         ,       18, the uncle reward if the miner who won the uncle block is the holder address
-prefundIn          , int256      ,           ,           ,        ,         ,       19, at block zero (0) only&#44; the amount of genesis income for the holder address
-selfDestructIn     , int256      ,           ,           ,        ,         ,       20, the incoming value of a self-destruct if recipient is the holder address
-amountOut          , int256      ,           ,           ,        ,         ,       21, the amount (in units of the asset) of regular outflow during this transaction
-internalOut        , int256      ,           ,           ,        ,         ,       22, the value of any internal value transfers out of the holder account
-gasOut             , int256      ,           ,           ,        ,         ,       23, if the transaction's original sender is the holder address&#44; the amount of gas expended
-selfDestructOut    , int256      ,           ,           ,        ,         ,       24, the outgoing value of a self-destruct if sender is the holder address
-transaction        , *Transaction,           , calc      ,        ,         ,       25, the transaction that triggered the transfer
-log                , *Log        ,           , calc      ,        ,         ,       26, if a token transfer&#44; the log that triggered the transfer
+amount             , wei         ,           ,           ,        ,         ,       13, the amount of this transfer (use sender/receiver to assertain direction)

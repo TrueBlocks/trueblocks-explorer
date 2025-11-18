@@ -85,16 +85,26 @@ export const NamedAddressRenderer = memo(
     if (isActiveAddress) {
       return (
         <Stack gap={2}>
-          <Group gap="xs" align="center">
+          <Group gap="xs" align="center" wrap="nowrap">
             <icons.Pin
-              size={12}
-              style={{ color: 'var(--mantine-color-blue-6)' }}
+              size={14}
+              style={{
+                color: 'var(--mantine-color-blue-6)',
+                fontWeight: 'bold',
+              }}
             />
             <Text
-              size={tableCell ? 'sm' : 'md'}
-              fw={600}
+              size={tableCell ? 'md' : 'lg'}
+              fw={700}
               c="blue"
-              style={{ lineHeight: 1.2 }}
+              style={{
+                lineHeight: 1.2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                minWidth: 0,
+                flex: 1,
+              }}
             >
               {name}
             </Text>
@@ -105,7 +115,7 @@ export const NamedAddressRenderer = memo(
             style={{
               fontFamily: 'monospace',
               lineHeight: 1.2,
-              marginLeft: '20px',
+              marginLeft: '22px',
             }}
           >
             {displayAddress}

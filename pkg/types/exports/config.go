@@ -139,6 +139,7 @@ func (c *ExportsCollection) buildStaticFacets() map[string]types.FacetConfig {
 			Name:          "Traces",
 			Store:         "traces",
 			ViewType:      "table",
+			Panel:         "custom",
 			DividerBefore: false,
 			Fields:        getTracesFields(),
 			Actions:       []string{},

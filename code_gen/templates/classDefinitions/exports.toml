@@ -94,6 +94,7 @@ name = "Traces"
 store = "Traces"
 actions = ["export"]
 viewType = "table"
+panel = "custom"
 
 [[facets]]
 name = "Receipts"

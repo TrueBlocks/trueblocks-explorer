@@ -348,10 +348,10 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
-				RenderCtx:  ctx,
-				Addrs:      []string{payload.ActiveAddress},
-				Articulate: true,
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
+				RenderCtx: ctx,
+				Addrs:     []string{payload.ActiveAddress},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsLogs, "fetch", err)
@@ -643,10 +643,10 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
-				RenderCtx:  ctx,
-				Addrs:      []string{payload.ActiveAddress},
-				Articulate: true,
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
+				RenderCtx: ctx,
+				Addrs:     []string{payload.ActiveAddress},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.Export(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransactions, "fetch", err)

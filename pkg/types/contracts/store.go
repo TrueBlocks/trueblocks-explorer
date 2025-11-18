@@ -98,11 +98,11 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			exportOpts := sdk.ExportOptions{
-				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
-				RenderCtx:  ctx,
-				Addrs:      []string{payload.ActiveAddress},
-				Emitter:    []string{payload.TargetAddress},
-				Articulate: true,
+				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
+				RenderCtx: ctx,
+				Addrs:     []string{payload.ActiveAddress},
+				Emitter:   []string{payload.TargetAddress},
+				// Articulate: true,
 			}
 			if _, _, err := exportOpts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ContractsEvents, "fetch", err)

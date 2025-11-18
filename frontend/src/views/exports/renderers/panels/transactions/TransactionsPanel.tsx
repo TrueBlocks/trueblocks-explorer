@@ -6,14 +6,20 @@
  * the code inside of 'EXISTING_CODE' tags.
  */
 // EXISTING_CODE
-import { useEffect, useState } from 'react';
+import React from 'react';
 
-import { NameFromAddress } from '@app';
-import { DetailPanelContainer, DetailSection } from '@components';
-import { Grid, Group, Stack, Text } from '@mantine/core';
+import { OpenLink } from '@app';
+import {
+  DetailPanelContainer,
+  DetailSection,
+  FunctionRenderer,
+} from '@components';
+import { Anchor, Grid, Group, Stack, Text } from '@mantine/core';
 import { types } from '@models';
+import { formatNumericValue } from '@utils';
 
 import '../../../../../components/detail/DetailTable.css';
+import { EtherRenderer } from '../../../../../components/renderers/EtherRenderer';
 
 // EXISTING_CODE
 
@@ -39,182 +45,56 @@ export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
     }
   };
 
-  // Component to display parameter value with address name resolution
-  const ParameterValue = ({ param }: { param: types.Parameter }) => {
-    const [addressName, setAddressName] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-      const isAddress =
-        param.type === 'address' &&
-        param.value &&
-        typeof param.value === 'string' &&
-        param.value.startsWith('0x') &&
-        param.value.length === 42;
-
-      if (isAddress) {
-        setIsLoading(true);
-        NameFromAddress(param.value as string)
-          .then((result) => {
-            if (result && typeof result === 'object' && 'name' in result) {
-              setAddressName(result.name);
-            }
-          })
-          .catch(() => {
-            // Silently fail, just show the address
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      }
-    }, [param.type, param.value]);
-
-    const displayValue = param.value ? String(param.value) : '-';
-
-    if (param.type === 'address' && addressName) {
-      return (
-        <div>
-          <div style={{ fontWeight: 500 }}>{addressName}</div>
-          <div
-            style={{ fontSize: '10px', color: 'var(--mantine-color-dimmed)' }}
-          >
-            {displayValue}
-          </div>
-        </div>
-      );
+  // Helper to format shortened hash as clickable link
+  const formatHashLink = (
+    hash: { hash?: number[] } | { address?: number[] } | null | undefined,
+    type: string = 'hash',
+  ): React.JSX.Element => {
+    // Early return if hash is null, undefined, or not an object
+    if (!hash || typeof hash !== 'object') {
+      return <span>-</span>;
     }
 
-    return <span>{isLoading ? `${displayValue}...` : displayValue}</span>;
-  };
+    // Handle both hash and address types
+    const bytes =
+      'hash' in hash ? hash.hash : 'address' in hash ? hash.address : undefined;
+    const hashString = bytes ? formatHashFromBytes(bytes) : '';
 
-  // ArticulatedTx Display Component
-  const ArticulatedTxDisplay = ({
-    articulatedTx,
-  }: {
-    articulatedTx: types.Function;
-  }) => {
-    const renderParameterTable = (
-      parameters: types.Parameter[],
-      title: string,
-    ) => {
-      return (
-        <div style={{ marginTop: '12px' }}>
-          <div
-            style={{ fontSize: '14px', fontWeight: 500, marginBottom: '6px' }}
-          >
-            {title}
-          </div>
-          <div
-            style={{
-              maxHeight: '200px',
-              overflow: 'auto',
-              border: '1px solid var(--mantine-color-gray-3)',
-              borderRadius: '4px',
-            }}
-          >
-            <table
-              style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                fontSize: '12px',
-              }}
-            >
-              <thead>
-                <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                  <th
-                    style={{
-                      padding: '6px 0px 6px 0px',
-                      textAlign: 'left',
-                      borderBottom: '1px solid var(--mantine-color-gray-3)',
-                      fontWeight: 500,
-                    }}
-                  >
-                    Name
-                  </th>
-                  <th
-                    style={{
-                      padding: '6px 8px',
-                      textAlign: 'left',
-                      borderBottom: '1px solid var(--mantine-color-gray-3)',
-                      fontWeight: 500,
-                    }}
-                  >
-                    Value
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {parameters && parameters.length > 0 ? (
-                  parameters.slice(0, 12).map((param, index) => (
-                    <tr key={index}>
-                      <td
-                        style={{
-                          padding: '4px 0px 4px 0px',
-                          borderBottom: '1px solid var(--mantine-color-gray-2)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          maxWidth: '120px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        {param.name || '-'}
-                      </td>
-                      <td
-                        style={{
-                          padding: '4px 8px',
-                          borderBottom: '1px solid var(--mantine-color-gray-2)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        <ParameterValue param={param} />
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={2}
-                      style={{
-                        padding: '8px',
-                        textAlign: 'left',
-                        color: 'var(--mantine-color-dimmed)',
-                        fontStyle: 'italic',
-                      }}
-                    >
-                      No parameters
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    };
+    if (!hashString) return <span>-</span>;
 
     return (
-      <div>
-        <div
-          style={{
-            fontSize: '16px',
-            fontWeight: 700,
-            marginBottom: '12px',
-          }}
-        >
-          {articulatedTx.name} ({articulatedTx.encoding})
-        </div>
-        {renderParameterTable(articulatedTx.inputs || [], 'Inputs')}
-        {articulatedTx.outputs &&
-          articulatedTx.outputs.length > 0 &&
-          renderParameterTable(articulatedTx.outputs, 'Outputs')}
-      </div>
+      <Anchor
+        component="button"
+        size="sm"
+        onClick={() => {
+          try {
+            const fullHex =
+              '0x' +
+              bytes!.map((b) => b.toString(16).padStart(2, '0')).join('');
+            OpenLink(type, fullHex);
+          } catch (error) {
+            console.error('Error opening link:', error);
+          }
+        }}
+      >
+        {hashString}
+      </Anchor>
     );
   };
-  // EXISTING_CODE
+
+  // Helper to format hash from bytes array
+  const formatHashFromBytes = (bytes: number[]): string => {
+    try {
+      const hex =
+        '0x' + bytes.map((b) => b.toString(16).padStart(2, '0')).join('');
+      if (hex.length > 18) {
+        return `${hex.slice(0, 10)}...${hex.slice(-8)}`;
+      }
+      return hex;
+    } catch {
+      return '';
+    }
+  };
 
   // Title component with key identifying info
   const titleComponent = () => (
@@ -276,28 +156,152 @@ export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
     } as unknown as types.Function;
   };
 
+  // Get receipt status display
+  const getReceiptStatus = () => {
+    if (!transaction.receipt) return 'No receipt';
+
+    const status = transaction.receipt.status;
+    const isError = transaction.receipt.isError || transaction.isError;
+
+    if (isError) return 'Failed';
+    if (status === 1) return 'Success';
+    if (status === 0) return 'Failed';
+    return 'Unknown';
+  };
+
+  // Get receipt status color
+  const getReceiptStatusColor = () => {
+    if (!transaction.receipt) return 'dimmed';
+
+    const isError = transaction.receipt.isError || transaction.isError;
+    const status = transaction.receipt.status;
+
+    if (isError || status === 0) return 'red';
+    if (status === 1) return 'green';
+    return 'dimmed';
+  };
+
   return (
     <Stack gap={8} className="fixed-prompt-width">
       <DetailPanelContainer title={titleComponent()}>
         <DetailSection title="Decoded Function Call">
-          <ArticulatedTxDisplay articulatedTx={getDisplayTx()} />
+          <FunctionRenderer functionData={getDisplayTx()} />
         </DetailSection>
+
+        <DetailSection title="Transaction Details">
+          <Grid gutter={4}>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Hash</div>
+              <div className="detail-row-value">
+                {formatHashLink(transaction.hash, 'hash')}
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Value</div>
+              <div className="detail-row-value">
+                <EtherRenderer value={transaction.value} />
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Date</div>
+              <div className="detail-row-value">
+                {new Date(transaction.timestamp * 1000).toLocaleDateString()}
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Time</div>
+              <div className="detail-row-value">
+                {new Date(transaction.timestamp * 1000).toLocaleTimeString()}
+              </div>
+            </Grid.Col>
+          </Grid>
+        </DetailSection>
+
+        <DetailSection title="Gas Information">
+          <Grid gutter={4}>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Gas Used</div>
+              <div className="detail-row-value">
+                {formatNumericValue(transaction.gasUsed)}
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Gas Limit</div>
+              <div className="detail-row-value">
+                {formatNumericValue(transaction.gas)}
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Gas Price</div>
+              <div className="detail-row-value">
+                {formatNumericValue(transaction.gasPrice)} gwei
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Max Fee Per Gas</div>
+              <div className="detail-row-value">
+                {transaction.maxFeePerGas
+                  ? formatNumericValue(transaction.maxFeePerGas) + ' gwei'
+                  : '-'}
+              </div>
+            </Grid.Col>
+          </Grid>
+        </DetailSection>
+
         <DetailSection title="Block Information">
           <Grid gutter={4}>
             <Grid.Col span={6}>
-              <div className="detail-row-prompt">Block</div>
+              <div className="detail-row-prompt">Block Number</div>
               <div className="detail-row-value">{transaction.blockNumber}</div>
             </Grid.Col>
             <Grid.Col span={6}>
-              <div className="detail-row-prompt">Index</div>
+              <div className="detail-row-prompt">Transaction Index</div>
               <div className="detail-row-value">
                 {transaction.transactionIndex}
               </div>
             </Grid.Col>
             <Grid.Col span={12}>
-              <div className="detail-row-prompt">Timestamp</div>
+              <div className="detail-row-prompt">Block Hash</div>
               <div className="detail-row-value">
-                {new Date(transaction.timestamp * 1000).toLocaleString()}
+                {formatHashLink(transaction.blockHash, 'block')}
+              </div>
+            </Grid.Col>
+          </Grid>
+        </DetailSection>
+
+        <DetailSection title="Receipt & Status">
+          <Grid gutter={4}>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Status</div>
+              <div className="detail-row-value">
+                <Text c={getReceiptStatusColor()} fw={500}>
+                  {getReceiptStatus()}
+                </Text>
+              </div>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <div className="detail-row-prompt">Log Count</div>
+              <div className="detail-row-value">
+                {transaction.receipt?.logs?.length || 0}
+              </div>
+            </Grid.Col>
+            {transaction.receipt?.contractAddress && (
+              <>
+                <Grid.Col span={12}>
+                  <div className="detail-row-prompt">Contract Address</div>
+                  <div className="detail-row-value">
+                    {formatHashLink(
+                      { address: transaction.receipt.contractAddress.address },
+                      'address',
+                    )}
+                  </div>
+                </Grid.Col>
+              </>
+            )}
+            <Grid.Col span={12}>
+              <div className="detail-row-prompt">Trace Count</div>
+              <div className="detail-row-value">
+                {transaction.traces?.length || 0}
               </div>
             </Grid.Col>
           </Grid>

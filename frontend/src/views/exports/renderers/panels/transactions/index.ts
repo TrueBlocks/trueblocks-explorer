@@ -4,6 +4,4 @@
 /*
  * This file was auto generated. Do not edit.
  */
-export { StatementsPanel } from './statements';
-export { TransactionsPanel } from './transactions';
-export { AssetsPanel } from './assets';
+export { TransactionsPanel } from './TransactionsPanel';

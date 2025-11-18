@@ -7,7 +7,7 @@ import * as panels from './panels';
 export const renderers = {
   panels: {
     [types.DataFacet.STATEMENTS]: panels.StatementsPanel,
-    [types.DataFacet.OPENAPPROVALS]: panels.OpenApprovalsPanel,
+    [types.DataFacet.TRANSACTIONS]: panels.TransactionsPanel,
     [types.DataFacet.ASSETS]: panels.AssetsPanel,
   },
   facets: {

@@ -105,15 +105,13 @@ func (c *ExportsCollection) buildStaticFacets() map[string]types.FacetConfig {
 			HeaderActions: []string{"export"},
 		},
 		"assets": {
-			Name:             "Assets",
-			Store:            "assets",
-			ViewType:         "table",
-			Panel:            "custom",
-			DividerBefore:    false,
-			Fields:           getAssetsFields(),
-			Actions:          []string{},
-			HeaderActions:    []string{"export"},
-			PanelChartConfig: getAssetsPanelConfig(),
+			Name:          "Assets",
+			Store:         "assets",
+			ViewType:      "table",
+			DividerBefore: false,
+			Fields:        getAssetsFields(),
+			Actions:       []string{},
+			HeaderActions: []string{"export"},
 		},
 		"assetcharts": {
 			Name:             "Asset Charts",
@@ -529,37 +527,37 @@ func getAssetChartsFacetConfig() *types.FacetChartConfig {
 	}
 }
 
-func getAssetsPanelConfig() *types.PanelChartConfig {
-	return &types.PanelChartConfig{
-		Type:          "piechart",
-		DefaultMetric: "endBalEth",
-		Metrics: []types.MetricConfig{
-			{
-				Key:          "endBalEth",
-				Label:        "End Balance (ETH)",
-				BucketsField: "endBalEth",
-				Bytes:        false,
-			},
-			{
-				Key:          "totalInEth",
-				Label:        "Total Inflow (ETH)",
-				BucketsField: "totalInEth",
-				Bytes:        false,
-			},
-			{
-				Key:          "totalOutEth",
-				Label:        "Total Outflow (ETH)",
-				BucketsField: "totalOutEth",
-				Bytes:        false,
-			},
-			{
-				Key:          "spotPrice",
-				Label:        "Spot Price",
-				BucketsField: "spotPrice",
-				Bytes:        false,
-			},
-		},
-	}
-}
+// func getAssetsPanelConfig() *types.PanelChartConfig {
+// 	return &types.PanelChartConfig{
+// 		Type:          "piechart",
+// 		DefaultMetric: "endBalEth",
+// 		Metrics: []types.MetricConfig{
+// 			{
+// 				Key:          "endBalEth",
+// 				Label:        "End Balance (ETH)",
+// 				BucketsField: "endBalEth",
+// 				Bytes:        false,
+// 			},
+// 			{
+// 				Key:          "totalInEth",
+// 				Label:        "Total Inflow (ETH)",
+// 				BucketsField: "totalInEth",
+// 				Bytes:        false,
+// 			},
+// 			{
+// 				Key:          "totalOutEth",
+// 				Label:        "Total Outflow (ETH)",
+// 				BucketsField: "totalOutEth",
+// 				Bytes:        false,
+// 			},
+// 			{
+// 				Key:          "spotPrice",
+// 				Label:        "Spot Price",
+// 				BucketsField: "spotPrice",
+// 				Bytes:        false,
+// 			},
+// 		},
+// 	}
+// }
 
 // EXISTING_CODE

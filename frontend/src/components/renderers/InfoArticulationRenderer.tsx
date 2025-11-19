@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { NameFromAddress } from '@app';
-import { Grid } from '@mantine/core';
 import { types } from '@models';
+
+import { BorderedSection, PanelRow, PanelTable } from '.';
 
 // Component to display parameter value with address name resolution
 const ParameterValue = ({ param }: { param: types.Parameter }) => {
@@ -196,112 +197,61 @@ export const InfoArticulationRenderer = ({
       !showTitle && !(functionData.name === 'Unknown' && input === '0x');
 
     return (
-      <Grid gutter={4}>
-        <Grid.Col span={12}>
-          {showTitle && (
-            <div
-              style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                marginBottom: '6px',
-                marginTop: '12px',
-              }}
-            >
-              {title}
-            </div>
-          )}
+      <BorderedSection>
+        {showTitle && (
           <div
             style={{
-              maxHeight: '200px',
-              overflow: 'auto',
-              border: '1px solid var(--mantine-color-gray-3)',
-              borderRadius: '4px',
+              fontSize: '14px',
+              fontWeight: 500,
+              marginBottom: '6px',
               marginTop: '12px',
             }}
           >
-            <table
-              style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                fontSize: '12px',
-              }}
-            >
-              <tbody>
-                {shouldShowHeader && (
-                  <tr
-                    style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
-                  >
-                    <td
-                      style={{
-                        padding: '8px',
-                        borderBottom: '1px solid var(--mantine-color-gray-2)',
-                        verticalAlign: 'top',
-                      }}
-                      colSpan={2}
-                    >
-                      <span style={{ fontWeight: 600, fontSize: '13px' }}>
-                        {functionData.name} ({functionData.encoding})
-                      </span>
-                    </td>
-                  </tr>
-                )}
-                {parameters && parameters.length > 0 ? (
-                  parameters.slice(0, 12).map((param, index) => (
-                    <tr
-                      key={index}
-                      style={{
-                        backgroundColor: 'var(--mantine-color-gray-0)',
-                      }}
-                    >
-                      <td
-                        style={{
-                          padding: '4px 0px 4px 8px',
-                          borderBottom: '1px solid var(--mantine-color-gray-2)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          maxWidth: '120px',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        {param.name || '-'}
-                      </td>
-                      <td
-                        style={{
-                          padding: '4px 8px',
-                          borderBottom: '1px solid var(--mantine-color-gray-2)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        <ParameterValue param={param} />
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr
-                    style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
-                  >
-                    <td
-                      colSpan={2}
-                      style={{
-                        padding: '8px',
-                        textAlign: 'left',
-                        color: 'var(--mantine-color-dimmed)',
-                        fontStyle: 'italic',
-                      }}
-                    >
-                      No parameters
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            {title}
           </div>
-        </Grid.Col>
-      </Grid>
+        )}
+        <div
+          style={{
+            maxHeight: '200px',
+            overflow: 'auto',
+          }}
+        >
+          <PanelTable>
+            {shouldShowHeader && (
+              <PanelRow layout="full" colSpan={2}>
+                <span style={{ fontWeight: 600, fontSize: '13px' }}>
+                  {functionData.name} ({functionData.encoding})
+                </span>
+              </PanelRow>
+            )}
+            {parameters && parameters.length > 0 ? (
+              parameters
+                .slice(0, 12)
+                .map((param, index) => (
+                  <PanelRow
+                    key={index}
+                    label={param.name || '-'}
+                    value={<ParameterValue param={param} />}
+                  />
+                ))
+            ) : (
+              <PanelRow layout="full" colSpan={2}>
+                <div
+                  style={{
+                    textAlign: 'left',
+                    color: 'var(--mantine-color-dimmed)',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {functionData.name === 'Unknown'
+                    ? 'Empty function call (no data)'
+                    : 'Function takes no parameters'}
+                </div>
+              </PanelRow>
+            )}
+          </PanelTable>
+        </div>
+      </BorderedSection>
     );
   };
 

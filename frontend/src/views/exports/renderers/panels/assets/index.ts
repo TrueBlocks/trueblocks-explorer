@@ -1,1 +1,0 @@
-export { AssetsPanel } from './AssetsPanel';

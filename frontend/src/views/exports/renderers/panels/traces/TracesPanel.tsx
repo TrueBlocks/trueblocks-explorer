@@ -1,16 +1,16 @@
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   DetailPanelContainer,
-  DetailSection,
   InfoAddressRenderer,
   InfoArticulationRenderer,
   InfoDetailsRenderer,
   txToAddressInfo,
 } from '@components';
+import { BorderedSection } from '@components';
 import { Stack, Text } from '@mantine/core';
 import { types } from '@models';
 import { displayHash } from '@utils';
@@ -44,6 +44,23 @@ const traceToDetailsInfo = (trace: types.Trace) => {
 };
 
 export const TracesPanel = (rowData: Record<string, unknown> | null) => {
+  // Collapse state management
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  // Handle section toggle
+  const handleToggle = (sectionName: string) => {
+    const isCollapsed = collapsed.has(sectionName);
+    if (isCollapsed) {
+      setCollapsed((prev) => {
+        const next = new Set(prev);
+        next.delete(sectionName);
+        return next;
+      });
+    } else {
+      setCollapsed((prev) => new Set([...prev, sectionName]));
+    }
+  };
+
   // Memoize trace conversion to avoid dependency warnings
   const trace = useMemo(
     () => (rowData as unknown as types.Trace) || ({} as types.Trace),
@@ -80,8 +97,13 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
     [rowData, trace],
   );
 
-  // Early return after all hooks
-  if (!rowData || !articulationInfo || !detailsInfo) {
+  // Show loading state if no data is provided
+  if (!rowData) {
+    return <div className="no-selection">Loading...</div>;
+  }
+
+  // Early return after all hooks if computed data is invalid
+  if (!articulationInfo || !detailsInfo) {
     return null;
   }
 
@@ -93,39 +115,90 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
   );
 
   return (
-    <Stack gap={8} className="fixed-prompt-width">
+    <Stack gap={0} className="fixed-prompt-width">
       <DetailPanelContainer title={titleComponent()}>
         {!!addressInfo && (
-          <DetailSection title="Address Information">
-            <InfoAddressRenderer addressInfo={addressInfo} />
-          </DetailSection>
+          <BorderedSection>
+            <div
+              onClick={() => handleToggle('Address Information')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Text variant="primary" size="sm">
+                <div className="detail-section-header">
+                  {collapsed.has('Address Information') ? '▶ ' : '▼ '}Address
+                  Information
+                </div>
+              </Text>
+            </div>
+            {!collapsed.has('Address Information') && (
+              <InfoAddressRenderer addressInfo={addressInfo} />
+            )}
+          </BorderedSection>
         )}
 
-        <DetailSection title="Decoded Trace Call">
-          <InfoArticulationRenderer articulationInfo={articulationInfo} />
-        </DetailSection>
+        <BorderedSection>
+          <div
+            onClick={() => handleToggle('Decoded Trace Call')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text variant="primary" size="sm">
+              <div className="detail-section-header">
+                {collapsed.has('Decoded Trace Call') ? '▶ ' : '▼ '}Decoded
+                Trace Call
+              </div>
+            </Text>
+          </div>
+          {!collapsed.has('Decoded Trace Call') && (
+            <InfoArticulationRenderer articulationInfo={articulationInfo} />
+          )}
+        </BorderedSection>
 
         {!!trace.error && (
-          <DetailSection title="Trace Error">
+          <BorderedSection>
             <div
-              style={{
-                border: '1px solid var(--mantine-color-red-3)',
-                borderRadius: '4px',
-                marginTop: '8px',
-                backgroundColor: 'var(--mantine-color-red-0)',
-                padding: '8px',
-                color: 'var(--mantine-color-red-8)',
-                fontWeight: '500',
-              }}
+              onClick={() => handleToggle('Trace Error')}
+              style={{ cursor: 'pointer' }}
             >
-              {trace.error}
+              <Text variant="primary" size="sm">
+                <div className="detail-section-header">
+                  {collapsed.has('Trace Error') ? '▶ ' : '▼ '}Trace Error
+                </div>
+              </Text>
             </div>
-          </DetailSection>
+            {!collapsed.has('Trace Error') && (
+              <div
+                style={{
+                  border: '1px solid var(--mantine-color-red-3)',
+                  borderRadius: '4px',
+                  marginTop: '8px',
+                  backgroundColor: 'var(--mantine-color-red-0)',
+                  padding: '8px',
+                  color: 'var(--mantine-color-red-8)',
+                  fontWeight: '500',
+                }}
+              >
+                {trace.error}
+              </div>
+            )}
+          </BorderedSection>
         )}
 
-        <DetailSection title="Transaction & Block Details">
-          <InfoDetailsRenderer detailsInfo={detailsInfo} />
-        </DetailSection>
+        <BorderedSection>
+          <div
+            onClick={() => handleToggle('Transaction & Block Details')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text variant="primary" size="sm">
+              <div className="detail-section-header">
+                {collapsed.has('Transaction & Block Details') ? '▶ ' : '▼ '}
+                Transaction & Block Details
+              </div>
+            </Text>
+          </div>
+          {!collapsed.has('Transaction & Block Details') && (
+            <InfoDetailsRenderer detailsInfo={detailsInfo} />
+          )}
+        </BorderedSection>
       </DetailPanelContainer>
     </Stack>
   );

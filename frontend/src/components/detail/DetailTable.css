@@ -1,8 +1,9 @@
 .detail-table {
   width: 100%;
   display: grid;
-  grid-template-columns: 25% 75%;
+  grid-template-columns: 16.67% 83.33%;
   gap: 0;
+  overflow: hidden;
 }
 
 .detail-section-header {
@@ -21,9 +22,9 @@
 }
 
 .detail-row-prompt {
-  padding: 4px 6px;
-  font-weight: 500;
-  color: var(--mantine-color-text);
+  padding: 6px 8px;
+  font-weight: 600;
+  color: var(--mantine-color-blue-6);
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: top;
@@ -32,9 +33,12 @@
 }
 
 .detail-row-value {
-  padding: 4px 6px;
-  overflow-x: auto;
-  word-break: break-word;
+  padding: 6px 8px;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   vertical-align: top;
   color: var(--mantine-color-text);
 }
@@ -77,7 +81,7 @@
 }
 
 .detail-row[data-columns='1'] {
-  grid-template-columns: 25% 75%;
+  grid-template-columns: 16.67% 83.33%;
 }
 
 .detail-row .detail-row-prompt {
@@ -87,6 +91,8 @@
 }
 
 .detail-row .detail-row-value {
-  overflow-x: auto;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }

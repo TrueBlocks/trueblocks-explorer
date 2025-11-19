@@ -1,14 +1,9 @@
 import { useState } from 'react';
 
-import {
-  DetailPanelContainer,
-  DetailRow,
-  DetailSection,
-  FieldRenderer,
-  FormField,
-} from '@components';
-import { Grid } from '@mantine/core';
+import { DetailPanelContainer, FieldRenderer, FormField } from '@components';
+import { Text } from '@mantine/core';
 
+import { BorderedSection, PanelRow, PanelTable } from '../renderers';
 import './DetailTable.css';
 
 type Section = {
@@ -31,54 +26,71 @@ export const DetailTable = ({
     new Set(defaultCollapsedSections),
   );
 
+  const handleToggle = (sectionName: string, isCollapsed: boolean) => {
+    if (isCollapsed) {
+      setCollapsed((prev) => new Set([...prev, sectionName]));
+    } else {
+      setCollapsed((prev) => {
+        const next = new Set(prev);
+        next.delete(sectionName);
+        return next;
+      });
+    }
+  };
+
   return (
     <DetailPanelContainer
       className={`detail-panel-componentized${className ? ` ${className}` : ''}`}
     >
-      {sections.map((section, sectionIndex) => (
-        <DetailSection
-          key={section.name}
-          title={section.name}
-          defaultCollapsed={collapsed.has(section.name)}
-          onToggle={(isCollapsed) => {
-            if (isCollapsed) {
-              setCollapsed((prev) => new Set([...prev, section.name]));
-            } else {
-              setCollapsed((prev) => {
-                const next = new Set(prev);
-                next.delete(section.name);
-                return next;
-              });
-            }
-          }}
-          headerProps={{
-            className: sectionIndex === 0 ? 'first-section-header' : undefined,
-          }}
-        >
-          {section.rows.map((row, rowIndex) => {
-            const formField = row as FormField;
-            return (
-              <DetailRow key={`${section.name}-${rowIndex}`}>
-                <Grid.Col span={3}>
-                  <div className="detail-row-prompt">
-                    {formField.label || formField.key || 'Unknown'}
-                  </div>
-                </Grid.Col>
-                <Grid.Col span={9}>
-                  <div className="detail-row-value">
-                    <FieldRenderer
-                      field={formField}
-                      mode="display"
-                      tableCell={false}
-                      rowData={section.rowData}
+      {sections.map((section, sectionIndex) => {
+        const isCollapsed = collapsed.has(section.name);
+
+        return (
+          <BorderedSection key={section.name}>
+            <div
+              onClick={() => handleToggle(section.name, !isCollapsed)}
+              style={{ cursor: 'pointer' }}
+            >
+              <Text variant="primary" size="sm">
+                <div
+                  className={`detail-section-header ${
+                    sectionIndex === 0 ? 'first-section-header' : ''
+                  }`}
+                >
+                  {`${isCollapsed ? '▶ ' : '▼ '}${section.name}`}
+                </div>
+              </Text>
+            </div>
+            {!isCollapsed && (
+              <PanelTable>
+                {section.rows.map((row, rowIndex) => {
+                  const formField = row as FormField;
+                  return (
+                    <PanelRow
+                      key={`${section.name}-${rowIndex}`}
+                      label={
+                        <div className="detail-row-prompt">
+                          {formField.label || formField.key || 'Unknown'}
+                        </div>
+                      }
+                      value={
+                        <div className="detail-row-value">
+                          <FieldRenderer
+                            field={formField}
+                            mode="display"
+                            tableCell={false}
+                            rowData={section.rowData}
+                          />
+                        </div>
+                      }
                     />
-                  </div>
-                </Grid.Col>
-              </DetailRow>
-            );
-          })}
-        </DetailSection>
-      ))}
+                  );
+                })}
+              </PanelTable>
+            )}
+          </BorderedSection>
+        );
+      })}
     </DetailPanelContainer>
   );
 };

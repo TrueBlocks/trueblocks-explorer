@@ -1,0 +1,102 @@
+/* Shared Panel Renderer Styles */
+
+.panel-section {
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 4px;
+  margin-top: 0px;
+}
+
+.panel-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.panel-row {
+  background-color: var(--mantine-color-gray-0);
+}
+
+.panel-cell-label {
+  padding: 6px 8px;
+  font-weight: 600;
+  color: var(--mantine-color-blue-6);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  width: 16.67%;
+  vertical-align: top;
+}
+
+.panel-cell-value {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  width: 83.33%;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+/* Specific variants for different layouts */
+.panel-cell-label-wide {
+  padding: 4px 8px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  border-right: 1px solid var(--mantine-color-gray-2);
+  vertical-align: top;
+  width: 50%;
+}
+
+.panel-cell-value-wide {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  vertical-align: top;
+  width: 50%;
+}
+
+.panel-cell-full {
+  padding: 8px;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  vertical-align: top;
+}
+
+.panel-cell-full-no-border {
+  padding: 8px;
+  vertical-align: top;
+}
+
+/* Special styling for nested content */
+.panel-nested-name {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.panel-nested-address {
+  font-size: 11px;
+  color: var(--mantine-color-blue-6);
+}
+
+/* Status text colors */
+.panel-status-success {
+  color: var(--mantine-color-green-6);
+  font-weight: 600;
+}
+
+.panel-status-error {
+  color: var(--mantine-color-red-6);
+  font-weight: 600;
+}
+
+.panel-status-dimmed {
+  color: var(--mantine-color-dimmed);
+  font-weight: 600;
+}
+
+/* Formula explanation text */
+.panel-formula-note {
+  font-size: 11px;
+  font-style: italic;
+  text-align: left;
+  margin-top: 4px;
+  color: var(--mantine-color-dimmed);
+}

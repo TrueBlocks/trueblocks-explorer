@@ -69,8 +69,8 @@ mapKey = "item.Asset.Hex()"
 useMapKey = true
 needsCalcs = true
 viewType = "table"
-panel = "custom"
-panelChart = true
+# panel = "custom"
+# panelChart = true
 
 [[facets]]
 name = "AssetCharts"

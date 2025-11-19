@@ -1,7 +1,8 @@
 import { EtherRenderer } from '@components';
-import { Grid } from '@mantine/core';
 import { types } from '@models';
 import { createHashLink } from '@utils';
+
+import { BorderedSection, PanelRow, PanelTable } from '.';
 
 export interface DetailsInfo {
   hash?: unknown;
@@ -33,100 +34,54 @@ export const InfoDetailsRenderer = ({
   };
 
   return (
-    <Grid gutter={4}>
-      <Grid.Col span={12}>
-        <div
-          style={{
-            border: '1px solid var(--mantine-color-gray-3)',
-            borderRadius: '4px',
-            marginTop: '8px',
-          }}
-        >
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              fontSize: '12px',
-            }}
-          >
-            <tbody>
-              <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                  }}
-                  colSpan={2}
-                >
-                  <span style={{ fontWeight: 600, fontSize: '13px' }}>
-                    {formatDateTime()}
-                  </span>
-                </td>
-              </tr>
-              <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    borderRight: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Hash:</span>{' '}
-                  {createHashLink(
-                    detailsInfo.hash as { hash?: number[] },
-                    'hash',
-                  )}
-                </td>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Value:</span>{' '}
-                  <EtherRenderer value={detailsInfo.value} />
-                </td>
-              </tr>
-              <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    borderRight: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Block:</span>{' '}
-                  <span style={{ fontWeight: 600 }}>
-                    {detailsInfo.blockNumber}.{detailsInfo.transactionIndex}
-                  </span>
-                </td>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Block Hash:</span>{' '}
-                  {createHashLink(
-                    detailsInfo.blockHash as { hash?: number[] },
-                    'block',
-                  )}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </Grid.Col>
-    </Grid>
+    <BorderedSection>
+      <PanelTable>
+        <PanelRow
+          layout="full"
+          colSpan={2}
+          value={
+            <span style={{ fontWeight: 600, fontSize: '13px' }}>
+              {formatDateTime()}
+            </span>
+          }
+        />
+        <PanelRow
+          layout="wide"
+          label={
+            <>
+              <span style={{ fontWeight: 500 }}>Hash:</span>{' '}
+              {createHashLink(detailsInfo.hash as { hash?: number[] }, 'hash')}
+            </>
+          }
+          value={
+            <>
+              <span style={{ fontWeight: 500 }}>Value:</span>{' '}
+              <EtherRenderer value={detailsInfo.value} />
+            </>
+          }
+        />
+        <PanelRow
+          layout="wide"
+          label={
+            <>
+              <span style={{ fontWeight: 500 }}>Block:</span>{' '}
+              <span style={{ fontWeight: 600 }}>
+                {detailsInfo.blockNumber}.{detailsInfo.transactionIndex}
+              </span>
+            </>
+          }
+          value={
+            <>
+              <span style={{ fontWeight: 500 }}>Block Hash:</span>{' '}
+              {createHashLink(
+                detailsInfo.blockHash as { hash?: number[] },
+                'block',
+              )}
+            </>
+          }
+        />
+      </PanelTable>
+    </BorderedSection>
   );
 };
 

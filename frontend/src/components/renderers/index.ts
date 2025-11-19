@@ -15,3 +15,6 @@ export * from './InfoDetailsRenderer';
 export * from './PopoverRenderer';
 export * from './WeiRenderer';
 export * from './TypeRendererRegistry';
+export * from './BorderedSection';
+export * from './PanelTable';
+export * from './PanelRow';

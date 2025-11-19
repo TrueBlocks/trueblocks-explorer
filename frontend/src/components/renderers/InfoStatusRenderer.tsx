@@ -1,6 +1,8 @@
-import { Grid, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { types } from '@models';
 import { createHashLink } from '@utils';
+
+import { BorderedSection, PanelRow, PanelTable } from '.';
 
 export interface StatusInfo {
   status?: number | string;
@@ -45,87 +47,49 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
   };
 
   return (
-    <Grid gutter={4}>
-      <Grid.Col span={12}>
-        <div
-          style={{
-            border: '1px solid var(--mantine-color-gray-3)',
-            borderRadius: '4px',
-            marginTop: '8px',
-          }}
-        >
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              fontSize: '12px',
-            }}
-          >
-            <tbody>
-              <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    borderRight: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Status:</span>{' '}
-                  <Text component="span" c={getStatusColor()} fw={600}>
-                    {getReceiptStatus()}
-                  </Text>
-                </td>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderBottom: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Log Count:</span>{' '}
-                  <span style={{ fontWeight: 600 }}>
-                    {statusInfo.logs?.length || 0}
-                  </span>
-                </td>
-              </tr>
-              <tr style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
-                <td
-                  style={{
-                    padding: '8px',
-                    borderRight: '1px solid var(--mantine-color-gray-2)',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  {statusInfo.contractAddress ? (
-                    <span>
-                      {createHashLink(statusInfo.contractAddress, 'address')}
-                    </span>
-                  ) : (
-                    'None'
-                  )}
-                </td>
-                <td
-                  style={{
-                    padding: '8px',
-                    verticalAlign: 'top',
-                    width: '50%',
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>Trace Count:</span>{' '}
-                  <span style={{ fontWeight: 600 }}>
-                    {statusInfo.traces?.length || 0}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </Grid.Col>
-    </Grid>
+    <BorderedSection>
+      <PanelTable>
+        <PanelRow
+          layout="wide"
+          label={
+            <>
+              <span style={{ fontWeight: 500 }}>Status:</span>{' '}
+              <Text component="span" c={getStatusColor()} fw={600}>
+                {getReceiptStatus()}
+              </Text>
+            </>
+          }
+          value={
+            <>
+              <span style={{ fontWeight: 500 }}>Log Count:</span>{' '}
+              <span style={{ fontWeight: 600 }}>
+                {statusInfo.logs?.length || 0}
+              </span>
+            </>
+          }
+        />
+        <PanelRow
+          layout="wide"
+          label={
+            statusInfo.contractAddress ? (
+              <span>
+                {createHashLink(statusInfo.contractAddress, 'address')}
+              </span>
+            ) : (
+              'None'
+            )
+          }
+          value={
+            <>
+              <span style={{ fontWeight: 500 }}>Trace Count:</span>{' '}
+              <span style={{ fontWeight: 600 }}>
+                {statusInfo.traces?.length || 0}
+              </span>
+            </>
+          }
+        />
+      </PanelTable>
+    </BorderedSection>
   );
 };
 

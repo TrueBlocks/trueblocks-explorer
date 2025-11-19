@@ -237,7 +237,6 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 				if err := it.EnsureCalcs(props, nil); err != nil {
 					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
 				}
-				c.updateAssetsBucket(it)
 				return it
 			}
 			return nil

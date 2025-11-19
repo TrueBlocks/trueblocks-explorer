@@ -1,16 +1,16 @@
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   DetailPanelContainer,
-  DetailSection,
   InfoAddressRenderer,
   InfoArticulationRenderer,
   InfoDetailsRenderer,
   logToAddressInfo,
 } from '@components';
+import { BorderedSection } from '@components';
 import { Stack, Text } from '@mantine/core';
 import { types } from '@models';
 import { displayHash } from '@utils';
@@ -42,6 +42,23 @@ const logToDetailsInfo = (log: types.Log) => {
 };
 
 export const LogsPanel = (rowData: Record<string, unknown> | null) => {
+  // Collapse state management
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  // Handle section toggle
+  const handleToggle = (sectionName: string) => {
+    const isCollapsed = collapsed.has(sectionName);
+    if (isCollapsed) {
+      setCollapsed((prev) => {
+        const next = new Set(prev);
+        next.delete(sectionName);
+        return next;
+      });
+    } else {
+      setCollapsed((prev) => new Set([...prev, sectionName]));
+    }
+  };
+
   // Memoize log conversion to avoid dependency warnings
   const log = useMemo(
     () => (rowData as unknown as types.Log) || ({} as types.Log),
@@ -72,8 +89,13 @@ export const LogsPanel = (rowData: Record<string, unknown> | null) => {
     [rowData, log],
   );
 
-  // Early return after all hooks
-  if (!rowData || !articulationInfo || !detailsInfo || !addressInfo) {
+  // Show loading state if no data is provided
+  if (!rowData) {
+    return <div className="no-selection">Loading...</div>;
+  }
+
+  // Early return after all hooks if computed data is invalid
+  if (!articulationInfo || !detailsInfo || !addressInfo) {
     return null;
   }
 
@@ -85,19 +107,57 @@ export const LogsPanel = (rowData: Record<string, unknown> | null) => {
   );
 
   return (
-    <Stack gap={8} className="fixed-prompt-width">
+    <Stack gap={0} className="fixed-prompt-width">
       <DetailPanelContainer title={titleComponent()}>
-        <DetailSection title="Contract Information">
-          <InfoAddressRenderer addressInfo={addressInfo} />
-        </DetailSection>
+        <BorderedSection>
+          <div
+            onClick={() => handleToggle('Contract Information')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text variant="primary" size="sm">
+              <div className="detail-section-header">
+                {collapsed.has('Contract Information') ? '▶ ' : '▼ '}Contract
+                Information
+              </div>
+            </Text>
+          </div>
+          {!collapsed.has('Contract Information') && (
+            <InfoAddressRenderer addressInfo={addressInfo} />
+          )}
+        </BorderedSection>
 
-        <DetailSection title="Decoded Event">
-          <InfoArticulationRenderer articulationInfo={articulationInfo} />
-        </DetailSection>
+        <BorderedSection>
+          <div
+            onClick={() => handleToggle('Decoded Event')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text variant="primary" size="sm">
+              <div className="detail-section-header">
+                {collapsed.has('Decoded Event') ? '▶ ' : '▼ '}Decoded Event
+              </div>
+            </Text>
+          </div>
+          {!collapsed.has('Decoded Event') && (
+            <InfoArticulationRenderer articulationInfo={articulationInfo} />
+          )}
+        </BorderedSection>
 
-        <DetailSection title="Transaction & Block Details">
-          <InfoDetailsRenderer detailsInfo={detailsInfo} />
-        </DetailSection>
+        <BorderedSection>
+          <div
+            onClick={() => handleToggle('Transaction & Block Details')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text variant="primary" size="sm">
+              <div className="detail-section-header">
+                {collapsed.has('Transaction & Block Details') ? '▶ ' : '▼ '}
+                Transaction & Block Details
+              </div>
+            </Text>
+          </div>
+          {!collapsed.has('Transaction & Block Details') && (
+            <InfoDetailsRenderer detailsInfo={detailsInfo} />
+          )}
+        </BorderedSection>
       </DetailPanelContainer>
     </Stack>
   );

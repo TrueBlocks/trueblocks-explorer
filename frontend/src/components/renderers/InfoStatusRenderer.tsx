@@ -13,24 +13,11 @@ export interface StatusInfo {
   traces?: unknown[];
 }
 
-export const txToStatusInfo = (transaction: types.Transaction): StatusInfo => {
-  return {
-    status: transaction.receipt?.status,
-    isError: transaction.isError,
-    contractAddress: transaction.receipt?.contractAddress,
-    contractAddressName: transaction.receipt?.contractAddressName,
-    cumulativeGasUsed: transaction.receipt?.cumulativeGasUsed,
-    effectiveGasPrice: transaction.receipt?.effectiveGasPrice,
-    logs: transaction.receipt?.logs,
-    traces: transaction.traces,
-  };
-};
-
-interface StatusRendererProps {
+interface InfoStatusRendererProps {
   statusInfo: StatusInfo;
 }
 
-export const StatusRenderer = ({ statusInfo }: StatusRendererProps) => {
+export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
   // Get receipt status display
   const getReceiptStatus = () => {
     if (statusInfo.status === undefined) return 'No receipt';
@@ -140,4 +127,17 @@ export const StatusRenderer = ({ statusInfo }: StatusRendererProps) => {
       </Grid.Col>
     </Grid>
   );
+};
+
+export const txToStatusInfo = (transaction: types.Transaction): StatusInfo => {
+  return {
+    status: transaction.receipt?.status,
+    isError: transaction.isError,
+    contractAddress: transaction.receipt?.contractAddress,
+    contractAddressName: transaction.receipt?.contractAddressName,
+    cumulativeGasUsed: transaction.receipt?.cumulativeGasUsed,
+    effectiveGasPrice: transaction.receipt?.effectiveGasPrice,
+    logs: transaction.receipt?.logs,
+    traces: transaction.traces,
+  };
 };

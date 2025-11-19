@@ -4,11 +4,11 @@
 import React, { useMemo } from 'react';
 
 import {
-  AddressInfoRenderer,
-  ArticulationRenderer,
   DetailPanelContainer,
   DetailSection,
-  DetailsRenderer,
+  InfoAddressRenderer,
+  InfoArticulationRenderer,
+  InfoDetailsRenderer,
   logToAddressInfo,
 } from '@components';
 import { Stack, Text } from '@mantine/core';
@@ -88,15 +88,15 @@ export const LogsPanel = (rowData: Record<string, unknown> | null) => {
     <Stack gap={8} className="fixed-prompt-width">
       <DetailPanelContainer title={titleComponent()}>
         <DetailSection title="Contract Information">
-          <AddressInfoRenderer addressInfo={addressInfo} />
+          <InfoAddressRenderer addressInfo={addressInfo} />
         </DetailSection>
 
         <DetailSection title="Decoded Event">
-          <ArticulationRenderer articulationInfo={articulationInfo} />
+          <InfoArticulationRenderer articulationInfo={articulationInfo} />
         </DetailSection>
 
         <DetailSection title="Transaction & Block Details">
-          <DetailsRenderer detailsInfo={detailsInfo} />
+          <InfoDetailsRenderer detailsInfo={detailsInfo} />
         </DetailSection>
       </DetailPanelContainer>
     </Stack>

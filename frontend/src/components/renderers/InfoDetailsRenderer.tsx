@@ -18,30 +18,13 @@ export interface DetailsInfo {
   toName?: string;
 }
 
-export const txToDetailsInfo = (
-  transaction: types.Transaction,
-): DetailsInfo => {
-  return {
-    hash: transaction.hash,
-    blockNumber: transaction.blockNumber,
-    blockHash: transaction.blockHash,
-    transactionIndex: transaction.transactionIndex,
-    timestamp: transaction.timestamp,
-    nonce: transaction.nonce,
-    type: transaction.type,
-    value: transaction.value,
-    from: transaction.from,
-    fromName: transaction.fromName,
-    to: transaction.to,
-    toName: transaction.toName,
-  };
-};
-
-interface DetailsRendererProps {
+interface InfoDetailsRendererProps {
   detailsInfo: DetailsInfo;
 }
 
-export const DetailsRenderer = ({ detailsInfo }: DetailsRendererProps) => {
+export const InfoDetailsRenderer = ({
+  detailsInfo,
+}: InfoDetailsRendererProps) => {
   // Format combined date and time
   const formatDateTime = () => {
     if (!detailsInfo.timestamp) return 'Unknown';
@@ -145,4 +128,23 @@ export const DetailsRenderer = ({ detailsInfo }: DetailsRendererProps) => {
       </Grid.Col>
     </Grid>
   );
+};
+
+export const txToDetailsInfo = (
+  transaction: types.Transaction,
+): DetailsInfo => {
+  return {
+    hash: transaction.hash,
+    blockNumber: transaction.blockNumber,
+    blockHash: transaction.blockHash,
+    transactionIndex: transaction.transactionIndex,
+    timestamp: transaction.timestamp,
+    nonce: transaction.nonce,
+    type: transaction.type,
+    value: transaction.value,
+    from: transaction.from,
+    fromName: transaction.fromName,
+    to: transaction.to,
+    toName: transaction.toName,
+  };
 };

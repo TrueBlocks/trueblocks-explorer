@@ -4,13 +4,13 @@
 import React, { useMemo } from 'react';
 
 import {
-  AddressInfoRenderer,
-  ArticulationRenderer,
   DetailPanelContainer,
   DetailSection,
-  DetailsRenderer,
-  GasInfoRenderer,
-  StatusRenderer,
+  InfoAddressRenderer,
+  InfoArticulationRenderer,
+  InfoDetailsRenderer,
+  InfoGasRenderer,
+  InfoStatusRenderer,
   txToAddressInfo,
   txToArticulationInfo,
   txToDetailsInfo,
@@ -93,27 +93,27 @@ export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
     <Stack gap={8} className="fixed-prompt-width">
       <DetailPanelContainer title={titleComponent()}>
         <DetailSection title="Address Information">
-          <AddressInfoRenderer addressInfo={addressInfo} />
+          <InfoAddressRenderer addressInfo={addressInfo} />
         </DetailSection>
 
         <DetailSection title="Decoded Function Call">
-          <ArticulationRenderer articulationInfo={articulationInfo} />
+          <InfoArticulationRenderer articulationInfo={articulationInfo} />
         </DetailSection>
 
         {!!gasInfo && (
           <DetailSection title="Gas Information">
-            <GasInfoRenderer gasInfo={gasInfo} />
+            <InfoGasRenderer gasInfo={gasInfo} />
           </DetailSection>
         )}
 
         {!!statusInfo && (
           <DetailSection title="Receipt & Status">
-            <StatusRenderer statusInfo={statusInfo} />
+            <InfoStatusRenderer statusInfo={statusInfo} />
           </DetailSection>
         )}
 
         <DetailSection title="Transaction & Block Details">
-          <DetailsRenderer detailsInfo={detailsInfo} />
+          <InfoDetailsRenderer detailsInfo={detailsInfo} />
         </DetailSection>
       </DetailPanelContainer>
     </Stack>

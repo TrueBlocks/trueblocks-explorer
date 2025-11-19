@@ -4,11 +4,11 @@
 import React, { useMemo } from 'react';
 
 import {
-  AddressInfoRenderer,
-  ArticulationRenderer,
   DetailPanelContainer,
   DetailSection,
-  DetailsRenderer,
+  InfoAddressRenderer,
+  InfoArticulationRenderer,
+  InfoDetailsRenderer,
   txToAddressInfo,
 } from '@components';
 import { Stack, Text } from '@mantine/core';
@@ -97,12 +97,12 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
       <DetailPanelContainer title={titleComponent()}>
         {!!addressInfo && (
           <DetailSection title="Address Information">
-            <AddressInfoRenderer addressInfo={addressInfo} />
+            <InfoAddressRenderer addressInfo={addressInfo} />
           </DetailSection>
         )}
 
         <DetailSection title="Decoded Trace Call">
-          <ArticulationRenderer articulationInfo={articulationInfo} />
+          <InfoArticulationRenderer articulationInfo={articulationInfo} />
         </DetailSection>
 
         {!!trace.error && (
@@ -124,7 +124,7 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
         )}
 
         <DetailSection title="Transaction & Block Details">
-          <DetailsRenderer detailsInfo={detailsInfo} />
+          <InfoDetailsRenderer detailsInfo={detailsInfo} />
         </DetailSection>
       </DetailPanelContainer>
     </Stack>

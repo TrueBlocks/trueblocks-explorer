@@ -59,54 +59,7 @@ export interface ArticulationInfo {
   };
 }
 
-export const txToArticulationInfo = (
-  transaction: types.Transaction,
-): ArticulationInfo => {
-  // Create synthetic function from input data if no articulatedTx exists
-  const createSyntheticFunction = (input: string): types.Function => {
-    if (input.length < 10) {
-      return {
-        name: 'Unknown',
-        encoding: input || '0x',
-        inputs: [],
-        outputs: [],
-      } as unknown as types.Function;
-    }
-
-    const encoding = input.slice(0, 10);
-    const remainingData = input.slice(10);
-    const inputs: types.Parameter[] = [];
-
-    for (let i = 0; i < remainingData.length; i += 64) {
-      const chunk = remainingData.slice(i, i + 64);
-      if (chunk.length > 0) {
-        inputs.push({
-          name: `param_${Math.floor(i / 64)}`,
-          value: '0x' + chunk,
-          type: 'bytes32',
-        } as types.Parameter);
-      }
-    }
-
-    return {
-      name: 'Unknown',
-      encoding,
-      inputs,
-      outputs: [],
-    } as unknown as types.Function;
-  };
-
-  return {
-    functionData:
-      transaction.articulatedTx ||
-      createSyntheticFunction(transaction.input || ''),
-    input: transaction.input,
-    to: transaction.to,
-    receipt: transaction.receipt,
-  };
-};
-
-interface ArticulationRendererProps {
+interface InfoArticulationRendererProps {
   articulationInfo: ArticulationInfo;
 }
 
@@ -143,9 +96,9 @@ const hexToAscii = (hex: string): string => {
 /**
  * Renders an articulated transaction function with inputs and outputs
  */
-export const ArticulationRenderer = ({
+export const InfoArticulationRenderer = ({
   articulationInfo,
-}: ArticulationRendererProps) => {
+}: InfoArticulationRendererProps) => {
   const { functionData, input, to, receipt } = articulationInfo;
   const [contractName, setContractName] = useState<string | null>(null);
   const [isLoadingContractName, setIsLoadingContractName] = useState(false);
@@ -245,109 +198,107 @@ export const ArticulationRenderer = ({
     return (
       <Grid gutter={4}>
         <Grid.Col span={12}>
-          <div style={{ marginTop: '12px' }}>
-            {showTitle && (
-              <div
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  marginBottom: '6px',
-                }}
-              >
-                {title}
-              </div>
-            )}
+          {showTitle && (
             <div
               style={{
-                maxHeight: '200px',
-                overflow: 'auto',
-                border: '1px solid var(--mantine-color-gray-3)',
-                borderRadius: '4px',
+                fontSize: '14px',
+                fontWeight: 500,
+                marginBottom: '6px',
+                marginTop: '12px',
               }}
             >
-              <table
-                style={{
-                  width: '100%',
-                  borderCollapse: 'collapse',
-                  fontSize: '12px',
-                }}
-              >
-                <tbody>
-                  {shouldShowHeader && (
+              {title}
+            </div>
+          )}
+          <div
+            style={{
+              maxHeight: '200px',
+              overflow: 'auto',
+              border: '1px solid var(--mantine-color-gray-3)',
+              borderRadius: '4px',
+              marginTop: '12px',
+            }}
+          >
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                fontSize: '12px',
+              }}
+            >
+              <tbody>
+                {shouldShowHeader && (
+                  <tr
+                    style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
+                  >
+                    <td
+                      style={{
+                        padding: '8px',
+                        borderBottom: '1px solid var(--mantine-color-gray-2)',
+                        verticalAlign: 'top',
+                      }}
+                      colSpan={2}
+                    >
+                      <span style={{ fontWeight: 600, fontSize: '13px' }}>
+                        {functionData.name} ({functionData.encoding})
+                      </span>
+                    </td>
+                  </tr>
+                )}
+                {parameters && parameters.length > 0 ? (
+                  parameters.slice(0, 12).map((param, index) => (
                     <tr
-                      style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
+                      key={index}
+                      style={{
+                        backgroundColor: 'var(--mantine-color-gray-0)',
+                      }}
                     >
                       <td
                         style={{
-                          padding: '8px',
+                          padding: '4px 0px 4px 8px',
                           borderBottom: '1px solid var(--mantine-color-gray-2)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          maxWidth: '120px',
                           verticalAlign: 'top',
                         }}
-                        colSpan={2}
                       >
-                        <span style={{ fontWeight: 600, fontSize: '13px' }}>
-                          {functionData.name} ({functionData.encoding})
-                        </span>
+                        {param.name || '-'}
                       </td>
-                    </tr>
-                  )}
-                  {parameters && parameters.length > 0 ? (
-                    parameters.slice(0, 12).map((param, index) => (
-                      <tr
-                        key={index}
-                        style={{
-                          backgroundColor: 'var(--mantine-color-gray-0)',
-                        }}
-                      >
-                        <td
-                          style={{
-                            padding: '4px 0px 4px 8px',
-                            borderBottom:
-                              '1px solid var(--mantine-color-gray-2)',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            maxWidth: '120px',
-                            verticalAlign: 'top',
-                          }}
-                        >
-                          {param.name || '-'}
-                        </td>
-                        <td
-                          style={{
-                            padding: '4px 8px',
-                            borderBottom:
-                              '1px solid var(--mantine-color-gray-2)',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            verticalAlign: 'top',
-                          }}
-                        >
-                          <ParameterValue param={param} />
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr
-                      style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
-                    >
                       <td
-                        colSpan={2}
                         style={{
-                          padding: '8px',
-                          textAlign: 'left',
-                          color: 'var(--mantine-color-dimmed)',
-                          fontStyle: 'italic',
+                          padding: '4px 8px',
+                          borderBottom: '1px solid var(--mantine-color-gray-2)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          verticalAlign: 'top',
                         }}
                       >
-                        No parameters
+                        <ParameterValue param={param} />
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))
+                ) : (
+                  <tr
+                    style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
+                  >
+                    <td
+                      colSpan={2}
+                      style={{
+                        padding: '8px',
+                        textAlign: 'left',
+                        color: 'var(--mantine-color-dimmed)',
+                        fontStyle: 'italic',
+                      }}
+                    >
+                      No parameters
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </Grid.Col>
       </Grid>
@@ -474,4 +425,51 @@ export const ArticulationRenderer = ({
         renderParameterTable(functionData.outputs, 'Outputs', true)}
     </div>
   );
+};
+
+export const txToArticulationInfo = (
+  transaction: types.Transaction,
+): ArticulationInfo => {
+  // Create synthetic function from input data if no articulatedTx exists
+  const createSyntheticFunction = (input: string): types.Function => {
+    if (input.length < 10) {
+      return {
+        name: 'Unknown',
+        encoding: input || '0x',
+        inputs: [],
+        outputs: [],
+      } as unknown as types.Function;
+    }
+
+    const encoding = input.slice(0, 10);
+    const remainingData = input.slice(10);
+    const inputs: types.Parameter[] = [];
+
+    for (let i = 0; i < remainingData.length; i += 64) {
+      const chunk = remainingData.slice(i, i + 64);
+      if (chunk.length > 0) {
+        inputs.push({
+          name: `param_${Math.floor(i / 64)}`,
+          value: '0x' + chunk,
+          type: 'bytes32',
+        } as types.Parameter);
+      }
+    }
+
+    return {
+      name: 'Unknown',
+      encoding,
+      inputs,
+      outputs: [],
+    } as unknown as types.Function;
+  };
+
+  return {
+    functionData:
+      transaction.articulatedTx ||
+      createSyntheticFunction(transaction.input || ''),
+    input: transaction.input,
+    to: transaction.to,
+    receipt: transaction.receipt,
+  };
 };

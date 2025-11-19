@@ -10,43 +10,11 @@ export interface AddressInfo {
   toLabel?: string; // Custom label for 'to' field (e.g., 'Contract' for logs)
 }
 
-export const txToAddressInfo = (
-  from?: unknown,
-  fromName?: string,
-  to?: unknown,
-  toName?: string,
-): AddressInfo => {
-  return {
-    from,
-    fromName,
-    to,
-    toName,
-    showFromLabel: true,
-    toLabel: 'To',
-  };
-};
-
-export const logToAddressInfo = (
-  contractAddress?: unknown,
-  contractName?: string,
-): AddressInfo => {
-  return {
-    from: undefined,
-    fromName: undefined,
-    to: contractAddress,
-    toName: contractName,
-    showFromLabel: false,
-    toLabel: 'Contract',
-  };
-};
-
-interface AddressInfoRendererProps {
+interface InfoAddressProps {
   addressInfo: AddressInfo;
 }
 
-export const AddressInfoRenderer = ({
-  addressInfo,
-}: AddressInfoRendererProps) => {
+export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
   const { from, fromName, to, toName, showFromLabel, toLabel } = addressInfo;
 
   return (
@@ -143,4 +111,34 @@ export const AddressInfoRenderer = ({
       </Grid.Col>
     </Grid>
   );
+};
+
+export const txToAddressInfo = (
+  from?: unknown,
+  fromName?: string,
+  to?: unknown,
+  toName?: string,
+): AddressInfo => {
+  return {
+    from,
+    fromName,
+    to,
+    toName,
+    showFromLabel: true,
+    toLabel: 'To',
+  };
+};
+
+export const logToAddressInfo = (
+  contractAddress?: unknown,
+  contractName?: string,
+): AddressInfo => {
+  return {
+    from: undefined,
+    fromName: undefined,
+    to: contractAddress,
+    toName: contractName,
+    showFromLabel: false,
+    toLabel: 'Contract',
+  };
 };

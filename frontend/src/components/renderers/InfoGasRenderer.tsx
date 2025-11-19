@@ -16,30 +16,11 @@ export interface GasInfo {
   fromAddress?: string;
 }
 
-interface GasInfoRendererProps {
+interface InfoGasRendererProps {
   gasInfo: GasInfo;
 }
 
-export const txToGasInfo = (
-  transaction: types.Transaction,
-  namedFrom?: string,
-  fromAddress?: string,
-): GasInfo => {
-  return {
-    gas: transaction.gas,
-    gasOut: transaction.gasPrice * transaction.gasUsed,
-    gasPrice: transaction.gasPrice,
-    gasUsed: transaction.gasUsed,
-    maxFeePerGas: transaction.maxFeePerGas,
-    maxPriorityFeePerGas: transaction.maxPriorityFeePerGas,
-    cumulativeGasUsed: transaction.receipt?.cumulativeGasUsed,
-    effectiveGasPrice: transaction.receipt?.effectiveGasPrice,
-    namedFrom,
-    fromAddress,
-  };
-};
-
-export const GasInfoRenderer = ({ gasInfo }: GasInfoRendererProps) => {
+export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
   const { activeAddress } = useActiveProject();
 
   // Calculate gas cost
@@ -139,4 +120,23 @@ export const GasInfoRenderer = ({ gasInfo }: GasInfoRendererProps) => {
       </Grid.Col>
     </Grid>
   );
+};
+
+export const txToGasInfo = (
+  transaction: types.Transaction,
+  namedFrom?: string,
+  fromAddress?: string,
+): GasInfo => {
+  return {
+    gas: transaction.gas,
+    gasOut: transaction.gasPrice * transaction.gasUsed,
+    gasPrice: transaction.gasPrice,
+    gasUsed: transaction.gasUsed,
+    maxFeePerGas: transaction.maxFeePerGas,
+    maxPriorityFeePerGas: transaction.maxPriorityFeePerGas,
+    cumulativeGasUsed: transaction.receipt?.cumulativeGasUsed,
+    effectiveGasPrice: transaction.receipt?.effectiveGasPrice,
+    namedFrom,
+    fromAddress,
+  };
 };

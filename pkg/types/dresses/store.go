@@ -13,9 +13,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/fileserver"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
@@ -310,24 +312,78 @@ func getStoreKey(payload *types.Payload) string {
 }
 
 // EXISTING_CODE
-// getGalleryItems returns cached items performing incremental scan per series
+// getGalleryItems returns cached items using efficient single-pass filesystem scan
 func (c *DressesCollection) getGalleryItems() (items []*DalleDress) {
 	root := storage.OutputDir()
+	baseURL := fileserver.CurrentBaseURL()
 	seriesList := make([]*DalleDress, 0, 512)
 
-	entries, err := os.ReadDir(root)
-	if err == nil {
-		for _, e := range entries {
-			if !e.IsDir() {
-				continue
-			}
-			series := e.Name()
-			if seriesItems, err := collectGalleryItemsForSeries(root, series); err == nil && len(seriesItems) > 0 {
-				seriesList = append(seriesList, seriesItems...)
-			}
+	// Single efficient walk through all directories (O(n) instead of O(n×series))
+	_ = filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return nil // Continue walking
 		}
-	}
 
+		// Only process PNG files in annotated directories
+		if !strings.HasSuffix(strings.ToLower(d.Name()), ".png") {
+			return nil
+		}
+		if !strings.Contains(path, string(filepath.Separator)+"annotated"+string(filepath.Separator)) {
+			return nil
+		}
+
+		// Extract series and address from path
+		rel, relErr := filepath.Rel(root, path)
+		if relErr != nil {
+			return nil
+		}
+
+		parts := strings.Split(rel, string(filepath.Separator))
+		if len(parts) < 3 { // Need: series/annotated/filename.png
+			return nil
+		}
+
+		series := parts[0]
+		name := parts[len(parts)-1]
+
+		// Extract address from filename
+		address := ""
+		addrPattern := regexp.MustCompile(`0x[0-9a-fA-F]{40}`)
+		if m := addrPattern.FindString(name); m != "" {
+			address = strings.ToLower(m)
+		}
+
+		// Get file info for metadata
+		info, statErr := d.Info()
+		modTime := time.Now().Unix()
+		size := int64(0)
+		if statErr == nil {
+			modTime = info.ModTime().Unix()
+			size = info.Size()
+		}
+
+		// Build URL paths
+		annotatedPath := filepath.Join(series, "annotated", name)
+		served := strings.ReplaceAll(annotatedPath, string(filepath.Separator), "/")
+		url := "file://" + root + "/" + served
+		if baseURL != "" {
+			url = baseURL + served
+		}
+
+		seriesList = append(seriesList, &DalleDress{
+			Series:        series,
+			Original:      address,
+			ImageURL:      url,
+			AnnotatedPath: annotatedPath,
+			FileName:      name,
+			ModifiedAt:    modTime,
+			FileSize:      size,
+		})
+
+		return nil // Continue walking
+	})
+
+	// Sort by series, then filename for consistent ordering
 	sort.SliceStable(seriesList, func(i, j int) bool {
 		if seriesList[i].Series == seriesList[j].Series {
 			return seriesList[i].FileName < seriesList[j].FileName

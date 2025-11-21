@@ -4,7 +4,7 @@ module github.com/TrueBlocks/trueblocks-explorer
 go 1.25.1
 
 require (
-	github.com/TrueBlocks/trueblocks-chifra/v6 v6.5.1-0.20251118031743-69a8c974ca33
+	github.com/TrueBlocks/trueblocks-chifra/v6 v6.5.1-0.20251121153833-19c9b4bcd4a9
 	github.com/TrueBlocks/trueblocks-dalle/v6 v6.4.5
 	github.com/TrueBlocks/trueblocks-sdk/v6 v6.5.1
 	github.com/google/go-cmp v0.7.0

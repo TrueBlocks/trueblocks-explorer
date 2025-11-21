@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ExecuteRowAction } from '@app';
-import { RendererParams, StyledButton, StyledSelect } from '@components';
+import {
+  GenerationProgressModal,
+  RendererParams,
+  StyledButton,
+  StyledSelect,
+} from '@components';
 import { useIconSets, usePreferences } from '@hooks';
 import {
   Center,
@@ -28,6 +33,11 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
         dalledress: data || [],
       }) as unknown as dresses.DressesPage,
     [data],
+  );
+
+  const [progressModalOpened, setProgressModalOpened] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null,
   );
   const viewStateKey: project.ViewStateKey = useMemo(
     () => ({
@@ -112,6 +122,11 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
 
   const selectedItem = getSelectedItem();
 
+  // Reset generated image when selection changes
+  useEffect(() => {
+    setGeneratedImageUrl(null);
+  }, [selectedItem?.original, selectedItem?.series]);
+
   const { speaking, audioUrl, audioRef, speak } = useSpeakPrompt({
     activeAddress: selectedItem?.original || null,
     selectedSeries: selectedItem?.series || null,
@@ -122,10 +137,28 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
     (label: string) => {
       if (!selectedItem?.original || !selectedItem.series) return;
       Log('generator:button:' + label.toLowerCase());
-      // TODO: Implement actual button click logic
+
+      if (label === 'generate') {
+        Log('generator:opening:modal');
+        setProgressModalOpened(true);
+        Log('generator:modal:state:' + progressModalOpened);
+      }
+      // TODO: Implement actual button click logic for other buttons
     },
-    [selectedItem?.original, selectedItem?.series],
+    [selectedItem?.original, selectedItem?.series, progressModalOpened],
   );
+
+  const handleGenerationComplete = useCallback(() => {
+    Log('generator:generation:complete');
+
+    // Mock: Change last character of address from 3 to 2 to simulate new generation
+    if (selectedItem?.imageUrl) {
+      // Replace the last '3' with '2' in the URL (0x...533 -> 0x...532)
+      const newUrl = selectedItem.imageUrl.replace(/533\.png$/, '532.png');
+      setGeneratedImageUrl(newUrl);
+      Log('generator:image:updated', newUrl);
+    }
+  }, [selectedItem?.imageUrl]);
 
   const handleThumbSelect = useCallback(
     (item: model.DalleDress) => {
@@ -293,13 +326,16 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
   // selectedItem already defined above; maintain comment for context (Task 2).
   const attributes = selectedItem?.attributes || [];
   const displayImageUrl = useMemo(() => {
+    // If we have a newly generated image, show that instead
+    if (generatedImageUrl) return generatedImageUrl;
+
     if (selectedItem?.imageUrl) return selectedItem.imageUrl;
     const first = galleryItems.find((g) => g.original === orig);
     if (first?.imageUrl) return first.imageUrl;
     if (galleryItems.length && galleryItems[0])
       return galleryItems[0].imageUrl || '';
     return '';
-  }, [selectedItem, galleryItems, orig]);
+  }, [generatedImageUrl, selectedItem, galleryItems, orig]);
 
   return (
     <div
@@ -344,12 +380,38 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                   </Center>
                 )}
               </div>
+
+              {/* Debug Info */}
+              {displayImageUrl && (
+                <div
+                  style={{
+                    marginTop: 8,
+                    padding: 8,
+                    backgroundColor: 'var(--mantine-color-yellow-1)',
+                    border: '1px solid var(--mantine-color-yellow-4)',
+                    borderRadius: 4,
+                    fontSize: '11px',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  <Text
+                    size="xs"
+                    style={{ fontWeight: 'bold', marginBottom: 4 }}
+                  >
+                    Image Debug:
+                  </Text>
+                  <div>URL: {displayImageUrl}</div>
+                  <div>Generated: {generatedImageUrl ? 'Yes' : 'No'}</div>
+                  <div>Series: {selectedItem?.series || 'none'}</div>
+                  <div>Address: {selectedItem?.original || 'none'}</div>
+                </div>
+              )}
             </div>
           </Stack>
         </Grid.Col>
         <Grid.Col span={chromeCollapsed ? 5 : 4}>
           <Grid gutter="sm">
-            <Grid.Col span={10}>
+            <Grid.Col span={8}>
               <Stack gap="sm">
                 <StyledSelect
                   label="Address"
@@ -489,37 +551,61 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                 </div>
               </Stack>
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col span={4}>
               <Stack gap="xs">
                 <Title order={6}>Actions</Title>
-                <StyledButton
-                  size="sm"
-                  variant="primary"
-                  fullWidth
-                  onClick={() => handleButtonClick('generate')}
-                  disabled={!selectedItem?.original || !selectedItem.series}
-                >
-                  Generate
-                </StyledButton>
-                {['Claim', 'Mint', 'Burn', 'Trade', 'Eject', 'Merch'].map(
-                  (label) => (
+                <div style={{ minWidth: '120px' }}>
+                  <StyledButton
+                    size="sm"
+                    variant="primary"
+                    style={{ width: '100%' }}
+                    onClick={() => handleButtonClick('generate')}
+                    disabled={!selectedItem?.original || !selectedItem.series}
+                  >
+                    Generate
+                  </StyledButton>
+                  {['Mint', 'Burn', 'Merch'].map((label) => (
                     <StyledButton
                       key={label}
                       size="sm"
                       variant="primary"
-                      fullWidth
+                      style={{ width: '100%', marginTop: '8px' }}
                       onClick={() => handleButtonClick(label)}
                     >
                       {label}
                     </StyledButton>
-                  ),
-                )}
+                  ))}
+                </div>
               </Stack>
             </Grid.Col>
           </Grid>
         </Grid.Col>
         {!chromeCollapsed && <Grid.Col span={1}></Grid.Col>}
       </Grid>
+
+      <GenerationProgressModal
+        opened={progressModalOpened}
+        onClose={() => {
+          Log('generator:modal:closing');
+          setProgressModalOpened(false);
+        }}
+        onComplete={handleGenerationComplete}
+      />
+
+      {/* Debug info */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          background: 'yellow',
+          padding: '5px',
+          fontSize: '12px',
+          zIndex: 9999,
+        }}
+      >
+        Modal State: {progressModalOpened ? 'OPEN' : 'CLOSED'}
+      </div>
     </div>
   );
 };

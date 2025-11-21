@@ -8,6 +8,7 @@ export * from './DashboardCard';
 export * from './DebugToggle';
 export * from './FieldTypeToggle';
 export * from './ExportFormatModal';
+export * from './GenerationProgressModal';
 export * from './LightDarkToggle';
 export * from './NodeStatus';
 export * from './ProjectCard';

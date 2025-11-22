@@ -2215,7 +2215,7 @@
                                 "export"
                             ],
                             "viewType": "table",
-                            "panel": "",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
@@ -3262,7 +3262,7 @@
             "display_name": "AddressList",
             "doc_group": "001-Route",
             "doc_route": "001-addresslist",
-            "doc_descr": "project management and home dashboard for the TrueBlocks Explorer",
+            "doc_descr": "A list off addresses inside a project",
             "produced_by": "addresslist",
             "disable_go": true,
             "members": [
@@ -3305,7 +3305,7 @@
             "display_name": "Projects",
             "doc_group": "001-Route",
             "doc_route": "001-projects",
-            "doc_descr": "project management and home dashboard for the TrueBlocks Explorer",
+            "doc_descr": "project management and home dashboard",
             "produced_by": "projects",
             "members": [
                 {
@@ -3557,7 +3557,7 @@
                         "export"
                     ],
                     "viewType": "table",
-                    "panel": "",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,

@@ -262,6 +262,10 @@ export function GetFormat() {
   return window['go']['app']['App']['GetFormat']();
 }
 
+export function GetImageDebugInfo(arg1) {
+  return window['go']['app']['App']['GetImageDebugInfo'](arg1);
+}
+
 export function GetImageURL(arg1) {
   return window['go']['app']['App']['GetImageURL'](arg1);
 }

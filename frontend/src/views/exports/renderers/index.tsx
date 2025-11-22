@@ -8,6 +8,7 @@ export const renderers = {
   panels: {
     [types.DataFacet.STATEMENTS]: panels.StatementsPanel,
     [types.DataFacet.TRANSACTIONS]: panels.TransactionsPanel,
+    [types.DataFacet.OPENAPPROVALS]: panels.OpenApprovalsPanel,
     [types.DataFacet.LOGS]: panels.LogsPanel,
     [types.DataFacet.TRACES]: panels.TracesPanel,
   },

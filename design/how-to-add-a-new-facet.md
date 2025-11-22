@@ -1,12 +1,12 @@
-# How to Add a New Facet to TrueBlocks Explorer
+# How to Add a New Facet to a TrueBlocks mini-dApps project
 
 **Version**: 1.0  
 **Date**: October 13, 2025  
-**Audience**: Developers working on TrueBlocks Explorer
+**Audience**: Developers working on TrueBlocks projects
 
 ## Overview
 
-This guide provides a generic process for adding new facets to any view in the TrueBlocks Explorer. A facet represents a tab within a view that displays a specific type of data (e.g., transactions, balances, logs, etc.).
+This guide provides a generic process for adding new facets to any view in a TrueBlocks mini-dApps project. A facet represents a tab within a view that displays a specific type of data (e.g., transactions, balances, logs, etc.).
 
 ## Architecture Context
 

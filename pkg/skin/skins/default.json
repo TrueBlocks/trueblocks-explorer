@@ -1,7 +1,7 @@
 {
   "name": "default",
   "displayName": "Default",
-  "description": "Default skin for TrueBlocks Explorer with light color palette and optimized visual properties",
+  "description": "Default skin for TrueBlocks mini-dApps with light color palette and optimized visual properties",
   "author": "TrueBlocks",
   "version": "1.0.0",
   "isBuiltIn": true,

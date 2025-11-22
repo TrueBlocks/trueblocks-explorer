@@ -2,12 +2,12 @@
 
 ## Overview
 
-The TrueBlocks Explorer uses a template-driven approach to generate consistent custom renderers across all views. This document explains how to add custom panels (table-based custom rendering) or custom facets (completely custom rendering) to any view.
+A TrueBlocks mini-dApps project uses a template-driven approach to generate consistent custom renderers across all views. This document explains how to add custom panels (table-based custom rendering) or custom facets (completely custom rendering) to any view.
 
 ## Prerequisites
 
 - Basic understanding of React/TypeScript
-- Familiarity with TrueBlocks Explorer architecture
+- Familiarity with TrueBlocks architecture
 - Access to the codebase and build tools
 
 ## Process

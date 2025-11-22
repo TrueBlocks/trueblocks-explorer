@@ -42,6 +42,7 @@ name = "OpenApprovals"
 store = "OpenApprovals"
 actions = ["export"]
 viewType = "table"
+panel = "custom"
 
 [[facets]]
 name = "ApprovalLogs"

@@ -6,5 +6,6 @@
  */
 export { StatementsPanel } from './statements';
 export { TransactionsPanel } from './transactions';
+export { OpenApprovalsPanel } from './openapprovals';
 export { LogsPanel } from './logs';
 export { TracesPanel } from './traces';

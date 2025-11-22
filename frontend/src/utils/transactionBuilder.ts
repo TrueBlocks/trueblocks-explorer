@@ -67,6 +67,11 @@ const convertInputValue = (type: string, value: string): unknown => {
   }
 
   if (type.startsWith('uint') || type.startsWith('int')) {
+    // For numeric types, ensure we return a proper number for small values
+    // The Go ABI encoder may expect specific type handling
+    if (type === 'uint256' || type === 'int256') {
+      return value.trim();
+    }
     return value; // Go backend can handle string numbers
   }
 

@@ -152,6 +152,8 @@ export function GetFilterState(arg1:project.ViewStateKey):Promise<project.Filter
 
 export function GetFormat():Promise<string>;
 
+export function GetImageDebugInfo(arg1:string):Promise<Record<string, string>>;
+
 export function GetImageURL(arg1:string):Promise<string>;
 
 export function GetKhedraControlURL():Promise<string>;

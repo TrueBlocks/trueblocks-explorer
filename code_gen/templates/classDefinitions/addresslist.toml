@@ -1,7 +1,7 @@
 [settings]
     class = "AddressList"
     doc_group = "001-Route"
-    doc_descr = "project management and home dashboard for the TrueBlocks Explorer"
+    doc_descr = "A list off addresses inside a project"
     doc_route = "001-addresslist"
     attributes = ""
     produced_by = "addresslist"

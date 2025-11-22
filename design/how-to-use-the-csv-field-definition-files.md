@@ -2,7 +2,7 @@
 
 ## Overview
 
-The TrueBlocks Explorer uses a CSV-first approach for defining data fields throughout the application. This system provides a single source of truth that automatically propagates through the entire Go→TypeScript→UI pipeline, ensuring type safety and consistency while eliminating configuration drift.
+This mini-dApp uses a CSV-first approach for defining data fields throughout the application. This system provides a single source of truth that automatically propagates through the entire Go→TypeScript→UI pipeline, ensuring type safety and consistency while eliminating configuration drift.
 
 ## New Field Type Addition Process
 

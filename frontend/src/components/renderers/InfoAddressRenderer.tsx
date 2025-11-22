@@ -5,10 +5,11 @@ import { BorderedSection, PanelRow, PanelTable } from '.';
 export interface AddressInfo {
   from?: unknown;
   fromName?: string;
+  fromLabel?: string;
+  showFromLabel?: boolean;
   to?: unknown;
   toName?: string;
-  showFromLabel?: boolean;
-  toLabel?: string; // Custom label for 'to' field (e.g., 'Contract' for logs)
+  toLabel?: string;
 }
 
 interface InfoAddressProps {
@@ -16,14 +17,15 @@ interface InfoAddressProps {
 }
 
 export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
-  const { from, fromName, to, toName, showFromLabel, toLabel } = addressInfo;
+  const { from, fromName, fromLabel, showFromLabel, to, toName, toLabel } =
+    addressInfo;
 
   return (
     <BorderedSection>
       <PanelTable>
         {showFromLabel && !!from && (
           <PanelRow
-            label="From"
+            label={fromLabel || 'From'}
             value={
               <>
                 {fromName && (
@@ -67,6 +69,23 @@ export const txToAddressInfo = (
     toName,
     showFromLabel: true,
     toLabel: 'To',
+  };
+};
+
+export const approvalToAddressInfo = (
+  from?: unknown,
+  fromName?: string,
+  to?: unknown,
+  toName?: string,
+): AddressInfo => {
+  return {
+    from,
+    fromName,
+    fromLabel: 'Owner',
+    showFromLabel: true,
+    to,
+    toName,
+    toLabel: 'Spender',
   };
 };
 

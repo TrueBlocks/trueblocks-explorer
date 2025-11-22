@@ -259,7 +259,7 @@ func (a *App) OpenURL(url string) {
 	}
 }
 
-// OpenLink opens a blockchain explorer link for the given key and value
+// OpenLink opens website for the given key and value
 func (a *App) OpenLink(key string, value string) {
 	var url string
 	if key == "blockHash" {

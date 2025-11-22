@@ -263,14 +263,14 @@ store = "Balances"      # Same store, potentially different filtering
 ### SDK Integration Patterns
 ```go
 // Basic export
-exportOpts.Export()
+opts.Export()
 
 // Specific export type
-exportOpts.ExportLogs()
-exportOpts.ExportBalances()
+opts.ExportLogs()
+opts.ExportBalances()
 
 // With options
-exportOpts := sdk.ExportOptions{
+opts := sdk.ExportOptions{
     Globals:    sdk.Globals{Cache: true, Chain: payload.ActiveChain},
     Addrs:      []string{address},
     Articulate: true,    // For detailed log parsing

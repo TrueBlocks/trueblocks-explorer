@@ -97,14 +97,14 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Emitter:    []string{payload.TargetAddress},
 				Articulate: true,
 			}
-			if _, _, err := exportOpts.ExportLogs(); err != nil {
+			if _, _, err := opts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ContractsEvents, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
 				return wrappedErr

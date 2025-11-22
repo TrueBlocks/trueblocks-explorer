@@ -14,7 +14,6 @@ import {
   approvalToAddressInfo,
   txToDetailsInfo,
 } from '@components';
-import { useViewContext } from '@contexts';
 import { useWalletGatedAction } from '@hooks';
 import { usePayload } from '@hooks';
 import { Group, Stack, Text } from '@mantine/core';
@@ -56,10 +55,7 @@ const truncateAddress = (address: unknown): string => {
 };
 */
 
-export const OpenApprovalsPanel = (
-  rowData: Record<string, unknown> | null,
-  optimisticUpdate?: (approval: Record<string, unknown>) => void,
-) => {
+export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   // Collapse state management
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
 
@@ -77,7 +73,6 @@ export const OpenApprovalsPanel = (
   }>({ opened: false, txHash: null });
 
   const { createWalletGatedAction } = useWalletGatedAction();
-  const viewContext = useViewContext();
   const createPayload = usePayload('exports'); // Handle section toggle
   const handleToggle = (sectionName: string) => {
     const isCollapsed = collapsed.has(sectionName);
@@ -101,12 +96,6 @@ export const OpenApprovalsPanel = (
   // Update approval allowance to zero
   const updateApprovalToZero = useCallback(async () => {
     try {
-      // Perform optimistic update first for immediate UI feedback
-      if (optimisticUpdate) {
-        optimisticUpdate(approval as unknown as Record<string, unknown>);
-      }
-
-      // Create updated approval object with zero allowance
       const updatedApproval = {
         ...approval,
         allowance: '0',
@@ -126,7 +115,7 @@ export const OpenApprovalsPanel = (
       // Note: If backend update fails, the optimistic update will be overwritten
       // when Reload() fetches fresh data from the backend
     }
-  }, [approval, createPayload, optimisticUpdate]);
+  }, [approval, createPayload]);
 
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash: string) => {
@@ -309,14 +298,9 @@ export const OpenApprovalsPanel = (
     setSuccessModal({ opened: false, txHash: null });
   }, []);
 
-  // Show loading state if no data is provided
+  // Show loading state if no data is provided (moved after all hooks)
   if (!rowData) {
     return <div className="no-selection">Loading...</div>;
-  }
-
-  // Early return after all hooks if computed data is invalid
-  if (!detailsInfo || !addressInfo || !tokenInfo || !allowanceInfo) {
-    return null;
   }
 
   // Title component with key identifying info
@@ -330,6 +314,11 @@ export const OpenApprovalsPanel = (
       </Text>
     </Group>
   );
+
+  // Return null if computed data is invalid (after all hooks)
+  if (!detailsInfo || !addressInfo || !tokenInfo || !allowanceInfo) {
+    return null;
+  }
 
   return (
     <Stack gap={0} className="fixed-prompt-width">

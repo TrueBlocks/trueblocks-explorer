@@ -88,12 +88,12 @@ func (c *ExportsCollection) getApprovalLogsStore(payload *types.Payload, facet t
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 			}
-			if _, _, err := exportOpts.ExportApprovals(); err != nil {
+			if _, _, err := opts.ExportApprovals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsApprovalLogs, "fetch", err)
 				return wrappedErr
 			}
@@ -146,12 +146,12 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 			}
-			if _, _, err := exportOpts.ExportApprovals(); err != nil {
+			if _, _, err := opts.ExportApprovals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsApprovalTxs, "fetch", err)
 				return wrappedErr
 			}
@@ -198,13 +198,13 @@ func (c *ExportsCollection) getAssetsStore(payload *types.Payload, facet types.D
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Accounting: true, // Enable accounting for statements
 			}
-			if _, _, err := exportOpts.ExportStatements(); err != nil {
+			if _, _, err := opts.ExportStatements(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsStatements, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports statements SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -280,12 +280,12 @@ func (c *ExportsCollection) getBalancesStore(payload *types.Payload, facet types
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain, Ether: true},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 			}
-			if _, _, err := exportOpts.ExportBalances(); err != nil {
+			if _, _, err := opts.ExportBalances(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsBalances, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports balances SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -344,13 +344,13 @@ func (c *ExportsCollection) getLogsStore(payload *types.Payload, facet types.Dat
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Articulate: true,
 			}
-			if _, _, err := exportOpts.ExportLogs(); err != nil {
+			if _, _, err := opts.ExportLogs(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsLogs, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports logs SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -408,13 +408,20 @@ func (c *ExportsCollection) getOpenApprovalsStore(payload *types.Payload, facet 
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			tokensOpts := sdk.TokensOptions{
+			// freshen the list
+			listOpts := sdk.ListOptions{
+				Globals: sdk.Globals{Chain: payload.ActiveChain},
+				Addrs:   []string{payload.ActiveAddress},
+			}
+			_, _, _ = listOpts.List()
+
+			opts := sdk.TokensOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 				NoZero:    true,
 			}
-			if _, _, err := tokensOpts.TokensApprovals(); err != nil {
+			if _, _, err := opts.TokensApprovals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsOpenApprovals, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports openapprovals SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -463,13 +470,13 @@ func (c *ExportsCollection) getReceiptsStore(payload *types.Payload, facet types
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Articulate: true,
 			}
-			if _, _, err := exportOpts.ExportReceipts(); err != nil {
+			if _, _, err := opts.ExportReceipts(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsReceipts, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports receipts SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -518,13 +525,13 @@ func (c *ExportsCollection) getStatementsStore(payload *types.Payload, facet typ
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Accounting: true, // Enable accounting for statements
 			}
-			if _, _, err := exportOpts.ExportStatements(); err != nil {
+			if _, _, err := opts.ExportStatements(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsStatements, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports statements SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -587,13 +594,13 @@ func (c *ExportsCollection) getTracesStore(payload *types.Payload, facet types.D
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Articulate: true,
 			}
-			if _, _, err := exportOpts.ExportTraces(); err != nil {
+			if _, _, err := opts.ExportTraces(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTraces, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports traces SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -639,13 +646,13 @@ func (c *ExportsCollection) getTransactionsStore(payload *types.Payload, facet t
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Articulate: true,
 			}
-			if _, _, err := exportOpts.Export(); err != nil {
+			if _, _, err := opts.Export(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransactions, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports transactions SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -693,13 +700,13 @@ func (c *ExportsCollection) getTransfersStore(payload *types.Payload, facet type
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
 				Accounting: true, // Enable accounting for transfers
 			}
-			if _, _, err := exportOpts.ExportTransfers(); err != nil {
+			if _, _, err := opts.ExportTransfers(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransfers, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
 				return wrappedErr
@@ -760,12 +767,12 @@ func (c *ExportsCollection) getWithdrawalsStore(payload *types.Payload, facet ty
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			exportOpts := sdk.ExportOptions{
+			opts := sdk.ExportOptions{
 				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx: ctx,
 				Addrs:     []string{payload.ActiveAddress},
 			}
-			if _, _, err := exportOpts.ExportWithdrawals(); err != nil {
+			if _, _, err := opts.ExportWithdrawals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsTransfers, "fetch", err)
 				logging.LogBEWarning(fmt.Sprintf("Exports transfers SDK query error: %v", wrappedErr))
 				return wrappedErr

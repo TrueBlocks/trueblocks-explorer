@@ -81,7 +81,7 @@ package exports
 // 	}()
 
 // 	// Set up SDK options exactly like app code
-// 	exportOpts := sdk.ExportOptions{
+// 	opts := sdk.ExportOptions{
 // 		Globals: sdk.Globals{
 // 			Cache:   true,
 // 			Verbose: true,
@@ -98,7 +98,7 @@ package exports
 
 // 	go func() {
 // 		// Call SDK Export - this is where the delay should occur if it's SDK-related
-// 		_, _, err := exportOpts.Export()
+// 		_, _, err := opts.Export()
 // 		done <- err
 // 	}()
 

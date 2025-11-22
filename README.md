@@ -1,4 +1,4 @@
-# TrueBlocks Explorer
+# TrueBlocks mini-dApps
 
 An opinionated version of a desktop-based Wails app with Golang backend and React frontend using TrueBlocks's SDK and Unchained Index.
 

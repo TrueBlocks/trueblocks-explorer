@@ -46,7 +46,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - articulatedLog: a human-readable version of the topic and data fields
   - compressedLog: a truncated version of the articulation
 
-- **ApprovalTxs Store (21 members)**
+- **ApprovalTxs Store (22 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
@@ -56,7 +56,8 @@ Welcome to the **Exports** view! This section provides information about managin
   - to: address to which the transaction was sent
   - toName: name for address to which the transaction was sent
   - value: the amount of wei sent with this transactions
-  - gasUsed: the amount of gas used by this transaction
+  - date: the timestamp as a date
+  - gasOut: the amount of gas spent on the transaction
   - timestamp: the Unix timestamp of the object
   - input: byte data either containing a message or funcational data for a smart contracts
   - articulatedTx: articulated transaction data
@@ -87,7 +88,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - statementId: the number of statements for this asset
   - calcs.endBalCalcEth: calculated ending balance in ETH
   - date: the timestamp as a date
-  - gasUsed: gas used in the transaction
+  - gasUsed: the amount of gas used by the transaction
   - calcs.reconciliationType: type of reconciliation
   - accountedFor: the address being accounted for
   - accountedForName: the name for this accounted address
@@ -174,7 +175,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - fromName: the name for this from address
   - to: the recipient of the transaction
   - toName: the name for this to address
-  - gasUsed: the amount of gas actually used by the transaction
+  - gasOut: the amount of gas cost for the transaction
   - status: `1` on transaction suceess, `null` if tx precedes Byzantium, `0` otherwise
   - isError: whether the transaction resulted in an error
   - contractAddress: the address of the newly created contract, if any
@@ -252,7 +253,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - timestamp: the timestamp of the block
   - date: the timestamp as a date
 
-- **Transactions Store (21 members)**
+- **Transactions Store (27 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
@@ -262,7 +263,8 @@ Welcome to the **Exports** view! This section provides information about managin
   - to: address to which the transaction was sent
   - toName: the name for this to address
   - value: the amount of wei sent with this transactions
-  - gasUsed: the amount of gas used by this transaction
+  - date: the timestamp as a date
+  - gasOut: the amount of gas cost for this transaction
   - timestamp: the Unix timestamp of the object
   - input: byte data either containing a message or funcational data for a smart contracts
   - articulatedTx: articulated transaction data

@@ -14,11 +14,11 @@ spotPrice               , float64  ,           ,           , Asset         ,    
 statementId             , uint64   ,           ,           , Asset         ,         ,       13, the number of statements for this asset
 calcs.endBalCalcEth     , ether    ,           , noTable   , Reconciliation,         ,       14, calculated ending balance in ETH
 date                    , datetime ,           , noTable   , Summary       ,         ,       15, the timestamp as a date
-gasUsed                 , gas      ,           , noTable   , Summary       ,         ,       16, gas used in the transaction
+gasUsed                 , gas      ,           , noTable   , Summary       ,         ,       16, the amount of gas used by the transaction
 calcs.reconciliationType, string   ,           , noTable   , Summary       ,         ,       17, type of reconciliation
 accountedFor            , address  ,           , noTable   , Asset         ,         ,       18, the address being accounted for
 accountedForName        , string   ,           , noTable   , Asset         ,         ,       19, the name for this accounted address
-calcs.reconciled        , boolean     ,           ,           , Summary       ,         ,       20, true if reconciled
+calcs.reconciled        , boolean  ,           ,           , Summary       ,         ,       20, true if reconciled
 amountIn                , int256   ,           , noTable   , Inflow        ,         ,       21, incoming amount
 internalIn              , int256   ,           , noTable   , Inflow        ,         ,       22, internal incoming amount
 selfDestructIn          , int256   ,           , noTable   , Inflow        ,         ,       23, self-destruct incoming amount

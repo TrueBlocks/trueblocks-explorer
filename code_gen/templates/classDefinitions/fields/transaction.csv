@@ -1,22 +1,23 @@
-name                , type     , strDefault, attributes, section , upgrades, docOrder, description
-blockNumber         , blknum   ,           ,           , Context ,         ,        1, the number of the block
-transactionIndex    , txnum    ,           ,           , Context ,         ,        2, the zero-indexed position of the transaction in the block
-hash                , hash     ,           ,           , Overview,         ,        3, the hash of the transaction
-from                , address  ,           ,           , Overview,         ,        4, address from which the transaction was sent
-fromName            , string   ,           ,           , Overview,         ,        5, the name for this from address
-to                  , address  ,           ,           , Overview,         ,        6, address to which the transaction was sent
-toName              , string   ,           ,           , Overview,         ,        7, the name for this to address
-value               , wei      ,           ,           , Overview,         ,        8, the amount of wei sent with this transactions
-gasUsed             , gas      ,           ,           , Gas     ,         ,        9, the amount of gas used by this transaction
-timestamp           , timestamp,           , noTable   , Overview,         ,       10, the Unix timestamp of the object
-input               , bytes    ,           , noTable   , Overview,         ,       11, byte data either containing a message or funcational data for a smart contracts
-articulatedTx       , *Function,           , noTable   , Overview,         ,       12, articulated transaction data
-isError             , boolean  ,           , noTable   , Overview,         ,       13, `true` if the transaction ended in error&#44; `false` otherwise
-hasToken            , boolean  ,           , noTable   , Overview,         ,       14, `true` if the transaction is token related&#44; `false` otherwise
-gas                 , gas      ,           , noTable   , Gas     ,         ,       15, the maximum number of gas allowed for this transaction
-gasPrice            , gas      ,           , noTable   , Gas     ,         ,       16, the number of wei per unit of gas the sender is willing to spend
-maxFeePerGas        , gas      ,           , noTable   , Gas     ,         ,       17, maximum fee per gas
-maxPriorityFeePerGas, gas      ,           , noTable   , Gas     ,         ,       18, maximum priority fee per gas
-blockHash           , hash     ,           , noTable   , Context ,         ,       19, the hash of the block containing this transaction
-nonce               , value    ,           , noTable   , Details ,         ,       20, sequence number of the transactions sent by the sender
-type                , string   ,           , noTable   , Details ,         ,       21, the transaction type
+name                       , type     , strDefault, attributes, section , upgrades, docOrder, description
+blockNumber                , blknum   ,           ,           , Context ,         ,        1, the number of the block
+transactionIndex           , txnum    ,           ,           , Context ,         ,        2, the zero-indexed position of the transaction in the block
+hash                       , hash     ,           ,           , Overview,         ,        3, the hash of the transaction
+from                       , address  ,           ,           , Overview,         ,        4, address from which the transaction was sent
+fromName                   , string   ,           ,           , Overview,         ,        5, the name for this from address
+to                         , address  ,           ,           , Overview,         ,        6, address to which the transaction was sent
+toName                     , string   ,           ,           , Overview,         ,        7, the name for this to address
+value                      , ether    ,           ,           , Overview,         ,        8, the amount of wei sent with this transactions
+date                       , datetime ,           , noTable   , Overview,         ,        9, the timestamp as a date
+gasOut                     , gas      ,           , noTable   , Overview,         ,       10, the amount of gas cost for this transaction
+timestamp                  , timestamp,           , noTable   , Overview,         ,       11, the Unix timestamp of the object
+input                      , bytes    ,           , noTable   , Overview,         ,       12, byte data either containing a message or funcational data for a smart contracts
+articulatedTx              , *Function,           , noTable   , Overview,         ,       13, articulated transaction data
+isError                    , boolean  ,           , noTable   , Overview,         ,       14, `true` if the transaction ended in error&#44; `false` otherwise
+hasToken                   , boolean  ,           , noTable   , Overview,         ,       15, `true` if the transaction is token related&#44; `false` otherwise
+gas                        , gas      ,           , noTable   , Gas     ,         ,       16, the maximum number of gas allowed for this transaction
+gasPrice                   , gas      ,           , noTable   , Gas     ,         ,       17, the number of wei per unit of gas the sender is willing to spend
+maxFeePerGas               , gas      ,           , noTable   , Gas     ,         ,       18, maximum fee per gas
+maxPriorityFeePerGas       , gas      ,           , noTable   , Gas     ,         ,       19, maximum priority fee per gas
+blockHash                  , hash     ,           , noTable   , Context ,         ,       20, the hash of the block containing this transaction
+nonce                      , value    ,           , noTable   , Details ,         ,       21, sequence number of the transactions sent by the sender
+type                       , string   ,           , noTable   , Details ,         ,       22, the transaction type

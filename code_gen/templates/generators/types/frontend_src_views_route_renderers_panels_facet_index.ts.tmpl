@@ -1,7 +1,14 @@
+/*
+output: frontend/src/views/[[route]]/renderers/panels/-facet-/index.ts
+scope: facet
+*/
+
+{{- if eq .Panel "custom" -}}
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
 /*
  * This file was auto generated. Do not edit.
  */
-export { TracesPanel } from './TracesPanel';
+export { {{.Name}}Panel } from './{{.Name}}Panel';
+{{- end }}

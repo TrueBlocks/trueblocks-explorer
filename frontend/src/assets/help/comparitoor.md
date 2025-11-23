@@ -20,7 +20,7 @@ Welcome to the **Comparitoor** view! This section provides information about man
 
 ## Stores
 
-- **Transaction Store (21 members)**
+- **Transaction Store (27 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block
@@ -30,7 +30,8 @@ Welcome to the **Comparitoor** view! This section provides information about man
   - to: address to which the transaction was sent
   - toName: the name for this to address
   - value: the amount of wei sent with this transactions
-  - gasUsed: the amount of gas used by this transaction
+  - date: the timestamp as a date
+  - gasOut: the amount of gas cost for this transaction
   - timestamp: the Unix timestamp of the object
   - input: byte data either containing a message or funcational data for a smart contracts
   - articulatedTx: articulated transaction data

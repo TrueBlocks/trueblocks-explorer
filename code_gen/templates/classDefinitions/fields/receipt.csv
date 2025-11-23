@@ -6,7 +6,7 @@ from             , address,           ,             , Context  ,             ,  
 fromName         , string ,           ,             , Context  ,             ,        5, the name for this from address
 to               , address,           ,             , Context  ,             ,        6, the recipient of the transaction
 toName           , string ,           ,             , Context  ,             ,        7, the name for this to address
-gasUsed          , gas    ,           ,             , Details  ,             ,        8, the amount of gas actually used by the transaction
+gasOut           , gas    ,           ,             , Details  ,             ,        8, the amount of gas cost for the transaction
 status           , value  ,           ,             , Details  , 2.5.9:uint32,        9, `1` on transaction suceess&#44; `null` if tx precedes Byzantium&#44; `0` otherwise
 isError          , boolean   ,           , noTable     , Details  ,             ,       10, whether the transaction resulted in an error
 contractAddress  , address,           , noTable     , Details  ,             ,       11, the address of the newly created contract&#44; if any

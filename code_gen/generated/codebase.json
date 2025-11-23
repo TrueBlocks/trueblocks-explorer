@@ -601,7 +601,7 @@
                             "attributes": "noTable",
                             "section": "Summary",
                             "docOrder": 16,
-                            "description": "gas used in the transaction",
+                            "description": "the amount of gas used by the transaction",
                             "num": 16
                         },
                         {
@@ -4990,46 +4990,56 @@
                 },
                 {
                     "name": "value",
-                    "type": "wei",
+                    "type": "ether",
                     "section": "Overview",
                     "docOrder": 8,
                     "description": "the amount of wei sent with this transactions",
                     "num": 8
                 },
                 {
-                    "name": "gasUsed",
-                    "type": "gas",
-                    "section": "Gas",
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "noTable",
+                    "section": "Overview",
                     "docOrder": 9,
-                    "description": "the amount of gas used by this transaction",
+                    "description": "the timestamp as a date",
                     "num": 9
+                },
+                {
+                    "name": "gasOut",
+                    "type": "gas",
+                    "attributes": "noTable",
+                    "section": "Overview",
+                    "docOrder": 10,
+                    "description": "the amount of gas cost for this transaction",
+                    "num": 10
                 },
                 {
                     "name": "timestamp",
                     "type": "timestamp",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 10,
+                    "docOrder": 11,
                     "description": "the Unix timestamp of the object",
-                    "num": 10
+                    "num": 11
                 },
                 {
                     "name": "input",
                     "type": "bytes",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 11,
+                    "docOrder": 12,
                     "description": "byte data either containing a message or funcational data for a smart contracts",
-                    "num": 11
+                    "num": 12
                 },
                 {
                     "name": "articulatedTx",
                     "type": "Function",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 12,
+                    "docOrder": 13,
                     "description": "articulated transaction data",
-                    "num": 12,
+                    "num": 13,
                     "isPointer": true
                 },
                 {
@@ -5037,81 +5047,126 @@
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 13,
+                    "docOrder": 14,
                     "description": "`true` if the transaction ended in error, `false` otherwise",
-                    "num": 13
+                    "num": 14
                 },
                 {
                     "name": "hasToken",
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 14,
+                    "docOrder": 15,
                     "description": "`true` if the transaction is token related, `false` otherwise",
-                    "num": 14
+                    "num": 15
                 },
                 {
                     "name": "gas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 15,
+                    "docOrder": 16,
                     "description": "the maximum number of gas allowed for this transaction",
-                    "num": 15
+                    "num": 16
                 },
                 {
                     "name": "gasPrice",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 16,
+                    "docOrder": 17,
                     "description": "the number of wei per unit of gas the sender is willing to spend",
-                    "num": 16
+                    "num": 17
                 },
                 {
                     "name": "maxFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 17,
+                    "docOrder": 18,
                     "description": "maximum fee per gas",
-                    "num": 17
+                    "num": 18
                 },
                 {
                     "name": "maxPriorityFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 18,
+                    "docOrder": 19,
                     "description": "maximum priority fee per gas",
-                    "num": 18
+                    "num": 19
                 },
                 {
                     "name": "blockHash",
                     "type": "hash",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 19,
+                    "docOrder": 20,
                     "description": "the hash of the block containing this transaction",
-                    "num": 19
+                    "num": 20
                 },
                 {
                     "name": "nonce",
                     "type": "value",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 20,
+                    "docOrder": 21,
                     "description": "sequence number of the transactions sent by the sender",
-                    "num": 20
+                    "num": 21
                 },
                 {
                     "name": "type",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 21,
+                    "docOrder": 22,
                     "description": "the transaction type",
-                    "num": 21
+                    "num": 22
+                },
+                {
+                    "name": "receipt.contractAddress",
+                    "type": "address",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 23,
+                    "description": "contractAddress",
+                    "num": 23
+                },
+                {
+                    "name": "receipt.contractAddressName",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 24,
+                    "description": "contractAddressName",
+                    "num": 24
+                },
+                {
+                    "name": "receipt.status",
+                    "type": "value",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 25,
+                    "description": "status",
+                    "num": 25
+                },
+                {
+                    "name": "receipt.logs",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 26,
+                    "description": "logs",
+                    "num": 26
+                },
+                {
+                    "name": "traces",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Traces",
+                    "docOrder": 27,
+                    "description": "traces",
+                    "num": 27
                 }
             ]
         },
@@ -5185,46 +5240,56 @@
                 },
                 {
                     "name": "value",
-                    "type": "wei",
+                    "type": "ether",
                     "section": "Overview",
                     "docOrder": 8,
                     "description": "the amount of wei sent with this transactions",
                     "num": 8
                 },
                 {
-                    "name": "gasUsed",
-                    "type": "gas",
-                    "section": "Gas",
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "noTable",
+                    "section": "Overview",
                     "docOrder": 9,
-                    "description": "the amount of gas used by this transaction",
+                    "description": "the timestamp as a date",
                     "num": 9
+                },
+                {
+                    "name": "gasOut",
+                    "type": "gas",
+                    "attributes": "noTable",
+                    "section": "Overview",
+                    "docOrder": 10,
+                    "description": "the amount of gas cost for this transaction",
+                    "num": 10
                 },
                 {
                     "name": "timestamp",
                     "type": "timestamp",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 10,
+                    "docOrder": 11,
                     "description": "the Unix timestamp of the object",
-                    "num": 10
+                    "num": 11
                 },
                 {
                     "name": "input",
                     "type": "bytes",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 11,
+                    "docOrder": 12,
                     "description": "byte data either containing a message or funcational data for a smart contracts",
-                    "num": 11
+                    "num": 12
                 },
                 {
                     "name": "articulatedTx",
                     "type": "Function",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 12,
+                    "docOrder": 13,
                     "description": "articulated transaction data",
-                    "num": 12,
+                    "num": 13,
                     "isPointer": true
                 },
                 {
@@ -5232,81 +5297,126 @@
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 13,
+                    "docOrder": 14,
                     "description": "`true` if the transaction ended in error, `false` otherwise",
-                    "num": 13
+                    "num": 14
                 },
                 {
                     "name": "hasToken",
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 14,
+                    "docOrder": 15,
                     "description": "`true` if the transaction is token related, `false` otherwise",
-                    "num": 14
+                    "num": 15
                 },
                 {
                     "name": "gas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 15,
+                    "docOrder": 16,
                     "description": "the maximum number of gas allowed for this transaction",
-                    "num": 15
+                    "num": 16
                 },
                 {
                     "name": "gasPrice",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 16,
+                    "docOrder": 17,
                     "description": "the number of wei per unit of gas the sender is willing to spend",
-                    "num": 16
+                    "num": 17
                 },
                 {
                     "name": "maxFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 17,
+                    "docOrder": 18,
                     "description": "maximum fee per gas",
-                    "num": 17
+                    "num": 18
                 },
                 {
                     "name": "maxPriorityFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 18,
+                    "docOrder": 19,
                     "description": "maximum priority fee per gas",
-                    "num": 18
+                    "num": 19
                 },
                 {
                     "name": "blockHash",
                     "type": "hash",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 19,
+                    "docOrder": 20,
                     "description": "the hash of the block containing this transaction",
-                    "num": 19
+                    "num": 20
                 },
                 {
                     "name": "nonce",
                     "type": "value",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 20,
+                    "docOrder": 21,
                     "description": "sequence number of the transactions sent by the sender",
-                    "num": 20
+                    "num": 21
                 },
                 {
                     "name": "type",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 21,
+                    "docOrder": 22,
                     "description": "the transaction type",
-                    "num": 21
+                    "num": 22
+                },
+                {
+                    "name": "receipt.contractAddress",
+                    "type": "address",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 23,
+                    "description": "contractAddress",
+                    "num": 23
+                },
+                {
+                    "name": "receipt.contractAddressName",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 24,
+                    "description": "contractAddressName",
+                    "num": 24
+                },
+                {
+                    "name": "receipt.status",
+                    "type": "value",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 25,
+                    "description": "status",
+                    "num": 25
+                },
+                {
+                    "name": "receipt.logs",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Receipt",
+                    "docOrder": 26,
+                    "description": "logs",
+                    "num": 26
+                },
+                {
+                    "name": "traces",
+                    "type": "string",
+                    "attributes": "noTable",
+                    "section": "Traces",
+                    "docOrder": 27,
+                    "description": "traces",
+                    "num": 27
                 }
             ]
         },
@@ -5380,11 +5490,11 @@
                     "num": 7
                 },
                 {
-                    "name": "gasUsed",
+                    "name": "gasOut",
                     "type": "gas",
                     "section": "Details",
                     "docOrder": 8,
-                    "description": "the amount of gas actually used by the transaction",
+                    "description": "the amount of gas cost for the transaction",
                     "num": 8
                 },
                 {
@@ -5542,11 +5652,11 @@
                     "num": 7
                 },
                 {
-                    "name": "gasUsed",
+                    "name": "gasOut.",
                     "type": "gas",
                     "section": "Details",
                     "docOrder": 8,
-                    "description": "the amount of gas actually used by the transaction",
+                    "description": "the amount of gas cost for the transaction",
                     "num": 8
                 },
                 {
@@ -6554,46 +6664,55 @@
                 },
                 {
                     "name": "value",
-                    "type": "wei",
+                    "type": "ether",
                     "section": "Overview",
                     "docOrder": 8,
                     "description": "the amount of wei sent with this transactions",
                     "num": 8
                 },
                 {
-                    "name": "gasUsed",
+                    "name": "date",
+                    "type": "datetime",
+                    "attributes": "noTable",
+                    "section": "Overview",
+                    "docOrder": 9,
+                    "description": "the timestamp as a date",
+                    "num": 9
+                },
+                {
+                    "name": "gasOut",
                     "type": "gas",
                     "section": "Gas",
-                    "docOrder": 9,
-                    "description": "the amount of gas used by this transaction",
-                    "num": 9
+                    "docOrder": 10,
+                    "description": "the amount of gas spent on the transaction",
+                    "num": 10
                 },
                 {
                     "name": "timestamp",
                     "type": "timestamp",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 10,
+                    "docOrder": 11,
                     "description": "the Unix timestamp of the object",
-                    "num": 10
+                    "num": 11
                 },
                 {
                     "name": "input",
                     "type": "bytes",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 11,
+                    "docOrder": 12,
                     "description": "byte data either containing a message or funcational data for a smart contracts",
-                    "num": 11
+                    "num": 12
                 },
                 {
                     "name": "articulatedTx",
                     "type": "Function",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 12,
+                    "docOrder": 13,
                     "description": "articulated transaction data",
-                    "num": 12,
+                    "num": 13,
                     "isPointer": true
                 },
                 {
@@ -6601,81 +6720,81 @@
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 13,
+                    "docOrder": 14,
                     "description": "`true` if the transaction ended in error, `false` otherwise",
-                    "num": 13
+                    "num": 14
                 },
                 {
                     "name": "hasToken",
                     "type": "boolean",
                     "attributes": "noTable",
                     "section": "Overview",
-                    "docOrder": 14,
+                    "docOrder": 15,
                     "description": "`true` if the transaction is token related, `false` otherwise",
-                    "num": 14
+                    "num": 15
                 },
                 {
                     "name": "gas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 15,
+                    "docOrder": 16,
                     "description": "the maximum number of gas allowed for this transaction",
-                    "num": 15
+                    "num": 16
                 },
                 {
                     "name": "gasPrice",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 16,
+                    "docOrder": 17,
                     "description": "the number of wei per unit of gas the sender is willing to spend",
-                    "num": 16
+                    "num": 17
                 },
                 {
                     "name": "maxFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 17,
+                    "docOrder": 18,
                     "description": "maximum fee per gas",
-                    "num": 17
+                    "num": 18
                 },
                 {
                     "name": "maxPriorityFeePerGas",
                     "type": "gas",
                     "attributes": "noTable",
                     "section": "Gas",
-                    "docOrder": 18,
+                    "docOrder": 19,
                     "description": "maximum priority fee per gas",
-                    "num": 18
+                    "num": 19
                 },
                 {
                     "name": "blockHash",
                     "type": "hash",
                     "attributes": "noTable",
                     "section": "Context",
-                    "docOrder": 19,
+                    "docOrder": 20,
                     "description": "the hash of the block containing this transaction",
-                    "num": 19
+                    "num": 20
                 },
                 {
                     "name": "nonce",
                     "type": "value",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 20,
+                    "docOrder": 21,
                     "description": "sequence number of the transactions sent by the sender",
-                    "num": 20
+                    "num": 21
                 },
                 {
                     "name": "type",
                     "type": "string",
                     "attributes": "noTable",
                     "section": "Details",
-                    "docOrder": 21,
+                    "docOrder": 22,
                     "description": "the transaction type",
-                    "num": 21
+                    "num": 22
                 }
             ]
         },
@@ -7323,7 +7442,7 @@
                     "attributes": "noTable",
                     "section": "Summary",
                     "docOrder": 16,
-                    "description": "gas used in the transaction",
+                    "description": "the amount of gas used by the transaction",
                     "num": 16
                 },
                 {

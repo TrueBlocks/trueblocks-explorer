@@ -59,7 +59,88 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   // Collapse state management
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
 
-  // Store hardcoded calldata for transaction preparation
+  // Memoize approval conversion to avoid dependency warnings (MOVED UP to match TransactionsPanel pattern)
+  const approval = useMemo(
+    () => (rowData as unknown as types.Approval) || ({} as types.Approval),
+    [rowData],
+  );
+
+  // Memoized converter functions (matching TransactionsPanel hook order)
+  const addressInfo = useMemo(() => {
+    if (!rowData) return null;
+    return approvalToAddressInfo(
+      approval.owner,
+      approval.ownerName,
+      approval.spender,
+      approval.spenderName,
+    );
+  }, [rowData, approval]);
+
+  const detailsInfo = useMemo(() => {
+    if (!rowData) return null;
+    // Create a pseudo-transaction structure for the InfoDetailsRenderer
+    const pseudoTransaction = {
+      hash: approval.token, // Use token address as hash for display
+      blockNumber: approval.blockNumber,
+      blockHash: approval.token, // Use token as block hash placeholder
+      transactionIndex: 0,
+      timestamp: approval.timestamp,
+      nonce: 0,
+      type: 'approval',
+      value: approval.allowance,
+      from: approval.owner,
+      fromName: approval.ownerName,
+      to: approval.spender,
+      toName: approval.spenderName,
+      // Add missing required fields with default values
+      gas: 0,
+      gasPrice: 0,
+      gasUsed: 0,
+      hasToken: false,
+      isError: false,
+      receipt: null,
+      traces: [],
+    };
+    return txToDetailsInfo(pseudoTransaction as unknown as types.Transaction);
+  }, [rowData, approval]);
+
+  const tokenInfo = useMemo(() => {
+    if (!rowData) return null;
+    return [
+      {
+        label: 'Token',
+        value: addressToHex(approval.token),
+        name: approval.tokenName,
+      },
+      {
+        label: 'Name',
+        value: approval.tokenName || 'Unknown Token',
+      },
+    ];
+  }, [rowData, approval]);
+
+  const allowanceInfo = useMemo(() => {
+    if (!rowData) return null;
+    return [
+      {
+        label: 'Allowance',
+        value: formatNumericValue(approval.allowance || 0),
+        isHighlight: Number(approval.allowance) > 0,
+      },
+      {
+        label: 'Block',
+        value: approval.lastAppBlock?.toString() || 'N/A',
+      },
+      {
+        label: 'Timestamp',
+        value: approval.lastAppTs
+          ? new Date(approval.lastAppTs * 1000).toLocaleString()
+          : 'N/A',
+      },
+    ];
+  }, [rowData, approval]);
+
+  // Store hardcoded calldata for transaction preparation (moved after memoized converters)
   const hardcodedCallDataRef = useRef<string>('');
 
   const [transactionModal, setTransactionModal] = useState<{
@@ -86,12 +167,6 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       setCollapsed((prev) => new Set([...prev, sectionName]));
     }
   };
-
-  // Memoize approval conversion to avoid dependency warnings
-  const approval = useMemo(
-    () => (rowData as unknown as types.Approval) || ({} as types.Approval),
-    [rowData],
-  );
 
   // Update approval allowance to zero
   const updateApprovalToZero = useCallback(async () => {
@@ -131,81 +206,6 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       LogError('Revoke transaction error:', error);
     },
   });
-
-  // Memoized converter functions (called before early return to maintain hook order)
-  const detailsInfo = useMemo(() => {
-    if (!rowData) return null;
-    // Create a pseudo-transaction structure for the InfoDetailsRenderer
-    const pseudoTransaction = {
-      hash: approval.token, // Use token address as hash for display
-      blockNumber: approval.blockNumber,
-      blockHash: approval.token, // Use token as block hash placeholder
-      transactionIndex: 0,
-      timestamp: approval.timestamp,
-      nonce: 0,
-      type: 'approval',
-      value: approval.allowance,
-      from: approval.owner,
-      fromName: approval.ownerName,
-      to: approval.spender,
-      toName: approval.spenderName,
-      // Add missing required fields with default values
-      gas: 0,
-      gasPrice: 0,
-      gasUsed: 0,
-      hasToken: false,
-      isError: false,
-      receipt: null,
-      traces: [],
-    };
-    return txToDetailsInfo(pseudoTransaction as unknown as types.Transaction);
-  }, [rowData, approval]);
-
-  const addressInfo = useMemo(() => {
-    if (!rowData) return null;
-    return approvalToAddressInfo(
-      approval.owner,
-      approval.ownerName,
-      approval.spender,
-      approval.spenderName,
-    );
-  }, [rowData, approval]);
-
-  const tokenInfo = useMemo(() => {
-    if (!rowData) return null;
-    return [
-      {
-        label: 'Token',
-        value: addressToHex(approval.token),
-        name: approval.tokenName,
-      },
-      {
-        label: 'Name',
-        value: approval.tokenName || 'Unknown Token',
-      },
-    ];
-  }, [rowData, approval]);
-
-  const allowanceInfo = useMemo(() => {
-    if (!rowData) return null;
-    return [
-      {
-        label: 'Allowance',
-        value: formatNumericValue(approval.allowance || 0),
-        isHighlight: Number(approval.allowance) > 0,
-      },
-      {
-        label: 'Block',
-        value: approval.lastAppBlock?.toString() || 'N/A',
-      },
-      {
-        label: 'Timestamp',
-        value: approval.lastAppTs
-          ? new Date(approval.lastAppTs * 1000).toLocaleString()
-          : 'N/A',
-      },
-    ];
-  }, [rowData, approval]);
 
   // Custom prepare transaction that uses hardcoded calldata
   const customPrepareTransaction = useCallback(async () => {
@@ -342,11 +342,9 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
             onClick={() => handleToggle('Address Information')}
             style={{ cursor: 'pointer' }}
           >
-            <Text variant="primary" size="sm">
-              <div className="detail-section-header">
-                {collapsed.has('Address Information') ? '▶ ' : '▼ '}Address
-                Information
-              </div>
+            <Text variant="primary" size="sm" className="detail-section-header">
+              {collapsed.has('Address Information') ? '▶ ' : '▼ '}Address
+              Information
             </Text>
           </div>
           {!collapsed.has('Address Information') && (
@@ -359,11 +357,9 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
             onClick={() => handleToggle('Token Information')}
             style={{ cursor: 'pointer' }}
           >
-            <Text variant="primary" size="sm">
-              <div className="detail-section-header">
-                {collapsed.has('Token Information') ? '▶ ' : '▼ '}Token
-                Information
-              </div>
+            <Text variant="primary" size="sm" className="detail-section-header">
+              {collapsed.has('Token Information') ? '▶ ' : '▼ '}Token
+              Information
             </Text>
           </div>
           {!collapsed.has('Token Information') && (

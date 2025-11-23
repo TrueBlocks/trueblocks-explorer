@@ -14,7 +14,7 @@ export const WalletConnectButton = () => {
         <Text variant="success" size="md">
           {formatAddress(walletAddress || '')}
         </Text>
-        <StyledButton size="xs" onClick={handleDisconnect} variant="warning">
+        <StyledButton size="xs" onClick={handleDisconnect}>
           Disconnect
         </StyledButton>
       </Group>

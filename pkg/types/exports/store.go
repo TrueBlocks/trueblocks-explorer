@@ -147,9 +147,10 @@ func (c *ExportsCollection) getApprovalTxsStore(payload *types.Payload, facet ty
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
 			opts := sdk.ExportOptions{
-				Globals:   sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
-				RenderCtx: ctx,
-				Addrs:     []string{payload.ActiveAddress},
+				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
+				RenderCtx:  ctx,
+				Addrs:      []string{payload.ActiveAddress},
+				Articulate: true,
 			}
 			if _, _, err := opts.ExportApprovals(); err != nil {
 				wrappedErr := types.NewSDKError("exports", ExportsApprovalTxs, "fetch", err)

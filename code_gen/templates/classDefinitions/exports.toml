@@ -55,6 +55,7 @@ name = "ApprovalTxs"
 store = "ApprovalTxs"
 actions = ["export"]
 viewType = "table"
+panel = "custom"
 
 [[facets]]
 name = "Withdrawals"

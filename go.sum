@@ -10,8 +10,8 @@ github.com/ProjectZKM/Ziren/crates/go-runtime/zkvm_runtime v0.0.0-20251001021608
 github.com/ProjectZKM/Ziren/crates/go-runtime/zkvm_runtime v0.0.0-20251001021608-1fe7b43fc4d6/go.mod h1:ioLG6R+5bUSO1oeGSDxOV3FADARuMoytZCSX6MEMQkI=
 github.com/TrueBlocks/trueblocks-chifra/v6 v6.6.5 h1:8z7rwszmbT/RAlUS/G6AtXEd4X5Tv+2lSO1eR2bg1xg=
 github.com/TrueBlocks/trueblocks-chifra/v6 v6.6.5/go.mod h1:uPPZk3Qy0hGCD/nO6yPZkoOSt3ZnsWfFoH2Y1+b05sA=
-github.com/TrueBlocks/trueblocks-dalle/v6 v6.4.5 h1:O9vt9b5ZCxz8B/lp6l1IDZpOvB4vMfyvqRXBsc3h8N8=
-github.com/TrueBlocks/trueblocks-dalle/v6 v6.4.5/go.mod h1:MFJ+sXfK0u9tTa1bB4AqD9BA4pfxUxXO81J2K0pyND8=
+github.com/TrueBlocks/trueblocks-dalle/v6 v6.6.5 h1:oM2f9mvMz81Ku+9uEi8pIR/cM8RztqGYDofVMax3I6I=
+github.com/TrueBlocks/trueblocks-dalle/v6 v6.6.5/go.mod h1:2eoZUV8vZcJM0FR8crPGgc4DW06Bfxht9chXdI9v9VY=
 github.com/TrueBlocks/trueblocks-sdk/v6 v6.6.5 h1:AisWYbuVs3uQ3pG1tda652edH6jtuQyPLMUjmCBtPAE=
 github.com/TrueBlocks/trueblocks-sdk/v6 v6.6.5/go.mod h1:z6bz2btFTxNEomsrO6tIcndbdJQiP9xrqJC+vwL1wu0=
 github.com/VictoriaMetrics/fastcache v1.13.0 h1:AW4mheMR5Vd9FkAPUv+NH6Nhw+fmbTMGMsNAoA/+4G0=

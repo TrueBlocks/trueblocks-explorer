@@ -5,7 +5,7 @@ go 1.25.1
 
 require (
 	github.com/TrueBlocks/trueblocks-chifra/v6 v6.6.5
-	github.com/TrueBlocks/trueblocks-dalle/v6 v6.4.5
+	github.com/TrueBlocks/trueblocks-dalle/v6 v6.6.5
 	github.com/TrueBlocks/trueblocks-sdk/v6 v6.6.5
 	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1

@@ -130,7 +130,7 @@ func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
 		{{- range .Members }}
 			{{- if not (or (contains .Type "[]") (contains .Type "*")) }}
 				{{- $type := .GetFormatter }}
-				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $type}}, Type: "{{$type}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
+				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $type}}, Type: "{{$type}}"{{end}}{{if .Label}}, Label: "{{.Label}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
 			{{- end }}
 		{{- end }}
 		{{- if .HasActions $.Facets}}

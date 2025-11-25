@@ -49,6 +49,8 @@ name = "ApprovalLogs"
 store = "ApprovalLogs"
 actions = ["export"]
 viewType = "table"
+panel = "custom"
+needsCalcs = true
 
 [[facets]]
 name = "ApprovalTxs"

@@ -2238,12 +2238,12 @@
                                 "export"
                             ],
                             "viewType": "table",
-                            "panel": "",
+                            "panel": "custom",
                             "navigate": "",
                             "attributes": "",
                             "isDynamic": false,
                             "disabled": false,
-                            "needsCalcs": false,
+                            "needsCalcs": true,
                             "panelChart": false,
                             "facetChart": false,
                             "useMapKey": false,
@@ -3580,12 +3580,12 @@
                         "export"
                     ],
                     "viewType": "table",
-                    "panel": "",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,
                     "disabled": false,
-                    "needsCalcs": false,
+                    "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
                     "useMapKey": false,
@@ -5122,51 +5122,6 @@
                     "docOrder": 22,
                     "description": "the transaction type",
                     "num": 22
-                },
-                {
-                    "name": "receipt.contractAddress",
-                    "type": "address",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 23,
-                    "description": "contractAddress",
-                    "num": 23
-                },
-                {
-                    "name": "receipt.contractAddressName",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 24,
-                    "description": "contractAddressName",
-                    "num": 24
-                },
-                {
-                    "name": "receipt.status",
-                    "type": "value",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 25,
-                    "description": "status",
-                    "num": 25
-                },
-                {
-                    "name": "receipt.logs",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 26,
-                    "description": "logs",
-                    "num": 26
-                },
-                {
-                    "name": "traces",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Traces",
-                    "docOrder": 27,
-                    "description": "traces",
-                    "num": 27
                 }
             ]
         },
@@ -5372,51 +5327,6 @@
                     "docOrder": 22,
                     "description": "the transaction type",
                     "num": 22
-                },
-                {
-                    "name": "receipt.contractAddress",
-                    "type": "address",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 23,
-                    "description": "contractAddress",
-                    "num": 23
-                },
-                {
-                    "name": "receipt.contractAddressName",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 24,
-                    "description": "contractAddressName",
-                    "num": 24
-                },
-                {
-                    "name": "receipt.status",
-                    "type": "value",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 25,
-                    "description": "status",
-                    "num": 25
-                },
-                {
-                    "name": "receipt.logs",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Receipt",
-                    "docOrder": 26,
-                    "description": "logs",
-                    "num": 26
-                },
-                {
-                    "name": "traces",
-                    "type": "string",
-                    "attributes": "noTable",
-                    "section": "Traces",
-                    "docOrder": 27,
-                    "description": "traces",
-                    "num": 27
                 }
             ]
         },
@@ -6061,6 +5971,7 @@
                     "section": "Context",
                     "docOrder": 4,
                     "description": "the smart contract that emitted this log",
+                    "label": "Emitter",
                     "num": 4
                 },
                 {
@@ -6206,6 +6117,7 @@
                     "section": "Context",
                     "docOrder": 4,
                     "description": "the smart contract that emitted this log",
+                    "label": "Emitter",
                     "num": 4
                 },
                 {
@@ -6492,6 +6404,7 @@
                     "section": "Context",
                     "docOrder": 4,
                     "description": "the smart contract that emitted this log",
+                    "label": "Emitter",
                     "num": 4
                 },
                 {
@@ -8599,7 +8512,7 @@
                     "attributes": "",
                     "isDynamic": false,
                     "disabled": false,
-                    "needsCalcs": false,
+                    "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
                     "useMapKey": false,
@@ -9707,7 +9620,7 @@
                     "attributes": "",
                     "isDynamic": false,
                     "disabled": false,
-                    "needsCalcs": false,
+                    "needsCalcs": true,
                     "panelChart": false,
                     "facetChart": false,
                     "useMapKey": false,

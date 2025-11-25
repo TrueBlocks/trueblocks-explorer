@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import {
   DataDisplayType,
   DisplayRendererProps,
+  ErrorRenderer,
   FormField,
   shouldRightAlign as shouldRightAlignType,
 } from '@components';
@@ -200,6 +201,14 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
       const num = safeToNumber(value);
       return isNaN(num) ? '0' : num.toLocaleString();
     },
+  },
+  error: {
+    displayRenderer: (value, { context }) => (
+      <ErrorRenderer
+        value={value}
+        tableCell={context === RenderContext.TABLE_CELL}
+      />
+    ),
   },
   boolean: {
     displayRenderer: (value, { context }) => (

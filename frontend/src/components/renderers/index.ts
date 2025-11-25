@@ -4,6 +4,7 @@ export * from './CustomSection';
 export * from './DateTimeRenderer';
 export * from './DisplayRenderer';
 export * from './EditRenderer';
+export * from './ErrorRenderer';
 export * from './EtherRenderer';
 export * from './FieldRenderer';
 export * from './FileSizeRenderer';

@@ -2,15 +2,15 @@ import { memo } from 'react';
 
 import { StyledBadge } from '@components';
 
-export const BooleanRenderer = memo(
+export const ErrorRenderer = memo(
   ({ value, tableCell }: { value: unknown; tableCell?: boolean }) => {
     const isTrue = value === true || value === 'true' || value === 1;
     if (tableCell) {
-      return isTrue ? <StyledBadge variant="boolean">true</StyledBadge> : '';
+      return isTrue ? '' : <StyledBadge variant="error">error</StyledBadge>;
     } else {
-      return isTrue ? 'Yes' : 'No';
+      return isTrue ? '' : 'Error';
     }
   },
 );
 
-BooleanRenderer.displayName = 'BooleanRenderer';
+ErrorRenderer.displayName = 'ErrorRenderer';

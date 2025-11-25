@@ -22,7 +22,6 @@ import { useWalletGatedAction } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
-  Log,
   LogError,
   PreparedTransaction,
   TransactionData,

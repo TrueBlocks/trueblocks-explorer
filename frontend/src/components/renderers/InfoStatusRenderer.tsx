@@ -2,7 +2,7 @@ import { Text } from '@mantine/core';
 import { types } from '@models';
 import { createHashLink } from '@utils';
 
-import { BorderedSection, PanelRow, PanelTable } from '.';
+import { CustomSection, PanelRow, PanelTable } from '.';
 
 export interface StatusInfo {
   status?: number | string;
@@ -47,7 +47,7 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
   };
 
   return (
-    <BorderedSection>
+    <CustomSection>
       <PanelTable>
         <PanelRow
           layout="wide"
@@ -89,7 +89,7 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
           }
         />
       </PanelTable>
-    </BorderedSection>
+    </CustomSection>
   );
 };
 

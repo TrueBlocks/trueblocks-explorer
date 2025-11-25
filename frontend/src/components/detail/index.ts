@@ -1,5 +1,7 @@
-export * from './DetailTable';
-export * from './detailPanel';
+export * from './DetailContainer';
+export * from './DetailHeader';
 export * from './DetailRow';
 export * from './DetailSection';
-export * from './DetailPanelContainer';
+export * from './DetailTable';
+
+export * from './detailPanelHook';

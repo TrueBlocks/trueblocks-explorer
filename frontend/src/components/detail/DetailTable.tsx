@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { DetailPanelContainer, FieldRenderer, FormField } from '@components';
+import { DetailContainer, FieldRenderer, FormField } from '@components';
 import { Text } from '@mantine/core';
 
-import { BorderedSection, PanelRow, PanelTable } from '../renderers';
+import { CustomSection, PanelRow, PanelTable } from '../renderers';
 import './DetailTable.css';
 
 type Section = {
@@ -39,14 +39,14 @@ export const DetailTable = ({
   };
 
   return (
-    <DetailPanelContainer
+    <DetailContainer
       className={`detail-panel-componentized${className ? ` ${className}` : ''}`}
     >
       {sections.map((section, sectionIndex) => {
         const isCollapsed = collapsed.has(section.name);
 
         return (
-          <BorderedSection key={section.name}>
+          <CustomSection key={section.name}>
             <div
               onClick={() => handleToggle(section.name, !isCollapsed)}
               style={{ cursor: 'pointer' }}
@@ -88,9 +88,9 @@ export const DetailTable = ({
                 })}
               </PanelTable>
             )}
-          </BorderedSection>
+          </CustomSection>
         );
       })}
-    </DetailPanelContainer>
+    </DetailContainer>
   );
 };

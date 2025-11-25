@@ -20,10 +20,11 @@ import { types } from '@models';
 import { displayHash } from '@utils';
 
 import '../../../../../components/detail/DetailTable.css';
+import { logToArticulationInfo, logToDetailsInfo } from '../logs/LogsPanel';
 
 // EXISTING_CODE
 
-export const LogsPanel = (rowData: Record<string, unknown> | null) => {
+export const ApprovalLogsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
   const log = useMemo(
     () => (rowData as unknown as types.Log) || types.Log.createFrom({}),
@@ -63,27 +64,4 @@ export const LogsPanel = (rowData: Record<string, unknown> | null) => {
 };
 
 // EXISTING_CODE
-// Converter functions for reusing existing thin interfaces
-export const logToArticulationInfo = (log: types.Log) => {
-  return {
-    functionData: log.articulatedLog || ({} as types.Function),
-    input: log.data || '',
-    to: log.address,
-    receipt: undefined,
-  };
-};
-
-export const logToDetailsInfo = (log: types.Log) => {
-  return {
-    hash: log.transactionHash,
-    blockNumber: log.blockNumber,
-    blockHash: log.blockHash,
-    timestamp: log.timestamp,
-    value: undefined,
-    from: undefined,
-    to: log.address,
-    toName: log.addressName,
-    logIndex: log.logIndex,
-  };
-};
 // EXISTING_CODE

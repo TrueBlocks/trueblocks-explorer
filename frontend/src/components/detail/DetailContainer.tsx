@@ -1,14 +1,14 @@
-export interface DetailPanelContainerProps {
+export interface DetailContainerProps {
   children: React.ReactNode;
   className?: string;
   title?: React.ReactNode;
 }
 
-export const DetailPanelContainer = ({
+export const DetailContainer = ({
   children,
   className,
   title = '',
-}: DetailPanelContainerProps) => {
+}: DetailContainerProps) => {
   return (
     <div
       className={`detail-panel-container${className ? ` ${className}` : ''}`}

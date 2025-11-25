@@ -190,5 +190,5 @@ export function formatNumberWithFallback(
 export const MAX_UINT256_PREFIX = '1157920892373161954235709850086879078532';
 
 export function isInfiniteValue(value: string): boolean {
-  return value.startsWith(MAX_UINT256_PREFIX);
+  return !!value && value.startsWith(MAX_UINT256_PREFIX);
 }

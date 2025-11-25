@@ -1,11 +1,21 @@
-import { DetailPanelContainer, DetailSection } from '@components';
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
+import { DetailContainer, DetailSection } from '@components';
 import { Grid, Group, Stack, Text } from '@mantine/core';
 import { types } from '@models';
 import { addressToHex } from '@utils';
 
 import '../../../../../components/detail/DetailTable.css';
 
+// EXISTING_CODE
+
 export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
+  // EXISTING_CODE
   if (!rowData) return null;
   const statement = rowData as unknown as types.Statement;
   const decimals = statement.decimals || 18;
@@ -115,7 +125,7 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
 
   return (
     <Stack gap={8} className="fixed-prompt-width">
-      <DetailPanelContainer title={titleComponent()}>
+      <DetailContainer title={titleComponent()}>
         <DetailSection title="Participants">
           <Grid gutter={4}>
             <Grid.Col span={6}>
@@ -408,7 +418,11 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
             Correction Id: {statement.correctionId}
           </Text>
         ) : null}
-      </DetailPanelContainer>
+      </DetailContainer>
     </Stack>
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

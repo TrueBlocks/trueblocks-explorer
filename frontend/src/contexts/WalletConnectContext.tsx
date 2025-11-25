@@ -62,9 +62,21 @@ export const WalletConnectProvider = ({
   const { connect } = useConnect({
     requiredNamespaces: {
       eip155: {
-        methods: ['eth_sendTransaction', 'personal_sign'],
+        methods: [
+          'eth_sendTransaction',
+          'personal_sign',
+          'eth_sign',
+          'eth_signTypedData',
+        ],
         chains: ['eip155:1'], // Ethereum mainnet
         events: ['chainChanged', 'accountsChanged'],
+      },
+    },
+    optionalNamespaces: {
+      eip155: {
+        methods: ['wallet_switchEthereumChain', 'wallet_addEthereumChain'],
+        chains: ['eip155:1', 'eip155:11155111'], // Mainnet and Sepolia
+        events: ['connect', 'disconnect'],
       },
     },
   });
@@ -76,33 +88,73 @@ export const WalletConnectProvider = ({
       Log('Project ID:', import.meta.env.VITE_WALLETCONNECT_PROJECT_ID);
       Log('Connect function available:', typeof connect);
 
-      const walletSession = await connect();
-      Log('Wallet connected successfully:', JSON.stringify(walletSession));
+      const connectionPromise = connect();
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Connection timeout after 60 seconds'));
+        }, 60000);
+      });
 
-      // Extract address and chain info from session
-      const address =
-        walletSession.namespaces?.eip155?.accounts?.[0]?.split(':')[2];
-      const chainId = parseInt(
-        walletSession.namespaces?.eip155?.chains?.[0]?.split(':')[1] || '1',
+      const walletSession = (await Promise.race([
+        connectionPromise,
+        timeoutPromise,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ])) as any;
+
+      Log(
+        'Wallet connected successfully:',
+        JSON.stringify(walletSession, null, 2),
       );
 
-      Log('Extracted address:', address || 'none');
+      // Extract address and chain info from session with better error handling
+      const accounts = walletSession.namespaces?.eip155?.accounts;
+      const chains = walletSession.namespaces?.eip155?.chains;
+
+      Log('Available accounts:', accounts);
+      Log('Available chains:', chains);
+
+      if (!accounts || accounts.length === 0) {
+        throw new Error('No accounts found in wallet session');
+      }
+
+      const address = accounts[0]?.split(':')[2];
+      const chainId = parseInt(chains?.[0]?.split(':')[1] || '1');
+
+      if (!address) {
+        throw new Error('Failed to extract address from wallet session');
+      }
+
+      Log('Extracted address:', address);
       Log('Extracted chainId:', String(chainId));
 
       setWalletConnectSession(
         walletSession as unknown as Record<string, unknown>,
       );
 
-      // Update global state instead of local state
-      if (address && chainId) {
-        await connectWallet(address, chainId);
-        Log('Wallet connected to global state:', address, String(chainId));
-      }
+      // Update global state
+      await connectWallet(address, chainId);
+      Log('Wallet connected to global state:', address, String(chainId));
     } catch (error) {
-      Log(
-        'Wallet connection failed:',
-        error instanceof Error ? error.message : String(error),
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      Log('Wallet connection failed:', errorMessage);
+
+      // Provide more specific error messages
+      if (errorMessage.includes('Modal closed')) {
+        Log(
+          'User closed the wallet connection modal. Please try again and complete the connection process.',
+        );
+      } else if (errorMessage.includes('timeout')) {
+        Log(
+          'Connection timed out. Please ensure your wallet app is open and responsive.',
+        );
+      } else if (errorMessage.includes('User rejected')) {
+        Log('Connection was rejected by user.');
+      } else {
+        Log(
+          'Unexpected connection error. Please try again or check your wallet app.',
+        );
+      }
     } finally {
       setIsConnecting(false);
     }

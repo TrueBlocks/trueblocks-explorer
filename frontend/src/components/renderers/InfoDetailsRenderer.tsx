@@ -2,7 +2,7 @@ import { EtherRenderer } from '@components';
 import { types } from '@models';
 import { createHashLink } from '@utils';
 
-import { BorderedSection, PanelRow, PanelTable } from '.';
+import { CustomSection, PanelRow, PanelTable } from '.';
 
 export interface DetailsInfo {
   hash?: unknown;
@@ -34,7 +34,7 @@ export const InfoDetailsRenderer = ({
   };
 
   return (
-    <BorderedSection>
+    <CustomSection>
       <PanelTable>
         <PanelRow
           layout="full"
@@ -81,7 +81,7 @@ export const InfoDetailsRenderer = ({
           }
         />
       </PanelTable>
-    </BorderedSection>
+    </CustomSection>
   );
 };
 

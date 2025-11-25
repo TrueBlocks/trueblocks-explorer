@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/fileserver"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/store"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
@@ -188,6 +189,17 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 				it.AddressName = names.NameAddress(it.Address)
 				// EXISTING_CODE
 				// EXISTING_CODE
+				props := &sdk.ModelProps{
+					Chain:   payload.ActiveChain,
+					Format:  "json",
+					Verbose: true,
+					ExtraOpts: map[string]any{
+						"ether": true,
+					},
+				}
+				if err := it.EnsureCalcs(props, nil); err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to calculate fields during ingestion: %v", err))
+				}
 				return it
 			}
 			return nil

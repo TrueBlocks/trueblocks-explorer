@@ -2,7 +2,7 @@ import { useActiveProject } from '@hooks';
 import { types } from '@models';
 import { formatNumericValue } from '@utils';
 
-import { BorderedSection, PanelRow, PanelTable } from '.';
+import { CustomSection, PanelRow, PanelTable } from '.';
 
 export interface GasInfo {
   gas?: number | string;
@@ -52,7 +52,7 @@ export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
   };
 
   return (
-    <BorderedSection>
+    <CustomSection>
       <PanelTable>
         <PanelRow layout="full" colSpan={2}>
           <span style={{ fontWeight: 600 }}>
@@ -77,7 +77,7 @@ export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
         </PanelRow>
       </PanelTable>
       <div className="panel-formula-note">gasUsed × gasPrice = gasCost</div>
-    </BorderedSection>
+    </CustomSection>
   );
 };
 

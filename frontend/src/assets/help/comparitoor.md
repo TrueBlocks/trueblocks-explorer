@@ -20,7 +20,7 @@ Welcome to the **Comparitoor** view! This section provides information about man
 
 ## Stores
 
-- **Transaction Store (27 members)**
+- **Transaction Store (22 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block

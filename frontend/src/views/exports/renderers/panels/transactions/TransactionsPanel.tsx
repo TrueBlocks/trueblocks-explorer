@@ -1,6 +1,10 @@
 // Copyright 2016, 2026 The Authors. All rights reserved.
 // Use of this source code is governed by a license that can
 // be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import React from 'react';
 
 import { Group, Text } from '@mantine/core';
@@ -9,12 +13,13 @@ import { displayHash } from '@utils';
 
 import { TransactionPanelBase } from '../shared/TransactionPanelBase';
 
+// EXISTING_CODE
+
 export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
-  // Convert rowData to transaction for title display
+  // EXISTING_CODE
   const transaction =
     (rowData as unknown as types.Transaction) || ({} as types.Transaction);
 
-  // Custom title for transactions
   const titleComponent = () => (
     <Group justify="space-between" align="flex-start">
       <Text variant="primary" size="md" fw={600}>
@@ -34,4 +39,8 @@ export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
       showStatusSection={true}
     />
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

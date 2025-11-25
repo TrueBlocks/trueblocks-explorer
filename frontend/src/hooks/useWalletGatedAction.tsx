@@ -31,19 +31,31 @@ import { Log } from '@utils';
  */
 export const useWalletGatedAction = () => {
   const { isWalletConnected, walletAddress } = useWallet();
-  const { handleConnect } = useWalletConnectContext();
+  const { handleConnect, isConnecting } = useWalletConnectContext();
 
   const createWalletGatedAction = useCallback(
     (
       action: (walletAddress: string) => void,
       actionName: string = 'Action',
     ) => {
-      return () => {
+      return async () => {
         if (!isWalletConnected) {
           Log(
             `${actionName} requires wallet connection. Opening wallet connect modal...`,
           );
-          handleConnect();
+          try {
+            await handleConnect();
+            const walletAddr = walletAddress || '';
+            if (walletAddr) {
+              Log(`${actionName} executed with wallet:`, walletAddr);
+              action(walletAddr);
+            }
+          } catch (error) {
+            Log(
+              `${actionName} cancelled or failed:`,
+              error instanceof Error ? error.message : String(error),
+            );
+          }
           return;
         }
 
@@ -58,6 +70,7 @@ export const useWalletGatedAction = () => {
   return {
     isWalletConnected,
     walletAddress: walletAddress,
+    isConnecting,
     createWalletGatedAction,
   };
 };

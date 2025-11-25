@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { NameFromAddress } from '@app';
 import { types } from '@models';
 
-import { BorderedSection, PanelRow, PanelTable } from '.';
+import { CustomSection, PanelRow, PanelTable } from '.';
 
 // Component to display parameter value with address name resolution
 const ParameterValue = ({ param }: { param: types.Parameter }) => {
@@ -197,7 +197,7 @@ export const InfoArticulationRenderer = ({
       !showTitle && !(functionData.name === 'Unknown' && input === '0x');
 
     return (
-      <BorderedSection>
+      <CustomSection>
         {showTitle && (
           <div
             style={{
@@ -251,7 +251,7 @@ export const InfoArticulationRenderer = ({
             )}
           </PanelTable>
         </div>
-      </BorderedSection>
+      </CustomSection>
     );
   };
 

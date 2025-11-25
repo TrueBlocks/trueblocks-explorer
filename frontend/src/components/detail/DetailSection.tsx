@@ -1,63 +1,33 @@
 import { useState } from 'react';
 
-import { Grid, Text } from '@mantine/core';
-
 export interface DetailSectionProps {
   title: string;
   children: React.ReactNode;
-  collapsible?: boolean; // Whether the section can be collapsed (default: true)
-  defaultCollapsed?: boolean; // Initial collapsed state (default: false)
-  onToggle?: (collapsed: boolean) => void; // Callback when section is toggled
-  headerProps?: React.HTMLProps<HTMLDivElement>;
-  className?: string;
-  span?: number; // Grid span for horizontal layouts (when used within DetailRow)
+  cond?: boolean;
 }
 
-/**
- * DetailSection creates a collapsible section with a header and content area.
- * It reuses the existing CSS classes (detail-section-header, detail-separator)
- * for visual consistency with the current DetailTable styling.
- *
- * Features:
- * - Collapsible sections with expand/collapse arrows
- * - Consistent header styling with existing DetailTable
- * - Optional separators between sections
- * - Controlled or uncontrolled collapsed state
- */
 export const DetailSection = ({
   title,
   children,
-  collapsible = true,
-  defaultCollapsed = false,
-  onToggle,
-  headerProps: _headerProps = {},
-  className,
-  span,
+  cond = true,
 }: DetailSectionProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const handleToggle = () => {
-    if (!collapsible) return;
-
-    const newCollapsed = !isCollapsed;
-    setIsCollapsed(newCollapsed);
-    onToggle?.(newCollapsed);
+    setIsCollapsed(!isCollapsed);
   };
 
   const sectionContent = (
-    <div className={className}>
+    <div>
       <div className="detail-separator" />
       <div
         onClick={handleToggle}
         style={{
-          cursor: collapsible ? 'pointer' : 'default',
+          cursor: 'pointer',
         }}
       >
-        <Text variant="primary" size="sm">
-          <div className="detail-section-header">
-            {`${collapsible ? (isCollapsed ? '▶ ' : '▼ ') : ''}${title}`}
-          </div>
-        </Text>
+        <div className="detail-section-header">
+          {`${isCollapsed ? '▶ ' : '▼ '}${title}`}
+        </div>
       </div>
       {!isCollapsed && (
         <div onClick={(e) => e.stopPropagation()} style={{ cursor: 'default' }}>
@@ -67,13 +37,7 @@ export const DetailSection = ({
     </div>
   );
 
-  // If span is provided, wrap in Grid.Col for horizontal layouts
-  if (span) {
-    return <Grid.Col span={span}>{sectionContent}</Grid.Col>;
-  }
-
-  // Default vertical stacking
-  return sectionContent;
+  return cond ? sectionContent : null;
 };
 
 DetailSection.displayName = 'DetailSection';

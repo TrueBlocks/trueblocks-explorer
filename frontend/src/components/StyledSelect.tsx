@@ -15,7 +15,7 @@ export const StyledSelect = (props: SelectProps) => (
       },
       option: {
         color: 'var(--mantine-color-text)',
-        '&[data-selected]': {
+        '&[dataSelected]': {
           backgroundColor: 'var(--mantine-color-gray-3)',
           color: 'var(--mantine-color-text)',
         },

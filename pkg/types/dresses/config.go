@@ -146,7 +146,7 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Context", Key: "blockNumber", Type: "blknum"},
 		{Section: "Context", Key: "transactionIndex", Type: "txnum"},
 		{Section: "Context", Key: "logIndex", Type: "lognum"},
-		{Section: "Context", Key: "address", Type: "address"},
+		{Section: "Context", Key: "address", Type: "address", Label: "Emitter"},
 		{Section: "Context", Key: "addressName", Type: "string"},
 		{Section: "Context", Key: "timestamp", Type: "timestamp", NoTable: true},
 		{Section: "Context", Key: "blockHash", Type: "hash", NoTable: true},

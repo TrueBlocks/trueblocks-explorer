@@ -14,7 +14,6 @@
   font-weight: 600;
   padding: 8px 6px;
   cursor: pointer;
-  border-bottom: 1px solid var(--mantine-color-gray-4);
 }
 
 .detail-section-header.first-section-header {

@@ -36,10 +36,18 @@ func (f *FieldConfig) normalizeField() {
 
 	fmt := ""
 	if f.ColumnLabel == "" {
-		f.ColumnLabel, fmt = clean()
+		if f.Label != "" {
+			f.ColumnLabel = f.Label
+		} else {
+			f.ColumnLabel, fmt = clean()
+		}
 	}
 	if f.DetailLabel == "" {
-		f.DetailLabel, fmt = clean()
+		if f.Label != "" {
+			f.DetailLabel = f.Label
+		} else {
+			f.DetailLabel, fmt = clean()
+		}
 	}
 	if f.Type == "" {
 		if fmt != "" {

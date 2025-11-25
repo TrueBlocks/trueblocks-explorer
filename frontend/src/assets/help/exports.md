@@ -253,7 +253,7 @@ Welcome to the **Exports** view! This section provides information about managin
   - timestamp: the timestamp of the block
   - date: the timestamp as a date
 
-- **Transactions Store (27 members)**
+- **Transactions Store (22 members)**
 
   - blockNumber: the number of the block
   - transactionIndex: the zero-indexed position of the transaction in the block

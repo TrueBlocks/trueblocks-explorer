@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
-import { DetailContainer, FieldRenderer, FormField } from '@components';
+import {
+  DetailContainer,
+  DetailSection,
+  FieldRenderer,
+  FormField,
+} from '@components';
 import { Text } from '@mantine/core';
 
-import { CustomSection, PanelRow, PanelTable } from '../renderers';
+import { PanelRow, PanelTable } from '../renderers';
 import './DetailTable.css';
 
 type Section = {
@@ -46,7 +51,7 @@ export const DetailTable = ({
         const isCollapsed = collapsed.has(section.name);
 
         return (
-          <CustomSection key={section.name}>
+          <DetailSection key={section.name}>
             <div
               onClick={() => handleToggle(section.name, !isCollapsed)}
               style={{ cursor: 'pointer' }}
@@ -88,7 +93,7 @@ export const DetailTable = ({
                 })}
               </PanelTable>
             )}
-          </CustomSection>
+          </DetailSection>
         );
       })}
     </DetailContainer>

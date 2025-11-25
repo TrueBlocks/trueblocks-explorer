@@ -1,8 +1,8 @@
-import { EtherRenderer } from '@components';
+import { DetailSection, EtherRenderer } from '@components';
 import { types } from '@models';
 import { createHashLink } from '@utils';
 
-import { CustomSection, PanelRow, PanelTable } from '.';
+import { PanelRow, PanelTable } from '.';
 
 export interface DetailsInfo {
   hash?: unknown;
@@ -34,7 +34,7 @@ export const InfoDetailsRenderer = ({
   };
 
   return (
-    <CustomSection>
+    <DetailSection>
       <PanelTable>
         <PanelRow
           layout="full"
@@ -81,7 +81,7 @@ export const InfoDetailsRenderer = ({
           }
         />
       </PanelTable>
-    </CustomSection>
+    </DetailSection>
   );
 };
 

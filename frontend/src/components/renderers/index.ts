@@ -1,6 +1,5 @@
 export * from './BooleanRenderer';
 export * from './CheckmarkRenderer';
-export * from './CustomSection';
 export * from './DateTimeRenderer';
 export * from './DisplayRenderer';
 export * from './EditRenderer';

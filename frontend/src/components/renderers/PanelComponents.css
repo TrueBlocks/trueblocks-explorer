@@ -1,10 +1,10 @@
 /* Shared Panel Renderer Styles */
 
-.panel-section {
+/* .panel-section {
   border: 1px solid var(--mantine-color-gray-3);
   border-radius: 4px;
   margin-top: 0px;
-}
+} */
 
 .panel-table {
   width: 100%;

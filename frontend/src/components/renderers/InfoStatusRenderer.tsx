@@ -1,8 +1,9 @@
+import { DetailSection } from '@components';
 import { Text } from '@mantine/core';
 import { types } from '@models';
 import { createHashLink } from '@utils';
 
-import { CustomSection, PanelRow, PanelTable } from '.';
+import { PanelRow, PanelTable } from '.';
 
 export interface StatusInfo {
   status?: number | string;
@@ -47,7 +48,7 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
   };
 
   return (
-    <CustomSection>
+    <DetailSection>
       <PanelTable>
         <PanelRow
           layout="wide"
@@ -89,7 +90,7 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
           }
         />
       </PanelTable>
-    </CustomSection>
+    </DetailSection>
   );
 };
 

@@ -1,6 +1,7 @@
+import { DetailSection } from '@components';
 import { createAddressLink } from '@utils';
 
-import { CustomSection, PanelRow, PanelTable } from '.';
+import { PanelRow, PanelTable } from '.';
 
 export interface AddressInfo {
   from?: unknown;
@@ -34,7 +35,7 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
   } = addressInfo;
 
   return (
-    <CustomSection>
+    <DetailSection>
       <PanelTable>
         {showFromLabel && !!from && (
           <PanelRow
@@ -80,7 +81,7 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
           />
         )}
       </PanelTable>
-    </CustomSection>
+    </DetailSection>
   );
 };
 

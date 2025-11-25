@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
 export interface DetailSectionProps {
-  title: string;
   children: React.ReactNode;
+  title?: string;
   cond?: boolean;
 }
 
 export const DetailSection = ({
-  title,
   children,
+  title = '',
   cond = true,
 }: DetailSectionProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);

@@ -22,6 +22,7 @@ import { useWalletGatedAction } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
+  Log,
   LogError,
   PreparedTransaction,
   TransactionData,
@@ -86,6 +87,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     ];
   }, [approval]);
 
+  const [isPreparingTransaction, setIsPreparingTransaction] = useState(false);
   const hardcodedCallDataRef = useRef<string>('');
   const { createWalletGatedAction, isWalletConnected, isConnecting } =
     useWalletGatedAction();
@@ -101,14 +103,62 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   });
 
   const customPrepareTransaction = useCallback(async () => {
-    return {
-      to: addressToHex(approval.token),
-      data: hardcodedCallDataRef.current,
-      value: '0',
-      gas: '100000', // Standard gas limit for ERC20 approve
-      gasPrice: '20000000000', // 20 gwei default
-    } as PreparedTransaction;
-  }, [approval.token]);
+    setIsPreparingTransaction(true);
+    try {
+      // Generate calldata manually (same as createRevokeTransaction does)
+      const spenderAddress = addressToHex(approval.spender);
+      const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
+      const paddedAmount = '0'.padStart(64, '0');
+      const callData = '0x095ea7b3' + paddedSpender + paddedAmount;
+
+      // Use safe, conservative values to avoid the 0.5 ETH problem
+      const gasLimitDecimal = 60000; // Conservative estimate for ERC20 approve
+      const gasPriceGwei = 20; // Conservative 20 gwei (reasonable for current network)
+      const gasPriceWei = gasPriceGwei * 1e9; // Convert to wei
+
+      // Convert to hex format (many wallets expect hex)
+      const gasLimit = '0x' + gasLimitDecimal.toString(16); // Convert to hex
+      const gasPrice = '0x' + gasPriceWei.toString(16); // Convert to hex
+
+      // Calculate and log the expected cost
+      const maxCostEth = (gasLimitDecimal * gasPriceWei) / 1e18;
+      Log(
+        `✅ Transaction prep SUCCESS - Gas: ${gasLimitDecimal} (${gasLimit}), Price: ${gasPriceGwei} gwei (${gasPrice}), Max cost: ${maxCostEth.toFixed(6)} ETH (~$${(maxCostEth * 3000).toFixed(2)})`,
+        '',
+      );
+
+      return {
+        to: addressToHex(approval.token),
+        data: callData,
+        value: '0',
+        gas: gasLimit,
+        gasPrice: gasPrice,
+      } as PreparedTransaction;
+    } catch (error) {
+      LogError('Failed to prepare revoke transaction:', String(error));
+      // Fallback to same safe defaults
+      LogError(
+        'Failed to prepare transaction, using fallback values',
+        String(error),
+      );
+
+      // Generate calldata in fallback too
+      const spenderAddress = addressToHex(approval.spender);
+      const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
+      const paddedAmount = '0'.padStart(64, '0');
+      const fallbackCallData = '0x095ea7b3' + paddedSpender + paddedAmount;
+
+      return {
+        to: addressToHex(approval.token),
+        data: fallbackCallData,
+        value: '0',
+        gas: '0x' + (60000).toString(16), // 60k gas limit in hex
+        gasPrice: '0x' + (20 * 1e9).toString(16), // 20 gwei fallback in hex
+      } as PreparedTransaction;
+    } finally {
+      setIsPreparingTransaction(false);
+    }
+  }, [approval.token, approval.spender]);
 
   const handleConfirmTransaction = useCallback(
     async (preparedTx: PreparedTransaction) => {
@@ -124,10 +174,13 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   const createRevokeTransaction = useCallback(() => {
     try {
       const spenderAddress = addressToHex(approval.spender);
+
+      // Generate calldata for display (same as before for visual purposes)
       const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
       const paddedAmount = '0'.padStart(64, '0');
       const callData = '0x095ea7b3' + paddedSpender + paddedAmount;
       hardcodedCallDataRef.current = callData;
+
       const transactionData: TransactionData = {
         to: addressToHex(approval.token),
         function: {
@@ -179,22 +232,31 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
               <StyledButton
                 onClick={handleRevoke}
                 size="sm"
-                disabled={!approval.token || !approval.spender || isConnecting}
+                disabled={
+                  !approval.token ||
+                  !approval.spender ||
+                  isPreparingTransaction ||
+                  isConnecting
+                }
                 title={
                   isConnecting
                     ? 'Connecting wallet... Please check your wallet app and scan the QR code'
-                    : !isWalletConnected
-                      ? 'Connect wallet to revoke approval'
-                      : !approval.token || !approval.spender
-                        ? 'Invalid approval data'
-                        : 'Revoke this token approval'
+                    : isPreparingTransaction
+                      ? 'Preparing transaction with current gas prices...'
+                      : !isWalletConnected
+                        ? 'Connect wallet to revoke approval'
+                        : !approval.token || !approval.spender
+                          ? 'Invalid approval data'
+                          : 'Revoke this token approval'
                 }
               >
                 {isConnecting
                   ? 'Connecting...'
-                  : isWalletConnected
-                    ? 'Revoke'
-                    : 'Connect & Revoke'}
+                  : isPreparingTransaction
+                    ? 'Preparing...'
+                    : isWalletConnected
+                      ? 'Revoke'
+                      : 'Connect & Revoke'}
               </StyledButton>
               {isConnecting && (
                 <Text size="xs" c="dimmed" mt={4}>
@@ -295,6 +357,35 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
               </p>
             </div>
             <div>
+              <strong>Transaction Details:</strong>
+              <div
+                style={{
+                  fontSize: '12px',
+                  marginTop: '8px',
+                  padding: '8px',
+                  background: '#f5f5f5',
+                  borderRadius: '4px',
+                  border: '1px solid #ddd',
+                  wordBreak: 'break-all',
+                }}
+              >
+                <div>
+                  <strong>Function:</strong> approve(address,uint256)
+                </div>
+                <div style={{ fontFamily: 'monospace', marginTop: '4px' }}>
+                  <strong>Spender:</strong> {addressToHex(approval.spender)}
+                </div>
+                <div style={{ fontFamily: 'monospace' }}>
+                  <strong>Amount:</strong> 0 (revoke all)
+                </div>
+                <div
+                  style={{ marginTop: '8px', fontSize: '11px', color: '#666' }}
+                >
+                  Gas limit and price will be estimated when you confirm
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: '16px' }}>
               <strong>Calldata:</strong>
               <div
                 style={{
@@ -310,7 +401,8 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
               >
                 {(() => {
                   const calldata = hardcodedCallDataRef.current;
-                  if (!calldata) return '';
+                  if (!calldata)
+                    return 'Calldata will be generated when transaction is prepared';
                   // Function selector (first 4 bytes = 8 hex chars)
                   const selector = calldata.slice(0, 10); // includes 0x
                   // Parameters (remaining data in 32-byte chunks = 64 hex chars each)

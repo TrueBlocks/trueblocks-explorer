@@ -18,7 +18,7 @@ import {
   StyledButton,
   approvalToAddressInfo,
 } from '@components';
-import { useWalletGatedAction } from '@hooks';
+import { useWallet, useWalletGatedAction } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
@@ -31,6 +31,7 @@ import {
   formatNumericValue,
   useWalletConnection,
 } from '@utils';
+import { ApprovalTransaction, TransactionModelHelpers } from '@wallet';
 import { isInfiniteValue } from 'src/components/renderers/utils';
 
 import '../../../../../components/detail/DetailTable.css';
@@ -47,6 +48,19 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     opened: boolean;
     txHash: string | null;
   }>({ opened: false, txHash: null });
+  const [approveModal, setApproveModal] = useState<{
+    opened: boolean;
+    owner: string;
+    spender: string;
+    token: string;
+    amount: string;
+  }>({
+    opened: false,
+    owner: '',
+    spender: '',
+    token: '',
+    amount: '',
+  });
 
   const approval = useMemo(
     () =>
@@ -91,6 +105,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   const hardcodedCallDataRef = useRef<string>('');
   const { createWalletGatedAction, isWalletConnected, isConnecting } =
     useWalletGatedAction();
+  const { walletAddress } = useWallet();
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash: string) => {
       setTransactionModal({ opened: false, transactionData: null });
@@ -102,47 +117,102 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     },
   });
 
+  // Validation functions for approve modal
+  const validateAmount = useCallback((amount: string): string => {
+    if (amount.trim() === '') {
+      return ''; // Empty is valid (means current allowance)
+    }
+
+    const numValue = parseFloat(amount);
+    if (isNaN(numValue)) {
+      return 'Amount must be a valid number';
+    }
+
+    if (numValue < 0) {
+      return 'Amount cannot be negative';
+    }
+
+    // Note: 0 is a valid amount (different from revoke which sets to 0)
+
+    // Check for reasonable decimal places (max 18 for most tokens)
+    const decimalPlaces = (amount.split('.')[1] || '').length;
+    if (decimalPlaces > 18) {
+      return 'Too many decimal places (max 18)';
+    }
+
+    return '';
+  }, []);
+
+  const validateAddress = useCallback((address: string): boolean => {
+    if (!address || address.trim() === '') {
+      return false;
+    }
+
+    // Basic Ethereum address validation
+    const trimmedAddress = address.trim();
+
+    // Must start with 0x and be 42 characters long
+    if (!trimmedAddress.startsWith('0x') || trimmedAddress.length !== 42) {
+      return false;
+    }
+
+    // Must contain only valid hex characters after 0x
+    const hexPart = trimmedAddress.slice(2);
+    return /^[a-fA-F0-9]{40}$/.test(hexPart);
+  }, []);
+
+  const isApproveModalValid = useMemo(() => {
+    const isTokenValid = validateAddress(approveModal.token);
+    const isSpenderValid = validateAddress(approveModal.spender);
+    const isAmountValid = validateAmount(approveModal.amount) === '';
+
+    return isTokenValid && isSpenderValid && isAmountValid;
+  }, [
+    approveModal.token,
+    approveModal.spender,
+    approveModal.amount,
+    validateAddress,
+    validateAmount,
+  ]);
+
   const customPrepareTransaction = useCallback(async () => {
     setIsPreparingTransaction(true);
     try {
-      // Generate calldata manually (same as createRevokeTransaction does)
-      const spenderAddress = addressToHex(approval.spender);
-      const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
-      const paddedAmount = '0'.padStart(64, '0');
-      const callData = '0x095ea7b3' + paddedSpender + paddedAmount;
+      if (!walletAddress) {
+        throw new Error('Wallet not connected');
+      }
 
-      // Use safe, conservative values to avoid the 0.5 ETH problem
-      const gasLimitDecimal = 60000; // Conservative estimate for ERC20 approve
-      const gasPriceGwei = 20; // Conservative 20 gwei (reasonable for current network)
-      const gasPriceWei = gasPriceGwei * 1e9; // Convert to wei
-
-      // Convert to hex format (many wallets expect hex)
-      const gasLimit = '0x' + gasLimitDecimal.toString(16); // Convert to hex
-      const gasPrice = '0x' + gasPriceWei.toString(16); // Convert to hex
-
-      // Calculate and log the expected cost
-      const maxCostEth = (gasLimitDecimal * gasPriceWei) / 1e18;
-      Log(
-        `✅ Transaction prep SUCCESS - Gas: ${gasLimitDecimal} (${gasLimit}), Price: ${gasPriceGwei} gwei (${gasPrice}), Max cost: ${maxCostEth.toFixed(6)} ETH (~$${(maxCostEth * 3000).toFixed(2)})`,
-        '',
+      // Use ApprovalTransaction model for revoke (amount = "0")
+      const revokeTransaction = ApprovalTransaction.forRevoke(
+        approval,
+        walletAddress,
       );
 
-      return {
-        to: addressToHex(approval.token),
-        data: callData,
-        value: '0',
-        gas: gasLimit,
-        gasPrice: gasPrice,
-      } as PreparedTransaction;
+      // Validate function structure
+      if (
+        !TransactionModelHelpers.validateApproveFunction(
+          revokeTransaction.function,
+        )
+      ) {
+        throw new Error('Invalid approve function signature');
+      }
+
+      // Log transaction details
+      Log(
+        `✅ Revoke transaction created using wallet model - Token: ${TransactionModelHelpers.formatAddress(approval.token)}, Spender: ${TransactionModelHelpers.formatAddress(approval.spender)}`,
+        `Function encoding: ${revokeTransaction.function.encoding}`,
+      );
+
+      // Get transaction object ready for signing
+      return revokeTransaction.getTransactionObject();
     } catch (error) {
       LogError('Failed to prepare revoke transaction:', String(error));
-      // Fallback to same safe defaults
+      // Fallback to manual construction for backwards compatibility
       LogError(
-        'Failed to prepare transaction, using fallback values',
+        'Failed to prepare transaction using wallet model, using fallback',
         String(error),
       );
 
-      // Generate calldata in fallback too
       const spenderAddress = addressToHex(approval.spender);
       const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
       const paddedAmount = '0'.padStart(64, '0');
@@ -152,13 +222,13 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         to: addressToHex(approval.token),
         data: fallbackCallData,
         value: '0',
-        gas: '0x' + (60000).toString(16), // 60k gas limit in hex
-        gasPrice: '0x' + (20 * 1e9).toString(16), // 20 gwei fallback in hex
+        gas: '0x' + (60000).toString(16),
+        gasPrice: '0x' + (20 * 1e9).toString(16),
       } as PreparedTransaction;
     } finally {
       setIsPreparingTransaction(false);
     }
-  }, [approval.token, approval.spender]);
+  }, [approval, walletAddress]);
 
   const handleConfirmTransaction = useCallback(
     async (preparedTx: PreparedTransaction) => {
@@ -207,9 +277,77 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     }
   }, [approval]);
 
+  const createApprovalTransaction = useCallback(
+    async (amount: string, token: string, spender: string) => {
+      setIsPreparingTransaction(true);
+      try {
+        if (!walletAddress) {
+          throw new Error('Wallet not connected');
+        }
+
+        // Use ApprovalTransaction model
+        const approvalTransaction = ApprovalTransaction.forApproval(
+          token,
+          spender,
+          walletAddress,
+          amount,
+        );
+
+        // Validate inputs using built-in validation
+        const validation = approvalTransaction.validate();
+        if (!validation.isValid) {
+          throw new Error('Validation failed: ' + validation.errors.join(', '));
+        }
+
+        // Validate function structure
+        if (
+          !TransactionModelHelpers.validateApproveFunction(
+            approvalTransaction.function,
+          )
+        ) {
+          throw new Error('Invalid approve function signature');
+        }
+
+        // Log transaction details
+        Log(
+          `✅ Approval transaction created using wallet model - Amount: ${amount || '0'} tokens, Token: ${token}, Spender: ${spender}`,
+          `Function encoding: ${approvalTransaction.function.encoding}`,
+        );
+
+        // Get transaction object and execute
+        const preparedTx = approvalTransaction.getTransactionObject();
+        await sendTransaction(preparedTx);
+
+        // Close modal on success
+        setApproveModal({
+          opened: false,
+          owner: '',
+          spender: '',
+          token: '',
+          amount: '',
+        });
+      } catch (error) {
+        LogError('Failed to prepare/send approval transaction:', String(error));
+      } finally {
+        setIsPreparingTransaction(false);
+      }
+    },
+    [sendTransaction, walletAddress],
+  );
+
   const handleRevoke = createWalletGatedAction(() => {
     createRevokeTransaction();
   }, 'Revoke');
+
+  const handleApprove = createWalletGatedAction(() => {
+    setApproveModal({
+      opened: true,
+      owner: addressToHex(walletAddress || ''),
+      spender: addressToHex(approval.spender || ''),
+      token: addressToHex(approval.token || ''),
+      amount: '',
+    });
+  }, 'Approve');
 
   const handleModalClose = useCallback(() => {
     setTransactionModal({ opened: false, transactionData: null });
@@ -219,24 +357,20 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     setSuccessModal({ opened: false, txHash: null });
   }, []);
 
-  if (!rowData) {
-    return <div className="no-selection">Loading...</div>;
-  }
+  // Handle no data case but still show the approve button
+  const hasApprovalData = rowData && approval.token && approval.spender;
 
   return (
     <>
       <DetailContainer>
         <DetailHeader>
           <Group justify="space-between" align="flex-start">
-            <div>
+            <div style={{ display: 'flex', gap: '12px' }}>
               <StyledButton
                 onClick={handleRevoke}
                 size="sm"
                 disabled={
-                  !approval.token ||
-                  !approval.spender ||
-                  isPreparingTransaction ||
-                  isConnecting
+                  !hasApprovalData || isPreparingTransaction || isConnecting
                 }
                 title={
                   isConnecting
@@ -245,8 +379,8 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
                       ? 'Preparing transaction with current gas prices...'
                       : !isWalletConnected
                         ? 'Connect wallet to revoke approval'
-                        : !approval.token || !approval.spender
-                          ? 'Invalid approval data'
+                        : !hasApprovalData
+                          ? 'No approval data available'
                           : 'Revoke this token approval'
                 }
               >
@@ -254,9 +388,27 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
                   ? 'Connecting...'
                   : isPreparingTransaction
                     ? 'Preparing...'
-                    : isWalletConnected
-                      ? 'Revoke'
-                      : 'Connect & Revoke'}
+                    : 'Revoke'}
+              </StyledButton>
+              <StyledButton
+                onClick={handleApprove}
+                size="sm"
+                disabled={isPreparingTransaction || isConnecting}
+                title={
+                  isConnecting
+                    ? 'Connecting wallet... Please check your wallet app and scan the QR code'
+                    : isPreparingTransaction
+                      ? 'Preparing transaction with current gas prices...'
+                      : !isWalletConnected
+                        ? 'Connect wallet to approve tokens'
+                        : 'Grant token approval'
+                }
+              >
+                {isConnecting
+                  ? 'Connecting...'
+                  : isPreparingTransaction
+                    ? 'Preparing...'
+                    : 'Approve'}
               </StyledButton>
               {isConnecting && (
                 <Text size="xs" c="dimmed" mt={4}>
@@ -267,14 +419,33 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
               )}
             </div>
             <Text variant="primary" size="md" fw={600}>
-              {`Approval ${displayHash(approval.token)} ${approval.tokenName || 'Token'}`}
+              {hasApprovalData
+                ? `Approval ${displayHash(approval.token)} ${approval.tokenName || 'Token'}`
+                : 'Token Approval Management'}
             </Text>
           </Group>
         </DetailHeader>
-        <DetailSection title={'Information'}>
-          <InfoAddressRenderer addressInfo={addressInfo} />
-        </DetailSection>
-        <DetailSection title={'Allowance Details'} cond={!!allowanceInfo}>
+        {!hasApprovalData && (
+          <DetailSection title={'No Open Approvals'}>
+            <div
+              style={{ padding: '16px', textAlign: 'center', color: '#666' }}
+            >
+              <p style={{ margin: '0', fontSize: '14px' }}>
+                You may still create new token approvals using the Approve
+                button above.
+              </p>
+            </div>
+          </DetailSection>
+        )}
+        {hasApprovalData && (
+          <DetailSection title={'Information'}>
+            <InfoAddressRenderer addressInfo={addressInfo} />
+          </DetailSection>
+        )}
+        <DetailSection
+          title={'Allowance Details'}
+          cond={Boolean(hasApprovalData && allowanceInfo)}
+        >
           <PanelTable>
             {allowanceInfo.map((item, index) => (
               <PanelRow
@@ -533,6 +704,239 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
                 }}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {approveModal.opened && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'rgba(0,0,0,0.5)',
+              zIndex: 999,
+            }}
+            onClick={() =>
+              setApproveModal({
+                opened: false,
+                owner: '',
+                spender: '',
+                token: '',
+                amount: '',
+              })
+            }
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: 'white',
+              padding: '24px',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+              zIndex: 1000,
+              minWidth: '500px',
+            }}
+          >
+            <h3>Grant Token Approval</h3>
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                  }}
+                >
+                  Owner Address (Connected Wallet):
+                </label>
+                <input
+                  type="text"
+                  value={approveModal.owner}
+                  readOnly
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                    fontFamily: 'monospace',
+                    backgroundColor: '#f5f5f5',
+                    color: '#666',
+                    cursor: 'not-allowed',
+                  }}
+                  title="Owner address is automatically set to your connected wallet address"
+                />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                  }}
+                >
+                  Token Contract Address:
+                </label>
+                <input
+                  type="text"
+                  value={approveModal.token}
+                  onChange={(e) =>
+                    setApproveModal({ ...approveModal, token: e.target.value })
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                    fontFamily: 'monospace',
+                  }}
+                  placeholder="Enter token contract address"
+                />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label
+                  style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                  }}
+                >
+                  Spender Address:
+                </label>
+                <input
+                  type="text"
+                  value={approveModal.spender}
+                  onChange={(e) =>
+                    setApproveModal({
+                      ...approveModal,
+                      spender: e.target.value,
+                    })
+                  }
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                    fontFamily: 'monospace',
+                  }}
+                  placeholder="Enter spender address (contract/address to approve)"
+                />
+              </div>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label
+                style={{
+                  display: 'block',
+                  marginBottom: '8px',
+                  fontWeight: 'bold',
+                  fontSize: '14px',
+                }}
+              >
+                Approval Amount:
+              </label>
+              <input
+                type="text"
+                placeholder="Enter amount (e.g., 100) or leave empty for current allowance"
+                value={approveModal.amount}
+                onChange={(e) =>
+                  setApproveModal({ ...approveModal, amount: e.target.value })
+                }
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  fontFamily: 'monospace',
+                }}
+              />
+              <p
+                style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#666' }}
+              >
+                💡 This amount will replace any existing allowance for this
+                token/spender pair. Leave empty to set allowance to 0
+                (effectively revoking approval).
+              </p>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <button
+                onClick={() =>
+                  createApprovalTransaction(
+                    approveModal.amount,
+                    approveModal.token,
+                    approveModal.spender,
+                  )
+                }
+                disabled={isPreparingTransaction || !isApproveModalValid}
+                title={
+                  isPreparingTransaction
+                    ? 'Processing transaction...'
+                    : !isApproveModalValid
+                      ? 'Please enter valid token and spender addresses and a valid amount'
+                      : 'Confirm the approval transaction'
+                }
+                style={{
+                  padding: '10px 16px',
+                  background:
+                    isPreparingTransaction || !isApproveModalValid
+                      ? '#6c757d'
+                      : '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  cursor:
+                    isPreparingTransaction || !isApproveModalValid
+                      ? 'not-allowed'
+                      : 'pointer',
+                  opacity:
+                    isPreparingTransaction || !isApproveModalValid ? 0.6 : 1,
+                }}
+              >
+                {isPreparingTransaction ? 'Processing...' : 'Confirm Approval'}
+              </button>
+              <button
+                onClick={() =>
+                  setApproveModal({
+                    opened: false,
+                    owner: '',
+                    spender: '',
+                    token: '',
+                    amount: '',
+                  })
+                }
+                style={{
+                  padding: '10px 16px',
+                  background: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
               </button>
             </div>
           </div>

@@ -32,6 +32,7 @@
       "@mocks": ["src/__tests__/mocks"],
       "@models": ["wailsjs/go/models"],
       "@names": ["wailsjs/go/names/NamesCollection"],
+      "@wallet": ["src/wallet"],
       "@runtime": ["wailsjs/runtime"],
       "@stores": ["src/stores"],
       "@utils": ["src/utils"],

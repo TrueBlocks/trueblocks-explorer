@@ -7,9 +7,8 @@ import React, {
 } from 'react';
 
 import { Log } from '@utils';
+import { useWallet } from '@wallet';
 import { useConnect } from '@walletconnect/modal-sign-react';
-
-import { useWallet } from '../hooks/useWallet';
 
 export interface WalletSession {
   address?: string;

@@ -1,6 +1,6 @@
 import { Textarea } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { ADDRESS_DESCRIPTION, ADDRESS_PLACEHOLDER } from '@utils';
+import { ADDRESS_DESCRIPTION, ADDRESS_PLACEHOLDER } from '@wallet';
 
 interface AddressInputProps<T = Record<string, unknown>> {
   form: UseFormReturnType<T>;

@@ -10,3 +10,10 @@ export {
   ApprovalTransaction,
   TransactionModelHelpers,
 } from './transaction-models';
+export * from './hooks';
+export * from './stores';
+export {
+  useWalletConnectContext,
+  WalletConnectProvider,
+} from './WalletConnectContext';
+export * from './utils';

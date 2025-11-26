@@ -15,7 +15,7 @@ import {
   PreparedTransaction,
   TransactionData,
   prepareTransaction,
-} from '@utils';
+} from '@wallet';
 
 interface TransactionReviewModalProps {
   opened: boolean;

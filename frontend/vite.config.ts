@@ -12,7 +12,6 @@ export default defineConfig({
       '@hooks': 'src/hooks',
       '@utils': 'src/utils',
       '@contexts': 'src/contexts',
-      '@stores': 'src/stores',
     },
   },
   esbuild: {

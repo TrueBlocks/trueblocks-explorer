@@ -18,19 +18,22 @@ import {
   StyledButton,
   approvalToAddressInfo,
 } from '@components';
-import { useWallet, useWalletGatedAction } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
   Log,
   LogError,
-  PreparedTransaction,
-  TransactionData,
   addressToHex,
   displayHash,
   formatNumericValue,
-  useWalletConnection,
 } from '@utils';
+import {
+  PreparedTransaction,
+  TransactionData,
+  useWalletConnection,
+} from '@wallet';
+import { useWalletGatedAction } from '@wallet';
+import { useWallet } from '@wallet';
 import { ApprovalTransaction, TransactionModelHelpers } from '@wallet';
 import { isInfiniteValue } from 'src/components/renderers/utils';
 

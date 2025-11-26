@@ -1,6 +1,6 @@
 import { types } from '@models';
 
-import { ADDRESS_VALIDATION_ERROR } from './addressConstants';
+import { ADDRESS_VALIDATION_ERROR } from './';
 
 export const isValidSolidityType = (type: string): boolean => {
   const validTypes = [

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ExecuteRowAction, ExportData, IsDialogSilenced } from '@app';
 import { useViewContext } from '@contexts';
-import { useWalletGatedAction } from '@hooks';
 import { crud, project, sdk, types } from '@models';
 import {
   Log,
@@ -12,7 +11,8 @@ import {
   useErrorHandler,
 } from '@utils';
 // TODO: BOGUS add an @contracts alias for this import
-import { TransactionData, buildTransaction } from '@utils';
+import { TransactionData, buildTransaction } from '@wallet';
+import { useWalletGatedAction } from '@wallet';
 
 import { useActionMsgs } from './useActionMsgs';
 

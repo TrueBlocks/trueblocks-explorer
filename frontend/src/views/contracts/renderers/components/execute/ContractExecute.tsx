@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { StyledBadge, StyledButton } from '@components';
-import { useWalletGatedAction } from '@hooks';
 import {
   Alert,
   Card,
@@ -19,7 +18,8 @@ import {
   Title,
 } from '@mantine/core';
 import { types } from '@models';
-import { ADDRESS_HELP_TEXT, LogError, addressToHex } from '@utils';
+import { LogError, addressToHex } from '@utils';
+import { ADDRESS_HELP_TEXT } from '@wallet';
 import {
   PreparedTransaction,
   TransactionData,
@@ -27,9 +27,10 @@ import {
   isArrayType,
   isStructType,
   useWalletConnection,
+  useWalletGatedAction,
   validateSolidityValue,
   validateTransactionInputs,
-} from '@utils';
+} from '@wallet';
 
 import { getWriteFunctions } from '../dashboard/facetCreation';
 import { TransactionReviewModal } from './TransactionReviewModal';

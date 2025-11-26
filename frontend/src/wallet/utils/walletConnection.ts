@@ -1,6 +1,6 @@
-import { useWalletConnectContext } from '@contexts';
-import { useWallet } from '@hooks';
 import { Log, LogError } from '@utils';
+import { useWalletConnectContext } from '@wallet';
+import { useWallet } from '@wallet';
 import { useRequest } from '@walletconnect/modal-sign-react';
 
 import { PreparedTransaction } from './transactionBuilder';

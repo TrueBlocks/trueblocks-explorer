@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import { useWalletConnectContext } from '@contexts';
-import { useWallet } from '@hooks';
 import { Log } from '@utils';
+import { useWalletConnectContext } from '@wallet';
+import { useWallet } from '@wallet';
 
 /**
  * Hook for creating wallet-gated actions that require a connected wallet

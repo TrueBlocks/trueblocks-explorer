@@ -6,11 +6,7 @@ import {
   SplashScreen,
   getBarSize,
 } from '@components';
-import {
-  ViewContextProvider,
-  WalletConnectProvider,
-  useViewContext,
-} from '@contexts';
+import { ViewContextProvider, useViewContext } from '@contexts';
 import {
   initializeAllViewConfigs,
   useActiveProject,
@@ -24,6 +20,7 @@ import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
 import { msgs, project, types } from '@models';
 import { LogError, initializePreferencesDefaults, useEmitters } from '@utils';
+import { WalletConnectProvider } from '@wallet';
 import { WalletConnectModalSign } from '@walletconnect/modal-sign-react';
 import { Router, useLocation } from 'wouter';
 

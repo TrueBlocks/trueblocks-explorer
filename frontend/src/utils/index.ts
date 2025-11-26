@@ -1,7 +1,6 @@
 export * from './Debugger';
 export * from './StateDisplay';
 export * from './addresses';
-export * from './addressConstants';
 export * from './clipboard';
 export * from './debugLayout';
 export * from './eventUtils';
@@ -15,9 +14,5 @@ export * from './wizardUtils';
 export * from './useErrorHandler';
 export * from './sortSpec';
 export * from './hashes';
-
-export * from './solidityValidation';
 export * from './timeAggregation';
-export * from './transactionBuilder';
-export * from './walletConnection';
 export * from './contractErrors';

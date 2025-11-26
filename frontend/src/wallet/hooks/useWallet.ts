@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 
-import { walletStore } from '../stores/walletStore';
+import { walletStore } from '@wallet';
 
 export interface UseWalletReturn {
   // Wallet state

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { Log } from '@utils';
-import { useWalletConnectContext } from '@wallet';
+import { useWalletContext } from '@wallet';
 import { useWallet } from '@wallet';
 
 /**
@@ -31,7 +31,7 @@ import { useWallet } from '@wallet';
  */
 export const useWalletGatedAction = () => {
   const { isWalletConnected, walletAddress } = useWallet();
-  const { handleConnect, isConnecting } = useWalletConnectContext();
+  const { handleConnect, isConnecting } = useWalletContext();
 
   const createWalletGatedAction = useCallback(
     (

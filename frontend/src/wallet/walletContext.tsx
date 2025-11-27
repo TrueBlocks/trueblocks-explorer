@@ -25,17 +25,13 @@ interface WalletConnectContextType {
   formatAddress: (address: string) => string;
 }
 
-const WalletConnectContext = createContext<WalletConnectContextType | null>(
-  null,
-);
+const WalletContext = createContext<WalletConnectContextType | null>(null);
 
 interface WalletConnectProviderProps {
   children: ReactNode;
 }
 
-export const WalletConnectProvider = ({
-  children,
-}: WalletConnectProviderProps) => {
+export const WalletProvider = ({ children }: WalletConnectProviderProps) => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [walletConnectSession, setWalletConnectSession] = useState<
     Record<string, unknown> | undefined
@@ -186,18 +182,14 @@ export const WalletConnectProvider = ({
   };
 
   return (
-    <WalletConnectContext.Provider value={value}>
-      {children}
-    </WalletConnectContext.Provider>
+    <WalletContext.Provider value={value}>{children}</WalletContext.Provider>
   );
 };
 
-export const useWalletConnectContext = () => {
-  const context = useContext(WalletConnectContext);
+export const useWalletContext = () => {
+  const context = useContext(WalletContext);
   if (!context) {
-    throw new Error(
-      'useWalletConnectContext must be used within a WalletConnectProvider',
-    );
+    throw new Error('useWalletContext must be used within a WalletProvider');
   }
   return context;
 };

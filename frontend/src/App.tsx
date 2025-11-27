@@ -20,7 +20,7 @@ import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
 import { msgs, project, types } from '@models';
 import { LogError, initializePreferencesDefaults, useEmitters } from '@utils';
-import { WalletConnectProvider } from '@wallet';
+import { WalletProvider } from '@wallet';
 import { WalletConnectModalSign } from '@walletconnect/modal-sign-react';
 import { Router, useLocation } from 'wouter';
 
@@ -220,7 +220,7 @@ export const App = () => {
 
   return (
     <Router>
-      <WalletConnectProvider>
+      <WalletProvider>
         <div
           style={{
             display: 'flex',
@@ -278,7 +278,7 @@ export const App = () => {
             onCancel={hasActiveProject ? handleProjectModalCancel : undefined}
           />
         </div>
-      </WalletConnectProvider>
+      </WalletProvider>
     </Router>
   );
 };

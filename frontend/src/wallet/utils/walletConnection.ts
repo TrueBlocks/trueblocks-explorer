@@ -1,5 +1,5 @@
 import { Log, LogError } from '@utils';
-import { useWalletConnectContext } from '@wallet';
+import { useWalletContext } from '@wallet';
 import { useWallet } from '@wallet';
 import { useRequest } from '@walletconnect/modal-sign-react';
 
@@ -14,7 +14,7 @@ export const useWalletConnection = ({
   onTransactionSigned,
   onError,
 }: WalletConnectionProps = {}) => {
-  const { session } = useWalletConnectContext();
+  const { session } = useWalletContext();
   const { walletAddress, walletChainId, isWalletConnected } = useWallet();
 
   // Initialize the WalletConnect request hook

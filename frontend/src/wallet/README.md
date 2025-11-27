@@ -83,14 +83,12 @@ const txObject = approvalTransaction.getTransactionObject();
 ### TransactionModelHelpers Class
 
 ```typescript
-const gasEstimate = TransactionModelHelpers.estimateGasCost();
 const isValid = TransactionModelHelpers.validateApproveFunction(function);
 const addressHex = TransactionModelHelpers.formatAddress(baseAddress);
 ```
 
 **Static Methods:**
 
-- `estimateGasCost()` - Calculates gas costs in ETH and USD
 - `validateApproveFunction()` - Validates Function objects match ERC20 approve signature
 - `formatAddress()` - Converts base.Address to hex string
 

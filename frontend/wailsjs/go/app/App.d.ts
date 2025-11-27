@@ -21,6 +21,7 @@ import {names} from '../models';
 import {projects} from '../models';
 import {status} from '../models';
 import {app} from '../models';
+import {rpc} from '../models';
 
 export function AbisCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
@@ -253,6 +254,8 @@ export function OpenLink(arg1:string,arg2:string):Promise<void>;
 export function OpenProjectFile(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;
+
+export function PrepareApprovalTransaction(arg1:rpc.ApprovalTransactionData):Promise<rpc.ApprovalTransactionResult>;
 
 export function ReadToMe(arg1:types.Payload,arg2:string):Promise<string>;
 

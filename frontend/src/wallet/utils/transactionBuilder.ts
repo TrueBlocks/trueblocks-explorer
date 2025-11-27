@@ -157,7 +157,7 @@ export const prepareTransaction = async (
       transactionData.inputs,
     );
 
-    // TODO: Estimate gas
+    // Use simple gas estimation for non-approval transactions
     const estimatedGas = await estimateGas(transactionData);
 
     return {
@@ -177,13 +177,14 @@ export const prepareTransaction = async (
 };
 
 /**
- * Estimates gas for a transaction using eth_estimateGas
+ * Estimates gas for a transaction using simple heuristics
+ * Note: For approval transactions, use the backend API PrepareApprovalTransaction instead
  */
 export const estimateGas = async (
   transactionData: TransactionData,
 ): Promise<string> => {
   try {
-    // For ERC20 approve, use a reasonable default since we don't have a Web3 provider
+    // For ERC20 approve, use a reasonable default
     if (transactionData.function.name === 'approve') {
       return '60000'; // Safe estimate for ERC20 approve transactions
     }

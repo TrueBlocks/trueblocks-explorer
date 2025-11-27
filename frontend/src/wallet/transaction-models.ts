@@ -1,11 +1,12 @@
-import { types } from '@models';
+import { rpc, types } from '@models';
 
-import { getErrorMessage, withErrorHandling } from './error-simple';
+import { PrepareApprovalTransaction } from '../../wailsjs/go/app/App';
+import { withErrorHandling } from './error-simple';
 
 /**
- * Simple simulation result for transaction preview
+ * Result from preparing an approval transaction
  */
-export interface SimulationResult {
+export interface PreparationResult {
   success: boolean;
   gasUsed: string;
   error?: string;
@@ -81,8 +82,15 @@ export class ApprovalTransaction {
 
   /**
    * Gets the transaction data for this approval operation
+   * Note: Call prepare() first to ensure data is generated via backend
    */
   public getTransactionData(): string {
+    // If prepare() was called, the function encoding should have the full transaction data
+    if (this.function.encoding && this.function.encoding.length > 10) {
+      return this.function.encoding;
+    }
+
+    // Fallback to old method if prepare() wasn't called
     const spenderHex = this.spenderAddress.startsWith('0x')
       ? this.spenderAddress.slice(2).padStart(64, '0')
       : this.spenderAddress.padStart(64, '0');
@@ -124,12 +132,25 @@ export class ApprovalTransaction {
     approval: types.Approval,
     ownerAddress: string,
   ): ApprovalTransaction {
-    return new ApprovalTransaction(
-      approval.token.address.join(''), // Convert base.Address to string
-      approval.spender.address.join(''), // Convert base.Address to string
-      ownerAddress,
-      '0', // Revoke = amount 0
-    );
+    try {
+      const tokenAddress = ApprovalTransaction.baseAddressToString(
+        approval.token,
+      );
+      const spenderAddress = ApprovalTransaction.baseAddressToString(
+        approval.spender,
+      );
+
+      return new ApprovalTransaction(
+        tokenAddress,
+        spenderAddress,
+        ownerAddress,
+        '0', // Revoke = amount 0
+      );
+    } catch (error) {
+      throw new Error(
+        `Failed to create revoke transaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
+    }
   }
 
   /**
@@ -198,6 +219,19 @@ export class ApprovalTransaction {
   }
 
   /**
+   * Converts base.Address to hex string format
+   */
+  private static baseAddressToString(baseAddr: { address?: number[] }): string {
+    if (!baseAddr?.address || !Array.isArray(baseAddr.address)) {
+      return '';
+    }
+    return (
+      '0x' +
+      baseAddr.address.map((b) => b.toString(16).padStart(2, '0')).join('')
+    );
+  }
+
+  /**
    * Validates Ethereum address format
    */
   private isValidAddress(address: string): boolean {
@@ -217,69 +251,37 @@ export class ApprovalTransaction {
   }
 
   /**
-   * Simulates the transaction without executing
+   * Prepares the transaction using the backend API
    */
-  public async simulate(rpcProvider: string): Promise<SimulationResult> {
-    try {
-      // Get current allowance
-      const currentAllowance = await this.getCurrentAllowance(rpcProvider);
+  public async prepare(): Promise<PreparationResult> {
+    return withErrorHandling(async () => {
+      const data: rpc.ApprovalTransactionData = {
+        tokenAddress: this.tokenAddress,
+        spenderAddress: this.spenderAddress,
+        ownerAddress: this.ownerAddress,
+        amount: this.amount,
+      };
 
-      // Simulate the transaction
-      const gasUsed = await this.estimateGas(rpcProvider, this.function);
+      const result = await PrepareApprovalTransaction(data);
+
+      if (!result.success) {
+        return {
+          success: false,
+          gasUsed: '0x0',
+          error: result.error || 'Unknown error occurred',
+        };
+      }
+
+      // Update the function with the prepared transaction data
+      this.function.encoding = result.transactionData.slice(0, 10); // First 10 chars (0x + 8 hex chars)
 
       return {
         success: true,
-        gasUsed,
-        currentAllowance,
-        newAllowance: this.amount,
+        gasUsed: result.gasEstimate,
+        currentAllowance: result.currentAllowance,
+        newAllowance: result.newAllowance,
       };
-    } catch (error) {
-      return {
-        success: false,
-        gasUsed: '0x0',
-        error: getErrorMessage(error),
-      };
-    }
-  }
-
-  private async getCurrentAllowance(rpcProvider: string): Promise<string> {
-    const data =
-      '0xdd62ed3e' +
-      this.ownerAddress.slice(2).padStart(64, '0') +
-      this.spenderAddress.slice(2).padStart(64, '0');
-
-    const response = await fetch(rpcProvider, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: 1,
-        method: 'eth_call',
-        params: [{ to: this.tokenAddress, data }, 'latest'],
-      }),
-    });
-
-    const result = await response.json();
-    return result.result || '0x0';
-  }
-
-  private async estimateGas(
-    rpcProvider: string,
-    txObject: types.Function,
-  ): Promise<string> {
-    const response = await fetch(rpcProvider, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: 2,
-        method: 'eth_estimateGas',
-        params: [txObject],
-      }),
-    });
-
-    const result = await response.json();
-    return result.result || '0x0';
+    }, 'Preparing approval transaction');
   }
 }
 

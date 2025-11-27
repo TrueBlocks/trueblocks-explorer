@@ -1155,6 +1155,51 @@ export namespace prompt {
 
 }
 
+export namespace rpc {
+	
+	export class ApprovalTransactionData {
+	    tokenAddress: string;
+	    spenderAddress: string;
+	    ownerAddress: string;
+	    amount: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ApprovalTransactionData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.tokenAddress = source["tokenAddress"];
+	        this.spenderAddress = source["spenderAddress"];
+	        this.ownerAddress = source["ownerAddress"];
+	        this.amount = source["amount"];
+	    }
+	}
+	export class ApprovalTransactionResult {
+	    success: boolean;
+	    transactionData: string;
+	    gasEstimate: string;
+	    currentAllowance: string;
+	    newAllowance: string;
+	    error?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ApprovalTransactionResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.success = source["success"];
+	        this.transactionData = source["transactionData"];
+	        this.gasEstimate = source["gasEstimate"];
+	        this.currentAllowance = source["currentAllowance"];
+	        this.newAllowance = source["newAllowance"];
+	        this.error = source["error"];
+	    }
+	}
+
+}
+
 export namespace sdk {
 	
 	export class SortSpec {

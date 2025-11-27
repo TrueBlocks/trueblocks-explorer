@@ -466,6 +466,10 @@ export function OpenURL(arg1) {
   return window['go']['app']['App']['OpenURL'](arg1);
 }
 
+export function PrepareApprovalTransaction(arg1) {
+  return window['go']['app']['App']['PrepareApprovalTransaction'](arg1);
+}
+
 export function ReadToMe(arg1, arg2) {
   return window['go']['app']['App']['ReadToMe'](arg1, arg2);
 }

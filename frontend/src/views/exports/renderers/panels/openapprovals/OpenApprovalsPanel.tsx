@@ -18,6 +18,8 @@ import {
   StyledButton,
   approvalToAddressInfo,
 } from '@components';
+import { useViewContext } from '@contexts';
+import { usePayload } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
@@ -43,6 +45,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const { currentView } = useViewContext();
+  const createPayload = usePayload(currentView);
+  const payload = useMemo(
+    () => createPayload('' as types.DataFacet),
+    [createPayload],
+  );
   const [transactionModal, setTransactionModal] = useState<{
     opened: boolean;
     transactionData: TransactionData | null;
@@ -207,7 +215,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       );
 
       // Get transaction object ready for signing
-      return revokeTransaction.getTransactionObject();
+      return await revokeTransaction.getTransactionObject(payload);
     } catch (error) {
       LogError('Failed to prepare revoke transaction:', String(error));
       // Fallback to manual construction for backwards compatibility
@@ -231,7 +239,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     } finally {
       setIsPreparingTransaction(false);
     }
-  }, [approval, walletAddress]);
+  }, [approval, walletAddress, payload]);
 
   const handleConfirmTransaction = useCallback(
     async (preparedTx: PreparedTransaction) => {
@@ -318,7 +326,8 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         );
 
         // Get transaction object and execute
-        const preparedTx = approvalTransaction.getTransactionObject();
+        const preparedTx =
+          await approvalTransaction.getTransactionObject(payload);
         await sendTransaction(preparedTx);
 
         // Close modal on success
@@ -335,7 +344,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         setIsPreparingTransaction(false);
       }
     },
-    [sendTransaction, walletAddress],
+    [sendTransaction, walletAddress, payload],
   );
 
   const handleRevoke = createWalletGatedAction(() => {

@@ -169,11 +169,3 @@ export const useWalletConnection = ({
     chainId: walletChainId,
   };
 };
-
-// Export the component for backwards compatibility
-export const WalletConnection: React.FC<WalletConnectionProps> = (props) => {
-  const _wallet = useWalletConnection(props);
-
-  // This component doesn't render anything - it's just for the hook
-  return null;
-};

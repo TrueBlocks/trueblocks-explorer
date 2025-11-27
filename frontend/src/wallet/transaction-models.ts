@@ -1,22 +1,8 @@
+import { PrepareApprovalTransaction } from '@app';
 import { rpc, types } from '@models';
 
-import { PrepareApprovalTransaction } from '../../wailsjs/go/app/App';
 import { withErrorHandling } from './error-simple';
 
-/**
- * Result from preparing an approval transaction
- */
-export interface PreparationResult {
-  success: boolean;
-  gasUsed: string;
-  error?: string;
-  currentAllowance?: string;
-  newAllowance?: string;
-}
-
-/**
- * Represents an ERC20 Approval transaction (including revokes with amount = "0")
- */
 export class ApprovalTransaction {
   public function: types.Function;
   public tokenAddress: string;
@@ -24,6 +10,7 @@ export class ApprovalTransaction {
   public ownerAddress: string;
   public amount: string; // Amount in token units, "0" for revokes
 
+  // constructor creates an ApprovalTransaction with default amount of "0" for revoke
   constructor(
     tokenAddress: string,
     spenderAddress: string,
@@ -39,9 +26,7 @@ export class ApprovalTransaction {
     this.function = this.createApproveFunction();
   }
 
-  /**
-   * Creates the ERC20 approve function definition
-   */
+  // createApproveFunction builds the ERC20 approve(address,uint256) function definition
   private createApproveFunction(): types.Function {
     const spenderParam = new types.Parameter();
     spenderParam.name = 'spender';
@@ -64,9 +49,7 @@ export class ApprovalTransaction {
     return func;
   }
 
-  /**
-   * Converts the amount to wei (assumes 18 decimals for now)
-   */
+  // getAmountWei converts amount to wei assuming 18 decimals
   private getAmountWei(): string {
     if (this.amount.trim() === '' || this.amount.trim() === '0') {
       return '0';
@@ -80,17 +63,12 @@ export class ApprovalTransaction {
     return (amountFloat * 1e18).toString();
   }
 
-  /**
-   * Gets the transaction data for this approval operation
-   * Note: Call prepare() first to ensure data is generated via backend
-   */
+  // getTransactionData returns encoded transaction data for ERC20 approve
   public getTransactionData(): string {
-    // If prepare() was called, the function encoding should have the full transaction data
     if (this.function.encoding && this.function.encoding.length > 10) {
       return this.function.encoding;
     }
 
-    // Fallback to old method if prepare() wasn't called
     const spenderHex = this.spenderAddress.startsWith('0x')
       ? this.spenderAddress.slice(2).padStart(64, '0')
       : this.spenderAddress.padStart(64, '0');
@@ -102,32 +80,45 @@ export class ApprovalTransaction {
     return this.function.encoding + spenderHex + amountHex;
   }
 
-  /**
-   * Gets the complete transaction object ready for signing
-   */
-  public getTransactionObject(): {
+  // getTransactionObject calls prepare() for real-time gas values, returns transaction ready for signing
+  public async getTransactionObject(payload: types.Payload): Promise<{
     to: string;
     data: string;
     value: string;
     gas: string;
     gasPrice: string;
-  } {
-    const gasLimitDecimal = 60000;
-    const gasPriceGwei = 20;
-    const gasPriceWei = gasPriceGwei * 1e9;
+  }> {
+    const prepareResult = await this.prepare(payload);
+    if (!prepareResult.success) {
+      const gasLimitDecimal = 60000;
+      const gasPriceGwei = 20;
+      const gasPriceWei = gasPriceGwei * 1e9;
+      return {
+        to: this.tokenAddress,
+        data: this.getTransactionData(),
+        value: '0x0',
+        gas: '0x' + gasLimitDecimal.toString(16),
+        gasPrice: '0x' + gasPriceWei.toString(16),
+      };
+    }
 
+    const gasEstimate =
+      prepareResult.gasUsed || prepareResult.gasEstimate || '0xEA60';
+    const gasPrice = prepareResult.gasPrice || '0x4a817c800';
     return {
       to: this.tokenAddress,
       data: this.getTransactionData(),
       value: '0x0',
-      gas: '0x' + gasLimitDecimal.toString(16),
-      gasPrice: '0x' + gasPriceWei.toString(16),
+      gas: gasEstimate.startsWith('0x')
+        ? gasEstimate
+        : '0x' + parseInt(gasEstimate).toString(16),
+      gasPrice: gasPrice.startsWith('0x')
+        ? gasPrice
+        : '0x' + parseInt(gasPrice).toString(16),
     };
   }
 
-  /**
-   * Creates a revoke transaction (approval with amount = "0") from existing approval
-   */
+  // forRevoke creates a revoke transaction (amount = "0") from existing approval
   public static forRevoke(
     approval: types.Approval,
     ownerAddress: string,
@@ -153,9 +144,7 @@ export class ApprovalTransaction {
     }
   }
 
-  /**
-   * Creates an approval transaction with specific amount
-   */
+  // forApproval creates an approval transaction with specified amount
   public static forApproval(
     tokenAddress: string,
     spenderAddress: string,
@@ -170,41 +159,33 @@ export class ApprovalTransaction {
     );
   }
 
-  /**
-   * Checks if this is a revoke transaction
-   */
+  // isRevoke returns true if this is a revoke transaction (amount = "0")
   public isRevoke(): boolean {
     return this.amount === '0';
   }
 
-  /**
-   * Validates the approval parameters
-   */
+  // validate checks all approval parameters and returns validation errors if any
   public validate(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    // Validate token address
     if (!this.tokenAddress || this.tokenAddress.trim() === '') {
       errors.push('Token address is required');
     } else if (!this.isValidAddress(this.tokenAddress)) {
       errors.push('Invalid token address format');
     }
 
-    // Validate spender address
     if (!this.spenderAddress || this.spenderAddress.trim() === '') {
       errors.push('Spender address is required');
     } else if (!this.isValidAddress(this.spenderAddress)) {
       errors.push('Invalid spender address format');
     }
 
-    // Validate owner address
     if (!this.ownerAddress || this.ownerAddress.trim() === '') {
       errors.push('Owner address is required');
     } else if (!this.isValidAddress(this.ownerAddress)) {
       errors.push('Invalid owner address format');
     }
 
-    // Validate amount
     if (!this.isRevoke() && this.amount.trim() !== '') {
       const amountFloat = parseFloat(this.amount);
       if (isNaN(amountFloat) || amountFloat < 0) {
@@ -218,9 +199,7 @@ export class ApprovalTransaction {
     };
   }
 
-  /**
-   * Converts base.Address to hex string format
-   */
+  // baseAddressToString converts base.Address to hex string format
   private static baseAddressToString(baseAddr: { address?: number[] }): string {
     if (!baseAddr?.address || !Array.isArray(baseAddr.address)) {
       return '';
@@ -231,16 +210,12 @@ export class ApprovalTransaction {
     );
   }
 
-  /**
-   * Validates Ethereum address format
-   */
+  // isValidAddress validates Ethereum address format (0x + 40 hex chars)
   private isValidAddress(address: string): boolean {
     return /^0x[a-fA-F0-9]{40}$/.test(address);
   }
 
-  /**
-   * Submits the transaction
-   */
+  // submit sends the transaction using provided wallet function
   public async submit(
     walletSubmitFn: (tx: types.Function) => Promise<string>,
   ): Promise<string> {
@@ -250,10 +225,10 @@ export class ApprovalTransaction {
     }, `Submitting ${operation} transaction`);
   }
 
-  /**
-   * Prepares the transaction using the backend API
-   */
-  public async prepare(): Promise<PreparationResult> {
+  // prepare calls backend to get real-time gas estimation from blockchain
+  public async prepare(
+    payload: types.Payload,
+  ): Promise<rpc.ApprovalTransactionResult> {
     return withErrorHandling(async () => {
       const data: rpc.ApprovalTransactionData = {
         tokenAddress: this.tokenAddress,
@@ -262,36 +237,29 @@ export class ApprovalTransaction {
         amount: this.amount,
       };
 
-      const result = await PrepareApprovalTransaction(data);
-
+      const result = await PrepareApprovalTransaction(payload, data);
       if (!result.success) {
-        return {
+        return rpc.ApprovalTransactionResult.createFrom({
           success: false,
           gasUsed: '0x0',
           error: result.error || 'Unknown error occurred',
-        };
+        });
       }
 
-      // Update the function with the prepared transaction data
-      this.function.encoding = result.transactionData.slice(0, 10); // First 10 chars (0x + 8 hex chars)
+      this.function.encoding = result.transactionData.slice(0, 10);
 
-      return {
+      return rpc.ApprovalTransactionResult.createFrom({
         success: true,
         gasUsed: result.gasEstimate,
-        currentAllowance: result.currentAllowance,
+        gasPrice: result.gasPrice,
         newAllowance: result.newAllowance,
-      };
+      });
     }, 'Preparing approval transaction');
   }
 }
 
-/**
- * Utility class for transaction-related helper functions
- */
 export class TransactionModelHelpers {
-  /**
-   * Formats a base.Address to hex string
-   */
+  // formatAddress converts base.Address to hex string
   static formatAddress(address: { address: number[] }): string {
     return (
       '0x' +
@@ -299,9 +267,7 @@ export class TransactionModelHelpers {
     );
   }
 
-  /**
-   * Validates that a function matches the expected ERC20 approve signature
-   */
+  // validateApproveFunction checks if function matches ERC20 approve(address,uint256) signature
   static validateApproveFunction(func: types.Function): boolean {
     return (
       func.name === 'approve' &&

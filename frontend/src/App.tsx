@@ -130,12 +130,115 @@ const NavigationHandler = () => {
   return null; // This component only handles events, no UI
 };
 
+// Inner component that uses hooks requiring WalletProvider
+const AppContent = ({
+  showProjectModal,
+  hasActiveProject,
+  ready,
+  isWizard,
+  viewConfigsLoading,
+  splashDelayComplete,
+  handleProjectModalClose,
+  handleProjectModalCancel,
+}: {
+  showProjectModal: boolean;
+  hasActiveProject: boolean;
+  ready: boolean;
+  isWizard: boolean;
+  viewConfigsLoading: boolean;
+  splashDelayComplete: boolean;
+  handleProjectModalClose: () => void;
+  handleProjectModalCancel: () => void;
+}) => {
+  const { menuCollapsed, helpCollapsed, chromeCollapsed } = usePreferences();
+  const { emitError } = useEmitters();
+
+  // These hooks need WalletProvider
+  useAppHotkeys();
+  useAppHealth();
+  useGlobalEscape();
+
+  if (!ready || viewConfigsLoading || !splashDelayComplete)
+    return <SplashScreen />;
+
+  const header = { height: getBarSize('header', chromeCollapsed) };
+  const footer = { height: getBarSize('footer', chromeCollapsed) };
+  const navbar = {
+    width: getBarSize('menu', menuCollapsed),
+    breakpoint: 'sm',
+    collapsed: { mobile: !menuCollapsed },
+  };
+  const aside = {
+    width: getBarSize('help', helpCollapsed),
+    breakpoint: 'sm',
+    collapsed: { mobile: !helpCollapsed },
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+      }}
+    >
+      <AppShell
+        layout="default"
+        header={header}
+        footer={footer}
+        navbar={navbar}
+        aside={aside}
+      >
+        <Header />
+        <MenuBar disabled={isWizard} />
+        <ViewContextProvider>
+          <NavigationHandler />
+          <MainView />
+        </ViewContextProvider>
+        <HelpBar />
+        <div
+          style={{
+            position: 'absolute',
+            top: `${getBarSize('header', chromeCollapsed) + 2}px`,
+            right: `${getBarSize('help', helpCollapsed) + 2}px`,
+            zIndex: 1000,
+          }}
+        >
+          <NodeStatus />
+        </div>
+        <Footer />
+      </AppShell>
+      <WalletConnectModalSign
+        projectId={
+          (import.meta.env.VITE_WALLETCONNECT_PROJECT_ID as string) ||
+          (() => {
+            emitError(
+              'VITE_WALLETCONNECT_PROJECT_ID not set in environment variables',
+            );
+            return 'MISSING_PROJECT_ID';
+          })()
+        }
+        metadata={{
+          name: 'TrueBlocks Explorer',
+          description: 'A TrueBlocks desktop application for naming addresses',
+          url: 'https://trueblocks.io',
+          icons: ['https://trueblocks.io/favicon.ico'],
+        }}
+      />
+      <ProjectSelectionModal
+        opened={showProjectModal}
+        onProjectSelected={handleProjectModalClose}
+        onCancel={hasActiveProject ? handleProjectModalCancel : undefined}
+      />
+    </div>
+  );
+};
+
 export const App = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [viewConfigsLoading, setViewConfigsLoading] = useState(true);
   const [splashDelayComplete, setSplashDelayComplete] = useState(false);
   const { hasActiveProject } = useActiveProject();
-  const { emitError } = useEmitters();
 
   useEffect(() => {
     // Initialize view configurations at app startup
@@ -188,11 +291,6 @@ export const App = () => {
   });
 
   const { ready, isWizard } = useAppNavigation();
-  const { menuCollapsed, helpCollapsed, chromeCollapsed } = usePreferences();
-
-  useAppHotkeys();
-  useAppHealth();
-  useGlobalEscape();
 
   const handleProjectModalClose = () => {
     setShowProjectModal(false);
@@ -202,82 +300,19 @@ export const App = () => {
     setShowProjectModal(false);
   };
 
-  if (!ready || viewConfigsLoading || !splashDelayComplete)
-    return <SplashScreen />;
-
-  const header = { height: getBarSize('header', chromeCollapsed) };
-  const footer = { height: getBarSize('footer', chromeCollapsed) };
-  const navbar = {
-    width: getBarSize('menu', menuCollapsed),
-    breakpoint: 'sm',
-    collapsed: { mobile: !menuCollapsed },
-  };
-  const aside = {
-    width: getBarSize('help', helpCollapsed),
-    breakpoint: 'sm',
-    collapsed: { mobile: !helpCollapsed },
-  };
-
   return (
     <Router>
       <WalletProvider>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100vh',
-          }}
-        >
-          <AppShell
-            layout="default"
-            header={header}
-            footer={footer}
-            navbar={navbar}
-            aside={aside}
-          >
-            <Header />
-            <MenuBar disabled={isWizard} />
-            <ViewContextProvider>
-              <NavigationHandler />
-              <MainView />
-            </ViewContextProvider>
-            <HelpBar />
-            <div
-              style={{
-                position: 'absolute',
-                top: `${getBarSize('header', chromeCollapsed) + 2}px`,
-                right: `${getBarSize('help', helpCollapsed) + 2}px`,
-                zIndex: 1000,
-              }}
-            >
-              <NodeStatus />
-            </div>
-            <Footer />
-          </AppShell>
-          <WalletConnectModalSign
-            projectId={
-              (import.meta.env.VITE_WALLETCONNECT_PROJECT_ID as string) ||
-              (() => {
-                emitError(
-                  'VITE_WALLETCONNECT_PROJECT_ID not set in environment variables',
-                );
-                return 'MISSING_PROJECT_ID';
-              })()
-            }
-            metadata={{
-              name: 'TrueBlocks Explorer',
-              description:
-                'A TrueBlocks desktop application for naming addresses',
-              url: 'https://trueblocks.io',
-              icons: ['https://trueblocks.io/favicon.ico'],
-            }}
-          />
-          <ProjectSelectionModal
-            opened={showProjectModal}
-            onProjectSelected={handleProjectModalClose}
-            onCancel={hasActiveProject ? handleProjectModalCancel : undefined}
-          />
-        </div>
+        <AppContent
+          showProjectModal={showProjectModal}
+          hasActiveProject={hasActiveProject}
+          ready={ready}
+          isWizard={isWizard}
+          viewConfigsLoading={viewConfigsLoading}
+          splashDelayComplete={splashDelayComplete}
+          handleProjectModalClose={handleProjectModalClose}
+          handleProjectModalCancel={handleProjectModalCancel}
+        />
       </WalletProvider>
     </Router>
   );

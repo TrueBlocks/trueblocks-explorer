@@ -184,6 +184,35 @@ export function setupFocusedHookMocks({
   };
 }
 
+// Mock @wallet to provide wallet context
+const createInitialWalletContextDefaultValue = () => ({
+  session: {
+    address: '0x123456789abcdef',
+    chainId: 1,
+  },
+  isConnected: false,
+  connect: vi.fn(),
+  disconnect: vi.fn(),
+});
+
+export let mockWalletContextValues = createInitialWalletContextDefaultValue();
+
+export const mockUseWalletContext = vi.fn(() => mockWalletContextValues);
+
+vi.mock('@wallet', async (importOriginal) => {
+  try {
+    const originalModule = await importOriginal();
+    return {
+      ...(originalModule as any),
+      useWalletContext: mockUseWalletContext,
+    };
+  } catch {
+    return {
+      useWalletContext: mockUseWalletContext,
+    };
+  }
+});
+
 // Mock @hooks to provide focused hooks
 vi.mock('@hooks', async (importOriginal) => {
   try {
@@ -495,6 +524,11 @@ export function resetAllCentralMocks() {
   // Reset Context mock values
   mockViewContextDefaultValue = createInitialViewContextDefaultValue();
   mockTableContextDefaultValue = createInitialTableContextDefaultValue();
+
+  // Reset Wallet Context mock values
+  mockWalletContextValues = createInitialWalletContextDefaultValue();
+  mockUseWalletContext.mockReset();
+  mockUseWalletContext.mockImplementation(() => mockWalletContextValues);
 
   // Reset Focused Hooks mock values
   mockFocusedHooksValues = createInitialFocusedHooksDefaultValue();

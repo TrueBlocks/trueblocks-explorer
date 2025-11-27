@@ -2,12 +2,34 @@
  * Test file to verify the transaction models work correctly
  */
 import { types } from '@models';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   ApprovalTransaction,
   TransactionModelHelpers,
 } from '../transaction-models';
+
+// Mock payload for testing
+const mockPayload: types.Payload = {
+  collection: 'exports',
+  dataFacet: '' as types.DataFacet,
+  activeChain: 'mainnet',
+  activeAddress: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
+};
+
+// Mock the PrepareApprovalTransaction function
+vi.mock('@app', () => ({
+  PrepareApprovalTransaction: vi.fn().mockImplementation((_payload, _data) =>
+    Promise.resolve({
+      success: true,
+      gasEstimate: '0xea60', // 60000 in hex
+      gasPrice: '0x4a817c800', // 20 gwei in hex
+      transactionData:
+        '0x095ea7b3000000000000000000000000987654321098765432109876543210987654321000000000000000000000000000000000000000000000000000000000000000000',
+      newAllowance: '0',
+    }),
+  ),
+}));
 
 describe('ApprovalTransaction', () => {
   const tokenAddress = '0x1234567890123456789012345678901234567890';
@@ -43,7 +65,7 @@ describe('ApprovalTransaction', () => {
       expect(txData).toMatch(/^0x095ea7b3[0-9a-f]{128}$/); // Selector + 64 chars spender + 64 chars amount
     });
 
-    it('should create complete transaction object for revoke', () => {
+    it('should create complete transaction object for revoke', async () => {
       const revokeTransaction = new ApprovalTransaction(
         tokenAddress,
         spenderAddress,
@@ -51,11 +73,11 @@ describe('ApprovalTransaction', () => {
         '0',
       );
 
-      const txObject = revokeTransaction.getTransactionObject();
+      const txObject =
+        await revokeTransaction.getTransactionObject(mockPayload);
       expect(txObject.to).toBe(tokenAddress);
       expect(txObject.value).toBe('0x0');
-      expect(txObject.gas).toBeDefined();
-      expect(txObject.gasPrice).toBeDefined();
+      // Gas fields are no longer included - should be estimated separately using backend API
     });
   });
 

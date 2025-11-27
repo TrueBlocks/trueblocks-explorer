@@ -79,6 +79,23 @@ vi.mock('@hooks', async (importOriginal) => {
   };
 });
 
+vi.mock('@wallet', async (importOriginal) => {
+  const original = await importOriginal();
+  return {
+    ...(original as object),
+    useWalletContext: () => ({
+      session: {
+        address: '0x123456789abcdef',
+        chainId: 1,
+        isConnected: false,
+      },
+      isConnected: false,
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+    }),
+  };
+});
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({

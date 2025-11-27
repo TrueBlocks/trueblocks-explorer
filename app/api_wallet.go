@@ -10,9 +10,15 @@ package app
 
 import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/rpc"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
 // PrepareApprovalTransaction prepares an ERC20 approval transaction by calling RPC methods
-func (a *App) PrepareApprovalTransaction(data rpc.ApprovalTransactionData) (*rpc.ApprovalTransactionResult, error) {
-	return rpc.PrepareApprovalTransaction(data)
+func (a *App) PrepareApprovalTransaction(payload *types.Payload, data rpc.ApprovalTransactionData) (*rpc.ApprovalTransactionResult, error) {
+	return rpc.PrepareApprovalTransaction(payload, data)
+}
+
+// EstimateTransactionGas estimates gas and gas price for any transaction
+func (a *App) EstimateTransactionGas(payload *types.Payload, txPayload rpc.TransactionPayload) (*rpc.GasEstimationResult, error) {
+	return rpc.EstimateTransactionGas(payload, txPayload)
 }

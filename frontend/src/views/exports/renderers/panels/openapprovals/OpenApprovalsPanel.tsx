@@ -28,6 +28,7 @@ import {
   addressToHex,
   displayHash,
   formatNumericValue,
+  useEmitters,
 } from '@utils';
 import {
   PreparedTransaction,
@@ -45,6 +46,7 @@ import '../../../../../components/detail/DetailTable.css';
 
 export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const { emitError } = useEmitters();
   const { currentView } = useViewContext();
   const createPayload = usePayload(currentView);
   const payload = useMemo(
@@ -247,6 +249,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         await sendTransaction(preparedTx);
       } catch (error) {
         LogError('Failed to send revoke transaction:', String(error));
+        setIsPreparingTransaction(false);
       }
     },
     [sendTransaction],
@@ -339,12 +342,18 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           amount: '',
         });
       } catch (error) {
-        LogError('Failed to prepare/send approval transaction:', String(error));
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        LogError('Failed to prepare/send approval transaction:', errorMsg);
+
+        // Send error to status bar via msgs.Error
+        emitError(`Approval transaction failed: ${errorMsg}`);
+
+        // Keep modal open so user can see the form and try again
       } finally {
         setIsPreparingTransaction(false);
       }
     },
-    [sendTransaction, walletAddress, payload],
+    [sendTransaction, walletAddress, payload, emitError],
   );
 
   const handleRevoke = createWalletGatedAction(() => {
@@ -363,6 +372,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
 
   const handleModalClose = useCallback(() => {
     setTransactionModal({ opened: false, transactionData: null });
+    setIsPreparingTransaction(false);
   }, []);
 
   const handleSuccessModalClose = useCallback(() => {
@@ -733,15 +743,16 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
               background: 'rgba(0,0,0,0.5)',
               zIndex: 999,
             }}
-            onClick={() =>
+            onClick={() => {
               setApproveModal({
                 opened: false,
                 owner: '',
                 spender: '',
                 token: '',
                 amount: '',
-              })
-            }
+              });
+              setIsPreparingTransaction(false);
+            }}
           />
           <div
             style={{
@@ -929,15 +940,16 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
                 {isPreparingTransaction ? 'Processing...' : 'Confirm Approval'}
               </button>
               <button
-                onClick={() =>
+                onClick={() => {
                   setApproveModal({
                     opened: false,
                     owner: '',
                     spender: '',
                     token: '',
                     amount: '',
-                  })
-                }
+                  });
+                  setIsPreparingTransaction(false);
+                }}
                 style={{
                   padding: '10px 16px',
                   background: '#6c757d',

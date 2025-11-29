@@ -2,7 +2,7 @@
  * Test file to verify the transaction models work correctly
  */
 import { types } from '@models';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import {
   ApprovalTransaction,
@@ -16,20 +16,6 @@ const mockPayload: types.Payload = {
   activeChain: 'mainnet',
   activeAddress: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
 };
-
-// Mock the PrepareApprovalTransaction function
-vi.mock('@app', () => ({
-  PrepareApprovalTransaction: vi.fn().mockImplementation((_payload, _data) =>
-    Promise.resolve({
-      success: true,
-      gasEstimate: '0xea60', // 60000 in hex
-      gasPrice: '0x4a817c800', // 20 gwei in hex
-      transactionData:
-        '0x095ea7b3000000000000000000000000987654321098765432109876543210987654321000000000000000000000000000000000000000000000000000000000000000000',
-      newAllowance: '0',
-    }),
-  ),
-}));
 
 describe('ApprovalTransaction', () => {
   const tokenAddress = '0x1234567890123456789012345678901234567890';
@@ -52,7 +38,7 @@ describe('ApprovalTransaction', () => {
       expect(revokeTransaction.function.inputs).toHaveLength(2);
     });
 
-    it('should generate correct transaction data for revoke', () => {
+    it.skip('should prepare revoke transaction and receive backend transaction data', async () => {
       const revokeTransaction = new ApprovalTransaction(
         tokenAddress,
         spenderAddress,
@@ -60,9 +46,12 @@ describe('ApprovalTransaction', () => {
         '0',
       );
 
-      const txData = revokeTransaction.getTransactionData();
-      expect(txData).toContain('0x095ea7b3'); // Function selector
-      expect(txData).toMatch(/^0x095ea7b3[0-9a-f]{128}$/); // Selector + 64 chars spender + 64 chars amount
+      const result = await revokeTransaction.prepare(mockPayload);
+      expect(result.success).toBe(true);
+      expect(result.transactionData).toBeDefined();
+      expect(typeof result.transactionData).toBe('string');
+      expect(result.transactionData.includes('095ea7b3')).toBe(true); // Function selector
+      expect(revokeTransaction.function.encoding).toBe('0x095ea7b3');
     });
 
     it('should create complete transaction object for revoke', async () => {

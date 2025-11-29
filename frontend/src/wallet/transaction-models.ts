@@ -1,5 +1,5 @@
 import { PrepareApprovalTransaction } from '@app';
-import { rpc, types } from '@models';
+import { app, types } from '@models';
 
 import { withErrorHandling } from './error-simple';
 
@@ -36,7 +36,8 @@ export class ApprovalTransaction {
     const amountParam = new types.Parameter();
     amountParam.name = 'amount';
     amountParam.type = 'uint256';
-    amountParam.value = this.getAmountWei();
+    // Backend handles amount conversion based on token decimals
+    amountParam.value = this.amount;
 
     const func = new types.Function();
     func.name = 'approve';
@@ -49,37 +50,6 @@ export class ApprovalTransaction {
     return func;
   }
 
-  // getAmountWei converts amount to wei assuming 18 decimals
-  private getAmountWei(): string {
-    if (this.amount.trim() === '' || this.amount.trim() === '0') {
-      return '0';
-    }
-
-    const amountFloat = parseFloat(this.amount);
-    if (isNaN(amountFloat) || amountFloat < 0) {
-      throw new Error('Invalid amount: must be a positive number');
-    }
-
-    return (amountFloat * 1e18).toString();
-  }
-
-  // getTransactionData returns encoded transaction data for ERC20 approve
-  public getTransactionData(): string {
-    if (this.function.encoding && this.function.encoding.length > 10) {
-      return this.function.encoding;
-    }
-
-    const spenderHex = this.spenderAddress.startsWith('0x')
-      ? this.spenderAddress.slice(2).padStart(64, '0')
-      : this.spenderAddress.padStart(64, '0');
-
-    const amountWei = this.getAmountWei();
-    const amountBigInt = BigInt(amountWei);
-    const amountHex = amountBigInt.toString(16).padStart(64, '0');
-
-    return this.function.encoding + spenderHex + amountHex;
-  }
-
   // getTransactionObject calls prepare() for real-time gas values, returns transaction ready for signing
   public async getTransactionObject(payload: types.Payload): Promise<{
     to: string;
@@ -90,24 +60,26 @@ export class ApprovalTransaction {
   }> {
     const prepareResult = await this.prepare(payload);
     if (!prepareResult.success) {
-      const gasLimitDecimal = 60000;
-      const gasPriceGwei = 20;
-      const gasPriceWei = gasPriceGwei * 1e9;
-      return {
-        to: this.tokenAddress,
-        data: this.getTransactionData(),
-        value: '0x0',
-        gas: '0x' + gasLimitDecimal.toString(16),
-        gasPrice: '0x' + gasPriceWei.toString(16),
-      };
+      throw new Error(
+        `Failed to estimate gas for ${this.isRevoke() ? 'revoke' : 'approval'} transaction: ${
+          prepareResult.error || 'Gas estimation failed'
+        }. Transaction cancelled to prevent potential failures.`,
+      );
     }
 
-    const gasEstimate =
-      prepareResult.gasUsed || prepareResult.gasEstimate || '0xEA60';
-    const gasPrice = prepareResult.gasPrice || '0x4a817c800';
+    // Ensure we have valid gas values - no fallbacks allowed
+    const gasEstimate = prepareResult.gasUsed || prepareResult.gasEstimate;
+    const gasPrice = prepareResult.gasPrice;
+
+    if (!gasEstimate || !gasPrice) {
+      throw new Error(
+        `Backend returned success but missing gas values. Gas estimate: ${gasEstimate}, Gas price: ${gasPrice}. Transaction cancelled.`,
+      );
+    }
+
     return {
       to: this.tokenAddress,
-      data: this.getTransactionData(),
+      data: prepareResult.transactionData, // Use backend-encoded data with proper decimals
       value: '0x0',
       gas: gasEstimate.startsWith('0x')
         ? gasEstimate
@@ -228,9 +200,9 @@ export class ApprovalTransaction {
   // prepare calls backend to get real-time gas estimation from blockchain
   public async prepare(
     payload: types.Payload,
-  ): Promise<rpc.ApprovalTransactionResult> {
+  ): Promise<app.ApprovalTransactionResult> {
     return withErrorHandling(async () => {
-      const data: rpc.ApprovalTransactionData = {
+      const data: app.ApprovalTransactionData = {
         tokenAddress: this.tokenAddress,
         spenderAddress: this.spenderAddress,
         ownerAddress: this.ownerAddress,
@@ -239,7 +211,7 @@ export class ApprovalTransaction {
 
       const result = await PrepareApprovalTransaction(payload, data);
       if (!result.success) {
-        return rpc.ApprovalTransactionResult.createFrom({
+        return app.ApprovalTransactionResult.createFrom({
           success: false,
           gasUsed: '0x0',
           error: result.error || 'Unknown error occurred',
@@ -248,8 +220,10 @@ export class ApprovalTransaction {
 
       this.function.encoding = result.transactionData.slice(0, 10);
 
-      return rpc.ApprovalTransactionResult.createFrom({
+      return app.ApprovalTransactionResult.createFrom({
         success: true,
+        transactionData: result.transactionData,
+        gasEstimate: result.gasEstimate,
         gasUsed: result.gasEstimate,
         gasPrice: result.gasPrice,
         newAllowance: result.newAllowance,

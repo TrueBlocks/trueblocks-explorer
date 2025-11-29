@@ -62,8 +62,8 @@ export function Encode(arg1, arg2) {
   return window['go']['app']['App']['Encode'](arg1, arg2);
 }
 
-export function EstimateTransactionGas(arg1, arg2) {
-  return window['go']['app']['App']['EstimateTransactionGas'](arg1, arg2);
+export function EstimateGasAndPrice(arg1, arg2) {
+  return window['go']['app']['App']['EstimateGasAndPrice'](arg1, arg2);
 }
 
 export function ExecuteRowAction(arg1) {

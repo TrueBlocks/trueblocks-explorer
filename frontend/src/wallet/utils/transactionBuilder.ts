@@ -1,7 +1,6 @@
 import { Encode } from '@app';
-import { EstimateTransactionGas } from '@app';
+import { EstimateGasAndPrice } from '@app';
 import { types } from '@models';
-import { LogError } from '@utils';
 
 // TODO: BOGUS - IT MIGHT BE BETTER TO CREATE A @contracts or @contract_utils folder than put these in @utils
 
@@ -170,22 +169,16 @@ export const prepareTransaction = async (
       value: transactionData.value || '0x0',
     };
 
-    const gasResult = await EstimateTransactionGas(payload, gasPayload);
+    const gasResult = await EstimateGasAndPrice(payload, gasPayload);
 
-    let estimatedGas: string;
-    let gasPrice: string;
-
-    if (gasResult.success) {
-      estimatedGas = parseInt(gasResult.gasEstimate, 16).toString();
-      gasPrice = parseInt(gasResult.gasPrice, 16).toString();
-    } else {
-      LogError(
-        'Gas estimation failed, using fallbacks:',
-        gasResult.error || 'Unknown error',
+    if (!gasResult.success) {
+      throw new Error(
+        `Gas estimation failed: ${gasResult.error || 'Unknown error'}. Transaction cancelled to prevent potential failures.`,
       );
-      estimatedGas = '100000';
-      gasPrice = (15 * 1e9).toString(); // 15 gwei fallback
     }
+
+    const estimatedGas = parseInt(gasResult.gasEstimate, 16).toString();
+    const gasPrice = parseInt(gasResult.gasPrice, 16).toString();
 
     return {
       to: transactionData.to,
@@ -229,18 +222,20 @@ export const estimateGas = async (
       value: transactionData.value || '0x0',
     };
 
-    const result = await EstimateTransactionGas(payload, gasPayload);
+    const result = await EstimateGasAndPrice(payload, gasPayload);
 
     if (!result.success) {
-      throw new Error(result.error || 'Gas estimation failed');
+      throw new Error(
+        `Gas estimation failed: ${result.error || 'Unknown error'}. Please check your RPC connection and try again.`,
+      );
     }
 
     // Convert hex result to decimal string
     return parseInt(result.gasEstimate, 16).toString();
   } catch (error) {
-    LogError('Gas estimation failed, using fallback:', String(error));
-    // Fallback to conservative estimate
-    return '100000';
+    throw new Error(
+      `Failed to estimate gas: ${error instanceof Error ? error.message : 'Unknown error'}. Transaction cancelled.`,
+    );
   }
 };
 
@@ -261,21 +256,20 @@ export const getGasPrice = async (payload: types.Payload): Promise<string> => {
       value: '0x0',
     };
 
-    const result = await EstimateTransactionGas(payload, dummyPayload);
+    const result = await EstimateGasAndPrice(payload, dummyPayload);
 
     if (!result.success) {
-      throw new Error(result.error || 'Gas price estimation failed');
+      throw new Error(
+        `Gas price estimation failed: ${result.error || 'Unknown error'}. Please check your RPC connection and try again.`,
+      );
     }
 
     // Convert hex result to decimal string
     return parseInt(result.gasPrice, 16).toString();
   } catch (error) {
-    LogError(
-      'Failed to get gas price from backend, using fallback:',
-      String(error),
+    throw new Error(
+      `Failed to get gas price: ${error instanceof Error ? error.message : 'Unknown error'}. Transaction cancelled.`,
     );
-    // Fallback: Conservative 15 gwei
-    return (15 * 1e9).toString();
   }
 };
 

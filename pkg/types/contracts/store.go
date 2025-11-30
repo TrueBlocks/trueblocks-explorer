@@ -18,12 +18,15 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
 
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/output"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
-type Contract = sdk.Contract
-type Log = sdk.Log
+type (
+	Contract = sdk.Contract
+	Log      = sdk.Log
+)
 
 // EXISTING_CODE
 
@@ -97,11 +100,14 @@ func (c *ContractsCollection) getLogsStore(payload *types.Payload, facet types.D
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
+			if payload.ActiveContract == "" {
+				return nil
+			}
 			opts := sdk.ExportOptions{
 				Globals:    sdk.Globals{Cache: true, Verbose: true, Chain: payload.ActiveChain},
 				RenderCtx:  ctx,
 				Addrs:      []string{payload.ActiveAddress},
-				Emitter:    []string{payload.TargetAddress},
+				Emitter:    []string{payload.ActiveContract},
 				Articulate: true,
 			}
 			if _, _, err := opts.ExportLogs(); err != nil {
@@ -192,6 +198,9 @@ func GetContractsCollection(payload *types.Payload) *ContractsCollection {
 
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
+	if base.IsValidAddress(payload.ActiveContract) {
+		return fmt.Sprintf("%s_%s_%s", payload.ActiveChain, payload.ActiveAddress, payload.ActiveContract)
+	}
 	// EXISTING_CODE
 	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }

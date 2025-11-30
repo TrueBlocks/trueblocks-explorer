@@ -156,6 +156,11 @@ func EmitReloaded(payload types.Payload) {
 	emitMessage(EventDataReloaded, payload.Collection, payload)
 }
 
+// EmitContractChanged signals that the active contract has changed.
+func EmitContractChanged(contract string) {
+	emitMessage(EventContractChanged, contract)
+}
+
 // EmitStatus sends a general status update.
 func EmitStatus(msgText string, payload ...interface{}) {
 	emitMessage(EventStatus, msgText, payload...)

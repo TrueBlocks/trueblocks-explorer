@@ -46,11 +46,15 @@ export function ConfigOk():Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
+export function ConvertTokenAmount(arg1:types.Payload,arg2:app.ConvertTokenAmountRequest):Promise<app.ConvertTokenAmountResult>;
+
 export function DeleteCustomSkin(arg1:string):Promise<void>;
 
 export function DressesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function Encode(arg1:types.Function,arg2:Array<any>):Promise<string>;
+
+export function EncodeTransaction(arg1:types.Payload,arg2:app.EncodeTransactionRequest):Promise<app.EncodeTransactionResult>;
 
 export function EstimateGasAndPrice(arg1:types.Payload,arg2:app.TransactionPayload):Promise<app.GasEstimationResult>;
 
@@ -115,6 +119,8 @@ export function GetComparitoorPage(arg1:types.Payload,arg2:number,arg3:number,ar
 export function GetComparitoorSummary(arg1:types.Payload):Promise<types.Summary>;
 
 export function GetContext():Promise<context.Context>;
+
+export function GetContracts():Promise<Array<types.Contract>>;
 
 export function GetContractsBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
@@ -255,8 +261,6 @@ export function OpenLink(arg1:string,arg2:string):Promise<void>;
 export function OpenProjectFile(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;
-
-export function PrepareApprovalTransaction(arg1:types.Payload,arg2:app.ApprovalTransactionData):Promise<app.ApprovalTransactionResult>;
 
 export function ReadToMe(arg1:types.Payload,arg2:string):Promise<string>;
 

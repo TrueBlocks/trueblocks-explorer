@@ -56,4 +56,14 @@ func (a *App) GetContractsBuckets(payload *types.Payload) (*types.Buckets, error
 }
 
 // EXISTING_CODE
+// GetContracts returns the contracts for frontend display
+func (a *App) GetContracts() []sdk.Contract {
+	contractPtrs := sdk.CreateContracts()
+	result := make([]sdk.Contract, len(contractPtrs))
+	for i, c := range contractPtrs {
+		result[i] = *c
+	}
+	return result
+}
+
 // EXISTING_CODE

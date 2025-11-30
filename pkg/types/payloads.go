@@ -5,6 +5,7 @@ type Payload struct {
 	DataFacet        DataFacet `json:"dataFacet"`
 	ActiveChain      string    `json:"activeChain,omitempty"`
 	ActiveAddress    string    `json:"activeAddress,omitempty"`
+	ActiveContract   string    `json:"activeContract,omitempty"`
 	ActivePeriod     Period    `json:"activePeriod,omitempty"`
 	ConnectedAddress string    `json:"connectedAddress,omitempty"`
 	TargetAddress    string    `json:"targetAddress,omitempty"`

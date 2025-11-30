@@ -8507,7 +8507,7 @@
                         "export"
                     ],
                     "viewType": "table",
-                    "panel": "",
+                    "panel": "custom",
                     "navigate": "",
                     "attributes": "",
                     "isDynamic": false,

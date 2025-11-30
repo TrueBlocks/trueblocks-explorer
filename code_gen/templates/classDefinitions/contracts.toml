@@ -23,4 +23,5 @@ name = "Events"
 store = "Logs"
 actions = ["export"]
 viewType = "table"
+panel = "custom"
 needsCalcs = true

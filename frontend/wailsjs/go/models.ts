@@ -45,45 +45,67 @@ export namespace abis {
 
 export namespace app {
 	
-	export class ApprovalTransactionData {
+	export class ConvertTokenAmountRequest {
 	    tokenAddress: string;
-	    spenderAddress: string;
-	    ownerAddress: string;
 	    amount: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ApprovalTransactionData(source);
+	        return new ConvertTokenAmountRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.tokenAddress = source["tokenAddress"];
-	        this.spenderAddress = source["spenderAddress"];
-	        this.ownerAddress = source["ownerAddress"];
 	        this.amount = source["amount"];
 	    }
 	}
-	export class ApprovalTransactionResult {
+	export class ConvertTokenAmountResult {
 	    success: boolean;
-	    transactionData: string;
-	    gasEstimate: string;
-	    gasPrice: string;
-	    gasUsed: string;
-	    newAllowance: string;
+	    weiAmount: string;
+	    decimals: number;
 	    error?: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ApprovalTransactionResult(source);
+	        return new ConvertTokenAmountResult(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.success = source["success"];
-	        this.transactionData = source["transactionData"];
-	        this.gasEstimate = source["gasEstimate"];
-	        this.gasPrice = source["gasPrice"];
-	        this.gasUsed = source["gasUsed"];
-	        this.newAllowance = source["newAllowance"];
+	        this.weiAmount = source["weiAmount"];
+	        this.decimals = source["decimals"];
+	        this.error = source["error"];
+	    }
+	}
+	export class EncodeTransactionRequest {
+	    contractAddress: string;
+	    signature: string;
+	    arguments: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new EncodeTransactionRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.contractAddress = source["contractAddress"];
+	        this.signature = source["signature"];
+	        this.arguments = source["arguments"];
+	    }
+	}
+	export class EncodeTransactionResult {
+	    success: boolean;
+	    data: string;
+	    error?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new EncodeTransactionResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.success = source["success"];
+	        this.data = source["data"];
 	        this.error = source["error"];
 	    }
 	}
@@ -784,6 +806,7 @@ export namespace msgs {
 	    PROJECT_MODAL = "project:modal",
 	    ADDRESS_CHANGED = "address:changed",
 	    CHAIN_CHANGED = "chain:changed",
+	    CONTRACT_CHANGED = "contract:changed",
 	    PERIOD_CHANGED = "period:changed",
 	    DATA_LOADED = "data:loaded",
 	    DATA_RELOADED = "data:reloaded",
@@ -2969,6 +2992,7 @@ export namespace types {
 	    dataFacet: DataFacet;
 	    activeChain?: string;
 	    activeAddress?: string;
+	    activeContract?: string;
 	    activePeriod?: Period;
 	    connectedAddress?: string;
 	    targetAddress?: string;
@@ -2986,6 +3010,7 @@ export namespace types {
 	        this.dataFacet = source["dataFacet"];
 	        this.activeChain = source["activeChain"];
 	        this.activeAddress = source["activeAddress"];
+	        this.activeContract = source["activeContract"];
 	        this.activePeriod = source["activePeriod"];
 	        this.connectedAddress = source["connectedAddress"];
 	        this.targetAddress = source["targetAddress"];
@@ -3160,6 +3185,7 @@ export namespace types {
 	    dataFacet: DataFacet;
 	    activeChain?: string;
 	    activeAddress?: string;
+	    activeContract?: string;
 	    activePeriod?: Period;
 	    connectedAddress?: string;
 	    targetAddress?: string;
@@ -3180,6 +3206,7 @@ export namespace types {
 	        this.dataFacet = source["dataFacet"];
 	        this.activeChain = source["activeChain"];
 	        this.activeAddress = source["activeAddress"];
+	        this.activeContract = source["activeContract"];
 	        this.activePeriod = source["activePeriod"];
 	        this.connectedAddress = source["connectedAddress"];
 	        this.targetAddress = source["targetAddress"];

@@ -19,7 +19,8 @@ function validatePayloadAddress(address: string, context: string) {
 
 // Single payload function - backend decides what data to use for collection sharing
 export const usePayload = (collection: string) => {
-  const { activeAddress, activeChain, activePeriod } = useActiveProject();
+  const { activeAddress, activeChain, activeContract, activePeriod } =
+    useActiveProject();
   const { session } = useWalletContext();
   return useCallback(
     (dataFacet: types.DataFacet, targetAddress?: string) => {
@@ -41,6 +42,7 @@ export const usePayload = (collection: string) => {
         dataFacet: dataFacet,
         activeChain: activeChain,
         activeAddress: activeAddress,
+        activeContract: activeContract,
         activePeriod: activePeriod,
         connectedAddress: session.isConnected ? session.address || '' : '',
         targetAddress: targetAddress || '', // Send specific target address when provided
@@ -50,6 +52,7 @@ export const usePayload = (collection: string) => {
       collection,
       activeChain,
       activeAddress,
+      activeContract,
       activePeriod,
       session.address,
       session.isConnected,

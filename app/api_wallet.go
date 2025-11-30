@@ -10,7 +10,6 @@ package app
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/logging"
@@ -50,69 +49,28 @@ type GasEstimationResult struct {
 	Error       string `json:"error,omitempty"`
 }
 
-func (a *App) PrepareApprovalTransaction(payload *types.Payload, data ApprovalTransactionData) (*ApprovalTransactionResult, error) {
-	logging.LogBackend(fmt.Sprintf("PrepareApprovalTransaction CALLED - Token: %s, Spender: %s, Owner: %s, Amount: %s",
-		data.TokenAddress, data.SpenderAddress, data.OwnerAddress, data.Amount))
+type EncodeTransactionRequest struct {
+	ContractAddress string   `json:"contractAddress"`
+	Signature       string   `json:"signature"`
+	Arguments       []string `json:"arguments"`
+}
 
-	result := &ApprovalTransactionResult{
-		NewAllowance: data.Amount,
-	}
+type EncodeTransactionResult struct {
+	Success bool   `json:"success"`
+	Data    string `json:"data"`
+	Error   string `json:"error,omitempty"`
+}
 
-	chain := payload.ActiveChain
-	if chain == "" {
-		chain = "mainnet"
-	}
+type ConvertTokenAmountRequest struct {
+	TokenAddress string `json:"tokenAddress"`
+	Amount       string `json:"amount"`
+}
 
-	transactionData, err := createApprovalTransactionData(chain, data.TokenAddress, data.SpenderAddress, data.Amount)
-	if err != nil {
-		logging.LogBEError(fmt.Sprintf("Failed to create transaction data: %v", err))
-		result.Error = fmt.Sprintf("Failed to create transaction data: %v", err)
-		return result, nil
-	}
-	result.TransactionData = transactionData
-	logging.LogBackend(fmt.Sprintf("Transaction data created: %s", transactionData))
-
-	fromAddr := base.HexToAddress(data.OwnerAddress)
-	toAddr := base.HexToAddress(data.TokenAddress)
-	valueWei := base.NewWei(0)
-
-	logging.LogBackend("=== GAS ESTIMATION DEBUG ===")
-	logging.LogBackend(fmt.Sprintf("Chain: %s", chain))
-	logging.LogBackend(fmt.Sprintf("From (owner): %s", fromAddr.Hex()))
-	logging.LogBackend(fmt.Sprintf("To (token): %s", toAddr.Hex()))
-	logging.LogBackend(fmt.Sprintf("Data: %s", transactionData))
-	logging.LogBackend(fmt.Sprintf("Value: %s", valueWei.String()))
-	logging.LogBackend(fmt.Sprintf("Data length: %d bytes", len(transactionData)))
-	logging.LogBackend("Expected gas for ERC20 approve: 46000-50000")
-	logging.LogBackend("Calling eth_estimateGas via SDK...")
-
-	estimatedGas, gasPrice, err := sdk.EstimateGasAndPrice(chain, fromAddr, toAddr, transactionData, valueWei)
-	if err != nil {
-		logging.LogBEError(fmt.Sprintf("SDK.EstimateGasAndPrice FAILED: %v", err))
-		result.Success = false
-		result.Error = fmt.Sprintf("Failed to estimate gas for approval transaction: %v. Please check your RPC connection and try again.", err)
-		return result, nil
-	}
-
-	logging.LogBackend(fmt.Sprintf("RPC RESPONSE: estimatedGas=%d (0x%x), gasPrice=%d (0x%x)",
-		estimatedGas, estimatedGas, gasPrice, gasPrice))
-
-	gasDeficit := int64(46000) - int64(estimatedGas)
-	deficitPercent := (float64(gasDeficit) / 46000.0) * 100.0
-	logging.LogBackend(fmt.Sprintf("GAS ANALYSIS: Expected ~46K, got %d - deficit: %d gas (%.1f%% too low)",
-		estimatedGas, gasDeficit, deficitPercent))
-
-	// Add 20% safety buffer to gas estimate - RPC nodes often underestimate token operations
-	bufferedGas := estimatedGas * 120 / 100
-	bufferAdded := bufferedGas - estimatedGas
-	result.GasEstimate = fmt.Sprintf("0x%x", bufferedGas)
-	result.GasPrice = fmt.Sprintf("0x%x", gasPrice)
-	logging.LogBackend(fmt.Sprintf("BUFFERED GAS: raw=%d, buffer=+%d (+20%%), final=%d (0x%x)",
-		estimatedGas, bufferAdded, bufferedGas, bufferedGas))
-	logging.LogBackend("=== END GAS ESTIMATION DEBUG ===")
-
-	result.Success = true
-	return result, nil
+type ConvertTokenAmountResult struct {
+	Success   bool   `json:"success"`
+	WeiAmount string `json:"weiAmount"`
+	Decimals  uint64 `json:"decimals"`
+	Error     string `json:"error,omitempty"`
 }
 
 func (a *App) EstimateGasAndPrice(payload *types.Payload, txPayload TransactionPayload) (*GasEstimationResult, error) {
@@ -156,67 +114,95 @@ func (a *App) EstimateGasAndPrice(payload *types.Payload, txPayload TransactionP
 	return result, nil
 }
 
-func createApprovalTransactionData(chain, tokenAddress, spender, amount string) (string, error) {
-	amountWei, err := convertToWei(chain, tokenAddress, amount)
-	if err != nil {
-		return "", err
+func (a *App) EncodeTransaction(payload *types.Payload, req EncodeTransactionRequest) (*EncodeTransactionResult, error) {
+	logging.LogBackend(fmt.Sprintf("EncodeTransaction CALLED - Contract: %s, Signature: %s, Args: %v",
+		req.ContractAddress, req.Signature, req.Arguments))
+
+	chain := payload.ActiveChain
+	if chain == "" {
+		chain = "mainnet"
 	}
 
-	selector := "0x095ea7b3"
-	spenderPadded := padLeft(removeHexPrefix(spender), 64)
-	amountPadded := padLeft(amountWei, 64)
-	return selector + spenderPadded + amountPadded, nil
+	// Use SDK to encode transaction
+	data, err := sdk.EncodeTransaction(sdk.TransactionEncodeRequest{
+		Chain:           chain,
+		ContractAddress: req.ContractAddress,
+		Signature:       req.Signature,
+		Arguments:       req.Arguments,
+	})
+	if err != nil {
+		logging.LogBEError(fmt.Sprintf("Failed to encode transaction: %v", err))
+		return &EncodeTransactionResult{
+			Success: false,
+			Error:   fmt.Sprintf("Failed to encode transaction: %v", err),
+		}, nil
+	}
+
+	logging.LogBackend(fmt.Sprintf("Transaction encoded successfully: %s", data))
+	return &EncodeTransactionResult{
+		Success: true,
+		Data:    data,
+	}, nil
 }
 
-func convertToWei(chain, tokenAddress, amount string) (string, error) {
-	if amount == "0" || amount == "" {
-		return "0", nil
+func (a *App) ConvertTokenAmount(payload *types.Payload, req ConvertTokenAmountRequest) (*ConvertTokenAmountResult, error) {
+	logging.LogBackend(fmt.Sprintf("ConvertTokenAmount CALLED - Token: %s, Amount: %s",
+		req.TokenAddress, req.Amount))
+
+	chain := payload.ActiveChain
+	if chain == "" {
+		chain = "mainnet"
 	}
 
-	// Get token decimals from SDK (with caching)
+	// Query token decimals - MUST succeed, no fallbacks
 	opts := &sdk.TokensOptions{
-		Addrs: []string{tokenAddress},
+		Addrs: []string{req.TokenAddress},
 		Parts: sdk.TPDecimals,
 	}
 	opts.Chain = chain
 
 	tokens, _, err := opts.Tokens()
-	decimals := uint64(18) // ERC20 spec default
-	if err == nil && len(tokens) > 0 && tokens[0].Decimals > 0 {
-		decimals = tokens[0].Decimals
-	}
-
-	logging.LogBackend(fmt.Sprintf("Token %s decimals: %d, converting amount: %s", tokenAddress, decimals, amount))
-
-	// Convert using base package
-	wei, err := base.WeiFromFloatString(amount, int(decimals))
 	if err != nil {
-		return "", fmt.Errorf("failed to convert amount to wei: %w", err)
+		logging.LogBEError(fmt.Sprintf("Failed to query token decimals: %v", err))
+		return &ConvertTokenAmountResult{
+			Success: false,
+			Error:   fmt.Sprintf("Failed to query token decimals: %v", err),
+		}, nil
+	}
+	if len(tokens) == 0 {
+		logging.LogBEError("No token data returned")
+		return &ConvertTokenAmountResult{
+			Success: false,
+			Error:   "No token data returned - invalid token address?",
+		}, nil
+	}
+	if tokens[0].Decimals == 0 {
+		logging.LogBEError("Token decimals is 0")
+		return &ConvertTokenAmountResult{
+			Success: false,
+			Error:   "Token decimals is 0 - invalid or non-standard token",
+		}, nil
 	}
 
-	// Return as hex string without 0x prefix
-	hexResult := wei.Text(16)
-	logging.LogBackend(fmt.Sprintf("Converted %s (decimals=%d) to wei: %s (hex: %s)", amount, decimals, wei.String(), hexResult))
-	return hexResult, nil
-}
+	decimals := tokens[0].Decimals
+	logging.LogBackend(fmt.Sprintf("Token decimals: %d", decimals))
 
-func removeHexPrefix(hex string) string {
-	if len(hex) >= 2 && hex[:2] == "0x" {
-		return hex[2:]
-	}
-	return hex
-}
-
-func padLeft(str string, length int) string {
-	str = strings.TrimPrefix(str, "0x")
-	if len(str) >= length {
-		return str[len(str)-length:]
+	// Convert human-readable amount to wei using chifra's WeiFromFloatString
+	weiAmount, err := base.WeiFromFloatString(req.Amount, int(decimals))
+	if err != nil {
+		logging.LogBEError(fmt.Sprintf("Failed to convert amount to wei: %v", err))
+		return &ConvertTokenAmountResult{
+			Success: false,
+			Error:   fmt.Sprintf("Failed to convert amount to wei: %v", err),
+		}, nil
 	}
 
-	padding := make([]byte, length-len(str))
-	for i := range padding {
-		padding[i] = '0'
+	result := &ConvertTokenAmountResult{
+		Success:   true,
+		WeiAmount: weiAmount.String(),
+		Decimals:  decimals,
 	}
+	logging.LogBackend(fmt.Sprintf("Converted %s to wei: %s (decimals=%d)", req.Amount, result.WeiAmount, decimals))
 
-	return string(padding) + str
+	return result, nil
 }

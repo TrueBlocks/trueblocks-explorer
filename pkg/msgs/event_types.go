@@ -9,6 +9,7 @@ const (
 	EventProjectModal    EventType = "project:modal"
 	EventAddressChanged  EventType = "address:changed"
 	EventChainChanged    EventType = "chain:changed"
+	EventContractChanged EventType = "contract:changed"
 	EventPeriodChanged   EventType = "period:changed"
 	EventDataLoaded      EventType = "data:loaded"
 	EventDataReloaded    EventType = "data:reloaded"
@@ -31,6 +32,7 @@ var AllMessages = []struct {
 	{EventProjectModal, "PROJECT_MODAL"},
 	{EventAddressChanged, "ADDRESS_CHANGED"},
 	{EventChainChanged, "CHAIN_CHANGED"},
+	{EventContractChanged, "CONTRACT_CHANGED"},
 	{EventPeriodChanged, "PERIOD_CHANGED"},
 	{EventDataLoaded, "DATA_LOADED"},
 	{EventDataReloaded, "DATA_RELOADED"},

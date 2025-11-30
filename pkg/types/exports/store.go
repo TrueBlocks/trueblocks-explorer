@@ -879,10 +879,6 @@ func GetExportsCollection(payload *types.Payload) *ExportsCollection {
 
 func getStoreKey(payload *types.Payload) string {
 	// EXISTING_CODE
-	if payload.DataFacet == ExportsAssets {
-		key := payload.ActiveChain
-		return key
-	}
 	// EXISTING_CODE
 	return fmt.Sprintf("%s_%s", payload.ActiveChain, payload.ActiveAddress)
 }

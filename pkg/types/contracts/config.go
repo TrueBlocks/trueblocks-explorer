@@ -52,6 +52,7 @@ func (c *ContractsCollection) buildStaticFacets() map[string]types.FacetConfig {
 			Name:          "Events",
 			Store:         "logs",
 			ViewType:      "table",
+			Panel:         "custom",
 			DividerBefore: false,
 			Fields:        getLogsFields(),
 			Actions:       []string{},

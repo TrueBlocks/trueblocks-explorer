@@ -14,6 +14,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/file"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/filewriter"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 )
 
@@ -302,7 +303,10 @@ func (p *Project) SetActiveContract(contract string) error {
 	}
 
 	if needsSave {
-		return p.Save()
+		if err := p.Save(); err != nil {
+			return err
+		}
+		msgs.EmitContractChanged(contract)
 	}
 	return nil
 }

@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { GetContracts } from '@app';
 import { AddAddressModal, StyledSelect } from '@components';
 import { useActiveProject } from '@hooks';
 import { Group, Loader, Text } from '@mantine/core';
 import { types } from '@models';
-import { PeriodOptions, getDisplayAddress } from '@utils';
+import { Log, PeriodOptions, getDisplayAddress } from '@utils';
 
 export const ProjectContextBar = ({}) => {
   const [addModalOpened, setAddModalOpened] = useState(false);
+  const [contracts, setContracts] = useState<types.Contract[]>([]);
 
   const {
     projects,
@@ -47,7 +49,16 @@ export const ProjectContextBar = ({}) => {
       label: chain,
     })) || [];
 
-  const contractOptions = [{ value: '', label: 'No Contract' }];
+  useEffect(() => {
+    GetContracts().then((contracts) => {
+      setContracts(contracts);
+    });
+  }, []);
+
+  const contractOptions = contracts.map((contract) => ({
+    value: contract.address?.toString() || '',
+    label: `${contract.name} (${contract.address?.toString().slice(0, 6)}...${contract.address?.toString().slice(-4)})`,
+  }));
 
   const handleProjectChange = async (projectId: string | null) => {
     if (projectId && projectId !== currentProject?.id) {
@@ -73,8 +84,16 @@ export const ProjectContextBar = ({}) => {
 
   const handleContractChange = async (contract: string | null) => {
     const contractValue = contract || '';
+    Log(
+      `[ProjectContextBar] Contract change: ${JSON.stringify({
+        from: activeContract,
+        to: contractValue,
+        willUpdate: contractValue !== activeContract,
+      })}`,
+    );
     if (contractValue !== activeContract) {
       await setActiveContract(contractValue);
+      Log('[ProjectContextBar] setActiveContract completed');
     }
   };
 

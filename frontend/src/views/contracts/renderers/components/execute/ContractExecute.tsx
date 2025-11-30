@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { OpenLink } from '@app';
 import { StyledBadge, StyledButton } from '@components';
 import {
   Alert,
+  Anchor,
   Card,
   Divider,
   Grid,
@@ -18,7 +20,7 @@ import {
   Title,
 } from '@mantine/core';
 import { types } from '@models';
-import { LogError, addressToHex } from '@utils';
+import { Log, LogError, addressToHex } from '@utils';
 import { ADDRESS_HELP_TEXT } from '@wallet';
 import {
   PreparedTransaction,
@@ -145,6 +147,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
   const [transactionResult, setTransactionResult] = useState<string | null>(
     null,
   );
+  const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [transactionData, setTransactionData] =
     useState<TransactionData | null>(null);
   const [reviewModalOpened, setReviewModalOpened] = useState(false);
@@ -154,12 +157,18 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
   // Wallet connection hook
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash) => {
-      setTransactionResult(`Transaction signed! Hash: ${txHash}`);
+      Log(`[ContractExecute] Transaction signed successfully: ${txHash}`);
+      setTransactionHash(txHash);
+      setTransactionResult(
+        `Transaction signed! View on Etherscan: https://etherscan.io/tx/${txHash}`,
+      );
       setReviewModalOpened(false);
     },
     onError: (error) => {
+      Log(`[ContractExecute] Transaction error: ${error}`);
       LogError(`Transaction failed: ${error}`);
       setTransactionResult(`Transaction failed: ${error}`);
+      setTransactionHash(null);
     },
   });
 
@@ -197,12 +206,20 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 
   // Execute transaction logic (extracted for reuse)
   const executeTransaction = useCallback(async () => {
-    if (!currentFunction || !isFormValid()) return;
+    Log('[ContractExecute] executeTransaction called');
+    if (!currentFunction || !isFormValid()) {
+      Log('[ContractExecute] Form invalid or no function selected');
+      return;
+    }
 
     setIsSubmitting(true);
     setTransactionResult(null);
+    setTransactionHash(null);
 
     try {
+      Log(
+        `[ContractExecute] Preparing transaction for function: ${currentFunction.name}`,
+      );
       // Prepare transaction data
       const inputValues = currentFunction.inputs.map((input) => {
         const fieldState = formState[input.name];
@@ -226,18 +243,21 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         inputValues,
       );
       if (!validation.isValid) {
+        Log(`[ContractExecute] Validation failed: ${validation.errors}`);
         setTransactionResult(
           `Validation failed: ${validation.errors.join(', ')}`,
         );
         return;
       }
 
+      Log('[ContractExecute] Opening review modal');
       // Store transaction data and open review modal
       setTransactionData(txData);
       setReviewModalOpened(true);
 
       onTransaction?.(txData);
     } catch (error) {
+      Log(`[ContractExecute] Error preparing transaction: ${error}`);
       setTransactionResult(
         `Error preparing transaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
@@ -330,7 +350,9 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 
   // Submit the transaction - now handles wallet gating with pending execution
   const handleSubmit = () => {
+    Log('[ContractExecute] handleSubmit called');
     if (!isWalletConnected) {
+      Log('[ContractExecute] Wallet not connected, triggering connection');
       // Set pending flag and trigger wallet connection
       setPendingSubmission(true);
       // Use the wallet gated action to trigger connection
@@ -338,16 +360,22 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
       return;
     }
 
+    Log('[ContractExecute] Wallet connected, executing transaction');
     // Wallet is connected, execute immediately
     executeTransaction();
   };
 
   // Handle transaction confirmation from modal
   const handleConfirmTransaction = async (preparedTx: PreparedTransaction) => {
+    Log('[ContractExecute] handleConfirmTransaction called');
     try {
-      await sendTransaction(preparedTx);
+      const txHash = await sendTransaction(preparedTx);
+      Log(`[ContractExecute] sendTransaction returned: ${txHash}`);
     } catch (error) {
+      Log(`[ContractExecute] sendTransaction threw error: ${error}`);
       LogError(`Transaction failed: ${error}`);
+      // Re-throw so modal can handle the error
+      throw error;
     }
   };
 
@@ -510,13 +538,34 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         <Alert
           variant="light"
           bd={
+            transactionResult.includes('failed') ||
             transactionResult.includes('Error')
               ? '1px solid var(--mantine-color-error-6)'
               : '1px solid var(--mantine-color-success-6)'
           }
-          bg={transactionResult.includes('Error') ? 'error.1' : 'success.1'}
+          bg={
+            transactionResult.includes('failed') ||
+            transactionResult.includes('Error')
+              ? 'error.1'
+              : 'success.1'
+          }
         >
-          {transactionResult}
+          {transactionHash ? (
+            <Stack gap="xs">
+              <Text>Transaction signed successfully!</Text>
+              <Anchor
+                component="button"
+                onClick={() => {
+                  Log(`Opening Etherscan link for tx: ${transactionHash}`);
+                  OpenLink('transactionHash', transactionHash);
+                }}
+              >
+                View on Etherscan
+              </Anchor>
+            </Stack>
+          ) : (
+            transactionResult
+          )}
         </Alert>
       )}
 

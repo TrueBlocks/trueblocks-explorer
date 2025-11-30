@@ -31,14 +31,18 @@ import {
   useEmitters,
 } from '@utils';
 import {
+  ApprovalTransaction,
   PreparedTransaction,
+  TransactionConfirm,
   TransactionData,
+  TransactionModelHelpers,
+  useWallet,
   useWalletConnection,
+  useWalletGatedAction,
 } from '@wallet';
-import { useWalletGatedAction } from '@wallet';
-import { useWallet } from '@wallet';
-import { ApprovalTransaction, TransactionModelHelpers } from '@wallet';
 import { isInfiniteValue } from 'src/components/renderers/utils';
+import { ConvertTokenAmount } from 'wailsjs/go/app/App';
+import { app } from 'wailsjs/go/models';
 
 import '../../../../../components/detail/DetailTable.css';
 
@@ -299,12 +303,39 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           throw new Error('Wallet not connected');
         }
 
-        // Use ApprovalTransaction model
+        // Step 1: Convert token amount to wei if non-zero
+        let weiAmount = amount;
+        if (amount && amount !== '0') {
+          Log(`Converting token amount: ${amount} for token ${token}`);
+          const convertRequest = app.ConvertTokenAmountRequest.createFrom({
+            tokenAddress: token,
+            amount: amount,
+          });
+          const convertResult = await ConvertTokenAmount(
+            payload,
+            convertRequest,
+          );
+
+          if (!convertResult.success || !convertResult.weiAmount) {
+            throw new Error(
+              convertResult.error || 'Failed to convert token amount',
+            );
+          }
+
+          weiAmount = convertResult.weiAmount;
+          Log(
+            `Converted ${amount} tokens to ${weiAmount} wei (${convertResult.decimals} decimals)`,
+          );
+        } else {
+          Log('Amount is 0 or empty, using as-is (no conversion needed)');
+        }
+
+        // Step 2: Use ApprovalTransaction model with converted amount
         const approvalTransaction = ApprovalTransaction.forApproval(
           token,
           spender,
           walletAddress,
-          amount,
+          weiAmount,
         );
 
         // Validate inputs using built-in validation
@@ -324,7 +355,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
 
         // Log transaction details
         Log(
-          `✅ Approval transaction created using wallet model - Amount: ${amount || '0'} tokens, Token: ${token}, Spender: ${spender}`,
+          `✅ Approval transaction created using wallet model - Amount: ${amount || '0'} tokens (${weiAmount} wei), Token: ${token}, Spender: ${spender}`,
           `Function encoding: ${approvalTransaction.function.encoding}`,
         );
 
@@ -495,140 +526,19 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           </PanelTable>
         </DetailSection>
       </DetailContainer>
-      {transactionModal.opened && (
-        <>
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 999,
-            }}
-            onClick={handleModalClose}
-          />
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: 'white',
-              padding: '20px',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-              zIndex: 1000,
-            }}
-          >
-            <h3>Confirm Revoke Transaction</h3>
-            <div
-              style={{
-                marginBottom: '16px',
-                padding: '12px',
-                background: '#fff3cd',
-                border: '1px solid #ffeaa7',
-                borderRadius: '4px',
-              }}
-            >
-              <p style={{ margin: '0 0 8px 0', fontWeight: 'bold' }}>
-                ⚠️ You are about to revoke approval for:
-              </p>
-              <p style={{ margin: '4px 0', fontSize: '14px' }}>
-                <strong>Token:</strong> {addressToHex(approval.token)} (
-                {approval.tokenName || 'Unknown'})
-              </p>
-              <p style={{ margin: '4px 0', fontSize: '14px' }}>
-                <strong>Spender:</strong> {addressToHex(approval.spender)} (
-                {approval.spenderName || 'Unknown'})
-              </p>
-              <p style={{ margin: '4px 0', fontSize: '14px' }}>
-                <strong>Action:</strong> Set allowance to 0 (complete
-                revocation)
-              </p>
-            </div>
-            <div>
-              <strong>Transaction Details:</strong>
-              <div
-                style={{
-                  fontSize: '12px',
-                  marginTop: '8px',
-                  padding: '8px',
-                  background: '#f5f5f5',
-                  borderRadius: '4px',
-                  border: '1px solid #ddd',
-                  wordBreak: 'break-all',
-                }}
-              >
-                <div>
-                  <strong>Function:</strong> approve(address,uint256)
-                </div>
-                <div style={{ fontFamily: 'monospace', marginTop: '4px' }}>
-                  <strong>Spender:</strong> {addressToHex(approval.spender)}
-                </div>
-                <div style={{ fontFamily: 'monospace' }}>
-                  <strong>Amount:</strong> 0 (revoke all)
-                </div>
-                <div
-                  style={{ marginTop: '8px', fontSize: '11px', color: '#666' }}
-                >
-                  Gas limit and price will be estimated when you confirm
-                </div>
-              </div>
-            </div>
-            <div style={{ marginTop: '16px' }}>
-              <strong>Calldata:</strong>
-              <div
-                style={{
-                  fontFamily: 'monospace',
-                  fontSize: '12px',
-                  marginTop: '8px',
-                  padding: '8px',
-                  background: '#f5f5f5',
-                  borderRadius: '4px',
-                  border: '1px solid #ddd',
-                  wordBreak: 'break-all',
-                }}
-              >
-                {(() => {
-                  const calldata = hardcodedCallDataRef.current;
-                  if (!calldata)
-                    return 'Calldata will be generated when transaction is prepared';
-                  // Function selector (first 4 bytes = 8 hex chars)
-                  const selector = calldata.slice(0, 10); // includes 0x
-                  // Parameters (remaining data in 32-byte chunks = 64 hex chars each)
-                  const params = calldata.slice(10);
-                  const chunks = [];
-                  for (let i = 0; i < params.length; i += 64) {
-                    chunks.push(params.slice(i, i + 64));
-                  }
-                  return (
-                    <>
-                      <div>{selector}</div>
-                      {chunks.map((chunk, index) => (
-                        <div key={index}>0x{chunk}</div>
-                      ))}
-                    </>
-                  );
-                })()}
-              </div>
-            </div>
-            <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-              <button
-                onClick={async () => {
-                  const preparedTx = await customPrepareTransaction();
-                  await handleConfirmTransaction(preparedTx);
-                }}
-              >
-                Confirm
-              </button>
-              <button onClick={handleModalClose}>Cancel</button>
-            </div>
-          </div>
-        </>
-      )}
+      <TransactionConfirm
+        opened={transactionModal.opened}
+        onClose={handleModalClose}
+        onConfirm={async () => {
+          const preparedTx = await customPrepareTransaction();
+          await handleConfirmTransaction(preparedTx);
+        }}
+        token={addressToHex(approval.token)}
+        tokenName={approval.tokenName || ''}
+        spender={addressToHex(approval.spender)}
+        spenderName={approval.spenderName || ''}
+        calldata={hardcodedCallDataRef.current}
+      />
       {successModal.opened && successModal.txHash && (
         <>
           <div

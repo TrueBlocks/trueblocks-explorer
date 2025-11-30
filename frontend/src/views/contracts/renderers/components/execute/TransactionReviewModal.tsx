@@ -78,17 +78,18 @@ export const TransactionReviewModal: React.FC<TransactionReviewModalProps> = ({
     if (!preparedTx) return;
 
     setConfirming(true);
+    setError(null);
     try {
       await onConfirm(preparedTx);
-      onClose();
+      // Modal will be closed by the onTransactionSigned callback
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to execute transaction',
-      );
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to execute transaction';
+      setError(errorMessage);
     } finally {
       setConfirming(false);
     }
-  }, [preparedTx, onConfirm, onClose]);
+  }, [preparedTx, onConfirm]);
 
   const formatParameter = (input: {
     name: string;

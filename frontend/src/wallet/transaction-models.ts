@@ -1,4 +1,3 @@
-import { PrepareApprovalTransaction } from '@app';
 import { app, types } from '@models';
 
 import { withErrorHandling } from './error-simple';
@@ -50,7 +49,7 @@ export class ApprovalTransaction {
     return func;
   }
 
-  // getTransactionObject calls prepare() for real-time gas values, returns transaction ready for signing
+  // getTransactionObject encodes + estimates gas, returns transaction ready for signing
   public async getTransactionObject(payload: types.Payload): Promise<{
     to: string;
     data: string;
@@ -58,35 +57,57 @@ export class ApprovalTransaction {
     gas: string;
     gasPrice: string;
   }> {
-    const prepareResult = await this.prepare(payload);
-    if (!prepareResult.success) {
+    // Import at top of function to avoid circular dependencies
+    const { EncodeTransaction, EstimateGasAndPrice } = await import('@app');
+
+    // Step 1: Encode the transaction using generic EncodeTransaction
+    // Amount is already in wei format from frontend conversion
+    const encodeRequest = app.EncodeTransactionRequest.createFrom({
+      contractAddress: this.tokenAddress,
+      signature: 'approve(address,uint256)',
+      arguments: [this.spenderAddress, this.amount],
+    });
+
+    const encodeResult = await EncodeTransaction(payload, encodeRequest);
+    if (!encodeResult.success || !encodeResult.data) {
       throw new Error(
-        `Failed to estimate gas for ${this.isRevoke() ? 'revoke' : 'approval'} transaction: ${
-          prepareResult.error || 'Gas estimation failed'
-        }. Transaction cancelled to prevent potential failures.`,
+        `Failed to encode ${this.isRevoke() ? 'revoke' : 'approval'} transaction: ${
+          encodeResult.error || 'Encoding failed'
+        }`,
       );
     }
 
-    // Ensure we have valid gas values - no fallbacks allowed
-    const gasEstimate = prepareResult.gasUsed || prepareResult.gasEstimate;
-    const gasPrice = prepareResult.gasPrice;
+    // Step 2: Estimate gas and get gas price
+    const gasRequest = app.TransactionPayload.createFrom({
+      from: this.ownerAddress,
+      to: this.tokenAddress,
+      data: encodeResult.data,
+      value: '0x0',
+    });
 
-    if (!gasEstimate || !gasPrice) {
+    const gasResult = await EstimateGasAndPrice(payload, gasRequest);
+    if (!gasResult.success) {
       throw new Error(
-        `Backend returned success but missing gas values. Gas estimate: ${gasEstimate}, Gas price: ${gasPrice}. Transaction cancelled.`,
+        `Failed to estimate gas: ${gasResult.error || 'Gas estimation failed'}. Transaction cancelled.`,
+      );
+    }
+
+    if (!gasResult.gasEstimate || !gasResult.gasPrice) {
+      throw new Error(
+        `Backend returned success but missing gas values. Transaction cancelled.`,
       );
     }
 
     return {
       to: this.tokenAddress,
-      data: prepareResult.transactionData, // Use backend-encoded data with proper decimals
+      data: encodeResult.data,
       value: '0x0',
-      gas: gasEstimate.startsWith('0x')
-        ? gasEstimate
-        : '0x' + parseInt(gasEstimate).toString(16),
-      gasPrice: gasPrice.startsWith('0x')
-        ? gasPrice
-        : '0x' + parseInt(gasPrice).toString(16),
+      gas: gasResult.gasEstimate.startsWith('0x')
+        ? gasResult.gasEstimate
+        : '0x' + parseInt(gasResult.gasEstimate).toString(16),
+      gasPrice: gasResult.gasPrice.startsWith('0x')
+        ? gasResult.gasPrice
+        : '0x' + parseInt(gasResult.gasPrice).toString(16),
     };
   }
 
@@ -195,40 +216,6 @@ export class ApprovalTransaction {
     return withErrorHandling(async () => {
       return await walletSubmitFn(this.function);
     }, `Submitting ${operation} transaction`);
-  }
-
-  // prepare calls backend to get real-time gas estimation from blockchain
-  public async prepare(
-    payload: types.Payload,
-  ): Promise<app.ApprovalTransactionResult> {
-    return withErrorHandling(async () => {
-      const data: app.ApprovalTransactionData = {
-        tokenAddress: this.tokenAddress,
-        spenderAddress: this.spenderAddress,
-        ownerAddress: this.ownerAddress,
-        amount: this.amount,
-      };
-
-      const result = await PrepareApprovalTransaction(payload, data);
-      if (!result.success) {
-        return app.ApprovalTransactionResult.createFrom({
-          success: false,
-          gasUsed: '0x0',
-          error: result.error || 'Unknown error occurred',
-        });
-      }
-
-      this.function.encoding = result.transactionData.slice(0, 10);
-
-      return app.ApprovalTransactionResult.createFrom({
-        success: true,
-        transactionData: result.transactionData,
-        gasEstimate: result.gasEstimate,
-        gasUsed: result.gasEstimate,
-        gasPrice: result.gasPrice,
-        newAllowance: result.newAllowance,
-      });
-    }, 'Preparing approval transaction');
   }
 }
 

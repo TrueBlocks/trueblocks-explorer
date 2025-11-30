@@ -38,22 +38,6 @@ describe('ApprovalTransaction', () => {
       expect(revokeTransaction.function.inputs).toHaveLength(2);
     });
 
-    it.skip('should prepare revoke transaction and receive backend transaction data', async () => {
-      const revokeTransaction = new ApprovalTransaction(
-        tokenAddress,
-        spenderAddress,
-        ownerAddress,
-        '0',
-      );
-
-      const result = await revokeTransaction.prepare(mockPayload);
-      expect(result.success).toBe(true);
-      expect(result.transactionData).toBeDefined();
-      expect(typeof result.transactionData).toBe('string');
-      expect(result.transactionData.includes('095ea7b3')).toBe(true); // Function selector
-      expect(revokeTransaction.function.encoding).toBe('0x095ea7b3');
-    });
-
     it('should create complete transaction object for revoke', async () => {
       const revokeTransaction = new ApprovalTransaction(
         tokenAddress,

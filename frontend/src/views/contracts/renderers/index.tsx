@@ -2,9 +2,12 @@ import { RendererParams } from '@components';
 import { types } from '@models';
 
 import * as facets from './facets';
+import * as panels from './panels';
 
 export const renderers = {
-  panels: {},
+  panels: {
+    [types.DataFacet.EVENTS]: panels.EventsPanel,
+  },
   facets: {
     [types.DataFacet.DASHBOARD]: (params: RendererParams) => {
       return <facets.DashboardFacet params={params} />;

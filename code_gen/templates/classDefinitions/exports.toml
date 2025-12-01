@@ -41,7 +41,7 @@ panel = "custom"
 name = "OpenApprovals"
 store = "OpenApprovals"
 actions = ["export"]
-viewType = "table"
+viewType = "custom"
 panel = "custom"
 
 [[facets]]

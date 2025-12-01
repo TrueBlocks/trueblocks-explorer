@@ -4,5 +4,4 @@
 /*
  * This file was auto generated. Do not edit.
  */
-export { OpenApprovalsFacet } from './openapprovals';
-export { AssetChartsFacet } from './assetcharts';
+export { OpenApprovalsFacet } from './OpenApprovalsFacet';

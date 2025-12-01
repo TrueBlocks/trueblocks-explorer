@@ -71,7 +71,7 @@ func (c *ExportsCollection) buildStaticFacets() map[string]types.FacetConfig {
 		"openapprovals": {
 			Name:          "Open Approvals",
 			Store:         "openapprovals",
-			ViewType:      "table",
+			ViewType:      "custom",
 			Panel:         "custom",
 			DividerBefore: false,
 			Fields:        getOpenapprovalsFields(),

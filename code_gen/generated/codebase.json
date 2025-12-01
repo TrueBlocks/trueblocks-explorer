@@ -2214,7 +2214,7 @@
                             "actions": [
                                 "export"
                             ],
-                            "viewType": "table",
+                            "viewType": "custom",
                             "panel": "custom",
                             "navigate": "",
                             "attributes": "",
@@ -3556,7 +3556,7 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "table",
+                    "viewType": "custom",
                     "panel": "custom",
                     "navigate": "",
                     "attributes": "",

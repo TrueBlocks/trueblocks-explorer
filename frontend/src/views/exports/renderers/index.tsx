@@ -15,6 +15,9 @@ export const renderers = {
     [types.DataFacet.TRACES]: panels.TracesPanel,
   },
   facets: {
+    [types.DataFacet.OPENAPPROVALS]: (params: RendererParams) => {
+      return <facets.OpenApprovalsFacet params={params} />;
+    },
     [types.DataFacet.ASSETCHARTS]: (params: RendererParams) => {
       return <facets.AssetChartsFacet params={params} />;
     },

@@ -1,0 +1,13 @@
+/*
+output: frontend/src/views/[[route]]/renderers/facets/-facet-/index.ts
+scope: facet
+*/
+{{- if eq .ViewType "custom" -}}
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+export { {{.Name}}Facet } from './{{.Name}}Facet';
+{{- end }}

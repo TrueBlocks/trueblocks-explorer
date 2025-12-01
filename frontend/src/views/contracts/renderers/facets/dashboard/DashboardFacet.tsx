@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import { RendererParams } from '@components';
 import { useActiveProject } from '@hooks';
 import { Alert, Container, Stack, Text, Title } from '@mantine/core';
@@ -5,7 +12,10 @@ import { types } from '@models';
 
 import { ContractDashboard } from '../../components/dashboard/ContractDashboard';
 
+// EXISTING_CODE
+
 export const DashboardFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { data } = params;
   const contracts = (data || []) as unknown as types.Contract[];
   const { activeContract } = useActiveProject();
@@ -48,4 +58,8 @@ export const DashboardFacet = ({ params }: { params: RendererParams }) => {
       </Stack>
     </Container>
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import { useCallback, useMemo, useState } from 'react';
 
 import { ProjectCard, RendererParams } from '@components';
@@ -5,7 +12,10 @@ import { useActiveProject } from '@hooks';
 import { msgs, project, projects, types } from '@models';
 import { emitEvent, useEmitters } from '@utils';
 
+// EXISTING_CODE
+
 export const ManageFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { data } = params;
   const _pageData = {
     projects: data || [],
@@ -89,4 +99,8 @@ export const ManageFacet = ({ params }: { params: RendererParams }) => {
   );
 
   return <ProjectCard {...projectCardProps} />;
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

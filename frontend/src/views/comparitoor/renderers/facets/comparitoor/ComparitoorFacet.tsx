@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import React from 'react';
 import { useRef, useState } from 'react';
 
@@ -25,7 +32,10 @@ export type AppearanceItem = {
   unique?: boolean;
 };
 
+// EXISTING_CODE
+
 export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { data } = params;
   const pageData = data;
   const address = '0x503017d7baf7fbc0fff7492b751025c6a78179b'; // Default address for now
@@ -239,9 +249,12 @@ export const ComparitoorFacet = ({ params }: { params: RendererParams }) => {
       {/** Legend removed as per requirements */}
     </Stack>
   );
+  // EXISTING_CODE
 };
 
+// EXISTING_CODE
 // TODO: Replace with real icons/components
 const MaterialIcon = () => (
   <span style={{ fontWeight: 'bold', marginLeft: 4 }}>★</span>
 );
+// EXISTING_CODE

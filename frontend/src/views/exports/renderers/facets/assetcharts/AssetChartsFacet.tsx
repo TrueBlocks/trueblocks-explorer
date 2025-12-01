@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { GetExportsBuckets, GetExportsMetric, SetExportsMetric } from '@app';
@@ -9,7 +16,10 @@ import { LogError, useErrorHandler } from '@utils';
 
 import { AssetChart, AssetHeader, type MetricOption } from '../../components';
 
+// EXISTING_CODE
+
 export const AssetChartsFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { columns } = params;
   if (columns.length == 100) {
     LogError('columns length equals 100. weird.'); // delinting only
@@ -249,4 +259,8 @@ export const AssetChartsFacet = ({ params }: { params: RendererParams }) => {
       </SimpleGrid>
     </Stack>
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

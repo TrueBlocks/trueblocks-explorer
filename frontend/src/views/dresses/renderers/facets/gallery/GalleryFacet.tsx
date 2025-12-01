@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { ExecuteRowAction } from '@app';
@@ -9,7 +16,10 @@ import { GalleryControls, GalleryGrouping } from '../../components';
 import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView';
 import { getItemKey, useGalleryStore } from '../../store';
 
+// EXISTING_CODE
+
 export const GalleryFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { data } = params;
   const pageData = useMemo(
     () =>
@@ -231,4 +241,8 @@ export const GalleryFacet = ({ params }: { params: RendererParams }) => {
       </div>
     </Container>
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

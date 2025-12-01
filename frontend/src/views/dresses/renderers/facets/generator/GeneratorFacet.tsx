@@ -1,3 +1,10 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ExecuteRowAction, GetContracts } from '@app';
@@ -34,7 +41,10 @@ import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView
 import { useSpeakPrompt } from '../../hooks/useSpeakPrompt';
 import { getItemKey, useGalleryStore } from '../../store';
 
+// EXISTING_CODE
+
 export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
   const { data } = params;
   const pageData = useMemo(
     () =>
@@ -848,4 +858,8 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
       </div>
     </div>
   );
+  // EXISTING_CODE
 };
+
+// EXISTING_CODE
+// EXISTING_CODE

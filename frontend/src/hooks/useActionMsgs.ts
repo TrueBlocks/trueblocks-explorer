@@ -1,4 +1,4 @@
-import { useEmitters } from '@utils';
+import { emitError, emitStatus } from '@utils';
 
 export type EntityType = 'names' | 'monitors' | 'abis';
 type ActionType =
@@ -43,7 +43,6 @@ const ENTITY_CONFIGS: Record<EntityType, EntityConfig> = {
 };
 
 export const useActionMsgs = (entityType: EntityType) => {
-  const { emitStatus, emitError } = useEmitters();
   const config = ENTITY_CONFIGS[entityType];
 
   const generateSuccessMessage = (

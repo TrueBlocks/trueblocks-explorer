@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { CancelFetches } from '@app';
-import { LogError, useEmitters } from '@utils';
+import { LogError, emitStatus } from '@utils';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 interface UseGlobalEscapeProps {
@@ -17,8 +17,6 @@ export const useGlobalEscape = ({
   enabled = true,
   onEscape,
 }: UseGlobalEscapeProps = {}) => {
-  const { emitStatus } = useEmitters();
-
   const handleEscape = useCallback(async () => {
     try {
       const cancelledCount = await CancelFetches();
@@ -32,7 +30,7 @@ export const useGlobalEscape = ({
       LogError('Failed to cancel fetches:', JSON.stringify(error));
       emitStatus('Failed to cancel active fetches');
     }
-  }, [emitStatus, onEscape]);
+  }, [onEscape]);
 
   useHotkeys(
     'esc',

@@ -19,7 +19,7 @@ import {
 import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
 import { msgs, project, types } from '@models';
-import { LogError, initializePreferencesDefaults, useEmitters } from '@utils';
+import { LogError, emitError, initializePreferencesDefaults } from '@utils';
 import { WalletProvider } from '@wallet';
 import { WalletConnectModalSign } from '@walletconnect/modal-sign-react';
 import { Router, useLocation } from 'wouter';
@@ -151,7 +151,6 @@ const AppContent = ({
   handleProjectModalCancel: () => void;
 }) => {
   const { menuCollapsed, helpCollapsed, chromeCollapsed } = usePreferences();
-  const { emitError } = useEmitters();
 
   // These hooks need WalletProvider
   useAppHotkeys();

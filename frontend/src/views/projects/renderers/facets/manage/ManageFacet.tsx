@@ -10,7 +10,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { ProjectCard, RendererParams } from '@components';
 import { useActiveProject } from '@hooks';
 import { msgs, project, projects, types } from '@models';
-import { emitEvent, useEmitters } from '@utils';
+import { emitError, emitEvent, emitStatus } from '@utils';
 
 // EXISTING_CODE
 
@@ -34,7 +34,6 @@ export const ManageFacet = ({ params }: { params: RendererParams }) => {
     closeProject,
     loading,
   } = useActiveProject();
-  const { emitStatus, emitError } = useEmitters();
 
   // Use the project data from useActiveProject which has the correct structure
   // The pageData from the backend uses the core project.Project type but
@@ -68,7 +67,7 @@ export const ManageFacet = ({ params }: { params: RendererParams }) => {
         emitError(`Failed to close project: ${errorMsg}`);
       }
     },
-    [closeProject, projectInfos, emitStatus, emitError],
+    [closeProject, projectInfos],
   );
 
   const handleNewProject = useCallback(() => {

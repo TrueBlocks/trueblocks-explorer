@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
 
 import { GetUserPreferences } from '@app';
 import { FormField, WizardForm } from '@components';
-import { useEmitters } from '@utils';
+import { emitStatus } from '@utils';
 import { LogError } from 'wailsjs/runtime/runtime';
 
 import { WizardStepProps } from '.';
@@ -18,7 +18,6 @@ export const StepUserInfo = ({
 }: WizardStepProps) => {
   const { name, email } = state.data;
   const { nameError, emailError } = state.validation;
-  const { emitStatus } = useEmitters();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -39,7 +38,7 @@ export const StepUserInfo = ({
     if (!name && !email) {
       loadUserData();
     }
-  }, [name, email, updateData, emitStatus]);
+  }, [name, email, updateData]);
 
   const handleNameChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { Log, useEmitters } from '.';
+import { Log, emitError } from '.';
 
 // Interface for structured error information from backend
 interface StructuredError {
@@ -79,32 +79,28 @@ const getUserFriendlyMessage = (structured: StructuredError): string => {
 
 export const useErrorHandler = () => {
   const [error, setError] = useState<Error | null>(null);
-  const { emitError } = useEmitters();
 
-  const handleError = useCallback(
-    (err: unknown, context: string) => {
-      const e = err instanceof Error ? err : new Error(String(err));
+  const handleError = useCallback((err: unknown, context: string) => {
+    const e = err instanceof Error ? err : new Error(String(err));
 
-      // Try to parse structured error information
-      const structured = parseStructuredError(e.message);
+    // Try to parse structured error information
+    const structured = parseStructuredError(e.message);
 
-      let userMessage: string;
-      let logMessage: string;
+    let userMessage: string;
+    let logMessage: string;
 
-      if (structured) {
-        userMessage = getUserFriendlyMessage(structured);
-        logMessage = `${structured.type} error in ${structured.collection}[${structured.dataFacet}] during ${structured.operation}: ${structured.message}`;
-      } else {
-        userMessage = `${e.message} ${context}`;
-        logMessage = `Error in ${context}: ${e.message}`;
-      }
+    if (structured) {
+      userMessage = getUserFriendlyMessage(structured);
+      logMessage = `${structured.type} error in ${structured.collection}[${structured.dataFacet}] during ${structured.operation}: ${structured.message}`;
+    } else {
+      userMessage = `${e.message} ${context}`;
+      logMessage = `Error in ${context}: ${e.message}`;
+    }
 
-      setError(e);
-      emitError(userMessage);
-      Log(logMessage);
-    },
-    [emitError],
-  );
+    setError(e);
+    emitError(userMessage);
+    Log(logMessage);
+  }, []);
 
   const clearError = useCallback(() => setError(null), []);
 

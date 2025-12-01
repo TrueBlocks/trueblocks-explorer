@@ -22,7 +22,7 @@ import {
   Title,
 } from '@mantine/core';
 import { types } from '@models';
-import { LogError, addressToHex, useEmitters } from '@utils';
+import { LogError, addressToHex, emitError, emitStatus } from '@utils';
 import { TxReviewModal } from '@wallet';
 import {
   PreparedTransaction,
@@ -173,7 +173,6 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 
   // Wallet gated action hook
   const { isWalletConnected, createWalletGatedAction } = useWalletGatedAction();
-  const { emitError, emitStatus } = useEmitters();
 
   // Track pending transaction submission
   const [pendingSubmission, setPendingSubmission] = useState(false);
@@ -263,7 +262,6 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     contractState.address,
     onTransaction,
     isFormValid,
-    emitError,
   ]);
 
   // Set default selected function if showing all

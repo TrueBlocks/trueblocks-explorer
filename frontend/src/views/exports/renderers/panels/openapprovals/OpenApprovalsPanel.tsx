@@ -26,8 +26,9 @@ import {
   LogError,
   addressToHex,
   displayHash,
+  emitError,
+  emitStatus,
   formatNumericValue,
-  useEmitters,
 } from '@utils';
 import {
   PreparedTransaction,
@@ -136,7 +137,6 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   const { createWalletGatedAction, isWalletConnected, isConnecting } =
     useWalletGatedAction();
   useWallet();
-  const { emitError, emitStatus } = useEmitters();
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash: string) => {
       setRevokeModal({ opened: false, transactionData: null });
@@ -165,7 +165,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         throw error;
       }
     },
-    [sendTransaction, emitError],
+    [sendTransaction],
   );
 
   const createRevokeTransaction = useCallback(() => {
@@ -189,7 +189,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       LogError('Creating revoke transaction:', String(error));
       emitError('Failed to prepare revoke transaction');
     }
-  }, [approval, emitError]);
+  }, [approval]);
 
   const createApprovalTransaction = useCallback(() => {
     try {
@@ -215,7 +215,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       LogError('Creating approval transaction:', String(error));
       emitError('Failed to prepare approval transaction');
     }
-  }, [approval, getTokenAddress, emitError]);
+  }, [approval, getTokenAddress]);
 
   const handleRevoke = createWalletGatedAction(() => {
     createRevokeTransaction();

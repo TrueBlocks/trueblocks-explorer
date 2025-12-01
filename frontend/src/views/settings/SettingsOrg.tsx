@@ -4,14 +4,13 @@ import { GetOrgPreferences, SetOrgPreferences } from '@app';
 import { FormField } from '@components';
 import { FormView } from '@layout';
 import { preferences } from '@models';
-import { useEmitters } from '@utils';
+import { emitStatus } from '@utils';
 
 type IndexableOrg = preferences.OrgPreferences & { [key: string]: unknown };
 
 export const SettingsOrg = () => {
   const [formData, setFormData] = useState<IndexableOrg>({});
   const [originalData, setOriginalData] = useState<IndexableOrg>({});
-  const { emitStatus } = useEmitters();
 
   useEffect(() => {
     GetOrgPreferences().then((data) => {

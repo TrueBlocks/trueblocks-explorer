@@ -12,7 +12,7 @@ import { FormField, WizardForm } from '@components';
 import { useIconSets } from '@hooks';
 import { ActionIcon, Card, Group, Tabs, Text } from '@mantine/core';
 import { preferences } from '@models';
-import { LogError, useEmitters } from '@utils';
+import { LogError, emitStatus } from '@utils';
 
 import { WizardStepProps } from '.';
 import { WizardStateData } from './WizardTypes';
@@ -31,7 +31,6 @@ export const StepChainInfo = ({
   const [chains, setChains] = useState<preferences.Chain[]>([]);
   const [activeTab, setActiveTab] = useState<string | null>('new');
   const firstInputRef = useRef<HTMLInputElement>(null);
-  const { emitStatus } = useEmitters();
 
   useEffect(() => {
     setTimeout(() => {
@@ -92,7 +91,7 @@ export const StepChainInfo = ({
     };
 
     loadChains();
-  }, [clearForm, updateFormWithChain, emitStatus]);
+  }, [clearForm, updateFormWithChain]);
 
   const handleTabChange = (value: string | null) => {
     if (!value) {

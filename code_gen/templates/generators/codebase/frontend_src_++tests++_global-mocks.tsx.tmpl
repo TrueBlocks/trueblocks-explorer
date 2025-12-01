@@ -65,7 +65,7 @@ vi.mock('@utils', async (importOriginal) => {
     ...(original as object),
     Log: vi.fn(),
     checkAndNavigateToWizard: () => Promise.resolve(null),
-    useEmitters: () => ({ emitStatus: vi.fn(), emitError: vi.fn() }),
+
     isDebugMode: vi.fn(() => false),
     useErrorHandler: vi.fn(() => vi.fn()),
   };

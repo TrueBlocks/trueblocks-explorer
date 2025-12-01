@@ -26,6 +26,7 @@ export * from './StyledDivider';
 export * from './StyledModal';
 export * from './StyledSelect';
 export * from './ThemeProvider';
+export * from './TransactionSuccessModal';
 export * from './WalletConnectButton';
 
 export * from './detail';

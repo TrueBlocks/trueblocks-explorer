@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { OpenLink } from '@app';
-import { StyledBadge, StyledButton } from '@components';
+import {
+  StyledBadge,
+  StyledButton,
+  TransactionSuccessModal,
+} from '@components';
 import {
   Alert,
-  Anchor,
   Card,
   Divider,
   Grid,
@@ -20,7 +22,7 @@ import {
   Title,
 } from '@mantine/core';
 import { types } from '@models';
-import { LogError, addressToHex } from '@utils';
+import { LogError, addressToHex, useEmitters } from '@utils';
 import { TxReviewModal } from '@wallet';
 import {
   PreparedTransaction,
@@ -146,13 +148,11 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 }) => {
   const [formState, setFormState] = useState<FormState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [transactionResult, setTransactionResult] = useState<string | null>(
-    null,
-  );
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [transactionData, setTransactionData] =
     useState<TransactionData | null>(null);
   const [reviewModalOpened, setReviewModalOpened] = useState(false);
+  const [successModalOpened, setSuccessModalOpened] = useState(false);
   const [selectedFunction, setSelectedFunction] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
@@ -160,20 +160,20 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash) => {
       setTransactionHash(txHash);
-      setTransactionResult(
-        `Transaction signed! View on Etherscan: https://etherscan.io/tx/${txHash}`,
-      );
       setReviewModalOpened(false);
+      setSuccessModalOpened(true);
+      emitStatus('Contract function executed successfully');
     },
     onError: (error) => {
       LogError(`Transaction failed: ${error}`);
-      setTransactionResult(`Transaction failed: ${error}`);
       setTransactionHash(null);
+      emitError('Transaction rejected by wallet');
     },
   });
 
   // Wallet gated action hook
   const { isWalletConnected, createWalletGatedAction } = useWalletGatedAction();
+  const { emitError, emitStatus } = useEmitters();
 
   // Track pending transaction submission
   const [pendingSubmission, setPendingSubmission] = useState(false);
@@ -211,7 +211,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     }
 
     setIsSubmitting(true);
-    setTransactionResult(null);
+
     setTransactionHash(null);
 
     try {
@@ -238,8 +238,8 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         inputValues,
       );
       if (!validation.isValid) {
-        setTransactionResult(
-          `Validation failed: ${validation.errors.join(', ')}`,
+        emitError(
+          `Invalid function parameters: ${validation.errors.join(', ')}`,
         );
         return;
       }
@@ -250,9 +250,10 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
 
       onTransaction?.(txData);
     } catch (error) {
-      setTransactionResult(
+      LogError(
         `Error preparing transaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
+      emitError('Failed to prepare transaction');
     } finally {
       setIsSubmitting(false);
     }
@@ -262,6 +263,7 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
     contractState.address,
     onTransaction,
     isFormValid,
+    emitError,
   ]);
 
   // Set default selected function if showing all
@@ -540,39 +542,13 @@ export const ContractExecute: React.FC<ContractExecuteProps> = ({
         </StyledButton>
       </Group>
 
-      {transactionResult && (
-        <Alert
-          variant="light"
-          bd={
-            transactionResult.includes('failed') ||
-            transactionResult.includes('Error')
-              ? '1px solid var(--mantine-color-error-6)'
-              : '1px solid var(--mantine-color-success-6)'
-          }
-          bg={
-            transactionResult.includes('failed') ||
-            transactionResult.includes('Error')
-              ? 'error.1'
-              : 'success.1'
-          }
-        >
-          {transactionHash ? (
-            <Stack gap="xs">
-              <Text>Transaction signed successfully!</Text>
-              <Anchor
-                component="button"
-                onClick={() => {
-                  OpenLink('transactionHash', transactionHash);
-                }}
-              >
-                View on Etherscan
-              </Anchor>
-            </Stack>
-          ) : (
-            transactionResult
-          )}
-        </Alert>
-      )}
+      <TransactionSuccessModal
+        opened={successModalOpened}
+        transactionHash={transactionHash}
+        onClose={() => setSuccessModalOpened(false)}
+        title="Transaction Signed!"
+        message="Your contract execution has been submitted to the network."
+      />
 
       {/* Transaction Review Modal */}
       <TxReviewModal

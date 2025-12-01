@@ -7,7 +7,6 @@
 // EXISTING_CODE
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { OpenLink } from '@app';
 import {
   DetailContainer,
   DetailHeader,
@@ -16,6 +15,7 @@ import {
   PanelRow,
   PanelTable,
   StyledButton,
+  TransactionSuccessModal,
   approvalToAddressInfo,
 } from '@components';
 import { useViewContext } from '@contexts';
@@ -27,6 +27,7 @@ import {
   addressToHex,
   displayHash,
   formatNumericValue,
+  useEmitters,
 } from '@utils';
 import {
   PreparedTransaction,
@@ -135,14 +136,17 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   const { createWalletGatedAction, isWalletConnected, isConnecting } =
     useWalletGatedAction();
   useWallet();
+  const { emitError, emitStatus } = useEmitters();
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash: string) => {
       setRevokeModal({ opened: false, transactionData: null });
       setApproveModal({ opened: false, transactionData: null });
       setSuccessModal({ opened: true, txHash });
+      emitStatus('Transaction submitted successfully');
     },
     onError: (error: string) => {
       LogError('Transaction error:', error);
+      emitError('Transaction rejected by wallet');
     },
   });
 
@@ -157,10 +161,11 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         await sendTransaction(preparedTx);
       } catch (error) {
         LogError('Failed to send transaction:', String(error));
+        emitError('Failed to submit transaction to network');
         throw error;
       }
     },
-    [sendTransaction],
+    [sendTransaction, emitError],
   );
 
   const createRevokeTransaction = useCallback(() => {
@@ -182,8 +187,9 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       });
     } catch (error) {
       LogError('Creating revoke transaction:', String(error));
+      emitError('Failed to prepare revoke transaction');
     }
-  }, [approval]);
+  }, [approval, emitError]);
 
   const createApprovalTransaction = useCallback(() => {
     try {
@@ -207,8 +213,9 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       });
     } catch (error) {
       LogError('Creating approval transaction:', String(error));
+      emitError('Failed to prepare approval transaction');
     }
-  }, [approval, getTokenAddress]);
+  }, [approval, getTokenAddress, emitError]);
 
   const handleRevoke = createWalletGatedAction(() => {
     createRevokeTransaction();
@@ -362,108 +369,13 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
             : undefined,
         }}
       />
-      {successModal.opened && successModal.txHash && (
-        <>
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 999,
-            }}
-            onClick={handleSuccessModalClose}
-          />
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: 'white',
-              padding: '24px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              minWidth: '400px',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '8px' }}>✅</div>
-              <h3 style={{ margin: '0 0 8px 0', color: '#28a745' }}>
-                Transaction Sent!
-              </h3>
-              <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>
-                Your revoke transaction has been submitted to the network.
-              </p>
-            </div>
-            <div
-              style={{
-                padding: '12px',
-                background: '#f8f9fa',
-                borderRadius: '4px',
-                marginBottom: '20px',
-              }}
-            >
-              <p
-                style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#666' }}
-              >
-                Transaction Hash:
-              </p>
-              <code
-                style={{
-                  fontSize: '12px',
-                  fontFamily: 'monospace',
-                  wordBreak: 'break-all',
-                  display: 'block',
-                  padding: '4px',
-                }}
-              >
-                {successModal.txHash}
-              </code>
-            </div>
-            <div
-              style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}
-            >
-              <button
-                onClick={() =>
-                  OpenLink('transactionHash', successModal.txHash!)
-                }
-                style={{
-                  padding: '10px 16px',
-                  background: '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                }}
-              >
-                View on Etherscan
-              </button>
-              <button
-                onClick={handleSuccessModalClose}
-                style={{
-                  padding: '10px 16px',
-                  background: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+      <TransactionSuccessModal
+        opened={successModal.opened}
+        transactionHash={successModal.txHash}
+        onClose={handleSuccessModalClose}
+        title="Transaction Sent!"
+        message="Your revoke transaction has been submitted to the network."
+      />
       {revokeModal.opened && revokeModal.transactionData && (
         <TxReviewModal
           opened={revokeModal.opened}

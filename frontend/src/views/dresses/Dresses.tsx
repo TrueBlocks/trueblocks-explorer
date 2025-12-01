@@ -128,10 +128,13 @@ export const Dresses = () => {
     },
   );
 
-  // Listen for active address/chain/period changes to refresh data
+  // Listen for active address/chain/contract/period changes to refresh data
   useEvent(msgs.EventType.ADDRESS_CHANGED, fetchData);
   useEvent(msgs.EventType.CHAIN_CHANGED, fetchData);
   useEvent(msgs.EventType.PERIOD_CHANGED, fetchData);
+  useEvent(msgs.EventType.CONTRACT_CHANGED, () => {
+    fetchData();
+  });
 
   useEffect(() => {
     fetchData();

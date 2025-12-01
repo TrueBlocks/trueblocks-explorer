@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { ExecuteRowAction } from '@app';
+import { ExecuteRowAction, GetContracts } from '@app';
 import {
   GenerationProgressModal,
   RendererParams,
   StyledButton,
   StyledSelect,
 } from '@components';
-import { useIconSets, usePreferences } from '@hooks';
+import { useIconSets, usePayload, usePreferences } from '@hooks';
 import {
   Center,
   Grid,
@@ -18,7 +18,16 @@ import {
   Title,
 } from '@mantine/core';
 import { dresses, model, project, types } from '@models';
-import { Log } from '@utils';
+import { Log, LogError, addressToHex } from '@utils';
+import {
+  PreparedTransaction,
+  TransactionData,
+  TxReviewModal,
+  buildTransaction,
+  useWallet,
+  useWalletConnection,
+  useWalletGatedAction,
+} from '@wallet';
 
 import { Thumbnail } from '../../components/Thumbnail';
 import { useScrollSelectedIntoView } from '../../hooks/useScrollSelectedIntoView';
@@ -39,6 +48,15 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   );
+  const [mintModal, setMintModal] = useState<{
+    opened: boolean;
+    transactionData: TransactionData | null;
+  }>({ opened: false, transactionData: null });
+  const [successModal, setSuccessModal] = useState<{
+    opened: boolean;
+    txHash: string | null;
+  }>({ opened: false, txHash: null });
+
   const viewStateKey: project.ViewStateKey = useMemo(
     () => ({
       viewName: 'dresses',
@@ -47,11 +65,53 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
     [],
   );
 
+  const createPayload = usePayload('dresses');
+  const payload = useMemo(
+    () => createPayload(types.DataFacet.GENERATOR),
+    [createPayload],
+  );
+
   const thumbRowRef = useRef<HTMLDivElement | null>(null);
   const hasScrolledOnMount = useRef(false);
   const icons = useIconSets();
   const SpeakIcon = icons.Speak;
   const { chromeCollapsed } = usePreferences();
+
+  const { createWalletGatedAction, isWalletConnected, isConnecting } =
+    useWalletGatedAction();
+  useWallet();
+  const { sendTransaction } = useWalletConnection({
+    onTransactionSigned: (txHash: string) => {
+      setMintModal({ opened: false, transactionData: null });
+      setSuccessModal({ opened: true, txHash });
+      Log('mint:transaction:signed', txHash);
+    },
+    onError: (error: string) => {
+      LogError('Mint transaction error:', error);
+    },
+  });
+
+  // Get DalleDress contract ABI
+  const [dalleDressContract, setDalleDressContract] =
+    useState<types.Contract | null>(null);
+
+  useEffect(() => {
+    const fetchContract = async () => {
+      const contracts = await GetContracts();
+      const contract = contracts.find(
+        (c: types.Contract) => c.name === 'DalleDress',
+      );
+      setDalleDressContract(contract || null);
+    };
+    fetchContract();
+  }, []);
+
+  const safeMintFunction = useMemo(() => {
+    if (!dalleDressContract?.abi?.functions) return null;
+    return dalleDressContract.abi.functions.find(
+      (f: types.Function) => f.name === 'safeMint',
+    );
+  }, [dalleDressContract]);
 
   const {
     orig,
@@ -133,6 +193,63 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
     hasEnhancedPrompt: !!selectedItem?.enhancedPrompt,
   });
 
+  const handleConfirmTransaction = useCallback(
+    async (preparedTx: PreparedTransaction) => {
+      try {
+        await sendTransaction(preparedTx);
+      } catch (error) {
+        LogError('Failed to send mint transaction:', String(error));
+        throw error;
+      }
+    },
+    [sendTransaction],
+  );
+
+  const createMintTransaction = useCallback(() => {
+    if (!safeMintFunction || !dalleDressContract || !selectedItem) {
+      LogError('Missing required data for mint transaction');
+      return;
+    }
+
+    try {
+      const contractAddress = addressToHex(dalleDressContract.address);
+      const walletAddress = payload.connectedAddress || '';
+      const tokenUri = selectedItem.imageUrl || '';
+
+      Log(
+        'mint:creating:transaction',
+        contractAddress,
+        walletAddress,
+        tokenUri,
+      );
+
+      const transactionData: TransactionData = buildTransaction(
+        contractAddress,
+        safeMintFunction,
+        [
+          { name: 'to', type: 'address', value: walletAddress },
+          { name: 'uri', type: 'string', value: tokenUri },
+        ],
+        '0.005', // mintCost in ETH
+      );
+
+      setMintModal({
+        opened: true,
+        transactionData,
+      });
+    } catch (error) {
+      LogError('Creating mint transaction:', String(error));
+    }
+  }, [safeMintFunction, dalleDressContract, selectedItem, payload]);
+
+  const handleMint = createWalletGatedAction(() => {
+    createMintTransaction();
+  }, 'Mint');
+
+  const handleSuccessModalClose = useCallback(() => {
+    setSuccessModal({ opened: false, txHash: null });
+  }, []);
+
   const handleButtonClick = useCallback(
     (label: string) => {
       if (!selectedItem?.original || !selectedItem.series) return;
@@ -143,7 +260,6 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
         setProgressModalOpened(true);
         Log('generator:modal:state:' + progressModalOpened);
       }
-      // TODO: Implement actual button click logic for other buttons
     },
     [selectedItem?.original, selectedItem?.series, progressModalOpened],
   );
@@ -564,7 +680,32 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
                   >
                     Generate
                   </StyledButton>
-                  {['Mint', 'Burn', 'Merch'].map((label) => (
+                  <StyledButton
+                    size="sm"
+                    variant="primary"
+                    style={{ width: '100%', marginTop: '8px' }}
+                    onClick={handleMint}
+                    disabled={
+                      !selectedItem?.original ||
+                      !selectedItem.series ||
+                      !safeMintFunction ||
+                      isConnecting
+                    }
+                    title={
+                      isConnecting
+                        ? 'Connecting wallet... Please check your wallet app'
+                        : !isWalletConnected
+                          ? 'Connect wallet to mint NFT'
+                          : !safeMintFunction
+                            ? 'Contract ABI not available'
+                            : !selectedItem?.imageUrl
+                              ? 'No image to mint'
+                              : 'Mint this image as an NFT (0.005 ETH)'
+                    }
+                  >
+                    {isConnecting ? 'Connecting...' : 'Mint'}
+                  </StyledButton>
+                  {['Burn', 'Merch'].map((label) => (
                     <StyledButton
                       key={label}
                       size="sm"
@@ -591,6 +732,105 @@ export const GeneratorFacet = ({ params }: { params: RendererParams }) => {
         }}
         onComplete={handleGenerationComplete}
       />
+
+      <TxReviewModal
+        opened={mintModal.opened}
+        onClose={() => setMintModal({ opened: false, transactionData: null })}
+        transactionData={mintModal.transactionData}
+        onConfirm={handleConfirmTransaction}
+        editable={true}
+        rowData={{
+          tokenAddress: dalleDressContract?.address
+            ? addressToHex(dalleDressContract.address)
+            : undefined,
+        }}
+      />
+
+      {successModal.opened && successModal.txHash && (
+        <>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'rgba(0,0,0,0.5)',
+              zIndex: 999,
+            }}
+            onClick={handleSuccessModalClose}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: 'white',
+              padding: '24px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              zIndex: 1000,
+              minWidth: '400px',
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '48px', marginBottom: '8px' }}>✅</div>
+              <h3 style={{ margin: '0 0 8px 0', color: '#28a745' }}>
+                NFT Minted!
+              </h3>
+              <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>
+                Your mint transaction has been submitted to the network.
+              </p>
+            </div>
+            <div
+              style={{
+                padding: '12px',
+                background: '#f8f9fa',
+                borderRadius: '4px',
+                marginBottom: '20px',
+              }}
+            >
+              <p
+                style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#666' }}
+              >
+                Transaction Hash:
+              </p>
+              <code
+                style={{
+                  fontSize: '12px',
+                  fontFamily: 'monospace',
+                  wordBreak: 'break-all',
+                  display: 'block',
+                  padding: '4px',
+                }}
+              >
+                {successModal.txHash}
+              </code>
+            </div>
+            <div
+              style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}
+            >
+              <button
+                onClick={handleSuccessModalClose}
+                style={{
+                  padding: '10px 16px',
+                  background: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Debug info */}
       <div

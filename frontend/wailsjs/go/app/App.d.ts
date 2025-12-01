@@ -4,7 +4,6 @@ import {types} from '../models';
 import {crud} from '../models';
 import {project} from '../models';
 import {base} from '../models';
-import {app} from '../models';
 import {menu} from '../models';
 import {sdk} from '../models';
 import {abis} from '../models';
@@ -21,6 +20,7 @@ import {monitors} from '../models';
 import {names} from '../models';
 import {projects} from '../models';
 import {status} from '../models';
+import {app} from '../models';
 
 export function AbisCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
@@ -46,17 +46,11 @@ export function ConfigOk():Promise<void>;
 
 export function ConvertToAddress(arg1:string):Promise<base.Address|boolean>;
 
-export function ConvertTokenAmount(arg1:types.Payload,arg2:app.ConvertTokenAmountRequest):Promise<app.ConvertTokenAmountResult>;
-
 export function DeleteCustomSkin(arg1:string):Promise<void>;
 
 export function DressesCrud(arg1:types.Payload,arg2:crud.Operation,arg3:any):Promise<void>;
 
 export function Encode(arg1:types.Function,arg2:Array<any>):Promise<string>;
-
-export function EncodeTransaction(arg1:types.Payload,arg2:app.EncodeTransactionRequest):Promise<app.EncodeTransactionResult>;
-
-export function EstimateGasAndPrice(arg1:types.Payload,arg2:app.TransactionPayload):Promise<app.GasEstimationResult>;
 
 export function ExecuteRowAction(arg1:types.RowActionPayload):Promise<void>;
 
@@ -261,6 +255,8 @@ export function OpenLink(arg1:string,arg2:string):Promise<void>;
 export function OpenProjectFile(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;
+
+export function PrepareTransaction(arg1:types.Payload,arg2:app.PrepareTransactionRequest):Promise<app.PrepareTransactionResult>;
 
 export function ReadToMe(arg1:types.Payload,arg2:string):Promise<string>;
 

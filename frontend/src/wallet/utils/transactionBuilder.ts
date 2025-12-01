@@ -1,36 +1,5 @@
-import { Encode } from '@app';
-import { EstimateGasAndPrice } from '@app';
+import { PrepareTransaction } from '@app';
 import { types } from '@models';
-
-// TODO: BOGUS - IT MIGHT BE BETTER TO CREATE A @contracts or @contract_utils folder than put these in @utils
-
-// Standard ERC20 approve function ABI
-export const ERC20_APPROVE_FUNCTION: types.Function = {
-  name: 'approve',
-  type: 'function',
-  inputs: [
-    types.Parameter.createFrom({
-      name: 'spender',
-      type: 'address',
-      internalType: 'address',
-    }),
-    types.Parameter.createFrom({
-      name: 'amount',
-      type: 'uint256',
-      internalType: 'uint256',
-    }),
-  ],
-  outputs: [
-    types.Parameter.createFrom({
-      name: '',
-      type: 'bool',
-      internalType: 'bool',
-    }),
-  ],
-  stateMutability: 'nonpayable',
-  encoding: '0x095ea7b3',
-  convertValues: () => {},
-};
 
 export interface TransactionData {
   to: string;
@@ -52,40 +21,6 @@ export interface PreparedTransaction {
   gas?: string;
   gasPrice?: string;
 }
-
-/**
- * Encodes function parameters for contract calls using the core's backend
- * This leverages the robust Go implementation that uses go-ethereum's ABI encoding
- */
-export const encodeParameters = async (
-  functionAbi: types.Function,
-  inputs: TransactionInput[],
-): Promise<string> => {
-  try {
-    // Convert inputs to the format expected by the backend
-    const callArguments = inputs.map((input) => {
-      // The Go backend expects proper types, not strings
-      return convertInputValue(input.type, input.value);
-    });
-
-    // Call the core's backend Encode function which uses Function.Pack
-    const encodedData = await Encode(functionAbi, callArguments);
-
-    return encodedData;
-  } catch (error) {
-    let errorMsg = 'Unknown error';
-    if (error instanceof Error) {
-      errorMsg = error.message;
-    } else if (typeof error === 'string') {
-      errorMsg = error;
-    } else if (error && typeof error === 'object') {
-      // Try to extract meaningful error information
-      errorMsg = JSON.stringify(error);
-    }
-
-    throw new Error(`Failed to encode transaction parameters: ${errorMsg}`);
-  }
-};
 
 /**
  * Convert string input values to proper types for the Go backend
@@ -146,43 +81,43 @@ export const buildTransaction = (
 };
 
 /**
- * Prepares a transaction for signing
+ * Prepares a transaction for signing using unified backend function
  */
 export const prepareTransaction = async (
   payload: types.Payload,
   transactionData: TransactionData,
 ): Promise<PreparedTransaction> => {
   try {
-    const encodedData = await encodeParameters(
-      transactionData.function,
-      transactionData.inputs,
+    // Convert inputs to parameter values for backend
+    const params = transactionData.inputs.map((input) =>
+      convertInputValue(input.type, input.value),
     );
 
-    // Use backend API for complete gas estimation (includes both gas limit and price)
-    const gasPayload = {
-      chain: payload.activeChain || 'mainnet',
+    // Call unified backend function that encodes + estimates gas
+    // Pass plain object - Wails will handle the conversion
+    const result = await PrepareTransaction(payload, {
+      function: transactionData.function,
+      params: params,
       from:
         payload.connectedAddress ||
         '0x0000000000000000000000000000000000000000',
       to: transactionData.to,
-      data: encodedData,
-      value: transactionData.value || '0x0',
-    };
+      value: transactionData.value || '0',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
-    const gasResult = await EstimateGasAndPrice(payload, gasPayload);
-
-    if (!gasResult.success) {
+    if (!result.success) {
       throw new Error(
-        `Gas estimation failed: ${gasResult.error || 'Unknown error'}. Transaction cancelled to prevent potential failures.`,
+        `Transaction preparation failed: ${result.error || 'Unknown error'}. Transaction cancelled to prevent potential failures.`,
       );
     }
 
-    const estimatedGas = parseInt(gasResult.gasEstimate, 16).toString();
-    const gasPrice = parseInt(gasResult.gasPrice, 16).toString();
+    const estimatedGas = parseInt(result.gasEstimate, 16).toString();
+    const gasPrice = parseInt(result.gasPrice, 16).toString();
 
     return {
       to: transactionData.to,
-      data: encodedData,
+      data: result.transactionData,
       value: transactionData.value || '0',
       gas: estimatedGas,
       gasPrice: gasPrice,
@@ -192,83 +127,6 @@ export const prepareTransaction = async (
       `Failed to prepare transaction: ${
         error instanceof Error ? error.message : 'Unknown error'
       }`,
-    );
-  }
-};
-
-/**
- * Estimates gas for a transaction using backend RPC calls
- * This replaces frontend heuristics with real network estimation
- */
-export const estimateGas = async (
-  payload: types.Payload,
-  transactionData: TransactionData,
-): Promise<string> => {
-  try {
-    // Encode the transaction data
-    const encodedData = await encodeParameters(
-      transactionData.function,
-      transactionData.inputs,
-    );
-
-    // Create payload for backend
-    const gasPayload = {
-      chain: payload.activeChain || 'mainnet',
-      from:
-        payload.connectedAddress ||
-        '0x0000000000000000000000000000000000000000',
-      to: transactionData.to,
-      data: encodedData,
-      value: transactionData.value || '0x0',
-    };
-
-    const result = await EstimateGasAndPrice(payload, gasPayload);
-
-    if (!result.success) {
-      throw new Error(
-        `Gas estimation failed: ${result.error || 'Unknown error'}. Please check your RPC connection and try again.`,
-      );
-    }
-
-    // Convert hex result to decimal string
-    return parseInt(result.gasEstimate, 16).toString();
-  } catch (error) {
-    throw new Error(
-      `Failed to estimate gas: ${error instanceof Error ? error.message : 'Unknown error'}. Transaction cancelled.`,
-    );
-  }
-};
-
-/**
- * Gets current gas price using backend RPC calls
- * @deprecated Use estimateGas instead which provides both gas estimate and gas price
- */
-export const getGasPrice = async (payload: types.Payload): Promise<string> => {
-  try {
-    // Use a dummy transaction to get current gas price
-    const dummyPayload = {
-      chain: payload.activeChain || 'mainnet',
-      from:
-        payload.connectedAddress ||
-        '0x0000000000000000000000000000000000000000',
-      to: '0x0000000000000000000000000000000000000000',
-      data: '0x',
-      value: '0x0',
-    };
-
-    const result = await EstimateGasAndPrice(payload, dummyPayload);
-
-    if (!result.success) {
-      throw new Error(
-        `Gas price estimation failed: ${result.error || 'Unknown error'}. Please check your RPC connection and try again.`,
-      );
-    }
-
-    // Convert hex result to decimal string
-    return parseInt(result.gasPrice, 16).toString();
-  } catch (error) {
-    throw new Error(
-      `Failed to get gas price: ${error instanceof Error ? error.message : 'Unknown error'}. Transaction cancelled.`,
     );
   }
 };

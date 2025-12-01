@@ -5,7 +5,7 @@ import { AddAddressModal, StyledSelect } from '@components';
 import { useActiveProject } from '@hooks';
 import { Group, Loader, Text } from '@mantine/core';
 import { types } from '@models';
-import { Log, PeriodOptions, getDisplayAddress } from '@utils';
+import { PeriodOptions, getDisplayAddress } from '@utils';
 
 export const ProjectContextBar = ({}) => {
   const [addModalOpened, setAddModalOpened] = useState(false);
@@ -84,16 +84,8 @@ export const ProjectContextBar = ({}) => {
 
   const handleContractChange = async (contract: string | null) => {
     const contractValue = contract || '';
-    Log(
-      `[ProjectContextBar] Contract change: ${JSON.stringify({
-        from: activeContract,
-        to: contractValue,
-        willUpdate: contractValue !== activeContract,
-      })}`,
-    );
     if (contractValue !== activeContract) {
       await setActiveContract(contractValue);
-      Log('[ProjectContextBar] setActiveContract completed');
     }
   };
 

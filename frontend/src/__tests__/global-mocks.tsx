@@ -100,15 +100,12 @@ vi.mock('@app', async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...(original as object),
-    EncodeTransaction: vi.fn().mockResolvedValue({
+    PrepareTransaction: vi.fn().mockResolvedValue({
       success: true,
-      data: '0x095ea7b3000000000000000000000000987654321098765432109876543210987654321000000000000000000000000000000000000000000000000000000000000000000',
-      error: '',
-    }),
-    EstimateGasAndPrice: vi.fn().mockResolvedValue({
-      success: true,
-      gasEstimate: '0xea60', // 60000 in hex
-      gasPrice: '0x4a817c800', // 20 gwei in hex
+      transactionData:
+        '0x095ea7b3000000000000000000000000spenderaddress0000000000000000000000000000000000000000000000000000000000000000',
+      gasEstimate: '0xea60',
+      gasPrice: '0x4a817c800',
       error: '',
     }),
   };

@@ -50,10 +50,6 @@ export function ConvertToAddress(arg1) {
   return window['go']['app']['App']['ConvertToAddress'](arg1);
 }
 
-export function ConvertTokenAmount(arg1, arg2) {
-  return window['go']['app']['App']['ConvertTokenAmount'](arg1, arg2);
-}
-
 export function DeleteCustomSkin(arg1) {
   return window['go']['app']['App']['DeleteCustomSkin'](arg1);
 }
@@ -64,14 +60,6 @@ export function DressesCrud(arg1, arg2, arg3) {
 
 export function Encode(arg1, arg2) {
   return window['go']['app']['App']['Encode'](arg1, arg2);
-}
-
-export function EncodeTransaction(arg1, arg2) {
-  return window['go']['app']['App']['EncodeTransaction'](arg1, arg2);
-}
-
-export function EstimateGasAndPrice(arg1, arg2) {
-  return window['go']['app']['App']['EstimateGasAndPrice'](arg1, arg2);
 }
 
 export function ExecuteRowAction(arg1) {
@@ -480,6 +468,10 @@ export function OpenProjectFile(arg1) {
 
 export function OpenURL(arg1) {
   return window['go']['app']['App']['OpenURL'](arg1);
+}
+
+export function PrepareTransaction(arg1, arg2) {
+  return window['go']['app']['App']['PrepareTransaction'](arg1, arg2);
 }
 
 export function ReadToMe(arg1, arg2) {

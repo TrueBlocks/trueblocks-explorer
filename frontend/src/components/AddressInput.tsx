@@ -1,6 +1,8 @@
 import { Textarea } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { ADDRESS_DESCRIPTION, ADDRESS_PLACEHOLDER } from '@wallet';
+
+const ADDRESS_PLACEHOLDER = '0x1234...5678 or vitalik.eth';
+const ADDRESS_DESCRIPTION = 'Enter one or more addresses or ENS names';
 
 interface AddressInputProps<T = Record<string, unknown>> {
   form: UseFormReturnType<T>;

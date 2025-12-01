@@ -1,7 +1,9 @@
 import { types } from '@models';
 
-import { ADDRESS_VALIDATION_ERROR } from './';
+const ADDRESS_VALIDATION_ERROR =
+  'Not a valid address. Must start with 0x and be 42 characters, or be an ENS name ending in .eth';
 
+// isValidSolidityType - not really used
 export const isValidSolidityType = (type: string): boolean => {
   const validTypes = [
     // Basic types

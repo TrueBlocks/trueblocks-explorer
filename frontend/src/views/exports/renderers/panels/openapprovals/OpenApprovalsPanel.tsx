@@ -5,7 +5,7 @@
  * This file was auto generated. Do not edit.
  */
 // EXISTING_CODE
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { OpenLink } from '@app';
 import {
@@ -23,41 +23,67 @@ import { usePayload } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
-  Log,
   LogError,
   addressToHex,
   displayHash,
   formatNumericValue,
-  useEmitters,
 } from '@utils';
 import {
-  ApprovalTransaction,
   PreparedTransaction,
-  TransactionConfirm,
   TransactionData,
-  TransactionModelHelpers,
+  TxReviewModal,
+  buildTransaction,
   useWallet,
   useWalletConnection,
   useWalletGatedAction,
 } from '@wallet';
 import { isInfiniteValue } from 'src/components/renderers/utils';
-import { ConvertTokenAmount } from 'wailsjs/go/app/App';
-import { app } from 'wailsjs/go/models';
 
 import '../../../../../components/detail/DetailTable.css';
+
+// Standard ERC20 approve function ABI
+export const ERC20_APPROVE_FUNCTION: types.Function = {
+  name: 'approve',
+  type: 'function',
+  inputs: [
+    types.Parameter.createFrom({
+      name: 'spender',
+      type: 'address',
+      internalType: 'address',
+    }),
+    types.Parameter.createFrom({
+      name: 'amount',
+      type: 'uint256',
+      internalType: 'uint256',
+    }),
+  ],
+  outputs: [
+    types.Parameter.createFrom({
+      name: '',
+      type: 'bool',
+      internalType: 'bool',
+    }),
+  ],
+  stateMutability: 'nonpayable',
+  encoding: '0x095ea7b3',
+  convertValues: () => {},
+};
 
 // EXISTING_CODE
 
 export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
-  const { emitError } = useEmitters();
   const { currentView } = useViewContext();
   const createPayload = usePayload(currentView);
   const payload = useMemo(
     () => createPayload('' as types.DataFacet),
     [createPayload],
   );
-  const [transactionModal, setTransactionModal] = useState<{
+  const [revokeModal, setRevokeModal] = useState<{
+    opened: boolean;
+    transactionData: TransactionData | null;
+  }>({ opened: false, transactionData: null });
+  const [approveModal, setApproveModal] = useState<{
     opened: boolean;
     transactionData: TransactionData | null;
   }>({ opened: false, transactionData: null });
@@ -65,19 +91,6 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     opened: boolean;
     txHash: string | null;
   }>({ opened: false, txHash: null });
-  const [approveModal, setApproveModal] = useState<{
-    opened: boolean;
-    owner: string;
-    spender: string;
-    token: string;
-    amount: string;
-  }>({
-    opened: false,
-    owner: '',
-    spender: '',
-    token: '',
-    amount: '',
-  });
 
   const approval = useMemo(
     () =>
@@ -118,142 +131,33 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     ];
   }, [approval]);
 
-  const [isPreparingTransaction, setIsPreparingTransaction] = useState(false);
-  const hardcodedCallDataRef = useRef<string>('');
+  const [isPreparingTransaction] = useState(false);
   const { createWalletGatedAction, isWalletConnected, isConnecting } =
     useWalletGatedAction();
-  const { walletAddress } = useWallet();
+  useWallet();
   const { sendTransaction } = useWalletConnection({
     onTransactionSigned: (txHash: string) => {
-      setTransactionModal({ opened: false, transactionData: null });
+      setRevokeModal({ opened: false, transactionData: null });
+      setApproveModal({ opened: false, transactionData: null });
       setSuccessModal({ opened: true, txHash });
-      // updateApprovalToZero();
     },
     onError: (error: string) => {
-      LogError('Revoke transaction error:', error);
+      LogError('Transaction error:', error);
     },
   });
 
-  // Validation functions for approve modal
-  const validateAmount = useCallback((amount: string): string => {
-    if (amount.trim() === '') {
-      return ''; // Empty is valid (means current allowance)
-    }
-
-    const numValue = parseFloat(amount);
-    if (isNaN(numValue)) {
-      return 'Amount must be a valid number';
-    }
-
-    if (numValue < 0) {
-      return 'Amount cannot be negative';
-    }
-
-    // Note: 0 is a valid amount (different from revoke which sets to 0)
-
-    // Check for reasonable decimal places (max 18 for most tokens)
-    const decimalPlaces = (amount.split('.')[1] || '').length;
-    if (decimalPlaces > 18) {
-      return 'Too many decimal places (max 18)';
-    }
-
-    return '';
-  }, []);
-
-  const validateAddress = useCallback((address: string): boolean => {
-    if (!address || address.trim() === '') {
-      return false;
-    }
-
-    // Basic Ethereum address validation
-    const trimmedAddress = address.trim();
-
-    // Must start with 0x and be 42 characters long
-    if (!trimmedAddress.startsWith('0x') || trimmedAddress.length !== 42) {
-      return false;
-    }
-
-    // Must contain only valid hex characters after 0x
-    const hexPart = trimmedAddress.slice(2);
-    return /^[a-fA-F0-9]{40}$/.test(hexPart);
-  }, []);
-
-  const isApproveModalValid = useMemo(() => {
-    const isTokenValid = validateAddress(approveModal.token);
-    const isSpenderValid = validateAddress(approveModal.spender);
-    const isAmountValid = validateAmount(approveModal.amount) === '';
-
-    return isTokenValid && isSpenderValid && isAmountValid;
-  }, [
-    approveModal.token,
-    approveModal.spender,
-    approveModal.amount,
-    validateAddress,
-    validateAmount,
-  ]);
-
-  const customPrepareTransaction = useCallback(async () => {
-    setIsPreparingTransaction(true);
-    try {
-      if (!walletAddress) {
-        throw new Error('Wallet not connected');
-      }
-
-      // Use ApprovalTransaction model for revoke (amount = "0")
-      const revokeTransaction = ApprovalTransaction.forRevoke(
-        approval,
-        walletAddress,
-      );
-
-      // Validate function structure
-      if (
-        !TransactionModelHelpers.validateApproveFunction(
-          revokeTransaction.function,
-        )
-      ) {
-        throw new Error('Invalid approve function signature');
-      }
-
-      // Log transaction details
-      Log(
-        `✅ Revoke transaction created using wallet model - Token: ${TransactionModelHelpers.formatAddress(approval.token)}, Spender: ${TransactionModelHelpers.formatAddress(approval.spender)}`,
-        `Function encoding: ${revokeTransaction.function.encoding}`,
-      );
-
-      // Get transaction object ready for signing
-      return await revokeTransaction.getTransactionObject(payload);
-    } catch (error) {
-      LogError('Failed to prepare revoke transaction:', String(error));
-      // Fallback to manual construction for backwards compatibility
-      LogError(
-        'Failed to prepare transaction using wallet model, using fallback',
-        String(error),
-      );
-
-      const spenderAddress = addressToHex(approval.spender);
-      const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
-      const paddedAmount = '0'.padStart(64, '0');
-      const fallbackCallData = '0x095ea7b3' + paddedSpender + paddedAmount;
-
-      return {
-        to: addressToHex(approval.token),
-        data: fallbackCallData,
-        value: '0',
-        gas: '0x' + (60000).toString(16),
-        gasPrice: '0x' + (20 * 1e9).toString(16),
-      } as PreparedTransaction;
-    } finally {
-      setIsPreparingTransaction(false);
-    }
-  }, [approval, walletAddress, payload]);
+  // Helper: Get token address from row data or payload
+  const getTokenAddress = useCallback((): string => {
+    return addressToHex(approval.token) || payload.activeContract || '';
+  }, [approval.token, payload.activeContract]);
 
   const handleConfirmTransaction = useCallback(
     async (preparedTx: PreparedTransaction) => {
       try {
         await sendTransaction(preparedTx);
       } catch (error) {
-        LogError('Failed to send revoke transaction:', String(error));
-        setIsPreparingTransaction(false);
+        LogError('Failed to send transaction:', String(error));
+        throw error;
       }
     },
     [sendTransaction],
@@ -263,30 +167,16 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     try {
       const spenderAddress = addressToHex(approval.spender);
 
-      // Generate calldata for display (same as before for visual purposes)
-      const paddedSpender = spenderAddress.slice(2).padStart(64, '0');
-      const paddedAmount = '0'.padStart(64, '0');
-      const callData = '0x095ea7b3' + paddedSpender + paddedAmount;
-      hardcodedCallDataRef.current = callData;
-
-      const transactionData: TransactionData = {
-        to: addressToHex(approval.token),
-        function: {
-          name: 'approve',
-          type: 'function',
-          inputs: [],
-          outputs: [],
-          stateMutability: 'nonpayable',
-          encoding: '0x095ea7b3',
-          convertValues: () => {},
-        } as types.Function,
-        inputs: [
+      const transactionData: TransactionData = buildTransaction(
+        addressToHex(approval.token),
+        ERC20_APPROVE_FUNCTION,
+        [
           { name: 'spender', type: 'address', value: spenderAddress },
           { name: 'amount', type: 'uint256', value: '0' },
         ],
-        value: '0',
-      };
-      setTransactionModal({
+      );
+
+      setRevokeModal({
         opened: true,
         transactionData,
       });
@@ -295,116 +185,38 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     }
   }, [approval]);
 
-  const createApprovalTransaction = useCallback(
-    async (amount: string, token: string, spender: string) => {
-      setIsPreparingTransaction(true);
-      try {
-        if (!walletAddress) {
-          throw new Error('Wallet not connected');
-        }
+  const createApprovalTransaction = useCallback(() => {
+    try {
+      // Build transaction data with empty values for user to fill
+      const transactionData: TransactionData = buildTransaction(
+        getTokenAddress(),
+        ERC20_APPROVE_FUNCTION,
+        [
+          {
+            name: 'spender',
+            type: 'address',
+            value: approval.spender ? addressToHex(approval.spender) : '',
+          },
+          { name: 'amount', type: 'uint256', value: '' },
+        ],
+      );
 
-        // Step 1: Convert token amount to wei if non-zero
-        let weiAmount = amount;
-        if (amount && amount !== '0') {
-          Log(`Converting token amount: ${amount} for token ${token}`);
-          const convertRequest = app.ConvertTokenAmountRequest.createFrom({
-            tokenAddress: token,
-            amount: amount,
-          });
-          const convertResult = await ConvertTokenAmount(
-            payload,
-            convertRequest,
-          );
-
-          if (!convertResult.success || !convertResult.weiAmount) {
-            throw new Error(
-              convertResult.error || 'Failed to convert token amount',
-            );
-          }
-
-          weiAmount = convertResult.weiAmount;
-          Log(
-            `Converted ${amount} tokens to ${weiAmount} wei (${convertResult.decimals} decimals)`,
-          );
-        } else {
-          Log('Amount is 0 or empty, using as-is (no conversion needed)');
-        }
-
-        // Step 2: Use ApprovalTransaction model with converted amount
-        const approvalTransaction = ApprovalTransaction.forApproval(
-          token,
-          spender,
-          walletAddress,
-          weiAmount,
-        );
-
-        // Validate inputs using built-in validation
-        const validation = approvalTransaction.validate();
-        if (!validation.isValid) {
-          throw new Error('Validation failed: ' + validation.errors.join(', '));
-        }
-
-        // Validate function structure
-        if (
-          !TransactionModelHelpers.validateApproveFunction(
-            approvalTransaction.function,
-          )
-        ) {
-          throw new Error('Invalid approve function signature');
-        }
-
-        // Log transaction details
-        Log(
-          `✅ Approval transaction created using wallet model - Amount: ${amount || '0'} tokens (${weiAmount} wei), Token: ${token}, Spender: ${spender}`,
-          `Function encoding: ${approvalTransaction.function.encoding}`,
-        );
-
-        // Get transaction object and execute
-        const preparedTx =
-          await approvalTransaction.getTransactionObject(payload);
-        await sendTransaction(preparedTx);
-
-        // Close modal on success
-        setApproveModal({
-          opened: false,
-          owner: '',
-          spender: '',
-          token: '',
-          amount: '',
-        });
-      } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : String(error);
-        LogError('Failed to prepare/send approval transaction:', errorMsg);
-
-        // Send error to status bar via msgs.Error
-        emitError(`Approval transaction failed: ${errorMsg}`);
-
-        // Keep modal open so user can see the form and try again
-      } finally {
-        setIsPreparingTransaction(false);
-      }
-    },
-    [sendTransaction, walletAddress, payload, emitError],
-  );
+      setApproveModal({
+        opened: true,
+        transactionData,
+      });
+    } catch (error) {
+      LogError('Creating approval transaction:', String(error));
+    }
+  }, [approval, getTokenAddress]);
 
   const handleRevoke = createWalletGatedAction(() => {
     createRevokeTransaction();
   }, 'Revoke');
 
   const handleApprove = createWalletGatedAction(() => {
-    setApproveModal({
-      opened: true,
-      owner: addressToHex(walletAddress || ''),
-      spender: addressToHex(approval.spender || ''),
-      token: addressToHex(approval.token || ''),
-      amount: '',
-    });
+    createApprovalTransaction();
   }, 'Approve');
-
-  const handleModalClose = useCallback(() => {
-    setTransactionModal({ opened: false, transactionData: null });
-    setIsPreparingTransaction(false);
-  }, []);
 
   const handleSuccessModalClose = useCallback(() => {
     setSuccessModal({ opened: false, txHash: null });
@@ -526,18 +338,29 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           </PanelTable>
         </DetailSection>
       </DetailContainer>
-      <TransactionConfirm
-        opened={transactionModal.opened}
-        onClose={handleModalClose}
-        onConfirm={async () => {
-          const preparedTx = await customPrepareTransaction();
-          await handleConfirmTransaction(preparedTx);
+      <TxReviewModal
+        opened={revokeModal.opened}
+        onClose={() => setRevokeModal({ opened: false, transactionData: null })}
+        transactionData={revokeModal.transactionData}
+        onConfirm={handleConfirmTransaction}
+        editable={false}
+      />
+      <TxReviewModal
+        opened={approveModal.opened}
+        onClose={() =>
+          setApproveModal({ opened: false, transactionData: null })
+        }
+        transactionData={approveModal.transactionData}
+        onConfirm={handleConfirmTransaction}
+        editable={true}
+        rowData={{
+          tokenAddress: approval.token
+            ? addressToHex(approval.token)
+            : undefined,
+          spenderAddress: approval.spender
+            ? addressToHex(approval.spender)
+            : undefined,
         }}
-        token={addressToHex(approval.token)}
-        tokenName={approval.tokenName || ''}
-        spender={addressToHex(approval.spender)}
-        spenderName={approval.spenderName || ''}
-        calldata={hardcodedCallDataRef.current}
       />
       {successModal.opened && successModal.txHash && (
         <>
@@ -641,240 +464,31 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           </div>
         </>
       )}
-      {approveModal.opened && (
-        <>
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 999,
-            }}
-            onClick={() => {
-              setApproveModal({
-                opened: false,
-                owner: '',
-                spender: '',
-                token: '',
-                amount: '',
-              });
-              setIsPreparingTransaction(false);
-            }}
-          />
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: 'white',
-              padding: '24px',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-              zIndex: 1000,
-              minWidth: '500px',
-            }}
-          >
-            <h3>Grant Token Approval</h3>
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ marginBottom: '16px' }}>
-                <label
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                  }}
-                >
-                  Owner Address (Connected Wallet):
-                </label>
-                <input
-                  type="text"
-                  value={approveModal.owner}
-                  readOnly
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                    fontFamily: 'monospace',
-                    backgroundColor: '#f5f5f5',
-                    color: '#666',
-                    cursor: 'not-allowed',
-                  }}
-                  title="Owner address is automatically set to your connected wallet address"
-                />
-              </div>
-              <div style={{ marginBottom: '16px' }}>
-                <label
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                  }}
-                >
-                  Token Contract Address:
-                </label>
-                <input
-                  type="text"
-                  value={approveModal.token}
-                  onChange={(e) =>
-                    setApproveModal({ ...approveModal, token: e.target.value })
-                  }
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                    fontFamily: 'monospace',
-                  }}
-                  placeholder="Enter token contract address"
-                />
-              </div>
-              <div style={{ marginBottom: '16px' }}>
-                <label
-                  style={{
-                    display: 'block',
-                    marginBottom: '8px',
-                    fontWeight: 'bold',
-                    fontSize: '14px',
-                  }}
-                >
-                  Spender Address:
-                </label>
-                <input
-                  type="text"
-                  value={approveModal.spender}
-                  onChange={(e) =>
-                    setApproveModal({
-                      ...approveModal,
-                      spender: e.target.value,
-                    })
-                  }
-                  style={{
-                    width: '100%',
-                    padding: '8px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                    fontFamily: 'monospace',
-                  }}
-                  placeholder="Enter spender address (contract/address to approve)"
-                />
-              </div>
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: 'bold',
-                  fontSize: '14px',
-                }}
-              >
-                Approval Amount:
-              </label>
-              <input
-                type="text"
-                placeholder="Enter amount (e.g., 100) or leave empty for current allowance"
-                value={approveModal.amount}
-                onChange={(e) =>
-                  setApproveModal({ ...approveModal, amount: e.target.value })
-                }
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  fontFamily: 'monospace',
-                }}
-              />
-              <p
-                style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#666' }}
-              >
-                💡 This amount will replace any existing allowance for this
-                token/spender pair. Leave empty to set allowance to 0
-                (effectively revoking approval).
-              </p>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                gap: '12px',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <button
-                onClick={() =>
-                  createApprovalTransaction(
-                    approveModal.amount,
-                    approveModal.token,
-                    approveModal.spender,
-                  )
-                }
-                disabled={isPreparingTransaction || !isApproveModalValid}
-                title={
-                  isPreparingTransaction
-                    ? 'Processing transaction...'
-                    : !isApproveModalValid
-                      ? 'Please enter valid token and spender addresses and a valid amount'
-                      : 'Confirm the approval transaction'
-                }
-                style={{
-                  padding: '10px 16px',
-                  background:
-                    isPreparingTransaction || !isApproveModalValid
-                      ? '#6c757d'
-                      : '#28a745',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  cursor:
-                    isPreparingTransaction || !isApproveModalValid
-                      ? 'not-allowed'
-                      : 'pointer',
-                  opacity:
-                    isPreparingTransaction || !isApproveModalValid ? 0.6 : 1,
-                }}
-              >
-                {isPreparingTransaction ? 'Processing...' : 'Confirm Approval'}
-              </button>
-              <button
-                onClick={() => {
-                  setApproveModal({
-                    opened: false,
-                    owner: '',
-                    spender: '',
-                    token: '',
-                    amount: '',
-                  });
-                  setIsPreparingTransaction(false);
-                }}
-                style={{
-                  padding: '10px 16px',
-                  background: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </>
+      {revokeModal.opened && revokeModal.transactionData && (
+        <TxReviewModal
+          opened={revokeModal.opened}
+          onClose={() =>
+            setRevokeModal({ opened: false, transactionData: null })
+          }
+          transactionData={revokeModal.transactionData}
+          onConfirm={handleConfirmTransaction}
+          editable={false}
+        />
+      )}
+      {approveModal.opened && approveModal.transactionData && (
+        <TxReviewModal
+          opened={approveModal.opened}
+          onClose={() =>
+            setApproveModal({ opened: false, transactionData: null })
+          }
+          transactionData={approveModal.transactionData}
+          onConfirm={handleConfirmTransaction}
+          editable={true}
+          rowData={{
+            tokenAddress: addressToHex(approval.token),
+            spenderAddress: addressToHex(approval.spender),
+          }}
+        />
       )}
     </>
   );

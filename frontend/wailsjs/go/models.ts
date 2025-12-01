@@ -45,106 +45,62 @@ export namespace abis {
 
 export namespace app {
 	
-	export class ConvertTokenAmountRequest {
-	    tokenAddress: string;
-	    amount: string;
+	export class PrepareTransactionRequest {
+	    function: types.Function;
+	    params: any[];
+	    from: string;
+	    to: string;
+	    value: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ConvertTokenAmountRequest(source);
+	        return new PrepareTransactionRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.tokenAddress = source["tokenAddress"];
-	        this.amount = source["amount"];
+	        this.function = this.convertValues(source["function"], types.Function);
+	        this.params = source["params"];
+	        this.from = source["from"];
+	        this.to = source["to"];
+	        this.value = source["value"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
-	export class ConvertTokenAmountResult {
+	export class PrepareTransactionResult {
 	    success: boolean;
-	    weiAmount: string;
-	    decimals: number;
-	    error?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new ConvertTokenAmountResult(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.success = source["success"];
-	        this.weiAmount = source["weiAmount"];
-	        this.decimals = source["decimals"];
-	        this.error = source["error"];
-	    }
-	}
-	export class EncodeTransactionRequest {
-	    contractAddress: string;
-	    signature: string;
-	    arguments: string[];
-	
-	    static createFrom(source: any = {}) {
-	        return new EncodeTransactionRequest(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.contractAddress = source["contractAddress"];
-	        this.signature = source["signature"];
-	        this.arguments = source["arguments"];
-	    }
-	}
-	export class EncodeTransactionResult {
-	    success: boolean;
-	    data: string;
-	    error?: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new EncodeTransactionResult(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.success = source["success"];
-	        this.data = source["data"];
-	        this.error = source["error"];
-	    }
-	}
-	export class GasEstimationResult {
-	    success: boolean;
+	    transactionData: string;
 	    gasEstimate: string;
 	    gasPrice: string;
 	    error?: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new GasEstimationResult(source);
+	        return new PrepareTransactionResult(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.success = source["success"];
+	        this.transactionData = source["transactionData"];
 	        this.gasEstimate = source["gasEstimate"];
 	        this.gasPrice = source["gasPrice"];
 	        this.error = source["error"];
-	    }
-	}
-	export class TransactionPayload {
-	    chain: string;
-	    from: string;
-	    to: string;
-	    data: string;
-	    value: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new TransactionPayload(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.chain = source["chain"];
-	        this.from = source["from"];
-	        this.to = source["to"];
-	        this.data = source["data"];
-	        this.value = source["value"];
 	    }
 	}
 	export class UserInfoStatus {

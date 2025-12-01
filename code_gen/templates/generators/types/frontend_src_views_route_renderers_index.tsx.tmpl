@@ -20,7 +20,7 @@ import * as facets from './facets';
 export const renderers = {
   panels: {
     {{- range .Facets }}
-    {{- if and (eq .ViewType "table") (eq .Panel "custom") }}
+    {{- if eq .Panel "custom" }}
     [types.DataFacet.{{toUpper .Name}}]: panels.{{printf "%sPanel" .Name}},
     {{- end }}
     {{- end }}

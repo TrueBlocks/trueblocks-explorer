@@ -34,8 +34,8 @@ type PrepareTransactionResult struct {
 }
 
 func (a *App) PrepareTransaction(payload *types.Payload, req PrepareTransactionRequest) (*PrepareTransactionResult, error) {
-	logging.LogBackend(fmt.Sprintf("PrepareTransaction CALLED - Function: %s, To: %s, From: %s",
-		req.Function.Name, req.To, req.From))
+	// logging.LogBackend(fmt.Sprintf("PrepareTransaction CALLED - Function: %s, To: %s, From: %s",
+	// 	req.Function.Name, req.To, req.From))
 
 	result := &PrepareTransactionResult{}
 
@@ -89,7 +89,7 @@ func (a *App) PrepareTransaction(payload *types.Payload, req PrepareTransactionR
 	}
 	transactionData := "0x" + fmt.Sprintf("%x", packed)
 	result.TransactionData = transactionData
-	logging.LogBackend(fmt.Sprintf("Transaction data encoded: %s", transactionData))
+	// logging.LogBackend(fmt.Sprintf("Transaction data encoded: %s", transactionData))
 
 	// Step 3: Estimate gas
 	fromAddr := base.HexToAddress(req.From)
@@ -103,8 +103,8 @@ func (a *App) PrepareTransaction(payload *types.Payload, req PrepareTransactionR
 		valueWei = &wei
 	}
 
-	logging.LogBackend(fmt.Sprintf("Estimating gas - Chain: %s, From: %s, To: %s, Value: %s",
-		chain, fromAddr.Hex(), toAddr.Hex(), valueWei.String()))
+	// logging.LogBackend(fmt.Sprintf("Estimating gas - Chain: %s, From: %s, To: %s, Value: %s",
+	// 	chain, fromAddr.Hex(), toAddr.Hex(), valueWei.String()))
 
 	estimatedGas, gasPrice, err := sdk.EstimateGasAndPrice(chain, fromAddr, toAddr, transactionData, valueWei)
 	if err != nil {
@@ -117,8 +117,8 @@ func (a *App) PrepareTransaction(payload *types.Payload, req PrepareTransactionR
 	result.GasPrice = fmt.Sprintf("0x%x", gasPrice)
 	result.Success = true
 
-	logging.LogBackend(fmt.Sprintf("Transaction prepared successfully - Gas: %s, Price: %s",
-		result.GasEstimate, result.GasPrice))
+	// logging.LogBackend(fmt.Sprintf("Transaction prepared successfully - Gas: %s, Price: %s",
+	// 	result.GasEstimate, result.GasPrice))
 
 	return result, nil
 }

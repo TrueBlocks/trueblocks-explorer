@@ -23,6 +23,7 @@ import { usePayload } from '@hooks';
 import { Group, Text } from '@mantine/core';
 import { types } from '@models';
 import {
+  Log,
   LogError,
   addressToHex,
   displayHash,
@@ -73,8 +74,12 @@ export const ERC20_APPROVE_FUNCTION: types.Function = {
 
 // EXISTING_CODE
 
-export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
+export const OpenApprovalsPanel = (
+  rowData: Record<string, unknown> | null,
+  onFinal?: (rowKey: string, newValue: string, txHash: string) => void,
+) => {
   // EXISTING_CODE
+
   const { currentView } = useViewContext();
   const createPayload = usePayload(currentView);
   const payload = useMemo(
@@ -93,6 +98,9 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
     opened: boolean;
     txHash: string | null;
   }>({ opened: false, txHash: null });
+
+  // State to track pending transaction amount
+  const [pendingAmount, setPendingAmount] = useState<string>('');
 
   const approval = useMemo(
     () =>
@@ -143,10 +151,22 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
       setApproveModal({ opened: false, transactionData: null });
       setSuccessModal({ opened: true, txHash });
       emitStatus('Transaction submitted successfully');
+
+      // Call onFinal callback for demo hack
+      if (onFinal && pendingAmount !== '') {
+        // Generate the same row key used in the facet: owner-token-spender
+        const rowKey = `${approval.owner}-${approval.token}-${approval.spender}`;
+        Log(
+          `[OpenApprovalsPanel] POST-CONFIRM: Calling onFinal: rowKey=${rowKey}, amount=${pendingAmount}, txHash=${txHash}`,
+        );
+        onFinal(rowKey, pendingAmount, txHash);
+        setPendingAmount(''); // Clear pending amount
+      }
     },
     onError: (error: string) => {
       LogError('Transaction error:', error);
       emitError('Transaction rejected by wallet');
+      setPendingAmount(''); // Clear pending amount on error
     },
   });
 
@@ -158,6 +178,16 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
   const handleConfirmTransaction = useCallback(
     async (preparedTx: PreparedTransaction) => {
       try {
+        // For approve transactions, use current allowance as demo hack amount
+        // (revoke already sets to '0' in createRevokeTransaction)
+        if (pendingAmount === '') {
+          const currentAllowance = approval.allowance || '0';
+          setPendingAmount(currentAllowance);
+          Log(
+            `[OpenApprovalsPanel] CONFIRM: Setting pendingAmount from current allowance: ${currentAllowance}`,
+          );
+        }
+
         await sendTransaction(preparedTx);
       } catch (error) {
         LogError('Failed to send transaction:', String(error));
@@ -165,7 +195,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
         throw error;
       }
     },
-    [sendTransaction],
+    [sendTransaction, approval.allowance, pendingAmount],
   );
 
   const createRevokeTransaction = useCallback(() => {
@@ -180,6 +210,10 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
           { name: 'amount', type: 'uint256', value: '0' },
         ],
       );
+
+      // Track revoke amount for demo hack
+      setPendingAmount('0');
+      Log(`[OpenApprovalsPanel] CONFIRM: Setting pendingAmount for revoke: 0`);
 
       setRevokeModal({
         opened: true,
@@ -259,7 +293,7 @@ export const OpenApprovalsPanel = (rowData: Record<string, unknown> | null) => {
                 {isConnecting
                   ? 'Connecting...'
                   : isPreparingTransaction
-                    ? 'Preparing...'
+                    ? 'Pending...'
                     : 'Revoke'}
               </StyledButton>
               <StyledButton

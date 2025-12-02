@@ -9,6 +9,7 @@ import {
 } from '@components';
 import { displayHash } from '@utils';
 
+import { AllowanceWithStatusRenderer } from './AllowanceWithStatusRenderer';
 import {
   BooleanRenderer,
   CheckmarkRenderer,
@@ -265,6 +266,13 @@ export const TYPE_RENDERER_REGISTRY: Record<string, TypeRendererConfig> = {
     displayRenderer: (value, { field, keyProp }) => (
       <DateTimeRenderer value={value} field={field} keyProp={keyProp || ''} />
     ),
+  },
+  allowanceWithStatus: {
+    displayRenderer: (value, { rowData }) => {
+      return <AllowanceWithStatusRenderer value={value} row={rowData} />;
+    },
+    editPlaceholder: 'Wei value (e.g., 1000000000000000000)',
+    editHint: 'Enter allowance value in Wei',
   },
 };
 

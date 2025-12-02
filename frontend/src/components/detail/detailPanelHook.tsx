@@ -12,12 +12,18 @@ import { types } from '@models';
  * This function encapsulates all ViewConfig integration logic and returns
  * a simple detail panel function for use in BaseTab.
  */
-export type DetailPanelFn<T = any> = (row: T | null) => ReactNode;
+export type DetailPanelFn<T = any> = (
+  row: T | null,
+  onFinal?: (rowKey: string, newValue: string, txHash: string) => void,
+) => ReactNode;
 
 export const createDetailPanel = <T extends Record<string, unknown>>(
   viewConfig: types.ViewConfig | null | undefined,
   getCurrentDataFacet: () => string,
   customPanels: Record<string, DetailPanelFn<any>> = {},
+  options: {
+    onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+  } = {},
 ): DetailPanelFn<T> => {
   // Get the current facet configuration
   const currentFacetConfig = viewConfig?.facets?.[getCurrentDataFacet()];
@@ -26,14 +32,23 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
   const facet = getCurrentDataFacet();
 
   // Check direct facet match first (e.g., "statements", "openapprovals")
-  if (customPanels[facet]) return customPanels[facet] as DetailPanelFn<T>;
+  if (customPanels[facet]) {
+    const panelFn = customPanels[facet] as DetailPanelFn<T>;
+    // If panel function accepts onFinal, pass it
+    return (rowData: T | null) => panelFn(rowData, options.onFinal);
+  }
 
   // Check for compound keys (viewName.facetKey or viewName)
   if (viewConfig?.viewName) {
     const key = `${viewConfig.viewName}.${facet}`;
-    if (customPanels[key]) return customPanels[key] as DetailPanelFn<T>;
-    if (customPanels[viewConfig.viewName])
-      return customPanels[viewConfig.viewName] as DetailPanelFn<T>;
+    if (customPanels[key]) {
+      const panelFn = customPanels[key] as DetailPanelFn<T>;
+      return (rowData: T | null) => panelFn(rowData, options.onFinal);
+    }
+    if (customPanels[viewConfig.viewName]) {
+      const panelFn = customPanels[viewConfig.viewName] as DetailPanelFn<T>;
+      return (rowData: T | null) => panelFn(rowData, options.onFinal);
+    }
   }
 
   return buildDetailPanelFromConfigs<T>(currentFacetConfig?.detailPanels);

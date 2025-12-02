@@ -18,3 +18,4 @@ export * from './PanelTable';
 export * from './PopoverRenderer';
 export * from './TypeRendererRegistry';
 export * from './WeiRenderer';
+export * from './AllowanceWithStatusRenderer';

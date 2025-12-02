@@ -1,4 +1,3 @@
-import { DetailSection } from '@components';
 import { useActiveProject } from '@hooks';
 import { types } from '@models';
 import { formatNumericValue } from '@utils';
@@ -53,7 +52,7 @@ export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
   };
 
   return (
-    <DetailSection>
+    <>
       <PanelTable>
         <PanelRow layout="full" colSpan={2}>
           <span style={{ fontWeight: 600 }}>
@@ -78,7 +77,7 @@ export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
         </PanelRow>
       </PanelTable>
       <div className="panel-formula-note">gasUsed × gasPrice = gasCost</div>
-    </DetailSection>
+    </>
   );
 };
 

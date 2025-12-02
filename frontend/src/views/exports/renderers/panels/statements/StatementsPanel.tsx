@@ -16,6 +16,8 @@ import '../../../../../components/detail/DetailTable.css';
 
 export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const facet = 'statements';
+
   if (!rowData) return null;
   const statement = rowData as unknown as types.Statement;
   const decimals = statement.decimals || 18;
@@ -126,7 +128,7 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
   return (
     <Stack gap={8} className="fixed-prompt-width">
       <DetailContainer title={titleComponent()}>
-        <DetailSection title="Participants">
+        <DetailSection facet={facet} title="Participants">
           <Grid gutter={4}>
             <Grid.Col span={6}>
               <Grid.Col span={12}>
@@ -166,7 +168,7 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
             </Grid.Col>
           </Grid>
         </DetailSection>
-        <DetailSection title="Balance Summary">
+        <DetailSection facet={facet} title="Balance Summary">
           <Grid gutter={4}>
             <Grid.Col span={3}>
               <Grid.Col span={12}>
@@ -250,7 +252,7 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
         </DetailSection>
         <Grid gutter={1}>
           <Grid.Col span={6}>
-            <DetailSection title="Inflows">
+            <DetailSection facet={facet} title="Inflows">
               <Grid gutter={1}>
                 {[
                   ['Amount In', statement.amountIn],
@@ -302,7 +304,7 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
             </DetailSection>
           </Grid.Col>
           <Grid.Col span={6}>
-            <DetailSection title="Outflows">
+            <DetailSection facet={facet} title="Outflows">
               <Grid gutter={1}>
                 {[
                   ['Amount Out', statement.amountOut],

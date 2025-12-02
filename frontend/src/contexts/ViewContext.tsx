@@ -3,6 +3,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -14,6 +15,7 @@ import {
 } from '@app';
 import { project, sdk, types } from '@models';
 import { EMPTY_SORT_SPEC, LogError } from '@utils';
+import { useLocation } from 'wouter';
 
 import { viewStateKeyToString } from '.';
 
@@ -122,6 +124,13 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
   const [viewSorting, setViewSorting] = useState<ViewSortState>({});
   const [viewFiltering, setViewFiltering] = useState<ViewFilterState>({});
   const [viewRowAction, setViewRowAction] = useState<ViewRowActionState>({});
+  const [location] = useLocation();
+  useEffect(() => {
+    const viewName = location.replace(/^\/+/, '') || 'projects'; // Default to 'projects' for root
+    if (currentView !== viewName) {
+      setCurrentView(viewName);
+    }
+  }, [location, currentView]);
 
   const getPagination = useCallback(
     (viewStateKey: project.ViewStateKey) => {

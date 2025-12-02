@@ -84,6 +84,8 @@ export function GetActiveProjectData():Promise<types.ProjectPayload>;
 
 export function GetActiveProjectPath():Promise<string>;
 
+export function GetAllDetailSectionStates():Promise<Record<string, boolean>>;
+
 export function GetAllSkins():Promise<Record<string, skin.Skin>>;
 
 export function GetAppId():Promise<preferences.Id>;
@@ -129,6 +131,8 @@ export function GetDalleAudioURL(arg1:types.Payload,arg2:string):Promise<string>
 export function GetDebugCollapsed():Promise<boolean>;
 
 export function GetDefaultAppPreferences():Promise<preferences.AppPreferences>;
+
+export function GetDetailSectionState(arg1:string):Promise<boolean>;
 
 export function GetDressesBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
@@ -313,6 +317,8 @@ export function SetChromeCollapsed(arg1:boolean):Promise<void>;
 export function SetChunksMetric(arg1:string,arg2:string):Promise<void>;
 
 export function SetDebugCollapsed(arg1:boolean):Promise<void>;
+
+export function SetDetailSectionState(arg1:string,arg2:boolean):Promise<void>;
 
 export function SetExportsMetric(arg1:string,arg2:string):Promise<void>;
 

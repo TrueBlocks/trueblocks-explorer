@@ -17,6 +17,8 @@ import { TransactionPanelBase } from '../shared/TransactionPanelBase';
 
 export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const facet = 'transactions';
+
   const transaction =
     (rowData as unknown as types.Transaction) || ({} as types.Transaction);
 
@@ -33,6 +35,7 @@ export const TransactionsPanel = (rowData: Record<string, unknown> | null) => {
 
   return (
     <TransactionPanelBase
+      facet={facet}
       rowData={rowData}
       title={titleComponent()}
       showGasSection={true}

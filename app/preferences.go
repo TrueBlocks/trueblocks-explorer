@@ -298,3 +298,47 @@ func (a *App) SetFontScale(scale float64) error {
 	a.Preferences.App.FontScale = scale
 	return preferences.SetAppPreferences(&a.Preferences.App)
 }
+
+// GetDetailSectionState returns the collapsed state for a given section key
+func (a *App) GetDetailSectionState(sectionKey string) bool {
+	a.prefsMu.RLock()
+	defer a.prefsMu.RUnlock()
+
+	if a.Preferences.App.SectionStates == nil {
+		return false
+	}
+	return a.Preferences.App.SectionStates[sectionKey]
+}
+
+// GetAllDetailSectionStates returns all section states in a single call for performance
+func (a *App) GetAllDetailSectionStates() map[string]bool {
+	a.prefsMu.RLock()
+	defer a.prefsMu.RUnlock()
+
+	if a.Preferences.App.SectionStates == nil {
+		return make(map[string]bool)
+	}
+
+	// Return a copy to prevent concurrent access issues
+	result := make(map[string]bool)
+	for k, v := range a.Preferences.App.SectionStates {
+		result[k] = v
+	}
+	return result
+}
+
+// SetDetailSectionState updates the collapsed state for a given section key and saves immediately
+func (a *App) SetDetailSectionState(sectionKey string, collapsed bool) error {
+	a.prefsMu.Lock()
+	defer a.prefsMu.Unlock()
+
+	if a.Preferences.App.SectionStates == nil {
+		a.Preferences.App.SectionStates = make(map[string]bool)
+	}
+	a.Preferences.App.SectionStates[sectionKey] = collapsed
+	if err := preferences.SetAppPreferences(&a.Preferences.App); err != nil {
+		msgs.EmitError("failed to save detail section state preference", err)
+		return err
+	}
+	return nil
+}

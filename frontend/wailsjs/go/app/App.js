@@ -126,6 +126,10 @@ export function GetActiveProjectPath() {
   return window['go']['app']['App']['GetActiveProjectPath']();
 }
 
+export function GetAllDetailSectionStates() {
+  return window['go']['app']['App']['GetAllDetailSectionStates']();
+}
+
 export function GetAllSkins() {
   return window['go']['app']['App']['GetAllSkins']();
 }
@@ -216,6 +220,10 @@ export function GetDebugCollapsed() {
 
 export function GetDefaultAppPreferences() {
   return window['go']['app']['App']['GetDefaultAppPreferences']();
+}
+
+export function GetDetailSectionState(arg1) {
+  return window['go']['app']['App']['GetDetailSectionState'](arg1);
 }
 
 export function GetDressesBuckets(arg1) {
@@ -584,6 +592,10 @@ export function SetChunksMetric(arg1, arg2) {
 
 export function SetDebugCollapsed(arg1) {
   return window['go']['app']['App']['SetDebugCollapsed'](arg1);
+}
+
+export function SetDetailSectionState(arg1, arg2) {
+  return window['go']['app']['App']['SetDetailSectionState'](arg1, arg2);
 }
 
 export function SetExportsMetric(arg1, arg2) {

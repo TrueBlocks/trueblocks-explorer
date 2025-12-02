@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { NameFromAddress } from '@app';
-import { DetailSection } from '@components';
 import { types } from '@models';
 
 import { PanelRow, PanelTable } from '.';
@@ -198,7 +197,7 @@ export const InfoArticulationRenderer = ({
       !showTitle && !(functionData.name === 'Unknown' && input === '0x');
 
     return (
-      <DetailSection>
+      <>
         {showTitle && (
           <div
             style={{
@@ -252,7 +251,7 @@ export const InfoArticulationRenderer = ({
             )}
           </PanelTable>
         </div>
-      </DetailSection>
+      </>
     );
   };
 

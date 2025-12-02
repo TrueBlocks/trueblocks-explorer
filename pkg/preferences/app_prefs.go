@@ -59,6 +59,7 @@ type AppPreferences struct {
 	SilencedDialogs map[string]bool   `json:"silencedDialogs"`
 	ChunksMetrics   map[string]string `json:"chunksMetrics,omitempty"`
 	ExportsMetrics  map[string]string `json:"exportsMetrics,omitempty"`
+	SectionStates   map[string]bool   `json:"sectionStates,omitempty"`
 	Bounds          Bounds            `json:"bounds,omitempty"`
 	FontScale       float64           `json:"fontScale"`
 	ShowFieldTypes  bool              `json:"showFieldTypes"`
@@ -87,6 +88,7 @@ func NewAppPreferences() *AppPreferences {
 		SilencedDialogs: make(map[string]bool),
 		ChunksMetrics:   make(map[string]string),
 		ExportsMetrics:  make(map[string]string),
+		SectionStates:   make(map[string]bool),
 		Bounds:          NewBounds(),
 		FontScale:       1.0,
 		ShowFieldTypes:  false,
@@ -151,6 +153,10 @@ func GetAppPreferences() (AppPreferences, error) {
 		appPrefs.Bounds = NewBounds()
 		needsSave = true
 	}
+	if appPrefs.SectionStates == nil {
+		appPrefs.SectionStates = make(map[string]bool)
+		needsSave = true
+	}
 
 	if !appPrefs.DetailCollapsed && !appPrefs.DebugCollapsed && !appPrefs.HelpCollapsed && !appPrefs.MenuCollapsed {
 		defaults := NewAppPreferences()
@@ -205,6 +211,10 @@ func validateAppPreferences(appPrefs *AppPreferences) error {
 
 	if appPrefs.LastProjects == nil {
 		return fmt.Errorf("lastProjects field cannot be nil (suggests memory corruption)")
+	}
+
+	if appPrefs.SectionStates == nil {
+		return fmt.Errorf("sectionStates field cannot be nil (suggests memory corruption)")
 	}
 
 	if appPrefs.Bounds.Width < 0 || appPrefs.Bounds.Height < 0 {

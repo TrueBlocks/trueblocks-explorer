@@ -21,6 +21,7 @@ import '../../../../../components/detail/DetailTable.css';
 
 interface TransactionPanelBaseProps {
   rowData: Record<string, unknown> | null;
+  facet: string;
   title: React.ReactNode;
   showGasSection?: boolean;
   showStatusSection?: boolean;
@@ -28,6 +29,7 @@ interface TransactionPanelBaseProps {
 
 export const TransactionPanelBase: React.FC<TransactionPanelBaseProps> = ({
   rowData,
+  facet,
   title,
   showGasSection = true,
   showStatusSection = true,
@@ -78,19 +80,20 @@ export const TransactionPanelBase: React.FC<TransactionPanelBaseProps> = ({
 
   return (
     <DetailContainer title={title}>
-      <DetailSection title={'Information'}>
+      <DetailSection facet={facet} title={'Information'}>
         <InfoAddressRenderer addressInfo={addressInfo} />
       </DetailSection>
 
-      <DetailSection title={'Function Call'}>
+      <DetailSection facet={facet} title={'Function Call'}>
         <InfoArticulationRenderer articulationInfo={articulationInfo} />
       </DetailSection>
 
-      <DetailSection title={'Transaction & Block Details'}>
+      <DetailSection facet={facet} title={'Transaction & Block Details'}>
         <InfoDetailsRenderer detailsInfo={detailsInfo} />
       </DetailSection>
 
       <DetailSection
+        facet={facet}
         title={'Receipt Details'}
         cond={showGasSection && !!gasInfo}
       >
@@ -98,6 +101,7 @@ export const TransactionPanelBase: React.FC<TransactionPanelBaseProps> = ({
       </DetailSection>
 
       <DetailSection
+        facet={facet}
         title={'Receipt & Trace Status'}
         cond={showStatusSection && !!statusInfo}
       >

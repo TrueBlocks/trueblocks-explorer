@@ -1,4 +1,3 @@
-import { DetailSection } from '@components';
 import { createAddressLink } from '@utils';
 
 import { PanelRow, PanelTable } from '.';
@@ -35,53 +34,49 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
   } = addressInfo;
 
   return (
-    <DetailSection>
-      <PanelTable>
-        {showFromLabel && !!from && (
-          <PanelRow
-            label={fromLabel || 'From'}
-            value={
-              <>
-                {fromName && (
-                  <div className="panel-nested-name">{fromName}</div>
-                )}
-                <div className="panel-nested-address">
-                  {createAddressLink(from)}
-                </div>
-              </>
-            }
-          />
-        )}
-        {!!extra && (
-          <PanelRow
-            label={extraLabel || 'Extra'}
-            value={
-              <>
-                {extraName && (
-                  <div className="panel-nested-name">{extraName}</div>
-                )}
-                <div className="panel-nested-address">
-                  {createAddressLink(extra)}
-                </div>
-              </>
-            }
-          />
-        )}
-        {!!to && (
-          <PanelRow
-            label={toLabel || 'To'}
-            value={
-              <>
-                {toName && <div className="panel-nested-name">{toName}</div>}
-                <div className="panel-nested-address">
-                  {createAddressLink(to)}
-                </div>
-              </>
-            }
-          />
-        )}
-      </PanelTable>
-    </DetailSection>
+    <PanelTable>
+      {showFromLabel && !!from && (
+        <PanelRow
+          label={fromLabel || 'From'}
+          value={
+            <>
+              {fromName && <div className="panel-nested-name">{fromName}</div>}
+              <div className="panel-nested-address">
+                {createAddressLink(from)}
+              </div>
+            </>
+          }
+        />
+      )}
+      {!!extra && (
+        <PanelRow
+          label={extraLabel || 'Extra'}
+          value={
+            <>
+              {extraName && (
+                <div className="panel-nested-name">{extraName}</div>
+              )}
+              <div className="panel-nested-address">
+                {createAddressLink(extra)}
+              </div>
+            </>
+          }
+        />
+      )}
+      {!!to && (
+        <PanelRow
+          label={toLabel || 'To'}
+          value={
+            <>
+              {toName && <div className="panel-nested-name">{toName}</div>}
+              <div className="panel-nested-address">
+                {createAddressLink(to)}
+              </div>
+            </>
+          }
+        />
+      )}
+    </PanelTable>
   );
 };
 

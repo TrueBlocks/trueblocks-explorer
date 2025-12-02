@@ -1,10 +1,12 @@
 import { useSyncExternalStore } from 'react';
 
 import {
+  GetAllDetailSectionStates,
   GetAppPreferences,
   SetAppPreferences,
   SetChromeCollapsed,
   SetDebugCollapsed,
+  SetDetailSectionState,
   SetFontScale,
   SetHelpCollapsed,
   SetLanguage,
@@ -12,7 +14,7 @@ import {
   SetSkin,
   SetTheme,
 } from '@app';
-import { preferences } from '@models';
+import { preferences, project } from '@models';
 import { LogError, updateAppPreferencesSafely } from '@utils';
 
 export interface UsePreferencesReturn {
@@ -37,6 +39,15 @@ export interface UsePreferencesReturn {
   setDetailCollapsed: (enabled: boolean) => Promise<void>;
   setFontScale: (scale: number) => Promise<void>;
   setShowFieldTypes: (enabled: boolean) => Promise<void>;
+  getDetailSectionState: (
+    sectionKey: string,
+    viewStateKey?: project.ViewStateKey,
+  ) => boolean;
+  setDetailSectionState: (
+    sectionKey: string,
+    expanded: boolean,
+    viewStateKey?: project.ViewStateKey,
+  ) => Promise<void>;
   isDarkMode: boolean;
 }
 
@@ -51,6 +62,7 @@ interface PreferencesState {
   detailCollapsed: boolean;
   fontScale: number;
   showFieldTypes: boolean;
+  sectionStates: Map<string, boolean>;
   loading: boolean;
 }
 
@@ -65,6 +77,7 @@ const initialPreferencesState: PreferencesState = {
   detailCollapsed: true,
   fontScale: 1.0,
   showFieldTypes: false,
+  sectionStates: new Map(),
   loading: false,
 };
 
@@ -104,6 +117,8 @@ class PreferencesStore {
         setDetailCollapsed: this.setDetailCollapsed,
         setFontScale: this.setFontScale,
         setShowFieldTypes: this.setShowFieldTypes,
+        getDetailSectionState: this.getDetailSectionState,
+        setDetailSectionState: this.setDetailSectionState,
         isDarkMode: this.isDarkMode,
       };
     }
@@ -174,6 +189,13 @@ class PreferencesStore {
       this.setState({ loading: true });
 
       const prefs = await GetAppPreferences();
+      const detailSectionStatesData = await GetAllDetailSectionStates();
+
+      // Convert backend data to Map
+      const sectionStates = new Map<string, boolean>();
+      for (const [key, collapsed] of Object.entries(detailSectionStatesData)) {
+        sectionStates.set(key, collapsed);
+      }
 
       // Clamp fontScale to valid range (0.6 to 1.4) and ensure single decimal precision
       let fontScale = prefs.fontScale ?? 1.0;
@@ -191,6 +213,7 @@ class PreferencesStore {
         detailCollapsed: prefs.detailCollapsed ?? true,
         fontScale,
         showFieldTypes: prefs.showFieldTypes ?? false,
+        sectionStates,
         loading: false,
       });
     } catch (error) {
@@ -206,6 +229,7 @@ class PreferencesStore {
         detailCollapsed: true,
         fontScale: 1.0,
         showFieldTypes: false,
+        sectionStates: new Map(),
         loading: false,
       });
     }
@@ -275,6 +299,49 @@ class PreferencesStore {
   get isDarkMode(): boolean {
     return this.state.lastTheme === 'dark';
   }
+
+  private generateSectionKey = (
+    sectionKey: string,
+    viewStateKey?: project.ViewStateKey,
+  ): string => {
+    return viewStateKey
+      ? `${viewStateKey.viewName}-${viewStateKey.facetName}-${sectionKey}`
+      : sectionKey;
+  };
+
+  getDetailSectionState = (
+    sectionKey: string,
+    viewStateKey?: project.ViewStateKey,
+  ): boolean => {
+    const fullKey = this.generateSectionKey(sectionKey, viewStateKey);
+    const collapsed = this.state.sectionStates.get(fullKey);
+    return collapsed !== undefined ? !collapsed : true; // Default to expanded (expanded = true)
+  };
+
+  setDetailSectionState = async (
+    sectionKey: string,
+    expanded: boolean,
+    viewStateKey?: project.ViewStateKey,
+  ): Promise<void> => {
+    const fullKey = this.generateSectionKey(sectionKey, viewStateKey);
+    const collapsed = !expanded;
+
+    // Optimistically update local state
+    const newStates = new Map(this.state.sectionStates);
+    newStates.set(fullKey, collapsed);
+    this.setState({ sectionStates: newStates });
+
+    try {
+      // Persist to backend
+      await SetDetailSectionState(fullKey, collapsed);
+    } catch (error) {
+      // Revert optimistic update on failure
+      const revertStates = new Map(this.state.sectionStates);
+      revertStates.set(fullKey, !collapsed);
+      this.setState({ sectionStates: revertStates });
+      throw error;
+    }
+  };
 }
 
 const preferencesStore = new PreferencesStore();

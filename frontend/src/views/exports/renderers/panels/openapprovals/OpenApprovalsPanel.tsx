@@ -79,6 +79,7 @@ export const OpenApprovalsPanel = (
   onFinal?: (rowKey: string, newValue: string, txHash: string) => void,
 ) => {
   // EXISTING_CODE
+  const facet = 'openapprovals';
 
   const { currentView } = useViewContext();
   const createPayload = usePayload(currentView);
@@ -332,7 +333,7 @@ export const OpenApprovalsPanel = (
           </Group>
         </DetailHeader>
         {!hasApprovalData && (
-          <DetailSection title={'No Open Approvals'}>
+          <DetailSection facet={facet} title={'No Open Approvals'}>
             <div
               style={{ padding: '16px', textAlign: 'center', color: '#666' }}
             >
@@ -344,11 +345,12 @@ export const OpenApprovalsPanel = (
           </DetailSection>
         )}
         {hasApprovalData && (
-          <DetailSection title={'Information'}>
+          <DetailSection facet={facet} title={'Information'}>
             <InfoAddressRenderer addressInfo={addressInfo} />
           </DetailSection>
         )}
         <DetailSection
+          facet={facet}
           title={'Allowance Details'}
           cond={Boolean(hasApprovalData && allowanceInfo)}
         >

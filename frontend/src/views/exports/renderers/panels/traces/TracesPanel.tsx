@@ -25,6 +25,8 @@ import '../../../../../components/detail/DetailTable.css';
 
 export const TracesPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const facet = 'traces';
+
   const trace = useMemo(
     () =>
       (rowData as unknown as types.Trace) ||
@@ -61,15 +63,15 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
         {displayHash(trace.transactionHash)}
       </DetailHeader>
 
-      <DetailSection title={'Address Information'}>
+      <DetailSection facet={facet} title={'Address Information'}>
         <InfoAddressRenderer addressInfo={addressInfo} />
       </DetailSection>
 
-      <DetailSection title={'Decoded Trace Call'}>
+      <DetailSection facet={facet} title={'Decoded Trace Call'}>
         <InfoArticulationRenderer articulationInfo={articulationInfo} />
       </DetailSection>
 
-      <DetailSection title={'Trace Error'} cond={!!trace.error}>
+      <DetailSection facet={facet} title={'Trace Error'} cond={!!trace.error}>
         <div
           style={{
             border: '1px solid var(--mantine-color-red-3)',
@@ -85,7 +87,7 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
         </div>
       </DetailSection>
 
-      <DetailSection title={'Transaction & Block Details'}>
+      <DetailSection facet={facet} title={'Transaction & Block Details'}>
         <InfoDetailsRenderer detailsInfo={detailsInfo} />
       </DetailSection>
     </DetailContainer>

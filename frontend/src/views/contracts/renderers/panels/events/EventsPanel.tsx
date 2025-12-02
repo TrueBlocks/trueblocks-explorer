@@ -25,6 +25,8 @@ import '../../../../../components/detail/DetailTable.css';
 
 export const EventsPanel = (rowData: Record<string, unknown> | null) => {
   // EXISTING_CODE
+  const facet = 'events';
+
   const log = useMemo(
     () => (rowData as unknown as types.Log) || types.Log.createFrom({}),
     [rowData],
@@ -46,15 +48,15 @@ export const EventsPanel = (rowData: Record<string, unknown> | null) => {
         Log {log.logIndex} in Tx {displayHash(log.transactionHash)}
       </DetailHeader>
 
-      <DetailSection title={'Information'}>
+      <DetailSection facet={facet} title={'Information'}>
         <InfoAddressRenderer addressInfo={addressInfo} />
       </DetailSection>
 
-      <DetailSection title={'Decoded Event'}>
+      <DetailSection facet={facet} title={'Decoded Event'}>
         <InfoArticulationRenderer articulationInfo={articulationInfo} />
       </DetailSection>
 
-      <DetailSection title={'Transaction & Block Details'}>
+      <DetailSection facet={facet} title={'Transaction & Block Details'}>
         <InfoDetailsRenderer detailsInfo={detailsInfo} />
       </DetailSection>
     </DetailContainer>

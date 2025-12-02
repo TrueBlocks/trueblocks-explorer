@@ -113,6 +113,8 @@ describe('useActiveFacet Hook Tests (Focused Hook implementation)', () => {
       setDetailCollapsed: vi.fn(),
       setFontScale: vi.fn(),
       setShowFieldTypes: vi.fn(),
+      getDetailSectionState: vi.fn(),
+      setDetailSectionState: vi.fn(),
     });
   });
 

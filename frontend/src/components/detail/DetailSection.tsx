@@ -1,19 +1,38 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
+
+import { useViewContext } from '@contexts';
+import { usePreferences } from '@hooks';
 
 export interface DetailSectionProps {
   children: React.ReactNode;
-  title?: string;
+  facet: string;
+  title: string;
+  defaultExpanded?: boolean;
   cond?: boolean;
 }
 
 export const DetailSection = ({
   children,
-  title = '',
+  facet,
+  title,
+  defaultExpanded = false,
   cond = true,
 }: DetailSectionProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const handleToggle = () => {
-    setIsCollapsed(!isCollapsed);
+  const { getDetailSectionState, setDetailSectionState } = usePreferences();
+  const { currentView } = useViewContext();
+
+  // Auto-generate sectionKey from context and title
+  const sectionKey = useMemo(() => {
+    const viewName = currentView;
+    const facetName = facet;
+    const normalizedTitle = title.toLowerCase().replace(/\s+/g, '-');
+    return `${viewName}-${facetName}-${normalizedTitle}`;
+  }, [currentView, facet, title]);
+
+  const expanded = getDetailSectionState(sectionKey) || defaultExpanded;
+
+  const handleToggle = async () => {
+    await setDetailSectionState(sectionKey, !expanded);
   };
 
   const sectionContent = (
@@ -26,10 +45,10 @@ export const DetailSection = ({
         }}
       >
         <div className="detail-section-header">
-          {`${isCollapsed ? '▶ ' : '▼ '}${title}`}
+          {`${expanded ? '▼ ' : '▶ '}${title}`}
         </div>
       </div>
-      {!isCollapsed && (
+      {expanded && (
         <div onClick={(e) => e.stopPropagation()} style={{ cursor: 'default' }}>
           {children}
         </div>

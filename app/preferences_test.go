@@ -193,6 +193,7 @@ func TestSetAppPreferences(t *testing.T) {
 				RecentProjects:  []string{},
 				LastProjects:    []preferences.OpenProject{},
 				SilencedDialogs: map[string]bool{},
+				SectionStates:   map[string]bool{},
 				Bounds:          preferences.Bounds{X: 100, Y: 100, Width: 800, Height: 600},
 			},
 			expectErr: false,

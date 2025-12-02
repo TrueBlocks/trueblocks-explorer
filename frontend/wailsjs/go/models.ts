@@ -871,6 +871,7 @@ export namespace preferences {
 	    silencedDialogs: Record<string, boolean>;
 	    chunksMetrics?: Record<string, string>;
 	    exportsMetrics?: Record<string, string>;
+	    sectionStates?: Record<string, boolean>;
 	    bounds?: Bounds;
 	    fontScale: number;
 	    showFieldTypes: boolean;
@@ -897,6 +898,7 @@ export namespace preferences {
 	        this.silencedDialogs = source["silencedDialogs"];
 	        this.chunksMetrics = source["chunksMetrics"];
 	        this.exportsMetrics = source["exportsMetrics"];
+	        this.sectionStates = source["sectionStates"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
 	        this.fontScale = source["fontScale"];
 	        this.showFieldTypes = source["showFieldTypes"];

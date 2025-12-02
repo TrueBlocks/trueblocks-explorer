@@ -10,7 +10,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { BaseTab, RendererParams, createDetailPanel } from '@components';
 import { useFacetColumns, useViewConfig } from '@hooks';
 import { exports, project, types } from '@models';
-import { Log } from '@utils';
 
 import { renderers } from '../../index';
 
@@ -43,41 +42,25 @@ export const OpenApprovalsFacet = ({ params }: { params: RendererParams }) => {
 
   // onFinal callback for transaction success
   const handleOnFinal = useCallback(
-    (rowKey: string, newValue: string, txHash: string) => {
-      Log(
-        `[OpenApprovalsFacet] POST-CONFIRM: Received callback - rowKey=${rowKey}, newValue=${newValue}, txHash=${txHash}`,
-      );
-
+    (rowKey: string, newValue: string, _txHash: string) => {
       if (newValue === '0') {
         // Revoke case - use the rowKey (approval details) instead of txHash
-        Log(
-          `[OpenApprovalsFacet] POST-CONFIRM: Setting pending-revoke status for ${rowKey}`,
-        );
         setApprovalStatuses((prev) =>
           new Map(prev).set(rowKey, 'pending-revoke'),
         );
 
         // Change to revoked after 10 seconds
         setTimeout(() => {
-          Log(
-            `[OpenApprovalsFacet] POST-CONFIRM: Setting revoked status for ${rowKey}`,
-          );
           setApprovalStatuses((prev) => new Map(prev).set(rowKey, 'revoked'));
         }, 10000);
       } else {
         // Approve case - use the rowKey (approval details) instead of txHash
-        Log(
-          `[OpenApprovalsFacet] POST-CONFIRM: Approve case - value=${newValue}, rowKey=${rowKey}`,
-        );
         setApprovalStatuses((prev) =>
           new Map(prev).set(rowKey, 'pending-changed'),
         );
 
         // Clear status after 10 seconds
         setTimeout(() => {
-          Log(
-            `[OpenApprovalsFacet] POST-CONFIRM: Clearing status for ${rowKey}`,
-          );
           setApprovalStatuses((prev) => {
             const newMap = new Map(prev);
             newMap.delete(rowKey);
@@ -91,14 +74,10 @@ export const OpenApprovalsFacet = ({ params }: { params: RendererParams }) => {
 
   // Augment data with approval status
   const augmentedData = useMemo(() => {
-    const result = localData.map((row, index) => {
+    const result = localData.map((row, _index) => {
       // Use approval details (owner-token-spender) as the key
       const rowKey = generateRowKey(row);
       const status = approvalStatuses.get(rowKey) || '';
-
-      Log(
-        `[OpenApprovalsFacet] Augmenting row ${index}: rowKey=${rowKey}, status="${status}"`,
-      );
 
       return {
         ...row,

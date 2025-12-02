@@ -51,7 +51,10 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
     }
   }
 
-  return buildDetailPanelFromConfigs<T>(currentFacetConfig?.detailPanels);
+  return buildDetailPanelFromConfigs<T>(
+    facet,
+    currentFacetConfig?.detailPanels,
+  );
 };
 
 /**
@@ -59,6 +62,7 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
  * This creates a combined panel with multiple sections using proper styling.
  */
 export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
+  facet: string,
   panelConfigs?: types.DetailPanelConfig[],
 ) => {
   const dp = (rowData: T | null) => {
@@ -85,6 +89,7 @@ export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
 
     return (
       <DetailTable
+        facet={facet}
         sections={sections}
         defaultCollapsedSections={defaultCollapsedSections}
       />

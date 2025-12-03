@@ -60,15 +60,18 @@ export const TableBody = <T extends Record<string, unknown>>({
 
                 // All rows: add left border to first column, right border to last column
                 if (colIndex === 0) {
-                  cellBorders.borderLeft = '3px solid blue';
+                  cellBorders.borderLeft =
+                    '1px solid var(--mantine-color-gray-4)';
                 }
                 if (colIndex === columns.length - 1) {
-                  cellBorders.borderRight = '3px solid blue';
+                  cellBorders.borderRight =
+                    '1px solid var(--mantine-color-gray-4)';
                 }
 
                 // Last row only: add bottom border to all columns
                 if (isLastRow) {
-                  cellBorders.borderBottom = '3px solid blue';
+                  cellBorders.borderBottom =
+                    '1px solid var(--mantine-color-gray-4)';
                 }
                 return (
                   <td

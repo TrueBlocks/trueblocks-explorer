@@ -73,19 +73,19 @@ export const Header = <T extends Record<string, unknown>>({
           if (index === 0) {
             // First column: left and top borders
             cellBorders = {
-              borderLeft: '3px solid red',
-              borderTop: '3px solid red',
+              borderLeft: '1px solid var(--mantine-color-gray-4)',
+              borderTop: '1px solid var(--mantine-color-gray-4)',
             };
           } else if (index === columns.length - 1) {
             // Last column: right and top borders
             cellBorders = {
-              borderRight: '3px solid red',
-              borderTop: '3px solid red',
+              borderRight: '1px solid var(--mantine-color-gray-4)',
+              borderTop: '1px solid var(--mantine-color-gray-4)',
             };
           } else {
             // Middle columns: top border only
             cellBorders = {
-              borderTop: '3px solid red',
+              borderTop: '1px solid var(--mantine-color-gray-4)',
             };
           }
 

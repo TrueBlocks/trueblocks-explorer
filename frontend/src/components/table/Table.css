@@ -170,7 +170,6 @@
 }
 
 .detail-panel {
-  /* Background and color now handled by Mantine Box component with bg="gray.1" */
   border-radius: var(--mantine-radius-sm);
   box-shadow: var(--mantine-shadow-md);
   position: relative;
@@ -180,6 +179,7 @@
   height: auto;
   max-height: 100vh;
   overflow: hidden;
+  margin-top: 2px;
 }
 
 .detail-panel-content {
@@ -285,23 +285,6 @@
   min-width: max-content;
 }
 
-/* Table sections */
-.data-table thead {
-  border-left: 5px solid blue;
-  border-top: 5px solid blue;
-  border-right: 5px solid blue;
-}
-
-.data-table tbody {
-  border-left: 5px solid orange;
-  border-bottom: 5px solid orange;
-  border-right: 5px solid orange;
-}
-
-.data-table tfoot {
-  border: none;
-}
-
 /* All cells */
 .data-table th,
 .data-table td {
@@ -311,13 +294,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: top;
-  border-bottom: 6px solid green;
-  border-right: 6px solid green;
-}
-
-.data-table th:last-child,
-.data-table td:last-child {
-  border-right: none;
 }
 
 /* Header cells */
@@ -346,24 +322,123 @@
 }
 
 .data-table tr:focus {
-  outline: 2px solid var(--mantine-color-primary-4);
   outline-offset: -2px;
+}
+
+/* Special states */
+.data-table tr.deleted-row {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* ========================================
+   BORDER AND BACKGROUND CONTROL SECTION
+   ======================================== */
+
+/* Table sections - borders only */
+.data-table thead {
+  border-left: 1px solid var(--mantine-color-gray-4);
+  border-top: 1px solid var(--mantine-color-gray-4);
+  border-right: 1px solid var(--mantine-color-gray-4);
+}
+
+.data-table tbody {
+  border-left: 1px solid var(--mantine-color-gray-4);
+  border-bottom: 1px solid var(--mantine-color-gray-4);
+  border-right: 1px solid var(--mantine-color-gray-4);
+}
+
+.data-table tfoot {
+  border: none;
+}
+
+/* All cells - borders only */
+.data-table th,
+.data-table td {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  border-right: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  border-right: none;
+}
+
+/* Remove bottom border from footer cells */
+.data-table tfoot td {
+  border-bottom: none;
+}
+
+/* Rounded corners on corner cells */
+.data-table thead th:first-child {
+  border-top-left-radius: var(--mantine-radius-sm);
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.data-table thead th:last-child {
+  border-top-right-radius: var(--mantine-radius-sm);
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.data-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: var(--mantine-radius-sm);
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.data-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: var(--mantine-radius-sm);
+  margin-right: 0;
+  padding-right: 0;
+}
+
+/* Remove padding from all perimeter cells for continuous border */
+.data-table thead th {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.data-table tbody tr:last-child td {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+/* Header cells - background only */
+.mantine-integrated-table .data-table th {
+  background-color: var(--mantine-primary-color-filled);
+}
+
+/* Special states - background only */
+.data-table tr.deleted-row {
+  background-color: rgba(255, 100, 100, 0.1);
+}
+
+/* Focus states - colors only */
+.data-table tr:focus {
+  outline: 2px solid var(--mantine-color-primary-4);
 }
 
 .data-table:focus tbody tr[aria-selected='true'] {
   box-shadow: 0 0 0 2px var(--mantine-color-primary-3);
 }
 
-/* Special states */
+/* Text colors */
 .mantine-integrated-table .data-table th {
-  background-color: var(--mantine-primary-color-filled);
   color: var(--mantine-primary-color-contrast);
-}
-
-.data-table tr.deleted-row {
-  text-decoration: line-through;
-  opacity: 0.7;
-  background-color: rgba(255, 100, 100, 0.1);
 }
 
 .data-table tr.deleted-row td {

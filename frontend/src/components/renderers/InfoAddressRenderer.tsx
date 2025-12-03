@@ -44,7 +44,10 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
           value={
             <>
               {fromName && (
-                <StyledValue weight="normal">{fromName}</StyledValue>
+                <>
+                  <StyledValue weight="normal">{fromName}</StyledValue>
+                  <br />
+                </>
               )}
               <StyledValue variant="blue" size="xs">
                 {createAddressLink(from)}
@@ -61,7 +64,10 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
           value={
             <>
               {extraName && (
-                <StyledValue weight="normal">{extraName}</StyledValue>
+                <>
+                  <StyledValue weight="normal">{extraName}</StyledValue>
+                  <br />
+                </>
               )}
               <StyledValue variant="blue" size="xs">
                 {createAddressLink(extra)}
@@ -75,7 +81,12 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
           label={<StyledLabel variant="blue">{toLabel || 'To'}</StyledLabel>}
           value={
             <>
-              {toName && <StyledValue weight="normal">{toName}</StyledValue>}
+              {toName && (
+                <>
+                  <StyledValue weight="normal">{toName}</StyledValue>
+                  <br />
+                </>
+              )}
               <StyledValue variant="blue" size="xs">
                 {createAddressLink(to)}
               </StyledValue>

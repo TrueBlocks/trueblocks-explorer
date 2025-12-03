@@ -40,12 +40,13 @@ const ParameterValue = ({ param }: { param: types.Parameter }) => {
 
   if (param.type === 'address' && addressName) {
     return (
-      <div>
-        <StyledValue weight="normal">{addressName+' '}</StyledValue>
+      <>
+        <StyledValue weight="normal">{addressName}</StyledValue>
+        <br />
         <StyledValue variant="dimmed" size="xs">
           {displayValue}
         </StyledValue>
-      </div>
+      </>
     );
   }
 

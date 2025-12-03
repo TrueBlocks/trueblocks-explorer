@@ -97,7 +97,7 @@ export const TransactionsPanel = (rowData: Record<string, unknown>) => {
         <InfoAddressRenderer addressInfo={addressInfo} />
       </DetailSection>
 
-      <DetailSection facet={facet} title={'Function Call'}>
+      <DetailSection facet={facet} title={'Articulated Call'}>
         <InfoArticulationRenderer articulationInfo={articulationInfo} />
       </DetailSection>
 

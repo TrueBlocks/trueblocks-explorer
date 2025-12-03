@@ -53,56 +53,28 @@ export const TableBody = <T extends Record<string, unknown>>({
                 cursor: 'pointer',
               }}
             >
-              {columns.map((col, colIndex) => {
-                // Determine borders for body cells
-                const isLastRow = rowIndex === data.length - 1;
-                let cellBorders: React.CSSProperties = {};
-
-                // All rows: add left border to first column, right border to last column
-                if (colIndex === 0) {
-                  cellBorders.borderLeft =
-                    '1px solid var(--mantine-color-gray-4)';
-                }
-                if (colIndex === columns.length - 1) {
-                  cellBorders.borderRight =
-                    '1px solid var(--mantine-color-gray-4)';
-                }
-
-                // Last row only: add bottom border to all columns
-                if (isLastRow) {
-                  cellBorders.borderBottom =
-                    '1px solid var(--mantine-color-gray-4)';
-                }
-                return (
-                  <td
-                    key={col.key}
-                    style={{
-                      ...col.style,
-                      ...cellBorders,
-                    }}
-                    className={col.className}
-                  >
-                    <FieldRenderer
-                      field={
-                        {
-                          key: col.key as string,
-                          type: col.type || 'text',
-                          value: (col.key !== undefined
-                            ? isNestedProperty(col.key)
-                              ? getNestedProperty(row, col.key)
-                              : row[col.key as keyof T]
-                            : '') as string,
-                          customRender: col.render
-                            ? col.render(row, rowIndex)
-                            : undefined,
-                        } as FormField<Record<string, unknown>>
-                      }
-                      row={row as Record<string, unknown>}
-                      mode="display"
-                    />
-                  </td>
-                );
-              })}
+              {columns.map((col) => (
+                <td key={col.key} style={col.style} className={col.className}>
+                  <FieldRenderer
+                    field={
+                      {
+                        key: col.key as string,
+                        type: col.type || 'text',
+                        value: (col.key !== undefined
+                          ? isNestedProperty(col.key)
+                            ? getNestedProperty(row, col.key)
+                            : row[col.key as keyof T]
+                          : '') as string,
+                        customRender: col.render
+                          ? col.render(row, rowIndex)
+                          : undefined,
+                      } as FormField<Record<string, unknown>>
+                    }
+                    row={row as Record<string, unknown>}
+                    mode="display"
+                  />
+                </td>
+              ))}
             </tr>
           </Fragment>
         );

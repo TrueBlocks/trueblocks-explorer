@@ -44,7 +44,7 @@
 
 .detail-separator {
   grid-column: 1 / -1;
-  border-bottom: 1px solid var(--mantine-color-gray-4);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
   height: 1px;
   margin: 4px 0;
 }

@@ -7,12 +7,11 @@ import { usePagination } from 'src/components/table/usePagination';
 // StatsProps defines the props for the Stats component.
 interface StatsProps {
   nRecords: number;
-  nCols: number;
   viewStateKey: project.ViewStateKey;
 }
 
 // Stats displays a summary of the current entries being shown in the table.
-export const Stats = ({ nRecords, nCols, viewStateKey }: StatsProps) => {
+export const Stats = ({ nRecords, viewStateKey }: StatsProps) => {
   const { pagination } = usePagination(viewStateKey);
   const { currentPage, pageSize, totalItems } = pagination;
 
@@ -20,14 +19,8 @@ export const Stats = ({ nRecords, nCols, viewStateKey }: StatsProps) => {
   const endRecord = Math.min((currentPage + 1) * pageSize, totalItems);
 
   return (
-    <tfoot>
-      <tr>
-        <td colSpan={nCols}>
-          <Text variant="dimmed" size="sm">
-            {`Showing ${startRecord} to ${endRecord} of ${totalItems} entries`}
-          </Text>
-        </td>
-      </tr>
-    </tfoot>
+    <Text variant="dimmed" size="sm" p="sm">
+      {`Showing ${startRecord} to ${endRecord} of ${totalItems} entries`}
+    </Text>
   );
 };

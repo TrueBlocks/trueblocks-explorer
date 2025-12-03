@@ -18,13 +18,14 @@ export const DetailPanel = <T extends Record<string, unknown>>({
       className={`detail-panel ${getDebugClass(12)}`}
       bg="gray.2"
       c="text"
+      m="2px"
       style={{
         flex: '0 0 35%',
         borderRadius: 'var(--mantine-radius-sm)',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        border: '1px solid var(--mantine-color-gray-4)',
+        border: '1px solid var(--mantine-color-gray-3)',
         height: 'auto',
         maxHeight: '100vh',
         overflow: 'hidden',

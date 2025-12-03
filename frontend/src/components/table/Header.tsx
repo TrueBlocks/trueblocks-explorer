@@ -68,33 +68,11 @@ export const Header = <T extends Record<string, unknown>>({
             .filter(Boolean)
             .join(' ');
 
-          // Determine borders for header cells
-          let cellBorders = {};
-          if (index === 0) {
-            // First column: left and top borders
-            cellBorders = {
-              borderLeft: '1px solid var(--mantine-color-gray-4)',
-              borderTop: '1px solid var(--mantine-color-gray-4)',
-            };
-          } else if (index === columns.length - 1) {
-            // Last column: right and top borders
-            cellBorders = {
-              borderRight: '1px solid var(--mantine-color-gray-4)',
-              borderTop: '1px solid var(--mantine-color-gray-4)',
-            };
-          } else {
-            // Middle columns: top border only
-            cellBorders = {
-              borderTop: '1px solid var(--mantine-color-gray-4)',
-            };
-          }
-
           return (
             <th
               key={col.key}
               style={{
                 textAlign: 'center',
-                ...cellBorders,
               }}
               className={classNames}
               onClick={col.sortable ? () => handleClick(col) : undefined}

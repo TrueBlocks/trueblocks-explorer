@@ -335,19 +335,9 @@
    BORDER AND BACKGROUND CONTROL SECTION
    ======================================== */
 
-/* Table sections - borders only */
-.data-table thead {
-  border-left: 1px solid var(--mantine-color-gray-4);
-  border-top: 1px solid var(--mantine-color-gray-4);
-  border-right: 1px solid var(--mantine-color-gray-4);
-}
-
-.data-table tbody {
-  border-left: 1px solid var(--mantine-color-gray-4);
-  border-bottom: 1px solid var(--mantine-color-gray-4);
-  border-right: 1px solid var(--mantine-color-gray-4);
-}
-
+/* No outer borders - table is wrapped in Box with panel border */
+.data-table thead,
+.data-table tbody,
 .data-table tfoot {
   border: none;
 }
@@ -369,29 +359,9 @@
   border-bottom: none;
 }
 
-/* Rounded corners on corner cells */
-.data-table thead th:first-child {
-  border-top-left-radius: var(--mantine-radius-sm);
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.data-table thead th:last-child {
-  border-top-right-radius: var(--mantine-radius-sm);
-  margin-right: 0;
-  padding-right: 0;
-}
-
-.data-table tbody tr:last-child td:first-child {
-  border-bottom-left-radius: var(--mantine-radius-sm);
-  margin-left: 0;
-  padding-left: 0;
-}
-
-.data-table tbody tr:last-child td:last-child {
-  border-bottom-right-radius: var(--mantine-radius-sm);
-  margin-right: 0;
-  padding-right: 0;
+/* Remove bottom border from last row to avoid conflict with Box border */
+.data-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* Remove padding from all perimeter cells for continuous border */

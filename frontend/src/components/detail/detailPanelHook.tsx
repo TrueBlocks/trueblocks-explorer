@@ -7,6 +7,8 @@ import type { ReactNode } from 'react';
 import { DetailTable, FormField, ShouldNotHappen } from '@components';
 import { types } from '@models';
 
+const NoSelection = () => <div className="no-selection">Loading...</div>;
+
 /**
  * Creates a detail panel from ViewConfig or falls back to default
  * This function encapsulates all ViewConfig integration logic and returns
@@ -25,36 +27,55 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
     onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
   } = {},
 ): DetailPanelFn<T> => {
-  // Get the current facet configuration
-  const currentFacetConfig = viewConfig?.facets?.[getCurrentDataFacet()];
+  const panelFunction = (rowData: T | null) => {
+    const facet = getCurrentDataFacet();
 
-  // Check for a custom panel override first
-  const facet = getCurrentDataFacet();
+    // Get the current facet configuration
+    const currentFacetConfig = viewConfig?.facets?.[facet];
 
-  // Check direct facet match first (e.g., "statements", "openapprovals")
-  if (customPanels[facet]) {
-    const panelFn = customPanels[facet] as DetailPanelFn<T>;
-    // If panel function accepts onFinal, pass it
-    return (rowData: T | null) => panelFn(rowData, options.onFinal);
-  }
-
-  // Check for compound keys (viewName.facetKey or viewName)
-  if (viewConfig?.viewName) {
-    const key = `${viewConfig.viewName}.${facet}`;
-    if (customPanels[key]) {
-      const panelFn = customPanels[key] as DetailPanelFn<T>;
-      return (rowData: T | null) => panelFn(rowData, options.onFinal);
+    // Check for a custom panel override first
+    // Check direct facet match first (e.g., "statements", "openapprovals")
+    if (customPanels[facet]) {
+      const panelFn = customPanels[facet] as DetailPanelFn<T>;
+      // If panel function accepts onFinal, pass it
+      return rowData ? (
+        panelFn(rowData, options.onFinal)
+      ) : (
+        <div className="no-selection">Loading...</div>
+      );
     }
-    if (customPanels[viewConfig.viewName]) {
-      const panelFn = customPanels[viewConfig.viewName] as DetailPanelFn<T>;
-      return (rowData: T | null) => panelFn(rowData, options.onFinal);
-    }
-  }
 
-  return buildDetailPanelFromConfigs<T>(
-    facet,
-    currentFacetConfig?.detailPanels,
-  );
+    // Check for compound keys (viewName.facetKey or viewName)
+    if (viewConfig?.viewName) {
+      const key = `${viewConfig.viewName}.${facet}`;
+      if (customPanels[key]) {
+        const panelFn = customPanels[key] as DetailPanelFn<T>;
+        return rowData ? (
+          panelFn(rowData, options.onFinal)
+        ) : (
+          <div className="no-selection">Loading...</div>
+        );
+      }
+      if (customPanels[viewConfig.viewName]) {
+        const panelFn = customPanels[viewConfig.viewName] as DetailPanelFn<T>;
+        return rowData ? (
+          panelFn(rowData, options.onFinal)
+        ) : (
+          <div className="no-selection">Loading...</div>
+        );
+      }
+    }
+
+    // Fall back to default panel configuration
+    const defaultPanel = buildDetailPanelFromConfigs<T>(
+      facet,
+      currentFacetConfig?.detailPanels,
+    );
+    return rowData ? defaultPanel(rowData) : <NoSelection />;
+  };
+
+  panelFunction.displayName = 'DetailPanel';
+  return panelFunction;
 };
 
 /**
@@ -65,11 +86,7 @@ export const buildDetailPanelFromConfigs = <T extends Record<string, unknown>>(
   facet: string,
   panelConfigs?: types.DetailPanelConfig[],
 ) => {
-  const dp = (rowData: T | null) => {
-    if (!rowData) {
-      return <div className="no-selection">Loading...</div>;
-    }
-
+  const dp = (rowData: T) => {
     if (!panelConfigs || !panelConfigs.length) {
       return (
         <ShouldNotHappen message="buildDetailPanelFromConfigs called with empty panelConfigs" />

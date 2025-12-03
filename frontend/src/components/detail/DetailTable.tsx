@@ -3,9 +3,12 @@ import {
   DetailSection,
   FieldRenderer,
   FormField,
+  PanelRow,
+  PanelTable,
+  StyledLabel,
+  StyledValue,
 } from '@components';
 
-import { PanelRow, PanelTable } from '../renderers';
 import './DetailTable.css';
 
 type Section = {
@@ -50,19 +53,19 @@ export const DetailTable = ({
                   <PanelRow
                     key={`${section.name}-${rowIndex}`}
                     label={
-                      <div className="detail-row-prompt">
+                      <StyledLabel variant="blue">
                         {formField.label || formField.key || 'Unknown'}
-                      </div>
+                      </StyledLabel>
                     }
                     value={
-                      <div className="detail-row-value">
+                      <StyledValue>
                         <FieldRenderer
                           field={formField}
                           mode="display"
-                          tableCell={false}
+                          tableCell={true}
                           rowData={section.rowData}
                         />
-                      </div>
+                      </StyledValue>
                     }
                   />
                 );

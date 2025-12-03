@@ -7,6 +7,7 @@ export * from './TableContext';
 export * from './Header';
 export * from './Stats';
 export * from './DetailPanel';
+export * from './DetailPanelErrorBoundary';
 
 export * from './usePagination';
 export * from './useTableKeys';

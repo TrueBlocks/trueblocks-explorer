@@ -1,3 +1,4 @@
+import { StyledLabel, StyledValue } from '@components';
 import { createAddressLink } from '@utils';
 
 import { PanelRow, PanelTable } from '.';
@@ -37,41 +38,47 @@ export const InfoAddressRenderer = ({ addressInfo }: InfoAddressProps) => {
     <PanelTable>
       {showFromLabel && !!from && (
         <PanelRow
-          label={fromLabel || 'From'}
+          label={
+            <StyledLabel variant="blue">{fromLabel || 'From'}</StyledLabel>
+          }
           value={
             <>
-              {fromName && <div className="panel-nested-name">{fromName}</div>}
-              <div className="panel-nested-address">
+              {fromName && (
+                <StyledValue weight="normal">{fromName}</StyledValue>
+              )}
+              <StyledValue variant="blue" size="xs">
                 {createAddressLink(from)}
-              </div>
+              </StyledValue>
             </>
           }
         />
       )}
       {!!extra && (
         <PanelRow
-          label={extraLabel || 'Extra'}
+          label={
+            <StyledLabel variant="blue">{extraLabel || 'Extra'}</StyledLabel>
+          }
           value={
             <>
               {extraName && (
-                <div className="panel-nested-name">{extraName}</div>
+                <StyledValue weight="normal">{extraName}</StyledValue>
               )}
-              <div className="panel-nested-address">
+              <StyledValue variant="blue" size="xs">
                 {createAddressLink(extra)}
-              </div>
+              </StyledValue>
             </>
           }
         />
       )}
       {!!to && (
         <PanelRow
-          label={toLabel || 'To'}
+          label={<StyledLabel variant="blue">{toLabel || 'To'}</StyledLabel>}
           value={
             <>
-              {toName && <div className="panel-nested-name">{toName}</div>}
-              <div className="panel-nested-address">
+              {toName && <StyledValue weight="normal">{toName}</StyledValue>}
+              <StyledValue variant="blue" size="xs">
                 {createAddressLink(to)}
-              </div>
+              </StyledValue>
             </>
           }
         />

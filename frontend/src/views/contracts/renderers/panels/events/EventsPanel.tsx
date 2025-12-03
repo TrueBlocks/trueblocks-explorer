@@ -14,6 +14,7 @@ import {
   InfoAddressRenderer,
   InfoArticulationRenderer,
   InfoDetailsRenderer,
+  StyledValue,
   logToAddressInfo,
 } from '@components';
 import { types } from '@models';
@@ -23,7 +24,7 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const EventsPanel = (rowData: Record<string, unknown> | null) => {
+export const EventsPanel = (rowData: Record<string, unknown>) => {
   // EXISTING_CODE
   const facet = 'events';
 
@@ -39,13 +40,19 @@ export const EventsPanel = (rowData: Record<string, unknown> | null) => {
   const articulationInfo = useMemo(() => logToArticulationInfo(log), [log]);
 
   if (!rowData) {
-    return <div className="no-selection">Loading...</div>;
+    return (
+      <div style={{ padding: '16px', textAlign: 'center' }}>
+        <StyledValue variant="dimmed">Loading...</StyledValue>
+      </div>
+    );
   }
 
   return (
     <DetailContainer>
       <DetailHeader>
-        Log {log.logIndex} in Tx {displayHash(log.transactionHash)}
+        <StyledValue variant="blue" weight="strong">
+          Log {log.logIndex} in Tx {displayHash(log.transactionHash)}
+        </StyledValue>
       </DetailHeader>
 
       <DetailSection facet={facet} title={'Information'}>

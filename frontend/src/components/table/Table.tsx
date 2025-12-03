@@ -14,6 +14,7 @@ import { getDebugClass } from '@utils';
 
 import {
   DetailPanel,
+  DetailPanelErrorBoundary,
   Header,
   Pagination,
   PerPage,
@@ -41,7 +42,7 @@ export interface TableProps<T extends Record<string, unknown>> {
   >;
   onModalOpen?: (openModal: (data: T) => void) => void;
   headerActions?: React.ReactNode;
-  detailPanel: (rowData: T | null) => React.ReactNode;
+  detailPanel: (rowData: T) => React.ReactNode;
 }
 
 export const Table = <T extends Record<string, unknown>>({
@@ -425,11 +426,14 @@ export const Table = <T extends Record<string, unknown>>({
           </table>
         </div>
 
-        {!detailCollapsed && (
-          <DetailPanel
-            selectedRowData={selectedRowData}
-            detailPanel={detailPanel}
-          />
+        {!detailCollapsed && selectedRowData && (
+          <DetailPanelErrorBoundary facetKey={facetKey}>
+            <DetailPanel
+              selectedRowData={selectedRowData}
+              detailPanel={detailPanel}
+              facetKey={facetKey}
+            />
+          </DetailPanelErrorBoundary>
         )}
       </div>
 

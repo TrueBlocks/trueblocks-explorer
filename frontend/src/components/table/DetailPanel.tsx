@@ -3,15 +3,18 @@ import { getDebugClass } from '@utils';
 
 interface DetailPanelProps<T extends Record<string, unknown>> {
   selectedRowData: T | null | undefined;
-  detailPanel: (rowData: T | null) => React.ReactNode;
+  detailPanel: (rowData: T) => React.ReactNode;
+  facetKey?: string;
 }
 
 export const DetailPanel = <T extends Record<string, unknown>>({
   selectedRowData,
   detailPanel,
+  facetKey,
 }: DetailPanelProps<T>) => {
   return (
     <Box
+      key={facetKey}
       className={`detail-panel ${getDebugClass(12)}`}
       bg="gray.2"
       c="text"
@@ -28,7 +31,16 @@ export const DetailPanel = <T extends Record<string, unknown>>({
       }}
     >
       <div className="detail-panel-content">
-        {detailPanel(selectedRowData || null)}
+        {(() => {
+          try {
+            const result = selectedRowData
+              ? detailPanel(selectedRowData)
+              : null;
+            return result;
+          } catch (error) {
+            return <div>Error rendering panel: {String(error)}</div>;
+          }
+        })()}
       </div>
     </Box>
   );

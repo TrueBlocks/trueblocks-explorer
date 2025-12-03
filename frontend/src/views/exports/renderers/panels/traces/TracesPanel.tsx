@@ -14,6 +14,7 @@ import {
   InfoAddressRenderer,
   InfoArticulationRenderer,
   InfoDetailsRenderer,
+  StyledValue,
   txToAddressInfo,
 } from '@components';
 import { types } from '@models';
@@ -23,7 +24,7 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const TracesPanel = (rowData: Record<string, unknown> | null) => {
+export const TracesPanel = (rowData: Record<string, unknown>) => {
   // EXISTING_CODE
   const facet = 'traces';
 
@@ -52,10 +53,6 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
 
   const detailsInfo = useMemo(() => traceToDetailsInfo(trace), [trace]);
 
-  if (!rowData) {
-    return <div className="no-selection">Loading...</div>;
-  }
-
   return (
     <DetailContainer>
       <DetailHeader>
@@ -79,11 +76,11 @@ export const TracesPanel = (rowData: Record<string, unknown> | null) => {
             marginTop: '8px',
             backgroundColor: 'var(--mantine-color-red-0)',
             padding: '8px',
-            color: 'var(--mantine-color-red-8)',
-            fontWeight: '500',
           }}
         >
-          {trace.error}
+          <StyledValue variant="error" weight="normal">
+            {trace.error}
+          </StyledValue>
         </div>
       </DetailSection>
 

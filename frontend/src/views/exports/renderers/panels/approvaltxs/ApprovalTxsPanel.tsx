@@ -5,42 +5,118 @@
  * This file was auto generated. Do not edit.
  */
 // EXISTING_CODE
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Group, Text } from '@mantine/core';
+import {
+  DetailContainer,
+  DetailHeader,
+  DetailSection,
+  InfoAddressRenderer,
+  InfoArticulationRenderer,
+  InfoDetailsRenderer,
+  InfoGasRenderer,
+  InfoStatusRenderer,
+  StyledValue,
+  txToAddressInfo,
+  txToArticulationInfo,
+  txToDetailsInfo,
+  txToGasInfo,
+  txToStatusInfo,
+} from '@components';
+import { Group } from '@mantine/core';
 import { types } from '@models';
-import { displayHash } from '@utils';
+import { addressToHex, displayHash } from '@utils';
 
-import { TransactionPanelBase } from '../shared/TransactionPanelBase';
+import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const ApprovalTxsPanel = (rowData: Record<string, unknown> | null) => {
+export const ApprovalTxsPanel = (rowData: Record<string, unknown>) => {
   // EXISTING_CODE
   const facet = 'approvaltxs';
 
-  const transaction =
-    (rowData as unknown as types.Transaction) || ({} as types.Transaction);
+  const transaction = useMemo(
+    () =>
+      (rowData as unknown as types.Transaction) ||
+      types.Transaction.createFrom({}),
+    [rowData],
+  );
 
-  const titleComponent = () => (
-    <Group justify="space-between" align="flex-start">
-      <Text variant="primary" size="md" fw={600}>
-        Approval Tx {displayHash(transaction.hash)}
-      </Text>
-      <Text variant="primary" size="md" fw={600}>
-        Block {transaction.blockNumber}
-      </Text>
-    </Group>
+  const addressInfo = useMemo(
+    () =>
+      txToAddressInfo(
+        transaction.from,
+        transaction.fromName,
+        transaction.to,
+        transaction.toName,
+      ),
+    [transaction],
+  );
+
+  const articulationInfo = useMemo(
+    () => txToArticulationInfo(transaction),
+    [transaction],
+  );
+
+  const detailsInfo = useMemo(
+    () => txToDetailsInfo(transaction),
+    [transaction],
+  );
+
+  const gasInfo = useMemo(
+    () =>
+      txToGasInfo(
+        transaction,
+        transaction.fromName,
+        addressToHex(transaction.from),
+      ),
+    [transaction],
+  );
+
+  const statusInfo = useMemo(() => txToStatusInfo(transaction), [transaction]);
+
+  const titleComponent = useMemo(
+    () => (
+      <Group justify="space-between" align="flex-start">
+        <StyledValue variant="blue" weight="strong">
+          Approval Tx {displayHash(transaction.hash)}
+        </StyledValue>
+        <StyledValue variant="blue" weight="strong">
+          Block {transaction.blockNumber}
+        </StyledValue>
+      </Group>
+    ),
+    [transaction.hash, transaction.blockNumber],
   );
 
   return (
-    <TransactionPanelBase
-      facet={facet}
-      rowData={rowData}
-      title={titleComponent()}
-      showGasSection={false}
-      showStatusSection={false}
-    />
+    <DetailContainer>
+      <DetailHeader>{titleComponent}</DetailHeader>
+
+      <DetailSection facet={facet} title={'Information'}>
+        <InfoAddressRenderer addressInfo={addressInfo} />
+      </DetailSection>
+
+      <DetailSection facet={facet} title={'Function Call'}>
+        <InfoArticulationRenderer articulationInfo={articulationInfo} />
+      </DetailSection>
+
+      <DetailSection facet={facet} title={'Transaction & Block Details'}>
+        <InfoDetailsRenderer detailsInfo={detailsInfo} />
+      </DetailSection>
+
+      <DetailSection facet={facet} title={'Receipt Details'} cond={!!gasInfo}>
+        <InfoGasRenderer gasInfo={gasInfo} />
+      </DetailSection>
+
+      <DetailSection
+        facet={facet}
+        title={'Receipt & Trace Status'}
+        cond={!!statusInfo}
+      >
+        <InfoStatusRenderer statusInfo={statusInfo} />
+      </DetailSection>
+    </DetailContainer>
   );
   // EXISTING_CODE
 };

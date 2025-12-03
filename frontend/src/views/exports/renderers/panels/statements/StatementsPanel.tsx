@@ -5,74 +5,124 @@
  * This file was auto generated. Do not edit.
  */
 // EXISTING_CODE
-import { DetailContainer, DetailSection } from '@components';
-import { Grid, Group, Stack, Text } from '@mantine/core';
+import { useMemo } from 'react';
+
+import {
+  DetailContainer,
+  DetailSection,
+  PanelRow,
+  PanelTable,
+  StyledLabel,
+  StyledValue,
+} from '@components';
+import { Group, Stack, Text } from '@mantine/core';
 import { types } from '@models';
 import { addressToHex } from '@utils';
 
-import '../../../../../components/detail/DetailTable.css';
-
 // EXISTING_CODE
 
-export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
+export const StatementsPanel = (rowData: Record<string, unknown>) => {
   // EXISTING_CODE
   const facet = 'statements';
 
-  if (!rowData) return null;
-  const statement = rowData as unknown as types.Statement;
-  const decimals = statement.decimals || 18;
-  const scale = BigInt(10) ** BigInt(decimals);
-  const toBig = (v: unknown): bigint => {
-    if (v === undefined || v === null) return 0n;
-    const s = typeof v === 'string' ? v : String(v);
-    if (s === '' || s === '0') return 0n;
-    try {
-      return BigInt(s);
-    } catch {
-      return 0n;
-    }
-  };
-  const formatToken = (v: unknown) => {
-    const b = toBig(v);
-    if (b === 0n) return '-';
-    const neg = b < 0n;
-    const abs = neg ? -b : b;
-    const whole = abs / scale;
-    const frac = abs % scale;
-    let fracStr = frac.toString().padStart(decimals, '0');
-    if (decimals >= 3) {
-      fracStr = fracStr.slice(0, 3);
-    } else {
-      fracStr = fracStr.padEnd(3, '0');
-    }
-    return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
-  };
+  const statement = useMemo(
+    () =>
+      (rowData as unknown as types.Statement) || types.Statement.createFrom({}),
+    [rowData],
+  );
 
-  const totalInRaw = toBig(statement.calcs?.totalIn || '0');
-  const totalOutRaw = toBig(statement.calcs?.totalOut || '0');
-  const minerInRaw =
-    toBig(statement.minerBaseRewardIn || '0') +
-    toBig(statement.minerNephewRewardIn || '0') +
-    toBig(statement.minerTxFeeIn || '0') +
-    toBig(statement.minerUncleRewardIn || '0');
-  const hasPrice = toBig(statement.spotPrice) === 0n;
-  const formatRaw = (b: bigint) => {
-    if (b === 0n) return '-';
-    const neg = b < 0n;
-    const abs = neg ? -b : b;
-    const whole = abs / scale;
-    const frac = abs % scale;
-    let fracStr = frac.toString().padStart(decimals, '0');
-    if (decimals >= 3) {
-      fracStr = fracStr.slice(0, 3);
-    } else {
-      fracStr = fracStr.padEnd(3, '0');
-    }
-    return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
-  };
-  const beginBalRaw = toBig(statement.begBal);
-  const endBalRaw = toBig(statement.endBal);
-  const isReconciled = statement.calcs?.reconciled ?? false;
+  const decimals = useMemo(
+    () => statement.decimals || 18,
+    [statement.decimals],
+  );
+  const scale = useMemo(() => BigInt(10) ** BigInt(decimals), [decimals]);
+
+  const toBig = useMemo(() => {
+    return (v: unknown): bigint => {
+      if (v === undefined || v === null) return 0n;
+      const s = typeof v === 'string' ? v : String(v);
+      if (s === '' || s === '0') return 0n;
+      try {
+        return BigInt(s);
+      } catch {
+        return 0n;
+      }
+    };
+  }, []);
+
+  const formatToken = useMemo(() => {
+    return (v: unknown) => {
+      const b = toBig(v);
+      if (b === 0n) return '-';
+      const neg = b < 0n;
+      const abs = neg ? -b : b;
+      const whole = abs / scale;
+      const frac = abs % scale;
+      let fracStr = frac.toString().padStart(decimals, '0');
+      if (decimals >= 3) {
+        fracStr = fracStr.slice(0, 3);
+      } else {
+        fracStr = fracStr.padEnd(3, '0');
+      }
+      return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
+    };
+  }, [toBig, scale, decimals]);
+
+  const formatRaw = useMemo(() => {
+    return (b: bigint) => {
+      if (b === 0n) return '-';
+      const neg = b < 0n;
+      const abs = neg ? -b : b;
+      const whole = abs / scale;
+      const frac = abs % scale;
+      let fracStr = frac.toString().padStart(decimals, '0');
+      if (decimals >= 3) {
+        fracStr = fracStr.slice(0, 3);
+      } else {
+        fracStr = fracStr.padEnd(3, '0');
+      }
+      return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
+    };
+  }, [scale, decimals]);
+
+  const totalInRaw = useMemo(
+    () => toBig(statement.calcs?.totalIn || '0'),
+    [toBig, statement.calcs?.totalIn],
+  );
+  const totalOutRaw = useMemo(
+    () => toBig(statement.calcs?.totalOut || '0'),
+    [toBig, statement.calcs?.totalOut],
+  );
+  const minerInRaw = useMemo(
+    () =>
+      toBig(statement.minerBaseRewardIn || '0') +
+      toBig(statement.minerNephewRewardIn || '0') +
+      toBig(statement.minerTxFeeIn || '0') +
+      toBig(statement.minerUncleRewardIn || '0'),
+    [
+      toBig,
+      statement.minerBaseRewardIn,
+      statement.minerNephewRewardIn,
+      statement.minerTxFeeIn,
+      statement.minerUncleRewardIn,
+    ],
+  );
+  const hasPrice = useMemo(
+    () => toBig(statement.spotPrice) === 0n,
+    [toBig, statement.spotPrice],
+  );
+  const beginBalRaw = useMemo(
+    () => toBig(statement.begBal),
+    [toBig, statement.begBal],
+  );
+  const endBalRaw = useMemo(
+    () => toBig(statement.endBal),
+    [toBig, statement.endBal],
+  );
+  const isReconciled = useMemo(
+    () => statement.calcs?.reconciled ?? false,
+    [statement.calcs?.reconciled],
+  );
 
   type AddressLike = { address?: number[] } | string | null | undefined;
   const displayAddress8 = (addr: AddressLike): string => {
@@ -86,20 +136,21 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
     }
   };
 
-  type TxHashLike = { hash?: number[] };
-  const hashToHex = (h: TxHashLike): string => {
-    if (!h || !h.hash) return '';
-    try {
-      const bytes: number[] = h.hash;
-      return '0x' + bytes.map((b) => b.toString(16).padStart(2, '0')).join('');
-    } catch {
-      return '';
-    }
-  };
+  const titleComponent = useMemo(() => {
+    type TxHashLike = { hash?: number[] };
+    const hashToHex = (h: TxHashLike): string => {
+      if (!h || !h.hash) return '';
+      try {
+        const bytes: number[] = h.hash;
+        return (
+          '0x' + bytes.map((b) => b.toString(16).padStart(2, '0')).join('')
+        );
+      } catch {
+        return '';
+      }
+    };
 
-  // Create complex title component
-  const titleComponent = () => {
-    var variant = isReconciled ? 'success' : 'error';
+    const variant = isReconciled ? 'success' : 'error';
     return (
       <>
         <Group justify="space-between" align="flex-start">
@@ -123,302 +174,235 @@ export const StatementsPanel = (rowData: Record<string, unknown> | null) => {
         </Group>
       </>
     );
-  };
+  }, [
+    isReconciled,
+    statement.transactionHash,
+    statement.timestamp,
+    statement.blockNumber,
+    statement.transactionIndex,
+    statement.logIndex,
+  ]);
 
   return (
     <Stack gap={8} className="fixed-prompt-width">
-      <DetailContainer title={titleComponent()}>
+      <DetailContainer title={titleComponent}>
         <DetailSection facet={facet} title="Participants">
-          <Grid gutter={4}>
-            <Grid.Col span={6}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Accounted For</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
+          <PanelTable>
+            <PanelRow
+              label={
+                <StyledLabel variant="blue" weight="strong">
+                  Accounted For
+                </StyledLabel>
+              }
+              value={
+                <StyledValue variant="default">
                   {displayAddress8(statement.accountedFor || statement.holder)}
-                </div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Asset</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
-                  {`${displayAddress8(statement.asset)}${statement.symbol ? ` (${statement.symbol})` : ''}`}
-                </div>
-              </Grid.Col>
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Sender</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
+                </StyledValue>
+              }
+            />
+            <PanelRow
+              label={
+                <StyledLabel variant="blue" weight="strong">
+                  Asset
+                </StyledLabel>
+              }
+              value={
+                <StyledValue variant="default">{`${displayAddress8(statement.asset)}${statement.symbol ? ` (${statement.symbol})` : ''}`}</StyledValue>
+              }
+            />
+            <PanelRow
+              label={
+                <StyledLabel variant="blue" weight="strong">
+                  Sender
+                </StyledLabel>
+              }
+              value={
+                <StyledValue variant="default">
                   {displayAddress8(statement.sender)}
-                </div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Recipient</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
+                </StyledValue>
+              }
+            />
+            <PanelRow
+              label={
+                <StyledLabel variant="blue" weight="strong">
+                  Recipient
+                </StyledLabel>
+              }
+              value={
+                <StyledValue variant="default">
                   {displayAddress8(statement.recipient)}
-                </div>
-              </Grid.Col>
-            </Grid.Col>
-          </Grid>
+                </StyledValue>
+              }
+            />
+          </PanelTable>
         </DetailSection>
         <DetailSection facet={facet} title="Balance Summary">
-          <Grid gutter={4}>
-            <Grid.Col span={3}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Beg Bal</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
-                  <Text
-                    variant="primary"
-                    size="sm"
-                    style={{
-                      textAlign: 'right',
-                    }}
-                  >
-                    {formatRaw(beginBalRaw)}
-                  </Text>
-                </div>
-              </Grid.Col>
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Income</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
-                  <div
-                    style={{
-                      textAlign: 'right',
-                      paddingRight: 16,
-                      color:
-                        totalInRaw === 0n
-                          ? 'var(--mantine-color-dimmed)'
-                          : 'var(--mantine-color-text)',
-                    }}
-                  >
-                    {formatRaw(totalInRaw)}
+          <PanelTable>
+            <PanelRow>
+              <td
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                  gap: '16px',
+                  padding: '6px 8px',
+                }}
+                colSpan={2}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <div>
+                    <StyledLabel variant="blue" weight="strong">
+                      Beg Bal
+                    </StyledLabel>
+                  </div>
+                  <div>
+                    <StyledValue variant="default" size="sm">
+                      {formatRaw(beginBalRaw)}
+                    </StyledValue>
                   </div>
                 </div>
-              </Grid.Col>
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">Outflow</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
-                  <div
-                    style={{
-                      textAlign: 'right',
-                      paddingRight: 16,
-                      color:
-                        totalOutRaw === 0n
-                          ? 'var(--mantine-color-dimmed)'
-                          : 'var(--mantine-color-text)',
-                    }}
-                  >
-                    {formatRaw(totalOutRaw)}
+                <div style={{ textAlign: 'center' }}>
+                  <div>
+                    <StyledLabel variant="blue" weight="strong">
+                      Income
+                    </StyledLabel>
+                  </div>
+                  <div>
+                    <StyledValue
+                      variant={totalInRaw === 0n ? 'dimmed' : 'default'}
+                      size="sm"
+                    >
+                      {formatRaw(totalInRaw)}
+                    </StyledValue>
                   </div>
                 </div>
-              </Grid.Col>
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <Grid.Col span={12}>
-                <div className="detail-row-prompt">End Bal</div>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <div className="detail-row-value">
-                  <Text
-                    variant="primary"
-                    size="sm"
-                    style={{
-                      textAlign: 'right',
-                    }}
-                  >
-                    {formatRaw(endBalRaw)}
-                  </Text>
+                <div style={{ textAlign: 'center' }}>
+                  <div>
+                    <StyledLabel variant="blue" weight="strong">
+                      Outflow
+                    </StyledLabel>
+                  </div>
+                  <div>
+                    <StyledValue
+                      variant={totalOutRaw === 0n ? 'dimmed' : 'default'}
+                      size="sm"
+                    >
+                      {formatRaw(totalOutRaw)}
+                    </StyledValue>
+                  </div>
                 </div>
-              </Grid.Col>
-            </Grid.Col>
-          </Grid>
+                <div style={{ textAlign: 'center' }}>
+                  <div>
+                    <StyledLabel variant="blue" weight="strong">
+                      End Bal
+                    </StyledLabel>
+                  </div>
+                  <div>
+                    <StyledValue variant="default" size="sm">
+                      {formatRaw(endBalRaw)}
+                    </StyledValue>
+                  </div>
+                </div>
+              </td>
+            </PanelRow>
+          </PanelTable>
         </DetailSection>
-        <Grid gutter={1}>
-          <Grid.Col span={6}>
-            <DetailSection facet={facet} title="Inflows">
-              <Grid gutter={1}>
-                {[
-                  ['Amount In', statement.amountIn],
-                  ['Internal In', statement.internalIn],
-                  ['Prefund In', statement.prefundIn],
-                  ['Self Destruct In', statement.selfDestructIn],
-                  ['Miner In', minerInRaw],
-                ].map(([label, val]) => {
-                  const raw = toBig(val);
-                  return (
-                    <div key={label} style={{ display: 'contents' }}>
-                      <Grid.Col span={5}>
-                        <Text variant="dimmed" size="md">
-                          <div
-                            className="detail-row-prompt"
-                            style={{
-                              padding: '1px 4px',
-                              textOverflow: 'clip',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {label}
-                          </div>
-                        </Text>
-                      </Grid.Col>
-                      <Grid.Col span={7}>
-                        <div
-                          className="detail-row-value"
-                          style={{
-                            padding: '1px 4px',
-                          }}
-                        >
-                          <Text
-                            variant="primary"
-                            size="sm"
-                            style={{
-                              textAlign: 'right',
-                            }}
-                          >
-                            {formatRaw(raw)}
-                          </Text>
-                        </div>
-                      </Grid.Col>
-                    </div>
-                  );
-                })}
-              </Grid>
-            </DetailSection>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <DetailSection facet={facet} title="Outflows">
-              <Grid gutter={1}>
-                {[
-                  ['Amount Out', statement.amountOut],
-                  ['Internal Out', statement.internalOut],
-                  ['Gas Out', statement.gasOut],
-                  ['Self Destruct Out', statement.selfDestructOut],
-                ].map(([label, val]) => {
-                  const raw = toBig(val);
-                  return (
-                    <div key={label} style={{ display: 'contents' }}>
-                      <Grid.Col span={5}>
-                        <Text variant="dimmed" size="md">
-                          <div
-                            className="detail-row-prompt"
-                            style={{
-                              padding: '1px 4px',
-                              textOverflow: 'clip',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {label}
-                          </div>
-                        </Text>
-                      </Grid.Col>
-                      <Grid.Col span={7}>
-                        <div
-                          className="detail-row-value"
-                          style={{
-                            padding: '1px 4px',
-                          }}
-                        >
-                          <Text
-                            variant="primary"
-                            size="sm"
-                            style={{
-                              textAlign: 'right',
-                            }}
-                          >
-                            {formatRaw(raw)}
-                          </Text>
-                        </div>
-                      </Grid.Col>
-                    </div>
-                  );
-                })}
-              </Grid>
-            </DetailSection>
-          </Grid.Col>
-        </Grid>
+
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '5fr 7fr 5fr 7fr',
-            alignItems: 'center',
-            gap: 0,
+            gridTemplateColumns: '1fr 1fr',
+            gap: '16px',
           }}
         >
-          <div
-            style={{
-              padding: '1px 4px',
-              fontWeight: 500,
-              textOverflow: 'clip',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              background: 'transparent',
-            }}
-          >
-            Spot Price
-          </div>
-          <div
-            style={{
-              textAlign: 'right',
-              color: hasPrice
-                ? 'var(--mantine-color-dimmed)'
-                : 'var(--mantine-color-text)',
-            }}
-          >
-            {formatToken(statement.spotPrice)}
-          </div>
-          <div
-            style={{
-              padding: '1px 4px',
-              fontWeight: 500,
-              textOverflow: 'clip',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              background: 'transparent',
-              color: 'var(--mantine-color-dimmed)',
-            }}
-          >
-            Price Source
-          </div>
-          <div
-            style={{
-              padding: '1px 4px',
-              textOverflow: 'clip',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              color: 'var(--mantine-color-text)',
-            }}
-          >
-            {statement.priceSource || '-'}
-          </div>
+          <DetailSection facet={facet} title="Inflows">
+            <PanelTable>
+              {[
+                ['Amount In', statement.amountIn],
+                ['Internal In', statement.internalIn],
+                ['Prefund In', statement.prefundIn],
+                ['Self Destruct In', statement.selfDestructIn],
+                ['Miner In', minerInRaw],
+              ].map(([label, val]) => {
+                const raw = toBig(val);
+                return (
+                  <PanelRow
+                    key={`inflow-${label}`}
+                    layout="wide"
+                    label={<StyledLabel variant="dimmed">{label}</StyledLabel>}
+                    value={
+                      <StyledValue variant="default" size="sm" align="right">
+                        {formatRaw(raw)}
+                      </StyledValue>
+                    }
+                  />
+                );
+              })}
+            </PanelTable>
+          </DetailSection>
+
+          <DetailSection facet={facet} title="Outflows">
+            <PanelTable>
+              {[
+                ['Amount Out', statement.amountOut],
+                ['Internal Out', statement.internalOut],
+                ['Gas Out', statement.gasOut],
+                ['Self Destruct Out', statement.selfDestructOut],
+              ].map(([label, val]) => {
+                const raw = toBig(val);
+                return (
+                  <PanelRow
+                    key={`outflow-${label}`}
+                    layout="wide"
+                    label={<StyledLabel variant="dimmed">{label}</StyledLabel>}
+                    value={
+                      <StyledValue variant="default" size="sm" align="right">
+                        {formatRaw(raw)}
+                      </StyledValue>
+                    }
+                  />
+                );
+              })}
+            </PanelTable>
+          </DetailSection>
+
+          <DetailSection facet={facet} title="Pricing">
+            <PanelTable>
+              <PanelRow
+                label={
+                  <StyledLabel variant="blue" weight="strong">
+                    Spot Price
+                  </StyledLabel>
+                }
+                value={
+                  <StyledValue variant={hasPrice ? 'dimmed' : 'default'}>
+                    {formatToken(statement.spotPrice)}
+                  </StyledValue>
+                }
+              />
+              <PanelRow
+                label={
+                  <StyledLabel variant="dimmed" weight="strong">
+                    Price Source
+                  </StyledLabel>
+                }
+                value={
+                  <StyledValue variant="default">
+                    {statement.priceSource || '-'}
+                  </StyledValue>
+                }
+              />
+            </PanelTable>
+          </DetailSection>
         </div>
         {!isReconciled && statement.correctingReasons && (
-          <Text variant="error" size="sm">
+          <StyledValue variant="error" size="sm">
             Error: {statement.correctingReasons}
-          </Text>
+          </StyledValue>
         )}
         {statement.correctionId ? (
-          <Text variant="dimmed" size="md">
+          <StyledValue variant="dimmed">
             Correction Id: {statement.correctionId}
-          </Text>
+          </StyledValue>
         ) : null}
       </DetailContainer>
     </Stack>

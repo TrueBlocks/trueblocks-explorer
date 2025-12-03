@@ -21,10 +21,7 @@
       "menuOrder": 90
     },
     "exports": {
-      "menuOrder": 20,
-      "disabledFacets": {
-        "approvallogs": true
-      }
+      "menuOrder": 20
     },
     "monitors": {
       "menuOrder": 30

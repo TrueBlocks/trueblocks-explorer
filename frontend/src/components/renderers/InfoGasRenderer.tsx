@@ -1,3 +1,4 @@
+import { StyledValue } from '@components';
 import { useActiveProject } from '@hooks';
 import { types } from '@models';
 import { formatNumericValue } from '@utils';
@@ -55,22 +56,22 @@ export const InfoGasRenderer = ({ gasInfo }: InfoGasRendererProps) => {
     <>
       <PanelTable>
         <PanelRow layout="full" colSpan={2}>
-          <span style={{ fontWeight: 600 }}>
+          <StyledValue weight="strong">
             {gasInfo.gasUsed ? formatNumericValue(gasInfo.gasUsed) : 'N/A'}
-          </span>{' '}
+          </StyledValue>{' '}
           ×{' '}
-          <span style={{ fontWeight: 600 }}>
+          <StyledValue weight="strong">
             {gasInfo.gasPrice ? formatGasPrice() : 'N/A'}
-          </span>{' '}
-          gwei = <span style={{ fontWeight: 600 }}>{calculateGasCost()}</span>{' '}
+          </StyledValue>{' '}
+          gwei = <StyledValue weight="strong">{calculateGasCost()}</StyledValue>{' '}
           ETH
         </PanelRow>
         <PanelRow layout="full" colSpan={2}>
           Gas charged to{' '}
           {shouldShowGasInfo ? (
-            <span style={{ fontWeight: 600 }}>
+            <StyledValue weight="strong">
               {gasInfo.namedFrom || gasInfo.fromAddress}
-            </span>
+            </StyledValue>
           ) : (
             'sender'
           )}

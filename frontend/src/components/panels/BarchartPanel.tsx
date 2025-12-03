@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { BucketsConfig, MetricSelector, StatsBox } from '@components';
+import {
+  BucketsConfig,
+  MetricSelector,
+  StatsBox,
+  StyledValue,
+} from '@components';
 import { useBucketStats, useEvent } from '@hooks';
 import { BarChart } from '@mantine/charts';
-import { Alert, Box, Stack, Text } from '@mantine/core';
+import { Alert, Box, Stack } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { msgs, types } from '@models';
 import { Log, aggregateTimeBasedBuckets, formatGroupKey } from '@utils';
@@ -168,11 +173,7 @@ export const BarchartPanel = ({
 
   // Only show loading if we've never loaded any data before
   if (!hasEverLoaded) {
-    return (
-      <Text variant="primary" size="md">
-        Loading chart data...
-      </Text>
-    );
+    return <StyledValue variant="blue">Loading chart data...</StyledValue>;
   }
 
   if (!statsData || !bucketsData?.length) {
@@ -183,9 +184,7 @@ export const BarchartPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <Text variant="dimmed" size="md">
-          Loading...
-        </Text>
+        <StyledValue variant="dimmed">Loading...</StyledValue>
       </Box>
     );
   }
@@ -224,11 +223,11 @@ export const BarchartPanel = ({
         />
       )}
 
-      <Text variant="primary" size="sm" fw={600}>
+      <StyledValue variant="blue" weight="strong" size="sm">
         {config.timeGroupBy
           ? `${currentMetric.label} - ${config.timeGroupBy.charAt(0).toUpperCase() + config.timeGroupBy.slice(1)} View`
           : 'Bar Chart'}
-      </Text>
+      </StyledValue>
 
       <BarChart
         h={400}
@@ -255,16 +254,16 @@ export const BarchartPanel = ({
                 p="xs"
                 style={{ border: '1px solid #ddd', borderRadius: 4 }}
               >
-                <Text variant="primary" size="sm" fw={600}>
+                <StyledValue variant="blue" weight="strong" size="sm">
                   {config.timeGroupBy ? 'Time Period' : 'Block Range'}:{' '}
                   {data.name}
-                </Text>
-                <Text variant="primary" size="sm">
+                </StyledValue>
+                <StyledValue variant="default" size="sm">
                   {currentMetric.label}: {currentMetric.formatValue(data.value)}
-                </Text>
-                <Text variant="dimmed" size="sm">
+                </StyledValue>
+                <StyledValue variant="dimmed" size="sm">
                   Bucket: {data.bucket}
-                </Text>
+                </StyledValue>
               </Box>
             );
           },
@@ -272,12 +271,12 @@ export const BarchartPanel = ({
       />
 
       <div style={{ textAlign: 'center' }}>
-        <Text variant="dimmed" size="sm">
+        <StyledValue variant="dimmed" size="sm">
           Showing {currentMetric.label.toLowerCase()} distribution across{' '}
           {statsData?.count || 0} buckets
           {statsData &&
             ` (avg: ${currentMetric.formatValue(statsData.average)})`}
-        </Text>
+        </StyledValue>
       </div>
     </Stack>
   );

@@ -23,7 +23,7 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const LogsPanel = (rowData: Record<string, unknown> | null) => {
+export const LogsPanel = (rowData: Record<string, unknown>) => {
   // EXISTING_CODE
   const facet = 'logs';
 
@@ -37,10 +37,6 @@ export const LogsPanel = (rowData: Record<string, unknown> | null) => {
   );
   const detailsInfo = useMemo(() => logToDetailsInfo(log), [log]);
   const articulationInfo = useMemo(() => logToArticulationInfo(log), [log]);
-
-  if (!rowData) {
-    return <div className="no-selection">Loading...</div>;
-  }
 
   return (
     <DetailContainer>

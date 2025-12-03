@@ -1,3 +1,4 @@
+import { StyledLabel, StyledValue } from '@components';
 import { Text } from '@mantine/core';
 import { types } from '@models';
 import { createHashLink } from '@utils';
@@ -52,7 +53,7 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
         layout="wide"
         label={
           <>
-            <span style={{ fontWeight: 500 }}>Status:</span>{' '}
+            <StyledLabel weight="normal">Status</StyledLabel>{' '}
             <Text component="span" c={getStatusColor()} fw={600}>
               {getReceiptStatus()}
             </Text>
@@ -60,10 +61,10 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
         }
         value={
           <>
-            <span style={{ fontWeight: 500 }}>Log Count:</span>{' '}
-            <span style={{ fontWeight: 600 }}>
+            <StyledLabel weight="normal">Log Count</StyledLabel>{' '}
+            <StyledValue weight="strong">
               {statusInfo.logs?.length || 0}
-            </span>
+            </StyledValue>
           </>
         }
       />
@@ -78,10 +79,10 @@ export const InfoStatusRenderer = ({ statusInfo }: InfoStatusRendererProps) => {
         }
         value={
           <>
-            <span style={{ fontWeight: 500 }}>Trace Count:</span>{' '}
-            <span style={{ fontWeight: 600 }}>
+            <StyledLabel weight="normal">Trace Count</StyledLabel>{' '}
+            <StyledValue weight="strong">
               {statusInfo.traces?.length || 0}
-            </span>
+            </StyledValue>
           </>
         }
       />

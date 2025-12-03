@@ -16,7 +16,7 @@ interface BaseTabProps<T extends Record<string, unknown>> {
   onRemove?: (rowData: T) => void;
   onAutoname?: (rowData: T) => void;
   headerActions?: React.ReactNode;
-  detailPanel: (rowData: T | null) => React.ReactNode;
+  detailPanel: (rowData: T) => React.ReactNode;
 }
 
 export function BaseTab<T extends Record<string, unknown>>({

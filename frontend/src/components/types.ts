@@ -3,7 +3,7 @@ import { types } from '@models';
 export type TimeGroupBy = 'daily' | 'monthly' | 'quarterly' | 'annual';
 
 export type PanelRenderer = (
-  rowData: Record<string, unknown> | null,
+  rowData: Record<string, unknown>,
 ) => React.ReactNode;
 
 export type RendererParams = {

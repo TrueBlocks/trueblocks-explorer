@@ -24,6 +24,9 @@
   border-bottom: 1px solid var(--mantine-color-gray-2);
   width: 16.67%;
   vertical-align: top;
+  overflow: hidden;
+  text-overflow: truncate;
+  white-space: nowrap;
 }
 
 .panel-cell-value {

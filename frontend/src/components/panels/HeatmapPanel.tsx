@@ -5,16 +5,10 @@ import {
   IntensityLegend,
   MetricSelector,
   StatsBox,
+  StyledValue,
 } from '@components';
 import { useBucketStats, useEvent } from '@hooks';
-import {
-  Alert,
-  Box,
-  Stack,
-  Text,
-  Tooltip,
-  useMantineTheme,
-} from '@mantine/core';
+import { Alert, Box, Stack, Tooltip, useMantineTheme } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { msgs, types } from '@models';
 import {
@@ -203,11 +197,7 @@ export const HeatmapPanel = ({
 
   // Only show loading if we've never loaded any data before
   if (!hasEverLoaded) {
-    return (
-      <Text variant="primary" size="md">
-        Loading heat map...
-      </Text>
-    );
+    return <StyledValue variant="blue">Loading heat map...</StyledValue>;
   }
 
   if (!bucketsData?.length || !statsData || !buckets) {
@@ -218,9 +208,7 @@ export const HeatmapPanel = ({
 
     return (
       <Box p="md" ta="center">
-        <Text variant="dimmed" size="md">
-          Loading...
-        </Text>
+        <StyledValue variant="dimmed">Loading...</StyledValue>
       </Box>
     );
   }
@@ -254,9 +242,9 @@ export const HeatmapPanel = ({
       )}
 
       <Box>
-        <Text variant="primary" size="sm" fw={600}>
+        <StyledValue variant="blue" weight="strong" size="sm">
           Heat Map
-        </Text>
+        </StyledValue>
 
         <Box
           style={{
@@ -291,21 +279,21 @@ export const HeatmapPanel = ({
                 label={
                   <Box>
                     {config.timeGroupBy ? (
-                      <Text variant="primary" size="sm">
+                      <StyledValue variant="blue" size="sm">
                         Period: {formatGroupKey(dataPoint.bucketIndex)}
-                      </Text>
+                      </StyledValue>
                     ) : (
-                      <Text variant="primary" size="sm">
+                      <StyledValue variant="blue" size="sm">
                         Blocks: {formatNumericValue(dataPoint.startBlock)} -{' '}
                         {formatNumericValue(dataPoint.endBlock)}
-                      </Text>
+                      </StyledValue>
                     )}
-                    <Text variant="primary" size="sm">
+                    <StyledValue variant="default" size="sm">
                       {getMetricConfig(selectedMetric)?.label}:{' '}
                       {getMetricConfig(selectedMetric)?.formatValue(
                         dataPoint.total,
                       )}
-                    </Text>
+                    </StyledValue>
                   </Box>
                 }
               >
@@ -323,13 +311,13 @@ export const HeatmapPanel = ({
         </Box>
 
         <Box mt="md">
-          <Text variant="dimmed" size="sm">
+          <StyledValue variant="dimmed" size="sm">
             {formatNumericValue(statsData.count)} buckets,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.total)}{' '}
             total,{' '}
             {getMetricConfig(selectedMetric)?.formatValue(statsData.average)}{' '}
             avg per {formatNumericValue(buckets.gridInfo.size)}-block range
-          </Text>
+          </StyledValue>
         </Box>
 
         <IntensityLegend

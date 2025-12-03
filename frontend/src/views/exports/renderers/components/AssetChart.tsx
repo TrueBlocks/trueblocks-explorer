@@ -99,7 +99,6 @@ export const AssetChart = ({
   if (!buckets || buckets.length === 0) {
     return (
       <Paper
-        key={assetKey}
         p="xs"
         withBorder
         h={300}
@@ -137,7 +136,6 @@ export const AssetChart = ({
   if (!chartData || chartData.length === 0) {
     return (
       <Paper
-        key={assetKey}
         p="xs"
         withBorder
         h={300}
@@ -171,7 +169,6 @@ export const AssetChart = ({
 
   return (
     <Paper
-      key={assetKey}
       p="xs"
       withBorder
       bg="gray.1"

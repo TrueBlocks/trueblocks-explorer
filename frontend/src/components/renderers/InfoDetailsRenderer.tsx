@@ -1,4 +1,4 @@
-import { EtherRenderer } from '@components';
+import { EtherRenderer, StyledLabel, StyledValue } from '@components';
 import { types } from '@models';
 import { createHashLink } from '@utils';
 
@@ -39,22 +39,22 @@ export const InfoDetailsRenderer = ({
         layout="full"
         colSpan={2}
         value={
-          <span style={{ fontWeight: 600, fontSize: '13px' }}>
+          <StyledValue weight="strong" size="md">
             {formatDateTime()}
-          </span>
+          </StyledValue>
         }
       />
       <PanelRow
         layout="wide"
         label={
           <>
-            <span style={{ fontWeight: 500 }}>Hash:</span>{' '}
+            <StyledLabel weight="normal">Hash</StyledLabel>{' '}
             {createHashLink(detailsInfo.hash as { hash?: number[] }, 'hash')}
           </>
         }
         value={
           <>
-            <span style={{ fontWeight: 500 }}>Value:</span>{' '}
+            <StyledLabel weight="normal">Value</StyledLabel>{' '}
             <EtherRenderer value={detailsInfo.value} />
           </>
         }
@@ -63,15 +63,15 @@ export const InfoDetailsRenderer = ({
         layout="wide"
         label={
           <>
-            <span style={{ fontWeight: 500 }}>Block:</span>{' '}
-            <span style={{ fontWeight: 600 }}>
+            <StyledLabel weight="normal">Block</StyledLabel>{' '}
+            <StyledValue weight="strong">
               {detailsInfo.blockNumber}.{detailsInfo.transactionIndex}
-            </span>
+            </StyledValue>
           </>
         }
         value={
           <>
-            <span style={{ fontWeight: 500 }}>Block Hash:</span>{' '}
+            <StyledLabel weight="normal">Block Hash</StyledLabel>{' '}
             {createHashLink(
               detailsInfo.blockHash as { hash?: number[] },
               'block',

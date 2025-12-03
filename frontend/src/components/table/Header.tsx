@@ -29,7 +29,7 @@ export const Header = <T extends Record<string, unknown>>({
   return (
     <thead className={getDebugClass(1)}>
       <tr>
-        {columns.map((col) => {
+        {columns.map((col, index) => {
           // Get sort info from SortSpecManager for this column
           const sortInfo = SortSpecManager.getSortInfo(
             sort || { fields: [], orders: [] },
@@ -68,11 +68,33 @@ export const Header = <T extends Record<string, unknown>>({
             .filter(Boolean)
             .join(' ');
 
+          // Determine borders for header cells
+          let cellBorders = {};
+          if (index === 0) {
+            // First column: left and top borders
+            cellBorders = {
+              borderLeft: '3px solid red',
+              borderTop: '3px solid red',
+            };
+          } else if (index === columns.length - 1) {
+            // Last column: right and top borders
+            cellBorders = {
+              borderRight: '3px solid red',
+              borderTop: '3px solid red',
+            };
+          } else {
+            // Middle columns: top border only
+            cellBorders = {
+              borderTop: '3px solid red',
+            };
+          }
+
           return (
             <th
               key={col.key}
               style={{
                 textAlign: 'center',
+                ...cellBorders,
               }}
               className={classNames}
               onClick={col.sortable ? () => handleClick(col) : undefined}

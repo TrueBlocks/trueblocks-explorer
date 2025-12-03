@@ -53,9 +53,32 @@ export const TableBody = <T extends Record<string, unknown>>({
                 cursor: 'pointer',
               }}
             >
-              {columns.map((col) => {
+              {columns.map((col, colIndex) => {
+                // Determine borders for body cells
+                const isLastRow = rowIndex === data.length - 1;
+                let cellBorders: React.CSSProperties = {};
+
+                // All rows: add left border to first column, right border to last column
+                if (colIndex === 0) {
+                  cellBorders.borderLeft = '3px solid blue';
+                }
+                if (colIndex === columns.length - 1) {
+                  cellBorders.borderRight = '3px solid blue';
+                }
+
+                // Last row only: add bottom border to all columns
+                if (isLastRow) {
+                  cellBorders.borderBottom = '3px solid blue';
+                }
                 return (
-                  <td key={col.key} style={col.style} className={col.className}>
+                  <td
+                    key={col.key}
+                    style={{
+                      ...col.style,
+                      ...cellBorders,
+                    }}
+                    className={col.className}
+                  >
                     <FieldRenderer
                       field={
                         {

@@ -1,100 +1,14 @@
-import { useEffect, useState } from 'react';
-
-import { GetContracts } from '@app';
-import { AddAddressModal, StyledSelect } from '@components';
+import {
+  AddressSelector,
+  ChainSelector,
+  ContractSelector,
+  PeriodSelector,
+} from '@components';
 import { useActiveProject } from '@hooks';
 import { Group, Loader, Text } from '@mantine/core';
-import { types } from '@models';
-import { PeriodOptions, getDisplayAddress } from '@utils';
 
 export const ProjectContextBar = ({}) => {
-  const [addModalOpened, setAddModalOpened] = useState(false);
-  const [contracts, setContracts] = useState<types.Contract[]>([]);
-
-  const {
-    projects,
-    activeAddress,
-    activeChain,
-    activeContract,
-    activePeriod,
-    setActiveAddress,
-    setActiveChain,
-    setActiveContract,
-    setActivePeriod,
-    switchProject,
-    loading,
-  } = useActiveProject();
-
-  const currentProject = projects.find((p) => p.isActive);
-
-  const projectOptions = projects.map((project) => ({
-    value: project.id,
-    label: `${project.name}`,
-  }));
-
-  const addressOptions =
-    currentProject?.addresses?.map((address) => ({
-      value: address,
-      label: getDisplayAddress(address),
-    })) || [];
-
-  addressOptions.push({
-    value: '__add_address__',
-    label: 'Add address...',
-  });
-
-  const chainOptions =
-    currentProject?.chains?.map((chain) => ({
-      value: chain,
-      label: chain,
-    })) || [];
-
-  useEffect(() => {
-    GetContracts().then((contracts) => {
-      setContracts(contracts);
-    });
-  }, []);
-
-  const contractOptions = contracts.map((contract) => ({
-    value: contract.address?.toString() || '',
-    label: `${contract.name} (${contract.address?.toString().slice(0, 6)}...${contract.address?.toString().slice(-4)})`,
-  }));
-
-  const handleProjectChange = async (projectId: string | null) => {
-    if (projectId && projectId !== currentProject?.id) {
-      await switchProject(projectId);
-    }
-  };
-
-  const handleAddressChange = async (address: string | null) => {
-    if (address === '__add_address__') {
-      setAddModalOpened(true);
-      return;
-    }
-    if (address && address !== activeAddress) {
-      await setActiveAddress(address);
-    }
-  };
-
-  const handleChainChange = async (chain: string | null) => {
-    if (chain && chain !== activeChain) {
-      await setActiveChain(chain);
-    }
-  };
-
-  const handleContractChange = async (contract: string | null) => {
-    const contractValue = contract || '';
-    if (contractValue !== activeContract) {
-      await setActiveContract(contractValue);
-    }
-  };
-
-  const handlePeriodChange = (pp: string | null) => {
-    if (pp !== null) {
-      const period = pp as types.Period;
-      setActivePeriod(period);
-    }
-  };
+  const { loading } = useActiveProject();
 
   if (loading) {
     return (
@@ -109,57 +23,12 @@ export const ProjectContextBar = ({}) => {
 
   return (
     <>
-      <Group gap="xs">
-        <StyledSelect
-          size="xs"
-          placeholder="Project"
-          value={currentProject?.id || ''}
-          data={projectOptions}
-          onChange={handleProjectChange}
-          w={120}
-        />
-        <StyledSelect
-          size="xs"
-          placeholder="Address"
-          value={activeAddress}
-          data={addressOptions}
-          onChange={handleAddressChange}
-          w={140}
-        />
-        <StyledSelect
-          size="xs"
-          placeholder="Chain"
-          value={activeChain}
-          data={chainOptions}
-          onChange={handleChainChange}
-          w={100}
-        />
-        <StyledSelect
-          size="xs"
-          placeholder="Contract"
-          value={activeContract}
-          data={contractOptions}
-          onChange={handleContractChange}
-          w={140}
-        />
-        <StyledSelect
-          size="xs"
-          placeholder="Period"
-          value={activePeriod}
-          data={PeriodOptions}
-          onChange={handlePeriodChange}
-          w={110}
-        />
+      <Group gap="xs" pb="0.5rem">
+        <AddressSelector label={'Active Address:'} />
+        <ChainSelector label={'Chain:'} />
+        <ContractSelector visible={false} />
+        <PeriodSelector label={'Period'} />
       </Group>
-      <AddAddressModal
-        opened={addModalOpened}
-        onSubmit={() => {
-          setAddModalOpened(false);
-        }}
-        onCancel={() => {
-          setAddModalOpened(false);
-        }}
-      />
     </>
   );
 };

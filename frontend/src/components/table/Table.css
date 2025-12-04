@@ -151,6 +151,7 @@
   min-height: 0;
   height: auto;
   align-items: flex-start;
+  margin-right: 5px;
 }
 
 .table-main-content.with-detail-panel .table-section {
@@ -378,13 +379,13 @@
 .data-table th:first-child,
 .data-table td:first-child {
   margin-left: 0;
-  padding-left: 0;
+  padding-left: 0.375rem;
 }
 
 .data-table th:last-child,
 .data-table td:last-child {
   margin-right: 0;
-  padding-right: 0;
+  padding-right: 0.375rem;
 }
 
 /* Header cells - background only */

@@ -78,6 +78,14 @@
   text-align: center;
 }
 
+/* Checkmark fields - Very compact, same as boolean */
+.column-type-checkmark {
+  width: 8%;
+  min-width: 60px;
+  max-width: 100px;
+  text-align: center;
+}
+
 /* IPFS Hash fields - Wide for IPFS hashes */
 .column-type-ipfsHash {
   width: 18%;
@@ -207,6 +215,12 @@
 }
 
 .table-main-content.with-detail-panel .column-type-boolean {
+  width: 8%;
+  min-width: 50px;
+  max-width: 70px;
+}
+
+.table-main-content.with-detail-panel .column-type-checkmark {
   width: 8%;
   min-width: 50px;
   max-width: 70px;

@@ -273,7 +273,10 @@ export const {{$class}} = () => {
         getCurrentDataFacet,
 {{- if .HasCustomPanel }}
         renderers.panels,
+{{- else}}
+        {},
 {{- end }}
+        (_rowKey: string, _newValue: string, _txHash: string) => {},
       ),
     [viewConfig, getCurrentDataFacet],
   );

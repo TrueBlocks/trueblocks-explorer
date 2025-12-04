@@ -4,6 +4,9 @@ scope: type
 */
 
 {{- if or .HasCustomPanel (or .HasCustomFacet .HasDynamicFacets) -}}
+{{- .HasCustomPanel }}
+import { PanelRenderer } from '@components';
+{{- end}}
 {{- $needsRendererParams := or .HasCustomFacet .HasDynamicFacets }}
 {{- if $needsRendererParams }}
 import { RendererParams } from '@components';
@@ -24,7 +27,11 @@ export const renderers = {
     [types.DataFacet.{{toUpper .Name}}]: panels.{{printf "%sPanel" .Name}},
     {{- end }}
     {{- end }}
+  {{- .HasCustomPanel }}
+  } as Record<string, PanelRenderer>,
+  {{- else}}
   },
+  {{- end}}
   facets: {
     {{- range .Facets }}
     {{- if eq .ViewType "custom" }}

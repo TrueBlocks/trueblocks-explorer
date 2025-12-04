@@ -6,4 +6,6 @@
  */
 export { GeneratorFacet } from './generator';
 export { SeriesFacet } from './series';
+export { DatabasesFacet } from './databases';
+export { RecordsFacet } from './records';
 export { GalleryFacet } from './gallery';

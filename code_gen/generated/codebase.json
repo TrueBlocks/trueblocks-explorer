@@ -9591,7 +9591,30 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "table",
+                    "viewType": "custom",
+                    "panel": "",
+                    "navigate": "dresses|records|databaseName|databaseName",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Records",
+                    "name": "Records",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Records",
+                    "storeSource": "dalle",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "custom",
                     "panel": "",
                     "navigate": "",
                     "attributes": "",
@@ -9651,6 +9674,15 @@
                     "hideable": false
                 }
             ]
+        },
+        {
+            "class": "Records",
+            "display_name": "Records",
+            "doc_group": "04-Admin",
+            "doc_route": "919-chunkIndex-stats",
+            "doc_descr": "Records in the various dalle databases.",
+            "produced_by": "dresses",
+            "disable_go": true
         },
         {
             "class": "Comparitoor",

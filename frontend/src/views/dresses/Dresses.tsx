@@ -105,6 +105,8 @@ export const Dresses = () => {
         return pageData.series || [];
       case types.DataFacet.DATABASES:
         return pageData.databases || [];
+      case types.DataFacet.RECORDS:
+        return pageData.records || [];
       case types.DataFacet.EVENTS:
         return pageData.logs || [];
       case types.DataFacet.GALLERY:
@@ -231,6 +233,7 @@ export const Dresses = () => {
       >[],
     renderers: renderers.facets,
     viewName: ROUTE,
+    onRowAction: handleRowAction,
   });
 
   const perTabContent = useMemo(() => {

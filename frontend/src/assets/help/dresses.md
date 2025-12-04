@@ -15,6 +15,7 @@ Welcome to the **Dresses** view! This section provides information about managin
 - Generator Facet uses the DalleDress store.
 - Series Facet uses the Series store.
 - Databases Facet uses the Databases store.
+- Records Facet uses the Records store.
 - Events Facet uses the Logs store.
 - Gallery Facet uses the DalleDress store.
 
@@ -68,6 +69,10 @@ Welcome to the **Dresses** view! This section provides information about managin
   - data: any remaining un-indexed parameters to the event
   - articulatedLog: a human-readable version of the topic and data fields
   - compressedLog: a truncated version of the articulation
+
+- **Records Store (0 members)**
+
+THIS NEEDS FIELDS
 
 - **Series Store (14 members)**
 

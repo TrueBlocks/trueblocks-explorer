@@ -52,9 +52,19 @@ func (c *DressesCollection) buildStaticFacets() map[string]types.FacetConfig {
 		"databases": {
 			Name:          "Databases",
 			Store:         "databases",
-			ViewType:      "table",
+			ViewType:      "custom",
 			DividerBefore: false,
 			Fields:        getDatabasesFields(),
+			Actions:       []string{},
+			HeaderActions: []string{"export"},
+			RowAction:     types.NewRowActionNavigation("dresses", "records", "databaseName", "databaseName"),
+		},
+		"records": {
+			Name:          "Records",
+			Store:         "records",
+			ViewType:      "custom",
+			DividerBefore: false,
+			Fields:        getRecordsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 		},
@@ -85,6 +95,7 @@ func (c *DressesCollection) buildFacetOrder() []string {
 		"generator",
 		"series",
 		"databases",
+		"records",
 		"events",
 		"gallery",
 	}
@@ -158,6 +169,17 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
+	}
+	types.NormalizeFields(&ret)
+	return ret
+}
+
+func getRecordsFields() []types.FieldConfig {
+	ret := []types.FieldConfig{
+		{Section: "General", Key: "index", Type: "uint64"},
+		{Section: "General", Key: "value", Type: "string"},
+		{Section: "General", Key: "weight", Type: "uint64"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

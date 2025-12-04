@@ -10,6 +10,7 @@ type RendererCtx<T extends Record<string, unknown>> = {
   data: T[];
   columns: FormField<T>[];
   facet: types.DataFacet;
+  onRowAction?: (rowData: Record<string, unknown>) => void;
 };
 
 type RendererMap<T extends Record<string, unknown>> = Partial<
@@ -24,6 +25,7 @@ export function useFacetForm<T extends Record<string, unknown>>({
   title,
   renderers,
   viewName,
+  onRowAction,
 }: {
   viewConfig: types.ViewConfig;
   getCurrentDataFacet: () => types.DataFacet;
@@ -32,6 +34,7 @@ export function useFacetForm<T extends Record<string, unknown>>({
   title?: string;
   renderers?: RendererMap<T>;
   viewName?: string;
+  onRowAction?: (rowData: Record<string, unknown>) => void;
 }): {
   isCanvas: boolean;
   node: React.ReactNode | null;
@@ -53,6 +56,7 @@ export function useFacetForm<T extends Record<string, unknown>>({
     currentColumns,
     renderers,
     viewName: viewName || viewConfig?.viewName || 'unknown',
+    onRowAction,
   });
 
   const derivedTitle = title || facetConfig?.name || viewConfig?.viewName || '';

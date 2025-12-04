@@ -1,0 +1,72 @@
+// Copyright 2016, 2026 The Authors. All rights reserved.
+// Use of this source code is governed by a license that can
+// be found in the LICENSE file.
+/*
+ * This file was auto generated. Do not edit.
+ */
+// EXISTING_CODE
+import { useCallback, useMemo } from 'react';
+
+import { BaseTab, RendererParams } from '@components';
+import { useFacetColumns, useViewConfig } from '@hooks';
+import { dresses, project, types } from '@models';
+
+// EXISTING_CODE
+
+export const RecordsFacet = ({ params }: { params: RendererParams }) => {
+  // EXISTING_CODE
+  const { data } = params;
+  const pageData = useMemo(
+    () =>
+      ({
+        records: data || [],
+      }) as unknown as dresses.DressesPage,
+    [data],
+  );
+  const viewStateKey: project.ViewStateKey = useMemo(
+    () => ({
+      viewName: 'dresses',
+      facetName: types.DataFacet.RECORDS,
+    }),
+    [],
+  );
+
+  const { config: viewConfig } = useViewConfig({ viewName: 'dresses' });
+
+  const columns = useFacetColumns(
+    viewConfig,
+    () => types.DataFacet.RECORDS,
+    {
+      showActions: false,
+      actions: [],
+    },
+    {},
+    pageData,
+    {
+      rowActions: [],
+      isWalletConnected: false,
+    },
+  );
+
+  const detailPanel = useCallback(
+    (_rowData: Record<string, unknown>) => null,
+    [],
+  );
+
+  return (
+    <BaseTab<Record<string, unknown>>
+      data={(pageData?.records || []) as unknown as Record<string, unknown>[]}
+      columns={columns}
+      state={pageData?.state || types.StoreState.LOADED}
+      error={null}
+      viewStateKey={viewStateKey}
+      headerActions={null}
+      detailPanel={detailPanel}
+      onDelete={useCallback(() => {}, [])}
+    />
+  );
+  // EXISTING_CODE
+};
+
+// EXISTING_CODE
+// EXISTING_CODE

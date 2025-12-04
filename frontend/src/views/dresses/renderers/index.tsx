@@ -12,6 +12,12 @@ export const renderers = {
     [types.DataFacet.SERIES]: (params: RendererParams) => {
       return <facets.SeriesFacet params={params} />;
     },
+    [types.DataFacet.DATABASES]: (params: RendererParams) => {
+      return <facets.DatabasesFacet params={params} />;
+    },
+    [types.DataFacet.RECORDS]: (params: RendererParams) => {
+      return <facets.RecordsFacet params={params} />;
+    },
     [types.DataFacet.GALLERY]: (params: RendererParams) => {
       return <facets.GalleryFacet params={params} />;
     },

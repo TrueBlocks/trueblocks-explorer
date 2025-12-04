@@ -25,6 +25,7 @@ type DressesPage struct {
 	DalleDress    []DalleDress     `json:"dalledress"`
 	Databases     []Database       `json:"databases"`
 	Logs          []Log            `json:"logs"`
+	Records       []Record         `json:"records"`
 	Series        []Series         `json:"series"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
@@ -125,6 +126,25 @@ func (c *DressesCollection) GetPage(
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
 			page.Databases = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case DressesRecords:
+		facet := c.recordsFacet
+		var filterFunc func(*Record) bool
+		if filter != "" {
+			filterFunc = func(item *Record) bool {
+				return c.matchesRecordFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Record, sort sdk.SortSpec) error {
+			return nil // No sorting for database records yet
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
+		} else {
+			page.Records = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
 		}
@@ -272,6 +292,17 @@ func (c *DressesCollection) matchesDatabaseFilter(item *Database, filter string)
 	_ = item   // delint
 	_ = filter // delint
 	return true
+}
+
+func (c *DressesCollection) matchesRecordFilter(item *Record, filter string) bool {
+	if item == nil {
+		return false
+	}
+	if filter == "" {
+		return true
+	}
+	lf := strings.ToLower(filter)
+	return strings.Contains(strings.ToLower(item.Value), lf)
 }
 
 func (c *DressesCollection) matchesEventFilter(item *Log, filter string) bool {

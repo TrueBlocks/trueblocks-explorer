@@ -220,7 +220,8 @@ describe('useTableKeys', () => {
       });
 
       expect(mockGoToPage).toHaveBeenCalledWith(0);
-      expect(mockContextValue.setSelectedRowIndex).toHaveBeenCalledWith(-1);
+      // Row selection should be deferred until data loads - no immediate call
+      expect(mockContextValue.setSelectedRowIndex).not.toHaveBeenCalled();
     });
 
     it('should not navigate down at last row of last page', () => {

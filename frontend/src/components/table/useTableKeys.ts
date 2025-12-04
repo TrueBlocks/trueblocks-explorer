@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import { useTableContext } from '@components';
 import { project } from '@models';
@@ -32,7 +32,26 @@ export const useTableKeys = ({
 }: UseTableKeysProps) => {
   const { focusState, selectedRowIndex, setSelectedRowIndex, focusTable } =
     useTableContext();
-  const { goToPage } = usePagination(viewStateKey);
+  const { goToPage, pagination } = usePagination(viewStateKey);
+  const { pageSize } = pagination;
+  const pendingRowIndex = useRef<number | null>(null);
+
+  // Handle delayed row selection after data loads
+  // Use useLayoutEffect to run before Table's useEffect auto-correction
+  useLayoutEffect(() => {
+    if (pendingRowIndex.current !== null && itemCount > 0) {
+      // For non-last pages, we expect pageSize items. For last page, we expect fewer.
+      // If we have a pending navigation and itemCount is much smaller than pageSize,
+      // we might still be seeing old data from the previous page
+      const expectedMinItems = currentPage < totalPages - 1 ? pageSize : 1;
+
+      if (itemCount >= expectedMinItems) {
+        const targetIndex = Math.min(pendingRowIndex.current, itemCount - 1);
+        setSelectedRowIndex(targetIndex);
+        pendingRowIndex.current = null;
+      }
+    }
+  }, [itemCount, setSelectedRowIndex, currentPage, totalPages, pageSize]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -52,8 +71,11 @@ export const useTableKeys = ({
           if (selectedRowIndex > 0) {
             setSelectedRowIndex(selectedRowIndex - 1);
           } else if (currentPage > 0) {
-            goToPage(currentPage - 1);
-            setSelectedRowIndex(-1);
+            const targetPage = currentPage - 1;
+            // Target page always has pageSize items (since it's not the last page when we navigate backwards)
+            const targetRow = pageSize - 1;
+            pendingRowIndex.current = targetRow;
+            goToPage(targetPage);
           }
           break;
         case 'ArrowLeft':
@@ -134,6 +156,7 @@ export const useTableKeys = ({
       totalPages,
       setSelectedRowIndex,
       goToPage,
+      pageSize,
       onEnter,
       onDelete,
       onCmdDelete,

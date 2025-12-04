@@ -380,6 +380,7 @@ export namespace dresses {
 	    facet: types.DataFacet;
 	    dalledress: model.DalleDress[];
 	    databases: model.Database[];
+	    items: model.Item[];
 	    logs: types.Log[];
 	    series: dalle.Series[];
 	    totalItems: number;
@@ -395,6 +396,7 @@ export namespace dresses {
 	        this.facet = source["facet"];
 	        this.dalledress = this.convertValues(source["dalledress"], model.DalleDress);
 	        this.databases = this.convertValues(source["databases"], model.Database);
+	        this.items = this.convertValues(source["items"], model.Item);
 	        this.logs = this.convertValues(source["logs"], types.Log);
 	        this.series = this.convertValues(source["series"], dalle.Series);
 	        this.totalItems = source["totalItems"];
@@ -723,6 +725,26 @@ export namespace model {
 	        this.description = source["description"];
 	        this.lastUpdated = source["lastUpdated"];
 	        this.cacheHit = source["cacheHit"];
+	    }
+	}
+	export class Item {
+	    id: string;
+	    databaseName: string;
+	    index: number;
+	    value: string;
+	    weight: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Item(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.databaseName = source["databaseName"];
+	        this.index = source["index"];
+	        this.value = source["value"];
+	        this.weight = source["weight"];
 	    }
 	}
 
@@ -1383,15 +1405,6 @@ export namespace status {
 
 export namespace types {
 	
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
-	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1416,6 +1429,7 @@ export namespace types {
 	    GENERATOR = "generator",
 	    SERIES = "series",
 	    DATABASES = "databases",
+	    ITEMS = "items",
 	    GALLERY = "gallery",
 	    STATEMENTS = "statements",
 	    BALANCES = "balances",
@@ -1440,6 +1454,15 @@ export namespace types {
 	    STALE = "stale",
 	    FETCHING = "fetching",
 	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;

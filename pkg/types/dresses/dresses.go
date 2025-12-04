@@ -24,6 +24,7 @@ const (
 	DressesGenerator types.DataFacet = "generator"
 	DressesSeries    types.DataFacet = "series"
 	DressesDatabases types.DataFacet = "databases"
+	DressesItems     types.DataFacet = "items"
 	DressesEvents    types.DataFacet = "events"
 	DressesGallery   types.DataFacet = "gallery"
 )
@@ -32,6 +33,7 @@ func init() {
 	types.RegisterDataFacet(DressesGenerator)
 	types.RegisterDataFacet(DressesSeries)
 	types.RegisterDataFacet(DressesDatabases)
+	types.RegisterDataFacet(DressesItems)
 	types.RegisterDataFacet(DressesEvents)
 	types.RegisterDataFacet(DressesGallery)
 }
@@ -40,6 +42,7 @@ type DressesCollection struct {
 	generatorFacet *facets.Facet[DalleDress]
 	seriesFacet    *facets.Facet[Series]
 	databasesFacet *facets.Facet[Database]
+	itemsFacet     *facets.Facet[Item]
 	eventsFacet    *facets.Facet[Log]
 	galleryFacet   *facets.Facet[DalleDress]
 	summary        types.Summary
@@ -84,6 +87,16 @@ func (c *DressesCollection) initializeFacets(payload *types.Payload) {
 		false,
 	)
 
+	c.itemsFacet = facets.NewFacet(
+		DressesItems,
+		isItem,
+		isDupItem(),
+		c.getItemsStore(payload, DressesItems),
+		"dresses",
+		c,
+		false,
+	)
+
 	c.eventsFacet = facets.NewFacet(
 		DressesEvents,
 		isEvent,
@@ -123,8 +136,11 @@ func isDatabase(item *Database) bool {
 	// EXISTING_CODE
 }
 
+func isItem(item *Item) bool {
 	// EXISTING_CODE
+	return true
 	// EXISTING_CODE
+}
 
 func isEvent(item *Log) bool {
 	// EXISTING_CODE
@@ -175,8 +191,11 @@ func isDupDatabase() func(existing []*Database, newItem *Database) bool {
 	// EXISTING_CODE
 }
 
+func isDupItem() func(existing []*Item, newItem *Item) bool {
 	// EXISTING_CODE
+	return nil
 	// EXISTING_CODE
+}
 
 func isDupLog() func(existing []*Log, newItem *Log) bool {
 	// EXISTING_CODE
@@ -210,6 +229,10 @@ func (c *DressesCollection) FetchByFacet(payload *types.Payload) {
 			if err := c.databasesFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
 			}
+		case DressesItems:
+			if err := c.itemsFacet.FetchFacet(); err != nil {
+				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
+			}
 		case DressesEvents:
 			if err := c.eventsFacet.FetchFacet(); err != nil {
 				logging.LogError(fmt.Sprintf("LoadData.%s from store: %%v", dataFacet), err, facets.ErrAlreadyLoading)
@@ -233,6 +256,8 @@ func (c *DressesCollection) Reset(payload *types.Payload) {
 		c.seriesFacet.Reset()
 	case DressesDatabases:
 		c.databasesFacet.Reset()
+	case DressesItems:
+		c.itemsFacet.Reset()
 	case DressesEvents:
 		c.eventsFacet.Reset()
 	case DressesGallery:
@@ -250,6 +275,8 @@ func (c *DressesCollection) NeedsUpdate(payload *types.Payload) bool {
 		return c.seriesFacet.NeedsUpdate()
 	case DressesDatabases:
 		return c.databasesFacet.NeedsUpdate()
+	case DressesItems:
+		return c.itemsFacet.NeedsUpdate()
 	case DressesEvents:
 		return c.eventsFacet.NeedsUpdate()
 	case DressesGallery:
@@ -304,6 +331,8 @@ func (c *DressesCollection) ExportData(payload *types.Payload) (string, error) {
 		return c.seriesFacet.ExportData(payload, string(DressesSeries))
 	case DressesDatabases:
 		return c.databasesFacet.ExportData(payload, string(DressesDatabases))
+	case DressesItems:
+		return c.itemsFacet.ExportData(payload, string(DressesItems))
 	case DressesEvents:
 		return c.eventsFacet.ExportData(payload, string(DressesEvents))
 	case DressesGallery:

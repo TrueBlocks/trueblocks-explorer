@@ -3,17 +3,20 @@ output: frontend/src/views/[[route]]/renderers/index.tsx
 scope: type
 */
 
-{{- if or .HasCustomPanel (or .HasCustomFacet .HasDynamicFacets) -}}
-{{- .HasCustomPanel }}
+{{- $hasPanel := .HasCustomPanel }}
+{{- $hasFacet := (or .HasCustomFacet .HasDynamicFacets) }}
+{{- if or $hasPanel $hasFacet }}
+
+{{- if and $hasPanel $hasFacet }}
+import { PanelRenderer, RendererParams } from '@components';
+{{- else if $hasPanel }}
 import { PanelRenderer } from '@components';
-{{- end}}
-{{- $needsRendererParams := or .HasCustomFacet .HasDynamicFacets }}
-{{- if $needsRendererParams }}
+{{- else }}
 import { RendererParams } from '@components';
 {{- end }}
 import { types } from '@models';
 
-{{- if .HasCustomPanel }}
+{{- if $hasPanel }}
 import * as panels from './panels';
 {{- end }}
 {{- if or .HasCustomFacet .HasDynamicFacets }}
@@ -27,11 +30,11 @@ export const renderers = {
     [types.DataFacet.{{toUpper .Name}}]: panels.{{printf "%sPanel" .Name}},
     {{- end }}
     {{- end }}
-  {{- .HasCustomPanel }}
+  {{- if $hasPanel }}
   } as Record<string, PanelRenderer>,
-  {{- else}}
+  {{- else }}
   },
-  {{- end}}
+  {{- end }}
   facets: {
     {{- range .Facets }}
     {{- if eq .ViewType "custom" }}

@@ -2582,7 +2582,8 @@
                         {
                             "name": "calcs.reconciled",
                             "type": "boolean",
-                            "section": "Summary",
+                            "attributes": "fmt=checkmark",
+                            "section": "Reconciliation",
                             "docOrder": 19,
                             "description": "true if reconciled",
                             "num": 19
@@ -4326,7 +4327,8 @@
                 {
                     "name": "calcs.reconciled",
                     "type": "boolean",
-                    "section": "Summary",
+                    "attributes": "fmt=checkmark",
+                    "section": "Reconciliation",
                     "docOrder": 19,
                     "description": "true if reconciled",
                     "num": 19
@@ -4720,6 +4722,7 @@
                 {
                     "name": "owner",
                     "type": "address",
+                    "attributes": "noTable",
                     "section": "Details",
                     "docOrder": 3,
                     "description": "the address of the owner of the token (the approver)",
@@ -4768,6 +4771,7 @@
                 {
                     "name": "allowance",
                     "type": "wei",
+                    "attributes": "fmt=allowanceWithStatus",
                     "section": "Details",
                     "docOrder": 9,
                     "description": "the amount of tokens approved for spending",
@@ -4794,6 +4798,7 @@
                 {
                     "name": "lastAppTs",
                     "type": "timestamp",
+                    "attributes": "noTable",
                     "section": "Data",
                     "docOrder": 12,
                     "description": "the timestamp of the last approval event",
@@ -9591,7 +9596,30 @@
                     "actions": [
                         "export"
                     ],
-                    "viewType": "table",
+                    "viewType": "custom",
+                    "panel": "",
+                    "navigate": "dresses|items|databaseName|databaseName",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Items",
+                    "name": "Items",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Items",
+                    "storeSource": "model",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "custom",
                     "panel": "",
                     "navigate": "",
                     "attributes": "",
@@ -9649,6 +9677,76 @@
                     "useMapKey": false,
                     "hidden": false,
                     "hideable": false
+                }
+            ]
+        },
+        {
+            "class": "Items",
+            "display_name": "Items",
+            "doc_group": "04-Admin",
+            "doc_route": "919-chunkIndex-stats",
+            "doc_descr": "Items in the various dalle databases.",
+            "produced_by": "dresses",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "index",
+                    "type": "uint64",
+                    "section": "General",
+                    "docOrder": 1,
+                    "description": "the item's ordering in the file",
+                    "num": 1
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 2,
+                    "description": "the entire line of data as a string",
+                    "num": 2
+                },
+                {
+                    "name": "weight",
+                    "type": "uint64",
+                    "section": "General",
+                    "docOrder": 3,
+                    "description": "the item's weight",
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "class": "Items",
+            "display_name": "Items",
+            "doc_group": "04-Admin",
+            "doc_route": "919-chunkIndex-stats",
+            "doc_descr": "Items in the various dalle databases.",
+            "produced_by": "dresses",
+            "disable_go": true,
+            "members": [
+                {
+                    "name": "index",
+                    "type": "uint64",
+                    "section": "General",
+                    "docOrder": 1,
+                    "description": "the item's ordering in the file",
+                    "num": 1
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 2,
+                    "description": "the entire line of data as a string",
+                    "num": 2
+                },
+                {
+                    "name": "weight",
+                    "type": "uint64",
+                    "section": "General",
+                    "docOrder": 3,
+                    "description": "the item's weight",
+                    "num": 3
                 }
             ]
         },

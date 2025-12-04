@@ -15,6 +15,7 @@ Welcome to the **Dresses** view! This section provides information about managin
 - Generator Facet uses the DalleDress store.
 - Series Facet uses the Series store.
 - Databases Facet uses the Databases store.
+- Items Facet uses the Items store.
 - Events Facet uses the Logs store.
 - Gallery Facet uses the DalleDress store.
 
@@ -50,6 +51,12 @@ Welcome to the **Dresses** view! This section provides information about managin
   - count: Number of entries
   - sample: Sample entry
   - filtered: Is database filtered by series
+
+- **Items Store (3 members)**
+
+  - index: the item's ordering in the file
+  - value: the entire line of data as a string
+  - weight: the item's weight
 
 - **Logs Store (15 members)**
 

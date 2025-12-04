@@ -217,7 +217,13 @@ export const Monitors = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet),
+    () =>
+      createDetailPanel(
+        viewConfig,
+        getCurrentDataFacet,
+        {},
+        (_rowKey: string, _newValue: string, _txHash: string) => {},
+      ),
     [viewConfig, getCurrentDataFacet],
   );
 

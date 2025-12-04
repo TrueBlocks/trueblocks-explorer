@@ -1,24 +1,14 @@
 import { useMemo } from 'react';
 
-import { FormField } from '@components';
+import { FacetRendererMap, FormField } from '@components';
 import { types } from '@models';
-
-type RendererCtx<T extends Record<string, unknown>> = {
-  data: T[];
-  columns: FormField<T>[];
-  facet: types.DataFacet;
-};
-
-type RendererMap<T extends Record<string, unknown>> = Partial<
-  Record<types.DataFacet, (ctx: RendererCtx<T>) => React.ReactNode>
->;
 
 interface UseFacetRendererParams<T extends Record<string, unknown>> {
   viewConfig: types.ViewConfig;
   getCurrentDataFacet: () => types.DataFacet;
   currentData: T[];
   currentColumns: FormField<T>[];
-  renderers?: RendererMap<T>;
+  renderers?: FacetRendererMap;
   viewName: string;
 }
 

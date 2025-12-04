@@ -1,4 +1,4 @@
-import { RendererParams } from '@components';
+import { PanelRenderer, RendererParams } from '@components';
 import { types } from '@models';
 
 import * as facets from './facets';
@@ -13,7 +13,7 @@ export const renderers = {
     [types.DataFacet.APPROVALTXS]: panels.ApprovalTxsPanel,
     [types.DataFacet.LOGS]: panels.LogsPanel,
     [types.DataFacet.TRACES]: panels.TracesPanel,
-  },
+  } as Record<string, PanelRenderer>,
   facets: {
     [types.DataFacet.OPENAPPROVALS]: (params: RendererParams) => {
       return <facets.OpenApprovalsFacet params={params} />;

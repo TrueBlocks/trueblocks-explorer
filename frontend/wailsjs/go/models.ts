@@ -696,6 +696,15 @@ export namespace model {
 	export class Database {
 	    id: string;
 	    name: string;
+	    databaseName: string;
+	    count: number;
+	    sample: string;
+	    filtered: string;
+	    version: string;
+	    columns: string[];
+	    description: string;
+	    lastUpdated: number;
+	    cacheHit: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Database(source);
@@ -705,6 +714,15 @@ export namespace model {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.id = source["id"];
 	        this.name = source["name"];
+	        this.databaseName = source["databaseName"];
+	        this.count = source["count"];
+	        this.sample = source["sample"];
+	        this.filtered = source["filtered"];
+	        this.version = source["version"];
+	        this.columns = source["columns"];
+	        this.description = source["description"];
+	        this.lastUpdated = source["lastUpdated"];
+	        this.cacheHit = source["cacheHit"];
 	    }
 	}
 

@@ -112,7 +112,7 @@ export const OpenApprovalsFacet = ({ params }: { params: RendererParams }) => {
         viewConfig,
         () => types.DataFacet.OPENAPPROVALS,
         renderers.panels,
-        { onFinal: handleOnFinal },
+        handleOnFinal,
       ),
     [viewConfig, handleOnFinal],
   );

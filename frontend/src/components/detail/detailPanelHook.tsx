@@ -1,32 +1,36 @@
 // TODO: BOGUS
 //   1. Can we move this up a folder to avoid confusing extra utils folder
-//   2. Why must we disable this lint?
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReactNode } from 'react';
 
-import { DetailTable, FormField, ShouldNotHappen } from '@components';
+import {
+  DetailTable,
+  FormField,
+  PanelRenderer,
+  ShouldNotHappen,
+} from '@components';
 import { types } from '@models';
 
 const NoSelection = () => <div className="no-selection">Loading...</div>;
 
 /**
- * Creates a detail panel from ViewConfig or falls back to default
+ * The function returned by createDetailPanel that BaseTab uses to render detail panels.
+ * This wrapper handles null checking and calls the actual PanelRenderer with non-null data.
+ */
+export type DetailPanelRenderer<T = Record<string, unknown>> = (
+  row: T | null,
+) => ReactNode;
+
+/**
+ * Creates a detail panel from ViewConfig or falls back to default.
  * This function encapsulates all ViewConfig integration logic and returns
  * a simple detail panel function for use in BaseTab.
  */
-export type DetailPanelFn<T = any> = (
-  row: T | null,
-  onFinal?: (rowKey: string, newValue: string, txHash: string) => void,
-) => ReactNode;
-
 export const createDetailPanel = <T extends Record<string, unknown>>(
   viewConfig: types.ViewConfig | null | undefined,
   getCurrentDataFacet: () => string,
-  customPanels: Record<string, DetailPanelFn<any>> = {},
-  options: {
-    onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
-  } = {},
-): DetailPanelFn<T> => {
+  customPanels: Record<string, PanelRenderer> = {},
+  onFinal: (rowKey: string, newValue: string, txHash: string) => void,
+): DetailPanelRenderer<T> => {
   const panelFunction = (rowData: T | null) => {
     const facet = getCurrentDataFacet();
 
@@ -36,10 +40,9 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
     // Check for a custom panel override first
     // Check direct facet match first (e.g., "statements", "openapprovals")
     if (customPanels[facet]) {
-      const panelFn = customPanels[facet] as DetailPanelFn<T>;
-      // If panel function accepts onFinal, pass it
+      const panelFn = customPanels[facet] as PanelRenderer;
       return rowData ? (
-        panelFn(rowData, options.onFinal)
+        panelFn(rowData, onFinal)
       ) : (
         <div className="no-selection">Loading...</div>
       );
@@ -49,17 +52,17 @@ export const createDetailPanel = <T extends Record<string, unknown>>(
     if (viewConfig?.viewName) {
       const key = `${viewConfig.viewName}.${facet}`;
       if (customPanels[key]) {
-        const panelFn = customPanels[key] as DetailPanelFn<T>;
+        const panelFn = customPanels[key] as PanelRenderer;
         return rowData ? (
-          panelFn(rowData, options.onFinal)
+          panelFn(rowData, onFinal)
         ) : (
           <div className="no-selection">Loading...</div>
         );
       }
       if (customPanels[viewConfig.viewName]) {
-        const panelFn = customPanels[viewConfig.viewName] as DetailPanelFn<T>;
+        const panelFn = customPanels[viewConfig.viewName] as PanelRenderer;
         return rowData ? (
-          panelFn(rowData, options.onFinal)
+          panelFn(rowData, onFinal)
         ) : (
           <div className="no-selection">Loading...</div>
         );

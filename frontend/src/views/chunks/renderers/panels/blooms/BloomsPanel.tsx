@@ -12,7 +12,11 @@ import { ChunksPanel } from '../shared/ChunksPanel';
 
 // EXISTING_CODE
 
-export const BloomsPanel = (rowData: Record<string, unknown>) => {
+export const BloomsPanel = (
+  rowData: Record<string, unknown>,
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  onFinal: (rowKey: string, newValue: string, txHash: string) => void,
+) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
   const facetConfig = viewConfig?.facets?.[types.DataFacet.BLOOMS];

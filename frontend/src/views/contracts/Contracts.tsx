@@ -214,7 +214,13 @@ export const Contracts = () => {
   );
 
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, getCurrentDataFacet, renderers.panels),
+    () =>
+      createDetailPanel(
+        viewConfig,
+        getCurrentDataFacet,
+        renderers.panels,
+        (_rowKey: string, _newValue: string, _txHash: string) => {},
+      ),
     [viewConfig, getCurrentDataFacet],
   );
 

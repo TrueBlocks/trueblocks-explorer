@@ -1,20 +1,10 @@
 import { useMemo } from 'react';
 
-import { FormField } from '@components';
+import { FacetRendererMap, FormField } from '@components';
 import { FormView } from '@layout';
 import { types } from '@models';
 
 import { useFacetRenderer } from './useFacetRenderer';
-
-type RendererCtx<T extends Record<string, unknown>> = {
-  data: T[];
-  columns: FormField<T>[];
-  facet: types.DataFacet;
-};
-
-type RendererMap<T extends Record<string, unknown>> = Partial<
-  Record<types.DataFacet, (ctx: RendererCtx<T>) => React.ReactNode>
->;
 
 export function useFacetForm<T extends Record<string, unknown>>({
   viewConfig,
@@ -30,7 +20,7 @@ export function useFacetForm<T extends Record<string, unknown>>({
   currentData: T[];
   currentColumns: FormField<T>[];
   title?: string;
-  renderers?: RendererMap<T>;
+  renderers?: FacetRendererMap;
   viewName?: string;
 }): {
   isCanvas: boolean;

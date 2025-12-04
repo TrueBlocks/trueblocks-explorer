@@ -71,7 +71,13 @@ export const ProjectsFacet = ({ params }: { params: RendererParams }) => {
 
   // Create detail panel for the project facet
   const detailPanel = useMemo(
-    () => createDetailPanel(viewConfig, () => viewStateKey.facetName, {}),
+    () =>
+      createDetailPanel(
+        viewConfig,
+        () => viewStateKey.facetName,
+        {},
+        (_rowKey: string, _newValue: string, _txHash: string) => {},
+      ),
     [viewConfig, viewStateKey.facetName],
   );
 

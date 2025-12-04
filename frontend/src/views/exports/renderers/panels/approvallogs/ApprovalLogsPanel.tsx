@@ -25,7 +25,11 @@ import { logToArticulationInfo, logToDetailsInfo } from '../logs/LogsPanel';
 
 // EXISTING_CODE
 
-export const ApprovalLogsPanel = (rowData: Record<string, unknown>) => {
+export const ApprovalLogsPanel = (
+  rowData: Record<string, unknown>,
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  onFinal: (rowKey: string, newValue: string, txHash: string) => void,
+) => {
   // EXISTING_CODE
   const facet = 'approvallogs';
 

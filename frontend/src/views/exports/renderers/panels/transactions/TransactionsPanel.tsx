@@ -31,7 +31,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const TransactionsPanel = (rowData: Record<string, unknown>) => {
+interface TransactionsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const TransactionsPanel = ({ rowData, _onFinal }: TransactionsProps) => {
   // EXISTING_CODE
   const facet = 'transactions';
 

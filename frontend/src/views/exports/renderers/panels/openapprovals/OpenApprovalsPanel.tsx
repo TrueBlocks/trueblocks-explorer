@@ -75,10 +75,15 @@ export const ERC20_APPROVE_FUNCTION: types.Function = {
 
 // EXISTING_CODE
 
-export const OpenApprovalsPanel = (
-  rowData: Record<string, unknown>,
-  onFinal?: (rowKey: string, newValue: string, txHash: string) => void,
-) => {
+interface OpenApprovalsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const OpenApprovalsPanel = ({
+  rowData,
+  _onFinal,
+}: OpenApprovalsProps) => {
   // EXISTING_CODE
   const facet = 'openapprovals';
 

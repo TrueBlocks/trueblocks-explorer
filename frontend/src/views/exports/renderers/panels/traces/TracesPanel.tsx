@@ -24,7 +24,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const TracesPanel = (rowData: Record<string, unknown>) => {
+interface TracesPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const TracesPanel = ({ rowData, _onFinal }: TracesProps) => {
   // EXISTING_CODE
   const facet = 'traces';
 

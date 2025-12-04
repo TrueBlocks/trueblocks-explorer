@@ -33,10 +33,10 @@ import (
 )
 
 type DalleDress = model.DalleDress
-type Database   = model.Database
-type Record     = model.DatabaseRecord
-type Log        = sdk.Log
-type Series     = dalle.Series
+type Database = model.Database
+type Record = model.DatabaseRecord
+type Log = sdk.Log
+type Series = dalle.Series
 
 // EXISTING_CODE
 

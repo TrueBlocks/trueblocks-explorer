@@ -12,7 +12,12 @@ import { ChunksPanel } from '../shared/ChunksPanel';
 
 // EXISTING_CODE
 
-export const IndexPanel = (rowData: Record<string, unknown>) => {
+interface IndexPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const IndexPanel = ({ rowData, _onFinal }: IndexProps) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
   const facetConfig = viewConfig?.facets?.[types.DataFacet.INDEX];

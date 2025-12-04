@@ -12,7 +12,12 @@ import { ChunksPanel } from '../shared/ChunksPanel';
 
 // EXISTING_CODE
 
-export const BloomsPanel = (rowData: Record<string, unknown>) => {
+interface BloomsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const BloomsPanel = ({ rowData, _onFinal }: BloomsProps) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
   const facetConfig = viewConfig?.facets?.[types.DataFacet.BLOOMS];

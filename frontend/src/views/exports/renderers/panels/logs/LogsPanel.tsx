@@ -23,7 +23,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const LogsPanel = (rowData: Record<string, unknown>) => {
+interface LogsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const LogsPanel = ({ rowData, _onFinal }: LogsProps) => {
   // EXISTING_CODE
   const facet = 'logs';
 

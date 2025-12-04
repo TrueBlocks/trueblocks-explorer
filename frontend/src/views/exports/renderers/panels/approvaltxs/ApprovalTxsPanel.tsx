@@ -31,7 +31,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const ApprovalTxsPanel = (rowData: Record<string, unknown>) => {
+interface ApprovalTxsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const ApprovalTxsPanel = ({ rowData, _onFinal }: ApprovalTxsProps) => {
   // EXISTING_CODE
   const facet = 'approvaltxs';
 

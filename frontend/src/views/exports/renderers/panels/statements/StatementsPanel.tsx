@@ -21,7 +21,12 @@ import { addressToHex } from '@utils';
 
 // EXISTING_CODE
 
-export const StatementsPanel = (rowData: Record<string, unknown>) => {
+interface StatementsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const StatementsPanel = ({ rowData, _onFinal }: StatementsProps) => {
   // EXISTING_CODE
   const facet = 'statements';
 

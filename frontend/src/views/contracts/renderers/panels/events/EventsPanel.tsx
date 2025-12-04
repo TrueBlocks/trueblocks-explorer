@@ -24,7 +24,12 @@ import '../../../../../components/detail/DetailTable.css';
 
 // EXISTING_CODE
 
-export const EventsPanel = (rowData: Record<string, unknown>) => {
+interface EventsPanelProps {
+  rowData: Record<string, unknown>;
+  _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
+}
+
+export const EventsPanel = ({ rowData, _onFinal }: EventsProps) => {
   // EXISTING_CODE
   const facet = 'events';
 

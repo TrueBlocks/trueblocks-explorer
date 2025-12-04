@@ -1,48 +1,48 @@
-name                    , type     , strDefault, attributes, section       , upgrades, docOrder, description
-timestamp               , timestamp,           ,           , Asset         ,         ,        1, the Unix timestamp of the object
-asset                   , address  ,           , readOnly  , Asset         ,         ,        2, 0xeeee...eeee for ETH reconciliations&#44; the token address otherwise
-assetName               , string   ,           , readOnly  , Asset         ,         ,        3, the name for this asset address
-symbol                  , string   ,           , noTable   , Asset         ,         ,        4, either ETH&#44; WEI&#44; or the symbol of the asset being reconciled as extracted from the chain
-decimals                , value    ,           , noTable   , Asset         ,         ,        5, the value of `decimals` from an ERC20 contract or&#44; if ETH or WEI&#44; then 18
-priceSource             , string   ,           , noTable   , Asset         ,         ,        6, the on-chain source from which the spot price was taken
-calcs.begBalEth         , ether    ,           ,           , Reconciliation,         ,        7, the beginning balance in ETH
-calcs.totalInEth        , ether    ,           ,           , Reconciliation,         ,        8, total inflow in ETH
-calcs.totalOutEth       , ether    ,           ,           , Reconciliation,         ,        9, total outflow in ETH
-calcs.amountNetEth      , ether    ,           , noTable   , Reconciliation,         ,       10, net amount in ETH
-calcs.endBalEth         , ether    ,           ,           , Reconciliation,         ,       11, ending balance in ETH
-spotPrice               , float64  ,           , noTable   , Asset         ,         ,       12, the on-chain price in USD at the time of the transaction
-calcs.endBalCalcEth     , ether    ,           , noTable   , Reconciliation,         ,       13, calculated ending balance in ETH
-date                    , datetime ,           , noTable   , Summary       ,         ,       14, the timestamp as a date
-gasUsed                 , gas      ,           , noTable   , Summary       ,         ,       15, gas used in the transaction
-calcs.reconciliationType, string   ,           , noTable   , Summary       ,         ,       16, type of reconciliation
-accountedFor            , address  ,           , noTable   , Summary       ,         ,       17, the address being accounted for
-accountedForName        , string   ,           , noTable   , Summary       ,         ,       18, the name for this accounted address
-calcs.reconciled        , boolean  ,           , fmt=checkmark , Reconciliation,         ,       19, true if reconciled
-amountIn                , int256   ,           , noTable   , Inflow        ,         ,       20, incoming amount
-internalIn              , int256   ,           , noTable   , Inflow        ,         ,       21, internal incoming amount
-selfDestructIn          , int256   ,           , noTable   , Inflow        ,         ,       22, self-destruct incoming amount
-minerBaseRewardIn       , int256   ,           , noTable   , Inflow        ,         ,       23, miner base reward
-minerTxFeeIn            , int256   ,           , noTable   , Inflow        ,         ,       24, miner transaction fee
-prefundIn               , int256   ,           , noTable   , Inflow        ,         ,       25, prefund amount
-amountOut               , int256   ,           , noTable   , Outflow       ,         ,       26, outgoing amount
-internalOut             , int256   ,           , noTable   , Outflow       ,         ,       27, internal outgoing amount
-selfDestructOut         , int256   ,           , noTable   , Outflow       ,         ,       28, self-destruct outgoing amount
-gasOut                  , int256   ,           , noTable   , Outflow       ,         ,       29, gas out
-blockNumber             , blknum   ,           , noTable   , Details       ,         ,       30, the number of the block
-transactionIndex        , txnum    ,           , noTable   , Details       ,         ,       31, the zero-indexed position of the transaction
-logIndex                , lognum   ,           , noTable   , Details       ,         ,       32, the zero-indexed position of the log
-transactionHash         , hash     ,           , noTable   , Details       ,         ,       33, the hash of the transaction
-sender                  , address  ,           , noTable   , Details       ,         ,       34, the transaction sender
-senderName              , string   ,           , noTable   , Details       ,         ,       35, the name for this sender address
-recipient               , address  ,           , noTable   , Details       ,         ,       36, the transaction recipient
-recipientName           , string   ,           , noTable   , Details       ,         ,       37, the name for this recipient address
-prevBal                 , int256   ,           , noTable   , Analysis      ,         ,       38, previous balance
-begBalDiff              , int256   ,           , noTable   , Analysis      ,         ,       39, beginning balance difference
-endBalDiff              , int256   ,           , noTable   , Analysis      ,         ,       40, ending balance difference
-correctingReasons       , string   ,           , noTable   , Analysis      ,         ,       41, reasons for corrections
-correctBegBalIn         , int256   ,           , noTable   , Corrections   ,         ,       42, correct beginning balance in
-correctAmountIn         , int256   ,           , noTable   , Corrections   ,         ,       43, correct amount in
-correctEndBalIn         , int256   ,           , noTable   , Corrections   ,         ,       44, correct ending balance in
-correctBegBalOut        , int256   ,           , noTable   , Corrections   ,         ,       45, correct beginning balance out
-correctAmountOut        , int256   ,           , noTable   , Corrections   ,         ,       46, correct amount out
-correctEndBalOut        , int256   ,           , noTable   , Corrections   ,         ,       47, correct ending balance out
+name                    , type     , strDefault, attributes, section       , upgrades, docOrder, label, description
+timestamp               , timestamp,           ,           , Asset         ,         ,        1,      , the Unix timestamp of the object
+asset                   , address  ,           , readOnly  , Asset         ,         ,        2,      , 0xeeee...eeee for ETH reconciliations&#44; the token address otherwise
+assetName               , string   ,           , readOnly  , Asset         ,         ,        3,      , the name for this asset address
+symbol                  , string   ,           , noTable   , Asset         ,         ,        4,      , either ETH&#44; WEI&#44; or the symbol of the asset being reconciled as extracted from the chain
+decimals                , value    ,           , noTable   , Asset         ,         ,        5,      , the value of `decimals` from an ERC20 contract or&#44; if ETH or WEI&#44; then 18
+priceSource             , string   ,           , noTable   , Asset         ,         ,        6,      , the on-chain source from which the spot price was taken
+calcs.begBalEth         , ether    ,           ,           , Reconciliation,         ,        7,      , the beginning balance in ETH
+calcs.totalInEth        , ether    ,           ,           , Reconciliation,         ,        8,      , total inflow in ETH
+calcs.totalOutEth       , ether    ,           ,           , Reconciliation,         ,        9,      , total outflow in ETH
+calcs.amountNetEth      , ether    ,           , noTable   , Reconciliation,         ,       10,      , net amount in ETH
+calcs.endBalEth         , ether    ,           ,           , Reconciliation,         ,       11,      , ending balance in ETH
+spotPrice               , float64  ,           , noTable   , Asset         ,         ,       12,      , the on-chain price in USD at the time of the transaction
+calcs.endBalCalcEth     , ether    ,           , noTable   , Reconciliation,         ,       13,      , calculated ending balance in ETH
+date                    , datetime ,           , noTable   , Summary       ,         ,       14,      , the timestamp as a date
+gasUsed                 , gas      ,           , noTable   , Summary       ,         ,       15,      , gas used in the transaction
+calcs.reconciliationType, string   ,           , noTable   , Summary       ,         ,       16,      , type of reconciliation
+accountedFor            , address  ,           , noTable   , Summary       ,         ,       17,      , the address being accounted for
+accountedForName        , string   ,           , noTable   , Summary       ,         ,       18,      , the name for this accounted address
+calcs.reconciled        , boolean  ,           , fmt=checkmark , Reconciliation,         ,       19, chk  , true if reconciled
+amountIn                , int256   ,           , noTable   , Inflow        ,         ,       20,      , incoming amount
+internalIn              , int256   ,           , noTable   , Inflow        ,         ,       21,      , internal incoming amount
+selfDestructIn          , int256   ,           , noTable   , Inflow        ,         ,       22,      , self-destruct incoming amount
+minerBaseRewardIn       , int256   ,           , noTable   , Inflow        ,         ,       23,      , miner base reward
+minerTxFeeIn            , int256   ,           , noTable   , Inflow        ,         ,       24,      , miner transaction fee
+prefundIn               , int256   ,           , noTable   , Inflow        ,         ,       25,      , prefund amount
+amountOut               , int256   ,           , noTable   , Outflow       ,         ,       26,      , outgoing amount
+internalOut             , int256   ,           , noTable   , Outflow       ,         ,       27,      , internal outgoing amount
+selfDestructOut         , int256   ,           , noTable   , Outflow       ,         ,       28,      , self-destruct outgoing amount
+gasOut                  , int256   ,           , noTable   , Outflow       ,         ,       29,      , gas out
+blockNumber             , blknum   ,           , noTable   , Details       ,         ,       30,      , the number of the block
+transactionIndex        , txnum    ,           , noTable   , Details       ,         ,       31,      , the zero-indexed position of the transaction
+logIndex                , lognum   ,           , noTable   , Details       ,         ,       32,      , the zero-indexed position of the log
+transactionHash         , hash     ,           , noTable   , Details       ,         ,       33,      , the hash of the transaction
+sender                  , address  ,           , noTable   , Details       ,         ,       34,      , the transaction sender
+senderName              , string   ,           , noTable   , Details       ,         ,       35,      , the name for this sender address
+recipient               , address  ,           , noTable   , Details       ,         ,       36,      , the transaction recipient
+recipientName           , string   ,           , noTable   , Details       ,         ,       37,      , the name for this recipient address
+prevBal                 , int256   ,           , noTable   , Analysis      ,         ,       38,      , previous balance
+begBalDiff              , int256   ,           , noTable   , Analysis      ,         ,       39,      , beginning balance difference
+endBalDiff              , int256   ,           , noTable   , Analysis      ,         ,       40,      , ending balance difference
+correctingReasons       , string   ,           , noTable   , Analysis      ,         ,       41,      , reasons for corrections
+correctBegBalIn         , int256   ,           , noTable   , Corrections   ,         ,       42,      , correct beginning balance in
+correctAmountIn         , int256   ,           , noTable   , Corrections   ,         ,       43,      , correct amount in
+correctEndBalIn         , int256   ,           , noTable   , Corrections   ,         ,       44,      , correct ending balance in
+correctBegBalOut        , int256   ,           , noTable   , Corrections   ,         ,       45,      , correct beginning balance out
+correctAmountOut        , int256   ,           , noTable   , Corrections   ,         ,       46,      , correct amount out
+correctEndBalOut        , int256   ,           , noTable   , Corrections   ,         ,       47,      , correct ending balance out

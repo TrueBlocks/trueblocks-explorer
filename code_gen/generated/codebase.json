@@ -2586,6 +2586,7 @@
                             "section": "Reconciliation",
                             "docOrder": 19,
                             "description": "true if reconciled",
+                            "label": "chk",
                             "num": 19
                         },
                         {
@@ -4331,6 +4332,7 @@
                     "section": "Reconciliation",
                     "docOrder": 19,
                     "description": "true if reconciled",
+                    "label": "chk",
                     "num": 19
                 },
                 {

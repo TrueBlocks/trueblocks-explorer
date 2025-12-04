@@ -23,7 +23,7 @@ describe('PerPage', () => {
   const mockedFocusControls = vi.fn();
 
   const defaultProps = {
-    pageSize: 25,
+    pageSize: 14,
     viewStateKey: mockViewStateKey,
     focusTable: mockedFocusTable,
     focusControls: mockedFocusControls,
@@ -39,11 +39,11 @@ describe('PerPage', () => {
 
     const select = screen.getByLabelText('Items per page');
     expect(select).toBeInTheDocument();
-    expect(select).toHaveValue('15');
+    expect(select).toHaveValue('14');
 
     // The visible text for each option is the number only
     expect(
-      screen.getByRole('option', { name: '15 per page' }),
+      screen.getByRole('option', { name: '14 per page' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('option', { name: '30' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: '50' })).toBeInTheDocument();

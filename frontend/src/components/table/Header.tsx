@@ -29,7 +29,7 @@ export const Header = <T extends Record<string, unknown>>({
   return (
     <thead className={getDebugClass(1)}>
       <tr>
-        {columns.map((col, index) => {
+        {columns.map((col) => {
           // Get sort info from SortSpecManager for this column
           const sortInfo = SortSpecManager.getSortInfo(
             sort || { fields: [], orders: [] },

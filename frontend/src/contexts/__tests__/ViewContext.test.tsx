@@ -131,7 +131,7 @@ describe('ViewContext Object Identity', () => {
     // Should return same initial state object reference
     expect(pagination1).toBe(pagination2);
     expect(pagination1.currentPage).toBe(0);
-    expect(pagination1.pageSize).toBe(15);
+    expect(pagination1.pageSize).toBe(14);
     expect(pagination1.totalItems).toBe(0);
   });
 });

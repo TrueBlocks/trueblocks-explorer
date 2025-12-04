@@ -206,7 +206,7 @@ describe('Table', () => {
       });
 
       const rows = screen.getAllByRole('row');
-      expect(rows.length).toBe(12);
+      expect(rows.length).toBe(11); // 1 header + 10 data rows
     });
 
     it('handles column with custom render function', () => {

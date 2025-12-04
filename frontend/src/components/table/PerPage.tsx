@@ -30,7 +30,7 @@ export const PerPage = ({
         aria-label="Items per page"
         onFocus={focusControls}
       >
-        {[15, 30, 50, 100].map((size, index) => (
+        {[14, 30, 50, 100].map((size, index) => (
           <option key={size} value={size}>
             {size + (index === 0 ? ' per page' : '')}
           </option>

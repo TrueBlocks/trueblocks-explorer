@@ -32,10 +32,13 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
-type DalleDress = model.DalleDress
-type Database = model.Database
-type Log = sdk.Log
-type Series = dalle.Series
+type (
+	DalleDress = model.DalleDress
+	Database   = model.Database
+	Item       = model.Item
+	Log        = sdk.Log
+	Series     = dalle.Series
+)
 
 // EXISTING_CODE
 
@@ -139,6 +142,60 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
+			cm := storage.GetCacheManager()
+			if err := cm.LoadOrBuild(); err != nil {
+				logging.LogBEError(fmt.Sprintf("Failed to load database cache: %v", err))
+				return err
+			}
+
+			// Track which databases we've seen to handle duplicates in DatabaseNames
+			seenDatabases := make(map[string]bool)
+			idx := 0
+
+			for _, dbName := range storage.GetAvailableDatabases() {
+				// Skip if we've already processed this database
+				if seenDatabases[dbName] {
+					continue
+				}
+				seenDatabases[dbName] = true
+
+				dbIndex, err := cm.GetDatabase(dbName)
+				if err != nil {
+					logging.LogBEError(fmt.Sprintf("Failed to get database %s: %v", dbName, err))
+					continue
+				}
+
+				sample := ""
+				if len(dbIndex.Records) > 0 {
+					sample = strings.Join(dbIndex.Records[0].Values, ", ")
+				}
+
+				// Extract column names from the first item (excluding version)
+				columns := []string{}
+				if len(dbIndex.Records) > 0 && len(dbIndex.Records[0].Values) > 1 {
+					// First value is typically the version, rest are actual columns
+					columns = dbIndex.Records[0].Values[1:]
+				}
+
+				description := storage.GetDatabaseDescription(dbName)
+
+				db := &Database{
+					ID:           fmt.Sprintf("%d", idx),
+					Name:         storage.FormatDatabaseName(dbName),
+					DatabaseName: dbName,
+					Count:        uint64(len(dbIndex.Records)),
+					Sample:       sample,
+					Filtered:     "none",
+					Version:      dbIndex.Version,
+					Columns:      columns,
+					Description:  description,
+					LastUpdated:  time.Now().Unix(),
+					CacheHit:     true,
+				}
+
+				theStore.AddItem(db, idx)
+				idx++
+			}
 			// EXISTING_CODE
 			return nil
 		}
@@ -167,6 +224,18 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 
 	return theStore
 }
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+			// EXISTING_CODE
+			// EXISTING_CODE
+
+				// EXISTING_CODE
+				// EXISTING_CODE
+
+		// EXISTING_CODE
+		// EXISTING_CODE
 
 func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Log] {
 	logsStoreMu.Lock()

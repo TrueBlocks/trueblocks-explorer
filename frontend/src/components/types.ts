@@ -18,6 +18,7 @@ export type RendererParams = {
   data: Record<string, unknown>[];
   columns: unknown[];
   facet: types.DataFacet;
+  onRowAction?: (rowData: Record<string, unknown>) => void;
 };
 
 export type FacetRenderer = (params: RendererParams) => React.ReactNode;

@@ -123,6 +123,9 @@ func isDatabase(item *Database) bool {
 	// EXISTING_CODE
 }
 
+	// EXISTING_CODE
+	// EXISTING_CODE
+
 func isEvent(item *Log) bool {
 	// EXISTING_CODE
 	return true
@@ -171,6 +174,9 @@ func isDupDatabase() func(existing []*Database, newItem *Database) bool {
 	return nil
 	// EXISTING_CODE
 }
+
+	// EXISTING_CODE
+	// EXISTING_CODE
 
 func isDupLog() func(existing []*Log, newItem *Log) bool {
 	// EXISTING_CODE

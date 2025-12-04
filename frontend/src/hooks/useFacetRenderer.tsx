@@ -10,6 +10,7 @@ interface UseFacetRendererParams<T extends Record<string, unknown>> {
   currentColumns: FormField<T>[];
   renderers?: FacetRendererMap;
   viewName: string;
+  onRowAction?: (rowData: Record<string, unknown>) => void;
 }
 
 /**
@@ -24,6 +25,7 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
   currentData,
   currentColumns,
   renderers,
+  onRowAction,
 }: UseFacetRendererParams<T>): {
   isCanvas: boolean;
   node: React.ReactNode | null;
@@ -41,13 +43,13 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
     if (hasCustomRenderer && data.length > 0) {
       const renderer = renderers[facet];
       return renderer
-        ? renderer({ data, columns: currentColumns, facet })
+        ? renderer({ data, columns: currentColumns, facet, onRowAction })
         : null;
     }
 
     // No custom renderer expected OR no data - return null (fall back to default form handling)
     return null;
-  }, [isCanvas, currentData, currentColumns, renderers, facet]);
+  }, [isCanvas, currentData, currentColumns, renderers, facet, onRowAction]);
 
   return { isCanvas, node, facetConfig };
 }

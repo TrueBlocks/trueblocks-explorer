@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/model"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
@@ -272,6 +273,17 @@ func (c *DressesCollection) matchesDatabaseFilter(item *Database, filter string)
 	_ = item   // delint
 	_ = filter // delint
 	return true
+}
+
+func (c *DressesCollection) matchesItemFilter(item *Item, filter string) bool {
+	if item == nil {
+		return false
+	}
+	if filter == "" {
+		return true
+	}
+	lf := strings.ToLower(filter)
+	return strings.Contains(strings.ToLower(item.Value), lf)
 }
 
 func (c *DressesCollection) matchesEventFilter(item *Log, filter string) bool {

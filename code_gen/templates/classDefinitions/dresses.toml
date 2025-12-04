@@ -25,7 +25,14 @@ mapKey = "item.Suffix"
 name = "Databases"
 store = "dalle.Databases"
 actions = ["export"]
-viewType = "table"
+viewType = "custom"
+navigate = "dresses|items|databaseName|databaseName"
+
+[[facets]]
+name = "Items"
+store = "model.Items"
+actions = ["export"]
+viewType = "custom"
 
 [[facets]]
 name = "Events"

@@ -128,7 +128,7 @@ func (c *{{$class}}Collection) addDynamicFacets(facets map[string]types.FacetCon
 func get{{firstUpper (toLower .Name)}}Fields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{{- range .Members }}
-			{{- if not (or (contains .Type "[]") (contains .Type "*")) }}
+			{{- if not (or (contains .Fmt "[]") (contains .Fmt "*")) }}
 				{{- $type := .GetFormatter }}
 				{Section: "{{ cond (eq .Section "") "General" .Section }}", Key: "{{.Name}}"{{if $type}}, Type: "{{$type}}"{{end}}{{if .Label}}, Label: "{{.Label}}"{{end}}{{if .IsNoTable}}, NoTable: true{{end}}{{if .IsSortable}}, Sortable: true{{end}}},
 			{{- end }}

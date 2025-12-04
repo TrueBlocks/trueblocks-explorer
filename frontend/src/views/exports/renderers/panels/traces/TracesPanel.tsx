@@ -29,7 +29,7 @@ interface TracesPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const TracesPanel = ({ rowData, _onFinal }: TracesProps) => {
+export const TracesPanel = ({ rowData, _onFinal }: TracesPanelProps) => {
   // EXISTING_CODE
   const facet = 'traces';
 

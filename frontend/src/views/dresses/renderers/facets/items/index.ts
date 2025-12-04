@@ -4,4 +4,4 @@
 /*
  * This file was auto generated. Do not edit.
  */
-export { RecordsFacet } from './RecordsFacet';
+export { ItemsFacet } from './ItemsFacet';

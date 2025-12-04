@@ -30,7 +30,10 @@ interface ApprovalLogsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const ApprovalLogsPanel = ({ rowData, _onFinal }: ApprovalLogsProps) => {
+export const ApprovalLogsPanel = ({
+  rowData,
+  _onFinal,
+}: ApprovalLogsPanelProps) => {
   // EXISTING_CODE
   const facet = 'approvallogs';
 

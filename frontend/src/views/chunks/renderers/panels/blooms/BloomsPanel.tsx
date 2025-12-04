@@ -17,7 +17,7 @@ interface BloomsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const BloomsPanel = ({ rowData, _onFinal }: BloomsProps) => {
+export const BloomsPanel = ({ rowData, _onFinal }: BloomsPanelProps) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
   const facetConfig = viewConfig?.facets?.[types.DataFacet.BLOOMS];

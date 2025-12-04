@@ -83,8 +83,9 @@ interface OpenApprovalsPanelProps {
 export const OpenApprovalsPanel = ({
   rowData,
   _onFinal,
-}: OpenApprovalsProps) => {
+}: OpenApprovalsPanelProps) => {
   // EXISTING_CODE
+  const onFinal = _onFinal;
   const facet = 'openapprovals';
 
   const { currentView } = useViewContext();

@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
+	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/model"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
@@ -24,8 +25,8 @@ type DressesPage struct {
 	Facet         types.DataFacet  `json:"facet"`
 	DalleDress    []DalleDress     `json:"dalledress"`
 	Databases     []Database       `json:"databases"`
+	Items         []Item           `json:"items"`
 	Logs          []Log            `json:"logs"`
-	Records       []Record         `json:"records"`
 	Series        []Series         `json:"series"`
 	TotalItems    int              `json:"totalItems"`
 	ExpectedTotal int              `json:"expectedTotal"`
@@ -130,21 +131,21 @@ func (c *DressesCollection) GetPage(
 			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
-	case DressesRecords:
-		facet := c.recordsFacet
-		var filterFunc func(*Record) bool
+	case DressesItems:
+		facet := c.itemsFacet
+		var filterFunc func(*Item) bool
 		if filter != "" {
-			filterFunc = func(item *Record) bool {
-				return c.matchesRecordFilter(item, filter)
+			filterFunc = func(item *Item) bool {
+				return c.matchesItemFilter(item, filter)
 			}
 		}
-		sortFunc := func(items []Record, sort sdk.SortSpec) error {
-			return nil // No sorting for database records yet
+		sortFunc := func(items []Item, sort sdk.SortSpec) error {
+			return model.SortItems(items, sort)
 		}
 		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
 			return nil, types.NewStoreError("dresses", dataFacet, "GetPage", err)
 		} else {
-			page.Records = result.Items
+			page.Items = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
 		}
@@ -294,7 +295,7 @@ func (c *DressesCollection) matchesDatabaseFilter(item *Database, filter string)
 	return true
 }
 
-func (c *DressesCollection) matchesRecordFilter(item *Record, filter string) bool {
+func (c *DressesCollection) matchesItemFilter(item *Item, filter string) bool {
 	if item == nil {
 		return false
 	}

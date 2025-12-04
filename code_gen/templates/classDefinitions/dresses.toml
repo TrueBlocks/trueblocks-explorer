@@ -26,11 +26,11 @@ name = "Databases"
 store = "dalle.Databases"
 actions = ["export"]
 viewType = "custom"
-navigate = "dresses|records|databaseName|databaseName"
+navigate = "dresses|items|databaseName|databaseName"
 
 [[facets]]
-name = "Records"
-store = "dalle.Records"
+name = "Items"
+store = "model.Items"
 actions = ["export"]
 viewType = "custom"
 

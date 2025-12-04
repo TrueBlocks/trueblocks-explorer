@@ -26,7 +26,10 @@ interface StatementsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const StatementsPanel = ({ rowData, _onFinal }: StatementsProps) => {
+export const StatementsPanel = ({
+  rowData,
+  _onFinal,
+}: StatementsPanelProps) => {
   // EXISTING_CODE
   const facet = 'statements';
 

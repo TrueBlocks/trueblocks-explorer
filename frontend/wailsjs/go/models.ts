@@ -380,8 +380,8 @@ export namespace dresses {
 	    facet: types.DataFacet;
 	    dalledress: model.DalleDress[];
 	    databases: model.Database[];
+	    items: model.Item[];
 	    logs: types.Log[];
-	    records: model.DatabaseRecord[];
 	    series: dalle.Series[];
 	    totalItems: number;
 	    expectedTotal: number;
@@ -396,8 +396,8 @@ export namespace dresses {
 	        this.facet = source["facet"];
 	        this.dalledress = this.convertValues(source["dalledress"], model.DalleDress);
 	        this.databases = this.convertValues(source["databases"], model.Database);
+	        this.items = this.convertValues(source["items"], model.Item);
 	        this.logs = this.convertValues(source["logs"], types.Log);
-	        this.records = this.convertValues(source["records"], model.DatabaseRecord);
 	        this.series = this.convertValues(source["series"], dalle.Series);
 	        this.totalItems = source["totalItems"];
 	        this.expectedTotal = source["expectedTotal"];
@@ -727,7 +727,7 @@ export namespace model {
 	        this.cacheHit = source["cacheHit"];
 	    }
 	}
-	export class DatabaseRecord {
+	export class Item {
 	    id: string;
 	    databaseName: string;
 	    index: number;
@@ -735,7 +735,7 @@ export namespace model {
 	    weight: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new DatabaseRecord(source);
+	        return new Item(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -1405,6 +1405,20 @@ export namespace status {
 
 export namespace types {
 	
+	export enum StoreState {
+	    STALE = "stale",
+	    FETCHING = "fetching",
+	    LOADED = "loaded",
+	}
+	export enum Period {
+	    BLOCKLY = "blockly",
+	    HOURLY = "hourly",
+	    DAILY = "daily",
+	    WEEKLY = "weekly",
+	    MONTHLY = "monthly",
+	    QUARTERLY = "quarterly",
+	    ANNUAL = "annual",
+	}
 	export enum DataFacet {
 	    STATS = "stats",
 	    INDEX = "index",
@@ -1429,7 +1443,7 @@ export namespace types {
 	    GENERATOR = "generator",
 	    SERIES = "series",
 	    DATABASES = "databases",
-	    RECORDS = "records",
+	    ITEMS = "items",
 	    GALLERY = "gallery",
 	    STATEMENTS = "statements",
 	    BALANCES = "balances",
@@ -1449,20 +1463,6 @@ export namespace types {
 	    STATUS = "status",
 	    CACHES = "caches",
 	    CHAINS = "chains",
-	}
-	export enum StoreState {
-	    STALE = "stale",
-	    FETCHING = "fetching",
-	    LOADED = "loaded",
-	}
-	export enum Period {
-	    BLOCKLY = "blockly",
-	    HOURLY = "hourly",
-	    DAILY = "daily",
-	    WEEKLY = "weekly",
-	    MONTHLY = "monthly",
-	    QUARTERLY = "quarterly",
-	    ANNUAL = "annual",
 	}
 	export class AbiCalcs {
 	    name?: string;

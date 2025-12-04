@@ -36,7 +36,10 @@ interface TransactionsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const TransactionsPanel = ({ rowData, _onFinal }: TransactionsProps) => {
+export const TransactionsPanel = ({
+  rowData,
+  _onFinal,
+}: TransactionsPanelProps) => {
   // EXISTING_CODE
   const facet = 'transactions';
 

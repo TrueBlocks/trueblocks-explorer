@@ -1,0 +1,4 @@
+name  , type  , strDefault, attributes, section, upgrades, docOrder, description
+index , uint64,           ,           , General,         ,        1, the item's ordering in the file
+value , string,           ,           , General,         ,        2, the entire line of data as a string
+weight, uint64,           ,           , General,         ,        3, the item's weight

@@ -15,8 +15,8 @@ export const renderers = {
     [types.DataFacet.DATABASES]: (params: RendererParams) => {
       return <facets.DatabasesFacet params={params} />;
     },
-    [types.DataFacet.RECORDS]: (params: RendererParams) => {
-      return <facets.RecordsFacet params={params} />;
+    [types.DataFacet.ITEMS]: (params: RendererParams) => {
+      return <facets.ItemsFacet params={params} />;
     },
     [types.DataFacet.GALLERY]: (params: RendererParams) => {
       return <facets.GalleryFacet params={params} />;

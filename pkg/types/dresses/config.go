@@ -57,14 +57,14 @@ func (c *DressesCollection) buildStaticFacets() map[string]types.FacetConfig {
 			Fields:        getDatabasesFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
-			RowAction:     types.NewRowActionNavigation("dresses", "records", "databaseName", "databaseName"),
+			RowAction:     types.NewRowActionNavigation("dresses", "items", "databaseName", "databaseName"),
 		},
-		"records": {
-			Name:          "Records",
-			Store:         "records",
+		"items": {
+			Name:          "Items",
+			Store:         "items",
 			ViewType:      "custom",
 			DividerBefore: false,
-			Fields:        getRecordsFields(),
+			Fields:        getItemsFields(),
 			Actions:       []string{},
 			HeaderActions: []string{"export"},
 		},
@@ -95,7 +95,7 @@ func (c *DressesCollection) buildFacetOrder() []string {
 		"generator",
 		"series",
 		"databases",
-		"records",
+		"items",
 		"events",
 		"gallery",
 	}
@@ -152,6 +152,17 @@ func getDatabasesFields() []types.FieldConfig {
 	return ret
 }
 
+func getItemsFields() []types.FieldConfig {
+	ret := []types.FieldConfig{
+		{Section: "General", Key: "index", Type: "uint64"},
+		{Section: "General", Key: "value", Type: "string"},
+		{Section: "General", Key: "weight", Type: "uint64"},
+		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
+	}
+	types.NormalizeFields(&ret)
+	return ret
+}
+
 func getLogsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
 		{Section: "Context", Key: "blockNumber", Type: "blknum"},
@@ -169,17 +180,6 @@ func getLogsFields() []types.FieldConfig {
 		{Section: "Details", Key: "data", Type: "bytes", NoTable: true},
 		{Section: "Articulation", Key: "articulatedLog", NoTable: true},
 		{Section: "Articulation", Key: "compressedLog", Type: "string", NoTable: true},
-		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
-	}
-	types.NormalizeFields(&ret)
-	return ret
-}
-
-func getRecordsFields() []types.FieldConfig {
-	ret := []types.FieldConfig{
-		{Section: "General", Key: "index", Type: "uint64"},
-		{Section: "General", Key: "value", Type: "string"},
-		{Section: "General", Key: "weight", Type: "uint64"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

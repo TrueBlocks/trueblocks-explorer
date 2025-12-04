@@ -1,0 +1,8 @@
+[settings]
+class = "Items"
+doc_group = "04-Admin"
+doc_descr = "Items in the various dalle databases."
+doc_route = "919-chunkIndex-stats"
+attributes = ""
+produced_by = "dresses"
+disable_go = true

@@ -32,11 +32,13 @@ import (
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
 )
 
-type DalleDress = model.DalleDress
-type Database = model.Database
-type Record = model.DatabaseRecord
-type Log = sdk.Log
-type Series = dalle.Series
+type (
+	DalleDress = model.DalleDress
+	Database   = model.Database
+	Item       = model.Item
+	Log        = sdk.Log
+	Series     = dalle.Series
+)
 
 // EXISTING_CODE
 
@@ -47,11 +49,11 @@ var (
 	databasesStore   = make(map[string]*store.Store[Database])
 	databasesStoreMu sync.Mutex
 
+	itemsStore   = make(map[string]*store.Store[Item])
+	itemsStoreMu sync.Mutex
+
 	logsStore   = make(map[string]*store.Store[Log])
 	logsStoreMu sync.Mutex
-
-	recordsStore   = make(map[string]*store.Store[Record])
-	recordsStoreMu sync.Mutex
 
 	seriesStore   = make(map[string]*store.Store[Series])
 	seriesStoreMu sync.Mutex
@@ -171,7 +173,7 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 					sample = strings.Join(dbIndex.Records[0].Values, ", ")
 				}
 
-				// Extract column names from the first record (excluding version)
+				// Extract column names from the first item (excluding version)
 				columns := []string{}
 				if len(dbIndex.Records) > 0 && len(dbIndex.Records[0].Values) > 1 {
 					// First value is typically the version, rest are actual columns
@@ -226,6 +228,91 @@ func (c *DressesCollection) getDatabasesStore(payload *types.Payload, facet type
 	return theStore
 }
 
+func (c *DressesCollection) getItemsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Item] {
+	itemsStoreMu.Lock()
+	defer itemsStoreMu.Unlock()
+
+	// EXISTING_CODE
+	// EXISTING_CODE
+
+	storeKey := getStoreKey(payload)
+	theStore := itemsStore[storeKey]
+	if theStore == nil {
+		queryFunc := func(ctx *output.RenderCtx) error {
+			// TODO: THIS IS INCORRECT
+			// EXISTING_CODE
+			// Get the database name from the payload's ActiveAddress field
+			// (passed via row action navigation from databases facet)
+			databaseName := payload.ActiveAddress
+			if databaseName == "" {
+				logging.LogBEError("No databaseName in payload")
+				return fmt.Errorf("database name not specified")
+			}
+
+			cm := storage.GetCacheManager()
+			if err := cm.LoadOrBuild(); err != nil {
+				logging.LogBEError(fmt.Sprintf("Failed to load database cache: %v", err))
+				return err
+			}
+
+			dbIndex, err := cm.GetDatabase(databaseName)
+			if err != nil {
+				logging.LogBEError(fmt.Sprintf("Failed to get database %s: %v", databaseName, err))
+				return err
+			}
+
+			// Load all items from the database
+			for idx, item := range dbIndex.Records {
+				if len(item.Values) == 0 {
+					continue
+				}
+
+				value := item.Values[0]
+				weight := uint64(1)
+				if len(item.Values) > 1 {
+					// Try to parse weight if present
+					_, _ = fmt.Sscanf(item.Values[1], "%d", &weight)
+				}
+
+				dbItem := &Item{
+					ID:           fmt.Sprintf("%s-%d", databaseName, idx),
+					DatabaseName: databaseName,
+					Index:        uint64(idx),
+					Value:        value,
+					Weight:       weight,
+				}
+
+				theStore.AddItem(dbItem, idx)
+			}
+			// EXISTING_CODE
+			return nil
+		}
+
+		processFunc := func(item interface{}) *Item {
+			if it, ok := item.(*Item); ok {
+				// EXISTING_CODE
+				// EXISTING_CODE
+				return it
+			}
+			return nil
+		}
+
+		mappingFunc := func(item *Item) (key string, includeInMap bool) {
+			return "", false
+		}
+
+		storeName := c.getStoreName(payload, facet)
+		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
+
+		// EXISTING_CODE
+		// EXISTING_CODE
+
+		itemsStore[storeKey] = theStore
+	}
+
+	return theStore
+}
+
 func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Log] {
 	logsStoreMu.Lock()
 	defer logsStoreMu.Unlock()
@@ -274,91 +361,6 @@ func (c *DressesCollection) getLogsStore(payload *types.Payload, facet types.Dat
 		// EXISTING_CODE
 
 		logsStore[storeKey] = theStore
-	}
-
-	return theStore
-}
-
-func (c *DressesCollection) getRecordsStore(payload *types.Payload, facet types.DataFacet) *store.Store[Record] {
-	recordsStoreMu.Lock()
-	defer recordsStoreMu.Unlock()
-
-	// EXISTING_CODE
-	// EXISTING_CODE
-
-	storeKey := getStoreKey(payload)
-	theStore := recordsStore[storeKey]
-	if theStore == nil {
-		queryFunc := func(ctx *output.RenderCtx) error {
-			// TODO: THIS IS INCORRECT
-			// EXISTING_CODE
-			// Get the database name from the payload's ActiveAddress field
-			// (passed via row action navigation from databases facet)
-			databaseName := payload.ActiveAddress
-			if databaseName == "" {
-				logging.LogBEError("No databaseName in payload")
-				return fmt.Errorf("database name not specified")
-			}
-
-			cm := storage.GetCacheManager()
-			if err := cm.LoadOrBuild(); err != nil {
-				logging.LogBEError(fmt.Sprintf("Failed to load database cache: %v", err))
-				return err
-			}
-
-			dbIndex, err := cm.GetDatabase(databaseName)
-			if err != nil {
-				logging.LogBEError(fmt.Sprintf("Failed to get database %s: %v", databaseName, err))
-				return err
-			}
-
-			// Load all records from the database
-			for idx, record := range dbIndex.Records {
-				if len(record.Values) == 0 {
-					continue
-				}
-
-				value := record.Values[0]
-				weight := uint64(1)
-				if len(record.Values) > 1 {
-					// Try to parse weight if present
-					fmt.Sscanf(record.Values[1], "%d", &weight)
-				}
-
-				dbRecord := &Record{
-					ID:           fmt.Sprintf("%s-%d", databaseName, idx),
-					DatabaseName: databaseName,
-					Index:        uint64(idx),
-					Value:        value,
-					Weight:       weight,
-				}
-
-				theStore.AddItem(dbRecord, idx)
-			}
-			// EXISTING_CODE
-			return nil
-		}
-
-		processFunc := func(item interface{}) *Record {
-			if it, ok := item.(*Record); ok {
-				// EXISTING_CODE
-				// EXISTING_CODE
-				return it
-			}
-			return nil
-		}
-
-		mappingFunc := func(item *Record) (key string, includeInMap bool) {
-			return "", false
-		}
-
-		storeName := c.getStoreName(payload, facet)
-		theStore = store.NewStore(storeName, queryFunc, processFunc, mappingFunc)
-
-		// EXISTING_CODE
-		// EXISTING_CODE
-
-		recordsStore[storeKey] = theStore
 	}
 
 	return theStore
@@ -429,8 +431,8 @@ func (c *DressesCollection) getStoreName(payload *types.Payload, facet types.Dat
 		name = "dresses-series"
 	case DressesDatabases:
 		name = "dresses-databases"
-	case DressesRecords:
-		name = "dresses-records"
+	case DressesItems:
+		name = "dresses-items"
 	case DressesEvents:
 		name = "dresses-logs"
 	case DressesGallery:

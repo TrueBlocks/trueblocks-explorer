@@ -36,7 +36,10 @@ interface ApprovalTxsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const ApprovalTxsPanel = ({ rowData, _onFinal }: ApprovalTxsProps) => {
+export const ApprovalTxsPanel = ({
+  rowData,
+  _onFinal,
+}: ApprovalTxsPanelProps) => {
   // EXISTING_CODE
   const facet = 'approvaltxs';
 

@@ -105,8 +105,8 @@ export const Dresses = () => {
         return pageData.series || [];
       case types.DataFacet.DATABASES:
         return pageData.databases || [];
-      case types.DataFacet.RECORDS:
-        return pageData.records || [];
+      case types.DataFacet.ITEMS:
+        return pageData.items || [];
       case types.DataFacet.EVENTS:
         return pageData.logs || [];
       case types.DataFacet.GALLERY:

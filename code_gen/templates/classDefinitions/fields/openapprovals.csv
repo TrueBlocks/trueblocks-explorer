@@ -1,14 +1,14 @@
 name        , type     , strDefault, attributes, section, docOrder, description
 timestamp   , timestamp,           , noTable   , Context,        1, the current timestamp when the report was generated
 blockNumber , blknum   ,           , noTable   , Context,        2, the current block number when the report was generated
-owner       , address  ,           ,           , Details,        3, the address of the owner of the token (the approver)
+owner       , address  ,           , noTable   , Details,        3, the address of the owner of the token (the approver)
 ownerName   , string   ,           ,           , Details,        4, the name for this owner address
 token       , address  ,           ,           , Details,        5, the address of the ERC-20 token being approved
 tokenName   , string   ,           ,           , Details,        6, the name for this token address
 spender     , address  ,           ,           , Details,        7, the address being granted approval to spend tokens
 spenderName , string   ,           ,           , Details,        8, the name for this spender address
-allowance   , wei      ,           ,           , Details,        9, the amount of tokens approved for spending
+allowance   , wei      ,           , fmt=allowanceWithStatus          , Details,        9, the amount of tokens approved for spending
 lastAppBlock, blknum   ,           , noTable   , Data   ,       10, the block number of the last approval event
 lastAppLogID, lognum   ,           , noTable   , Data   ,       11, the log index of the last approval event
-lastAppTs   , timestamp,           ,           , Data   ,       12, the timestamp of the last approval event
+lastAppTs   , timestamp,           , noTable   , Data   ,       12, the timestamp of the last approval event
 lastAppTxID , txnum    ,           , noTable   , Data   ,       13, the transaction index of the last approval event

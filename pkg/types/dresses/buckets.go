@@ -20,8 +20,8 @@ func (c *DressesCollection) GetBuckets(payload *types.Payload) (*types.Buckets, 
 		facet = c.seriesFacet
 	case DressesDatabases:
 		facet = c.databasesFacet
-	case DressesRecords:
-		facet = c.recordsFacet
+	case DressesItems:
+		facet = c.itemsFacet
 	case DressesEvents:
 		facet = c.eventsFacet
 	case DressesGallery:

@@ -29,7 +29,7 @@ interface EventsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const EventsPanel = ({ rowData, _onFinal }: EventsProps) => {
+export const EventsPanel = ({ rowData, _onFinal }: EventsPanelProps) => {
   // EXISTING_CODE
   const facet = 'events';
 

@@ -13,20 +13,20 @@ import { dresses, project, types } from '@models';
 
 // EXISTING_CODE
 
-export const RecordsFacet = ({ params }: { params: RendererParams }) => {
+export const ItemsFacet = ({ params }: { params: RendererParams }) => {
   // EXISTING_CODE
   const { data } = params;
   const pageData = useMemo(
     () =>
       ({
-        records: data || [],
+        items: data || [],
       }) as unknown as dresses.DressesPage,
     [data],
   );
   const viewStateKey: project.ViewStateKey = useMemo(
     () => ({
       viewName: 'dresses',
-      facetName: types.DataFacet.RECORDS,
+      facetName: types.DataFacet.ITEMS,
     }),
     [],
   );
@@ -35,7 +35,7 @@ export const RecordsFacet = ({ params }: { params: RendererParams }) => {
 
   const columns = useFacetColumns(
     viewConfig,
-    () => types.DataFacet.RECORDS,
+    () => types.DataFacet.ITEMS,
     {
       showActions: false,
       actions: [],
@@ -55,7 +55,7 @@ export const RecordsFacet = ({ params }: { params: RendererParams }) => {
 
   return (
     <BaseTab<Record<string, unknown>>
-      data={(pageData?.records || []) as unknown as Record<string, unknown>[]}
+      data={(pageData?.items || []) as unknown as Record<string, unknown>[]}
       columns={columns}
       state={pageData?.state || types.StoreState.LOADED}
       error={null}

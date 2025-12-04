@@ -28,7 +28,7 @@ interface LogsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const LogsPanel = ({ rowData, _onFinal }: LogsProps) => {
+export const LogsPanel = ({ rowData, _onFinal }: LogsPanelProps) => {
   // EXISTING_CODE
   const facet = 'logs';
 

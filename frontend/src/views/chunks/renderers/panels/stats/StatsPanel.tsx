@@ -17,7 +17,7 @@ interface StatsPanelProps {
   _onFinal?: (rowKey: string, newValue: string, txHash: string) => void;
 }
 
-export const StatsPanel = ({ rowData, _onFinal }: StatsProps) => {
+export const StatsPanel = ({ rowData, _onFinal }: StatsPanelProps) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });
   const facetConfig = viewConfig?.facets?.[types.DataFacet.STATS];

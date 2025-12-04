@@ -80,6 +80,20 @@ export const Debugger: React.FC<DebuggerProps> = ({
           >
             <icons.Minus />
           </ActionIcon>
+          <span
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              minWidth: '35px',
+              justifyContent: 'center',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              color: 'var(--mantine-color-dimmed)',
+              fontFamily: 'monospace',
+            }}
+          >
+            {fontScale.toFixed(1)}
+          </span>
           <ActionIcon
             size="sm"
             variant="subtle"

@@ -84,6 +84,8 @@ export function GetActiveProjectData():Promise<types.ProjectPayload>;
 
 export function GetActiveProjectPath():Promise<string>;
 
+export function GetAddressName(arg1:string):Promise<string>;
+
 export function GetAllDetailSectionStates():Promise<Record<string, boolean>>;
 
 export function GetAllSkins():Promise<Record<string, skin.Skin>>;

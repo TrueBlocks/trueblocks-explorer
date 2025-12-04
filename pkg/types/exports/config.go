@@ -395,7 +395,7 @@ func getStatementsFields() []types.FieldConfig {
 		{Section: "Summary", Key: "calcs.reconciliationType", Type: "string", NoTable: true},
 		{Section: "Summary", Key: "accountedFor", Type: "address", NoTable: true},
 		{Section: "Summary", Key: "accountedForName", Type: "string", NoTable: true},
-		{Section: "Summary", Key: "calcs.reconciled", Type: "boolean"},
+		{Section: "Reconciliation", Key: "calcs.reconciled", Type: "checkmark", Label: "chk"},
 		{Section: "Inflow", Key: "amountIn", Type: "int256", NoTable: true},
 		{Section: "Inflow", Key: "internalIn", Type: "int256", NoTable: true},
 		{Section: "Inflow", Key: "selfDestructIn", Type: "int256", NoTable: true},

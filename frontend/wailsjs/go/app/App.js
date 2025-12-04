@@ -126,6 +126,10 @@ export function GetActiveProjectPath() {
   return window['go']['app']['App']['GetActiveProjectPath']();
 }
 
+export function GetAddressName(arg1) {
+  return window['go']['app']['App']['GetAddressName'](arg1);
+}
+
 export function GetAllDetailSectionStates() {
   return window['go']['app']['App']['GetAllDetailSectionStates']();
 }

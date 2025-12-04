@@ -19,6 +19,11 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/skin"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/exports"
+	"github.com/TrueBlocks/trueblocks-explorer/pkg/types/names"
+
+	"github.com/joho/godotenv"
+	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/config"
@@ -29,9 +34,6 @@ import (
 	dalle "github.com/TrueBlocks/trueblocks-dalle/v6"
 	"github.com/TrueBlocks/trueblocks-dalle/v6/pkg/storage"
 	sdk "github.com/TrueBlocks/trueblocks-sdk/v6"
-	"github.com/joho/godotenv"
-	"github.com/wailsapp/wails/v2/pkg/menu"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
@@ -346,4 +348,9 @@ func (a *App) CloseActiveProject() error {
 	}
 
 	return a.ChangeVisibility(payload)
+}
+
+// GetAddressName returns the name for an address if found, empty string otherwise
+func (a *App) GetAddressName(address string) string {
+	return names.NameAddressStr(address)
 }

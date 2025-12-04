@@ -8,8 +8,9 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/types"
 
-	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 )
 
 // NewProject creates a new project with the given name and addresses

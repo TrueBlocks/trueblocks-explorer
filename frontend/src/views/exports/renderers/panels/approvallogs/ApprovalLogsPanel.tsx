@@ -52,7 +52,7 @@ export const ApprovalLogsPanel = (rowData: Record<string, unknown>) => {
         <InfoAddressRenderer addressInfo={addressInfo} />
       </DetailSection>
 
-      <DetailSection facet={facet} title={'Decoded Event'}>
+      <DetailSection facet={facet} title={'Articulated Log'}>
         <InfoArticulationRenderer articulationInfo={articulationInfo} />
       </DetailSection>
 

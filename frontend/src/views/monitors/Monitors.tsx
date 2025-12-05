@@ -236,6 +236,7 @@ export const Monitors = () => {
         Record<string, unknown>
       >[],
     viewName: ROUTE,
+    onRowAction: handleRowAction,
   });
 
   const perTabContent = useMemo(() => {

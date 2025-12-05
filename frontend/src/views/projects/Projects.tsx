@@ -251,6 +251,7 @@ export const Projects = () => {
       >[],
     renderers: renderers.facets,
     viewName: ROUTE,
+    onRowAction: handleRowAction,
   });
 
   const perTabContent = useMemo(() => {

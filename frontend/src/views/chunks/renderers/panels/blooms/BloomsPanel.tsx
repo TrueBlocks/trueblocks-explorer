@@ -14,8 +14,7 @@ import { ChunksPanel } from '../shared/ChunksPanel';
 
 export const BloomsPanel = (
   rowData: Record<string, unknown>,
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  onFinal: (rowKey: string, newValue: string, txHash: string) => void,
+  _onFinal: (rowKey: string, newValue: string, txHash: string) => void,
 ) => {
   // EXISTING_CODE
   const { config: viewConfig } = useViewConfig({ viewName: 'chunks' });

@@ -293,6 +293,9 @@ export const {{$class}} = () => {
     renderers: renderers.facets,
 {{- end }}
     viewName: ROUTE,
+{{- if .HasRowActions}}
+    onRowAction: handleRowAction,
+{{- end}}
   });
 
   const perTabContent = useMemo(() => {

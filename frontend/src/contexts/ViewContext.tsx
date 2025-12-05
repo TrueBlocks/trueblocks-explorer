@@ -187,14 +187,13 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
             other: {},
           };
 
-          const updatedState: project.FilterState = {
+          const updatedState: project.ViewFacetState = {
             ...existingState,
             sorting: {
               ...(existingState.sorting || {}),
               sortSpec: sort,
             },
           };
-
           const updatedViewStates = {
             ...viewStates,
             [facetName]: updatedState,
@@ -237,14 +236,13 @@ export const ViewContextProvider = ({ children }: { children: ReactNode }) => {
             other: {},
           };
 
-          const updatedState: project.FilterState = {
+          const updatedState: project.ViewFacetState = {
             ...existingState,
             filtering: {
               ...(existingState.filtering || {}),
               searchTerm: filter,
             },
           };
-
           const updatedViewStates = {
             ...viewStates,
             [facetName]: updatedState,

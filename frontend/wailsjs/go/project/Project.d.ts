@@ -9,9 +9,9 @@ export function AddAddress(arg1:base.Address):Promise<void>;
 
 export function AddContract(arg1:string):Promise<void>;
 
-export function ClearAllFilterStates():Promise<void>;
+export function ClearAllViewFacetStates():Promise<void>;
 
-export function ClearFilterState(arg1:project.ViewStateKey):Promise<void>;
+export function ClearViewFacetState(arg1:project.ViewStateKey):Promise<void>;
 
 export function GetActiveAddress():Promise<base.Address>;
 
@@ -27,8 +27,6 @@ export function GetChains():Promise<Array<string>>;
 
 export function GetContracts():Promise<Array<string>>;
 
-export function GetFilterState(arg1:project.ViewStateKey):Promise<project.FilterState|boolean>;
-
 export function GetLastFacet(arg1:string):Promise<string>;
 
 export function GetLastView():Promise<string>;
@@ -37,7 +35,9 @@ export function GetName():Promise<string>;
 
 export function GetPath():Promise<string>;
 
-export function GetViewStates(arg1:string):Promise<Record<string, project.FilterState>>;
+export function GetViewFacetState(arg1:project.ViewStateKey):Promise<project.ViewFacetState|boolean>;
+
+export function GetViewStates(arg1:string):Promise<Record<string, project.ViewFacetState>>;
 
 export function RemoveAddress(arg1:base.Address):Promise<void>;
 
@@ -59,8 +59,6 @@ export function SetActiveContract(arg1:string):Promise<void>;
 
 export function SetActivePeriod(arg1:types.Period):Promise<void>;
 
-export function SetFilterState(arg1:project.ViewStateKey,arg2:project.FilterState):Promise<void>;
-
 export function SetLastFacet(arg1:string,arg2:string):Promise<void>;
 
 export function SetLastView(arg1:string):Promise<void>;
@@ -69,6 +67,10 @@ export function SetName(arg1:string):Promise<void>;
 
 export function SetViewAndFacet(arg1:string,arg2:string):Promise<void>;
 
-export function SetViewStates(arg1:string,arg2:Record<string, project.FilterState>):Promise<void>;
+export function SetViewFacetState(arg1:project.ViewStateKey,arg2:project.ViewFacetState):Promise<void>;
+
+export function SetViewStates(arg1:string,arg2:Record<string, project.ViewFacetState>):Promise<void>;
 
 export function String():Promise<string>;
+
+export function UnmarshalJSON(arg1:Array<number>):Promise<void>;

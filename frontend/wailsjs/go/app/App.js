@@ -30,8 +30,8 @@ export function ClearActiveProject() {
   return window['go']['app']['App']['ClearActiveProject']();
 }
 
-export function ClearFilterState(arg1) {
-  return window['go']['app']['App']['ClearFilterState'](arg1);
+export function ClearViewFacetState(arg1) {
+  return window['go']['app']['App']['ClearViewFacetState'](arg1);
 }
 
 export function CloseActiveProject() {
@@ -270,10 +270,6 @@ export function GetFilename() {
   return window['go']['app']['App']['GetFilename']();
 }
 
-export function GetFilterState(arg1) {
-  return window['go']['app']['App']['GetFilterState'](arg1);
-}
-
 export function GetFormat() {
   return window['go']['app']['App']['GetFormat']();
 }
@@ -412,6 +408,10 @@ export function GetUserInfoStatus() {
 
 export function GetUserPreferences() {
   return window['go']['app']['App']['GetUserPreferences']();
+}
+
+export function GetViewFacetState(arg1) {
+  return window['go']['app']['App']['GetViewFacetState'](arg1);
 }
 
 export function GetWizardReturn() {
@@ -606,10 +606,6 @@ export function SetExportsMetric(arg1, arg2) {
   return window['go']['app']['App']['SetExportsMetric'](arg1, arg2);
 }
 
-export function SetFilterState(arg1, arg2) {
-  return window['go']['app']['App']['SetFilterState'](arg1, arg2);
-}
-
 export function SetFontScale(arg1) {
   return window['go']['app']['App']['SetFontScale'](arg1);
 }
@@ -672,6 +668,10 @@ export function SetUserPreferences(arg1) {
 
 export function SetViewAndFacet(arg1, arg2) {
   return window['go']['app']['App']['SetViewAndFacet'](arg1, arg2);
+}
+
+export function SetViewFacetState(arg1, arg2) {
+  return window['go']['app']['App']['SetViewFacetState'](arg1, arg2);
 }
 
 export function SilenceDialog(arg1) {

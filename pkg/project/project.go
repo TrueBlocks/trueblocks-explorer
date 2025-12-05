@@ -21,21 +21,21 @@ import (
 // ------------------------------------------------------------------------------------
 // Project represents a single project with its metadata and data.
 type Project struct {
-	mu             sync.RWMutex                 `json:"-"`
-	Version        string                       `json:"version"`
-	Name           string                       `json:"name"`
-	LastOpened     string                       `json:"last_opened"`
-	LastView       string                       `json:"lastView"`
-	LastFacetMap   map[string]string            `json:"lastFacetMap"`
-	Addresses      []base.Address               `json:"addresses"`
-	ActiveAddress  base.Address                 `json:"activeAddress"`
-	Chains         []string                     `json:"chains"`
-	ActiveChain    string                       `json:"activeChain"`
-	Contracts      []string                     `json:"contracts"`
-	ActiveContract string                       `json:"activeContract"`
-	ActivePeriod   types.Period                 `json:"activePeriod"`
-	FilterStates   map[ViewStateKey]FilterState `json:"filterStates"`
-	Path           string                       `json:"-"`
+	mu              sync.RWMutex                    `json:"-"`
+	Version         string                          `json:"version"`
+	Name            string                          `json:"name"`
+	LastOpened      string                          `json:"last_opened"`
+	LastView        string                          `json:"lastView"`
+	LastFacetMap    map[string]string               `json:"lastFacetMap"`
+	Addresses       []base.Address                  `json:"addresses"`
+	ActiveAddress   base.Address                    `json:"activeAddress"`
+	Chains          []string                        `json:"chains"`
+	ActiveChain     string                          `json:"activeChain"`
+	Contracts       []string                        `json:"contracts"`
+	ActiveContract  string                          `json:"activeContract"`
+	ActivePeriod    types.Period                    `json:"activePeriod"`
+	ViewFacetStates map[ViewStateKey]ViewFacetState `json:"viewFacetStates"`
+	Path            string                          `json:"-"`
 }
 
 // ------------------------------------------------------------------------------------
@@ -46,19 +46,19 @@ func NewProject(name string, activeAddress base.Address, chains []string) *Proje
 		addresses = append(addresses, activeAddress)
 	}
 	return &Project{
-		Version:        "1.0",
-		Name:           name,
-		LastOpened:     time.Now().Format(time.RFC3339),
-		LastView:       "",
-		LastFacetMap:   map[string]string{},
-		ActiveAddress:  activeAddress,
-		Addresses:      addresses,
-		ActiveChain:    chains[0],
-		Chains:         chains,
-		ActiveContract: "",
-		Contracts:      []string{},
-		ActivePeriod:   "blockly",
-		FilterStates:   make(map[ViewStateKey]FilterState),
+		Version:         "1.0",
+		Name:            name,
+		LastOpened:      time.Now().Format(time.RFC3339),
+		LastView:        "",
+		LastFacetMap:    map[string]string{},
+		ActiveAddress:   activeAddress,
+		Addresses:       addresses,
+		ActiveChain:     chains[0],
+		Chains:          chains,
+		ActiveContract:  "",
+		Contracts:       []string{},
+		ActivePeriod:    "blockly",
+		ViewFacetStates: make(map[ViewStateKey]ViewFacetState),
 	}
 }
 
@@ -66,6 +66,32 @@ func NewProject(name string, activeAddress base.Address, chains []string) *Proje
 // String returns a string representation of the project
 func (p *Project) String() string {
 	return p.Name
+}
+
+// ------------------------------------------------------------------------------------
+// UnmarshalJSON provides custom unmarshaling with migration support
+func (p *Project) UnmarshalJSON(data []byte) error {
+	type Alias Project
+	aux := &struct {
+		OldFilterStates map[ViewStateKey]ViewFacetState `json:"filterStates"`
+		*Alias
+	}{
+		Alias: (*Alias)(p),
+	}
+
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+
+	if aux.OldFilterStates != nil && p.ViewFacetStates == nil {
+		p.ViewFacetStates = aux.OldFilterStates
+	}
+
+	if p.Version == "" || p.Version == "1.0" {
+		p.Version = "v6.5.1" // TODO: Why is this hard coded?
+	}
+
+	return nil
 }
 
 // ------------------------------------------------------------------------------------
@@ -352,44 +378,44 @@ func (p *Project) SetActivePeriod(period types.Period) error {
 }
 
 // ------------------------------------------------------------------------------------
-// GetFilterState retrieves filter state for a given key
-func (p *Project) GetFilterState(key ViewStateKey) (FilterState, bool) {
+// GetViewFacetState retrieves view facet state for a given key
+func (p *Project) GetViewFacetState(key ViewStateKey) (ViewFacetState, bool) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
-	state, exists := p.FilterStates[key]
+	state, exists := p.ViewFacetStates[key]
 	return state, exists
 }
 
 // ------------------------------------------------------------------------------------
-// SetFilterState sets filter state for a given key and saves immediately (session state)
-func (p *Project) SetFilterState(key ViewStateKey, state FilterState) error {
-	if p.FilterStates == nil {
-		p.FilterStates = make(map[ViewStateKey]FilterState)
+// SetViewFacetState sets view facet state for a given key and saves immediately (session state)
+func (p *Project) SetViewFacetState(key ViewStateKey, state ViewFacetState) error {
+	if p.ViewFacetStates == nil {
+		p.ViewFacetStates = make(map[ViewStateKey]ViewFacetState)
 	}
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.FilterStates[key] = state
+	p.ViewFacetStates[key] = state
 	return p.SaveWithPriority(filewriter.Batched)
 }
 
 // ------------------------------------------------------------------------------------
-// ClearFilterState removes view state for a given key and saves immediately (session state)
-func (p *Project) ClearFilterState(key ViewStateKey) error {
-	if p.FilterStates != nil {
+// ClearViewFacetState removes view facet state for a given key and saves immediately (session state)
+func (p *Project) ClearViewFacetState(key ViewStateKey) error {
+	if p.ViewFacetStates != nil {
 		p.mu.Lock()
 		defer p.mu.Unlock()
-		delete(p.FilterStates, key)
+		delete(p.ViewFacetStates, key)
 		return p.SaveWithPriority(filewriter.Batched)
 	}
 	return nil
 }
 
 // ------------------------------------------------------------------------------------
-// ClearAllFilterStates removes all filter states and saves immediately (session state)
-func (p *Project) ClearAllFilterStates() error {
+// ClearAllViewFacetStates removes all view facet states and saves immediately (session state)
+func (p *Project) ClearAllViewFacetStates() error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.FilterStates = make(map[ViewStateKey]FilterState)
+	p.ViewFacetStates = make(map[ViewStateKey]ViewFacetState)
 	return p.SaveWithPriority(filewriter.Batched)
 }
 
@@ -471,13 +497,13 @@ func (p *Project) SetViewAndFacet(view, facet string) error {
 }
 
 // ------------------------------------------------------------------------------------
-// GetViewStates safely retrieves all filter states for a given view name
-func (p *Project) GetViewStates(viewName string) map[string]FilterState {
+// GetViewStates safely retrieves all view facet states for a given view name
+func (p *Project) GetViewStates(viewName string) map[string]ViewFacetState {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
-	result := make(map[string]FilterState)
-	for key, state := range p.FilterStates {
+	result := make(map[string]ViewFacetState)
+	for key, state := range p.ViewFacetStates {
 		if key.ViewName == viewName {
 			result[string(key.FacetName)] = state
 		}
@@ -486,15 +512,15 @@ func (p *Project) GetViewStates(viewName string) map[string]FilterState {
 }
 
 // ------------------------------------------------------------------------------------
-// SetViewStates safely sets all filter states for a given view name
-func (p *Project) SetViewStates(viewName string, states map[string]FilterState) error {
+// SetViewStates safely sets all view facet states for a given view name
+func (p *Project) SetViewStates(viewName string, states map[string]ViewFacetState) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	// Clear existing states for this view
-	for key := range p.FilterStates {
+	for key := range p.ViewFacetStates {
 		if key.ViewName == viewName {
-			delete(p.FilterStates, key)
+			delete(p.ViewFacetStates, key)
 		}
 	}
 
@@ -504,7 +530,7 @@ func (p *Project) SetViewStates(viewName string, states map[string]FilterState) 
 			ViewName:  viewName,
 			FacetName: types.DataFacet(facetName),
 		}
-		p.FilterStates[key] = state
+		p.ViewFacetStates[key] = state
 	}
 
 	return p.Save()

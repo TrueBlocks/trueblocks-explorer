@@ -10,12 +10,12 @@ export function AddContract(arg1) {
   return window['go']['project']['Project']['AddContract'](arg1);
 }
 
-export function ClearAllFilterStates() {
-  return window['go']['project']['Project']['ClearAllFilterStates']();
+export function ClearAllViewFacetStates() {
+  return window['go']['project']['Project']['ClearAllViewFacetStates']();
 }
 
-export function ClearFilterState(arg1) {
-  return window['go']['project']['Project']['ClearFilterState'](arg1);
+export function ClearViewFacetState(arg1) {
+  return window['go']['project']['Project']['ClearViewFacetState'](arg1);
 }
 
 export function GetActiveAddress() {
@@ -46,10 +46,6 @@ export function GetContracts() {
   return window['go']['project']['Project']['GetContracts']();
 }
 
-export function GetFilterState(arg1) {
-  return window['go']['project']['Project']['GetFilterState'](arg1);
-}
-
 export function GetLastFacet(arg1) {
   return window['go']['project']['Project']['GetLastFacet'](arg1);
 }
@@ -64,6 +60,10 @@ export function GetName() {
 
 export function GetPath() {
   return window['go']['project']['Project']['GetPath']();
+}
+
+export function GetViewFacetState(arg1) {
+  return window['go']['project']['Project']['GetViewFacetState'](arg1);
 }
 
 export function GetViewStates(arg1) {
@@ -110,10 +110,6 @@ export function SetActivePeriod(arg1) {
   return window['go']['project']['Project']['SetActivePeriod'](arg1);
 }
 
-export function SetFilterState(arg1, arg2) {
-  return window['go']['project']['Project']['SetFilterState'](arg1, arg2);
-}
-
 export function SetLastFacet(arg1, arg2) {
   return window['go']['project']['Project']['SetLastFacet'](arg1, arg2);
 }
@@ -130,10 +126,18 @@ export function SetViewAndFacet(arg1, arg2) {
   return window['go']['project']['Project']['SetViewAndFacet'](arg1, arg2);
 }
 
+export function SetViewFacetState(arg1, arg2) {
+  return window['go']['project']['Project']['SetViewFacetState'](arg1, arg2);
+}
+
 export function SetViewStates(arg1, arg2) {
   return window['go']['project']['Project']['SetViewStates'](arg1, arg2);
 }
 
 export function String() {
   return window['go']['project']['Project']['String']();
+}
+
+export function UnmarshalJSON(arg1) {
+  return window['go']['project']['Project']['UnmarshalJSON'](arg1);
 }

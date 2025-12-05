@@ -7,9 +7,10 @@ import (
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-explorer/pkg/project"
 
-	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/TrueBlocks/trueblocks-chifra/v6/pkg/base"
 )
 
 func TestGetLastView(t *testing.T) {
@@ -156,9 +157,9 @@ func TestLastFacet(t *testing.T) {
 	}
 }
 
-func TestFilterState(t *testing.T) {
+func TestViewFacetState(t *testing.T) {
 	viewStateKey := project.ViewStateKey{ViewName: "monitors", FacetName: "list"}
-	filterState := project.FilterState{
+	viewFacetState := project.ViewFacetState{
 		Sorting:   map[string]interface{}{"column": "name", "direction": "asc"},
 		Filtering: map[string]interface{}{"search": "test search"},
 		Other:     map[string]interface{}{"pageSize": 50, "page": 2},
@@ -196,8 +197,8 @@ func TestFilterState(t *testing.T) {
 			}
 			tt.setup(app)
 
-			// Test SetFilterState
-			err := app.SetFilterState(viewStateKey, filterState)
+			// Test SetViewFacetState
+			err := app.SetViewFacetState(viewStateKey, viewFacetState)
 			if tt.expectErr {
 				require.Error(t, err)
 				assert.Contains(t, err.Error(), "no active project")
@@ -205,14 +206,14 @@ func TestFilterState(t *testing.T) {
 			}
 			require.NoError(t, err)
 
-			// Test GetFilterState
-			retrievedState, err := app.GetFilterState(viewStateKey)
+			// Test GetViewFacetState
+			retrievedState, err := app.GetViewFacetState(viewStateKey)
 			require.NoError(t, err)
-			assert.Equal(t, filterState.Sorting["column"], retrievedState.Sorting["column"])
-			assert.Equal(t, filterState.Filtering["search"], retrievedState.Filtering["search"])
+			assert.Equal(t, viewFacetState.Sorting["column"], retrievedState.Sorting["column"])
+			assert.Equal(t, viewFacetState.Filtering["search"], retrievedState.Filtering["search"])
 
-			// Test ClearFilterState
-			err = app.ClearFilterState(viewStateKey)
+			// Test ClearViewFacetState
+			err = app.ClearViewFacetState(viewStateKey)
 			require.NoError(t, err)
 		})
 	}

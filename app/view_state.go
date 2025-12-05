@@ -55,28 +55,28 @@ func (a *App) GetLastFacet(view string) string {
 	return ""
 }
 
-// GetFilterState retrieves view state for a given key from the active project
-func (a *App) GetFilterState(key project.ViewStateKey) (project.FilterState, error) {
+// GetViewFacetState retrieves view facet state for a given key from the active project
+func (a *App) GetViewFacetState(key project.ViewStateKey) (project.ViewFacetState, error) {
 	if active := a.GetActiveProject(); active != nil {
-		if state, exists := active.GetFilterState(key); exists {
+		if state, exists := active.GetViewFacetState(key); exists {
 			return state, nil
 		}
 	}
-	return project.FilterState{}, fmt.Errorf("no active project")
+	return project.ViewFacetState{}, fmt.Errorf("no active project")
 }
 
-// SetFilterState sets view state for a given key in the active project
-func (a *App) SetFilterState(key project.ViewStateKey, state project.FilterState) error {
+// SetViewFacetState sets view facet state for a given key in the active project
+func (a *App) SetViewFacetState(key project.ViewStateKey, state project.ViewFacetState) error {
 	if active := a.GetActiveProject(); active != nil {
-		return active.SetFilterState(key, state)
+		return active.SetViewFacetState(key, state)
 	}
 	return fmt.Errorf("no active project")
 }
 
-// ClearFilterState removes filter state for a given key from the active project
-func (a *App) ClearFilterState(key project.ViewStateKey) error {
+// ClearViewFacetState removes view facet state for a given key from the active project
+func (a *App) ClearViewFacetState(key project.ViewStateKey) error {
 	if active := a.GetActiveProject(); active != nil {
-		return active.ClearFilterState(key)
+		return active.ClearViewFacetState(key)
 	}
 	return fmt.Errorf("no active project")
 }
@@ -86,16 +86,16 @@ func (a *App) GetWizardReturn() string {
 	return strings.ReplaceAll(a.GetLastView(), "wizard", "")
 }
 
-// GetProjectViewState retrieves all filter states for a given view name from the active project
-func (a *App) GetProjectViewState(viewName string) (map[string]project.FilterState, error) {
+// GetProjectViewState retrieves all view facet states for a given view name from the active project
+func (a *App) GetProjectViewState(viewName string) (map[string]project.ViewFacetState, error) {
 	if active := a.GetActiveProject(); active != nil {
 		return active.GetViewStates(viewName), nil
 	}
 	return nil, fmt.Errorf("no active project")
 }
 
-// SetProjectViewState sets all filter states for a given view name in the active project
-func (a *App) SetProjectViewState(viewName string, states map[string]project.FilterState) error {
+// SetProjectViewState sets all view facet states for a given view name in the active project
+func (a *App) SetProjectViewState(viewName string, states map[string]project.ViewFacetState) error {
 	if active := a.GetActiveProject(); active != nil {
 		return active.SetViewStates(viewName, states)
 	}

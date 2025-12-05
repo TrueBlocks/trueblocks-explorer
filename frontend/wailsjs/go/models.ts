@@ -1073,13 +1073,13 @@ export namespace preferences {
 
 export namespace project {
 	
-	export class FilterState {
+	export class ViewFacetState {
 	    sorting?: Record<string, any>;
 	    filtering?: Record<string, any>;
 	    other?: Record<string, any>;
 	
 	    static createFrom(source: any = {}) {
-	        return new FilterState(source);
+	        return new ViewFacetState(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -1116,7 +1116,7 @@ export namespace project {
 	    contracts: string[];
 	    activeContract: string;
 	    activePeriod: types.Period;
-	    filterStates: Record<string, FilterState>;
+	    viewFacetStates: Record<string, ViewFacetState>;
 	
 	    static createFrom(source: any = {}) {
 	        return new Project(source);
@@ -1136,7 +1136,7 @@ export namespace project {
 	        this.contracts = source["contracts"];
 	        this.activeContract = source["activeContract"];
 	        this.activePeriod = source["activePeriod"];
-	        this.filterStates = this.convertValues(source["filterStates"], FilterState, true);
+	        this.viewFacetStates = this.convertValues(source["viewFacetStates"], ViewFacetState, true);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -1157,6 +1157,7 @@ export namespace project {
 		    return a;
 		}
 	}
+	
 
 }
 

@@ -13,18 +13,18 @@ Welcome to the **Exports** view! This section provides information about managin
 ## Facets
 
 - Statements Facet uses the Statements store.
-- Balances Facet uses the Balances store.
-- Transfers Facet uses the Transfers store.
-- Transactions Facet uses the Transactions store.
-- OpenApprovals Facet uses the OpenApprovals store.
-- ApprovalLogs Facet uses the ApprovalLogs store.
-- ApprovalTxs Facet uses the ApprovalTxs store.
-- Withdrawals Facet uses the Withdrawals store.
 - Assets Facet uses the Assets store.
 - AssetCharts Facet uses the Statements store.
+- Balances Facet uses the Balances store.
+- Transfers Facet uses the Transfers store.
+- OpenApprovals Facet uses the OpenApprovals store.
+- ApprovalTxs Facet uses the ApprovalTxs store.
+- ApprovalLogs Facet uses the ApprovalLogs store.
+- Transactions Facet uses the Transactions store.
+- Withdrawals Facet uses the Withdrawals store.
+- Receipts Facet uses the Receipts store.
 - Logs Facet uses the Logs store.
 - Traces Facet uses the Traces store.
-- Receipts Facet uses the Receipts store.
 
 ## Stores
 

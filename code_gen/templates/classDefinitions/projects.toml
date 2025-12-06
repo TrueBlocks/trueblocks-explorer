@@ -1,5 +1,6 @@
 [settings]
 class = "Projects"
+menuOrder = 1
 doc_group = "001-Route"
 doc_descr = "project management and home dashboard"
 doc_route = "001-projects"

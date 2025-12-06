@@ -63,6 +63,8 @@ export const MainView = () => {
         className={getDebugClass(9)}
         style={{
           width: '100%',
+          position: 'relative',
+          zIndex: 1500,
         }}
       >
         <StatusBar />

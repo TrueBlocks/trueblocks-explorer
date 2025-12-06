@@ -1,8 +1,9 @@
 [settings]
 class = "Comparitoor"
+menuOrder = 80
 doc_group = "001-Comparisons"
 doc_descr = "Compare transactions across multiple sources for a given address"
-doc_route = "comparitoor"
+doc_route = "800-comparitoor"
 attributes = ""
 produced_by = "comparitoor"
 disable_go = false

@@ -40,14 +40,14 @@ export function useFacetRenderer<T extends Record<string, unknown>>({
 
     const data = currentData || [];
     const hasCustomRenderer = renderers && renderers[facet];
-    if (hasCustomRenderer && data.length > 0) {
+    if (hasCustomRenderer) {
       const renderer = renderers[facet];
       return renderer
         ? renderer({ data, columns: currentColumns, facet, onRowAction })
         : null;
     }
 
-    // No custom renderer expected OR no data - return null (fall back to default form handling)
+    // No custom renderer expected - return null (fall back to default form handling)
     return null;
   }, [isCanvas, currentData, currentColumns, renderers, facet, onRowAction]);
 

@@ -101,30 +101,30 @@ export const Exports = () => {
     switch (facet) {
       case types.DataFacet.STATEMENTS:
         return pageData.statements || [];
-      case types.DataFacet.BALANCES:
-        return pageData.balances || [];
-      case types.DataFacet.TRANSFERS:
-        return pageData.transfers || [];
-      case types.DataFacet.TRANSACTIONS:
-        return pageData.transactions || [];
-      case types.DataFacet.OPENAPPROVALS:
-        return pageData.openapprovals || [];
-      case types.DataFacet.APPROVALLOGS:
-        return pageData.approvallogs || [];
-      case types.DataFacet.APPROVALTXS:
-        return pageData.approvaltxs || [];
-      case types.DataFacet.WITHDRAWALS:
-        return pageData.withdrawals || [];
       case types.DataFacet.ASSETS:
         return pageData.assets || [];
       case types.DataFacet.ASSETCHARTS:
         return pageData.statements || [];
+      case types.DataFacet.BALANCES:
+        return pageData.balances || [];
+      case types.DataFacet.TRANSFERS:
+        return pageData.transfers || [];
+      case types.DataFacet.OPENAPPROVALS:
+        return pageData.openapprovals || [];
+      case types.DataFacet.APPROVALTXS:
+        return pageData.approvaltxs || [];
+      case types.DataFacet.APPROVALLOGS:
+        return pageData.approvallogs || [];
+      case types.DataFacet.TRANSACTIONS:
+        return pageData.transactions || [];
+      case types.DataFacet.WITHDRAWALS:
+        return pageData.withdrawals || [];
+      case types.DataFacet.RECEIPTS:
+        return pageData.receipts || [];
       case types.DataFacet.LOGS:
         return pageData.logs || [];
       case types.DataFacet.TRACES:
         return pageData.traces || [];
-      case types.DataFacet.RECEIPTS:
-        return pageData.receipts || [];
       default:
         LogError('[Exports] unexpected facet=' + String(facet));
         return [];

@@ -1,8 +1,10 @@
 [settings]
 class = "Monitors"
+menuOrder = 15
+menuPosition = "top"
 doc_group = "001-Route"
 doc_descr = "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account"
-doc_route = "200-monitors"
+doc_route = "150-monitors"
 attributes = ""
 produced_by = "monitors, list, export, slurp"
 contains = "appearance, appearancetable"

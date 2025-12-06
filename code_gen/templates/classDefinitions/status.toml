@@ -1,5 +1,6 @@
 [settings]
 class = "Status"
+menuOrder = 60
 doc_group = "001-Route"
 doc_descr = "data model for various status facets"
 doc_route = "600-status"

@@ -24,6 +24,7 @@ import { Wizard } from '@wizards';
 export interface MenuItem {
   label: string;
   path: string;
+  viewName?: string;
   position: 'top' | 'bottom' | 'hidden';
   component?: React.ComponentType;
   type?: 'navigation' | 'dev' | 'toggle';
@@ -36,6 +37,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Projects',
     path: '/projects',
+    menuOrder: 1,
     position: 'top',
     component: Projects,
     type: 'navigation',
@@ -43,6 +45,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Exports',
     path: '/exports',
+    menuOrder: 10,
     position: 'top',
     component: Exports,
     type: 'navigation',
@@ -50,6 +53,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Monitors',
     path: '/monitors',
+    menuOrder: 15,
     position: 'top',
     component: Monitors,
     type: 'navigation',
@@ -57,6 +61,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Abis',
     path: '/abis',
+    menuOrder: 20,
     position: 'top',
     component: Abis,
     type: 'navigation',
@@ -64,13 +69,15 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Names',
     path: '/names',
+    menuOrder: 30,
     position: 'top',
     component: Names,
     type: 'navigation',
   },
   {
-    label: 'Chunks',
+    label: 'Unchained',
     path: '/chunks',
+    menuOrder: 40,
     position: 'top',
     component: Chunks,
     type: 'navigation',
@@ -78,6 +85,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Contracts',
     path: '/contracts',
+    menuOrder: 50,
     position: 'top',
     component: Contracts,
     type: 'navigation',
@@ -85,6 +93,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Status',
     path: '/status',
+    menuOrder: 60,
     position: 'top',
     component: Status,
     type: 'navigation',
@@ -92,6 +101,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Dresses',
     path: '/dresses',
+    menuOrder: 70,
     position: 'top',
     component: Dresses,
     type: 'navigation',
@@ -99,6 +109,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Comparitoor',
     path: '/comparitoor',
+    menuOrder: 80,
     position: 'top',
     component: Comparitoor,
     type: 'navigation',
@@ -106,6 +117,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Khedra',
     path: '/khedra',
+    menuOrder: 997,
     position: 'bottom',
     component: Khedra,
     type: 'navigation',
@@ -113,6 +125,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Settings',
     path: '/settings',
+    menuOrder: 998,
     position: 'bottom',
     component: Settings,
     type: 'navigation',

@@ -1,16 +1,16 @@
-name    , type   , strDefault, attributes  , section      , upgrades, docOrder, description
-address   , address,           , readOnly    , Identity      ,         ,        1, the address associated with this name
-addressName, string,           , readOnly    , Identity      ,         ,        2, the name for this address
-name      , string ,           , required    , Identity      ,         ,        3, the name associated with this address
-symbol    , string ,           ,             , Identity      ,         ,        4, the symbol for this address
-decimals  , uint64 ,           ,             , Identity      ,         ,        5, number of decimals retrieved from an ERC20 smart contract
-source    , string ,           ,             , Classification,         ,        6, user supplied source of where this name was found
-tags      , string ,           ,             , Classification,         ,        7, colon separated list of tags
-deleted   , boolean   ,           , noui|noTable, Classification,         ,        8, if deleted
-isContract, boolean   ,           , noui|noTable, Properties    ,         ,        9, if the address is a smart contract
-isCustom  , boolean   ,           , noui|noTable, Properties    ,         ,       10, if the address is a custom address
-isErc20   , boolean   ,           , noui|noTable, Properties    ,         ,       11, if the address is an ERC20
-isErc721  , boolean   ,           , noui|noTable, Properties    ,         ,       12, if the address is an ERC721
-isPrefund , boolean   ,           , noui|noTable, Properties    ,         ,       13, if the address was one of the prefund addresses&#44; `false` otherwise
-prefund   , wei    ,           , noui|noTable, Data          ,         ,       14, the prefund amount for this address
-parts     , string ,           , noui|noTable, Data          ,         ,       15, parts of the name
+name       , type   , strDefault, attributes  , section       , upgrades, docOrder, description
+address    , address,           , readOnly    , Identity      ,         ,        1, the address associated with this name
+addressName, string ,           , readOnly    , Identity      ,         ,        2, the name for this address
+name       , string ,           , required    , Identity      ,         ,        3, the name associated with this address
+symbol     , string ,           , noTable     , Identity      ,         ,        4, the symbol for this address
+decimals   , uint64 ,           ,             , Identity      ,         ,        5, number of decimals retrieved from an ERC20 smart contract
+source     , string ,           ,             , Classification,         ,        6, user supplied source of where this name was found
+tags       , string ,           ,             , Classification,         ,        7, colon separated list of tags
+deleted    , boolean,           , noui|noTable, Classification,         ,        8, if deleted
+isContract , boolean,           , noui|noTable, Properties    ,         ,        9, if the address is a smart contract
+isCustom   , boolean,           , noui|noTable, Properties    ,         ,       10, if the address is a custom address
+isErc20    , boolean,           , noui|noTable, Properties    ,         ,       11, if the address is an ERC20
+isErc721   , boolean,           , noui|noTable, Properties    ,         ,       12, if the address is an ERC721
+isPrefund  , boolean,           , noui|noTable, Properties    ,         ,       13, if the address was one of the prefund addresses&#44; `false` otherwise
+prefund    , wei    ,           , noui|noTable, Data          ,         ,       14, the prefund amount for this address
+parts      , string ,           , noui|noTable, Data          ,         ,       15, parts of the name

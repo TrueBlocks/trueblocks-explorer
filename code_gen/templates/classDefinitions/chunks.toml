@@ -1,8 +1,10 @@
 [settings]
 class = "Chunks"
+menuOrder = 40
+menuLabel = "Unchained"
 doc_group = "001-Route"
 doc_descr = "internal-use only data model detailing a single index chunk file"
-doc_route = "500-chunks"
+doc_route = "400-chunks"
 attributes = ""
 produced_by = "chunks"
 store_type = "chain-scoped"

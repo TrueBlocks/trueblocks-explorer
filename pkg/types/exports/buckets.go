@@ -16,30 +16,30 @@ func (c *ExportsCollection) GetBuckets(payload *types.Payload) (*types.Buckets, 
 	switch payload.DataFacet {
 	case ExportsStatements:
 		facet = c.statementsFacet
-	case ExportsBalances:
-		facet = c.balancesFacet
-	case ExportsTransfers:
-		facet = c.transfersFacet
-	case ExportsTransactions:
-		facet = c.transactionsFacet
-	case ExportsOpenApprovals:
-		facet = c.openapprovalsFacet
-	case ExportsApprovalLogs:
-		facet = c.approvallogsFacet
-	case ExportsApprovalTxs:
-		facet = c.approvaltxsFacet
-	case ExportsWithdrawals:
-		facet = c.withdrawalsFacet
 	case ExportsAssets:
 		facet = c.assetsFacet
 	case ExportsAssetCharts:
 		facet = c.assetchartsFacet
+	case ExportsBalances:
+		facet = c.balancesFacet
+	case ExportsTransfers:
+		facet = c.transfersFacet
+	case ExportsOpenApprovals:
+		facet = c.openapprovalsFacet
+	case ExportsApprovalTxs:
+		facet = c.approvaltxsFacet
+	case ExportsApprovalLogs:
+		facet = c.approvallogsFacet
+	case ExportsTransactions:
+		facet = c.transactionsFacet
+	case ExportsWithdrawals:
+		facet = c.withdrawalsFacet
+	case ExportsReceipts:
+		facet = c.receiptsFacet
 	case ExportsLogs:
 		facet = c.logsFacet
 	case ExportsTraces:
 		facet = c.tracesFacet
-	case ExportsReceipts:
-		facet = c.receiptsFacet
 	default:
 		return &types.Buckets{
 			Series:   make(map[string][]types.Bucket),

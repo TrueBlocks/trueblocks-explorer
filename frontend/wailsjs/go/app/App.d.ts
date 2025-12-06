@@ -144,6 +144,8 @@ export function GetDressesPage(arg1:types.Payload,arg2:number,arg3:number,arg4:s
 
 export function GetDressesSummary(arg1:types.Payload):Promise<types.Summary>;
 
+export function GetElementsConfig():Promise<preferences.ElementsConfig>;
+
 export function GetExportsBuckets(arg1:types.Payload):Promise<types.Buckets>;
 
 export function GetExportsConfig(arg1:types.Payload):Promise<types.ViewConfig>;

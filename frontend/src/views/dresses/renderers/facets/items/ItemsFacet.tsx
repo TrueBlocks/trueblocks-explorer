@@ -7,7 +7,7 @@
 // EXISTING_CODE
 import { useCallback, useMemo } from 'react';
 
-import { BaseTab, RendererParams } from '@components';
+import { BaseTab, RendererParams, createDetailPanel } from '@components';
 import { useFacetColumns, useViewConfig } from '@hooks';
 import { dresses, project, types } from '@models';
 
@@ -48,9 +48,15 @@ export const ItemsFacet = ({ params }: { params: RendererParams }) => {
     },
   );
 
-  const detailPanel = useCallback(
-    (_rowData: Record<string, unknown>) => null,
-    [],
+  const detailPanel = useMemo(
+    () =>
+      createDetailPanel(
+        viewConfig,
+        () => types.DataFacet.ITEMS,
+        {},
+        (_rowKey: string, _newValue: string, _txHash: string) => {},
+      ),
+    [viewConfig],
   );
 
   return (

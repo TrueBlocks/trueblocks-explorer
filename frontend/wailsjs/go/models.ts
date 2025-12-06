@@ -731,8 +731,9 @@ export namespace model {
 	    id: string;
 	    databaseName: string;
 	    index: number;
+	    version: string;
 	    value: string;
-	    weight: number;
+	    remainder: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Item(source);
@@ -743,8 +744,9 @@ export namespace model {
 	        this.id = source["id"];
 	        this.databaseName = source["databaseName"];
 	        this.index = source["index"];
+	        this.version = source["version"];
 	        this.value = source["value"];
-	        this.weight = source["weight"];
+	        this.remainder = source["remainder"];
 	    }
 	}
 
@@ -981,6 +983,26 @@ export namespace preferences {
 	        this.remoteExplorer = source["remoteExplorer"];
 	        this.rpcProviders = source["rpcProviders"];
 	        this.symbol = source["symbol"];
+	    }
+	}
+	export class ElementsConfig {
+	    hideAddressSelector?: boolean;
+	    hideChainSelector?: boolean;
+	    hideContractSelector?: boolean;
+	    hidePeriodSelector?: boolean;
+	    hideProjectSelector?: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ElementsConfig(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.hideAddressSelector = source["hideAddressSelector"];
+	        this.hideChainSelector = source["hideChainSelector"];
+	        this.hideContractSelector = source["hideContractSelector"];
+	        this.hidePeriodSelector = source["hidePeriodSelector"];
+	        this.hideProjectSelector = source["hideProjectSelector"];
 	    }
 	}
 	export class Id {
@@ -1433,18 +1455,18 @@ export namespace types {
 	    ITEMS = "items",
 	    GALLERY = "gallery",
 	    STATEMENTS = "statements",
-	    BALANCES = "balances",
-	    TRANSFERS = "transfers",
-	    TRANSACTIONS = "transactions",
-	    OPENAPPROVALS = "openapprovals",
-	    APPROVALLOGS = "approvallogs",
-	    APPROVALTXS = "approvaltxs",
-	    WITHDRAWALS = "withdrawals",
 	    ASSETS = "assets",
 	    ASSETCHARTS = "assetcharts",
+	    BALANCES = "balances",
+	    TRANSFERS = "transfers",
+	    OPENAPPROVALS = "openapprovals",
+	    APPROVALTXS = "approvaltxs",
+	    APPROVALLOGS = "approvallogs",
+	    TRANSACTIONS = "transactions",
+	    WITHDRAWALS = "withdrawals",
+	    RECEIPTS = "receipts",
 	    LOGS = "logs",
 	    TRACES = "traces",
-	    RECEIPTS = "receipts",
 	    MONITORS = "monitors",
 	    MANAGE = "manage",
 	    STATUS = "status",
@@ -4178,6 +4200,8 @@ export namespace types {
 	    actions: Record<string, ActionConfig>;
 	    facetOrder: string[];
 	    menuOrder?: number;
+	    menuPosition?: string;
+	    menuLabel?: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new ViewConfig(source);
@@ -4191,6 +4215,8 @@ export namespace types {
 	        this.actions = this.convertValues(source["actions"], ActionConfig, true);
 	        this.facetOrder = source["facetOrder"];
 	        this.menuOrder = source["menuOrder"];
+	        this.menuPosition = source["menuPosition"];
+	        this.menuLabel = source["menuLabel"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

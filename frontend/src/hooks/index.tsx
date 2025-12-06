@@ -9,6 +9,7 @@ export * from './useBucketStats';
 export * from './useConfirmableActions';
 export * from './useColumns';
 export * from './useDateTime';
+export * from './useElements';
 export * from './useEvent';
 export * from './getViewConfig';
 export * from './useIconSets';

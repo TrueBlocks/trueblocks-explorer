@@ -4,11 +4,17 @@ import {
   ContractSelector,
   PeriodSelector,
 } from '@components';
-import { useActiveProject } from '@hooks';
+import { useActiveProject, useElements } from '@hooks';
 import { Group, Loader, Text } from '@mantine/core';
 
 export const ProjectContextBar = ({}) => {
   const { loading } = useActiveProject();
+  const {
+    hideAddressSelector,
+    hideChainSelector,
+    hideContractSelector,
+    hidePeriodSelector,
+  } = useElements();
 
   if (loading) {
     return (
@@ -24,10 +30,10 @@ export const ProjectContextBar = ({}) => {
   return (
     <>
       <Group gap="xs" pb="0.5rem">
-        <AddressSelector label={'Active Address:'} />
-        <ChainSelector label={'Chain:'} />
-        <ContractSelector visible={false} />
-        <PeriodSelector label={'Period'} />
+        {!hideAddressSelector && <AddressSelector label={'Active Address:'} />}
+        {!hideChainSelector && <ChainSelector label={'Chain:'} />}
+        {!hideContractSelector && <ContractSelector visible={true} />}
+        {!hidePeriodSelector && <PeriodSelector label={'Period'} />}
       </Group>
     </>
   );

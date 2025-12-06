@@ -72,17 +72,17 @@ export const StatementsPanel = (
   }, [toBig, scale, decimals]);
 
   const formatRaw = useMemo(() => {
-    return (b: bigint) => {
+    return (b: bigint, nDecimals: number = 5) => {
       if (b === 0n) return '-';
       const neg = b < 0n;
       const abs = neg ? -b : b;
       const whole = abs / scale;
       const frac = abs % scale;
       let fracStr = frac.toString().padStart(decimals, '0');
-      if (decimals >= 3) {
-        fracStr = fracStr.slice(0, 3);
+      if (decimals >= nDecimals) {
+        fracStr = fracStr.slice(0, nDecimals);
       } else {
-        fracStr = fracStr.padEnd(3, '0');
+        fracStr = fracStr.padEnd(nDecimals, '0');
       }
       return `${neg ? '-' : ''}${whole.toString()}.${fracStr}`;
     };

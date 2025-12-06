@@ -96,139 +96,6 @@ func (c *ExportsCollection) GetPage(
 			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsBalances:
-		facet := c.balancesFacet
-		var filterFunc func(*Balance) bool
-		if filter != "" {
-			filterFunc = func(item *Balance) bool {
-				return c.matchesBalanceFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Balance, sort sdk.SortSpec) error {
-			return sdk.SortBalances(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.Balances = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsTransfers:
-		facet := c.transfersFacet
-		var filterFunc func(*Transfer) bool
-		if filter != "" {
-			filterFunc = func(item *Transfer) bool {
-				return c.matchesTransferFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Transfer, sort sdk.SortSpec) error {
-			return sdk.SortTransfers(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.Transfers = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsTransactions:
-		facet := c.transactionsFacet
-		var filterFunc func(*Transaction) bool
-		if filter != "" {
-			filterFunc = func(item *Transaction) bool {
-				return c.matchesTransactionFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
-			return sdk.SortTransactions(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.Transactions = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsOpenApprovals:
-		facet := c.openapprovalsFacet
-		var filterFunc func(*OpenApproval) bool
-		if filter != "" {
-			filterFunc = func(item *OpenApproval) bool {
-				return c.matchesOpenApprovalFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []OpenApproval, sort sdk.SortSpec) error {
-			return sdk.SortOpenApprovals(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.OpenApprovals = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsApprovalLogs:
-		facet := c.approvallogsFacet
-		var filterFunc func(*ApprovalLog) bool
-		if filter != "" {
-			filterFunc = func(item *ApprovalLog) bool {
-				return c.matchesApprovalLogFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []ApprovalLog, sort sdk.SortSpec) error {
-			return sdk.SortApprovalLogs(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.ApprovalLogs = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsApprovalTxs:
-		facet := c.approvaltxsFacet
-		var filterFunc func(*ApprovalTx) bool
-		if filter != "" {
-			filterFunc = func(item *ApprovalTx) bool {
-				return c.matchesApprovalTxFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []ApprovalTx, sort sdk.SortSpec) error {
-			return sdk.SortApprovalTxs(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.ApprovalTxs = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsWithdrawals:
-		facet := c.withdrawalsFacet
-		var filterFunc func(*Withdrawal) bool
-		if filter != "" {
-			filterFunc = func(item *Withdrawal) bool {
-				return c.matchesWithdrawalFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Withdrawal, sort sdk.SortSpec) error {
-			return sdk.SortWithdrawals(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.Withdrawals = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsAssets:
 		facet := c.assetsFacet
 		var filterFunc func(*Asset) bool
@@ -267,6 +134,158 @@ func (c *ExportsCollection) GetPage(
 			page.State = result.State
 		}
 		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsBalances:
+		facet := c.balancesFacet
+		var filterFunc func(*Balance) bool
+		if filter != "" {
+			filterFunc = func(item *Balance) bool {
+				return c.matchesBalanceFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Balance, sort sdk.SortSpec) error {
+			return sdk.SortBalances(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.Balances = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsTransfers:
+		facet := c.transfersFacet
+		var filterFunc func(*Transfer) bool
+		if filter != "" {
+			filterFunc = func(item *Transfer) bool {
+				return c.matchesTransferFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Transfer, sort sdk.SortSpec) error {
+			return sdk.SortTransfers(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.Transfers = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsOpenApprovals:
+		facet := c.openapprovalsFacet
+		var filterFunc func(*OpenApproval) bool
+		if filter != "" {
+			filterFunc = func(item *OpenApproval) bool {
+				return c.matchesOpenApprovalFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []OpenApproval, sort sdk.SortSpec) error {
+			return sdk.SortOpenApprovals(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.OpenApprovals = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsApprovalTxs:
+		facet := c.approvaltxsFacet
+		var filterFunc func(*ApprovalTx) bool
+		if filter != "" {
+			filterFunc = func(item *ApprovalTx) bool {
+				return c.matchesApprovalTxFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []ApprovalTx, sort sdk.SortSpec) error {
+			return sdk.SortApprovalTxs(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.ApprovalTxs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsApprovalLogs:
+		facet := c.approvallogsFacet
+		var filterFunc func(*ApprovalLog) bool
+		if filter != "" {
+			filterFunc = func(item *ApprovalLog) bool {
+				return c.matchesApprovalLogFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []ApprovalLog, sort sdk.SortSpec) error {
+			return sdk.SortApprovalLogs(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.ApprovalLogs = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsTransactions:
+		facet := c.transactionsFacet
+		var filterFunc func(*Transaction) bool
+		if filter != "" {
+			filterFunc = func(item *Transaction) bool {
+				return c.matchesTransactionFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Transaction, sort sdk.SortSpec) error {
+			return sdk.SortTransactions(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.Transactions = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsWithdrawals:
+		facet := c.withdrawalsFacet
+		var filterFunc func(*Withdrawal) bool
+		if filter != "" {
+			filterFunc = func(item *Withdrawal) bool {
+				return c.matchesWithdrawalFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Withdrawal, sort sdk.SortSpec) error {
+			return sdk.SortWithdrawals(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.Withdrawals = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
+	case ExportsReceipts:
+		facet := c.receiptsFacet
+		var filterFunc func(*Receipt) bool
+		if filter != "" {
+			filterFunc = func(item *Receipt) bool {
+				return c.matchesReceiptFilter(item, filter)
+			}
+		}
+		sortFunc := func(items []Receipt, sort sdk.SortSpec) error {
+			return sdk.SortReceipts(items, sort)
+		}
+		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
+			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
+		} else {
+			page.Receipts = result.Items
+			page.TotalItems = result.TotalItems
+			page.State = result.State
+		}
+		page.ExpectedTotal = facet.ExpectedCount()
 	case ExportsLogs:
 		facet := c.logsFacet
 		var filterFunc func(*Log) bool
@@ -301,25 +320,6 @@ func (c *ExportsCollection) GetPage(
 			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
 		} else {
 			page.Traces = result.Items
-			page.TotalItems = result.TotalItems
-			page.State = result.State
-		}
-		page.ExpectedTotal = facet.ExpectedCount()
-	case ExportsReceipts:
-		facet := c.receiptsFacet
-		var filterFunc func(*Receipt) bool
-		if filter != "" {
-			filterFunc = func(item *Receipt) bool {
-				return c.matchesReceiptFilter(item, filter)
-			}
-		}
-		sortFunc := func(items []Receipt, sort sdk.SortSpec) error {
-			return sdk.SortReceipts(items, sort)
-		}
-		if result, err := facet.GetPage(first, pageSize, filterFunc, sortSpec, sortFunc); err != nil {
-			return nil, types.NewStoreError("exports", dataFacet, "GetPage", err)
-		} else {
-			page.Receipts = result.Items
 			page.TotalItems = result.TotalItems
 			page.State = result.State
 		}

@@ -52,11 +52,12 @@ Welcome to the **Dresses** view! This section provides information about managin
   - sample: Sample entry
   - filtered: Is database filtered by series
 
-- **Items Store (3 members)**
+- **Items Store (4 members)**
 
   - index: the item's ordering in the file
+  - databaseName: the name of the database this item belongs to
   - value: the entire line of data as a string
-  - weight: the item's weight
+  - remainder: the remainder of the record (different per database)
 
 - **Logs Store (15 members)**
 

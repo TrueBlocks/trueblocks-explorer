@@ -1,5 +1,6 @@
 [settings]
 class = "Contracts"
+menuOrder = 50
 doc_group = "001-Route"
 doc_descr = "smart contract state and interaction data including read function results, write function forms, and event history"
 doc_route = "500-contracts"

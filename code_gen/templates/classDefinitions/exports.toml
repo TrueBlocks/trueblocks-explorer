@@ -1,11 +1,27 @@
 [settings]
 class = "Exports"
+menuOrder = 10
 doc_group = "001-Route"
 doc_descr = "internal-use only data model detailing a single index chunk file"
 doc_route = "100-exports"
 attributes = ""
 produced_by = "exports"
 disable_go = false
+facetOrder = [
+    "statements",
+    "assets",
+    "assetcharts",
+    "balances",
+    "transfers",
+    "openapprovals",
+    "approvaltxs",
+    "approvallogs",
+    "transactions",
+    "withdrawals",
+    "receipts",
+    "logs",
+    "traces"
+]
 
 [[facets]]
 name = "Statements"
@@ -15,55 +31,6 @@ viewType = "table"
 panel = "custom"
 needsCalcs = true
 mapKey = "item.Asset.Hex()"
-
-[[facets]]
-name = "Balances"
-store = "Balances"
-actions = ["export"]
-viewType = "table"
-needsCalcs = true
-
-[[facets]]
-name = "Transfers"
-store = "Transfers"
-actions = ["export"]
-viewType = "table"
-needsCalcs = true
-
-[[facets]]
-name = "Transactions"
-store = "Transactions"
-actions = ["export"]
-viewType = "table"
-panel = "custom"
-
-[[facets]]
-name = "OpenApprovals"
-store = "OpenApprovals"
-actions = ["export"]
-viewType = "custom"
-panel = "custom"
-
-[[facets]]
-name = "ApprovalLogs"
-store = "ApprovalLogs"
-actions = ["export"]
-viewType = "table"
-panel = "custom"
-needsCalcs = true
-
-[[facets]]
-name = "ApprovalTxs"
-store = "ApprovalTxs"
-actions = ["export"]
-viewType = "table"
-panel = "custom"
-
-[[facets]]
-name = "Withdrawals"
-store = "Withdrawals"
-actions = ["export"]
-viewType = "table"
 
 [[facets]]
 name = "Assets"
@@ -86,6 +53,63 @@ needsCalcs = true
 mapKey = "item.Asset.Hex()"
 
 [[facets]]
+name = "Balances"
+store = "Balances"
+actions = ["export"]
+viewType = "table"
+needsCalcs = true
+
+[[facets]]
+name = "Transfers"
+store = "Transfers"
+actions = ["export"]
+viewType = "table"
+needsCalcs = true
+
+[[facets]]
+name = "OpenApprovals"
+store = "OpenApprovals"
+actions = ["export"]
+attributes = "dividerBefore"
+viewType = "custom"
+panel = "custom"
+
+[[facets]]
+name = "ApprovalTxs"
+store = "ApprovalTxs"
+actions = ["export"]
+viewType = "table"
+panel = "custom"
+
+[[facets]]
+name = "ApprovalLogs"
+store = "ApprovalLogs"
+actions = ["export"]
+viewType = "table"
+panel = "custom"
+needsCalcs = true
+
+[[facets]]
+name = "Transactions"
+store = "Transactions"
+actions = ["export"]
+attributes = "dividerBefore"
+viewType = "table"
+panel = "custom"
+
+[[facets]]
+name = "Withdrawals"
+store = "Withdrawals"
+actions = ["export"]
+viewType = "table"
+
+[[facets]]
+name = "Receipts"
+store = "Receipts"
+actions = ["export"]
+viewType = "table"
+
+[[facets]]
 name = "Logs"
 store = "Logs"
 actions = ["export"]
@@ -99,10 +123,3 @@ store = "Traces"
 actions = ["export"]
 viewType = "table"
 panel = "custom"
-
-[[facets]]
-name = "Receipts"
-store = "Receipts"
-actions = ["export"]
-viewType = "table"
-

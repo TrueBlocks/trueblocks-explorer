@@ -31,8 +31,13 @@ export const MenuBar = ({ disabled = false }: MenuBarProps) => {
   const botMenuItems = menuItems.filter((item) => item.position === 'bottom');
   const icons = useIconSets();
 
-  const renderMenuItem = ({ label, path, separator }: MenuItem) => {
-    const Icon = icons[label as keyof typeof icons] || icons.Missing;
+  const renderMenuItem = ({ label, path, viewName, separator }: MenuItem) => {
+    // Use viewName for icon lookup (falls back to label for backward compatibility)
+    // Capitalize first letter to match IconSet keys
+    const iconKey = viewName
+      ? viewName.charAt(0).toUpperCase() + viewName.slice(1)
+      : label;
+    const Icon = icons[iconKey as keyof typeof icons] || icons.Missing;
 
     const menuButton = (
       <StyledButton

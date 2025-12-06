@@ -38,8 +38,10 @@ export function useEnabledMenuItems(): UseEnabledMenuItemsResult {
 
             if (disabled) return null;
 
-            // Try to get menuOrder from view config
+            // Try to get menuOrder, menuPosition, and menuLabel from view config
             let menuOrder: number | undefined;
+            let position = item.position; // Start with default from Menu.ts
+            let label = item.label; // Start with default from Menu.ts
 
             // Handle special cases first
             // DEFAULT_ROUTE
@@ -63,7 +65,20 @@ export function useEnabledMenuItems(): UseEnabledMenuItemsResult {
               }
             }
 
-            return { ...item, menuOrder };
+            // Override position and label from config if provided
+            try {
+              const config = getViewConfig(viewName);
+              if (config.menuPosition) {
+                position = config.menuPosition as 'top' | 'bottom' | 'hidden';
+              }
+              if (config.menuLabel) {
+                label = config.menuLabel;
+              }
+            } catch {
+              // Keep defaults from Menu.ts
+            }
+
+            return { ...item, viewName, label, menuOrder, position };
           }),
         );
 

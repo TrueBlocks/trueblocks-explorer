@@ -1,8 +1,9 @@
 [settings]
 class = "Abis"
+menuOrder = 20
 doc_group = "001-Route"
 doc_descr = "a human-readable representation of a Solidity smart contract"
-doc_route = "300-abis"
+doc_route = "200-abis"
 attributes = ""
 produced_by = "abis"
 contains = "function"

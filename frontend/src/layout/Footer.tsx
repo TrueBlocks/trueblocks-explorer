@@ -7,7 +7,7 @@ import {
   Socials,
   getBarSize,
 } from '@components';
-import { usePreferences } from '@hooks';
+import { useElements, usePreferences } from '@hooks';
 import { AppShell, Flex, Text } from '@mantine/core';
 import { preferences } from '@models';
 
@@ -15,6 +15,7 @@ export const Footer = () => {
   var [org, setOrg] = useState<preferences.OrgPreferences>({});
   const { menuCollapsed, chromeCollapsed, setChromeCollapsed } =
     usePreferences();
+  const { hideProjectSelector } = useElements();
 
   useEffect(() => {
     const fetchOrgName = async () => {
@@ -41,7 +42,7 @@ export const Footer = () => {
             direction="down"
             title="Restore layout"
           />
-          {!chromeCollapsed && (
+          {!chromeCollapsed && !hideProjectSelector && (
             <div style={{ minWidth: '500px' }}>
               <ProjectSelector label="Active Project:" />
             </div>

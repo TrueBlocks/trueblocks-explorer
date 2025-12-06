@@ -20,6 +20,7 @@ import { Wizard } from '@wizards';
 export interface MenuItem {
   label: string;
   path: string;
+  viewName?: string;
   position: 'top' | 'bottom' | 'hidden';
   component?: React.ComponentType;
   type?: 'navigation' | 'dev' | 'toggle';
@@ -32,9 +33,12 @@ export const MenuItems: MenuItem[] = [
 {{- range .Structures }}
 {{- if and (ne .Class "") (not .DisableGo) }}
   {
-    label: '{{ .Class }}',
+    label: '{{ if eq .MenuLabel "" }}{{.Class}}{{else}}{{.MenuLabel}}{{end}}',
     path: '/{{ toLower .Class }}',
-    position: 'top',
+    {{- if gt .MenuOrder 0 }}
+    menuOrder: {{.MenuOrder}},
+    {{- end}}
+    position: '{{.MenuPosition}}',
     component: {{ .Class }},
     type: 'navigation',
   },
@@ -43,6 +47,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Khedra',
     path: '/khedra',
+    menuOrder: 997,
     position: 'bottom',
     component: Khedra,
     type: 'navigation',
@@ -50,6 +55,7 @@ export const MenuItems: MenuItem[] = [
   {
     label: 'Settings',
     path: '/settings',
+    menuOrder: 998,
     position: 'bottom',
     component: Settings,
     type: 'navigation',

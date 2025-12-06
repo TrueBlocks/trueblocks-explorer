@@ -57,7 +57,7 @@ function globalNavKeySquelcher(e: KeyboardEvent) {
 // NavigationHandler component that listens for navigation events
 // Must be inside ViewContextProvider to access setPendingRowAction
 const NavigationHandler = () => {
-  const { setPendingRowAction } = useViewContext();
+  const { setPendingRowAction, updateFiltering } = useViewContext();
   const {
     setViewAndFacet,
     activeAddress,
@@ -114,6 +114,14 @@ const NavigationHandler = () => {
         viewName: target.view,
         facetName: rowActionPayload.dataFacet,
       };
+
+      // Set filter from contextValues if databaseName is present
+      if (contextValues?.databaseName) {
+        updateFiltering(
+          targetViewStateKey,
+          contextValues.databaseName as string,
+        );
+      }
 
       // Store complete row action payload in ViewState
       setPendingRowAction(targetViewStateKey, rowActionPayload);
@@ -198,9 +206,9 @@ const AppContent = ({
         <div
           style={{
             position: 'absolute',
-            top: `${getBarSize('header', chromeCollapsed) + 2}px`,
+            bottom: `${getBarSize('footer', chromeCollapsed) + 27}px`,
             right: `${getBarSize('help', helpCollapsed) + 2}px`,
-            zIndex: 1000,
+            zIndex: 500,
           }}
         >
           <NodeStatus />

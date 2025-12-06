@@ -3,7 +3,7 @@ type BarType = 'header' | 'footer' | 'menu' | 'help';
 const BAR_CONFIG = {
   header: { collapsed: 0, expanded: 60 },
   footer: { collapsed: 25, expanded: 40 },
-  menu: { collapsed: 50, expanded: 160 }, // Was 160 * 1
+  menu: { collapsed: 50, expanded: 180 }, // Was 160 * 1
   help: { collapsed: 50, expanded: 320 }, // Was 160 * 2
 };
 

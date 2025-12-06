@@ -826,30 +826,30 @@ func (c *ExportsCollection) getStoreName(payload *types.Payload, facet types.Dat
 	switch facet {
 	case ExportsStatements:
 		name = "exports-statements"
-	case ExportsBalances:
-		name = "exports-balances"
-	case ExportsTransfers:
-		name = "exports-transfers"
-	case ExportsTransactions:
-		name = "exports-transactions"
-	case ExportsOpenApprovals:
-		name = "exports-openapprovals"
-	case ExportsApprovalLogs:
-		name = "exports-approvallogs"
-	case ExportsApprovalTxs:
-		name = "exports-approvaltxs"
-	case ExportsWithdrawals:
-		name = "exports-withdrawals"
 	case ExportsAssets:
 		name = "exports-assets"
 	case ExportsAssetCharts:
 		name = "exports-statements"
+	case ExportsBalances:
+		name = "exports-balances"
+	case ExportsTransfers:
+		name = "exports-transfers"
+	case ExportsOpenApprovals:
+		name = "exports-openapprovals"
+	case ExportsApprovalTxs:
+		name = "exports-approvaltxs"
+	case ExportsApprovalLogs:
+		name = "exports-approvallogs"
+	case ExportsTransactions:
+		name = "exports-transactions"
+	case ExportsWithdrawals:
+		name = "exports-withdrawals"
+	case ExportsReceipts:
+		name = "exports-receipts"
 	case ExportsLogs:
 		name = "exports-logs"
 	case ExportsTraces:
 		name = "exports-traces"
-	case ExportsReceipts:
-		name = "exports-receipts"
 	default:
 		return ""
 	}

@@ -246,6 +246,10 @@ export function GetDressesSummary(arg1) {
   return window['go']['app']['App']['GetDressesSummary'](arg1);
 }
 
+export function GetElementsConfig() {
+  return window['go']['app']['App']['GetElementsConfig']();
+}
+
 export function GetExportsBuckets(arg1) {
   return window['go']['app']['App']['GetExportsBuckets'](arg1);
 }

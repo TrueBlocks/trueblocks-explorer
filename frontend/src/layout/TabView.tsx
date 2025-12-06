@@ -98,7 +98,9 @@ export const TabView = ({
         <Tabs.List>
           {tabs.map((tab, index) => (
             <Fragment key={`tab-${index}`}>
-              {tab.dividerBefore && <StyledDivider key={`divider-${index}`} />}
+              {tab.dividerBefore && index > 0 && (
+                <StyledDivider key={`divider-${index}`} />
+              )}
               <Tabs.Tab
                 key={tab.value}
                 value={tab.value}

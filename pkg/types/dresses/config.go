@@ -142,7 +142,7 @@ func getDalledressFields() []types.FieldConfig {
 
 func getDatabasesFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "databaseName", Type: "string"},
+		{Section: "General", Key: "databaseName", Type: "string", Label: "Database"},
 		{Section: "General", Key: "count", Type: "uint64"},
 		{Section: "General", Key: "sample", Type: "string"},
 		{Section: "General", Key: "filtered", Type: "string"},
@@ -154,9 +154,10 @@ func getDatabasesFields() []types.FieldConfig {
 
 func getItemsFields() []types.FieldConfig {
 	ret := []types.FieldConfig{
-		{Section: "General", Key: "index", Type: "uint64"},
+		{Section: "General", Key: "index", Type: "uint64", NoTable: true},
+		{Section: "General", Key: "databaseName", Type: "string", Label: "Database"},
 		{Section: "General", Key: "value", Type: "string"},
-		{Section: "General", Key: "weight", Type: "uint64"},
+		{Section: "General", Key: "remainder", Type: "string"},
 		{Section: "", Key: "actions", Type: "actions", NoDetail: true},
 	}
 	types.NormalizeFields(&ret)

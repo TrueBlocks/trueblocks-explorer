@@ -51,6 +51,15 @@ func (a *App) GetDefaultAppPreferences() *preferences.AppPreferences {
 	return defaults
 }
 
+// GetElementsConfig returns the UI elements visibility configuration from .create-local-app.json
+func (a *App) GetElementsConfig() (*preferences.ElementsConfig, error) {
+	config, err := preferences.LoadAppConfig()
+	if err != nil {
+		return nil, err
+	}
+	return &config.Elements, nil
+}
+
 // GetLanguage returns the currently selected language
 func (a *App) GetLanguage() string {
 	a.prefsMu.RLock()

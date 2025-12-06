@@ -24,16 +24,19 @@
                     "doc_route": "503-abi",
                     "doc_descr": "a human-readable representation of a Solidity smart contract",
                     "produced_by": "abis",
-                    "disable_go": true
+                    "disable_go": true,
+                    "menuPosition": "top"
                 },
                 {
                     "class": "Abis",
                     "display_name": "Abis",
                     "doc_group": "001-Route",
-                    "doc_route": "300-abis",
+                    "doc_route": "200-abis",
                     "doc_descr": "a human-readable representation of a Solidity smart contract",
                     "produced_by": "abis",
                     "store_type": "chain-scoped",
+                    "menuOrder": 20,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "address",
@@ -239,6 +242,7 @@
                     "contained_by": "abi, log, receipt, result, slurp, trace, transaction",
                     "cache_type": "marshal_only",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "name",
@@ -337,6 +341,7 @@
                     "contained_by": "abi, log, receipt, result, slurp, trace, transaction",
                     "cache_type": "marshal_only",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "address",
@@ -386,6 +391,7 @@
                     "contained_by": "function, parameter",
                     "cache_type": "marshal_only",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "type",
@@ -467,6 +473,7 @@
                     "produced_by": "chunks,init,scrape",
                     "contained_by": "manifest",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "timestamp",
@@ -902,6 +909,7 @@
                     "produced_by": "chunks,init,scrape",
                     "contained_by": "manifest",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "blockNumber",
@@ -970,6 +978,7 @@
                     "doc_descr": "Bloom filter information for a Chunks data facet.",
                     "produced_by": "chunks",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "range",
@@ -1044,16 +1053,20 @@
                     "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
                     "produced_by": "chunks,init,scrape",
                     "contained_by": "manifest",
-                    "disable_go": true
+                    "disable_go": true,
+                    "menuPosition": "top"
                 },
                 {
                     "class": "Chunks",
                     "display_name": "Chunks",
                     "doc_group": "001-Route",
-                    "doc_route": "500-chunks",
+                    "doc_route": "400-chunks",
                     "doc_descr": "internal-use only data model detailing a single index chunk file",
                     "produced_by": "chunks",
                     "store_type": "chain-scoped",
+                    "menuOrder": 40,
+                    "menuLabel": "Unchained",
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "range",
@@ -1205,6 +1218,7 @@
                     "doc_descr": "Index information for a Chunks data facet.",
                     "produced_by": "chunks",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "range",
@@ -1270,6 +1284,7 @@
                     "doc_descr": "Manifest information for a Chunks data facet.",
                     "produced_by": "chunks",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "version",
@@ -1307,7 +1322,8 @@
                     "doc_route": "442-rangeDates",
                     "doc_descr": "shows first and last timestamps and dates for a given block range",
                     "produced_by": "chunks",
-                    "disable_go": true
+                    "disable_go": true,
+                    "menuPosition": "top"
                 },
                 {
                     "class": "Stats",
@@ -1317,6 +1333,7 @@
                     "doc_descr": "Statistics for a Chunks data facet.",
                     "produced_by": "chunks",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "range",
@@ -1437,6 +1454,7 @@
                     "produced_by": "chunks,init,scrape",
                     "contained_by": "manifest",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "blockHash",
@@ -1570,6 +1588,7 @@
                     "produced_by": "chunks,init,scrape",
                     "contained_by": "manifest",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "blockNumber",
@@ -1650,6 +1669,7 @@
                     "doc_descr": "A reconciliation statement",
                     "produced_by": "exports",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "blockNumber",
@@ -2051,6 +2071,23 @@
                     "doc_route": "100-exports",
                     "doc_descr": "internal-use only data model detailing a single index chunk file",
                     "produced_by": "exports",
+                    "facetOrder": [
+                        "statements",
+                        "assets",
+                        "assetcharts",
+                        "balances",
+                        "transfers",
+                        "openapprovals",
+                        "approvaltxs",
+                        "approvallogs",
+                        "transactions",
+                        "withdrawals",
+                        "receipts",
+                        "logs",
+                        "traces"
+                    ],
+                    "menuOrder": 10,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "range",
@@ -2136,6 +2173,52 @@
                             "hideable": false
                         },
                         {
+                            "display_name": "Assets",
+                            "name": "Assets",
+                            "mapKey": "item.Asset.Hex()",
+                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                            "storeName": "Assets",
+                            "storeSource": "sdk",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "table",
+                            "panel": "",
+                            "navigate": "",
+                            "attributes": "",
+                            "isDynamic": false,
+                            "disabled": false,
+                            "needsCalcs": true,
+                            "panelChart": false,
+                            "facetChart": false,
+                            "useMapKey": true,
+                            "hidden": false,
+                            "hideable": false
+                        },
+                        {
+                            "display_name": "AssetCharts",
+                            "name": "AssetCharts",
+                            "mapKey": "item.Asset.Hex()",
+                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                            "storeName": "Statements",
+                            "storeSource": "sdk",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "custom",
+                            "panel": "",
+                            "navigate": "",
+                            "attributes": "",
+                            "isDynamic": false,
+                            "disabled": false,
+                            "needsCalcs": true,
+                            "panelChart": false,
+                            "facetChart": true,
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
+                        },
+                        {
                             "display_name": "Balances",
                             "name": "Balances",
                             "mapKey": "",
@@ -2182,29 +2265,6 @@
                             "hideable": false
                         },
                         {
-                            "display_name": "Transactions",
-                            "name": "Transactions",
-                            "mapKey": "",
-                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                            "storeName": "Transactions",
-                            "storeSource": "sdk",
-                            "actions": [
-                                "export"
-                            ],
-                            "viewType": "table",
-                            "panel": "custom",
-                            "navigate": "",
-                            "attributes": "",
-                            "isDynamic": false,
-                            "disabled": false,
-                            "needsCalcs": false,
-                            "panelChart": false,
-                            "facetChart": false,
-                            "useMapKey": false,
-                            "hidden": false,
-                            "hideable": false
-                        },
-                        {
                             "display_name": "OpenApprovals",
                             "name": "OpenApprovals",
                             "mapKey": "",
@@ -2215,6 +2275,29 @@
                                 "export"
                             ],
                             "viewType": "custom",
+                            "panel": "custom",
+                            "navigate": "",
+                            "attributes": "dividerBefore",
+                            "isDynamic": false,
+                            "disabled": false,
+                            "needsCalcs": false,
+                            "panelChart": false,
+                            "facetChart": false,
+                            "useMapKey": false,
+                            "hidden": false,
+                            "hideable": false
+                        },
+                        {
+                            "display_name": "ApprovalTxs",
+                            "name": "ApprovalTxs",
+                            "mapKey": "",
+                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                            "storeName": "ApprovalTxs",
+                            "storeSource": "sdk",
+                            "actions": [
+                                "export"
+                            ],
+                            "viewType": "table",
                             "panel": "custom",
                             "navigate": "",
                             "attributes": "",
@@ -2251,11 +2334,11 @@
                             "hideable": false
                         },
                         {
-                            "display_name": "ApprovalTxs",
-                            "name": "ApprovalTxs",
+                            "display_name": "Transactions",
+                            "name": "Transactions",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                            "storeName": "ApprovalTxs",
+                            "storeName": "Transactions",
                             "storeSource": "sdk",
                             "actions": [
                                 "export"
@@ -2263,7 +2346,7 @@
                             "viewType": "table",
                             "panel": "custom",
                             "navigate": "",
-                            "attributes": "",
+                            "attributes": "dividerBefore",
                             "isDynamic": false,
                             "disabled": false,
                             "needsCalcs": false,
@@ -2297,11 +2380,11 @@
                             "hideable": false
                         },
                         {
-                            "display_name": "Assets",
-                            "name": "Assets",
-                            "mapKey": "item.Asset.Hex()",
+                            "display_name": "Receipts",
+                            "name": "Receipts",
+                            "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                            "storeName": "Assets",
+                            "storeName": "Receipts",
                             "storeSource": "sdk",
                             "actions": [
                                 "export"
@@ -2312,32 +2395,9 @@
                             "attributes": "",
                             "isDynamic": false,
                             "disabled": false,
-                            "needsCalcs": true,
+                            "needsCalcs": false,
                             "panelChart": false,
                             "facetChart": false,
-                            "useMapKey": true,
-                            "hidden": false,
-                            "hideable": false
-                        },
-                        {
-                            "display_name": "AssetCharts",
-                            "name": "AssetCharts",
-                            "mapKey": "item.Asset.Hex()",
-                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                            "storeName": "Statements",
-                            "storeSource": "sdk",
-                            "actions": [
-                                "export"
-                            ],
-                            "viewType": "custom",
-                            "panel": "",
-                            "navigate": "",
-                            "attributes": "",
-                            "isDynamic": false,
-                            "disabled": false,
-                            "needsCalcs": true,
-                            "panelChart": false,
-                            "facetChart": true,
                             "useMapKey": false,
                             "hidden": false,
                             "hideable": false
@@ -2387,29 +2447,6 @@
                             "useMapKey": false,
                             "hidden": false,
                             "hideable": false
-                        },
-                        {
-                            "display_name": "Receipts",
-                            "name": "Receipts",
-                            "mapKey": "",
-                            "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                            "storeName": "Receipts",
-                            "storeSource": "sdk",
-                            "actions": [
-                                "export"
-                            ],
-                            "viewType": "table",
-                            "panel": "",
-                            "navigate": "",
-                            "attributes": "",
-                            "isDynamic": false,
-                            "disabled": false,
-                            "needsCalcs": false,
-                            "panelChart": false,
-                            "facetChart": false,
-                            "useMapKey": false,
-                            "hidden": false,
-                            "hideable": false
                         }
                     ]
                 },
@@ -2421,6 +2458,7 @@
                     "doc_descr": "A reconciliation statement",
                     "produced_by": "exports",
                     "disable_go": true,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "timestamp",
@@ -2860,11 +2898,13 @@
                     "class": "Monitors",
                     "display_name": "Monitors",
                     "doc_group": "001-Route",
-                    "doc_route": "200-monitors",
+                    "doc_route": "150-monitors",
                     "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
                     "produced_by": "monitors,list,export,slurp",
                     "cache_type": "marshal_only",
                     "store_type": "chain-scoped",
+                    "menuOrder": 15,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "address",
@@ -2983,10 +3023,12 @@
                     "class": "Names",
                     "display_name": "Names",
                     "doc_group": "001-Route",
-                    "doc_route": "400-names",
+                    "doc_route": "300-names",
                     "doc_descr": "an association between a human-readable name and an address",
                     "produced_by": "names",
                     "store_type": "singleton",
+                    "menuOrder": 30,
+                    "menuPosition": "top",
                     "members": [
                         {
                             "name": "address",
@@ -3018,6 +3060,7 @@
                         {
                             "name": "symbol",
                             "type": "string",
+                            "attributes": "noTable",
                             "section": "Identity",
                             "docOrder": 4,
                             "description": "the symbol for this address",
@@ -3267,6 +3310,7 @@
             "doc_descr": "A list off addresses inside a project",
             "produced_by": "addresslist",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "address",
@@ -3309,6 +3353,8 @@
             "doc_route": "001-projects",
             "doc_descr": "project management and home dashboard",
             "produced_by": "projects",
+            "menuOrder": 1,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "id",
@@ -3395,6 +3441,23 @@
             "doc_route": "100-exports",
             "doc_descr": "internal-use only data model detailing a single index chunk file",
             "produced_by": "exports",
+            "facetOrder": [
+                "statements",
+                "assets",
+                "assetcharts",
+                "balances",
+                "transfers",
+                "openapprovals",
+                "approvaltxs",
+                "approvallogs",
+                "transactions",
+                "withdrawals",
+                "receipts",
+                "logs",
+                "traces"
+            ],
+            "menuOrder": 10,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "range",
@@ -3480,6 +3543,52 @@
                     "hideable": false
                 },
                 {
+                    "display_name": "Assets",
+                    "name": "Assets",
+                    "mapKey": "item.Asset.Hex()",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Assets",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": true,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": true,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "AssetCharts",
+                    "name": "AssetCharts",
+                    "mapKey": "item.Asset.Hex()",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Statements",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "custom",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": true,
+                    "panelChart": false,
+                    "facetChart": true,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
                     "display_name": "Balances",
                     "name": "Balances",
                     "mapKey": "",
@@ -3526,29 +3635,6 @@
                     "hideable": false
                 },
                 {
-                    "display_name": "Transactions",
-                    "name": "Transactions",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Transactions",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "custom",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
                     "display_name": "OpenApprovals",
                     "name": "OpenApprovals",
                     "mapKey": "",
@@ -3559,6 +3645,29 @@
                         "export"
                     ],
                     "viewType": "custom",
+                    "panel": "custom",
+                    "navigate": "",
+                    "attributes": "dividerBefore",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "ApprovalTxs",
+                    "name": "ApprovalTxs",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "ApprovalTxs",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
                     "panel": "custom",
                     "navigate": "",
                     "attributes": "",
@@ -3595,11 +3704,11 @@
                     "hideable": false
                 },
                 {
-                    "display_name": "ApprovalTxs",
-                    "name": "ApprovalTxs",
+                    "display_name": "Transactions",
+                    "name": "Transactions",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "ApprovalTxs",
+                    "storeName": "Transactions",
                     "storeSource": "sdk",
                     "actions": [
                         "export"
@@ -3607,7 +3716,7 @@
                     "viewType": "table",
                     "panel": "custom",
                     "navigate": "",
-                    "attributes": "",
+                    "attributes": "dividerBefore",
                     "isDynamic": false,
                     "disabled": false,
                     "needsCalcs": false,
@@ -3641,11 +3750,11 @@
                     "hideable": false
                 },
                 {
-                    "display_name": "Assets",
-                    "name": "Assets",
-                    "mapKey": "item.Asset.Hex()",
+                    "display_name": "Receipts",
+                    "name": "Receipts",
+                    "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Assets",
+                    "storeName": "Receipts",
                     "storeSource": "sdk",
                     "actions": [
                         "export"
@@ -3656,32 +3765,9 @@
                     "attributes": "",
                     "isDynamic": false,
                     "disabled": false,
-                    "needsCalcs": true,
+                    "needsCalcs": false,
                     "panelChart": false,
                     "facetChart": false,
-                    "useMapKey": true,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "AssetCharts",
-                    "name": "AssetCharts",
-                    "mapKey": "item.Asset.Hex()",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Statements",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "custom",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": true,
-                    "panelChart": false,
-                    "facetChart": true,
                     "useMapKey": false,
                     "hidden": false,
                     "hideable": false
@@ -3731,29 +3817,6 @@
                     "useMapKey": false,
                     "hidden": false,
                     "hideable": false
-                },
-                {
-                    "display_name": "Receipts",
-                    "name": "Receipts",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Receipts",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
                 }
             ]
         },
@@ -3765,6 +3828,7 @@
             "doc_descr": "A reconciliation statement",
             "produced_by": "exports",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -4167,6 +4231,7 @@
             "doc_descr": "A reconciliation statement",
             "produced_by": "exports",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "timestamp",
@@ -4597,6 +4662,7 @@
             "doc_descr": "a movement of an asset from one address to another (derived from a transaction or a log)",
             "produced_by": "export",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -4702,6 +4768,7 @@
             "doc_descr": "an ERC-20 token approval granting spending permission from owner to spender",
             "produced_by": "tokens",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "timestamp",
@@ -4821,11 +4888,13 @@
             "class": "Monitors",
             "display_name": "Monitors",
             "doc_group": "001-Route",
-            "doc_route": "200-monitors",
+            "doc_route": "150-monitors",
             "doc_descr": "a local file indicating a user's interest in an address. Includes caches for reconicilations, transactions, and appearances as well as an optional association to named account",
             "produced_by": "monitors,list,export,slurp",
             "cache_type": "marshal_only",
             "store_type": "chain-scoped",
+            "menuOrder": 15,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "address",
@@ -4928,6 +4997,211 @@
             ]
         },
         {
+            "class": "Abis",
+            "display_name": "Abis",
+            "doc_group": "001-Route",
+            "doc_route": "200-abis",
+            "doc_descr": "a human-readable representation of a Solidity smart contract",
+            "produced_by": "abis",
+            "store_type": "chain-scoped",
+            "menuOrder": 20,
+            "menuPosition": "top",
+            "members": [
+                {
+                    "name": "address",
+                    "type": "address",
+                    "attributes": "readOnly",
+                    "section": "Identity",
+                    "docOrder": 1,
+                    "description": "the address for the ABI",
+                    "num": 1
+                },
+                {
+                    "name": "addressName",
+                    "type": "string",
+                    "attributes": "readOnly",
+                    "section": "Identity",
+                    "docOrder": 2,
+                    "description": "the name for this address",
+                    "num": 2
+                },
+                {
+                    "name": "path",
+                    "type": "path",
+                    "attributes": "noui|noTable",
+                    "section": "Identity",
+                    "docOrder": 3,
+                    "description": "the folder holding the abi file",
+                    "num": 3
+                },
+                {
+                    "name": "nFunctions",
+                    "type": "uint64",
+                    "section": "Statistics",
+                    "docOrder": 4,
+                    "description": "the number of functions in the ABI",
+                    "num": 4
+                },
+                {
+                    "name": "nEvents",
+                    "type": "uint64",
+                    "section": "Statistics",
+                    "docOrder": 5,
+                    "description": "the number of events in the ABI",
+                    "num": 5
+                },
+                {
+                    "name": "fileSize",
+                    "type": "fileSize",
+                    "section": "Statistics",
+                    "docOrder": 6,
+                    "description": "the size of this file on disc",
+                    "num": 6
+                },
+                {
+                    "name": "isEmpty",
+                    "type": "boolean",
+                    "attributes": "noui|noTable",
+                    "section": "Properties",
+                    "docOrder": 7,
+                    "description": "true if the ABI could not be found (and won't be looked for again)",
+                    "num": 7
+                },
+                {
+                    "name": "isKnown",
+                    "type": "boolean",
+                    "attributes": "noui|noTable",
+                    "section": "Properties",
+                    "docOrder": 8,
+                    "description": "true if this is the ABI for a known smart contract or protocol",
+                    "num": 8
+                },
+                {
+                    "name": "hasConstructor",
+                    "type": "boolean",
+                    "attributes": "noui|noTable",
+                    "section": "Properties",
+                    "docOrder": 9,
+                    "description": "if verbose and the abi has a constructor, then `true`, else `false`",
+                    "num": 9
+                },
+                {
+                    "name": "hasFallback",
+                    "type": "boolean",
+                    "attributes": "noui|noTable",
+                    "section": "Properties",
+                    "docOrder": 10,
+                    "description": "if verbose and the abi has a fallback, then `true`, else `false`",
+                    "num": 10
+                },
+                {
+                    "name": "lastModDate",
+                    "type": "datetime",
+                    "attributes": "noui",
+                    "section": "Metadata",
+                    "docOrder": 11,
+                    "description": "the last update date of the file",
+                    "num": 11
+                }
+            ],
+            "facets": [
+                {
+                    "display_name": "Downloaded",
+                    "name": "Downloaded",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Abis",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "autoname",
+                        "remove",
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Known",
+                    "name": "Known",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Abis",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Functions",
+                    "name": "Functions",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Functions",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Events",
+                    "name": "Events",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Functions",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                }
+            ]
+        },
+        {
             "class": "Transaction",
             "display_name": "Transaction",
             "doc_group": "02-Chain Data",
@@ -4938,6 +5212,7 @@
             "cache_by": "tx",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -5143,6 +5418,7 @@
             "cache_by": "tx",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -5349,6 +5625,7 @@
             "cache_by": "block",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -5511,6 +5788,7 @@
             "cache_by": "block",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -5668,6 +5946,7 @@
             "doc_route": "215-attribute",
             "doc_descr": "Database used to generate dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "database",
@@ -5734,6 +6013,7 @@
             "doc_route": "215-database",
             "doc_descr": "Database used to generate dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "databaseName",
@@ -5741,6 +6021,7 @@
                     "section": "General",
                     "docOrder": 1,
                     "description": "Name of the database",
+                    "label": "Database",
                     "num": 1
                 },
                 {
@@ -5776,6 +6057,7 @@
             "doc_route": "215-database",
             "doc_descr": "Database used to generate dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "databaseName",
@@ -5783,6 +6065,7 @@
                     "section": "General",
                     "docOrder": 1,
                     "description": "Name of the database",
+                    "label": "Database",
                     "num": 1
                 },
                 {
@@ -5818,6 +6101,7 @@
             "doc_route": "215-gallery",
             "doc_descr": "Gallery used to generate dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "thumbnail",
@@ -5884,6 +6168,7 @@
             "doc_route": "215-generator",
             "doc_descr": "Generator used to create dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "activeAddress",
@@ -5947,6 +6232,7 @@
             "cache_by": "block",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -6093,6 +6379,7 @@
             "cache_by": "block",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -6234,6 +6521,7 @@
             "doc_route": "215-series",
             "doc_descr": "Series filter used to generate dalle dress prompts",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "suffix",
@@ -6380,6 +6668,7 @@
             "cache_by": "tx",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -6525,6 +6814,7 @@
             "cache_by": "tx",
             "cache_type": "cacheable",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -6727,7 +7017,8 @@
             "produced_by": "traces,export,blocks",
             "contained_by": "trace",
             "cache_type": "marshal_only",
-            "disable_go": true
+            "disable_go": true,
+            "menuPosition": "top"
         },
         {
             "class": "TraceResult",
@@ -6738,219 +7029,19 @@
             "produced_by": "traces,export,blocks",
             "contained_by": "trace",
             "cache_type": "marshal_only",
-            "disable_go": true
-        },
-        {
-            "class": "Abis",
-            "display_name": "Abis",
-            "doc_group": "001-Route",
-            "doc_route": "300-abis",
-            "doc_descr": "a human-readable representation of a Solidity smart contract",
-            "produced_by": "abis",
-            "store_type": "chain-scoped",
-            "members": [
-                {
-                    "name": "address",
-                    "type": "address",
-                    "attributes": "readOnly",
-                    "section": "Identity",
-                    "docOrder": 1,
-                    "description": "the address for the ABI",
-                    "num": 1
-                },
-                {
-                    "name": "addressName",
-                    "type": "string",
-                    "attributes": "readOnly",
-                    "section": "Identity",
-                    "docOrder": 2,
-                    "description": "the name for this address",
-                    "num": 2
-                },
-                {
-                    "name": "path",
-                    "type": "path",
-                    "attributes": "noui|noTable",
-                    "section": "Identity",
-                    "docOrder": 3,
-                    "description": "the folder holding the abi file",
-                    "num": 3
-                },
-                {
-                    "name": "nFunctions",
-                    "type": "uint64",
-                    "section": "Statistics",
-                    "docOrder": 4,
-                    "description": "the number of functions in the ABI",
-                    "num": 4
-                },
-                {
-                    "name": "nEvents",
-                    "type": "uint64",
-                    "section": "Statistics",
-                    "docOrder": 5,
-                    "description": "the number of events in the ABI",
-                    "num": 5
-                },
-                {
-                    "name": "fileSize",
-                    "type": "fileSize",
-                    "section": "Statistics",
-                    "docOrder": 6,
-                    "description": "the size of this file on disc",
-                    "num": 6
-                },
-                {
-                    "name": "isEmpty",
-                    "type": "boolean",
-                    "attributes": "noui|noTable",
-                    "section": "Properties",
-                    "docOrder": 7,
-                    "description": "true if the ABI could not be found (and won't be looked for again)",
-                    "num": 7
-                },
-                {
-                    "name": "isKnown",
-                    "type": "boolean",
-                    "attributes": "noui|noTable",
-                    "section": "Properties",
-                    "docOrder": 8,
-                    "description": "true if this is the ABI for a known smart contract or protocol",
-                    "num": 8
-                },
-                {
-                    "name": "hasConstructor",
-                    "type": "boolean",
-                    "attributes": "noui|noTable",
-                    "section": "Properties",
-                    "docOrder": 9,
-                    "description": "if verbose and the abi has a constructor, then `true`, else `false`",
-                    "num": 9
-                },
-                {
-                    "name": "hasFallback",
-                    "type": "boolean",
-                    "attributes": "noui|noTable",
-                    "section": "Properties",
-                    "docOrder": 10,
-                    "description": "if verbose and the abi has a fallback, then `true`, else `false`",
-                    "num": 10
-                },
-                {
-                    "name": "lastModDate",
-                    "type": "datetime",
-                    "attributes": "noui",
-                    "section": "Metadata",
-                    "docOrder": 11,
-                    "description": "the last update date of the file",
-                    "num": 11
-                }
-            ],
-            "facets": [
-                {
-                    "display_name": "Downloaded",
-                    "name": "Downloaded",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Abis",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "autoname",
-                        "remove",
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Known",
-                    "name": "Known",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Abis",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Functions",
-                    "name": "Functions",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Functions",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Events",
-                    "name": "Events",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Functions",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                }
-            ]
+            "disable_go": true,
+            "menuPosition": "top"
         },
         {
             "class": "Names",
             "display_name": "Names",
             "doc_group": "001-Route",
-            "doc_route": "400-names",
+            "doc_route": "300-names",
             "doc_descr": "an association between a human-readable name and an address",
             "produced_by": "names",
             "store_type": "singleton",
+            "menuOrder": 30,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "address",
@@ -6982,6 +7073,7 @@
                 {
                     "name": "symbol",
                     "type": "string",
+                    "attributes": "noTable",
                     "section": "Identity",
                     "docOrder": 4,
                     "description": "the symbol for this address",
@@ -7220,6 +7312,160 @@
             ]
         },
         {
+            "class": "Chunks",
+            "display_name": "Chunks",
+            "doc_group": "001-Route",
+            "doc_route": "400-chunks",
+            "doc_descr": "internal-use only data model detailing a single index chunk file",
+            "produced_by": "chunks",
+            "store_type": "chain-scoped",
+            "menuOrder": 40,
+            "menuLabel": "Unchained",
+            "menuPosition": "top",
+            "members": [
+                {
+                    "name": "range",
+                    "type": "blkrange",
+                    "section": "Range",
+                    "docOrder": 1,
+                    "description": "the block range (inclusive) covered by this chunk",
+                    "num": 1
+                },
+                {
+                    "name": "magic",
+                    "type": "string",
+                    "section": "Metadata",
+                    "docOrder": 2,
+                    "description": "an internal use only magic number to indicate file format",
+                    "num": 2
+                },
+                {
+                    "name": "hash",
+                    "type": "hash",
+                    "section": "Metadata",
+                    "docOrder": 3,
+                    "description": "the hash of the specification under which this chunk was generated",
+                    "num": 3
+                },
+                {
+                    "name": "nAddresses",
+                    "type": "uint64",
+                    "section": "Content",
+                    "docOrder": 4,
+                    "description": "the number of addresses in this chunk",
+                    "num": 4
+                },
+                {
+                    "name": "nAppearances",
+                    "type": "uint64",
+                    "section": "Content",
+                    "docOrder": 5,
+                    "description": "the number of appearances in this chunk",
+                    "num": 5
+                },
+                {
+                    "name": "size",
+                    "type": "fileSize",
+                    "section": "Metadata",
+                    "docOrder": 6,
+                    "description": "the size of the chunk in bytes",
+                    "num": 6
+                }
+            ],
+            "facets": [
+                {
+                    "display_name": "Stats",
+                    "name": "Stats",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Stats",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "custom",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": true,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Index",
+                    "name": "Index",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Index",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "custom",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": true,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Blooms",
+                    "name": "Blooms",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Blooms",
+                    "storeSource": "sdk",
+                    "actions": [
+                        "export"
+                    ],
+                    "viewType": "table",
+                    "panel": "custom",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": true,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                },
+                {
+                    "display_name": "Manifest",
+                    "name": "Manifest",
+                    "mapKey": "",
+                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
+                    "storeName": "Manifest",
+                    "storeSource": "sdk",
+                    "actions": null,
+                    "viewType": "form",
+                    "panel": "",
+                    "navigate": "",
+                    "attributes": "",
+                    "isDynamic": false,
+                    "disabled": false,
+                    "needsCalcs": false,
+                    "panelChart": false,
+                    "facetChart": false,
+                    "useMapKey": false,
+                    "hidden": false,
+                    "hideable": false
+                }
+            ]
+        },
+        {
             "class": "Assets",
             "display_name": "Assets",
             "doc_group": "04-Admin",
@@ -7228,6 +7474,7 @@
             "produced_by": "chunks,init,scrape",
             "contained_by": "manifest",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "timestamp",
@@ -7663,6 +7910,7 @@
             "produced_by": "chunks,init,scrape",
             "contained_by": "manifest",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -7731,7 +7979,8 @@
             "doc_descr": "a single record in the manifest detailing the IPFS hases and file sizes for each bloom filter and index chunk",
             "produced_by": "chunks,init,scrape",
             "contained_by": "manifest",
-            "disable_go": true
+            "disable_go": true,
+            "menuPosition": "top"
         },
         {
             "class": "Traces",
@@ -7742,6 +7991,7 @@
             "produced_by": "chunks,init,scrape",
             "contained_by": "manifest",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockHash",
@@ -7875,6 +8125,7 @@
             "produced_by": "chunks,init,scrape",
             "contained_by": "manifest",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "blockNumber",
@@ -7942,6 +8193,7 @@
             "doc_descr": "Bloom filter information for a Chunks data facet.",
             "produced_by": "chunks",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "range",
@@ -8016,6 +8268,7 @@
             "doc_descr": "Index information for a Chunks data facet.",
             "produced_by": "chunks",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "range",
@@ -8081,6 +8334,7 @@
             "doc_descr": "Manifest information for a Chunks data facet.",
             "produced_by": "chunks",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "version",
@@ -8119,6 +8373,7 @@
             "doc_descr": "Statistics for a Chunks data facet.",
             "produced_by": "chunks",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "range",
@@ -8237,158 +8492,8 @@
             "doc_route": "442-rangeDates",
             "doc_descr": "shows first and last timestamps and dates for a given block range",
             "produced_by": "chunks",
-            "disable_go": true
-        },
-        {
-            "class": "Chunks",
-            "display_name": "Chunks",
-            "doc_group": "001-Route",
-            "doc_route": "500-chunks",
-            "doc_descr": "internal-use only data model detailing a single index chunk file",
-            "produced_by": "chunks",
-            "store_type": "chain-scoped",
-            "members": [
-                {
-                    "name": "range",
-                    "type": "blkrange",
-                    "section": "Range",
-                    "docOrder": 1,
-                    "description": "the block range (inclusive) covered by this chunk",
-                    "num": 1
-                },
-                {
-                    "name": "magic",
-                    "type": "string",
-                    "section": "Metadata",
-                    "docOrder": 2,
-                    "description": "an internal use only magic number to indicate file format",
-                    "num": 2
-                },
-                {
-                    "name": "hash",
-                    "type": "hash",
-                    "section": "Metadata",
-                    "docOrder": 3,
-                    "description": "the hash of the specification under which this chunk was generated",
-                    "num": 3
-                },
-                {
-                    "name": "nAddresses",
-                    "type": "uint64",
-                    "section": "Content",
-                    "docOrder": 4,
-                    "description": "the number of addresses in this chunk",
-                    "num": 4
-                },
-                {
-                    "name": "nAppearances",
-                    "type": "uint64",
-                    "section": "Content",
-                    "docOrder": 5,
-                    "description": "the number of appearances in this chunk",
-                    "num": 5
-                },
-                {
-                    "name": "size",
-                    "type": "fileSize",
-                    "section": "Metadata",
-                    "docOrder": 6,
-                    "description": "the size of the chunk in bytes",
-                    "num": 6
-                }
-            ],
-            "facets": [
-                {
-                    "display_name": "Stats",
-                    "name": "Stats",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Stats",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "custom",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": true,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Index",
-                    "name": "Index",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Index",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "custom",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": true,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Blooms",
-                    "name": "Blooms",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Blooms",
-                    "storeSource": "sdk",
-                    "actions": [
-                        "export"
-                    ],
-                    "viewType": "table",
-                    "panel": "custom",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": true,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                },
-                {
-                    "display_name": "Manifest",
-                    "name": "Manifest",
-                    "mapKey": "",
-                    "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
-                    "storeName": "Manifest",
-                    "storeSource": "sdk",
-                    "actions": null,
-                    "viewType": "form",
-                    "panel": "",
-                    "navigate": "",
-                    "attributes": "",
-                    "isDynamic": false,
-                    "disabled": false,
-                    "needsCalcs": false,
-                    "panelChart": false,
-                    "facetChart": false,
-                    "useMapKey": false,
-                    "hidden": false,
-                    "hideable": false
-                }
-            ]
+            "disable_go": true,
+            "menuPosition": "top"
         },
         {
             "class": "Contracts",
@@ -8397,6 +8502,8 @@
             "doc_route": "500-contracts",
             "doc_descr": "smart contract state and interaction data including read function results, write function forms, and event history",
             "produced_by": "contracts",
+            "menuOrder": 50,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "address",
@@ -8535,7 +8642,8 @@
             "doc_route": "503-abi",
             "doc_descr": "a human-readable representation of a Solidity smart contract",
             "produced_by": "abis",
-            "disable_go": true
+            "disable_go": true,
+            "menuPosition": "top"
         },
         {
             "class": "Function",
@@ -8547,6 +8655,7 @@
             "contained_by": "abi, log, receipt, result, slurp, trace, transaction",
             "cache_type": "marshal_only",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "name",
@@ -8645,6 +8754,7 @@
             "contained_by": "abi, log, receipt, result, slurp, trace, transaction",
             "cache_type": "marshal_only",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "address",
@@ -8694,6 +8804,7 @@
             "contained_by": "function, parameter",
             "cache_type": "marshal_only",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "type",
@@ -8761,6 +8872,7 @@
             "doc_descr": "data model for caches",
             "produced_by": "status",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "type",
@@ -8820,6 +8932,7 @@
             "doc_descr": "data model for chains",
             "produced_by": "status",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "chain",
@@ -8887,6 +9000,7 @@
             "doc_descr": "data model for chains",
             "produced_by": "status",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "chain",
@@ -8954,6 +9068,8 @@
             "doc_descr": "data model for various status facets",
             "produced_by": "status",
             "store_type": "chain-scoped",
+            "menuOrder": 60,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "cachePath",
@@ -9178,6 +9294,7 @@
             "doc_descr": "multi-facet generative art collection for DalleDress",
             "produced_by": "dresses",
             "disable_go": true,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "original",
@@ -9365,6 +9482,8 @@
             "doc_route": "700-dresses",
             "doc_descr": "multi-facet generative art collection for DalleDress",
             "produced_by": "dresses",
+            "menuOrder": 70,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "original",
@@ -9683,82 +9802,14 @@
             ]
         },
         {
-            "class": "Items",
-            "display_name": "Items",
-            "doc_group": "04-Admin",
-            "doc_route": "919-chunkIndex-stats",
-            "doc_descr": "Items in the various dalle databases.",
-            "produced_by": "dresses",
-            "disable_go": true,
-            "members": [
-                {
-                    "name": "index",
-                    "type": "uint64",
-                    "section": "General",
-                    "docOrder": 1,
-                    "description": "the item's ordering in the file",
-                    "num": 1
-                },
-                {
-                    "name": "value",
-                    "type": "string",
-                    "section": "General",
-                    "docOrder": 2,
-                    "description": "the entire line of data as a string",
-                    "num": 2
-                },
-                {
-                    "name": "weight",
-                    "type": "uint64",
-                    "section": "General",
-                    "docOrder": 3,
-                    "description": "the item's weight",
-                    "num": 3
-                }
-            ]
-        },
-        {
-            "class": "Items",
-            "display_name": "Items",
-            "doc_group": "04-Admin",
-            "doc_route": "919-chunkIndex-stats",
-            "doc_descr": "Items in the various dalle databases.",
-            "produced_by": "dresses",
-            "disable_go": true,
-            "members": [
-                {
-                    "name": "index",
-                    "type": "uint64",
-                    "section": "General",
-                    "docOrder": 1,
-                    "description": "the item's ordering in the file",
-                    "num": 1
-                },
-                {
-                    "name": "value",
-                    "type": "string",
-                    "section": "General",
-                    "docOrder": 2,
-                    "description": "the entire line of data as a string",
-                    "num": 2
-                },
-                {
-                    "name": "weight",
-                    "type": "uint64",
-                    "section": "General",
-                    "docOrder": 3,
-                    "description": "the item's weight",
-                    "num": 3
-                }
-            ]
-        },
-        {
             "class": "Comparitoor",
             "display_name": "Comparitoor",
             "doc_group": "001-Comparisons",
-            "doc_route": "comparitoor",
+            "doc_route": "800-comparitoor",
             "doc_descr": "Compare transactions across multiple sources for a given address",
             "produced_by": "comparitoor",
+            "menuOrder": 80,
+            "menuPosition": "top",
             "members": [
                 {
                     "name": "gasUsed",
@@ -10112,6 +10163,98 @@
                     "useMapKey": false,
                     "hidden": false,
                     "hideable": false
+                }
+            ]
+        },
+        {
+            "class": "Items",
+            "display_name": "Items",
+            "doc_group": "04-Admin",
+            "doc_route": "919-chunkIndex-stats",
+            "doc_descr": "Items in the various dalle databases.",
+            "produced_by": "dresses",
+            "disable_go": true,
+            "menuPosition": "top",
+            "members": [
+                {
+                    "name": "index",
+                    "type": "uint64",
+                    "attributes": "noTable",
+                    "section": "General",
+                    "docOrder": 1,
+                    "description": "the item's ordering in the file",
+                    "num": 1
+                },
+                {
+                    "name": "databaseName",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 2,
+                    "description": "the name of the database this item belongs to",
+                    "label": "Database",
+                    "num": 2
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 3,
+                    "description": "the entire line of data as a string",
+                    "num": 3
+                },
+                {
+                    "name": "remainder",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 4,
+                    "description": "the remainder of the record (different per database)",
+                    "num": 4
+                }
+            ]
+        },
+        {
+            "class": "Items",
+            "display_name": "Items",
+            "doc_group": "04-Admin",
+            "doc_route": "919-chunkIndex-stats",
+            "doc_descr": "Items in the various dalle databases.",
+            "produced_by": "dresses",
+            "disable_go": true,
+            "menuPosition": "top",
+            "members": [
+                {
+                    "name": "index",
+                    "type": "uint64",
+                    "attributes": "noTable",
+                    "section": "General",
+                    "docOrder": 1,
+                    "description": "the item's ordering in the file",
+                    "num": 1
+                },
+                {
+                    "name": "databaseName",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 2,
+                    "description": "the name of the database this item belongs to",
+                    "label": "Database",
+                    "num": 2
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 3,
+                    "description": "the entire line of data as a string",
+                    "num": 3
+                },
+                {
+                    "name": "remainder",
+                    "type": "string",
+                    "section": "General",
+                    "docOrder": 4,
+                    "description": "the remainder of the record (different per database)",
+                    "num": 4
                 }
             ]
         }

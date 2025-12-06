@@ -63,6 +63,12 @@ func SetMenuOrder(vc *ViewConfig) {
 			} else {
 				vc.MenuOrder = 999 // Default order for views without explicit order
 			}
+			if viewConfig.MenuPosition != "" {
+				vc.MenuPosition = viewConfig.MenuPosition
+			}
+			if viewConfig.MenuLabel != "" {
+				vc.MenuLabel = viewConfig.MenuLabel
+			}
 			vc.Disabled = viewConfig.Disabled
 			if len(viewConfig.DisabledFacets) > 0 && vc.Facets != nil {
 				for facetName, facetConfig := range vc.Facets {
@@ -100,6 +106,24 @@ func SetMenuOrder(vc *ViewConfig) {
 			// Only update if we have a valid non-empty order
 			if len(validOrder) > 0 {
 				vc.FacetOrder = validOrder
+			}
+		}
+
+		// Apply facet settings overrides if provided (unless TB_ALLVIEWS is set)
+		if !skipOrdering && len(viewConfig.FacetSettings) > 0 && vc.Facets != nil {
+			for facetId, settings := range viewConfig.FacetSettings {
+				if facetConfig, exists := vc.Facets[facetId]; exists {
+					// Apply dividerBefore override
+					if settings.DividerBefore != nil {
+						facetConfig.DividerBefore = *settings.DividerBefore
+					}
+					// Apply canClose override
+					if settings.CanClose != nil {
+						facetConfig.CanClose = *settings.CanClose
+					}
+					// Save back to map
+					vc.Facets[facetId] = facetConfig
+				}
 			}
 		}
 	} else {

@@ -2,12 +2,14 @@ package types
 
 // ViewConfig represents the complete configuration for a view
 type ViewConfig struct {
-	ViewName   string                  `json:"viewName"`
-	Disabled   bool                    `json:"disabled"`
-	Facets     map[string]FacetConfig  `json:"facets"`
-	Actions    map[string]ActionConfig `json:"actions"`
-	FacetOrder []string                `json:"facetOrder"`
-	MenuOrder  int                     `json:"menuOrder,omitempty"`
+	ViewName     string                  `json:"viewName"`
+	Disabled     bool                    `json:"disabled"`
+	Facets       map[string]FacetConfig  `json:"facets"`
+	Actions      map[string]ActionConfig `json:"actions"`
+	FacetOrder   []string                `json:"facetOrder"`
+	MenuOrder    int                     `json:"menuOrder,omitempty"`
+	MenuPosition string                  `json:"menuPosition,omitempty"`
+	MenuLabel    string                  `json:"menuLabel,omitempty"`
 }
 
 // FacetConfig represents configuration for a single facet within a view

@@ -4,33 +4,12 @@
   "Github": "github.com/TrueBlocks/trueblocks-core",
   "Domain": "trueblocks.io",
   "Template": "default",
+  "Elements": {
+    "hideContractSelector": true
+  },
   "ViewConfig": {
-    "abis": {
-      "menuOrder": 40
-    },
-    "chunks": {
-      "menuOrder": 60
-    },
     "comparitoor": {
-      "menuOrder": 100
-    },
-    "contracts": {
-      "menuOrder": 70
-    },
-    "dresses": {
-      "menuOrder": 90
-    },
-    "exports": {
-      "menuOrder": 20
-    },
-    "monitors": {
-      "menuOrder": 30
-    },
-    "names": {
-      "menuOrder": 50
-    },
-    "status": {
-      "menuOrder": 80
+      "disabled": true
     }
   }
 }

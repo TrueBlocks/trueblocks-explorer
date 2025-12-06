@@ -240,48 +240,18 @@ func (c *DressesCollection) getItemsStore(payload *types.Payload, facet types.Da
 	if theStore == nil {
 		queryFunc := func(ctx *output.RenderCtx) error {
 			// EXISTING_CODE
-			// Get the database name from the payload's ActiveAddress field
-			// (passed via row action navigation from databases facet)
-			databaseName := payload.ActiveAddress
-			if databaseName == "" {
-				logging.LogBEError("No databaseName in payload")
-				return fmt.Errorf("database name not specified")
-			}
-
-			cm := storage.GetCacheManager()
-			if err := cm.LoadOrBuild(); err != nil {
-				logging.LogBEError(fmt.Sprintf("Failed to load database cache: %v", err))
-				return err
-			}
-
-			dbIndex, err := cm.GetDatabase(databaseName)
+			allItems, err := dalle.GetAllItems()
 			if err != nil {
-				logging.LogBEError(fmt.Sprintf("Failed to get database %s: %v", databaseName, err))
+				logging.LogBEError(fmt.Sprintf("Failed to get all items: %v", err))
 				return err
 			}
-
-			// Load all items from the database
-			for idx, item := range dbIndex.Records {
-				if len(item.Values) == 0 {
-					continue
+			idx := 0
+			for _, items := range allItems {
+				for _, item := range items {
+					itemCopy := item
+					theStore.AddItem(&itemCopy, idx)
+					idx++
 				}
-
-				value := item.Values[0]
-				weight := uint64(1)
-				if len(item.Values) > 1 {
-					// Try to parse weight if present
-					_, _ = fmt.Sscanf(item.Values[1], "%d", &weight)
-				}
-
-				dbItem := &Item{
-					ID:           fmt.Sprintf("%s-%d", databaseName, idx),
-					DatabaseName: databaseName,
-					Index:        uint64(idx),
-					Value:        value,
-					Weight:       weight,
-				}
-
-				theStore.AddItem(dbItem, idx)
 			}
 			// EXISTING_CODE
 			return nil

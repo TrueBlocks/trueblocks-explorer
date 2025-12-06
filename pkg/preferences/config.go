@@ -106,10 +106,12 @@ func GetAppId() Id {
 	}
 }
 
-const configOrgName = "TrueBlocks"
-const configBaseApp = "Explorer"
-const configBaseGithub = "github.com/TrueBlocks/trueblocks-core"
-const configBaseDomain = "trueblocks.io"
+const (
+	configOrgName    = "TrueBlocks"
+	configBaseApp    = "Explorer"
+	configBaseGithub = "github.com/TrueBlocks/trueblocks-core"
+	configBaseDomain = "trueblocks.io"
+)
 
 // WailsConfig represents the structure of the wails.json configuration file
 type WailsConfig struct {
@@ -135,15 +137,34 @@ type AppConfig struct {
 	Domain        string                     `json:"Domain"`
 	Template      string                     `json:"Template"`
 	PreserveFiles []string                   `json:"PreserveFiles"`
+	Elements      ElementsConfig             `json:"Elements,omitempty"`
 	ViewConfig    map[string]ViewConfigEntry `json:"ViewConfig,omitempty"`
+}
+
+// ElementsConfig represents UI element visibility configuration
+type ElementsConfig struct {
+	HideAddressSelector  bool `json:"hideAddressSelector,omitempty"`
+	HideChainSelector    bool `json:"hideChainSelector,omitempty"`
+	HideContractSelector bool `json:"hideContractSelector,omitempty"`
+	HidePeriodSelector   bool `json:"hidePeriodSelector,omitempty"`
+	HideProjectSelector  bool `json:"hideProjectSelector,omitempty"`
+}
+
+// FacetSettings represents per-facet configuration overrides
+type FacetSettings struct {
+	DividerBefore *bool `json:"dividerBefore,omitempty"`
+	CanClose      *bool `json:"canClose,omitempty"`
 }
 
 // ViewConfigEntry represents configuration for a single view in .create-local-app.json
 type ViewConfigEntry struct {
-	MenuOrder      int             `json:"menuOrder,omitempty"`
-	Disabled       bool            `json:"disabled,omitempty"`
-	DisabledFacets map[string]bool `json:"disabledFacets,omitempty"`
-	FacetOrder     []string        `json:"facetOrder,omitempty"`
+	MenuOrder      int                      `json:"menuOrder,omitempty"`
+	MenuPosition   string                   `json:"menuPosition,omitempty"`
+	MenuLabel      string                   `json:"menuLabel,omitempty"`
+	Disabled       bool                     `json:"disabled,omitempty"`
+	DisabledFacets map[string]bool          `json:"disabledFacets,omitempty"`
+	FacetOrder     []string                 `json:"facetOrder,omitempty"`
+	FacetSettings  map[string]FacetSettings `json:"facetSettings,omitempty"`
 }
 
 // LoadAppConfig reads and parses the configuration from .create-local-app.json file,
@@ -200,6 +221,13 @@ func getDefaultAppConfig() *AppConfig {
 		Domain:        "trueblocks.io",
 		Template:      "default",
 		PreserveFiles: []string{},
+		Elements: ElementsConfig{
+			HideAddressSelector:  false,
+			HideChainSelector:    false,
+			HideContractSelector: false,
+			HidePeriodSelector:   false,
+			HideProjectSelector:  false,
+		},
 		ViewConfig: map[string]ViewConfigEntry{
 			"exports":     {MenuOrder: 20},
 			"monitors":    {MenuOrder: 30},

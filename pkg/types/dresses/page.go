@@ -303,7 +303,9 @@ func (c *DressesCollection) matchesItemFilter(item *Item, filter string) bool {
 		return true
 	}
 	lf := strings.ToLower(filter)
-	return strings.Contains(strings.ToLower(item.Value), lf)
+	dbName := strings.ToLower(item.DatabaseName)
+	matches := dbName == lf
+	return matches
 }
 
 func (c *DressesCollection) matchesEventFilter(item *Log, filter string) bool {

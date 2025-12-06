@@ -59,7 +59,7 @@ type AppPreferences struct {
 	SilencedDialogs map[string]bool   `json:"silencedDialogs"`
 	ChunksMetrics   map[string]string `json:"chunksMetrics,omitempty"`
 	ExportsMetrics  map[string]string `json:"exportsMetrics,omitempty"`
-	SectionStates   map[string]bool   `json:"sectionStates,omitempty"`
+	SectionStates   map[string]bool   `json:"sectionStates"`
 	Bounds          Bounds            `json:"bounds,omitempty"`
 	FontScale       float64           `json:"fontScale"`
 	ShowFieldTypes  bool              `json:"showFieldTypes"`

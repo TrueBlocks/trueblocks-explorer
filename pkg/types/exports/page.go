@@ -580,7 +580,11 @@ func (c *ExportsCollection) matchesTransferFilter(item *Transfer, filter string)
 }
 
 func (c *ExportsCollection) matchesTransactionFilter(item *Transaction, filter string) bool {
-	return strings.Contains(strings.ToLower(item.Hash.Hex()), filter)
+	return strings.Contains(strings.ToLower(item.Hash.Hex()), filter) ||
+		strings.Contains(strings.ToLower(item.From.Hex()), filter) ||
+		strings.Contains(strings.ToLower(item.To.Hex()), filter) ||
+		strings.Contains(strings.ToLower(item.FromName), filter) ||
+		strings.Contains(strings.ToLower(item.ToName), filter)
 }
 
 func (c *ExportsCollection) matchesWithdrawalFilter(item *Withdrawal, filter string) bool {

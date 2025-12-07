@@ -152,8 +152,9 @@ type ElementsConfig struct {
 
 // FacetSettings represents per-facet configuration overrides
 type FacetSettings struct {
-	DividerBefore *bool `json:"dividerBefore,omitempty"`
-	CanClose      *bool `json:"canClose,omitempty"`
+	Label         string `json:"label,omitempty"`
+	DividerBefore *bool  `json:"dividerBefore,omitempty"`
+	CanClose      *bool  `json:"canClose,omitempty"`
 }
 
 // ViewConfigEntry represents configuration for a single view in .create-local-app.json

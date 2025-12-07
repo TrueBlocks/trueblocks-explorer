@@ -45,6 +45,7 @@ viewType = "table"
 
 [[facets]]
 name = "AssetCharts"
+label = "Histories"
 store = "Statements"
 actions = ["export"]
 viewType = "custom"

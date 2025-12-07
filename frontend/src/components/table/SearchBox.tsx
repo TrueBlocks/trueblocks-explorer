@@ -34,7 +34,7 @@ export const SearchBox = ({ value, onChange }: SearchBoxProps) => {
   };
 
   const handleBlur = () => {
-    setInputValue('');
+    commitChange();
   };
 
   return (

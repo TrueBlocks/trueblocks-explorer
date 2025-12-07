@@ -913,7 +913,7 @@ export namespace preferences {
 	    silencedDialogs: Record<string, boolean>;
 	    chunksMetrics?: Record<string, string>;
 	    exportsMetrics?: Record<string, string>;
-	    sectionStates?: Record<string, boolean>;
+	    sectionStates: Record<string, boolean>;
 	    bounds?: Bounds;
 	    fontScale: number;
 	    showFieldTypes: boolean;

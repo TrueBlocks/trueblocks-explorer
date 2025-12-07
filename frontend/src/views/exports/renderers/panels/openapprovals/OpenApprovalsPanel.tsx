@@ -298,7 +298,7 @@ export const OpenApprovalsPanel = (
                   ? 'Connecting...'
                   : isPreparingTransaction
                     ? 'Preparing...'
-                    : 'Pending...'}
+                    : 'Revoke...'}
               </StyledButton>
               <StyledButton
                 onClick={handleApprove}
@@ -318,7 +318,7 @@ export const OpenApprovalsPanel = (
                   ? 'Connecting...'
                   : isPreparingTransaction
                     ? 'Preparing...'
-                    : 'Approve'}
+                    : 'Approve...'}
               </StyledButton>
               {isConnecting && (
                 <Text size="xs" c="dimmed" mt={4}>

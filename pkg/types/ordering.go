@@ -113,6 +113,10 @@ func SetMenuOrder(vc *ViewConfig) {
 		if !skipOrdering && len(viewConfig.FacetSettings) > 0 && vc.Facets != nil {
 			for facetId, settings := range viewConfig.FacetSettings {
 				if facetConfig, exists := vc.Facets[facetId]; exists {
+					// Apply label override
+					if settings.Label != "" {
+						facetConfig.Name = settings.Label
+					}
 					// Apply dividerBefore override
 					if settings.DividerBefore != nil {
 						facetConfig.DividerBefore = *settings.DividerBefore

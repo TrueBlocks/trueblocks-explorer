@@ -139,6 +139,7 @@
                         {
                             "display_name": "Downloaded",
                             "name": "Downloaded",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Abis",
@@ -164,6 +165,7 @@
                         {
                             "display_name": "Known",
                             "name": "Known",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Abis",
@@ -187,6 +189,7 @@
                         {
                             "display_name": "Functions",
                             "name": "Functions",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Functions",
@@ -210,6 +213,7 @@
                         {
                             "display_name": "Events",
                             "name": "Events",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Functions",
@@ -1121,6 +1125,7 @@
                         {
                             "display_name": "Stats",
                             "name": "Stats",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Stats",
@@ -1144,6 +1149,7 @@
                         {
                             "display_name": "Index",
                             "name": "Index",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Index",
@@ -1167,6 +1173,7 @@
                         {
                             "display_name": "Blooms",
                             "name": "Blooms",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Blooms",
@@ -1190,6 +1197,7 @@
                         {
                             "display_name": "Manifest",
                             "name": "Manifest",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Manifest",
@@ -2152,6 +2160,7 @@
                         {
                             "display_name": "Statements",
                             "name": "Statements",
+                            "label": "",
                             "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Statements",
@@ -2175,6 +2184,7 @@
                         {
                             "display_name": "Assets",
                             "name": "Assets",
+                            "label": "",
                             "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Assets",
@@ -2196,8 +2206,9 @@
                             "hideable": false
                         },
                         {
-                            "display_name": "AssetCharts",
+                            "display_name": "Histories",
                             "name": "AssetCharts",
+                            "label": "Histories",
                             "mapKey": "item.Asset.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Statements",
@@ -2221,6 +2232,7 @@
                         {
                             "display_name": "Balances",
                             "name": "Balances",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Balances",
@@ -2244,6 +2256,7 @@
                         {
                             "display_name": "Transfers",
                             "name": "Transfers",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Transfers",
@@ -2267,6 +2280,7 @@
                         {
                             "display_name": "OpenApprovals",
                             "name": "OpenApprovals",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "OpenApprovals",
@@ -2290,6 +2304,7 @@
                         {
                             "display_name": "ApprovalTxs",
                             "name": "ApprovalTxs",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "ApprovalTxs",
@@ -2313,6 +2328,7 @@
                         {
                             "display_name": "ApprovalLogs",
                             "name": "ApprovalLogs",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "ApprovalLogs",
@@ -2336,6 +2352,7 @@
                         {
                             "display_name": "Transactions",
                             "name": "Transactions",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Transactions",
@@ -2359,6 +2376,7 @@
                         {
                             "display_name": "Withdrawals",
                             "name": "Withdrawals",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Withdrawals",
@@ -2382,6 +2400,7 @@
                         {
                             "display_name": "Receipts",
                             "name": "Receipts",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Receipts",
@@ -2405,6 +2424,7 @@
                         {
                             "display_name": "Logs",
                             "name": "Logs",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Logs",
@@ -2428,6 +2448,7 @@
                         {
                             "display_name": "Traces",
                             "name": "Traces",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Traces",
@@ -2980,6 +3001,7 @@
                         {
                             "display_name": "Monitors",
                             "name": "Monitors",
+                            "label": "",
                             "mapKey": "",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Monitors",
@@ -3167,6 +3189,7 @@
                         {
                             "display_name": "All",
                             "name": "All",
+                            "label": "",
                             "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
@@ -3193,6 +3216,7 @@
                         {
                             "display_name": "Custom",
                             "name": "Custom",
+                            "label": "",
                             "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
@@ -3224,6 +3248,7 @@
                         {
                             "display_name": "Prefund",
                             "name": "Prefund",
+                            "label": "",
                             "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
@@ -3249,6 +3274,7 @@
                         {
                             "display_name": "Regular",
                             "name": "Regular",
+                            "label": "",
                             "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
@@ -3275,6 +3301,7 @@
                         {
                             "display_name": "Baddress",
                             "name": "Baddress",
+                            "label": "",
                             "mapKey": "item.Address.Hex()",
                             "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                             "storeName": "Names",
@@ -3393,6 +3420,7 @@
                 {
                     "display_name": "Manage",
                     "name": "Manage",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Projects",
@@ -3414,6 +3442,7 @@
                 {
                     "display_name": "Projects",
                     "name": "Projects",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "AddressList",
@@ -3522,6 +3551,7 @@
                 {
                     "display_name": "Statements",
                     "name": "Statements",
+                    "label": "",
                     "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Statements",
@@ -3545,6 +3575,7 @@
                 {
                     "display_name": "Assets",
                     "name": "Assets",
+                    "label": "",
                     "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Assets",
@@ -3566,8 +3597,9 @@
                     "hideable": false
                 },
                 {
-                    "display_name": "AssetCharts",
+                    "display_name": "Histories",
                     "name": "AssetCharts",
+                    "label": "Histories",
                     "mapKey": "item.Asset.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Statements",
@@ -3591,6 +3623,7 @@
                 {
                     "display_name": "Balances",
                     "name": "Balances",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Balances",
@@ -3614,6 +3647,7 @@
                 {
                     "display_name": "Transfers",
                     "name": "Transfers",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transfers",
@@ -3637,6 +3671,7 @@
                 {
                     "display_name": "OpenApprovals",
                     "name": "OpenApprovals",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "OpenApprovals",
@@ -3660,6 +3695,7 @@
                 {
                     "display_name": "ApprovalTxs",
                     "name": "ApprovalTxs",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "ApprovalTxs",
@@ -3683,6 +3719,7 @@
                 {
                     "display_name": "ApprovalLogs",
                     "name": "ApprovalLogs",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "ApprovalLogs",
@@ -3706,6 +3743,7 @@
                 {
                     "display_name": "Transactions",
                     "name": "Transactions",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transactions",
@@ -3729,6 +3767,7 @@
                 {
                     "display_name": "Withdrawals",
                     "name": "Withdrawals",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Withdrawals",
@@ -3752,6 +3791,7 @@
                 {
                     "display_name": "Receipts",
                     "name": "Receipts",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Receipts",
@@ -3775,6 +3815,7 @@
                 {
                     "display_name": "Logs",
                     "name": "Logs",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
@@ -3798,6 +3839,7 @@
                 {
                     "display_name": "Traces",
                     "name": "Traces",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Traces",
@@ -4970,6 +5012,7 @@
                 {
                     "display_name": "Monitors",
                     "name": "Monitors",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Monitors",
@@ -5108,6 +5151,7 @@
                 {
                     "display_name": "Downloaded",
                     "name": "Downloaded",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Abis",
@@ -5133,6 +5177,7 @@
                 {
                     "display_name": "Known",
                     "name": "Known",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Abis",
@@ -5156,6 +5201,7 @@
                 {
                     "display_name": "Functions",
                     "name": "Functions",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Functions",
@@ -5179,6 +5225,7 @@
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Functions",
@@ -7180,6 +7227,7 @@
                 {
                     "display_name": "All",
                     "name": "All",
+                    "label": "",
                     "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
@@ -7206,6 +7254,7 @@
                 {
                     "display_name": "Custom",
                     "name": "Custom",
+                    "label": "",
                     "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
@@ -7237,6 +7286,7 @@
                 {
                     "display_name": "Prefund",
                     "name": "Prefund",
+                    "label": "",
                     "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
@@ -7262,6 +7312,7 @@
                 {
                     "display_name": "Regular",
                     "name": "Regular",
+                    "label": "",
                     "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
@@ -7288,6 +7339,7 @@
                 {
                     "display_name": "Baddress",
                     "name": "Baddress",
+                    "label": "",
                     "mapKey": "item.Address.Hex()",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Names",
@@ -7376,6 +7428,7 @@
                 {
                     "display_name": "Stats",
                     "name": "Stats",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Stats",
@@ -7399,6 +7452,7 @@
                 {
                     "display_name": "Index",
                     "name": "Index",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Index",
@@ -7422,6 +7476,7 @@
                 {
                     "display_name": "Blooms",
                     "name": "Blooms",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Blooms",
@@ -7445,6 +7500,7 @@
                 {
                     "display_name": "Manifest",
                     "name": "Manifest",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Manifest",
@@ -8571,6 +8627,7 @@
                 {
                     "display_name": "Dashboard",
                     "name": "Dashboard",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Contracts",
@@ -8592,6 +8649,7 @@
                 {
                     "display_name": "Execute",
                     "name": "Execute",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Contracts",
@@ -8613,6 +8671,7 @@
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
@@ -9220,6 +9279,7 @@
                 {
                     "display_name": "Status",
                     "name": "Status",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Status",
@@ -9241,6 +9301,7 @@
                 {
                     "display_name": "Caches",
                     "name": "Caches",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Caches",
@@ -9264,6 +9325,7 @@
                 {
                     "display_name": "Chains",
                     "name": "Chains",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Chains",
@@ -9662,6 +9724,7 @@
                 {
                     "display_name": "Generator",
                     "name": "Generator",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "DalleDress",
@@ -9683,6 +9746,7 @@
                 {
                     "display_name": "Series",
                     "name": "Series",
+                    "label": "",
                     "mapKey": "item.Suffix",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Series",
@@ -9710,6 +9774,7 @@
                 {
                     "display_name": "Databases",
                     "name": "Databases",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Databases",
@@ -9733,6 +9798,7 @@
                 {
                     "display_name": "Items",
                     "name": "Items",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Items",
@@ -9756,6 +9822,7 @@
                 {
                     "display_name": "Events",
                     "name": "Events",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Logs",
@@ -9779,6 +9846,7 @@
                 {
                     "display_name": "Gallery",
                     "name": "Gallery",
+                    "label": "",
                     "mapKey": "item.Original + \":\" + item.AnnotatedPath",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "DalleDress",
@@ -10052,6 +10120,7 @@
                 {
                     "display_name": "Comparitoor",
                     "name": "Comparitoor",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
@@ -10075,6 +10144,7 @@
                 {
                     "display_name": "Chifra",
                     "name": "Chifra",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
@@ -10098,6 +10168,7 @@
                 {
                     "display_name": "Etherscan",
                     "name": "Etherscan",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
@@ -10121,6 +10192,7 @@
                 {
                     "display_name": "Covalent",
                     "name": "Covalent",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",
@@ -10144,6 +10216,7 @@
                 {
                     "display_name": "Alchemy",
                     "name": "Alchemy",
+                    "label": "",
                     "mapKey": "",
                     "store": "NOT NEEDED AFTER LOAD - THIS MESSAGE PROVES IT",
                     "storeName": "Transaction",

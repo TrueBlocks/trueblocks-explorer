@@ -50,7 +50,7 @@ func (c *ExportsCollection) buildStaticFacets() map[string]types.FacetConfig {
 			HeaderActions: []string{"export"},
 		},
 		"assetcharts": {
-			Name:             "Asset Charts",
+			Name:             "Histories",
 			Store:            "statements",
 			ViewType:         "custom",
 			DividerBefore:    false,
